@@ -1,0 +1,41 @@
+{
+    "secTitle": "What would you like to do next?",
+    "dataList": [
+        {
+            "id": "1",
+            "boxIcon": "flaticon-thumbs-like",
+            "title": "Create Course",
+            "subTitle": "Create a new course for our 1000+ learners to enrol"
+        },
+        {
+            "id": "2",
+            "boxIcon": "flaticon-reading",
+            "title": "Course Stats",
+            "subTitle": "Generate course reports based on learner activity"
+        },
+        {
+            "id": "3",
+            "boxIcon": "flaticon-teacher",
+            "title": "Learner Insights",
+            "subTitle": "Generate student perfomance and engagement reports"
+        },
+        {
+            "id": "4",
+            "boxIcon": "flaticon-time",
+            "title": "Find Institutions",
+            "subTitle": "Partner with an Institution and create customized learning"
+        },
+        {
+            "id": "5",
+            "boxIcon": "flaticon-locations",
+            "title": "Refer to us",
+            "subTitle": "Refer a friend, colleague, instructor or an institution to us."
+        },
+        {
+            "id": "6",
+            "boxIcon": "flaticon-support",
+            "title": "Online Support",
+            "subTitle": "Start a live chat with one of our learning assistants"
+        }
+    ]
+}

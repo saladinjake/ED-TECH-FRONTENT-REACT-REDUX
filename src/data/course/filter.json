@@ -1,0 +1,77 @@
+{
+    "secTitle": "We Do What We Love To Do. Find the Best Course To Fit Your Needs.",
+    "dataList": [
+        {
+            "id": "1",
+            "targetId": "business",
+            "imgUrl": "ent.png",
+            "authorImg": "",
+            "authorName": "",
+            "authorCourses": "",
+            "price": "0.00",
+            "courseTitle": "Becoming an Entrepreneur",
+            "courseDesc": "Curious about entrepreneurship but not sure where to start? Becoming an Entrepreneur is designed in partnership with MIT to guide...",
+            "courseLink": "/course-details"
+        },
+        {
+            "id": "2",
+            "targetId": "technology",
+            "imgUrl": "html.jpg",
+            "authorImg": "",
+            "authorName": "",
+            "authorCourses": "",
+            "price": "0.00",
+            "courseTitle": "Build Websites from Scratch with HTML & CSS",
+            "courseDesc": "Learn Web Development Essentials and Become a Web Developer From Scratch in this Complete HTML & CSS Beginner's Course",
+            "courseLink": "/course-details"
+        },
+        {
+            "id": "3",
+            "targetId": "health",
+            "imgUrl": "corona.jpg",
+            "authorImg": "",
+            "authorName": "",
+            "authorCourses": "",
+            "price": "0.00",
+            "courseTitle": "Lessons from Ebola: Preventing the Next Pandemic",
+            "courseDesc": "Like no other event in recent history, the 2014 Ebola outbreak has made clear the fragility of existing health systems.",
+            "courseLink": "/course-details"
+        },
+        {
+            "id": "4",
+            "targetId": "health",
+            "imgUrl": "health.jpg",
+            "authorImg": "author.jpg",
+            "authorName": "",
+            "authorCourses": "",
+            "price": "0.00",
+            "courseTitle": "Nutrition, Heart Disease and Diabetes",
+            "courseDesc": "Discover the latest insights on the importance of nutrition and lifestyle in the development and treatment of cardiovascular diseases",
+            "courseLink": "/course-details"
+        },
+        {
+            "id": "5",
+            "targetId": "engineering",
+            "imgUrl": "arch.jpg",
+            "authorImg": "",
+            "authorName": "",
+            "authorCourses": "",
+            "price": "0.00",
+            "courseTitle": "A Global History of Architecture",
+            "courseDesc": "How do we understand architecture? One way of answering this question is by looking through the lens of history, beginning with ",
+            "courseLink": "/course-details"
+        },
+        {
+            "id": "6",
+            "targetId": "business",
+            "imgUrl": "ent2.jpg",
+            "authorImg": "author.jpg",
+            "authorName": "",
+            "authorCourses": "",
+            "price": "0.00",
+            "courseTitle": "Enterpreneurship basics for beginners",
+            "courseDesc": "Develop, organize, and manage your own business",
+            "courseLink": "/course-details"
+        }
+    ]
+}

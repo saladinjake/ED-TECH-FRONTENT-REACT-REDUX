@@ -1,0 +1,123 @@
+@import "../../styles/abstract/base";
+
+.features {
+  background: linear-gradient(106.1deg, #01265b 36.05%, #063d8d 61.2%);
+  display: flex;
+  padding: 2rem;
+
+  @media only screen and (min-width: 106rem) {
+    margin: 0 30rem;
+  }
+
+  @include respond(tab-land) {
+    flex-wrap: wrap;
+    padding: 5rem;
+  }
+
+  @include respond(misc1) {
+    padding: 3rem;
+  }
+
+  &__item {
+    flex-basis: 50%;
+
+    &.shortintro {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    @include respond(tab-land) {
+      flex-basis: 100%;
+      padding-bottom: 3rem;
+    }
+
+    span {
+      color: #de863e;
+      font-style: normal;
+      font-weight: normal;
+      font-weight: 300;
+      font-size: 1.2rem;
+      line-height: 2rem;
+      padding-top: 3rem;
+      padding-bottom: 2.5rem;
+    }
+
+    h2 {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 3.5rem;
+      line-height: 4.5rem;
+      color: $white;
+
+      @include respond(phone) {
+        font-size: 2rem;
+        line-height: 2.5rem;
+        text-align: center;
+      }
+    }
+
+    button {
+      outline: none;
+      border: none;
+      background-color: transparent;
+      color: $white;
+      align-self: flex-start;
+
+      &:hover {
+        background-color: $white;
+        color: $primary;
+        padding: 1rem 1.2rem;
+      }
+    }
+
+    .features__box {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+      grid-gap: 2rem;
+      padding-left: 5rem;
+
+      @include respond(tab-land) {
+        padding-left: 0;
+      }
+
+      &__item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        flex-direction: column;
+
+        &-icon {
+          width: 48px;
+          height: 48px;
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        h3,
+        p {
+          font-style: normal;
+          font-weight: normal;
+          font-weight: 300;
+          font-size: 1.5rem;
+          line-height: 2rem;
+          color: #fff;
+          padding-top: 1rem;
+          padding-bottom: 1rem;
+          width: 90%;
+    
+          @include respond(phone) {
+            width: 100%;
+            font-size: 1.2rem;
+            line-height: 1.5rem;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+}

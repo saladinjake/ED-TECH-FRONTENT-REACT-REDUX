@@ -1,0 +1,118 @@
+@import "../../styles/abstract/base";
+
+.footer {
+  padding: 5rem 10.4rem;
+  display: flex;
+  position:relative;
+  // background: linear-gradient(
+  //   180deg,
+  //   rgba(2, 83, 200, 0.03) 0%,
+  //   rgba(2, 83, 200, 0) 100%
+  // );
+  background-color: #f4f8fc;
+
+  @include respond(tab-port) {
+    padding: 5rem;
+  }
+
+  @include respond(misc1) {
+    padding: 3rem;
+  }
+
+  @include respond(tab-port) {
+    flex-wrap: wrap;
+  }
+
+  &__item {
+    flex-basis: 25%;
+
+    @include respond(tab-port) {
+      flex-basis: 50%;
+    }
+
+    @include respond(phone) {
+      flex-basis: 100%;
+    }
+
+    &-full {
+      flex-basis: 50%;
+
+      &.space {
+        display: flex;
+        justify-content: space-between;
+
+        @include respond(phone) {
+          flex-wrap: wrap;
+          .d-col {
+            flex-basis: 100%;
+          }
+        }
+      }
+
+      @include respond(tab-port) {
+        flex-basis: 100%;
+        margin-bottom: 1.5rem;
+      }
+
+      p {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 1.2rem;
+        line-height: 2rem;
+        color: $grey;
+        margin-bottom: 0.5rem;
+
+
+        @include respond(phone) {
+          @include fontNormal(1rem, 1.2rem, #30415a);
+        }
+      }
+
+      ul {
+        li {
+          a {
+            figure {
+              height: 2.4rem;
+              width: 2.4rem;
+              margin-right: 1.5rem;
+
+              img {
+                width: 100%;
+                height: 100%;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    ul.d-col {
+      @include respond(phone) {
+        margin-bottom: 2rem;
+      }
+
+      li {
+        margin-bottom: 1.2rem;
+        line-height: 1.2rem;
+      }
+    }
+  }
+
+  a {
+    font-style: normal;
+        font-weight: normal;
+        font-size: 1.2rem;
+        line-height: 1rem;
+        color: $grey;
+        margin-bottom: 0.5rem;
+  }
+
+  h4 {
+    font-style: normal;
+            font-weight: bold;
+            font-size: 1.5rem;
+            line-height: 2.5rem;
+            color: #01265b;
+            margin-bottom: 1.5rem;
+  }
+}

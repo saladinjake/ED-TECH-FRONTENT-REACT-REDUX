@@ -1,0 +1,41 @@
+{
+    "secTitle": "What would you like to do next?",
+    "dataList": [
+        {
+            "id": "1",
+            "boxIcon": "flaticon-thumbs-like",
+            "title": "Popular Courses",
+            "subTitle": "See the popular and recommended courses for you."
+        },
+        {
+            "id": "2",
+            "boxIcon": "flaticon-reading",
+            "title": "Find Courses",
+            "subTitle": "Search over 1000 courses on Questence"
+        },
+        {
+            "id": "3",
+            "boxIcon": "flaticon-teacher",
+            "title": "Become Instructor",
+            "subTitle": "Become an Instructor on Questence and sell your content."
+        },
+        {
+            "id": "4",
+            "boxIcon": "flaticon-time",
+            "title": "Unlimited Courses",
+            "subTitle": "Pick a subscription plan that's right for you."
+        },
+        {
+            "id": "5",
+            "boxIcon": "flaticon-locations",
+            "title": "Refer to us",
+            "subTitle": "Refer a friend, colleague, instructor or an institution to us."
+        },
+        {
+            "id": "6",
+            "boxIcon": "flaticon-support",
+            "title": "Online Support",
+            "subTitle": "Start a live chat with one of our learning assistants"
+        }
+    ]
+}

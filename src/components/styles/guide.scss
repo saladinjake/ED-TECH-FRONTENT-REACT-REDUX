@@ -1,0 +1,113 @@
+@import "../../styles/abstract/base";
+
+.guide {
+  display: flex;
+  padding: 8rem 10rem;
+
+  @media only screen and (min-width: 90rem) {
+    padding: 8rem 35rem;
+  }
+
+  @include respond(tab-land) {
+    flex-wrap: wrap;
+    padding: 5rem;
+  }
+
+  @include respond(misc1) {
+    padding: 3rem;
+  }
+
+  &__item {
+    flex-basis: 50%;
+
+    @include respond(tab-land) {
+      flex-basis: 100%;
+    }
+
+    h4 {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 2rem;
+      line-height: 2.5rem;
+      color: #01265b;
+      margin-bottom: 2rem;
+
+      @include respond(phone) {
+        font-size: 2rem;
+        line-height: 2.5rem;
+        text-align: center;
+      }
+
+      span {
+        color: #de863e;
+      }
+    }
+
+    .guide__box {
+      display: flex;
+      flex-direction: column;
+
+      &__item {
+        margin-bottom: 1.5rem;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+
+        figure {
+          background: #ebf2f3;
+          border: 2px solid #ffffff;
+          box-shadow: 0px 1px 7px #e5e5e5;
+          border-radius: 50%;
+          margin-right: 3rem;
+          width: 3rem;
+          height: 3rem;
+          overflow: hidden;
+
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+        &-info {
+          flex-basis: 90%;
+
+          h6 {
+            font-style: normal;
+            font-weight: bold;
+            font-size: 1.5rem;
+            line-height: 2.5rem;
+            color: #01265b;
+            margin-bottom: 0.5rem;
+
+            @include respond(phone) {
+              @include fontNormal(1rem, 1.2rem, #30415a);
+            }
+          }
+
+          p {
+            font-style: normal;
+            font-weight: normal;
+            font-size: 1.2rem;
+            line-height: 1.7rem;
+            color: #01265b;
+            margin-bottom: 0.5rem;
+
+
+            @include respond(phone) {
+              @include fontNormal(1rem, 1.2rem, #30415a);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &__figure {
+    flex-basis: 50%;
+    @include flexCenter;
+
+    @include respond(tab-land) {
+      display: none;
+    }
+  }
+}
