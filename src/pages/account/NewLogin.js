@@ -83,21 +83,13 @@ const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
   
  
       <div  class="col-lg-8 col-md-6 hidden-md-down hidden-xs hidden-sm "  style={{background:"#fff"}} >
-      
+           <div style={{padding:"43%", background:"#fff"}}></div>
       </div>
 
 
     <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pull-right" style={{background:"#fff",marginTop:"40px",height:"auto"}}>
       <div   >
-        <div class="panel-heading">
-          <h3 class="text-center"><strong class="text-custom">
-
-               <a href="#" style={{fontSize:"20px",marginTop:"30px"}} class="waves-effect waves-light">Log in </a>
-                           <br/>
-
-               <h6 style={{fontSize:"10px"}} class="waves-effect waves-light">Login.</h6>
-          </strong></h3>
-        </div>
+        
 
         <div class="panel-body " style={{marginTop:"74px"}}>
           <Formik
@@ -116,15 +108,15 @@ const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
                   }) => (
                     <div className="login-box ">
                       <div className="login-title text-center">
-                        <h3>Log In</h3>
+                        <h3 style={{color: "#0253c8"}}>Log In</h3>
                       </div>
                       <form
                         id="form_login"
-                        className="form form-horizontal baseForm"
+                        className="form form-horizontal baseForm card-box"
                         onSubmit={handleSubmit}
                       >
                         <p className="form-group">
-                          <label class="formFieldLabel "  htmlFor="email">Email</label>
+                          <label class="formFieldLabel " style={{color: "#0253c8"}}  htmlFor="email">Email</label>
                           <input
                           className="form-control"
                             type="email"
@@ -135,12 +127,12 @@ const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
                             onBlur={handleBlur}
                             value={values.email}
                           />
-                          <span className="login_input-msg">
+                          <span className="login_input-msg" style={{color: "red"}}>
                             {errors.email && touched.email && errors.email}
                           </span>
                         </p>
                         <p className="form-group">
-                          <label htmlFor="login_password" class="formFieldLabel">Password</label>
+                          <label style={{color: "#0253c8"}} htmlFor="login_password" class="formFieldLabel">Password</label>
                           <input
                           className="form-control"
                             type="password"
@@ -151,13 +143,13 @@ const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
                             onBlur={handleBlur}
                             value={values.password}
                           />
-                          <span className="login_input-msg">
+                          <span className="login_input-msg" style={{color: "red"}}>
                             {errors.password &&
                               touched.password &&
                               errors.password}
                           </span>
                         </p>
-                        <button type="submit" className="btn btn-default" disabled={isSubmitting}>
+                        <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
                           {loading ? (
                             <div className="spinner-border" role="status">
                               <span className="sr-only">Loading...</span>
@@ -166,8 +158,9 @@ const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
                             "Login"
                           )}
                         </button>
+                       
                         <div className="not_account-btn text-center">
-                          <p>
+                          <p> <br/> <br/>
                             Don't have an account yet?
                             <Link to={process.env.PUBLIC_URL + "/register"}>
                               {" "}
