@@ -1,11 +1,11 @@
 import React, { useEffect, useState, Fragment } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import NavBar from "components/Navbar";
-import { PageTitle } from "../../components/common/PageTitle";
+import { Row } from "react-bootstrap";
+// import NavBar from "components/Navbar";
+// import { PageTitle } from "../../components/common/PageTitle";
 import CourseSidebar from "./components/CourseSidebar";
 import CourseItemGrid from "./components/CourseItemsGrid";
 import Footer from "../../components/Footer";
-import { Styles } from "./styles/course.js";
+// import { Styles } from "./styles/course.js";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -15,12 +15,12 @@ import Loader from "components/Loader/Loader";
 import { useQuery } from "hooks/useQuery.js";
 
 
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 
-import { getAuthProfile } from "services/learner.js";
+// import { getAuthProfile } from "services/learner.js";
 
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 
 
 import "../shop/newdashboard/assets/css/bootstrap.min.css";
@@ -37,7 +37,7 @@ import Navbar from "components/Navbar"  //old
 import $ from "jquery";
 import jQueryBridget from "jquery-bridget"
 import Isotope from "isotope-layout";
-import magnificPopup from "magnific-popup"
+// import magnificPopup from "magnific-popup"
 // make Isotope a jQuery plugin
 jQueryBridget( 'isotope', Isotope, $ );
 

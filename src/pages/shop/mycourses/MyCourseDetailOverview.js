@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Fragment } from "react";
-import { Link } from "react-router-dom";
-import { Container, Row,  Col, Tab, Nav} from "react-bootstrap";
+// import { Link } from "react-router-dom";
+// import { Container, Row,  Col, Tab, Nav} from "react-bootstrap";
 
 // import Pagination from "./../../components/Pagination";
 import { Styles } from "./styles/course.js";
@@ -22,17 +22,17 @@ import "./magnify.css"
 import Sidebar from "../newdashboard/Sidebar";
 // import NewHeader from "../newdashboard/NewHeader";
 
-import $ from "jquery";
-import jQueryBridget from "jquery-bridget"
-import Isotope from "isotope-layout";
-import magnificPopup from "magnific-popup"
+// import $ from "jquery";
+// import jQueryBridget from "jquery-bridget"
+// import Isotope from "isotope-layout";
+// import magnificPopup from "magnific-popup"
 // // make Isotope a jQuery plugin
 
 
 
 
 import NavBar from "components/Navbar";
-import Footer from "components/Footer";
+// import Footer from "components/Footer";
 
 
 
@@ -176,19 +176,19 @@ const CourseDetails = ({
                                 <button type="button" className="btn  dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="true" style={{background: "rgb(2, 83, 200)", color: "rgb(255, 255, 255)"}}>
                                 Settings <span className="m-l-5"><i className="fa fa-cog"></i></span></button>
                                 <ul className="dropdown-menu drop-menu-right" role="menu"><li>
-                                <a href="#">Upcoming courses</a></li><li><a href="/profile">Profile</a></li>
-                                <li><a href="/notifications">Account Settings</a></li><li><a href="/cart">Cart</a></li>
-                                <li className="divider"></li><li><a href="#">Reload</a></li></ul>
+                                <a alt="no links" href="#">Upcoming courses</a></li><li><a alt="no links" href="/profile">Profile</a></li>
+                                <li><a alt="no links" href="/notifications">Account Settings</a></li><li><a alt="no links" href="/cart">Cart</a></li>
+                                <li className="divider"></li><li><a alt="no links" href="#">Reload</a></li></ul>
                                 </div>
 
 
                 <h4 className="page-title">Course  Detail</h4>
                 <ol className="breadcrumb" style={{display:"block"}}>
                   <li>
-                    <a href="#">Courses</a>
+                    <a alt="no links" href="#">Courses</a>
                   </li>
                   <li>
-                    <a href="#">Detail</a>
+                    <a alt="no links" href="#">Detail</a>
                   </li>
                   <li className="active">
                     Product Detail
@@ -208,17 +208,17 @@ const CourseDetails = ({
                                                
                                                <img className="img-responsive card-box" src={`${
                             coursedetails && coursedetails.data
-                              ? coursedetails.data.course_cover_image!="" ? coursedetails.data.course_cover_image  : "/assets/images/gallery/1.jpg"
+                              ? coursedetails.data.course_cover_image!=="" ? coursedetails.data.course_cover_image  : "/assets/images/gallery/1.jpg"
                               : "/assets/images/gallery/1.jpg"
                           }`} />
                             <br/>
                            <div className="rating">
                                                     <ul className="list-inline">
-                                                        <li><a className="fa fa-star" href=""></a></li>
-                                                        <li><a className="fa fa-star" href=""></a></li>
-                                                        <li><a className="fa fa-star" href=""></a></li>
-                                                        <li><a className="fa fa-star" href=""></a></li>
-                                                        <li><a className="fa fa-star-o" href=""></a></li>
+                                                        <li><a alt="no links" className="fa fa-star" href=""></a></li>
+                                                        <li><a alt="no links" className="fa fa-star" href=""></a></li>
+                                                        <li><a alt="no links" className="fa fa-star" href=""></a></li>
+                                                        <li><a alt="no links" className="fa fa-star" href=""></a></li>
+                                                        <li><a alt="no links" className="fa fa-star-o" href=""></a></li>
                                                     </ul>
                                                 </div>
 
@@ -235,11 +235,11 @@ const CourseDetails = ({
                                                <h3><b> {coursedetails?.data?.course_name}</b></h3>
                                                <div className="rating">
                                                     <ul className="list-inline">
-                                                        <li><a className="fa fa-star" href=""></a></li>
-                                                        <li><a className="fa fa-star" href=""></a></li>
-                                                        <li><a className="fa fa-star" href=""></a></li>
-                                                        <li><a className="fa fa-star" href=""></a></li>
-                                                        <li><a className="fa fa-star-o" href=""></a></li>
+                                                        <li><a alt="no links" className="fa fa-star" href=""></a></li>
+                                                        <li><a alt="no links" className="fa fa-star" href=""></a></li>
+                                                        <li><a alt="no links" className="fa fa-star" href=""></a></li>
+                                                        <li><a alt="no links" className="fa fa-star" href=""></a></li>
+                                                        <li><a alt="no links" className="fa fa-star-o" href=""></a></li>
                                                     </ul>
                                                 </div>
 
@@ -330,25 +330,25 @@ const CourseDetails = ({
                   <div className="col-md-12"> 
                                 <ul className="nav nav-tabs tabs" style={{width: "100%"}}>
                                     <li className="active tab" style={{width: "25%"}}>
-                                        <a href="#home-2" data-toggle="tab" aria-expanded="false" className="active"> 
+                                        <a alt="no links" href="#home-2" data-toggle="tab" aria-expanded="false" className="active"> 
                                             <span className="visible-xs"><i className="fa fa-home"></i></span> 
                                             <span className="hidden-xs">Course overview</span> 
                                         </a> 
                                     </li> 
                                     <li className="tab" style={{width: "25%"}}> 
-                                        <a href="#profile-2" data-toggle="tab" aria-expanded="false"> 
+                                        <a alt="no links" href="#profile-2" data-toggle="tab" aria-expanded="false"> 
                                             <span className="visible-xs"><i className="fa fa-user"></i></span> 
                                             <span className="hidden-xs">Curriculum</span> 
                                         </a> 
                                     </li> 
                                     <li className="tab" style={{width: "25%"}}> 
-                                        <a href="#messages-2" data-toggle="tab" aria-expanded="true"> 
+                                        <a alt="no links" href="#messages-2" data-toggle="tab" aria-expanded="true"> 
                                             <span className="visible-xs"><i className="fa fa-envelope-o"></i></span> 
                                             <span className="hidden-xs">Instructor</span> 
                                         </a> 
                                     </li> 
                                     <li className="tab" style={{width: "25%"}}> 
-                                        <a href="#settings-2" data-toggle="tab" aria-expanded="false"> 
+                                        <a alt="no links" href="#settings-2" data-toggle="tab" aria-expanded="false"> 
                                             <span className="visible-xs"><i className="fa fa-cog"></i></span> 
                                             <span className="hidden-xs">Reviews</span> 
                                         </a> 
@@ -402,27 +402,27 @@ const CourseDetails = ({
                             <hr/>
                             <ul className="social list-unstyled list-inline">
                               <li className="list-inline-item">
-                                <a href={process.env.PUBLIC_URL + "/"}>
+                                <a alt="no links" href={process.env.PUBLIC_URL + "/"}>
                                   <i className="fa fa-2x fa-facebook-f"></i>
                                 </a>
                               </li>
                               <li className="list-inline-item">
-                                <a href={process.env.PUBLIC_URL + "/"}>
+                                <a alt="no links" href={process.env.PUBLIC_URL + "/"}>
                                   <i className="fa fa-2x fa-twitter"></i>
                                 </a>
                               </li>
                               <li className="list-inline-item">
-                                <a href={process.env.PUBLIC_URL + "/"}>
+                                <a alt="no links" href={process.env.PUBLIC_URL + "/"}>
                                   <i className="fa fa-2x fa-linkedin-in"></i>
                                 </a>
                               </li>
                               <li className="list-inline-item">
-                                <a href={process.env.PUBLIC_URL + "/"}>
+                                <a alt="no links" href={process.env.PUBLIC_URL + "/"}>
                                   <i className="fa fa-2x fa-youtube"></i>
                                 </a>
                               </li>
                               <li className="list-inline-item">
-                                <a href={process.env.PUBLIC_URL + "/"}>
+                                <a alt="no links" href={process.env.PUBLIC_URL + "/"}>
                                   <i className="fa fa-2x fa-dribbble"></i>
                                 </a>
                               </li>
@@ -546,29 +546,4 @@ export default connect(mapStateToProps, {
 })(CourseDetails);
 
 
-class MyCourseDetail extends React.Component{
-	constructor(props){
-		super(props)
-	}
 
-	componentDidMount(){
-
-	}
-
-
-	render(){
-	  return(
-	  	 
-   
-      <Footer />
-    
-
-
-
-
-	  )
-	}
-}
-
-
-// export default MyCourseDetail;

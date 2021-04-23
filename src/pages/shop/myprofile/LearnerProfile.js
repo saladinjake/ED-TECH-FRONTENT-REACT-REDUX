@@ -25,8 +25,8 @@ import "../newdashboard/assets/css/pages.css";
 import "../newdashboard/assets/css/responsive.css";
 import "./tabnotifications.css"
 
-import $ from 'jquery';
-import Popper from 'popper.js';
+// import $ from 'jquery';
+// import Popper from 'popper.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 const LearnerProfiler = ({ auth: { user, user_roles } }) => {

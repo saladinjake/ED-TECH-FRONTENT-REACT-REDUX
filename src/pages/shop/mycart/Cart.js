@@ -1,8 +1,8 @@
 import React, { useEffect, Fragment } from "react";
-import { Container, Row, Col, Table } from "react-bootstrap";
+
 import { useHistory } from "react-router-dom";
 import NavBar from "components/Navbar";
-import Footer from "components/Footer";
+// import Footer from "components/Footer";
 
 
 import "../newdashboard/assets/css/bootstrap.min.css";
@@ -18,8 +18,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { removeFromCart } from "actions/cartActions";
 
-import $ from 'jquery';
-import Popper from 'popper.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 const Cart = ({

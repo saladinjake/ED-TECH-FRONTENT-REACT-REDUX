@@ -33,17 +33,17 @@ function CourseItemGrid({ allCourses, courses }) {
 
 
 
-  function showMore(id){
-    document.getElementById(id+'Overflow').className='';
-    document.getElementById(id+'MoreLink').className='hidden';
-    document.getElementById(id+'LessLink').className='';
-}
+//   function showMore(id){
+//     document.getElementById(id+'Overflow').className='';
+//     document.getElementById(id+'MoreLink').className='hidden';
+//     document.getElementById(id+'LessLink').className='';
+// }
 
-function showLess(id){
-    document.getElementById(id+'Overflow').className='hidden';
-    document.getElementById(id+'MoreLink').className='';
-    document.getElementById(id+'LessLink').className='hidden';
-}
+// function showLess(id){
+//     document.getElementById(id+'Overflow').className='hidden';
+//     document.getElementById(id+'MoreLink').className='';
+//     document.getElementById(id+'LessLink').className='hidden';
+// }
 
 
 

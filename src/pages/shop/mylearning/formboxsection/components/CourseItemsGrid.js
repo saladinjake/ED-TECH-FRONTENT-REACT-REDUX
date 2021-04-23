@@ -51,11 +51,11 @@ function CourseItemGrid({ allCourses, courses }) {
                     <div className="detail">
                                  <div className="rating" style={{width:"100px"}}>
                                                 <ul className="list-inline">
-                                                    <li><a className="fa fa-star" href="#"></a></li>
-                                                    <li><a className="fa fa-star" href="#"></a></li>
-                                                    <li><a className="fa fa-star" href="#"></a></li>
-                                                    <li><a className="fa fa-star" href="#"></a></li>
-                                                    <li><a className="fa fa-star-o" href="#"></a></li>
+                                                    <li><a alt="no links" className="fa fa-star" href="#"></a></li>
+                                                    <li><a alt="no links" className="fa fa-star" href="#"></a></li>
+                                                    <li><a alt="no links" className="fa fa-star" href="#"></a></li>
+                                                    <li><a alt="no links" className="fa fa-star" href="#"></a></li>
+                                                    <li><a alt="no links" className="fa fa-star-o" href="#"></a></li>
                                                 </ul>
                                   </div>
                                             
@@ -99,7 +99,7 @@ function runEvent(){
                     var remainder = "";
                     var id = shrinkables[i].id;
                     remainder = fullText.substring(len, fullText.length);
-                    shrinkables[i].innerHTML = '<span>' + trunc + '<span className="hidden" id="' + id + 'Overflow">'+ remainder +'</span></span>&nbsp;<a id="' + id + 'MoreLink" href="#!" onclick="showMore(\''+ id + '\');">More</a><a className="hidden" href="#!" id="' + id + 'LessLink" onclick="showLess(\''+ id + '\');">Less</a>';
+                    shrinkables[i].innerHTML = '<span>' + trunc + '<span className="hidden" id="' + id + 'Overflow">'+ remainder +'</span></span>&nbsp;<a alt="no links" id="' + id + 'MoreLink" href="#!" onclick="showMore(\''+ id + '\');">More</a><a alt="no links" className="hidden" href="#!" id="' + id + 'LessLink" onclick="showLess(\''+ id + '\');">Less</a>';
                 }
             }
         }

@@ -9,9 +9,9 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logOut } from "actions/authActions";
 
-import { uuid } from "services/dashboard";
+//import { uuid } from "services/dashboard";
 
-import { CATEGORIES, PACES, FEES, AUTHLINKS } from "./data";
+import { CATEGORIES, PACES,  AUTHLINKS } from "./data";
 
 const NavBar = ({
   cart: { cart },

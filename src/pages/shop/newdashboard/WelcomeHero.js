@@ -1,18 +1,19 @@
  
 
-import React, { Fragment, useRef } from "react";
-import { useEffect,useState} from "react";
+import React, { //Fragment, useRef 
+} from "react";
+// import { useEffect,useState} from "react";
 import { Link } from "react-router-dom";
 
-import questence from "assets/svgs/questence-logo.svg";
-import { useHistory } from "react-router-dom";
-import { ReactComponent as Dropdown } from "svgs/dropdown.svg";
+// import questence from "assets/svgs/questence-logo.svg";
+// import { useHistory } from "react-router-dom";
+// import { ReactComponent as Dropdown } from "svgs/dropdown.svg";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logOut } from "actions/authActions";
 
-import { CATEGORIES, PACES, AUTHLINKS } from "./data";
+// import { CATEGORIES, PACES, AUTHLINKS } from "./data";
 import skateboard from "./assets/images/big/skateboard.png"
 
  const WelcomeHero = ({
@@ -32,12 +33,12 @@ import skateboard from "./assets/images/big/skateboard.png"
                                 <div className="btn-group pull-right m-t-15">
                                     <button style={{background:"#0253c8",color:"#fff"}} type="button" className="btn  dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="false">Settings <span className="m-l-5"><i className="fa fa-cog"></i></span></button>
                                     <ul className="dropdown-menu drop-menu-right" role="menu">
-                                    <li><a href="#" onClick={(e)=>{document.getElementById("rightSide").style.right="10px"}}>Upcoming courses</a></li>
+                                    <li><a href="#hello" onClick={(e)=>{document.getElementById("rightSide").style.right="10px"}}>Upcoming courses</a></li>
                                         <li><Link to="./profile">Profile</Link></li>
                                         <li><Link to="./notifications">Account Settings</Link></li>
                                         <li><Link to="./cart">Cart</Link></li>
                                         <li className="divider"></li>
-                                        <li><a href="#" onClick={(e)=>{e.preventDefault();window.location.reload()}}>Reload</a></li>
+                                        <li><a href="#hello" onClick={(e)=>{e.preventDefault();window.location.reload()}}>Reload</a></li>
                                     </ul>
                                 </div>
 
@@ -66,7 +67,7 @@ import skateboard from "./assets/images/big/skateboard.png"
                          <Link to="../mycourses" type="button"  style={{background:"#0253c8",color:"#fff"}} className="btn  dropdown-toggle waves-effect">Explore my courses</Link>
 											</div>
                                             <div className="table-detail text-right">
-                                                <img src={skateboard} className="thumbnail" style={{border:"none"}} />
+                                                <img alt="noimage" src={skateboard} className="thumbnail" style={{border:"none"}} />
                                             </div>
 
 										</div>

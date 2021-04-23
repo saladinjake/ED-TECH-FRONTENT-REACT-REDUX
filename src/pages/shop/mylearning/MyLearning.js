@@ -1,13 +1,13 @@
-import React, {Fragment, useEffect,useState} from "react";
+import React, {Fragment, useEffect} from "react";
 // import NewHeader from "../newdashboard/NewHeader";
 import Navbar from "components/Navbar";
-import CourseTab from './tabsection/CourseTab'
+// import CourseTab from './tabsection/CourseTab'
 import MyLearningContainer from './tabsection/Tab';
-import CourseGrid from "./formboxsection/CourseGrid"
+// import CourseGrid from "./formboxsection/CourseGrid"
 import Footer from "components/Footer"
 
 
-import { getLearnerInfo } from "services/dashboard";
+// import { getLearnerInfo } from "services/dashboard";
 
 
 
@@ -25,17 +25,17 @@ import "../newdashboard/assets/css/pages.css";
 import "../newdashboard/assets/css/responsive.css";
 
 
-import $ from 'jquery';
-import Popper from 'popper.js';
+// import $ from 'jquery';
+// import Popper from 'popper.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 const NewDashBoard = ({ auth: { user } ,match}) => {
 
-  const [loading,setLoading] = useState(true);
+  // const [loading,setLoading] = useState(true);
  
-  const [info,setInfo] = useState({});
-  const [wishlists,setWishlist] = useState({});
-  const [courseList,setPaginatedCourses] = useState({})
+  // const [info,setInfo] = useState({});
+  // const [wishlists,setWishlist] = useState({});
+  // const [courseList,setPaginatedCourses] = useState({})
 
    useEffect(() => {
      (async function loadContent() {

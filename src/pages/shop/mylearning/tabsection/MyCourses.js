@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+
 import Datas from './data/filter.json'
 import { Link } from 'react-router-dom';
-import { Container, Row, Col } from 'react-bootstrap';
+
 import { Styles } from './styles/courseFilter';
 import './Tab.css'
 

@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect,useState} from "react";
-import NewHeader from "./NewHeader";  //mine
+// import NewHeader from "./NewHeader";  //mine
 import Navbar from "components/Navbar"  //old
 
 import Footer from "components/Footer"
@@ -27,8 +27,8 @@ import "./assets/css/pages.css";
 import "./assets/css/responsive.css";
 
 
-import $ from 'jquery';
-import Popper from 'popper.js';
+// import $ from 'jquery';
+// import Popper from 'popper.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 
@@ -39,32 +39,32 @@ import "./topitem.css"
 const NewDashBoard = ({ auth: { user } }) => {
 
 
-  const carouselLoop =() => {
-      document.querySelector('.multi-item-carousel').carousel({
-        interval: false
-      });
+  // const carouselLoop =() => {
+  //     document.querySelector('.multi-item-carousel').carousel({
+  //       interval: false
+  //     });
 
-      document.querySelector('.multi-item-carousel .item').each(function(){
-        var next = document.querySelector(this).nextElementSibling;
-        if (!next.length) {
-          next = document.querySelector(this).siblings(':first');
-        }
-        next.children(':first-child').clone().appendTo(document.querySelector(this));
+  //     document.querySelector('.multi-item-carousel .item').each(function(){
+  //       var next = document.querySelector(this).nextElementSibling;
+  //       if (!next.length) {
+  //         next = document.querySelector(this).siblings(':first');
+  //       }
+  //       next.children(':first-child').clone().appendTo(document.querySelector(this));
         
-        if (next.nextElementSibling.length>0) {
-          next.nextElementSibling.children(':first-child').clone().appendTo(document.querySelector(this));
-        } else {
-          document.querySelector(this).siblings(':first').children(':first-child').clone().appendTo(document.querySelector(this));
-        }
-      });
-    }
+  //       if (next.nextElementSibling.length>0) {
+  //         next.nextElementSibling.children(':first-child').clone().appendTo(document.querySelector(this));
+  //       } else {
+  //         document.querySelector(this).siblings(':first').children(':first-child').clone().appendTo(document.querySelector(this));
+  //       }
+  //     });
+  //   }
 
 
   // const [loading,setLoading] = useState(true);
   // const [info,setInfo] = useState();
   const [info,setInfo] = useState({});
   const [wishlists,setWishlist] = useState({});
-  const [courseList,setPaginatedCourses] = useState({})
+  // const [courseList,setPaginatedCourses] = useState({})
 
    useEffect(() => {
      (async function loadContent() {

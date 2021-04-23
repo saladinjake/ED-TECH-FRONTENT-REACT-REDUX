@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+// import { Container, Row, Col } from "react-bootstrap";
 import NavBar from "components/Navbar";
 
 import Footer from "components/Footer";
@@ -23,8 +23,8 @@ import "../newdashboard/assets/css/pages.css";
 import "../newdashboard/assets/css/responsive.css";
 import "./tabnotifications.css"
 
-import $ from 'jquery';
-import Popper from 'popper.js';
+// import $ from 'jquery';
+// import Popper from 'popper.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 function getTimeAgoInterval(date) {
@@ -49,7 +49,7 @@ function getTimeAgoInterval(date) {
     value = Math.floor(seconds / 60);
     unit = "minute";
   }
-  if (value != 1)
+  if (Number(value) !== 1)
     unit = unit + "s";
   return value + " " + unit + " " + direction;
 }
@@ -155,9 +155,9 @@ const Notifications = () => {
                           {notifications.map((item, i) => {
                             let notify_icon = "fa fa-book"
                             console.log(item.data.notification_type)
-                            if(item.data.notification_type =="Course Payment"){
+                            if(item.data.notification_type ==="Course Payment"){
                               notify_icon = "fa-shopping-cart"
-                            }else if (item.data.notification_type =="Course Enrollment") {
+                            }else if (item.data.notification_type ==="Course Enrollment") {
                               notify_icon = "fa-unlock"
                             }else {
                               notify_icon = "fa-user"

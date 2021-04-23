@@ -94,11 +94,11 @@ const Carousel = (props) => {
                     <div className="detail">
                                  <div className="rating" style={{width:"100px"}}>
                                                 <ul className="list-inline">
-                                                    <li><a className="fa fa-star" href="#"></a></li>
-                                                    <li><a className="fa fa-star" href="#"></a></li>
-                                                    <li><a className="fa fa-star" href="#"></a></li>
-                                                    <li><a className="fa fa-star" href="#"></a></li>
-                                                    <li><a className="fa fa-star-o" href="#"></a></li>
+                                                    <li><a alt="hello-1" className="fa fa-star" href="#"></a></li>
+                                                    <li><a alt="hello-2" className="fa fa-star" href="#"></a></li>
+                                                    <li><a alt="hello3" className="fa fa-star" href="#"></a></li>
+                                                    <li><a alt="hello33" className="fa fa-star" href="#"></a></li>
+                                                    <li><a alt="hello332" className="fa fa-star-o" href="#"></a></li>
                                                 </ul>
                                   </div>
                                             <h5 className="m-0"> <span className="text-muted"> instructor : {item.instructor.user.username}</span></h5>

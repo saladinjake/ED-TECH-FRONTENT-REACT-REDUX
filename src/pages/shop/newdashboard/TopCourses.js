@@ -1,11 +1,6 @@
  
-import React, { Fragment, useRef } from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
-import { useEffect,useState} from "react";
-
-import questence from "assets/svgs/questence-logo.svg";
-import { useHistory } from "react-router-dom";
-import { ReactComponent as Dropdown } from "svgs/dropdown.svg";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -14,8 +9,6 @@ import "./topitem.css";
 import toast from "react-hot-toast";
 import { getCourses } from "services/course";
 
-import { uuid } from "services/dashboard";
-
 import Carousel from "./Carousel"
 
 
@@ -23,48 +16,6 @@ import Carousel from "./Carousel"
 
 
 
-
-
-
-
-const ProductList = (props) => {
-    console.log(props)
-
-   return (
-   
-    <div className=" col-sm-6 col-lg-3 col-md-4 mobiles">
-              <div className="">
-                    <Link to={ '../courses/'+ props.item.id +'/'+ props.item.slug} className="image-popup" title="Screenshot-1">
-                          <img src={props.item.course_thumbnail} className="thumb-img" alt="work-thumbnail" />
-                    </Link>
-
-                    <div className="product-action">
-                          <Link to={ '../courses/'+ props.item.id +'/'+ props.item.slug} className="btn btn-success btn-sm"><i className="md md-book"></i></Link>
-                                            
-                    </div>
-
-                    <div className="price-tag">
-                           N {props.item.price}
-                    </div>
-                    <div className="detail">
-                              <Link to={ '../courses/'+ props.item.id +'/'+ props.item.slug}><h4 className="m-t-0"><Link to={ '../courses/'+ props.item.id +'/'+ props.item.slug}  className="text-dark">{props.item.course_name}</Link></h4></Link>
-                                 <div className="rating">
-                                                <ul className="list-inline">
-                                                    <li><a className="fa fa-star" href="#"></a></li>
-                                                    <li><a className="fa fa-star" href="#"></a></li>
-                                                    <li><a className="fa fa-star" href="#"></a></li>
-                                                    <li><a className="fa fa-star" href="#"></a></li>
-                                                    <li><a className="fa fa-star-o" href="#"></a></li>
-                                                </ul>
-                                  </div>
-                                            <h5 className="m-0"> <span className="text-muted"> instructor : {props.item.instructor.user.username}</span></h5>
-                        </div>
-              </div>
-      </div>
-
-
-   ); 
-}
 
 class TopCourses extends React.Component{
     constructor(props){
@@ -89,12 +40,11 @@ class TopCourses extends React.Component{
     }    
     render(){
           const { data } = this.state;
-          console.log(data)
-          let templateString =``;
+          
 
          
             return (
-              data.length == 0 
+              data.length === 0 
                 ?( 
 <Fragment>
                    <p>Loading..</p>

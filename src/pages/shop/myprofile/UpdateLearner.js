@@ -321,7 +321,7 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   <option key={new Date().getUTCMilliseconds() + Math.random()} value="Female">Female</option>
                                 </select>
                                 {touched.gender && errors.gender ? (
-                                  <span key={new Date().getUTCMilliseconds() + Math.random()} className="registration_input-msg" key={new Date().getUTCMilliseconds() + Math.random()}>
+                                  <span key={new Date().getUTCMilliseconds() + Math.random()} className="registration_input-msg" >
                                     {errors.gender}
                                   </span>
                                 ) : null}

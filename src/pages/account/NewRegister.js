@@ -1,11 +1,11 @@
 import React, {Fragment, useState } from "react";
 import { Link } from "react-router-dom";
-import { Container, Row, Col } from "react-bootstrap";
+// import { Container, Row, Col } from "react-bootstrap";
 import NavBar from "components/Navbar";
 
-import { BreadcrumbBox } from "../../components/common/Breadcrumb";
+// import { BreadcrumbBox } from "../../components/common/Breadcrumb";
 import Footer from "../../components/Footer";
-import { Styles } from "./styles/account.js";
+// import { Styles } from "./styles/account.js";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
