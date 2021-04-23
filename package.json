@@ -9,8 +9,8 @@
     "start:global": "set HOST=127.0.0.1 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "install": "./node_modules/.bin/yarn install"
+    "eject": "react-scripts eject"
+    
   },
   "keywords": [],
   "author": "",
