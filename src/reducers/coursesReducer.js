@@ -11,7 +11,7 @@ const initialState = {
   error: null,
 };
 
-const courseReducer = (state=initialState,action) => {
+export default (state=initialState,action) => {
     switch(action.type) {
         case GET_COURSES:
             return {
@@ -34,5 +34,3 @@ const courseReducer = (state=initialState,action) => {
             return state;
     }
 }
-
-export default courseReducer;

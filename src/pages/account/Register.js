@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import NavBar from "components/Navbar";
 
@@ -217,14 +217,14 @@ const Register = () => {
                       <Link to="/login"> Login Here</Link>
                     </p>
                   </div>
-                  <div className="have_account-btn text-center">
+                  {/*<div className="have_account-btn text-center">
                     <p>
                       <Link to="/register/instructor">
                         {" "}
                         Register as an Instructor{" "}
                       </Link>
                     </p>
-                  </div>
+                  </div>*/}
                 </div>
               </Col>
             </Row>

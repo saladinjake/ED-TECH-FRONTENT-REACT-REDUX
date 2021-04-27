@@ -3,7 +3,7 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import NavBar from "components/Navbar";
 
 import { BreadcrumbBox } from "../../components/common/Breadcrumb";
-// import Footer from "../../components/Footer";
+import Footer from "../../components/Footer";
 import { Styles } from "./styles/checkout.js";
 
 import PropTypes from "prop-types";
@@ -166,7 +166,7 @@ const Checkout = ({
         </Container>
 
         {/* Footer 2 */}
-    
+        <Footer />
       </div>
     </Styles>
   );

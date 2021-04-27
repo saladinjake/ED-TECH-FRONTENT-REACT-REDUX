@@ -1,69 +1,59 @@
-
-import React, { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ScrollToTop from "helper/ScrollToTop";
 import { GlobalStyle } from "components/common/styles/global.js";
+import HomeOne from "HomeOne";
+import About from "pages/about/About";
+import ForInstructor from "pages/instructors/ForInstructor";
+import ForBusiness from "pages/instructors/ForBusiness";
+import ForGovernment from "pages/instructors/ForGovernment";
+import ForSchool from "pages/instructors/ForSchool";
+import Checkout from "pages/checkout/Checkout";
+import Contact from './pages/contact/Contact';
+import CourseGrid from "pages/courses/CourseGrid";
+import CourseDetails from "pages/courses/CourseDetails";
+import Instructor from "pages/instructor/Instructors";
+import InstructorDetails from "pages/instructor/InstructorDetails";
+import Institution from "pages/institution/Institutions";
+import InstitutionDetails from "pages/institution/InstitutionDetails";
+import Login from "pages/account/Login";
+import LearnerProfiler from "pages/profile/LearnerProfile";
+import InstructorProfiler from "pages/profile/InstructorProfile";
+import UpdateLearner from "pages/profile/UpdateLearner";
+import UpdateInstructor from "pages/profile/UpdateInstructor";
+import Register from "pages/account/Register";
+import ResetPassword from "pages/account/ResetPassword";
+import InstructorRegister from "pages/account/InstructorRegister";
+import BusinessRegister from "pages/account/BusinessRegister";
+import PageNotFound from "pages/404/PageNotFound";
+// import Product from "pages/shop/Products";
+import InstructorCourses from "pages/instructors/InstructorCourses";
+import CreateCourse from "pages/account/CreateCourse";
+import InstructorDashboard from "pages/instructors/InstructorDashboard";
+import Cart from "pages/shop/Cart";
+// import DashBoard from "pages/shop/Dashboard";
+import Billing from "pages/shop/Billing";
+// import Notifications from "pages/shop/Notifications";
+import InstructorNotifications from "pages/instructors/InstructorNotifications";
+import InstructorPendingCourses from "pages/instructors/InstructorPendingCourses";
+import InstructorDeclinedCourses from "pages/instructors/InstructorDeclinedCourses";
 import { Toaster } from "react-hot-toast";
+import LearnersRoute from "routes/LearnersRoute";
+import InstructorsRoute from "routes/InstructorsRoute";
+// import AuthenticatedRoute from "routes/AuthenticatedRoute";
+import PublicRoute from "routes/PublicRoute";
 
 
-const HomeOne = lazy(() => import('./HomeOne'));
-const About = lazy(() => import('./pages/about/About'));
-const ForInstructor = lazy(() => import('./pages/instructors/ForInstructor'));
-const ForBusiness = lazy(() => import('./pages/instructors/ForBusiness'))
-const Checkout = lazy(() => import('./pages/checkout/Checkout'))
-const CourseGrid = lazy(() => import('./pages/courses/CourseGrid'))
-// const CourseDetails = lazy(() => import('./pages/courses/CourseDetails'))
-const Instructor = lazy(() => import('./pages/instructor/Instructors'))
-const InstructorDetails = lazy(() => import('./pages/instructor/InstructorDetails'))
-const Institution = lazy(() => import('./pages/institution/Institutions'))
-const InstitutionDetails = lazy(() => import('./pages/institution/InstitutionDetails'))
-// const Login = lazy(() => import('./pages/account/Login'))
-
-// const LearnerProfiler = lazy(() => import('./pages/profile/LearnerProfile'))
-const InstructorProfiler = lazy(() => import('./pages/profile/InstructorProfile'))
-// const UpdateLearner = lazy(() => import('./pages/profile/UpdateLearner'))
-const UpdateInstructor = lazy(() => import('./pages/profile/UpdateInstructor'))
-// const Register = lazy(() => import('./pages/account/Register'))
-const InstructorRegister = lazy(() => import('./pages/account/InstructorRegister'))
-const BusinessRegister = lazy(() => import('./pages/account/BusinessRegister'))
-const PageNotFound = lazy(() => import('./pages/404/PageNotFound'))
-// const Product = lazy(() => import('./pages/shop/Products'))
-const InstructorCourses = lazy(() => import('./pages/instructors/InstructorCourses'))
-const CreateCourse = lazy(() => import('./pages/account/CreateCourse'))
-const InstructorDashboard = lazy(() => import('./pages/instructors/InstructorDashboard'))
-// const Cart = lazy(() => import('./pages/shop/Cart'))
-// const DashBoard = lazy(() => import('./pages/shop/Dashboard'))
-const Billing = lazy(() => import('./pages/shop/Billing'))
-// const Notifications = lazy(() => import('./pages/shop/Notifications'))
-const Wishlists = lazy(() => import('./pages/wishlist/wishlist'))
-const InstructorNotifications = lazy(() => import('./pages/instructors/InstructorNotifications'))
-const InstructorPendingCourses = lazy(() => import('./pages/instructors/InstructorPendingCourses'))
-const InstructorDeclinedCourses = lazy(() => import('./pages/instructors/InstructorDeclinedCourses'))
-
-const LearnersRoute = lazy(() => import('./routes/LearnersRoute'))
-const InstructorsRoute = lazy(() => import('./routes/InstructorsRoute'))
-// const AuthenticatedRoute = lazy(() => import('./routes/AuthenticatedRoute'))
-const PublicRoute = lazy(() => import('./routes/PublicRoute'))
+import MylearningDashboard from "./pages/courses/components/MyLearning"
+import OverViewPane from "./pages/dashboard/MyDashboard"
+import SortTest from "./SortTest"
+import NewNotifications from './pages/mynotifications/Notifications'
+import Purchases from "./pages/purchases/Purchases"
 
 
-
-
-/*start code refactor here*/
-const NewDashboard= lazy(() => import('./pages/shop/newdashboard/NewDashboard'));
-const AllCoursesPageOverview = lazy(() => import('./pages/shop/mylearning/MyLearning'))
-const MyCoursesWithTabs = lazy(() => import('./pages/shop/mylearning/tabsection/Mycourseswithtabs'))
-// const NewProduct = lazy(() => import('./pages/shop/mycourses/NewProduct'));
-const NewRegister = lazy(() => import('./pages/account/NewRegister'))
-const NewLogin = lazy(() => import('./pages/account/NewLogin'))
-const MyCourseDetail = lazy(() => import('./pages/shop/mycourses/MyCourseDetailOverview'))
-const NewNotifications = lazy(() => import('./pages/shop/mynotifications/Notifications'))
-const NewCart = lazy(() => import('./pages/shop/mycart/Cart'))
-const NewProfile = lazy(() => import('./pages/shop/myprofile/LearnerProfile'))
-const NewProfileUpdater = lazy(() => import('./pages/shop/myprofile/UpdateLearner'))
 function App() {
   return (
     <Router>
-       <Suspense fallback={<div>Page is Loading...</div>}>
       <Toaster
         toastOptions={{
           success: {
@@ -94,23 +84,34 @@ function App() {
           component={About}
         />
         <Route
-          path={`${process.env.PUBLIC_URL + "/government"}`}
+          path={`${process.env.PUBLIC_URL + "/contact"}`}
+          component={Contact}
+        />
+        <Route
+          path={`${process.env.PUBLIC_URL + "/instructor"}`}
           component={ForInstructor}
+        />
+        <Route
+          path={`${process.env.PUBLIC_URL + "/government"}`}
+          component={ForGovernment}
+        />
+        <Route
+          path={`${process.env.PUBLIC_URL + "/schools"}`}
+          component={ForSchool}
         />
         <Route
           path={`${process.env.PUBLIC_URL + "/business"}`}
           component={ForBusiness}
         />
 
-        {/*<Route
+        <Route
           exact
           path={`${process.env.PUBLIC_URL + "/courses"}`}
           component={CourseGrid}
-        />*/}
+        />
         <Route exact path="/courses/category/:id" component={CourseGrid} />
 
-        
-
+       
         <Route
           exact
           path={`${process.env.PUBLIC_URL + "/instructors"}`}
@@ -132,17 +133,17 @@ function App() {
           component={InstitutionDetails}
         />
 
-        {/*<PublicRoute
+        <PublicRoute
           exact
           path={`${process.env.PUBLIC_URL + "/login"}`}
           component={Login}
-        />*/}
+        />
 
-        {/*<PublicRoute
+        <PublicRoute
           exact
           path={`${process.env.PUBLIC_URL + "/register"}`}
           component={Register}
-        />*/}
+        />
         <PublicRoute
           exact
           path={`${process.env.PUBLIC_URL + "/register/instructor"}`}
@@ -154,31 +155,27 @@ function App() {
           component={BusinessRegister}
         />
 
-        {/*<Route path={`${process.env.PUBLIC_URL + "/cart"}`} component={Cart} />*/}
+        <Route path={`${process.env.PUBLIC_URL + "/cart"}`} component={Cart} />
         <Route
           exact
           path={`${process.env.PUBLIC_URL + "/checkout"}`}
           component={Checkout}
         />
-
         <Route
           path={`${process.env.PUBLIC_URL + "/payment/callback"}`}
           component={Checkout}
         />
-
-        
-
-        
-
-        { /* <LearnersRoute exact path="/mycourses" component={Product} />*/ }
-        { /* <LearnersRoute exact path="/dashboard" component={DashBoard} /> */ }
-        
-        <LearnersRoute exact path="/billing" component={Billing} />
         <LearnersRoute
           exact
-          path={`${process.env.PUBLIC_URL + "/learner/wishlist"}`}
-          component={Wishlists}
+          path={`${process.env.PUBLIC_URL + "/learner/profile/update"}`}
+          component={UpdateLearner}
         />
+        <LearnersRoute
+          exact
+          path={`${process.env.PUBLIC_URL + "/learner/profile"}`}
+          component={LearnerProfiler}
+        />
+        <LearnersRoute exact path="/billing" component={Billing} />
 
         <InstructorsRoute
           exact
@@ -195,67 +192,55 @@ function App() {
           path="/instructor/mycourses"
           component={InstructorCourses}
         />
-
         <InstructorsRoute
           exact
           path={`${process.env.PUBLIC_URL + "/instructor/profile/update"}`}
           component={UpdateInstructor}
         />
-
         <InstructorsRoute
           exact
           path={`${process.env.PUBLIC_URL + "/instructor/notifications"}`}
           component={InstructorNotifications}
         />
-
         <InstructorsRoute
           exact
           path={`${process.env.PUBLIC_URL + "/instructor/course/create"}`}
           component={CreateCourse}
         />
-
         <InstructorsRoute
           exact
           path={`${process.env.PUBLIC_URL + "/instructor/course/pending"}`}
           component={InstructorPendingCourses}
         />
-
         <InstructorsRoute
           exact
           path={`${process.env.PUBLIC_URL + "/instructor/course/declined"}`}
           component={InstructorDeclinedCourses}
         />
+          <LearnersRoute exact path="/mycourses" component={MylearningDashboard} />
+          <LearnersRoute exact path="/notifications" component={NewNotifications} />
+          <LearnersRoute path={`${process.env.PUBLIC_URL + "/dashboard"}`} component={OverViewPane} />
+           <Route
+              exact
+              path={`${process.env.PUBLIC_URL + "/courses/:id"}`}
+              component={CourseDetails}
+            />
+            <Route
+              exact
+              path={`${process.env.PUBLIC_URL + "/courses/:id/:slug"}`}
+              component={CourseDetails}
+            />
 
+            <LearnersRoute path={`${process.env.PUBLIC_URL + "/learner/accounts"}`} component={ResetPassword} />
+            <LearnersRoute path={`${process.env.PUBLIC_URL + "/learner/purchase/history"}`} component={Purchases} />
+                    
 
-        
+            <Route path={`${process.env.PUBLIC_URL + "/sorttest" }`} component={SortTest} />     
+          
 
-
-        <LearnersRoute exact path="/dashboard" component={NewDashboard} />
-        <Route exact path="/courses" component={AllCoursesPageOverview} />
-         <Route exact path="/mycourses" component={MyCoursesWithTabs} />
-         <Route exact path={`${process.env.PUBLIC_URL + "/courses/:id"}`} component={MyCourseDetail} />
-
-        <PublicRoute exact path={`${process.env.PUBLIC_URL + "/login"}`} component={NewLogin} />
-        <PublicRoute exact path={`${process.env.PUBLIC_URL + "/register"}`} component={NewRegister} />
-        <LearnersRoute exact path="/notifications" component={NewNotifications} />
-        
-        <Route path={`${process.env.PUBLIC_URL + "/profile"}`} component={NewProfile} />
-        <LearnersRoute
-          exact
-          path={`${process.env.PUBLIC_URL + "/learner/profile/update"}`}
-          component={NewProfileUpdater}
-        />
-
-        <Route path={`${process.env.PUBLIC_URL + "/cart"}`} component={NewCart} />
-
-       
-
-
-        
 
         <Route component={PageNotFound} />
       </Switch>
-      </Suspense>
     </Router>
   );
 }

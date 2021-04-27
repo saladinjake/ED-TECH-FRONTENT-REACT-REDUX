@@ -9,20 +9,13 @@ function StickyMenu({ cart, isAuthenticated, user, logOut }) {
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
-      
+      const stickyMenu = document.querySelector(".sticky-menu");
 
-      //fix error this way
-
-      // if(document.querySelector(".sticky-menu")){
-      //   const stickyMenu = document.querySelector(".sticky-menu");
-      //      if (window.scrollY > 160) {
-      //     stickyMenu.classList.add("sticky");
-      //   } else {
-      //     stickyMenu.classList.remove("sticky");
-      //   }
-      // }
-
-     
+      if (window.scrollY > 160) {
+        stickyMenu.classList.add("sticky");
+      } else {
+        stickyMenu.classList.remove("sticky");
+      }
     });
   });
 
@@ -144,7 +137,7 @@ function StickyMenu({ cart, isAuthenticated, user, logOut }) {
                           <img
                             src={
                               process.env.PUBLIC_URL +
-                              `${user?.image_url} ` || "/assets/images/questone.jpg"
+                              "/assets/images/questone.jpg"
                             }
                             alt=""
                             width="20px"

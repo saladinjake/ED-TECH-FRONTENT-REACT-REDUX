@@ -3,7 +3,7 @@ import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import NavBar from "components/Navbar";
 import Footer from "../../components/Footer";
-import { BreadcrumbBox } from "../../components/common/Breadcrumb";
+// import { BreadcrumbBox } from "../../components/common/Breadcrumb";
 import { Styles } from "./styles/cart.js";
 
 import PropTypes from "prop-types";
@@ -37,7 +37,7 @@ const Cart = ({
         <NavBar />
 
         {/* Breadcroumb */}
-        <BreadcrumbBox title="Cart" />
+        
 
         {/* Product Details */}
         <section className="cart-area">
@@ -160,10 +160,8 @@ const Cart = ({
         </section>
 
         {/* Footer 2 */}
-      
-      </div>
-
         <Footer />
+      </div>
     </Styles>
   );
 };

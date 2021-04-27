@@ -1,4 +1,5 @@
-import React, { Fragment, useRef } from "react";
+import React, { Fragment, useRef, useEffect,useState } from "react";
+
 import { Link } from "react-router-dom";
 import "./navbar.scss";
 import questence from "assets/svgs/questence-logo.svg";
@@ -9,9 +10,14 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logOut } from "actions/authActions";
 
-//import { uuid } from "services/dashboard";
+import "./core.css";
+import "./components.css";
 
-import { CATEGORIES, PACES,  AUTHLINKS } from "./data";
+import { //CATEGORIES,
+ PACES,  AUTHLINKS } from "./data";
+
+import { getCategories } from "services/category";
+import toast from "react-hot-toast";
 
 const NavBar = ({
   cart: { cart },
@@ -20,6 +26,29 @@ const NavBar = ({
 }) => {
   const toogleBtn = useRef();
   const mobileNav = useRef();
+
+
+   const [categories,setInfo] = useState([]);
+  
+
+   useEffect(() => {
+     (async function loadContent() {
+       try {
+         let res = await getCategories(user.id);
+         
+    
+         setInfo([...res.data.data]);
+         console.log(res)
+
+        
+       
+       } catch (err) {
+         toast.error("Error occured fetching notifications");
+       }
+       // setLoading(false);
+     })();
+     // eslint-disable-next-line
+   }, []);
 
   const openNav = () => {
     toogleBtn.current.classList.toggle("mobActive");
@@ -45,7 +74,7 @@ const NavBar = ({
 
   return (
     <Fragment>
-      <nav className="desktop" style={{position:"fixed"}}>
+      <nav className="desktop">
         <figure className="logo">
           <Link to="/">
             <img src={questence} alt="" width="171px" />
@@ -53,15 +82,14 @@ const NavBar = ({
         </figure>
 
         <ul className="mainNav" ref={mobileNav}>
-          <li className="NavHover" key={new Date().getUTCMilliseconds() + Math.random()}>
+          <li className="NavHover">
             <div className="parent">
               <span>Courses and Programs</span>
               <Dropdown />
             </div>
             <ul className="ParentDropDown">
-              <li className="ParentDropDown__item" key={new Date().getUTCMilliseconds() + Math.random()}>
+              <li className="ParentDropDown__item">
                 <Link
-                key={new Date().getUTCMilliseconds() + Math.random()}
                   className="DropDown__link"
                   to={process.env.PUBLIC_URL + "/courses"}
                 >
@@ -70,14 +98,14 @@ const NavBar = ({
               </li>
 
               <li className="ParentDropDown__item">
-                <span>By Category</span>
+                <span style={{marginRight:"50px"}}>By Category</span>
+                 <span class="caret-right"></span>
                 <ul className="NavSubMenu">
-                  {CATEGORIES.length > 0 &&
-                    CATEGORIES.map((item, i) => {
+                  {categories.length > 0 &&
+                    categories.map((item, i) => {
                       return (
-                        <li key={new Date().getUTCMilliseconds() + Math.random()}>
+                        <li >
                           <Link
-                          key={new Date().getUTCMilliseconds() + Math.random()}
                             className="DropDown__link"
                             to={`${process.env.PUBLIC_URL}/courses/category/${item.id}`}
                           >
@@ -89,9 +117,8 @@ const NavBar = ({
                 </ul>
               </li>
               
-              <li className="ParentDropDown__item" key={new Date().getUTCMilliseconds() + Math.random()}>
+{/*              <li className="ParentDropDown__item">
                 <Link
-                key={new Date().getUTCMilliseconds() + Math.random()}
                   className="DropDown__link"
                   to={process.env.PUBLIC_URL + "/courses"}
                 >
@@ -99,23 +126,22 @@ const NavBar = ({
                 </Link>
               </li>
  
-              <li className="ParentDropDown__item" key={new Date().getUTCMilliseconds() + Math.random()}>
+              <li className="ParentDropDown__item">
                 <Link
-                key={new Date().getUTCMilliseconds() + Math.random()}
                   className="DropDown__link"
                   to={process.env.PUBLIC_URL + "/courses"}
                 >
                   By Training Partner
                 </Link>
               </li>
-{/* 
+ 
               <li className="ParentDropDown__item">
                 <span>By Fee</span>
                 <ul className="NavSubMenu">
                   {FEES.length > 0 &&
                     FEES.map((item, i) => {
                       return (
-                        <li key={new Date().getUTCMilliseconds() + Math.random()}>
+                        <li>
                           <Link className="DropDown__link" to={`${item.link}`}>
                             {item.name}
                           </Link>
@@ -131,8 +157,8 @@ const NavBar = ({
                   {PACES.length > 0 &&
                     PACES.map((item, i) => {
                       return (
-                        <li key={new Date().getUTCMilliseconds() + Math.random()}>
-                          <Link key={new Date().getUTCMilliseconds() + Math.random()} className="DropDown__link" to={`${item.link}`}>
+                        <li>
+                          <Link className="DropDown__link" to={`${item.link}`}>
                             {item.name}
                           </Link>
                         </li>
@@ -143,13 +169,13 @@ const NavBar = ({
             </ul>
           </li>
 
-          <li className="NavHover" key={new Date().getUTCMilliseconds() + Math.random()}>
+          <li className="NavHover">
             <div className="parent">
               <span> For Institutions</span>
               <Dropdown />
             </div>
             <ul className="ParentDropDown">
-              <li className="ParentDropDown__item" key={new Date().getUTCMilliseconds() + Math.random()}>
+              <li className="ParentDropDown__item">
                 <Link
                   className="DropDown__link"
                   to={process.env.PUBLIC_URL + "/schools"}
@@ -157,7 +183,7 @@ const NavBar = ({
                   For Schools
                 </Link>
               </li>
-              <li className="ParentDropDown__item" key={new Date().getUTCMilliseconds() + Math.random()}>
+              <li className="ParentDropDown__item">
                 <Link
                   className="DropDown__link"
                   to={process.env.PUBLIC_URL + "/government"}
@@ -165,9 +191,8 @@ const NavBar = ({
                   For Government
                 </Link>
               </li>
-              <li className="ParentDropDown__item" key={new Date().getUTCMilliseconds() + Math.random()}>
+              <li className="ParentDropDown__item">
                 <Link
-                key={new Date().getUTCMilliseconds() + Math.random()}
                   className="DropDown__link"
                   to={process.env.PUBLIC_URL + "/business"}
                 >
@@ -179,7 +204,7 @@ const NavBar = ({
 
         
 
-          <li className="search__group" key={new Date().getUTCMilliseconds() + Math.random()}>
+          <li className="search__group">
             <div className="search__form">
               <input
                 type="text"
@@ -204,15 +229,22 @@ const NavBar = ({
               </button>
             </div>
           </li>
+           <li className="dropdown top-menu-item-xs" style={{float:"left"}}>
+                <Link alt="noimage" to={process.env.PUBLIC_URL + "/cart"} className=" waves-effect waves-light"  aria-expanded="true">
+                   <i className="fa fa-shopping-cart"></i> <span className="badge badge-xs badge-danger">{cart !== undefined && `(${cart?.length})`}</span>
+                                                    </Link>
+                                                    
+                                                </li>
+
 
           {!isAuthenticated ? (
             <Fragment>
-              <li key={new Date().getUTCMilliseconds() + Math.random()}>
+              <li>
                 <Link to="/login" className="auth outline">
                   Log In
                 </Link>
               </li>
-              <li key={new Date().getUTCMilliseconds() + Math.random()}>
+              <li>
                 <button
                   className="btnMobileFull"
                   onClick={() => history.push("register")}
@@ -223,7 +255,7 @@ const NavBar = ({
             </Fragment>
           ) : (
             <Fragment>
-              <li className="DropDown" key={new Date().getUTCMilliseconds() + Math.random()}>
+              <li className="DropDown">
                 <input
                   type="checkbox"
                   className="DropDown__checkbox"
@@ -231,7 +263,7 @@ const NavBar = ({
                 />
 
                 <label
-                  htmlFor="navi-toggle3"
+                  for="navi-toggle3"
                   className="DropDown__button useracount"
                 >
                   <figure>
@@ -246,30 +278,22 @@ const NavBar = ({
                   {`${user?.first_name} ${user?.last_name}`}
                 </label>
 
-                <ul className="DropDown__list userdropdown">
+                <ul className="DropDown__list userdropdown"  style={{marginLeft:"100px",marginTop:"-20px"}}>
                   {AUTHLINKS.length > 0 &&
                     AUTHLINKS.map((item, i) => {
                       return (
-                        <li key={new Date().getUTCMilliseconds() + Math.random()} className="DropDown__item">
-                          <Link key={new Date().getUTCMilliseconds() + Math.random()} className="DropDown__link" to={`${item.link}`}>
+                        <li className="DropDown__item"  >
+                          <Link  className="DropDown__link" to={`${item.link}`}>
                             {item.name}
                           </Link>
                         </li>
                       );
                     })}
 
-                  <li className="DropDown__item" key={new Date().getUTCMilliseconds() + Math.random()}>
-                    <Link 
-                    key={new Date().getUTCMilliseconds() + Math.random()}
-                      className="DropDown__link"
-                      to={process.env.PUBLIC_URL + "/cart"}
-                    >
-                      Cart {cart !== undefined && `(${cart?.length})`}
-                    </Link>
-                  </li>
+                  
 
-                  <li className="DropDown__item" key={new Date().getUTCMilliseconds() + Math.random()}>
-                    <Link key={new Date().getUTCMilliseconds() + Math.random()} className="DropDown__link" to="#" onClick={handleLogout}>
+                  <li className="DropDown__item" style={{height:"30px"}}>
+                    <Link className="DropDown__link" onClick={handleLogout}>
                       Logout
                     </Link>
                   </li>
@@ -285,7 +309,6 @@ const NavBar = ({
           <div className="bar3"></div>
         </button>
       </nav>
-      <br/>
     </Fragment>
   );
 };

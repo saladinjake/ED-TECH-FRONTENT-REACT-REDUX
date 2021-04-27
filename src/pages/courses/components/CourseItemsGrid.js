@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import { Col } from "react-bootstrap";
 import Pagination from "./Pagination";
 
-import "./topitem.css"
-
 function CourseItemGrid({ allCourses, courses }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [coursePerPage] = useState(5);
@@ -31,67 +29,60 @@ function CourseItemGrid({ allCourses, courses }) {
     setCurrCourses(allCourses.slice(indexOfFirstCourse, indexOfLastCourse));
   };
 
-
-
-//   function showMore(id){
-//     document.getElementById(id+'Overflow').className='';
-//     document.getElementById(id+'MoreLink').className='hidden';
-//     document.getElementById(id+'LessLink').className='';
-// }
-
-// function showLess(id){
-//     document.getElementById(id+'Overflow').className='hidden';
-//     document.getElementById(id+'MoreLink').className='';
-//     document.getElementById(id+'LessLink').className='hidden';
-// }
-
-
-
-
-
   return (
     <Fragment>
       {currentCourses.length > 0 ? (
         <Fragment>
-           {currentCourses.length > 0 &&
-                                currentCourses.map((item, i) => {
-                                           return (<div style={{width:"100%",marginLeft:"15px"}} className=" col-sm-6 col-lg-3 col-md-4 mobiles card-box">
-                                           <Link to={ '../courses/'+ item.id }><h4 className="m-t-0"><Link to={ '../courses/'+ item.id } style={{fontSize:"14px"}}  className="text-dark">{item.course_name}</Link></h4></Link>
-                              
-              <div className="product-list-box thumb">
-                    <Link to={ '../courses/'+ item.id } className="image-popup" title="Screenshot-1">
-                       {item.course_cover_image !=null ? (<img src={item.course_cover_image} className="thumb-img card-box" alt="work-thumbnail" />
-                    ) : ( <Fragment />)}   </Link>
+          {currentCourses.map((data, i) => {
+            console.log(data.course_cover_image)
+            return (
+              <Col lg="4" md="6" key={i}>
+                <div className="course-item" style={{width:"200px",height:"200px"}}>
+                  <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
+                    <div
+                      
+                      style={{
+                        height:"100px",
+                        backgroundImage: data
 
-                    <div className="product-action">
-                          <Link to={ '../courses/'+ item.id } className="btn btn-success btn-sm"><i className="md md-book"></i></Link>
-                                            
+                          ? `url(${data.course_cover_image})`
+                          : "",
+                             backgroundRepeat:"no-repeat",
+    backgroundPosition: "center center",
+    
+    minHeight:"20%"
+                      }}
+                    >
+                      
+                      
                     </div>
-
-                    <div className="price-tag " style={{fontSize:"10px"}}>
-                           N {item.price}
+                  </Link>
+                  <div className="course-content">
+                    <h6 style={{fontSize:"14px"}}>
+                      <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
+                        {data.course_name.substring(0,20)+ "..."}
+                      </Link>
+                    </h6>
+                  
+                    <div className="course-face d-flex justify-content-between">
+                      <div className="duration">
+                        <p>
+                          <i className="las la-clock"></i> {data.duration}
+                        </p>
+                      </div>
+                     
+                      <div className="student">
+                        <p>
+                          <i className="las la-chair"></i>60
+                        </p>
+                      </div>
                     </div>
-                    <div className="detail">
-                                 <div className="rating" style={{width:"100px"}}>
-                                 <h5 className="m-0"> <span className="text-muted">Ratings </span></h5>
-                                                <ul className="list-inline">
-                                                    <li><a className="fa fa-star" href="#"></a></li>
-                                                    <li><a className="fa fa-star" href="#"></a></li>
-                                                    <li><a className="fa fa-star" href="#"></a></li>
-                                                    <li><a className="fa fa-star" href="#"></a></li>
-                                                    <li><a className="fa fa-star-o" href="#"></a></li>
-                                                </ul>
-                                  </div><br/>
-                                            <h5 className="m-0"> <span className="text-muted"> </span></h5>
-                        </div>
-              </div>
-      </div>)     
-                                   })}
-
-           <div>{ runEvent()}</div>
+                  </div>
+                </div>
+              </Col>
+            );
+          })}
         </Fragment>
-
-   
       ) : (
         <p>No courses yet.</p>
       )}
@@ -106,36 +97,7 @@ function CourseItemGrid({ allCourses, courses }) {
         />
       </Col>
     </Fragment>
-
-    
   );
-}
-
-
-
-function runEvent(){
-  setTimeout(()=>{
-
-    var len = 40;
-    if(document.getElementsByClassName('shrinkable')){
-        var shrinkables = document.getElementsByClassName('shrinkable');
-        if (shrinkables.length > 0) {
-            for (var i = 0; i < shrinkables.length; i++){
-                var fullText = shrinkables[i].innerHTML;
-                if(fullText.length > len){
-                    var trunc = fullText.substring(0, len).replace(/\w+$/, '');
-                    var remainder = "";
-                    var id = shrinkables[i].id;
-                    remainder = fullText.substring(len, fullText.length);
-                    shrinkables[i].innerHTML = '<span>' + trunc + '<span class="hidden" id="' + id + 'Overflow">'+ remainder +'</span></span>&nbsp;<a id="' + id + 'MoreLink" href="#!" onclick="showMore(\''+ id + '\');">More</a><a class="hidden" href="#!" id="' + id + 'LessLink" onclick="showLess(\''+ id + '\');">Less</a>';
-                }
-            }
-        }
-
-         
-   }
-
-    },5000)
 }
 
 export default CourseItemGrid;

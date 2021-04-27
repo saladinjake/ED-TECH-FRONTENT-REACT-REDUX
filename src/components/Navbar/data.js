@@ -69,6 +69,23 @@ export const AUTHLINKS = [
     link: "/mycourses",
   },
   {
+    name: "Profile",
+    link: "/learner/profile",
+  },
+  {
+    name: "Account Settings",
+    link: "/learner/accounts",
+  },
+  {
+    name: "Notifications",
+    link: "/notifications",
+  },
+  {
+    name: "Purchase History",
+    link: "/learner/purchase/history",
+  },
+  
+  {
     name: "Wishlist",
     link: "/learner/wislist",
   },
@@ -76,29 +93,16 @@ export const AUTHLINKS = [
     name: "Accomplishment",
     link: "/learner/accomplishment",
   },
-  {
-    name: "Notifications",
-    link: "/notifications",
-  },
-  {
-    name: "Account Settings",
-    link: "/notifications",
-  },
+  
+  
   {
     name: "Subscriptions",
-    link: "/notifications",
+    link: "/learner/subscriptions",
   },
-  {
-    name: "Purchase History",
-    link: "/notifications",
-  },
-  {
-    name: "Profile",
-    link: "/learner/profile",
-  },
+  
   {
     name: "Help",
-    link: "/notifications",
+    link: "/help/info",
   },
   {
     name: "Billing",

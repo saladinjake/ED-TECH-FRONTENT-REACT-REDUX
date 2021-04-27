@@ -1,11 +1,11 @@
 import React, { useEffect, useState, Fragment } from "react";
-import { Row } from "react-bootstrap";
-// import NavBar from "components/Navbar";
-// import { PageTitle } from "../../components/common/PageTitle";
+import { Container, Row, Col } from "react-bootstrap";
+import NavBar from "components/Navbar";
+import { PageTitle } from "../../components/common/PageTitle";
 import CourseSidebar from "./components/CourseSidebar";
 import CourseItemGrid from "./components/CourseItemsGrid";
 import Footer from "../../components/Footer";
-// import { Styles } from "./styles/course.js";
+import { Styles } from "./styles/course.js";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -13,33 +13,6 @@ import { fetchCourses } from "actions/coursesActions";
 
 import Loader from "components/Loader/Loader";
 import { useQuery } from "hooks/useQuery.js";
-
-
-// import { Link } from "react-router-dom";
-
-
-// import { getAuthProfile } from "services/learner.js";
-
-// import toast from "react-hot-toast";
-
-
-import "../shop/newdashboard/assets/css/bootstrap.min.css";
-import "../shop/newdashboard/assets/css/core.css";
-import "../shop/newdashboard/assets/css/components.css";
-import "../shop/newdashboard/assets/css/icons.css";
-import "../shop/newdashboard/assets/css/pages.css";
-import "../shop/newdashboard/assets/css/responsive.css";
-
-
-import Sidebar from "../shop/newdashboard/Sidebar";
-// import NewHeader from "../newdashboard/NewHeader";
-import Navbar from "components/Navbar"  //old
-import $ from "jquery";
-import jQueryBridget from "jquery-bridget"
-import Isotope from "isotope-layout";
-// import magnificPopup from "magnific-popup"
-// make Isotope a jQuery plugin
-jQueryBridget( 'isotope', Isotope, $ );
 
 const CourseGrid = ({
   course: { courses, courseLoading },
@@ -148,32 +121,25 @@ const CourseGrid = ({
   };
 
   return (
-<Fragment >
-     <div className="content-page ">
-        
-        <div className="content ">
-          <div className="container ">
-            <br/>  <br/>
+    <div className="main-wrapper course-page">
+      <NavBar />
+      <PageTitle />
 
-            
-    <div className="" style={{height:"2000px"}}>
-      <Navbar />
-      {/*<PageTitle />*/}
-       <br/><br/>
-   
+      <Styles>
         {/* Course Grid */}
-        <section className="course-grid-area ">
-          
-             <div class="col-md-3">
+        <section className="course-grid-area">
+          <Container>
+            <Row>
+              <Col lg="3" md="4" sm="5">
                 <CourseSidebar
                   setFilterAllCourses={setFilterAllCourses}
                   setSearch={setSearch}
                   search={search}
                 />
-             </div>
-              <div class="col-md-9">
+              </Col>
+              <Col lg="9" md="8" sm="7">
                 <div className="course-items">
-               
+                  <Row>
                     {courseLoading ? (
                       <Loader width="70" />
                     ) : courses.length > 0 ? (
@@ -188,29 +154,17 @@ const CourseGrid = ({
                         <h1>No courses yet</h1>
                       </Row>
                     )}
-            
+                  </Row>
                 </div>
-            </div>
-       
+              </Col>
+            </Row>
+          </Container>
         </section>
- 
-
-
-      </div>
- </div>
-
-            </div>
+      </Styles>
 
       {/* Footer 2 */}
       <Footer />
-        <footer class="footer text-right">
-                    © 2021. All rights reserved.
-                </footer>  
-        
-
     </div>
- <Sidebar />
-    </Fragment>
   );
 };
 

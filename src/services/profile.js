@@ -3,11 +3,9 @@ import axios from "services/axiosConfig";
 import qs from "qs";
 
 export const getLearnerProfile = async () => {
-  let request = axios.get("learners/profile");  //axios.get("learners/profile");
+  let request = axios.get("learners/profile");
   return request.then((response) => {
-    console.log(response)
     if (response.status === 200) {
-      // console.log(response)
       return response && response;
     }
   });

@@ -19,7 +19,7 @@ const initialState = {
   total: cachedTotal ? cachedTotal : 0,
 };
 
-const cartReducer = (state = initialState, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_TO_CART:
       let itemToBeAdded = state.courses.find(
@@ -111,6 +111,3 @@ const cartReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-
-export default cartReducer;

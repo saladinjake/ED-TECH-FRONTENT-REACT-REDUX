@@ -1,10 +1,7 @@
 import React, { useState, useEffect, Fragment, useMemo } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import NavBar from "components/Navbar";
-import { BreadcrumbBox } from "../../components/common/Breadcrumb";
-import FooterTwo from "../../components/FooterTwo";
 import { Styles } from "./styles/account.js";
-// import { useHistory } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Formik } from "formik";
 import PropTypes from "prop-types";
@@ -13,6 +10,7 @@ import { getCountries } from "services/country";
 import { getLanguages } from "services/language";
 import { getLearnerProfile } from "services/profile";
 import { learnerSchema } from "helper/validations";
+import UploadContainer from "./UploadContainer"
 import {
   Degrees,
   EducationLevel,
@@ -20,6 +18,10 @@ import {
   ExperienceLevel,
   MaritalStatus,
 } from "helper/data";
+
+
+
+
 
 import Loader from "components/Loader/Loader";
 import { connect } from "react-redux";
@@ -81,7 +83,7 @@ const UpdateLearner = ({ auth: { user } }) => {
         toast.error("Error Occured fetching data");
       });
   };
-
+  console.log(profile)
   const handleSubmit = async (values, { setSubmitting }) => {
     setLoading(true);
     values.email = user.email;
@@ -102,8 +104,6 @@ const UpdateLearner = ({ auth: { user } }) => {
         {/* Header 2 */}
         <NavBar />
 
-        {/* Breadcroumb */}
-        <BreadcrumbBox title="Update Profile" />
 
         {/* Registration Area */}
         <section className="registration-area">
@@ -114,10 +114,16 @@ const UpdateLearner = ({ auth: { user } }) => {
               <Fragment>
                 <Row>
                   <Col lg="12">
-                    <div className="registration-box instructorregister">
-                      <div className="registration-title text-center">
-                        <h3>Update Profile</h3>
+                    <div className="registration-box instructorregister" style={{background:"#fff"}}>
+                         
+                      <UploadContainer previousProfile={ profile?.user?.image_url || "no-image.jpg"} />
+
+
+
+                      <div className="" style={{background:"#fff"}}>
+                        <h3>Personal Details</h3>
                       </div>
+
 
                       <Formik
                         initialValues={initialValues}
@@ -138,8 +144,13 @@ const UpdateLearner = ({ auth: { user } }) => {
                             id="form_registration"
                             className="form"
                             onSubmit={handleSubmit}
+                           
                           >
                             <Row>
+                             
+
+                            <Col lg="6">
+                          
                               <p className="form-control">
                                 <label htmlFor="registration_fname">
                                   First Name
@@ -200,8 +211,10 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                            </Row>
-                            <Row>
+                              </Col>
+
+
+                              <Col lg="6">
                               <p className="form-control">
                                 <label htmlFor="registration_user">
                                   Phone Number
@@ -251,6 +264,7 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   onBlur={handleBlur}
                                   value={values.biography}
                                   id="registration_biography"
+                                  
                                 ></textarea>
 
                                 {touched.biography && errors.biography ? (
@@ -279,13 +293,22 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
+
+                              </Col>
+
+
                             </Row>
+
+
+                           
                             <Row>
+
+                            <Col lg="6">
                               <p className="form-control">
                                 <label htmlFor="registration_user">
                                   Gender
                                 </label>
-                                <select
+                                <select style={{background:"#fff"}}
                                   name="gender"
                                   onChange={handleChange}
                                   onBlur={handleBlur}
@@ -307,7 +330,7 @@ const UpdateLearner = ({ auth: { user } }) => {
                                 <label htmlFor="registration_user">
                                   Country
                                 </label>
-                                <select
+                                <select style={{background:"#fff"}}
                                   name="country_id"
                                   onChange={handleChange}
                                   onBlur={handleBlur}
@@ -351,13 +374,17 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                            </Row>
-                            <Row>
+
+                                
+
+                              </Col>
+
+                              <Col lg="6">
                               <p className="form-control">
                                 <label htmlFor="registration_user">
                                   Language {profile?.user?.learner_profile.language}
                                 </label>
-                                <select
+                                <select style={{background:"#fff"}}
                                   name="language"
                                   onChange={handleChange}
                                   onBlur={handleBlur}
@@ -387,7 +414,7 @@ const UpdateLearner = ({ auth: { user } }) => {
                                 <label htmlFor="registration_user">
                                   Educational Level
                                 </label>
-                                <select
+                                <select style={{background:"#fff"}}
                                   name="education_level"
                                   onChange={handleChange}
                                   onBlur={handleBlur}
@@ -413,7 +440,7 @@ const UpdateLearner = ({ auth: { user } }) => {
                                 <label htmlFor="registration_user">
                                   Degree Obtained
                                 </label>
-                                <select
+                                <select style={{background:"#fff"}}
                                   name="degree_obtained"
                                   onChange={handleChange}
                                   onBlur={handleBlur}
@@ -435,13 +462,18 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
+
+                              </Col>
                             </Row>
+                            
                             <Row>
+                              <h3> Education</h3><br/>
+                            <Col lg="12">
                               <p className="form-control">
                                 <label htmlFor="registration_user">
                                   Employment Status
                                 </label>
-                                <select
+                                <select style={{background:"#fff"}}
                                   name="employment_status"
                                   onChange={handleChange}
                                   onBlur={handleBlur}
@@ -467,7 +499,7 @@ const UpdateLearner = ({ auth: { user } }) => {
                                 <label htmlFor="registration_user">
                                   Experience Level
                                 </label>
-                                <select
+                                <select style={{background:"#fff"}}
                                   name="experience_level"
                                   onChange={handleChange}
                                   onBlur={handleBlur}
@@ -493,7 +525,7 @@ const UpdateLearner = ({ auth: { user } }) => {
                                 <label htmlFor="registration_user">
                                   Marital Status
                                 </label>
-                                <select
+                                <select style={{background:"#fff"}}
                                   name="marital_status"
                                   onChange={handleChange}
                                   onBlur={handleBlur}
@@ -515,8 +547,12 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
+
+                            </Col>
                             </Row>
                             <Row>
+                             <h3>Social Links</h3><br/>
+                             <Col lg="12">
                               <p className="form-control">
                                 <label htmlFor="registration_email">
                                   Facebook Url
@@ -574,8 +610,10 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
+
+                              </Col>
                             </Row>
-                            <button type="submit" disabled={isSubmitting}>
+                            <button style={{width:"200px"}} className="btn btn-primary" type="submit" disabled={isSubmitting}>
                               {loading ? (
                                 <div className="spinner-border" role="status">
                                   <span className="sr-only">Loading...</span>
@@ -598,8 +636,10 @@ const UpdateLearner = ({ auth: { user } }) => {
         </section>
 
         {/* Footer 2 */}
-        <FooterTwo />
+        
       </div>
+
+ 
     </Styles>
   );
 };

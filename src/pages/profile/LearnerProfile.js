@@ -2,16 +2,20 @@ import React, { useState, useEffect, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { Container, Row, Col, Table } from "react-bootstrap";
 import NavBar from "components/Navbar";
-import { BreadcrumbBox } from "../../components/common/Breadcrumb";
+import Footer from "components/Footer";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import FooterTwo from "../../components/FooterTwo";
-import { Styles } from "./styles/productDetails.js";
+// import FooterTwo from "../../components/FooterTwo";
+// import { Styles } from "./styles/productDetails.js";
 
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Loader from "components/Loader/Loader";
 import { getLearnerProfile } from "services/profile";
 import toast from "react-hot-toast";
+
+import "./avatar.css";
+
+
 
 const LearnerProfiler = ({ auth: { user, user_roles } }) => {
   const [profile, setProfile] = useState({});
@@ -29,24 +33,20 @@ const LearnerProfiler = ({ auth: { user, user_roles } }) => {
     })();
     // eslint-disable-next-line
   }, []);
-
+console.log(profile.user)
   return (
-    <Styles>
-      {/* Main Wrapper */}
-      <div className="main-wrapper product-details-page">
-        {/* Header 2 */}
+ 
+   
+      <div className=" " >
+     
         <NavBar />
 
-        {/* Breadcroumb */}
-        <BreadcrumbBox title="Profile" />
-
-        {/* Product Details */}
-        <section className="product-details-area card-box">
+        <section className=" ">
           <Container>
             {loading ? (
               <Loader width="70" />
             ) : Object.entries(profile).length !== 0 ? (
-              <Fragment>
+              <Fragment><br/><br/><br/>
                 <Row>
                   <Col md="5">
                     <div className="product-slider">
@@ -56,106 +56,123 @@ const LearnerProfiler = ({ auth: { user, user_roles } }) => {
                             process.env.PUBLIC_URL +
                             `/assets/images/product-01.jpg`
                           }
+                          height="200" width="200"
                           alt=""
-                          className="img-fluid avatar"
+                          className="circle card-box"
                         />
                       </div>
                     </div>
+
+
+                    <Col>
+                      <Table className="table table-borderless table-reveal ">
+                        <tbody>
+
+
+                  <tr>
+                            <td><i className="fa fa-user" style={{marginRight:"20px"}} ></i>Username </td>
+                    
+                           <td className="pull-right">{`${profile.user?.username}`}</td>
+                    </tr>
+
+                    <tr>
+                              <td><i className="fa fa-user" style={{marginRight:"20px"}} ></i>First Name </td>
+                    
+                      <td className="pull-right">{`${profile.user?.first_name}`}</td>
+                    </tr>
+
+
+
+             
+
+                      <tr>
+                            <td><i className="fa fa-user" style={{marginRight:"20px"}} ></i>Last Name</td>
+                    
+                    <td className="pull-right">{`${profile.user?.last_name}`} </td>
+                    </tr>
+                          
+                          <tr>
+                            <td><i className="fa fa-email" style={{marginRight:"20px"}} ></i>Email</td>
+                            <td className="pull-right">{`${profile.user?.email}`}</td>
+                          </tr>
+                          <tr>
+                            <td><i className="fa fa-user" style={{marginRight:"20px"}} ></i>Gender</td>
+                            <td className="pull-right">{`${profile.user.learner_profile?.gender}`}</td>
+                          </tr>
+                          <tr>
+                            <td><i className="fa fa-mobile" style={{marginRight:"20px"}} ></i>Phone</td>
+                            <td className="pull-right">{`${profile.user?.phone_number}`}</td>
+                          </tr>
+       
+
+                        </tbody>
+                      </Table>
+
+
+
+
+                 
+                  </Col>
+
                   </Col>
 
                   <Col md="7">
-                    <div className="product-information">
-                      <div className="product-title">
-                        <h4>{`${profile?.first_name}  ${profile?.last_name}`}</h4>
-                      </div>
-                      <div className="product-rating d-flex">
-                        <div className="review-num">
-                          {/* <Link to={process.env.PUBLIC_URL + "/"}>
-                          </Link> */}
-                        </div>
-                      </div>
-                      <div className="product-desc">
-                        <p>{profile.email}</p>
-                      </div>
-                      <div className="product-stock">
-                        <p>
-                          User type :{" "}
-                          <span className="stock">{user_roles[0].name}</span>
-                        </p>
-                      </div>
-
-                      <div className="product-cart-wh-com-btn">
-                        <Link to="/learner/profile/update" className="cart-btn">
-                          Update Profile
-                        </Link>
-                      </div>
-                    </div>
-                  </Col>
-
-                  <Col md="12">
-                    <div className="product-tab">
-                      <Table className="table table-bordered">
+                    
+                    <Table className="table table-borderless table-reveal ">
                         <tbody>
-                          <tr>
-                            <td>Username</td>
-                            <td>{`${profile?.username}`}</td>
+                                           <tr>
+                            <td><i className="fa fa-user" style={{marginRight:"20px"}} ></i>Marital Status</td>
+                             <td className="pull-right">{`${profile.user.learner_profile?.marital_status}`}</td>
                           </tr>
+
                           <tr>
-                            <td>Fisrt Name</td>
-                            <td>{`${profile?.first_name}`}</td>
-                          </tr>
-                          <tr>
-                            <td>Last Name</td>
-                            <td>{`${profile?.last_name}`}</td>
-                          </tr>
-                          <tr>
-                            <td>Email</td>
-                            <td>{`${profile?.email}`}</td>
-                          </tr>
-                          <tr>
-                            <td>Gender</td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td>Phone</td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td>Country</td>
-                            <td></td>
+                            <td><i className="fa fa-briefcase" style={{marginRight:"20px"}} ></i>Date Of Birth</td>
+                            <td className="pull-right">>{`${profile.user.learner_profile?.date_of_birth}`}</td>
                           </tr>
                           <tr>
                             <td>Employment Status</td>
-                            <td></td>
+                            <td className="pull-right">{`${profile.user.learner_profile?.employment_status}`}</td>
                           </tr>
                           <tr>
-                            <td>Education Level</td>
-                            <td></td>
+                            <td><i className="fa fa-graduation-cap" style={{marginRight:"20px"}} ></i>Education Level</td>
+                            <td className="pull-right">{`${profile.user.learner_profile?.education_level}`}</td>
                           </tr>
                           <tr>
-                            <td>Degree Obtained</td>
-                            <td></td>
+                            <td><i className="fa fa-graduation-cap" style={{marginRight:"20px"}} ></i> Degree Obtained</td>
+                            <td className="pull-right">{`${profile.user.learner_profile?.degree_obtained}`}</td>
                           </tr>
                           <tr>
-                            <td>Date of Birth</td>
-                            <td></td>
+                            <td><i className="fa fa-twitter" style={{marginRight:"20px"}}></i>Twitter Link</td>
+                            <td className="pull-right">{`${profile.user.learner_profile?.twitter_url}`}</td>
                           </tr>
                           <tr>
-                            <td>Marital Status</td>
-                            <td></td>
+                            <td><i className="fa fa-facebook" style={{marginRight:"20px"}} ></i>Facebook Link</td>
+                            <td className="pull-right">{`${profile.user.learner_profile?.facebook_url}`}</td>
                           </tr>
                           <tr>
-                            <td>LinkedIn</td>
-                            <td></td>
+                            <td><i className="fa fa-linkedin" style={{marginRight:"20px"}}></i>LinkedIn Link</td>
+                            <td className="pull-right">{`${profile.user.learner_profile?.linkedin_url}`}</td>
                           </tr>
-                          <tr>
-                            <td></td>
-                            <td></td>
-                          </tr>
+                          
+                          
                         </tbody>
                       </Table>
-                    </div>
+                         <Link to="/learner/profile/update" className="btn btn-primary pull-right">
+                            Update Profile
+                          </Link>
                   </Col>
+
+
+
+               
+                      
+
+
+
+          
+
+
+
                 </Row>
               </Fragment>
             ) : (
@@ -164,10 +181,9 @@ const LearnerProfiler = ({ auth: { user, user_roles } }) => {
           </Container>
         </section>
 
-        {/* Footer 2 */}
-        <FooterTwo />
+<Footer/>
       </div>
-    </Styles>
+
   );
 };
 

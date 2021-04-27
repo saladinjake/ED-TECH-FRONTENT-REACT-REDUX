@@ -21,10 +21,6 @@ export const getInstructorInfo = async () => {
 
 
 
-
-
-
-
 export const uuid = () => {
  
   var now = new Date();

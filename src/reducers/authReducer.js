@@ -24,7 +24,7 @@ const initialState = {
   prevPath: "",
 };
 
-const RootReducer = (state = initialState, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_SUCCESS:
       localStorage.setItem("access_token", action.payload.access_token);
@@ -81,6 +81,3 @@ const RootReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-
-export default RootReducer;

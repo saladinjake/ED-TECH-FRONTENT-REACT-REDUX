@@ -18,3 +18,12 @@ export const checkoutCourses = async (data) => {
     }
   });
 };
+
+export const getEnrolledCourse = async (id) => {
+  let request = axios.get(`enrollments/me`);
+  return request.then((response) => {
+    if (response.status === 200) {
+      return response && response;
+    }
+  });
+};
