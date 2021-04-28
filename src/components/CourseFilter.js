@@ -123,7 +123,7 @@ const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
                 ) : allCourses.length > 0 ? (
                   <Fragment>
                     {allCourses.map((data, i) => (
-                       <Col lg="4" md="6" key={i}>
+                       <Col lg="3" md="9" key={i}>
                 <div className="course-item " style={{width:"200px",height:"200px", background:"#fafafa"}}>
                   <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
                     <div
