@@ -123,56 +123,50 @@ const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
                 ) : allCourses.length > 0 ? (
                   <Fragment>
                     {allCourses.map((data, i) => (
-                      <Col lg="4" md="6" key={i} data-id={data.id}>
-                        <div className="course-item">
-                          <Link
-                            to={`${process.env.PUBLIC_URL}/courses/${data.id}`}
-                          >
-                            <div
-                              className="course-image"
-                              style={{
-                                backgroundImage: `url(${data.course_cover_image})`,
-                              }}
-                            >
-                              <div className="author-img d-flex"></div>
-                            </div>
-                          </Link>
-                          <div className="course-content">
-                            <h6 className="heading">
-                              <Link
-                                to={`${process.env.PUBLIC_URL}/courses/${data.id}`}
-                              >
-                                {data.course_name}
-                              </Link>
-                            </h6>
-                            <p className="author">
-                              A Course by{" "} {`${data.instructor?.user?.first_name} ${data.instructor?.user?.last_name} `}{" "}
-                            </p>
-                            <p className="desc">{data.course_description}</p>
-                            <div className="course-face d-flex justify-content-between">
-                              <div className="duration">
-                                <p>
-                                  <svg
-                                    width="16"
-                                    height="16"
-                                    viewBox="0 0 16 16"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                  >
-                                    <path
-                                      d="M15.9583 6.13748C15.8536 5.81349 15.5662 5.58339 15.2262 5.55275L10.6082 5.13342L8.78208 0.859266C8.64744 0.546026 8.34079 0.343262 8.00008 0.343262C7.65937 0.343262 7.35273 0.546026 7.21808 0.859999L5.39198 5.13342L0.773211 5.55275C0.433847 5.58412 0.147219 5.81349 0.0418692 6.13748C-0.0634802 6.46146 0.0338123 6.81682 0.290533 7.04082L3.78122 10.1022L2.7519 14.6364C2.67658 14.9697 2.80598 15.3143 3.0826 15.5143C3.23128 15.6217 3.40524 15.6764 3.58066 15.6764C3.7319 15.6764 3.88193 15.6356 4.01658 15.5551L8.00008 13.1743L11.9821 15.5551C12.2735 15.7304 12.6408 15.7144 12.9168 15.5143C13.1936 15.3137 13.3228 14.969 13.2475 14.6364L12.2182 10.1022L15.7089 7.04143C15.9656 6.81682 16.0636 6.46207 15.9583 6.13748Z"
-                                      fill="#FFC107"
-                                    />
-                                  </svg>
-                                </p>
-                              </div>
-                              <div className="student">
-                                <p>NGN{data?.price}</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </Col>
+                       <Col lg="4" md="6" key={i}>
+                <div className="course-item " style={{width:"200px",height:"200px", background:"#fafafa"}}>
+                  <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
+                    <div
+                      
+                      style={{
+                        height:"100px",
+                        backgroundImage: data
+
+                          ? `url(${data.course_cover_image})`
+                          : "",
+                             backgroundRepeat:"no-repeat",
+    backgroundPosition: "center center",
+    
+    minHeight:"20%"
+                      }}
+                    >
+                      
+                      
+                    </div>
+                  </Link>
+                  <div className="course-content">
+                    <h6 style={{fontSize:"14px"}}>
+                      <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
+                        {data.course_name.substring(0,20)+ "..."}
+                      </Link>
+                    </h6>
+                  
+                    <div className="course-face d-flex justify-content-between" >
+                      <div className="duration">
+                        <p>
+                         Instructor
+                        </p>
+                      </div>
+                     
+                      <div className="student">
+                        <p>
+                          {"sakakas"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Col>
                     ))}
                   </Fragment>
                 ) : (
