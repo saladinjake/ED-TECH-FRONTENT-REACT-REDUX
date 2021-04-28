@@ -29,6 +29,8 @@ const Cart = ({
     await removeFromCart(id);
   };
 
+  // console.log(cart)
+
   return (
     <Styles>
       {/* Main Wrapper */}
@@ -82,8 +84,7 @@ const Cart = ({
                                 <td className="product-thumbnail">
                                   <img
                                     src={
-                                      process.env.PUBLIC_URL +
-                                      `/assets/images/product-01.jpg`
+                                      data.course_cover_image
                                     }
                                     alt=""
                                   />

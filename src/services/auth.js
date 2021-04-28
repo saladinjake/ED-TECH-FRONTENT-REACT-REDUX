@@ -10,6 +10,15 @@ export const loginUser = async (details) => {
   });
 };
 
+export const loginUserForgotPassword = async (details) => {
+  let request = axios.post("/auth/reset-password-request", details);
+  return request.then((response) => {
+    if (response.status === 200) {
+      return response && response;
+    }
+  });
+};
+
 export const registerLearner = async (details) => {
   let request = axios.post("learners/register", details);
   return request.then((response) => {

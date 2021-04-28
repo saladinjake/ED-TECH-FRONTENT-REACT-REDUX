@@ -116,28 +116,13 @@ const PurchaseHistory = () =>{
       setLoading(true);
       try {
         let res =[]  //await getNotifications();
-        setNotifications([...res.data.data]);
+        setNotifications([]);//...res.data.data
       } catch (err) {
-        toast.error(`Error occured fetching notifications`);
+        // toast.error(`Error occured fetching notifications`);
       }
       setLoading(false);
     })();
   }, []);
-
-
-  const handleSubmit = async (values, { setSubmitting }) => {
-    setLoading(true);
-    try {
-      // const res = await loginUser(values);
-      
-      setSubmitting(false);
-    } catch (err) {
-      toast.error(err?.response?.data?.message);
-      
-      // setSubmitting(false);
-    }
-    // setLoading(false);
-  };
 
 
   

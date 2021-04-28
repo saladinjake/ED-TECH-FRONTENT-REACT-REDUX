@@ -104,7 +104,7 @@ const NavBar = ({
                   {categories.length > 0 &&
                     categories.map((item, i) => {
                       return (
-                        <li >
+                        <li  style={{height:"30px"}}>
                           <Link
                             className="DropDown__link"
                             to={`${process.env.PUBLIC_URL}/courses/category/${item.id}`}

@@ -23,6 +23,7 @@ import UpdateLearner from "pages/profile/UpdateLearner";
 import UpdateInstructor from "pages/profile/UpdateInstructor";
 import Register from "pages/account/Register";
 import ResetPassword from "pages/account/ResetPassword";
+import ForgotPassword from "pages/account/PasswordForgot"
 import InstructorRegister from "pages/account/InstructorRegister";
 import BusinessRegister from "pages/account/BusinessRegister";
 import PageNotFound from "pages/404/PageNotFound";
@@ -51,9 +52,12 @@ import NewNotifications from './pages/mynotifications/Notifications'
 import Purchases from "./pages/purchases/Purchases"
 
 
+import history from './history';
+
+
 function App() {
   return (
-    <Router>
+    <Router history={history}>
       <Toaster
         toastOptions={{
           success: {
@@ -233,7 +237,8 @@ function App() {
 
             <LearnersRoute path={`${process.env.PUBLIC_URL + "/learner/accounts"}`} component={ResetPassword} />
             <LearnersRoute path={`${process.env.PUBLIC_URL + "/learner/purchase/history"}`} component={Purchases} />
-                    
+            
+            <Route path={`${process.env.PUBLIC_URL + "/password-forgot" }`} component={ForgotPassword} /> 
 
             <Route path={`${process.env.PUBLIC_URL + "/sorttest" }`} component={SortTest} />     
           

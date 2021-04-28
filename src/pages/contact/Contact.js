@@ -5,7 +5,37 @@ import { BreadcrumbBox } from '../../components/common/Breadcrumb';
 import Footer from '../../components/Footer';
 import { Styles } from './styles/contact.js';
 
+
+import { useState } from 'react';
+import PropTypes from 'prop-types';
+
+import { init, send } from 'emailjs-com';
+import { EMAIL_CONFIG } from "../../config"
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
+
+import facebook from "assets/pngs/facebook.png";
+import twitter from "assets/pngs/twitter.png";
+import linkedin from "assets/pngs/linkedin.png";
+
+init("user_G3PO2EisAWs0dlZT1qu0g");
+
+
+
 function Contact() {
+
+      const [feedback, setFeedback] = useState('');
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formSubmitSuccessful, setFormSubmitSuccessful] = useState(false);
+
+  const handleCancel = () => {
+    setFeedback('');
+  };
+
+  const handleChange = (event) => {
+    setFeedback(event.target.value);
+  };
+
     useEffect(() => {
         const form = document.getElementById("form_contact");
         const name = document.getElementById("contact_name");
@@ -48,6 +78,26 @@ function Contact() {
             } else {
                 setSuccess(message);
             }
+
+
+            if(emailValue && messageValue &&  subjectValue && nameValue){
+                 // setFormSubmitted(true);
+                 toast.success("Your feedback was sent.");
+                 send("service_qkww1qn","template_8a8txks",{
+                    senderEmail: emailValue,
+                    title: subjectValue,
+                    feedback: messageValue,
+                    reply_to: "admin@questence.org",
+                    from_name: nameValue
+                     
+                    }).then((res) => {
+                            if (res.status === 200) {
+                              // setFormSubmitSuccessful(true);
+                            }
+                          })
+                          // Handle errors here however you like
+                          .catch((err) => console.error('Failed to send feedback. Error: ', err));
+            }
         }
 
         function setError(input, message) {
@@ -67,6 +117,7 @@ function Contact() {
         }
     });
 
+   
     return (
         <Styles>
             {/* Main Wrapper */}
@@ -74,6 +125,7 @@ function Contact() {
 
                 <NavBar />
                 <BreadcrumbBox title="Contact Us" />
+
 
                 {/* Contact Area */}
                 <section className="contact-area">
@@ -110,14 +162,38 @@ function Contact() {
                                         <p>+234 0700 0000 0000</p>
                                     </div>
                                 </div>
-                                <div className="contact-social">
+                                <div className="">
                                     <ul className="social list-unstyled list-inline">
-                                        <li className="list-inline-item"><a href={process.env.PUBLIC_URL + "/"}><i className="fab fa-facebook-f"></i></a></li>
-                                        <li className="list-inline-item"><a href={process.env.PUBLIC_URL + "/"}><i className="fab fa-twitter"></i></a></li>
-                                        <li className="list-inline-item"><a href={process.env.PUBLIC_URL + "/"}><i className="fab fa-linkedin-in"></i></a></li>
-                                        <li className="list-inline-item"><a href={process.env.PUBLIC_URL + "/"}><i className="fab fa-youtube"></i></a></li>
-                                        <li className="list-inline-item"><a href={process.env.PUBLIC_URL + "/"}><i className="fab fa-dribbble"></i></a></li>
-                                    </ul>
+
+                                   <li className="list-inline-item" > <Link to="#">
+                    <figure>
+                      <img src={facebook} alt="facebook" />
+                    </figure>
+                  </Link>
+                </li>
+                <li className="list-inline-item">
+                  <Link to="#">
+                    <figure>
+                      <img src={twitter} alt="twitter" />
+                    </figure>
+                  </Link>
+                </li>
+                <li className="list-inline-item" >
+                  <Link to="#">
+                    <figure>
+                      <img src={linkedin} alt="linkedin" />
+                    </figure>
+                  </Link>
+                </li>
+
+
+
+
+
+
+
+
+      </ul>
                                 </div>
                             </Col>
                             <Col md="8">

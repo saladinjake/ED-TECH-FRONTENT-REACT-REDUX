@@ -61,7 +61,7 @@ class TopCourses extends React.Component{
                         <div className="col-lg-2 pull-left"><Link to="../courses" style={{background: "#0253c8", color:"#fff"}} className="btn  waves-effect waves-light pull-left m-b-10"><i className="md  md-chevron-left"></i> See All courses</Link> </div>
                             
                            <div className="col-md-12">
-                           <br/><br/><br/><br/>
+                           <br/><br/>
                                             <Carousel
                                                 show={2}
                                                 children={data}

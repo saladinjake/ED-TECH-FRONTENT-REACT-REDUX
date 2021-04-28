@@ -128,7 +128,7 @@ const Carousel = (props) => {
                     >
                         {children.length > 0 &&
                                 children.map((item, i) => {
-                                           return (<div style={{width:"150px",height:"150px",marginLeft:"15px"}} className=" col-sm-6 col-lg-3 col-md-4 mobiles card-box">
+                                           return (<div style={{marginLeft:"15px"}} className=" col-sm-6 col-lg-3 col-md-4 mobiles card-box">
                                      
                                        <a onClick={() => {addToMyWishList(item.id)}} class="button one inactive mobile button--secondary">
 

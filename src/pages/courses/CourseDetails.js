@@ -8,33 +8,53 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 
 import Loader from "components/Loader/Loader";
-import { getCourse } from "services/course";
+import { getCourse, getCourses } from "services/course";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { fetchCourses, addToCart } from "actions/cartActions";
 import { getAuthProfile } from "services/learner.js";
 import toast from "react-hot-toast";
+import { useHistory, useLocation } from "react-router-dom";
+
+import "./relatedcoursesmodal.css"
 
 const CourseDetails = ({
+  history,
   match,
   auth: { isAuthenticated },
   cart: { cart },
   addToCart,
   fetchCourses,
 }) => {
+
+  // console.log(cart)
+
+  // console.log(history.location.pathname)
+
+  const lastLocation =history.location.pathname;
+
   const [coursedetails, setCourseDetails] = useState({});
   // eslint-disable-next-line
   const [status, setStatus] = useState("init");
   const [loading, setLoading] = useState(true);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
+  const [relatedCourses, setRelatedCourses] = useState([]);
 
   const init = async () => {
     setStatus("loading");
     let courseId = parseInt(match.params.id);
     try {
       let response = await getCourse(courseId);
-      setCourseDetails(response.data);
+        setCourseDetails(response.data);
+
+       let allcourses = await getCourses();
+       setRelatedCourses(allcourses.data.data)     // ;
+      
+     
+       
+     
+    
       setStatus("success");
     } catch (err) {
       setStatus("error");
@@ -45,6 +65,7 @@ const CourseDetails = ({
   useEffect(() => {
     (async function loadContent() {
       await fetchCourses();
+       // const lastLocation = useLocation();
     })();
     // eslint-disable-next-line
   }, []);
@@ -55,8 +76,12 @@ const CourseDetails = ({
         try {
           let res = await getAuthProfile();
           let enrolledCourses = res.data.data;
+
           let ids = enrolledCourses.map((course) => course.course.id);
+          
           setEnrolledCourses([...ids]);
+
+
           console.log(ids);
         } catch (err) {
           toast.error(
@@ -99,6 +124,17 @@ const CourseDetails = ({
     return check;
   };
 
+
+   // 
+
+
+   // result.map(course => {
+   //      // course === response.data.data.course.category.name
+   //       return console.log(course.course_name, //coursedetails.data.category
+   //        )
+
+   //      })
+
   return (
     <div className="main-wrapper course-details-page">
       {/* Header 2 */}
@@ -119,11 +155,11 @@ const CourseDetails = ({
               <Container>
                 <Row>
                   <Col lg="9" md="8" sm="12">
-                    <div className="course-details-top">
+                    <div className="course-details-top" >
                       <div className="heading">
                         <h4>{coursedetails?.data?.course_name}</h4>
                       </div>
-                      <div className="course-top-overview">
+                      <div className="course-top-overview" style={{height:"2000px"}}>
                         <div className="d-flex overviews">
                           <div className="author">
                             <img
@@ -662,27 +698,35 @@ const CourseDetails = ({
                               ) : (
                                 <button
                                   type="button"
-                                  onClick={addToCart.bind(
-                                    this,
-                                    coursedetails?.data?.id
-                                  )}
+                                  onClick={
+                                  
+                                     addToCart.bind(
+                                       this,
+                                       coursedetails?.data?.id
+                                      )
+
+                                      
+                                }
                                   className="enroll-btn"
                                 >
                                   Enroll Course
                                 </button>
                               )
                             ) : (
-                              <button
-                                type="button"
-                                onClick={addToCart.bind(
-                                  this,
-                                  coursedetails?.data?.id
-                                )}
-                                className="enroll-btn"
+                              <a
+                                href={process.env.PUBLIC_URL + `/login?redirectTo=${lastLocation}`}
+                                alt="linkedout"
+                                className="btn btn-primary enroll-btn"
+                                onClick= {(e) =>{
+
+                                 
+                                }}
                               >
-                                Enroll Course
-                              </button>
+                                Login To Enroll
+                              </a>
                             )}
+
+                         
                           </div>
                         </Col>
                       </Row>
@@ -697,11 +741,75 @@ const CourseDetails = ({
         )}
       </Styles>
 
+
+
+        <div className="md-modal md-effect-12" id="md-modal" >
+        <div className="md-modal md-header"><h4>Course Cart Preview</h4></div>
+    <div className="md-content" style={{marginLeft:"0px",height:"400px",overflowY:"scroll"}}><br/>
+        <h3>Items in your cart</h3><br/><br/>
+
+         <div style={{display:"table"}}>
+            <button onClick={()=>{
+              closeModal()
+              window.location.href = process.env.PUBLIC_URL + "/courses"
+
+            }} className="btn btn-primary pull-left">Continue Shopping</button>
+            <button style={{marginRight:"20px"}} onClick={()=>{
+              window.location.href = process.env.PUBLIC_URL + "/cart"
+            }} className="btn btn-danger pull-right">Go to cart</button>
+          </div>
+        <div>
+            {cart.length > 0 && cart.map( item =>{
+               return (
+               <div style={{float:"left",  margin:"10px", width:"200px"}}>
+                
+
+                  <img
+                          src={`${
+                            item.course_cover_image && item.course_cover_image
+                              ? item.course_cover_image
+                              : ""
+                          }`}
+                          alt="No Wrapper"
+                          className="img-fluid"
+                        />
+                         <p className="text-muted">{item.course_name}</p>
+                  <p className="text-muted">{item.course_code}</p>
+                </div>
+               )
+            })
+              
+            }
+          
+        </div>
+    </div>
+    
+</div>
+
+<div className="md-overlay"></div>
+
       {/* Footer 2 */}
       <Footer />
     </div>
   );
 };
+
+
+const closeModal =() =>{
+  // document.getElementById('md-close').on('click', function() {
+    document.getElementById('md-modal').classList.remove('md-show');
+  // });
+}
+
+const showModalEffect = () => {
+  // document.getElementById('md-trigger').addEventListener('click', function() {
+    document.getElementById('md-modal').classList.add('md-show');
+  // });
+  
+  
+}
+
+
 
 CourseDetails.propTypes = {
   cart: PropTypes.object.isRequired,

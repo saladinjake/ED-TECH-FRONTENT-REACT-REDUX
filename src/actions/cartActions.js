@@ -29,6 +29,7 @@ export const fetchCourses =  () => async (dispatch) => {
 };
 
 export const addToCart = (id) => async (dispatch) => {
+   document.getElementById('md-modal').classList.add('md-show');
   dispatch({
     type: ADD_TO_CART,
     payload: id

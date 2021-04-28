@@ -5,7 +5,7 @@ import Pagination from "./Pagination";
 
 function CourseItemGrid({ allCourses, courses }) {
   const [currentPage, setCurrentPage] = useState(1);
-  const [coursePerPage] = useState(5);
+  const [coursePerPage] = useState(50);
   const [currentCourses, setCurrCourses] = useState([]);
 
   // Get current course
@@ -34,10 +34,10 @@ function CourseItemGrid({ allCourses, courses }) {
       {currentCourses.length > 0 ? (
         <Fragment>
           {currentCourses.map((data, i) => {
-            console.log(data.course_cover_image)
+            console.log(data)
             return (
               <Col lg="4" md="6" key={i}>
-                <div className="course-item" style={{width:"200px",height:"200px"}}>
+                <div className="course-item " style={{width:"200px",height:"200px", background:"#fafafa"}}>
                   <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
                     <div
                       
@@ -64,16 +64,16 @@ function CourseItemGrid({ allCourses, courses }) {
                       </Link>
                     </h6>
                   
-                    <div className="course-face d-flex justify-content-between">
+                    <div className="course-face d-flex justify-content-between" >
                       <div className="duration">
                         <p>
-                          <i className="las la-clock"></i> {data.duration}
+                         Instructor
                         </p>
                       </div>
                      
                       <div className="student">
                         <p>
-                          <i className="las la-chair"></i>60
+                          {"sakakas"}
                         </p>
                       </div>
                     </div>
