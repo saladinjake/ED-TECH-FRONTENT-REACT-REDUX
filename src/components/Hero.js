@@ -15,7 +15,7 @@ useEffect(() => {
   return (
 
 
-    <section className="hero-area">
+    <section className="hero-area" style={{background: `linear-gradient(200deg, #fff 30%, #2a0845 60%)` }}>
       <Container>
       <Row>
         <Col lg="7">
@@ -25,7 +25,7 @@ useEffect(() => {
               Accelerate your quest,<br></br>
               <span>learn</span> anywhere, anytime.
             </h2>
-            <p>
+            <p style={{color:"#fff"}}>
             Acquire new knowledge and skills, train for certifications, diplomas and degrees from world-class institutions at your 
             own pace and space.
             </p>

@@ -5,9 +5,9 @@ import "./styles/cta.scss";
 
 const CTA = () => {
   return (
-    <section className="cta mainCta">
+    <section className="cta mainCta"  >
       
-            <div className="cta__item brown">
+            <div className="cta__item brown" style={{background: `linear-gradient(200deg, #6441A5 30%, #2a0845 60%)` }}>
               <figure class="cta__item-icon mt-xs">
                 <img src={professor} alt="professor" />
               </figure>
@@ -21,7 +21,7 @@ const CTA = () => {
               <button className="mt-xs">Read More</button>
             </div>
 
-            <div className="cta__item inst">
+            <div className="cta__item inst" style={{background: `linear-gradient(200deg, #6441A5 30%, #2a0845 60%)` }}>
               <figure class="cta__item-icon mt-xs">
                 <img src={university} alt="university" />
               </figure>

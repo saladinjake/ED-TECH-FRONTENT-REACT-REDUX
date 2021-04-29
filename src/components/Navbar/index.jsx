@@ -80,11 +80,11 @@ const NavBar = ({
 
 
 
-   <section class="menu-area" >
+   <section class="menu-area"  >
     <div >
         <div class="row">
             <div class="col-md-12">
-                <nav class="navbar navbar-expand-lg navbar-light bg-light" >
+                <nav class="navbar navbar-expand-lg navbar-light bg-light" style={{background: `linear-gradient(170deg, #fff 20%, #2a0845 90%)` }} >
 
 
 
