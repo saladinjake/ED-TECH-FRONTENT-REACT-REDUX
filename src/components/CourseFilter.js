@@ -139,7 +139,7 @@ const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
                   <Fragment>
                     {allCourses.map((data, i) => (
                        <Col lg="3" md="9" key={i}>
-                <div className="course-item " style={{width:"250px",height:"300px", background:"#fff"}}>
+                <div className="course-item " style={{width:"200px",height:"300px", background:"#fff"}}>
                   <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
                     <div
                       
@@ -167,7 +167,7 @@ const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
                         width:"50px",
                         position:"absolute",
                         top:"120px",
-                        right:"40px",
+                        right:"90px",
                         padding:"5px",
                         backgroundImage: data
 
