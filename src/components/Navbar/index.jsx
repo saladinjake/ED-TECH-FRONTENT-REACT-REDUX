@@ -81,10 +81,10 @@ const NavBar = ({
 
 
    <section class="menu-area" >
-    <div class="container-xl">
+    <div >
         <div class="row">
-            <div class="col">
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="col-md-12">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light" >
 
 
 
