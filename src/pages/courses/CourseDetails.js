@@ -15,7 +15,7 @@ import { connect } from "react-redux";
 import { fetchCourses, addToCart } from "actions/cartActions";
 import { getAuthProfile } from "services/learner.js";
 import toast from "react-hot-toast";
-import { useHistory, useLocation } from "react-router-dom";
+// import { useHistory, useLocation } from "react-router-dom";
 
 import "./relatedcoursesmodal.css"
 
@@ -801,13 +801,13 @@ const closeModal =() =>{
   // });
 }
 
-const showModalEffect = () => {
-  // document.getElementById('md-trigger').addEventListener('click', function() {
-    document.getElementById('md-modal').classList.add('md-show');
-  // });
+// const showModalEffect = () => {
+//   // document.getElementById('md-trigger').addEventListener('click', function() {
+//     document.getElementById('md-modal').classList.add('md-show');
+//   // });
   
   
-}
+// }
 
 
 

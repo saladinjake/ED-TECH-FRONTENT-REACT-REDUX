@@ -10,7 +10,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { init, send } from 'emailjs-com';
-import { EMAIL_CONFIG } from "../../config"
+// import { EMAIL_CONFIG } from "../../config"
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
@@ -24,17 +24,17 @@ init("user_G3PO2EisAWs0dlZT1qu0g");
 
 function Contact() {
 
-      const [feedback, setFeedback] = useState('');
-  const [formSubmitted, setFormSubmitted] = useState(false);
-  const [formSubmitSuccessful, setFormSubmitSuccessful] = useState(false);
+      // const [feedback, setFeedback] = useState('');
+  // const [formSubmitted, setFormSubmitted] = useState(false);
+  // const [formSubmitSuccessful, setFormSubmitSuccessful] = useState(false);
 
-  const handleCancel = () => {
-    setFeedback('');
-  };
+  // const handleCancel = () => {
+  //   // setFeedback('');
+  // };
 
-  const handleChange = (event) => {
-    setFeedback(event.target.value);
-  };
+  // const handleChange = (event) => {
+  //   // setFeedback(event.target.value);
+  // };
 
     useEffect(() => {
         const form = document.getElementById("form_contact");
