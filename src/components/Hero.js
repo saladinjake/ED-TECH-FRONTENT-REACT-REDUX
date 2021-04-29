@@ -31,14 +31,15 @@ useEffect(() => {
             </p>
 
              <ul class="contact">
-      <li><a href="mailto:jonas@badalic.com">Login</a></li>
+      <li><a href="#">Login</a></li>
           <li>
-          <a target="_top"href="https://codepen.io/JonasB/">Signup</a>
+          <a target="_top"href="#">Signup</a>
         </li>
         <li>
-          <a target="_top" href="https://twitter.com/JonasBadalic">Find courses</a></li>
-        <li><a target="_top" href="https://si.linkedin.com/in/jonasbadalic">About</a></li>
+          <a target="_top" href="#">Find courses</a></li>
+        <li><a target="_top" href="#">About</a></li>
       </ul>
+      <br/>  <br/>
 
 
 
