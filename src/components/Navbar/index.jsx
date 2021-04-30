@@ -146,7 +146,7 @@ const NavBar = ({
                                                  </span>
                                               </a>
                                             </li>
-                                                    <li><Link to={`${process.env.PUBLIC_URL}/courses/${cat.id}`}>  {cat.name}</Link></li>
+                                                    <li><Link onClick={() =>{window.location.href= `${process.env.PUBLIC_URL}/courses/${cat.id}`}} to={`${process.env.PUBLIC_URL}/courses/${cat.id}`}>  {cat.name}</Link></li>
                                                     
                                                 </Fragment>    
                                              
