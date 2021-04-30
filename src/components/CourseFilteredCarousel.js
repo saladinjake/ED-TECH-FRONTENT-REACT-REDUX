@@ -112,7 +112,7 @@ const Carousel = (props) => {
         <h6>Browse Category #{ title }</h6>
             <div className="carousel-wrapper">
                 {/* You can alwas change the content of the button to other things */}
-                <button onClick={prev}   className="left-arrow" style={{background: "#0253c8", color:"#fff"}}>
+                <button onClick={prev}   className="left-arrow" style={{background: "#212529", color:"#fff"}}>
                         &lt;
                     </button>
                 <div
@@ -135,7 +135,7 @@ const Carousel = (props) => {
                         <div className="widgetImage animation">
                           <img src={`${data.course_cover_image}`} alt="Product 1" />
                         </div>
-                        <div className="widgetContent animation" style={{background: `linear-gradient(200deg, #fff 30%, #2a0845 60%)` }}>
+                        <div className="widgetContent animation" style={{background: `linear-gradient(200deg, #fff 30%, #212529 60%)` }}>
                           <h6 className="widgetTitle">
                         {data.course_name}
                          </h6>
@@ -163,7 +163,7 @@ const Carousel = (props) => {
                     </div>
                 </div>
                 {/* You can alwas change the content of the button to other things */}
-                <button onClick={next}   className="right-arrow" style={{background: "#0253c8", color:"#fff"}}>
+                <button onClick={next}   className="right-arrow" style={{background: "#212529", color:"#fff"}}>
                         &gt;
                     </button>)
                     
