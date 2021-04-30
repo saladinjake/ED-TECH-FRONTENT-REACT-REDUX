@@ -236,12 +236,14 @@ const MyLearningContainer = (props) => {
                     ) : !loading ? (
                       <Fragment>
                         <div className="col-md-2 col-sm-12" >
+                         <div style={{marginTop:"240px"}}>
                              <div className="filter-sidebar"> 
                                   <CourseSidebar
                                       setFilterAllCourses={setFilterAllCourses}
                                       setSearch={setSearch}
                                       search={search}
                                     />
+                             </div>
                              </div>
                         </div>
 

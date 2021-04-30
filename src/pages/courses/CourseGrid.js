@@ -130,13 +130,17 @@ const CourseGrid = ({
         <section className="course-grid-area">
           <Container>
             <Row>
+          
               <Col lg="3" md="4" sm="5">
+                <div style={{marginTop:"240px"}}>
                 <CourseSidebar
                   setFilterAllCourses={setFilterAllCourses}
                   setSearch={setSearch}
                   search={search}
                 />
+                   </div>
               </Col>
+           
               <Col lg="9" md="8" sm="7">
                 <div className="course-items">
                   <Row>
