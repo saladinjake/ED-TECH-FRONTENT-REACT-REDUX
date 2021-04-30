@@ -10,8 +10,8 @@
 .widget {
   position: relative;
   display: inline-block;
-  width: 200px;
-  height: 320px;
+  width: 260px;
+  height: 350px;
   margin: 10px;
   background: #fff;
   overflow: hidden;
@@ -61,7 +61,7 @@
 
 .widgetTitle {
   margin-bottom: 5px;
-  font-size: 15px;
+  font-size: 20px;
   /*font-weight: 700;*/
   line-height: 1.2em;
   color: #000;
