@@ -16,7 +16,7 @@ import "./components.css";
 import { //CATEGORIES,
  PACES,  AUTHLINKS } from "./data";
 
- import "./nav.css"
+
 
 import { getCategories } from "services/category";
 import toast from "react-hot-toast";
@@ -119,7 +119,7 @@ const NavBar = ({
                                               return (
                                               <Fragment>
                                             
-                                                    <li><Link className="DropDown__link"  onClick={() =>{window.location.href= `${process.env.PUBLIC_URL}/courses/${cat.id}`}} to={`${process.env.PUBLIC_URL}/courses/${cat.id}`}>  {cat.name}</Link></li>
+                                                    <li style={{display:"none"}}><Link className="DropDown__link"  onClick={() =>{window.location.href= `${process.env.PUBLIC_URL}/courses/${cat.id}`}} to={`${process.env.PUBLIC_URL}/courses/${cat.id}`}>  {cat.name}</Link></li>
                                                     
                                                 </Fragment>    
                                              

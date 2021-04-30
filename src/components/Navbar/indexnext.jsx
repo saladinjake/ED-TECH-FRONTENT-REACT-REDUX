@@ -103,17 +103,17 @@ const NavBar = ({
                      <div class="main-nav-wrap">
                                     <div class="mobile-overlay"></div>
 
-                                    <ul class="mobile-main-nav">
+                                    <ul className="mobile-main-nav">
                                       <div class="mobile-menu-helper-top"></div>
 
-                                      <li class="has-children">
+                                      <li className="has-children">
                                         <a href="">
                                           <i class="fas fa-th d-inline"></i>
                                           <span>Courses</span>
                                           <span class="has-sub-category"><i class="fas fa-angle-right"></i></span>
                                         </a>
 
-                                        <ul class="category corner-triangle top-left is-hidden pb-0">
+                                        <ul className="category corner-triangle top-left is-hidden pb-0">
                                           <li class="go-back"><a href=""><i class="fas fa-angle-left"></i>Menu</a></li>
 
                                            {categories.length > 0 &&
