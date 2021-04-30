@@ -2,6 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Col } from "react-bootstrap";
 import Pagination from "./Pagination";
+import "./filter.css"
 
 function CourseItemGrid({ allCourses, courses }) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,7 +38,25 @@ function CourseItemGrid({ allCourses, courses }) {
             console.log(data)
             return (
               <Col lg="4" md="6" key={i}>
-                 <div className="course-item " style={{width:"200px",height:"300px", background:"#fff"}}>
+                  
+
+                       <div class="widget">
+                        <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
+                        <div class="widgetImage animation">
+                          <img src={`${data.course_cover_image}`} alt="Product 1" />
+                        </div>
+                        <div class="widgetContent animation" style={{background: `linear-gradient(200deg, #fff 30%, #2a0845 60%)` }}>
+                          <h6 class="widgetTitle">
+                        {data.course_name}
+                         </h6>
+                          <h2 class="widgetSubTitle">Course</h2>
+                          <p>{data.description}</p>
+                        </div>
+                        </Link>
+                      </div>
+
+
+                {/*<div className="course-item " style={{width:"200px",height:"300px", background:"#fff"}}>
                   <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
                     <div
                       
@@ -81,7 +100,7 @@ function CourseItemGrid({ allCourses, courses }) {
                       
                     </div>
                   <div className="course-content" >
-                    <h6 style={{fontSize:"14px", color:"#fff"}}><br/>
+                    <h6 className="" style={{fontSize:"10px", color:"#fff"}}><br/>
                       <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`} >
                         {data.course_name}
                       </Link>
@@ -101,7 +120,7 @@ function CourseItemGrid({ allCourses, courses }) {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div>*/}
               </Col>
             );
           })}

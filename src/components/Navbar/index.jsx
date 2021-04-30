@@ -230,8 +230,8 @@ const NavBar = ({
 
 
                          <div class="wishlist-box menu-icon-box" id="wishlist_items">
-                                <div class="icon">
-                                    <a href=""><i class="far fa-heart"></i></a>
+                                <div class="icon" >
+                                    <a href=""><i class="far fa-heart" style={{color:"#fff"}}></i></a>
                                     <span class="number">1</span>
                                 </div>
                                 <div class="dropdown course-list-dropdown corner-triangle top-right">
@@ -246,14 +246,14 @@ const NavBar = ({
                                       </a>
                                   </div>
                                   <div class="item-details">
-                                      <a href="#home/course/questence-ss1-mathematics/26">
+                                      <a href="#home">
                                           <div class="course-name">Questence SS1 Mathematics</div>
                                           <div class="instructor-name">
-                                              By Instructor-01 Questence                                    
+                                              Demo course not implemented                                   
                                           </div>
 
                                           <div class="item-price">
-                                          <span class="current-price">Free</span>
+                                          <span class="current-price">N20000</span>
                                   </div>
                                 </a>
                                                     <button>Already purchased</button>
@@ -263,7 +263,7 @@ const NavBar = ({
                                                             </ul>
                                         </div>
                                         <div class="dropdown-footer">
-                                            <a href="#home/my_wishlist">Go to wishlist</a>
+                                            <a href="#my_wishlist">Go to wishlist</a>
                                         </div>
                                     </div>
                                     <div class="empty-box text-center d-none">
@@ -279,8 +279,8 @@ const NavBar = ({
 
 
                         <div class="cart-box menu-icon-box" id="cart_items">
-                          <div class="icon">
-                              <a href="#"><i class="fas fa-shopping-cart"></i></a>
+                          <div class="icon" style={{color:"#fff"}}>
+                              <a href="#"><i style={{color:"#fff"}} class="fas fa-shopping-cart"></i></a>
                               <span class="number">{cart !== undefined && `(${cart?.length})`}</span>
                           </div>
 

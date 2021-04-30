@@ -1,0 +1,75 @@
+.animation {
+  -webkit-transition: all 0.2s ;
+  -moz-transition: all 0.2s ;
+  -ms-transition: all 0.2s ;
+  -o-transition: all 0.2s ;
+  transition: all 0.2s ;
+}
+
+
+.widget {
+  position: relative;
+  display: inline-block;
+  width: 260px;
+  height: 320px;
+  margin: 10px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.widgetImage {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 260px;
+  height: 260px;
+  margin-left: -50%;
+}
+
+.widgetImage img {
+  width: 100%;
+  height: auto;
+}
+
+.widget:hover .widgetImage {
+  top: -130px;
+  left: 0;
+  width: 520px;
+  height: 520px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  -webkit-filter: grayscale(1);
+}
+
+.widgetContent {
+  position: absolute;
+  top: 255px;
+  width: 280px;
+  height: 300px;
+  padding: 10px;
+  font-size: 12px;
+  line-height: 16px;
+  color: #666;
+  background: blue;
+}
+
+.widget:hover .widgetContent {
+  top: 100px;
+}
+
+.widgetTitle {
+  margin-bottom: 5px;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2em;
+  color: #000;
+}
+
+.widgetSubTitle {
+  margin-bottom: 20px;
+  font-size: 17px;
+  line-height: 1.2em;
+  color: #000;
+}
