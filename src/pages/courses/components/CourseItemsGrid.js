@@ -37,12 +37,12 @@ function CourseItemGrid({ allCourses, courses }) {
             console.log(data)
             return (
               <Col lg="4" md="6" key={i}>
-                <div className="course-item " style={{width:"200px",height:"200px", background:"#fafafa"}}>
+                 <div className="course-item " style={{width:"200px",height:"300px", background:"#fff"}}>
                   <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
                     <div
                       
                       style={{
-                        height:"100px",
+                        height:"150px",
                         backgroundImage: data
 
                           ? `url(${data.course_cover_image})`
@@ -57,23 +57,46 @@ function CourseItemGrid({ allCourses, courses }) {
                       
                     </div>
                   </Link>
-                  <div className="course-content">
-                    <h6 style={{fontSize:"14px"}}>
-                      <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
-                        {data.course_name.substring(0,20)+ "..."}
+
+                   <div
+                      className="card-box"
+                      style={{
+                        height:"30px",
+                        width:"50px",
+                        position:"absolute",
+                        top:"120px",
+                        right:"90px",
+                        padding:"5px",
+                        backgroundImage: data
+
+                          ? `url(${data.course_cover_image})`
+                          : "",
+                             backgroundRepeat:"no-repeat",
+    backgroundPosition: "center center",
+    
+    minHeight:"20%"
+                      }}
+                    >
+                      
+                      
+                    </div>
+                  <div className="course-content" style={{background: `linear-gradient(570deg, #6441A5 40%, #2a0845 10%)` }}>
+                    <h6 style={{fontSize:"14px", color:"#fff"}}><br/>
+                      <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`} >
+                        {data.course_name}
                       </Link>
                     </h6>
                   
-                    <div className="course-face d-flex justify-content-between" >
-                      <div className="duration">
-                        <p>
-                         Instructor
+                    <div className="course-face " style={{position:"absolute",bottom: "40px"}}>
+                      <div className="duration pull-left" style={{marginLeft:"40px",float:"left"}}>
+                        <p style={{fontSize:"10px"}}>
+                         Course
                         </p>
                       </div>
                      
-                      <div className="student">
-                        <p>
-                          {"sakakas"}
+                      <div className="student pull-right">
+                        <p style={{fontSize:"10px", float:"right"}}>
+                          
                         </p>
                       </div>
                     </div>
