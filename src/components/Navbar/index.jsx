@@ -1,4 +1,5 @@
-import React, { Fragment, useRef } from "react";
+import React, { Fragment, useRef, useEffect,useState } from "react";
+
 import { Link } from "react-router-dom";
 import "./navbar.scss";
 import questence from "assets/svgs/questence-logo.svg";
@@ -9,7 +10,17 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logOut } from "actions/authActions";
 
-import { CATEGORIES, PACES, FEES, AUTHLINKS } from "./data";
+import "./core.css";
+import "./components.css";
+
+import { //CATEGORIES,
+ PACES,  AUTHLINKS } from "./data";
+
+ import "./nav.css"
+
+import { getCategories } from "services/category";
+import toast from "react-hot-toast";
+
 
 const NavBar = ({
   cart: { cart },
@@ -18,6 +29,29 @@ const NavBar = ({
 }) => {
   const toogleBtn = useRef();
   const mobileNav = useRef();
+
+
+   const [categories,setInfo] = useState([]);
+  
+
+   useEffect(() => {
+     (async function loadContent() {
+       try {
+         let res = await getCategories(user.id);
+         
+    
+         setInfo([...res.data.data]);
+         console.log(res)
+
+        
+       
+       } catch (err) {
+         toast.error("Error occured fetching notifications");
+       }
+       // setLoading(false);
+     })();
+     // eslint-disable-next-line
+   }, []);
 
   const openNav = () => {
     toogleBtn.current.classList.toggle("mobActive");
@@ -40,7 +74,6 @@ const NavBar = ({
       history.push(`/courses?method=name&search=${searchVal}&filter=course`);
     }
   };
-
   return (
     <Fragment>
       <nav className="desktop" style={{position:"fixed"}}>
@@ -69,16 +102,34 @@ const NavBar = ({
               <li className="ParentDropDown__item">
                 <span>By Category</span>
                 <ul className="NavSubMenu">
-                  {CATEGORIES.length > 0 &&
-                    CATEGORIES.map((item, i) => {
+                  {categories.length > 0 &&
+                    categories.map((item, i) => {
                       return (
-                        <li>
+                        <li  className="ParentDropDown__item">
                           <Link
                             className="DropDown__link"
                             to={`${process.env.PUBLIC_URL}/courses/category/${item.id}`}
                           >
                             {item.name}
                           </Link>
+
+
+                           <ul className="NavSubMenu">
+                                          {item.subcategories.length > 0  && item.subcategories.map( cat =>{
+                                              return (
+                                              <Fragment>
+                                            
+                                                    <li><Link className="DropDown__link"  onClick={() =>{window.location.href= `${process.env.PUBLIC_URL}/courses/${cat.id}`}} to={`${process.env.PUBLIC_URL}/courses/${cat.id}`}>  {cat.name}</Link></li>
+                                                    
+                                                </Fragment>    
+                                             
+
+                                              )
+
+                                          }) }
+                                          </ul>
+
+
                         </li>
                       );
                     })}
@@ -198,6 +249,15 @@ const NavBar = ({
             </div>
           </li>
 
+           <li className="dropdown top-menu-item-xs" style={{float:"left"}}>
+                <Link alt="noimage" to={process.env.PUBLIC_URL + "/cart"} className=" waves-effect waves-light"  aria-expanded="true">
+                   <i className="fa fa-2x fa-shopping-cart"></i> <span className="badge badge-xs badge-danger">{cart !== undefined && `(${cart?.length})`}</span>
+                                                    </Link>
+
+
+                                                    
+                                                </li>
+
           {!isAuthenticated ? (
             <Fragment>
               <li>
@@ -239,7 +299,7 @@ const NavBar = ({
                   {`${user?.first_name} ${user?.last_name}`}
                 </label>
 
-                <ul className="DropDown__list userdropdown">
+                <ul className="DropDown__list userdropdown" style={{marginLeft:"90px"}}>
                   {AUTHLINKS.length > 0 &&
                     AUTHLINKS.map((item, i) => {
                       return (
