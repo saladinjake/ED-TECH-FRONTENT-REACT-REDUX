@@ -140,7 +140,7 @@ const Carousel = (props) => {
                           <h6 className="widgetTitle">
                         {data.course_name}
                          </h6>
-                         <p>
+                         <p style={{padding: "10px"}}>
                         A course by {data.instructor.user.first_name}
                          </p>
                          <div className="widgetSubTitle">
