@@ -198,6 +198,13 @@ const NavBar = ({
             </div>
           </li>
 
+           <li className="dropdown top-menu-item-xs" style={{float:"left"}}>
+                <Link alt="noimage" to={process.env.PUBLIC_URL + "/cart"} className=" waves-effect waves-light"  aria-expanded="true">
+                   <i className="fa fa-shopping-cart"></i> <span className="badge badge-xs badge-danger">{cart !== undefined && `(${cart?.length})`}</span>
+                                                    </Link>
+                                                    
+                                                </li>
+
           {!isAuthenticated ? (
             <Fragment>
               <li>
