@@ -61,8 +61,8 @@
 
 .widgetTitle {
   margin-bottom: 5px;
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 15px;
+  /*font-weight: 700;*/
   line-height: 1.2em;
   color: #000;
 }
@@ -72,4 +72,10 @@
   font-size: 17px;
   line-height: 1.2em;
   color: #000;
+}
+
+p.convey_desc{
+  overflow-wrap: normal;
+overflow-wrap: break-word;
+/*overflow-wrap: anywhere;*/
 }

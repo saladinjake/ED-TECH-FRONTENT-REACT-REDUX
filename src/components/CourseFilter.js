@@ -148,18 +148,18 @@ const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
 
                        <Col lg="3" md="9" key={i}>
 
-                       <div class="widget">
+                       <div className="widget">
                         <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
-                        <div class="widgetImage animation">
+                        <div className="widgetImage animation">
                           <img src={`${data.course_cover_image}`} alt="Product 1" />
                         </div>
-                        <div class="widgetContent animation" style={{background: `linear-gradient(200deg, #fff 30%, #2a0845 60%)` }}>
-                          <h6 class="widgetTitle">
+                        <div className="widgetContent animation" style={{background: `linear-gradient(200deg, #fff 30%, #2a0845 60%)` }}>
+                          <h6 className="widgetTitle">
                         {data.course_name}
                          </h6>
-                          <h2 class="widgetSubTitle">Course</h2>
+                          <h2 className="widgetSubTitle">Course</h2>
                          
-                           <p style={{color:"#fff", wordWrap: "break-word",  wordBreak: "break-all"}}>{data.course_description.substring(0,40)}</p>
+                           <p className="convey_desc" style={{color:"#fff", wordWrap: "break-word",  wordBreak: "break-all"}}>{data.course_description.substring(0,40)}</p>
                         </div>
                         </Link>
                       </div>

@@ -61,8 +61,8 @@
 
 .widgetTitle {
   margin-bottom: 5px;
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 15px;
+  /*font-weight: 700;*/
   line-height: 1.2em;
   color: #000;
 }
