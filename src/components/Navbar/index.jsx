@@ -37,7 +37,7 @@ const NavBar = ({
    useEffect(() => {
      (async function loadContent() {
        try {
-         let res = await getCategories(user.id);
+         let res = await getCategories(); //await getCategories(user.id);
          
     
          setInfo([...res.data.data]);
