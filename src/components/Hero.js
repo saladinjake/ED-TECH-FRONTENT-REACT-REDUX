@@ -25,7 +25,7 @@ useEffect(() => {
               Accelerate your quest,<br></br>
               <span>learn</span> anywhere, anytime.
             </h2>
-            <p style={{color:"#fff"}}>
+            <p style={{color:"#000"}}>
             Acquire new knowledge and skills, train for certifications, diplomas and degrees from world-class institutions at your 
             own pace and space.
             </p>
