@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import CourseFilteredCarousel from "./CourseFilteredCarousel"
 
 import "./filter.css"
+import "./carousel.css"
 import Loader from "components/Loader/Loader";
 
 const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
@@ -95,6 +96,8 @@ const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
               </div>
             </Col>
             <Col md="12">
+
+            
            <BrowseByCategory />
            
               <div className="filter-btns text-center">
@@ -348,9 +351,12 @@ class BrowseByCategory extends React.Component{
                         <div className="col-lg-2 pull-left"><Link to="../courses" style={{background: "#0253c8", color:"#fff"}} className="btn  waves-effect waves-light pull-left m-b-10"><i className="md  md-chevron-left"></i> See All courses</Link> </div>
                             
                            <div className="col-md-12" style={{ maxWidth: 1200, marginLeft: 'auto', marginRight: 'auto', marginTop: 64 }}>
-                           <br/><br/>
-
-
+                       
+                           {/*<div id="slide">
+                                 <div id="toggle">&#9776;</div>
+                                 <div class="box">Content</div>
+                            </div>*/}
+          
                           
 
                             <CourseFilteredCarousel title="Business"  show={4} children={groupedData['Business']}  />
@@ -373,6 +379,11 @@ class BrowseByCategory extends React.Component{
                                         </div>
 
                           </div>
+
+
+
+
+                          
 
                     </Fragment>
                        
