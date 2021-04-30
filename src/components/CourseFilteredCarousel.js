@@ -144,7 +144,7 @@ const Carousel = (props) => {
                         A course by {data.instructor.user.first_name}
                          </p>
                          <div className="widgetSubTitle">
-                         <hr/>
+                         <hr style={{width:"240px"}}/>
                           <h2 >Course</h2>
                          </div>
                            <div className="convey_desc card-box" style={{position:"absolute",left:"30px",top:"-10px"}}></div>
