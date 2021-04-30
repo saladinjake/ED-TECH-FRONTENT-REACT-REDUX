@@ -71,3 +71,43 @@
         display: none;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+/*side show on hover*/
+
+#slide{
+  position: fixed;
+  background: #999;
+  width: 200px; 
+  right: -200px;
+  height: 100px;
+  top:400px;
+  z-index:9999999;
+  transition: left 0.4s ease-in-out;
+  -o-transition: left 0.4s ease-in-out;
+  -ms-transition: left 0.4s ease-in-out;
+  -moz-transition: left 0.4s ease-in-out;
+  -webkit-transition: left 0.4s ease-in-out;
+}
+#toggle{
+  position: absolute;
+  right: 200px;
+  padding: 10px;
+  background: #ccc; 
+}
+.box {
+  padding: 20px;
+}
+#slide:hover{
+  right: 0px;
+}

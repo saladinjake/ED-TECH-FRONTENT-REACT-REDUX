@@ -10,7 +10,7 @@
 .widget {
   position: relative;
   display: inline-block;
-  width: 260px;
+  width: 200px;
   height: 320px;
   margin: 10px;
   background: #fff;
@@ -23,7 +23,7 @@
   position: absolute;
   top: 0;
   left: 50%;
-  width: 260px;
+  width: 200px;
   height: 260px;
   margin-left: -50%;
 }
