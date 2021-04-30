@@ -146,7 +146,7 @@ class BrowseByCategory extends React.Component{
               data.length === 0 
                 ?( 
 <Fragment><br/>
-                   <p>Loading..</p>
+                    <Loader width="70" />
 
 
 
