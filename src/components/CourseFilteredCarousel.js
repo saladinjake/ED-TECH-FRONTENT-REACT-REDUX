@@ -109,7 +109,7 @@ const Carousel = (props) => {
 
     return (
         <div className="carousel-container">
-        <h3> { title }</h3>
+        <h3> { /*title */}</h3>
             <div className="carousel-wrapper">
                 {/* You can alwas change the content of the button to other things */}
                 <button onClick={prev}   className="left-arrow" style={{background: "#212529", color:"#fff"}}>
@@ -141,7 +141,7 @@ const Carousel = (props) => {
                         {data.course_name}
                          </h6>
                          <p style={{padding: "10px"}}>
-                        A course by {data.instructor.user.first_name}
+                        A course by {data.instructor.user.first_name}  {data.instructor.user.last_name}  
                          </p>
                          <div className="widgetSubTitle">
                          <hr style={{width:"240px"}}/>

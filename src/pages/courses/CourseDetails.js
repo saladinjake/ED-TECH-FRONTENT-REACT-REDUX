@@ -713,17 +713,18 @@ const CourseDetails = ({
                                 </button>
                               )
                             ) : (
-                              <a
-                                href={process.env.PUBLIC_URL + `/login?redirectTo=${lastLocation}`}
-                                alt="linkedout"
-                                className="btn btn-primary enroll-btn"
+                              <button
+                              type="button"
+                               
+                                
+                                className=" enroll-btn"
                                 onClick= {(e) =>{
-
+                                   return window.location.href= process.env.PUBLIC_URL + `/login?redirectTo=${lastLocation}`
                                  
                                 }}
                               >
                                 Login To Enroll
-                              </a>
+                              </button>
                             )}
 
                          

@@ -45,7 +45,7 @@ class AboutUs extends Component {
                       </p>
                       <Link
                         className="readmore-btn"
-                        to={process.env.PUBLIC_URL + "/about"}
+                        to={process.env.PUBLIC_URL + "/courses"}
                       >
                           Start Learning
                       </Link>

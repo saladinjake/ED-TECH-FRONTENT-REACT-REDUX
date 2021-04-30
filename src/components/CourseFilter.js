@@ -159,17 +159,26 @@ class BrowseByCategory extends React.Component{
                       <Fragment>
                       <br/>
 
-                      <h4 className="text-header text-dark "> My Courses</h4><br/>
+                      <h4 className="text-header text-dark "> Featured Courses</h4><br/>
                         <div className="row">
 
-                        <div className="col-lg-2 pull-left"><Link to="../courses" style={{background: "#0253c8", color:"#fff"}} className="btn  waves-effect waves-light pull-left m-b-10"><i className="md  md-chevron-left"></i> See All courses</Link> </div>
+                      
+
+                       <CourseFilteredCarousel title="Business"  show={4} children={data}  />
+                          
+
+                            <div className="col-lg-2 pull-left">
+                            <Link to="../courses" style={{background: "#0253c8", color:"#fff"}} className="btn  waves-effect waves-light pull-left m-b-10">
+                            <i className="md  md-chevron-left"></i> See All courses</Link> </div>
                             
                            <div className="col-md-12" style={{ maxWidth: 1200, marginLeft: 'auto', marginRight: 'auto', marginTop: 64 }}>
                        
+
+
                            {/*<div id="slide">
                                  <div id="toggle">&#9776;</div>
                                  <div class="box">Content</div>
-                            </div>*/}
+                            </div>
           
                           
 
@@ -182,7 +191,7 @@ class BrowseByCategory extends React.Component{
                            <CourseFilteredCarousel title="Health And Nutrition" show={4} children={groupedData['Health and Nutrition']} />
                            <CourseFilteredCarousel title="Social Sciences"  show={4} children={groupedData['Social Sciences']} />
                                   
-
+                        */}
                                      
         {/* Object.entries(groupedData).map( (item,value) =>{
               return(<div> <CourseFilteredCarousel  show={4} children={item}  /></div>)
