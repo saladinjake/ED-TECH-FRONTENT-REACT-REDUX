@@ -236,7 +236,7 @@ const MyLearningContainer = (props) => {
                     ) : !loading ? (
                       <Fragment>
                         <div className="col-md-2 col-sm-12" >
-                         <div style={{marginTop:"240px"}}>
+                         <div style={{marginTop:"60px"}}>
                              <div className="filter-sidebar"> 
                                   <CourseSidebar
                                       setFilterAllCourses={setFilterAllCourses}

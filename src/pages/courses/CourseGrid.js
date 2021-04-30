@@ -132,7 +132,7 @@ const CourseGrid = ({
             <Row>
           
               <Col lg="3" md="4" sm="5">
-                <div style={{marginTop:"240px"}}>
+                <div style={{marginTop:"10px"}}>
                 <CourseSidebar
                   setFilterAllCourses={setFilterAllCourses}
                   setSearch={setSearch}
