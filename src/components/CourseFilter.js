@@ -182,7 +182,7 @@ const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
                       
                       
                     </div>
-                  <div className="course-content" style={{background: `linear-gradient(570deg, #6441A5 40%, #2a0845 10%)` }}>
+                  <div className="course-content" >
                     <h6 style={{fontSize:"14px", color:"#fff"}}><br/>
                       <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`} >
                         {data.course_name}

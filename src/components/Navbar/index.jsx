@@ -192,7 +192,7 @@ const NavBar = ({
                               id="search"
                               placeholder="Search for a course"
                             />
-                            <button onClick={handleSearch} type="button">
+                            <button onClick={handleSearch} type="button" style={{marginLeft:"10px", background: `linear-gradient(170deg, #fff 20%, #2a0845 90%)`}}>
                               Search
                               <svg
                                 width="14"
