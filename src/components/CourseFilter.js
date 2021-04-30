@@ -158,7 +158,8 @@ const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
                         {data.course_name}
                          </h6>
                           <h2 class="widgetSubTitle">Course</h2>
-                          <p>{data.description}</p>
+                         
+                           <p style={{color:"#fff", wordWrap: "break-word",  wordBreak: "break-all"}}>{data.course_description.substring(0,40)}</p>
                         </div>
                         </Link>
                       </div>
