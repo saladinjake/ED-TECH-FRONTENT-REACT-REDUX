@@ -84,7 +84,7 @@ const NavBar = ({
     <div >
         <div class="row">
             <div class="col-md-12">
-                <nav class="navbar navbar-expand-lg navbar-light bg-light" style={{background: `linear-gradient(170deg, #fff 20%, #2a0845 90%)` }} >
+                <nav class="navbar navbar-expand-lg navbar-light bg-light"  >
 
 
 
@@ -229,7 +229,7 @@ const NavBar = ({
 
 
 
-                         <div class="wishlist-box menu-icon-box" id="wishlist_items">
+                      {isAuthenticated ? (   <div class="wishlist-box menu-icon-box" id="wishlist_items">
                                 <div class="icon" >
                                     <a href=""><i class="far fa-heart" style={{color:"#fff"}}></i></a>
                                     <span class="number">1</span>
@@ -273,11 +273,14 @@ const NavBar = ({
                                 </div>
                         </div>
 
+                         ) : (<Fragment/>)}
 
 
 
 
 
+
+                        {isAuthenticated ? (
                         <div class="cart-box menu-icon-box" id="cart_items">
                           <div class="icon" style={{color:"#fff"}}>
                               <a href="#"><i style={{color:"#fff"}} class="fas fa-shopping-cart"></i></a>
@@ -310,24 +313,32 @@ const NavBar = ({
 
 
 
-                     </div>
+                     </div> ) : (<Fragment />) }
 
+
+                    
 
 
 
 
                       <div class="user-box menu-icon-box">
-                        <div class="icon">
-                            <a href="javascript::">
-                            <img
-                      src={
-                        process.env.PUBLIC_URL + "/assets/images/questone.jpg"
-                      }
-                      alt=""
-                      width="20px"
-                    />
-                        </a>
-                    </div>
+                        {isAuthenticated ? ( 
+                          <Fragment >
+                            <div class="icon">
+                                <a href="javascript::">
+                                <img
+                          src={
+                            process.env.PUBLIC_URL + "/assets/images/questone.jpg"
+                          }
+                          alt=""
+                          width="20px"
+                        />
+                            </a>
+                            </div>
+
+                            </Fragment>
+                        ) : (<Fragment />) }
+                    
                     <div class="dropdown user-dropdown corner-triangle top-right">
                         <ul class="user-dropdown-menu">
 

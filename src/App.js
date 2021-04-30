@@ -23,7 +23,8 @@ import UpdateLearner from "pages/profile/UpdateLearner";
 import UpdateInstructor from "pages/profile/UpdateInstructor";
 import Register from "pages/account/Register";
 import ResetPassword from "pages/account/ResetPassword";
-import ForgotPassword from "pages/account/PasswordForgot"
+import ForgotPassword from "pages/account/PasswordForgot";
+import ChangeCredentials from "pages/account/LoggedOutChangePassword";
 import InstructorRegister from "pages/account/InstructorRegister";
 import BusinessRegister from "pages/account/BusinessRegister";
 import PageNotFound from "pages/404/PageNotFound";
@@ -137,17 +138,7 @@ function App() {
           component={InstitutionDetails}
         />
 
-        <PublicRoute
-          exact
-          path={`${process.env.PUBLIC_URL + "/login"}`}
-          component={Login}
-        />
-
-        <PublicRoute
-          exact
-          path={`${process.env.PUBLIC_URL + "/register"}`}
-          component={Register}
-        />
+       
         <PublicRoute
           exact
           path={`${process.env.PUBLIC_URL + "/register/instructor"}`}
@@ -240,7 +231,28 @@ function App() {
             
             <Route path={`${process.env.PUBLIC_URL + "/password-forgot" }`} component={ForgotPassword} /> 
 
-            <Route path={`${process.env.PUBLIC_URL + "/sorttest" }`} component={SortTest} />     
+            <Route path={`${process.env.PUBLIC_URL + "/sorttest" }`} component={SortTest} /> 
+
+
+             <PublicRoute
+          exact
+          path={`${process.env.PUBLIC_URL + "/login"}`}
+          component={Login}
+        />
+
+        <PublicRoute
+          exact
+          path={`${process.env.PUBLIC_URL + "/register"}`}
+          component={Register}
+        />
+
+        <PublicRoute
+          exact
+          path={`${process.env.PUBLIC_URL + "/change-password"}`}
+          component={ChangeCredentials}
+        />
+
+
           
 
 
