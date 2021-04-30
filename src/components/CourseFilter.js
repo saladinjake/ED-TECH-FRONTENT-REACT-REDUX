@@ -95,7 +95,7 @@ const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
               </div>
             </Col>
             <Col md="12">
-            {/*<BrowseByCategory />*/}
+           <BrowseByCategory />
            
               <div className="filter-btns text-center">
                 <ul className="filter-btn-list list-unstyled list inline">
@@ -351,19 +351,19 @@ class BrowseByCategory extends React.Component{
                            <br/><br/>
 
 
-                          {/*
+                          
 
-                            <CourseFilteredCarousel  show={4} children={groupedData['Business']}  />
-                           <CourseFilteredCarousel  show={4} children={groupedData['Technology']}  />
-                           <CourseFilteredCarousel  show={4} children={groupedData['Mathematics and Sciences']} />
-                           <CourseFilteredCarousel  show={4} children={groupedData['Languages']} />
-                           <CourseFilteredCarousel  show={4} children={groupedData['Engineering']} />
-                           <CourseFilteredCarousel  show={4} children={groupedData['Law']} />
-                           <CourseFilteredCarousel  show={4} children={groupedData['Health and Nutrition']} />
-                           <CourseFilteredCarousel  show={4} children={groupedData['Social Sciences']} />
+                            <CourseFilteredCarousel title="Business"  show={4} children={groupedData['Business']}  />
+                           <CourseFilteredCarousel title="Technology"  show={4} children={groupedData['Technology']}  />
+                           <CourseFilteredCarousel title="Maths And Sciences"  show={4} children={groupedData['Mathematics and Sciences']} />
+                           <CourseFilteredCarousel title="Languages"  show={4} children={groupedData['Languages']} />
+                           <CourseFilteredCarousel title="Engineering" show={4} children={groupedData['Engineering']} />
+                           <CourseFilteredCarousel title="Law" show={4} children={groupedData['Law']} />
+                           <CourseFilteredCarousel title="Health And Nutrition" show={4} children={groupedData['Health and Nutrition']} />
+                           <CourseFilteredCarousel title="Social Sciences"  show={4} children={groupedData['Social Sciences']} />
                                   
 
-                          */}           
+                                     
         {/* Object.entries(groupedData).map( (item,value) =>{
               return(<div> <CourseFilteredCarousel  show={4} children={item}  /></div>)
 

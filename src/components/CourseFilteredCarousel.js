@@ -3,10 +3,11 @@ import './carousel.css';
 import "./wishlist.css"
 import {Link } from "react-router-dom"; 
 import { addToWishlist } from "services/wishlist"
+import { Container, Row, Col } from "react-bootstrap";
 
 
 const Carousel = (props) => {
-    const {children, show} = props
+    const {children, show, title} = props
 
     const [currentIndex, setCurrentIndex] = useState(0)
     const [length, setLength] = useState(children.length)
@@ -108,6 +109,7 @@ const Carousel = (props) => {
 
     return (
         <div className="carousel-container">
+        <h6>Browse Category #{ title }</h6>
             <div className="carousel-wrapper">
                 {/* You can alwas change the content of the button to other things */}
                 <button onClick={prev}   className="left-arrow" style={{background: "#0253c8", color:"#fff"}}>
@@ -123,14 +125,28 @@ const Carousel = (props) => {
                         style={{ transform: `translateX(-${currentIndex * (100 / 4)}%)` }}
                     >
 
-                    {children.map(item=> {
+                    {children.map( (data,i)=> {
                       
                       return (
-                            <div style={{width:"300px"}}>
-                              <div style={{padding: 8}}>
-                                  <img src="https://via.placeholder.com/300x300" alt="placeholder" style={{width: '100%'}} />
-                              </div>
-                            </div>
+                            <Col lg="3" md="9" key={i}>
+
+                       <div className="widget">
+                        <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
+                        <div className="widgetImage animation">
+                          <img src={`${data.course_cover_image}`} alt="Product 1" />
+                        </div>
+                        <div className="widgetContent animation" style={{background: `linear-gradient(200deg, #fff 30%, #2a0845 60%)` }}>
+                          <h6 className="widgetTitle">
+                        {data.course_name}
+                         </h6>
+                          <h2 className="widgetSubTitle">Course</h2>
+                         
+                           <p className="convey_desc" style={{color:"#fff", wordWrap: "break-word",  wordBreak: "break-all"}}>{data.course_description.substring(0,40)}</p>
+                        </div>
+                        </Link>
+                      </div>
+
+                      </Col>
                       )
                     })}
                         
