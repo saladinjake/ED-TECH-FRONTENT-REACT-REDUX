@@ -746,19 +746,10 @@ const CourseDetails = ({
 
         <div className="md-modal md-effect-12" id="md-modal" >
         <div className="md-modal md-header"><h4>Course Cart Preview</h4></div>
-    <div className="md-content" style={{marginLeft:"0px",height:"400px",overflowY:"scroll"}}><br/>
+    <div className="md-content" style={{marginLeft:"0px",width: "900px",height:"400px",overflowY:"scroll"}}><br/>
         <h3>Items in your cart</h3><br/><br/>
 
-         <div style={{display:"table"}}>
-            <button onClick={()=>{
-              closeModal()
-              window.location.href = process.env.PUBLIC_URL + "/courses"
-
-            }} className="btn btn-primary pull-left">Continue Shopping</button>
-            <button style={{marginRight:"20px"}} onClick={()=>{
-              window.location.href = process.env.PUBLIC_URL + "/cart"
-            }} className="btn btn-danger pull-right">Go to cart</button>
-          </div>
+        
         <div>
             {cart.length > 0 && cart.map( item =>{
                return (
@@ -774,13 +765,24 @@ const CourseDetails = ({
                           alt="No Wrapper"
                           className="img-fluid"
                         />
-                         <p className="text-muted">{item.course_name}</p>
+                         <p className="text-muted" style={{marginTop:"20px"}}>{item.course_name}</p>
                   <p className="text-muted">{item.course_code}</p>
                 </div>
                )
             })
               
             }
+
+             <div style={{display:"table"}}>
+            <button onClick={()=>{
+              closeModal()
+              window.location.href = process.env.PUBLIC_URL + "/courses"
+
+            }} className="btn btn-primary pull-left">Continue Shopping</button>
+            <button style={{marginLeft:"180px",float:"right", marginRight:"20px"}} onClick={()=>{
+              window.location.href = process.env.PUBLIC_URL + "/cart"
+            }} className="btn btn-danger pull-right">Go to cart</button>
+          </div>
           
         </div>
     </div>
