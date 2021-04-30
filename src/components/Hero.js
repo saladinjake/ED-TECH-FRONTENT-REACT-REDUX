@@ -15,7 +15,7 @@ useEffect(() => {
   return (
 
 
-    <section className="hero-area" style={{background: `linear-gradient(200deg, #fff 30%, #2a0845 60%)` }}>
+    <section className="hero-area" >
       <Container>
       <Row>
         <Col lg="7">

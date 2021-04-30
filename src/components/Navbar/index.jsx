@@ -302,7 +302,7 @@ const NavBar = ({
                                              
                                           </div>
                                       </div>
-                                      <a href="#">Go to cart</a>
+                                      <Link to={process.env.PUBLIC_URL + "/cart"}>Go to cart</Link>
                                   </div>
                               </div>
                               <div class="empty-box text-center d-none">
