@@ -49,9 +49,14 @@ function CourseItemGrid({ allCourses, courses }) {
                           <h6 className="widgetTitle">
                         {data.course_name}
                          </h6>
-                          <h2 className="widgetSubTitle">Course</h2>
-                         
-                           <p className="convey_desc" style={{color:"#fff", wordWrap: "break-word",  wordBreak: "break-all"}}>{data.course_description.substring(0,40)}</p>
+                         <p style={{padding: "10px"}}>
+                        A course by {data.instructor.user.first_name}
+                         </p>
+                         <div className="widgetSubTitle">
+                         <hr style={{width:"240px"}}/>
+                          <h2 >Course</h2>
+                         </div>
+                           <div className="convey_desc card-box" style={{position:"absolute",left:"30px",top:"-10px"}}></div>
                         </div>
                         </Link>
                       </div>
