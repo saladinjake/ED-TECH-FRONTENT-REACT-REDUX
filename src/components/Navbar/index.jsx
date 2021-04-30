@@ -192,7 +192,7 @@ const NavBar = ({
                               id="search"
                               placeholder="Search for a course"
                             />
-                            <button onClick={handleSearch} type="button" style={{marginLeft:"10px", background: `linear-gradient(170deg, #fff 20%, #2a0845 90%)`}}>
+                            <button onClick={handleSearch} type="button" style={{marginLeft:"10px"}}>
                               Search
                               <svg
                                 width="14"
@@ -337,7 +337,23 @@ const NavBar = ({
                             </div>
 
                             </Fragment>
-                        ) : (<Fragment />) }
+                        ) : (<div style={{width:"100px",float:"right"}}>
+                             <Link
+                  
+                  onClick={() => history.push("login")}
+                >
+                  Login |
+                </Link>
+
+                 <Link
+                  
+                  onClick={() => history.push("register")}
+                >
+                  Sign Up
+                </Link>
+
+
+                        </div>) }
                     
                     <div class="dropdown user-dropdown corner-triangle top-right">
                         <ul class="user-dropdown-menu">
@@ -353,19 +369,7 @@ const NavBar = ({
                             
                         {!isAuthenticated ? (
             <Fragment>
-              <li>
-                <Link to={process.env.PUBLIC_URL +"/login" } className="auth outline">
-                  Log In
-                </Link>
-              </li>
-              <li>
-                <button
-                  className="btnMobileFull"
-                  onClick={() => history.push("register")}
-                >
-                  Sign Up
-                </button>
-              </li>
+              
             </Fragment>
           ) : (
             <Fragment>
@@ -599,19 +603,7 @@ const NavBar = ({
 
           {!isAuthenticated ? (
             <Fragment>
-              <li>
-                <Link to="/login" className="auth outline">
-                  Log In
-                </Link>
-              </li>
-              <li>
-                <button
-                  className="btnMobileFull"
-                  onClick={() => history.push("register")}
-                >
-                  Sign Up
-                </button>
-              </li>
+              
             </Fragment>
           ) : (
             <Fragment>
