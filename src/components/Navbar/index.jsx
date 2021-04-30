@@ -184,9 +184,9 @@ const NavBar = ({
                       );
                     })}
                 </ul>
-              </li>
+              </li> */}
             </ul>
-          </li>*/}
+          </li>
 
           <li className="NavHover">
             <div className="parent">
