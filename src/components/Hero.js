@@ -30,8 +30,8 @@ useEffect(() => {
             own pace and space.
             </p>
 
-             <ul class="contact">
-      <li><a href="#">Login</a></li>
+            {/* <ul class="contact">
+                <li><a href="#">Login</a></li>
           <li>
           <a target="_top"href="#">Signup</a>
         </li>
@@ -39,7 +39,7 @@ useEffect(() => {
           <a target="_top" href="#">Find courses</a></li>
         <li><a target="_top" href="#">About</a></li>
       </ul>
-      <br/>  <br/>
+      <br/>  <br/>*/}
 
 
 

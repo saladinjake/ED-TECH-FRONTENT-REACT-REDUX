@@ -33,7 +33,7 @@
   height: auto;
 }
 
-.widget:hover .widgetImage {
+/*.widget:hover .widgetImage {
   top: -130px;
   left: 0;
   width: 520px;
@@ -41,36 +41,52 @@
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
   -webkit-filter: grayscale(1);
-}
+}*/
 
 .widgetContent {
   position: absolute;
-  top: 255px;
+  /* top: 255px;*/
+ top:150px;
   width: 280px;
   height: 300px;
   padding: 10px;
   font-size: 12px;
   line-height: 16px;
   color: #666;
-  background: blue;
+
+  margin:auto;
+
 }
 
-.widget:hover .widgetContent {
+/*.widget:hover .widgetContent {
   top: 100px;
-}
+}*/
 
 .widgetTitle {
-  margin-bottom: 5px;
-  font-size: 20px;
+  margin:10px;
+  margin-top: 25px;
+  font-size: 16px;
   /*font-weight: 700;*/
+  line-height: 1.2em;
+
+
+  
+  color: #076ac8!important;
+}
+
+.widgetSubTitle {
+  position:absolute;
+  bottom:120px;
+  font-size: 15px;
   line-height: 1.2em;
   color: #000;
 }
 
-.widgetSubTitle {
-  margin-bottom: 20px;
-  font-size: 17px;
-  line-height: 1.2em;
+
+.widgetSubTitle h2 {
+
+  font-size: 15px;
+
   color: #000;
 }
 

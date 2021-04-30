@@ -1,10 +1,7 @@
 import React, { Fragment, useRef } from "react";
 
-import "./assets/css/core.css";
-import "./assets/css/components.css";
-import "./assets/css/icons.css";
-import "./assets/css/pages.css";
-import "./assets/css/responsive.css";
+
+
 
 
 import { Link } from "react-router-dom";

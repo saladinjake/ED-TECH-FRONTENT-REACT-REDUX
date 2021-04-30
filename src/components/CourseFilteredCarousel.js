@@ -109,7 +109,7 @@ const Carousel = (props) => {
 
     return (
         <div className="carousel-container">
-        <h6>Browse Category #{ title }</h6>
+        <h3> { title }</h3>
             <div className="carousel-wrapper">
                 {/* You can alwas change the content of the button to other things */}
                 <button onClick={prev}   className="left-arrow" style={{background: "#212529", color:"#fff"}}>
@@ -127,6 +127,7 @@ const Carousel = (props) => {
 
                     {children.map( (data,i)=> {
                       
+
                       return (
                             <Col lg="3" md="9" key={i}>
 
@@ -135,13 +136,18 @@ const Carousel = (props) => {
                         <div className="widgetImage animation">
                           <img src={`${data.course_cover_image}`} alt="Product 1" />
                         </div>
-                        <div className="widgetContent animation" style={{background: `linear-gradient(200deg, #fff 30%, #212529 60%)` }}>
+                        <div className="widgetContent animation" >
                           <h6 className="widgetTitle">
                         {data.course_name}
                          </h6>
-                          <h2 className="widgetSubTitle">Course</h2>
-                         
-                           <p className="convey_desc" style={{color:"#fff", wordWrap: "break-word",  wordBreak: "break-all"}}>{data.course_description.substring(0,40)}</p>
+                         <p>
+                        A course by {data.instructor.user.first_name}
+                         </p>
+                         <div className="widgetSubTitle">
+                         <hr/>
+                          <h2 >Course</h2>
+                         </div>
+                           <div className="convey_desc card-box" style={{position:"absolute",left:"30px",top:"-10px"}}></div>
                         </div>
                         </Link>
                       </div>

@@ -45,7 +45,7 @@ function CourseItemGrid({ allCourses, courses }) {
                         <div className="widgetImage animation">
                           <img src={`${data.course_cover_image}`} alt="Product 1" />
                         </div>
-                        <div className="widgetContent animation" style={{background: `linear-gradient(200deg, #fff 30%, #2a0845 60%)` }}>
+                        <div className="widgetContent animation" >
                           <h6 className="widgetTitle">
                         {data.course_name}
                          </h6>
