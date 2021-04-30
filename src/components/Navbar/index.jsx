@@ -374,7 +374,7 @@ const NavBar = ({
           ) : (
             <Fragment>
 
-            <li class="dropdown-user-info">
+           {/* <li class="dropdown-user-info">
                                 <a href="">
                                     <div class="clearfix">
                                         <div class="user-image float-left">
@@ -387,17 +387,10 @@ const NavBar = ({
                     />
                                         </div>
                                         <div class="user-details">
-                                            <div class="user-name">
-                                                <span class="hi">Hi,</span>
-                                                 {`${user?.first_name} ${user?.last_name}`}                                          </div>
-                                            <div class="user-email">
-                                                <span class="email">${user?.email}`}</span>
-                                                <span class="welcome">Welcome back</span>
-                                            </div>
                                         </div>
                                     </div>
                                 </a>
-                            </li>
+                            </li>*/}
 
 
 
