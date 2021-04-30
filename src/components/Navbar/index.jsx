@@ -246,7 +246,7 @@ const NavBar = ({
                   {`${user?.first_name} ${user?.last_name}`}
                 </label>
 
-                <ul className="DropDown__list userdropdown">
+                <ul className="DropDown__list userdropdown" style={{marginLeft:"90px"}}>
                   {AUTHLINKS.length > 0 &&
                     AUTHLINKS.map((item, i) => {
                       return (
