@@ -93,10 +93,10 @@ const NavBar = ({
                         <li><a class="mobile-search-trigger" href="#mobile-search">Search<span></span></a></li>
                     </ul>
 
-                    <a href="#" class="navbar-brand">
+                    <Link to={process.env.PUBLIC_URL + "/"} class="navbar-brand">
                         
                          <img src={questence} alt="" width="171px" height="35" />
-                    </a>
+                    </Link>
 
 
 
@@ -337,7 +337,7 @@ const NavBar = ({
                             </div>
 
                             </Fragment>
-                        ) : (<div style={{width:"100px",float:"right"}}>
+                        ) : (<div style={{width:"100px"}}>
                              <Link
                   
                   onClick={() => history.push("login")}
