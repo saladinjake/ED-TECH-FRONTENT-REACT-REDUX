@@ -136,7 +136,7 @@ const NavBar = ({
                 </ul>
               </li>
               
-              <li className="ParentDropDown__item">
+{/*               <li className="ParentDropDown__item">
                 <Link
                   className="DropDown__link"
                   to={process.env.PUBLIC_URL + "/courses"}
@@ -153,7 +153,7 @@ const NavBar = ({
                   By Training Partner
                 </Link>
               </li>
-{/* 
+
               <li className="ParentDropDown__item">
                 <span>By Fee</span>
                 <ul className="NavSubMenu">
@@ -168,7 +168,7 @@ const NavBar = ({
                       );
                     })}
                 </ul>
-              </li> */}
+              </li> 
 
               <li className="ParentDropDown__item">
                 <span>By Learning Style</span>
@@ -186,7 +186,7 @@ const NavBar = ({
                 </ul>
               </li>
             </ul>
-          </li>
+          </li>*/}
 
           <li className="NavHover">
             <div className="parent">
