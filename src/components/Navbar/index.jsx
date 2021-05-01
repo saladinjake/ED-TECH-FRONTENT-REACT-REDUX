@@ -101,7 +101,7 @@ const NavBar = ({
        <ul class="sub-menu">
 
 
-         <li>By Category
+         <li><span>By Category<span className="fa fa-caret-right" style={{float:"right", margin:"10px"}}></span> </span>
          <ul class="sub-menu-1 any1">
 
          {categories.length > 0 &&
@@ -109,7 +109,7 @@ const NavBar = ({
 
                     return (
 
-                     <li >{item.name}
+                     <li ><span>{item.name}<span className="fa fa-caret-right" style={{float:"right", margin:"10px"}}></span></span>
                              <ul class="sub-menu-2 any1 more">
                      {item.subcategories.length > 0  && item.subcategories.map( cat =>{
                                              
