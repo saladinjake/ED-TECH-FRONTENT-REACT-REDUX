@@ -1,25 +1,28 @@
-nav li {
+nav.set_navigation li {
    position: relative;
+
+   background-color:#fff;
 }
- nav > ul {
+ nav.set_navigation > ul {
    display: flex;
+
 }
- nav li a {
+ nav.set_navigation li a {
    display: block;
-   padding: 10px 15px;
-   background: green;
-   border: 3px solid green;
-   font-size: 1.25em;
-   color: #fff;
+   padding: 5px 10px;
+   background: #fff;
+ 
+   font-size: 14px;
+   color: #000;
    text-decoration: none;
    white-space: nowrap;
    transition: all 0.3s;
 }
- nav li a:hover {
+ nav.set_navigation li a:hover {
    background: #fff;
-   color: green;
+   color: #000;
 }
- nav ul ul {
+ nav.set_navigation ul ul {
    visibility: hidden;
    opacity: 0;
    min-width: 150px;
@@ -28,18 +31,24 @@ nav li {
    left: 0;
    transition: all 0.3s;
 }
- nav ul li:hover > ul {
+
+
+
+
+
+
+ nav.set_navigation ul li:hover > ul {
    top: 100%;
    visibility: visible;
    opacity: 1;
 }
- nav ul ul ul {
+ nav.set_navigation ul ul ul {
    left: 100%;
 }
- nav ul ul li:hover > ul {
+ nav.set_navigation ul ul li:hover > ul {
    top: 0;
 }
- nav {
+/* nav {
    max-width: 1000px;
    margin: 25px auto;
-}
+}*/

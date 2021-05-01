@@ -54,6 +54,7 @@ const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
           <Row>
             <Col md="12">
               <div className="sec-title text-center">
+              <br/>
                 <h4>Our Featured Courses</h4>
               </div>
             </Col>
@@ -157,10 +158,7 @@ class BrowseByCategory extends React.Component{
                   )
                 : (
                       <Fragment>
-                      <br/>
-
-                      <h4 className="text-header text-dark "> Featured Courses</h4><br/>
-                        <div className="row">
+                          <div className="row">
 
                       
 

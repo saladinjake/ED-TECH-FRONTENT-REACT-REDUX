@@ -7,7 +7,7 @@
 }
 
 
-.widget {
+.gridDisplay .widget {
   position: relative;
   display: inline-block;
   width: 260px;
@@ -19,7 +19,7 @@
   cursor: pointer;
 }
 
-.widgetImage {
+.gridDisplay .widgetImage {
   position: absolute;
   top: 0;
   left: 50%;
@@ -28,7 +28,7 @@
   margin-left: -50%;
 }
 
-.widgetImage img {
+.gridDisplay .widgetImage img {
   width: 100%;
   height: auto;
 }
@@ -43,8 +43,8 @@
   -webkit-filter: grayscale(1);
 }*/
 
-.widgetContent {
-  position: absolute;
+.gridDisplay .widgetContent {
+   position: absolute;
   /* top: 255px;*/
  top:150px;
   width: 280px;
@@ -60,9 +60,9 @@
 
 /*.widget:hover .widgetContent {
   top: 100px;
-}*/
-
-.widgetTitle {
+}
+*/
+.gridDisplay .widgetTitle {
   margin:10px;
   margin-top: 25px;
   font-size: 16px;
@@ -75,7 +75,8 @@
   color: #076ac8!important;
 }
 
-.widgetSubTitle {
+
+.gridDisplay .widgetSubTitle {
   position:absolute;
   bottom:120px;
   font-size: 15px;
@@ -84,15 +85,44 @@
 }
 
 
-.widgetSubTitle h2 {
+.gridDisplay .widgetSubTitle h2 {
 
   font-size: 15px;
 
   color: #000;
 }
-
 p.convey_desc{
   overflow-wrap: normal;
 overflow-wrap: break-word;
 /*overflow-wrap: anywhere;*/
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.listDisplay .widget {
+   width: 100%;
+   margin: 0 auto 20px;
+}
+ .listDisplay .widgetImage img {
+   max-width: 30%;
+}
+ .listDisplay .widgetContent {
+   float: left;
+   max-width: 66%;
+   margin-top: 4%;
+   margin-left: 1%;
 }

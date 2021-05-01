@@ -12,7 +12,7 @@ import { logOut } from "actions/authActions";
 
 import "./core.css";
 import "./components.css";
-
+import "./nav.css"
 import { //CATEGORIES,
  PACES,  AUTHLINKS } from "./data";
 
@@ -83,6 +83,87 @@ const NavBar = ({
           </Link>
         </figure>
 
+
+                             <nav class="set_navigation">
+                                    <div class="mobile-overlay"></div>
+
+                                    <ul className="">
+                                      <div class=""></div>
+
+
+
+
+                                      <li className="has-children">
+                                        <a href="">
+                                          
+                                          <span>Courses And Programs</span>
+                                          <span class="has-sub-category"><i class="fas fa-angle-down"></i></span>
+                                        </a>
+
+                                        <ul className="category corner-triangle top-left is-hidden pb-0">
+
+
+
+
+                                          <li class="go-back"> <span> By Category</span>
+                                            <span class="has-sub-category"><i class="fas fa-angle-right"></i></span></li>
+                                           <ul>
+                                           {categories.length > 0 &&
+                    categories.map((item, i) => {
+
+
+                      return (
+                       
+                    
+                           <li class="has-children">
+                                           <Link
+                            
+                            to={`${process.env.PUBLIC_URL}/courses/category/${item.id}`}
+                          >
+                                        
+                                            <span> {item.name}</span>
+                                            <span class="has-sub-category"><i class="fas fa-angle-right"></i></span>
+                                          </Link>
+                                          <ul class="sub-category is-hidden">
+                                          {item.subcategories.length > 0  && item.subcategories.map( cat =>{
+                                              return (
+                                              <Fragment>
+                                            
+                                           
+                                                    <li class=""><Link onClick={() =>{window.location.href= `${process.env.PUBLIC_URL}/courses/${cat.id}`}} to={`${process.env.PUBLIC_URL}/courses/${cat.id}`}>  {cat.name}</Link></li>
+                                                    
+                                                </Fragment>    
+                                             
+
+                                              )
+
+                                          }) }
+                                          </ul>
+                                          
+                                          
+                        </li>
+                      );
+                    })}
+                    </ul>
+
+
+                   
+
+
+
+                                             
+                                          
+                                    
+
+                                    
+
+                                    </ul>
+                                  </li>
+
+                                  </ul>
+                                  </nav>
+
+
         <ul className="mainNav" ref={mobileNav}>
           <li className="NavHover">
             <div className="parent">
@@ -99,42 +180,6 @@ const NavBar = ({
                 </Link>
               </li>
 
-              <li className="ParentDropDown__item">
-                <span>By Category</span>
-                <ul className="NavSubMenu">
-                  {categories.length > 0 &&
-                    categories.map((item, i) => {
-                      return (
-                        <li  className="ParentDropDown__item">
-                          <Link
-                            className="DropDown__link"
-                            to={`${process.env.PUBLIC_URL}/courses/category/${item.id}`}
-                          >
-                            {item.name}
-                          </Link>
-
-
-                           <ul className="NavSubMenu">
-                                          {item.subcategories.length > 0  && item.subcategories.map( cat =>{
-                                              return (
-                                              <Fragment>
-                                            
-                                                    <li style={{display:"none"}}><Link className="DropDown__link"  onClick={() =>{window.location.href= `${process.env.PUBLIC_URL}/courses/${cat.id}`}} to={`${process.env.PUBLIC_URL}/courses/${cat.id}`}>  {cat.name}</Link></li>
-                                                    
-                                                </Fragment>    
-                                             
-
-                                              )
-
-                                          }) }
-                                          </ul>
-
-
-                        </li>
-                      );
-                    })}
-                </ul>
-              </li>
               
 {/*               <li className="ParentDropDown__item">
                 <Link

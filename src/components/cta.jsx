@@ -7,7 +7,7 @@ const CTA = () => {
   return (
     <section className="cta mainCta"  >
       
-            <div className="cta__item brown" style={{background: `linear-gradient(200deg, #6441A5 30%, #2a0845 60%)` }}>
+            <div className="cta__item brown" >
               <figure class="cta__item-icon mt-xs">
                 <img src={professor} alt="professor" />
               </figure>

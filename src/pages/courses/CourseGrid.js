@@ -13,6 +13,7 @@ import { fetchCourses } from "actions/coursesActions";
 
 import Loader from "components/Loader/Loader";
 import { useQuery } from "hooks/useQuery.js";
+import "./grid.css"
 
 const CourseGrid = ({
   course: { courses, courseLoading },
@@ -34,6 +35,38 @@ const CourseGrid = ({
     })();
     // eslint-disable-next-line
   }, []);
+
+
+  useEffect(()=>{
+    let listButton = document.querySelector(".list-view");
+     let gridButton = document.querySelector(".grid-view");
+     let wrapper =document.querySelector(".viewCourses");
+
+
+
+    listButton.addEventListener('click',function(){
+  
+      gridButton.classList.remove('on');
+      listButton.classList.add('on');
+      wrapper.classList.remove('gridDisplay')
+       wrapper.classList.add('listDisplay');
+
+
+
+     //wrapper.querySelector("widget")
+      
+    });
+
+    gridButton.addEventListener('click',function(){
+
+       listButton.classList.remove('on');
+       gridButton.classList.add('on');
+       wrapper.classList.remove('listDisplay');
+      wrapper.classList.add('gridDisplay')
+    
+      
+    });
+  })
 
   useEffect(() => {
     if (routeQuery !== null && routeQuery.length > 0) {
@@ -132,7 +165,7 @@ const CourseGrid = ({
             <Row>
           
               <Col lg="3" md="4" sm="5">
-                <div style={{marginTop:"10px"}}>
+                <div style={{marginTop:"90px"}}>
                 <CourseSidebar
                   setFilterAllCourses={setFilterAllCourses}
                   setSearch={setSearch}
@@ -142,7 +175,16 @@ const CourseGrid = ({
               </Col>
            
               <Col lg="9" md="8" sm="7">
-                <div className="course-items">
+
+
+              
+<div class="buttons-sec gridsect">
+  <button class="gridsect list-view on"><i class="fa fa-bars"></i></button>
+  <button class="gridsect grid-view"><i class="fa fa-th"></i></button>
+</div><br/>
+
+
+                <div className="course-items viewCourses gridDisplay">
                   <Row>
                     {courseLoading ? (
                       <Loader width="70" />

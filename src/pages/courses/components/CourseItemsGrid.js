@@ -37,10 +37,10 @@ function CourseItemGrid({ allCourses, courses }) {
           {currentCourses.map((data, i) => {
             console.log(data)
             return (
-              <Col lg="4" md="6" key={i}>
-                  
-
-                       <div className="widget">
+              
+                 
+<Fragment>
+                       <div className="widget grid">
                         <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
                         <div className="widgetImage animation">
                           <img src={`${data.course_cover_image}`} alt="Product 1" />
@@ -56,7 +56,7 @@ function CourseItemGrid({ allCourses, courses }) {
                          <hr style={{width:"240px"}}/>
                           <h2 >Course</h2>
                          </div>
-                           <div className="convey_desc card-box" style={{position:"absolute",left:"30px",top:"-10px"}}></div>
+                           
                         </div>
                         </Link>
                       </div>
@@ -127,7 +127,7 @@ function CourseItemGrid({ allCourses, courses }) {
                     </div>
                   </div>
                 </div>*/}
-              </Col>
+              </Fragment>
             );
           })}
         </Fragment>

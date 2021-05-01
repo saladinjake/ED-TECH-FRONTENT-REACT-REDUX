@@ -116,7 +116,7 @@ const Carousel = (props) => {
                         &lt;
                     </button>
                 <div
-                    className="carousel-content-wrapper"
+                    className="carousel-content-wrapper gridDisplay"
                     onTouchStart={handleTouchStart}
                     onTouchMove={handleTouchMove}
                 >
