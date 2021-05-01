@@ -84,159 +84,81 @@ const NavBar = ({
         </figure>
 
 
-                             <nav class="set_navigation">
-                                    <div class="mobile-overlay"></div>
-
-                                    <ul className="">
-                                      <div class=""></div>
 
 
 
+ 
 
-                                      <li className="has-children">
-                                        <a href="">
-                                          
-                                          <span>Courses And Programs</span>
-                                          <span class="has-sub-category"><i class="fas fa-angle-down"></i></span>
-                                        </a>
-
-                                        <ul className="category corner-triangle top-left is-hidden pb-0">
+  
 
 
+        <ul className="mainNav" ref={mobileNav}>
+
+        <div class="main-menu">
+   <ul>
+     <li className="caret"><span>Courses And Programs</span>
+     
+       <ul class="sub-menu">
 
 
-                                          <li class="go-back"> <span> By Category</span>
-                                            <span class="has-sub-category"><i class="fas fa-angle-right"></i></span></li>
-                                           <ul>
-                                           {categories.length > 0 &&
+         <li>By Category
+         <ul class="sub-menu-1 any1">
+
+         {categories.length > 0 &&
                     categories.map((item, i) => {
 
+                    return (
 
-                      return (
-                       
-                    
-                           <li class="has-children">
-                                           <Link
-                            
-                            to={`${process.env.PUBLIC_URL}/courses/category/${item.id}`}
-                          >
-                                        
-                                            <span> {item.name}</span>
-                                            <span class="has-sub-category"><i class="fas fa-angle-right"></i></span>
-                                          </Link>
-                                          <ul class="sub-category is-hidden">
-                                          {item.subcategories.length > 0  && item.subcategories.map( cat =>{
+                     <li >{item.name}
+                             <ul class="sub-menu-2 any1 more">
+                     {item.subcategories.length > 0  && item.subcategories.map( cat =>{
+                                             
                                               return (
-                                              <Fragment>
-                                            
-                                           
-                                                    <li class=""><Link onClick={() =>{window.location.href= `${process.env.PUBLIC_URL}/courses/${cat.id}`}} to={`${process.env.PUBLIC_URL}/courses/${cat.id}`}>  {cat.name}</Link></li>
-                                                    
-                                                </Fragment>    
+                                              
+                                                         <li className="morelinks">{cat.name}</li>
+            
+            
+          
+                                             
                                              
 
                                               )
 
+
                                           }) }
-                                          </ul>
-                                          
-                                          
-                        </li>
-                      );
-                    })}
-                    </ul>
-
-
-                   
+                                           </ul> 
+                                         
 
 
 
-                                             
-                                          
-                                    
-
-                                    
-
-                                    </ul>
-                                  </li>
-
-                                  </ul>
-                                  </nav>
+                     </li>
 
 
-        <ul className="mainNav" ref={mobileNav}>
-          <li className="NavHover">
-            <div className="parent">
-              <span>Courses and Programs</span>
-              <Dropdown />
-            </div>
-            <ul className="ParentDropDown">
-              <li className="ParentDropDown__item">
-                <Link
-                  className="DropDown__link"
-                  to={process.env.PUBLIC_URL + "/courses"}
-                >
-                  All Courses
-                </Link>
-              </li>
+                       )
 
-              
-{/*               <li className="ParentDropDown__item">
-                <Link
-                  className="DropDown__link"
-                  to={process.env.PUBLIC_URL + "/courses"}
-                >
-                  By Program
-                </Link>
-              </li>
- 
-              <li className="ParentDropDown__item">
-                <Link
-                  className="DropDown__link"
-                  to={process.env.PUBLIC_URL + "/courses"}
-                >
-                  By Training Partner
-                </Link>
-              </li>
+                })}
 
-              <li className="ParentDropDown__item">
-                <span>By Fee</span>
-                <ul className="NavSubMenu">
-                  {FEES.length > 0 &&
-                    FEES.map((item, i) => {
-                      return (
-                        <li>
-                          <Link className="DropDown__link" to={`${item.link}`}>
-                            {item.name}
-                          </Link>
-                        </li>
-                      );
-                    })}
-                </ul>
-              </li> 
+           
+          
+           </ul>
+         </li>
 
-              <li className="ParentDropDown__item">
-                <span>By Learning Style</span>
-                <ul className="NavSubMenu">
-                  {PACES.length > 0 &&
-                    PACES.map((item, i) => {
-                      return (
-                        <li>
-                          <Link className="DropDown__link" to={`${item.link}`}>
-                            {item.name}
-                          </Link>
-                        </li>
-                      );
-                    })}
-                </ul>
-              </li> */}
-            </ul>
-          </li>
+
+       </ul>
+     
+     </li>
+    </ul>
+  </div>
+
+
+
+          
+
 
           <li className="NavHover">
-            <div className="parent">
+            <div className="parent caret">
               <span> For Institutions</span>
-              <Dropdown />
+            
             </div>
             <ul className="ParentDropDown">
               <li className="ParentDropDown__item">

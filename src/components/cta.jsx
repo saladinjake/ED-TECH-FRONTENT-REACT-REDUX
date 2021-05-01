@@ -21,7 +21,7 @@ const CTA = () => {
               <button className="mt-xs">Read More</button>
             </div>
 
-            <div className="cta__item inst" style={{background: `linear-gradient(200deg, #6441A5 30%, #2a0845 60%)` }}>
+            <div className="cta__item inst" >
               <figure class="cta__item-icon mt-xs">
                 <img src={university} alt="university" />
               </figure>
