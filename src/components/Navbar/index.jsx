@@ -96,9 +96,23 @@ const NavBar = ({
 
         <div class="main-menu">
    <ul>
+
+
      <li><span>Courses And Programs</span>
      
        <ul class="sub-menu">
+
+        <li className="ParentDropDown__item">
+                <Link
+                  className="DropDown__link"
+                  to={process.env.PUBLIC_URL + "/courses"}
+                >
+                  All Courses
+                </Link>
+        </li>
+
+
+
 
 
          <li><span>By Category<span className="fa fa-caret-right" style={{float:"right", margin:"10px"}}></span> </span>
@@ -152,6 +166,19 @@ const NavBar = ({
           
            </ul>
          </li>
+
+
+         <li className="ParentDropDown__item">
+                
+                  By Program
+               
+              </li>
+ 
+              <li className="ParentDropDown__item">
+                
+                  By Training Partner
+                
+              </li>
 
 
        </ul>
