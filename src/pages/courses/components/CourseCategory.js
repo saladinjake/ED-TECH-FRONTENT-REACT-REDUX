@@ -7,10 +7,13 @@ import { connect } from "react-redux";
 
 const CourseCategory = ({ course: { courses }, setFilterAllCourses }) => {
   const [categories, setCategories] = useState([]);
+  let selectedSearchFormNav =null
 
   useEffect(() => {
     (async function loadContent() {
       await fetchCategories();
+
+
     })();
     // eslint-disable-next-line
   }, []);
@@ -33,6 +36,32 @@ const CourseCategory = ({ course: { courses }, setFilterAllCourses }) => {
     }
   };
 
+
+  useEffect(()=>{
+    if(localStorage.getItem("category") && localStorage.getItem("category_clicked")){
+        if(localStorage.getItem("category_clicked") ){
+           // alert("works" +  localStorage.getItem("category"))
+           // let selectBox= document.getElementById("selectedSearch");
+
+           // selectBox.options[selectBox.selectedIndex].value = localStorage.getItem("category_id");
+           // selectBox.options[selectBox.selectedIndex].text = localStorage.getItem("category");
+         
+           // selectBox.options.selectedIndex[selectBox].value = localStorage.getItem("category");
+           // localStorage.setItem("category_clicked",false)
+
+          // localStorage.setItem("category",'')
+        }else{
+          // alert("not from nav")
+          localStorage.setItem("category_clicked",false)
+          localStorage.getItem("category_id",'')
+          localStorage.setItem("category",'')
+        }
+    }
+
+      
+                          
+  })
+
   return (
     <Styles>
       {/* Course Tag */}
@@ -40,7 +69,7 @@ const CourseCategory = ({ course: { courses }, setFilterAllCourses }) => {
         <h5>Course Category</h5>
 
         <div className="form__group">
-          <select name="category" onChange={filterCategory} required>
+          <select id="selectedSearch" name="category" onChange={filterCategory} required>
             <option value="">-- Choose Category --</option>
             <option value="0">All</option>
             {categories.length > 0 &&

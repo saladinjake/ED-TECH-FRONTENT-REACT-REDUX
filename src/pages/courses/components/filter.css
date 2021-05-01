@@ -121,30 +121,51 @@ overflow-wrap: break-word;
 }
  .listDisplay .widgetImage img {
    max-width: 30%;
+   /*height:200px;*/
+   float: left;
+   width: 33.33333%;
+   border:3px solid #dedfe0;
 }
  .listDisplay .widgetContent {
-   float: left;
+   /*float: left;
    max-width: 100%;
    margin-top: -160px;
    margin-left: 40%;
     position:relative;
-  width:100%;
+  width:100%;*/
+
+   float: left;
+   padding-left: 24px;
+   /*padding-bottom: 64px;*/
+   text-align: left;
+   width: 66.66666%;
+   color: #076ac8!important;
+
 }
 
 .listDisplay .widget  hr{
-  width:500px;
+  width:100%;
+
+
 }
 
 
  .listDisplay .widgetTitle {
-  margin:10px;
-  margin-top: 25px;
+  /*margin:10px;
+  margin-top: 25px;*/
   font-size: 16px;
   /*font-weight: 700;*/
   line-height: 1.2em;
    height: 25px;
    position:relative;
   width:100%;
+
+
+  /*float: left;
+   padding-left: 24px;
+   padding-bottom: 64px;
+   text-align: left;
+   width: 66.66666%;*/
 
 
   
@@ -155,8 +176,8 @@ overflow-wrap: break-word;
  .listDisplay .widgetSubTitle {
   position:relative;
   width:100%;
-  font-size: 15px;
-  line-height: 1.2em;
+  font-size: 12px;
+  /*line-height: 1.2em;*/
   color: #000;
 }
 
@@ -165,4 +186,13 @@ overflow-wrap: break-word;
 
   font-size: 15px;
   color: #000;
+}
+
+
+
+/*.gridDisplay .widget {
+   width: 33.33333%;
+}*/
+ .listDisplay .widget {
+   width: 100%;
 }

@@ -155,7 +155,7 @@ const CourseGrid = ({
 
   return (
     <div className="main-wrapper course-page">
-      <NavBar />
+      <NavBar /><br/><br/><br/>
       <PageTitle />
 
       <Styles>

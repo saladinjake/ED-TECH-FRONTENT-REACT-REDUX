@@ -89,20 +89,20 @@ const NavBar = ({
 
  
 
-  
+ 
 
 
         <ul className="mainNav" ref={mobileNav}>
 
         <div class="main-menu">
-   <ul>
+   <ul className="">
 
 
-     <li><span>Courses And Programs</span>
+     <li><span style={{marginRight:"5px"}}>Courses And Programs<Dropdown /></span>
      
-       <ul class="sub-menu">
+       <ul className="sub-menu parent" style={{marginTop:"10px"}}>
 
-        <li className="ParentDropDown__item">
+        <li style={{borderBottom:" 1px solid #eeeeee" }}>
                 <Link
                   className="DropDown__link"
                   to={process.env.PUBLIC_URL + "/courses"}
@@ -115,23 +115,30 @@ const NavBar = ({
 
 
 
-         <li><span>By Category<span className="fa fa-caret-right" style={{float:"right", margin:"10px"}}></span> </span>
-         <ul class="sub-menu-1 any1">
+         <li style={{borderBottom:" 1px solid #eeeeee" }}><span>By Category<span className="fa fa-caret-right" style={{float:"right", margin:"10px"}}></span> </span>
+         <ul class="sub-menu-1 any1 ParentDropDown">
 
          {categories.length > 0 &&
                     categories.map((item, i) => {
 
                     return (
 
-                     <li ><Link
+                     <li style={{borderBottom:" 1px solid #eeeeee" }} className="ParentDropDown__item"><a
+                            onClick= {(e) =>{
+                              e.preventDefault();
+                              localStorage.setItem("category_id",item.id)
+                               localStorage.setItem("category",item.name)
+                              localStorage.setItem("category_clicked",true)
+
+                              window.location.href= `${process.env.PUBLIC_URL}/courses/category/${item.id}`
+                            }}
                             
-                            to={`${process.env.PUBLIC_URL}/courses/category/${item.id}`}
                           >
                                         
                                              {item.name}
                                              <span className="fa fa-caret-right" style={{float:"right", margin:"10px"}}></span>
                                            
-                                          </Link>
+                                          </a>
                              <ul class="sub-menu-2 any1 more">
                      {item.subcategories.length > 0  && item.subcategories.map( cat =>{
                                              
@@ -139,7 +146,9 @@ const NavBar = ({
                                               
                                                          
 
-                                                          <li class="" ><Link onClick={() =>{window.location.href= `${process.env.PUBLIC_URL}/courses/${cat.id}`}} to={`${process.env.PUBLIC_URL}/courses/${cat.id}`}>  {cat.name}</Link></li>
+                                                          <li style={{borderBottom:" 1px solid #eeeeee" }}  className="ParentDropDown__item" ><a onClick={() =>{
+
+                                                          window.location.href= `${process.env.PUBLIC_URL}/courses/${cat.id}`}} to={`${process.env.PUBLIC_URL}/courses/${cat.id}`}>  {cat.name}</a></li>
             
             
           
@@ -168,13 +177,13 @@ const NavBar = ({
          </li>
 
 
-         <li className="ParentDropDown__item">
+         <li style={{borderBottom:" 1px solid #eeeeee" }}>
                 
                   By Program
                
               </li>
  
-              <li className="ParentDropDown__item">
+              <li style={{borderBottom:" 1px solid #eeeeee" }}>
                 
                   By Training Partner
                 
@@ -193,8 +202,8 @@ const NavBar = ({
 
 
           <li className="NavHover">
-            <div className="parent caret">
-              <span> For Institutions</span>
+            <div className="parent ">
+              <span> For Institutions<Dropdown /></span>
             
             </div>
             <ul className="ParentDropDown">

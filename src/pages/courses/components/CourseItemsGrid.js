@@ -4,14 +4,70 @@ import { Col } from "react-bootstrap";
 import Pagination from "./Pagination";
 import "./filter.css"
 
-function CourseItemGrid({ allCourses, courses }) {
+
+
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { addToCart } from "actions/cartActions";
+import { getAuthProfile } from "services/learner.js";
+import toast from "react-hot-toast";
+
+function CourseItemGrid({ allCourses, courses , auth: { isAuthenticated },
+  cart: { cart },
+  addToCart }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [coursePerPage] = useState(50);
   const [currentCourses, setCurrCourses] = useState([]);
 
+//added
+  const [enrolledCourses, setEnrolledCourses] = useState([]);
+ 
+  const [coursedetails, setCourseDetails] = useState({});
+  // eslint-disable-next-line
+  const [status, setStatus] = useState("init");
+  const [loading, setLoading] = useState(true);
+
   // Get current course
   var indexOfLastCourse = currentPage * coursePerPage;
   var indexOfFirstCourse = indexOfLastCourse - coursePerPage;
+
+
+  //added
+
+   useEffect(() => {
+    (async function CheckStatus() {
+      if (isAuthenticated === true) {
+        try {
+          let res = await getAuthProfile();
+          let enrolledCourses = res.data.data;
+
+          let ids = enrolledCourses.map((course) => course.course.id);
+          
+          setEnrolledCourses([...ids]);
+
+
+          console.log(ids);
+        } catch (err) {
+          toast.error(
+            err?.response?.data?.message ||
+              `Error occured fetching active courses`
+          );
+        }
+        setLoading(false);
+      }
+    })();
+    // eslint-disable-next-line
+  }, []);
+
+
+   const checkCourseStatus = (courseId) => {
+    var check = false;
+    if (enrolledCourses.length > 0) {
+      check = enrolledCourses.includes(courseId);
+    }
+    console.log(`cehck for ${courseId} is ${check}`);
+    return check;
+  };
 
   useEffect(() => {
     if (allCourses.length > 0) {
@@ -52,11 +108,64 @@ function CourseItemGrid({ allCourses, courses }) {
                          <p style={{padding: "10px"}}>
                         A course by {data.instructor.user.first_name}
                          </p>
+
+
+                          <div className="short_desc">
+                         
+                          <p style={{color:"#333"}}>{data.course_overview}</p>
+
+                           {isAuthenticated ? (
+                              checkCourseStatus(data.id) ? (
+                                ""
+                              ) : (
+                                <button
+                                  type="button"
+                                  onClick={
+                                  
+                                     addToCart.bind(
+                                       this,
+                                       data?.id
+                                      )
+
+                                      
+                                }
+                                  className="btn btn-primary add-to-cart"
+                                >
+                                  Add to cart
+                                </button>
+                              )
+                            ) : (
+                              <button
+                              className="btn btn-primary add-to-cart"
+                              type="button"
+                        
+                                onClick= {(e) =>{
+                                   return window.location.href= process.env.PUBLIC_URL + `/login`
+                                 
+                                }}
+                              >
+                               <i className="fa fa-lock"></i> Login To Enroll
+                              </button>
+                            )}
+
+
+                            <button
+                              className="btn btn-danger add-to-cart"
+                              type="button"
+                                onClick= {(e) =>{ }}
+                              >
+
+                              <i className="fa fa-heart"></i>Add to Wish List  </button>
+                         </div>
+
+
                          <div className="widgetSubTitle">
                          <hr style={{width:"240px"}}/>
                           <h2 >Course</h2>
                          </div>
                            
+
+
                         </div>
                         </Link>
                       </div>
@@ -148,4 +257,21 @@ function CourseItemGrid({ allCourses, courses }) {
   );
 }
 
-export default CourseItemGrid;
+// export default CourseItemGrid;
+
+
+CourseItemGrid.propTypes = {
+  cart: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
+  addToCart: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  cart: state.cart,
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, {
+  addToCart,
+
+})(CourseItemGrid);
