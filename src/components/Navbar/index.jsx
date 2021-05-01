@@ -96,7 +96,7 @@ const NavBar = ({
 
         <div class="main-menu">
    <ul>
-     <li className="caret"><span>Courses And Programs</span>
+     <li><span>Courses And Programs</span>
      
        <ul class="sub-menu">
 
@@ -109,13 +109,23 @@ const NavBar = ({
 
                     return (
 
-                     <li ><span>{item.name}<span className="fa fa-caret-right" style={{float:"right", margin:"10px"}}></span></span>
+                     <li ><Link
+                            
+                            to={`${process.env.PUBLIC_URL}/courses/category/${item.id}`}
+                          >
+                                        
+                                             {item.name}
+                                             <span className="fa fa-caret-right" style={{float:"right", margin:"10px"}}></span>
+                                           
+                                          </Link>
                              <ul class="sub-menu-2 any1 more">
                      {item.subcategories.length > 0  && item.subcategories.map( cat =>{
                                              
                                               return (
                                               
-                                                         <li className="morelinks">{cat.name}</li>
+                                                         
+
+                                                          <li class="" ><Link onClick={() =>{window.location.href= `${process.env.PUBLIC_URL}/courses/${cat.id}`}} to={`${process.env.PUBLIC_URL}/courses/${cat.id}`}>  {cat.name}</Link></li>
             
             
           
