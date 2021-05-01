@@ -108,13 +108,39 @@ overflow-wrap: break-word;
 
 
 
-.gridDisplay .short_desc{
+.gridDisplay .short_desc, .course_infox{
   display:none;
 }
 
 .listDisplay .short_desc{
   display:block;
+  
+  left:0px;
+  top:90px;
 }
+
+.listDisplay  .course_infox{
+  clear:both;
+  display:block;
+/*  position:absolute;left:0;
+  top:250px;*/
+
+}
+
+
+.gridDisplay .course_infox{
+  display:none;
+}
+
+.listDisplay .course_infox li {
+    width: 25px;
+    height: 25px;
+    display: inline;
+    float: left;
+    /*background: url(http://bit.ly/osegEG);*/
+}
+
+.listDisplay .course_infox li a {margin-left: 30px; }
 
 
 .listDisplay .widget {
@@ -123,12 +149,21 @@ overflow-wrap: break-word;
    padding:10px;
    margin: 0 auto 20px;
 }
- .listDisplay .widgetImage img {
-   max-width: 30%;
-   /*height:200px;*/
+
+.listDisplay .widgetImage{
+ width: 33.33333%;
+  /* border:3px solid #fafafa;*/
    float: left;
-   width: 33.33333%;
-   border:3px solid #dedfe0;
+
+}
+ .listDisplay .widgetImage img {
+     height:100%;
+     padding:10px;
+     max-width: 280px;
+   
+  
+ 
+
 }
  .listDisplay .widgetContent {
    /*float: left;

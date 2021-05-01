@@ -100,6 +100,22 @@ function CourseItemGrid({ allCourses, courses , auth: { isAuthenticated },
                         <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
                         <div className="widgetImage animation">
                           <img src={`${data.course_cover_image}`} alt="Product 1" />
+                           <div className="course_infox" >
+                             
+                              
+                               <div class="info">
+                                  <h1> {data.course_name}</h1>
+                                  <p>
+                                     {data.category.name}
+                                  </p>
+                                </div>
+
+                                <div class="price">
+                                <i className="fa fa-2x fa-shopping-cart"></i> N {data.price}
+                                </div>
+                            
+                          </div>
+
                         </div>
                         <div className="widgetContent animation" >
                           <h6 className="widgetTitle">
@@ -157,6 +173,10 @@ function CourseItemGrid({ allCourses, courses , auth: { isAuthenticated },
 
                               <i className="fa fa-heart"></i>Add to Wish List  </button>
                          </div>
+
+                       
+
+
 
 
                          <div className="widgetSubTitle">
