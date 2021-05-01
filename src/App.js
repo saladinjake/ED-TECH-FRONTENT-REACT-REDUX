@@ -248,7 +248,7 @@ function App() {
 
         <PublicRoute
           exact
-          path={`${process.env.PUBLIC_URL + "/change-password"}`}
+          path={`${process.env.PUBLIC_URL + "/reset/password"}`}
           component={ChangeCredentials}
         />
 

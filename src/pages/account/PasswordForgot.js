@@ -38,7 +38,7 @@ const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
       // login(res.data);
       
       if (res) {
-          history.push("/change-password");
+          history.push("/reset/password");
       } else {
           history.push("/register");
       }
