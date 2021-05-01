@@ -49,7 +49,7 @@ const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
 
   return (
     <Styles>
-      <section className="course-filter">
+      <section className="course-filter" >
         <Container>
           <Row>
             <Col md="12">

@@ -3,7 +3,7 @@ import { colors } from "../common/element/elements.js";
 
 export const Styles = styled.div`
   .course-filter {
-    background: #f4f8fc;
+    background: #f4f8fa;
     padding: 62px 0 70px;
 
     .sec-title {
@@ -27,7 +27,7 @@ export const Styles = styled.div`
         background-color: #ffffff;
         display: inline-block;
         border-radius: 5px;
-        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.07);
+        box-shadow: 0 12px 25px rgba(0, 00, 0.07);
         margin-bottom: 52px;
 
         li {
