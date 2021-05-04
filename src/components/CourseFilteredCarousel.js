@@ -133,46 +133,7 @@ const Carousel = (props) => {
                             <Col lg="3" md="9" key={i}>
 
 
-                            {/* <div class="product" style={{float:"left"}}>
-    <figure>
-    <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
-      <img src={`${data.course_cover_image}`} alt="Product Image" class="product-image" />
-       </Link> 
-        </figure>
-
-      <div class="product-description">
-  
-        <div class="info">
-        <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
-    
-         
-           <div className=" animation" >
-                          <h6 className="widgetTitle">
-                        {data.course_name}
-                         </h6>
-                         </div>
-
-          <p>
-            A course by {data.instructor.user.first_name}  {data.instructor.user.last_name}  
-          </p>
-           </Link> 
-        </div>
-
-         <div className="widgetSubTitle">
-                         <hr style={{width:"240px"}}/>
-                          <h2 >Course</h2>
-                         </div>
-      </div>
-
-       
-
-      <div class="product-sidebar">
-
-        What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-
-      </div>
-      </div>
-  * /}  
+                            
 
 
                      <div className="widget">
