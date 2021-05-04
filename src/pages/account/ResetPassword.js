@@ -56,7 +56,7 @@ const PasswordReset = ({ auth: { prevPath }, login, logOut, setPrevPath }) =>{
 
       toast.success("Password Reset successful")
 
-         logOut();
+       history.push("../login")
       
       setSubmitting(false);
     } catch (err) {
