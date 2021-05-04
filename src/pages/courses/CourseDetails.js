@@ -24,7 +24,7 @@ const CourseDetails = ({
   match,
   auth: { isAuthenticated },
   cart: { cart },
-  //wishList:{wishList},
+  wishList:{ wishList },
   addToCart,
   addToWishList,
   fetchCourses,
@@ -825,6 +825,7 @@ function formaturl(youtube){
                                 <br/><br/><br/>
 
                                 <button
+                                id="wishlister"
                                 style={{background:"red"}}
                                   type="button"
                                   onClick={
@@ -966,6 +967,7 @@ CourseDetails.propTypes = {
 const mapStateToProps = (state) => ({
   cart: state.cart,
   auth: state.auth,
+  wishList:state.wishList
 });
 
 export default connect(mapStateToProps, {

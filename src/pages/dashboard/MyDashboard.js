@@ -35,10 +35,20 @@ const NewDashBoard = ({ auth: { user } }) => {
      (async function loadContent() {
        try {
          let res = await getLearnerInfo(user.id);
-         let reswish = await getWishlist();
+         let reswish =  []
+         if(localStorage.getItem('wishes')){
+            let reswish =  JSON?.parse(localStorage.getItem("wishes"))
+             setWishlist({wishlists: reswish});
+         }else{
+            reswish  = await getWishlist();
+            setWishlist({wishlists: reswish.data.data});
+
+         }
+            
+         console.log(reswish)
     
          setInfo({...res.data.data});
-         setWishlist({wishlists: reswish.data.data});
+         
        
        } catch (err) {
          toast.error("Error occured fetching notifications");

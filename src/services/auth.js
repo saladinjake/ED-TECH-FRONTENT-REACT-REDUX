@@ -20,10 +20,20 @@ export const loginUserForgotPassword = async (details) => {
 };
 
 
+export const loggedOutUserForgotPassword = async (details) => {
+  let request = axios.post("/auth/reset-password-request", details);
+  return request.then((response) => {
+    if (response.status === 200) {
+      return response && response;
+    }
+  });
+};
+
+
 
 
 export const loginUserForgotChangePassword = async (details) => {
-  let request = axios.post("/auth/password/reset", details);
+  let request = axios.post("/auth/update-password", details);
   return request.then((response) => {
     if (response.status === 200) {
       return response && response;

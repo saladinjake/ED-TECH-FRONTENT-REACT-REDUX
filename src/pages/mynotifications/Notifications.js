@@ -71,7 +71,7 @@ function getTimeAgoInterval(date) {
                                   <div className="table-detail">
     
                                     <div className="iconbox bg-info">
-                                      <img alt="noimage" src={process.env.PUBLIC_URL + "/assets/images/notification.png"} alt="" className="thumbnail" style={{border:"none"}} />
+                                      <img alt="noimagehere" src={process.env.PUBLIC_URL + "/assets/images/notification.png"}  className="thumbnail" style={{border:"none"}} />
     
                                     </div>
     

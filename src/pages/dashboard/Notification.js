@@ -4,7 +4,7 @@ import React, { useEffect,  useState,Fragment  } from "react";
 import toast from "react-hot-toast";
 import Loader from "components/Loader/Loader";
 
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 import "./css/topitem.css";
 

@@ -33,6 +33,7 @@ import InstructorCourses from "pages/instructors/InstructorCourses";
 import CreateCourse from "pages/account/CreateCourse";
 import InstructorDashboard from "pages/instructors/InstructorDashboard";
 import Cart from "pages/shop/Cart";
+import WishLists from "pages/shop/Wishlist";
 // import DashBoard from "pages/shop/Dashboard";
 import Billing from "pages/shop/Billing";
 // import Notifications from "pages/shop/Notifications";
@@ -248,9 +249,13 @@ function App() {
 
         <PublicRoute
           exact
-          path={`${process.env.PUBLIC_URL + "/reset/password"}`}
+          path={`${process.env.PUBLIC_URL + "/reset/password/:id"}`}
           component={ChangeCredentials}
         />
+
+
+        <LearnersRoute path={`${process.env.PUBLIC_URL + "/learner/wishlists"}`} component={WishLists} />
+            
 
 
           

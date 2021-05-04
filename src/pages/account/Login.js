@@ -4,7 +4,8 @@ import { Container, Row, Col } from "react-bootstrap";
 import NavBar from "components/Navbar";
 import { BreadcrumbBox } from "../../components/common/Breadcrumb";
 import { Styles } from "./styles/account.js";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, //useLocation
+ } from "react-router-dom";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { Formik } from "formik";

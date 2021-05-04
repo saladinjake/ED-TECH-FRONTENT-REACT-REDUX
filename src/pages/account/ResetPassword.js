@@ -9,6 +9,11 @@ import Footer from "components/Footer";
 import { connect } from "react-redux";
 import "./resetpassword.css"
 
+import { loginUserForgotChangePassword } from "services/auth"
+import { useHistory} from "react-router-dom";
+
+import PropTypes from "prop-types";
+import { login, logOut, setPrevPath } from "actions/authActions";
 
 function tabNavigator(evt, cityName) {
   // Declare all variables
@@ -31,10 +36,10 @@ function tabNavigator(evt, cityName) {
   evt.currentTarget.className += " active";
 }
 
-const PasswordReset = () =>{
-
+const PasswordReset = ({ auth: { prevPath }, login, logOut, setPrevPath }) =>{
+ let history = useHistory();
 	  const [loading, setLoading] = useState(false);
-  const initialValues = { email: "", password: "" };
+  const initialValues = { current_password: "", password: "", password_confirmation:"" };
 
   useEffect(() => {
     
@@ -43,17 +48,27 @@ const PasswordReset = () =>{
 
   const handleSubmit = async (values, { setSubmitting }) => {
     setLoading(true);
+    console.log("clicked")
     try {
-      // const res = await loginUser(values);
+      console.log(values)
+      const res = await loginUserForgotChangePassword(values);
+
+
+      toast.success("Password Reset successful")
+
+         logOut();
       
       setSubmitting(false);
     } catch (err) {
+      console.log(err)
       toast.error(err?.response?.data?.message);
       
-      // setSubmitting(false);
+      setSubmitting(false);
     }
-    // setLoading(false);
+     setLoading(false);
   };
+
+
 
 
 	
@@ -149,26 +164,26 @@ const PasswordReset = () =>{
                           <input
                             type="password"
                             placeholder="*******"
-                            id="confirm_password"
-                            name="confirm_password"
+                            id="password_confirmation"
+                            name="password_confirmation"
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            value={values.confirm_password}
+                            value={values.password_confirmation}
                             className="form-control"
                           />
                           <span className="login_input-msg">
-                            {errors.confirm_password &&
-                              touched.confirm_password &&
-                              errors.confirm_password}
+                            {errors.password_confirmation &&
+                              touched.password_confirmation &&
+                              errors.password_confirmation}
                           </span>
                         </p>
-                        <button className="btn btn-primary" type="submit" disabled={isSubmitting}>
+                        <button className="btn btn-lg btn-primary" type="submit" disabled={isSubmitting}>
                           {loading ? (
                             <div className="spinner-border" role="status">
                               <span className="sr-only">Loading...</span>
                             </div>
                           ) : (
-                            "Login"
+                            "Change Password"
                           )}
                         </button>
                         <div className="not_account-btn text-center">
@@ -258,20 +273,26 @@ const showModalEffect = () => {
 }
 
 PasswordReset.propTypes = {
-
+  auth: PropTypes.object.isRequired,
+  login: PropTypes.func.isRequired,
+  logOut: PropTypes.func.isRequired,
+  setPrevPath: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, {
-
+  login,
+  setPrevPath,
+  logOut,
 })(PasswordReset);
+
+
 
 const ResetSchema = Yup.object().shape({
   current_password: Yup.string()
-    .email("Invalid email")
     .min(2, "Too Short!")
     .max(50, "Too Long!")
     .required("Required"),
@@ -279,10 +300,12 @@ const ResetSchema = Yup.object().shape({
     .min(2, "Too Short!")
     .max(50, "Too Long!")
     .required("Required"),
-  password_confirm: Yup.string()
-    .min(2, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
+  password_confirmation: Yup.string()
+     .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    // .min(2, "Too Short!")
+    // .max(50, "Too Long!")
+    // .required("Required"),
+
 });
 
 

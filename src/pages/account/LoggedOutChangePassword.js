@@ -10,68 +10,48 @@ import toast from "react-hot-toast";
 import { Formik } from "formik";
 import Footer from "components/Footer";
 
-
-import { loginUser } from "services/auth";
-
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { login, logOut, setPrevPath } from "actions/authActions";
-
-const ChangeCredentials = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
+import qs from "qs"
+import { loggedOutUserForgotPassword } from "services/auth"
+const ChangeCredentials = ({ auth: { prevPath } }) => {
   let history = useHistory();
 
-  console.log(history)
-   var pattern2 = /[?redirectTo=]/;
-   console.log(pattern2.test(history?.location?.search))
+  const getTokenItemFromString = thePath => thePath.substring(thePath.lastIndexOf('/') + 1)
 
-   
+ 
+
+  let params = qs.parse(history?.location?.search, { ignoreQueryPrefix: true })
+
+  let token = getTokenItemFromString(window.location.href);
+  let tokenSplit = token.split("?")[0];
+  // alert(tokenSplit)
 
 
   const [loading, setLoading] = useState(false);
-  const initialValues = { email: "", password: "" };
+  const initialValues = { password_confirmation: "", password: "" };
 
-  useEffect(() => {
-    if (history.location.state?.from) {
-      setPrevPath(history.location.state?.from);
-    }else {
+  // useEffect(() => {
+   
+  //   // eslint-disable-next-line
+  // }, []);
 
-    }
-    // eslint-disable-next-line
-  }, []);
-
+  
   const handleSubmit = async (values, { setSubmitting }) => {
     setLoading(true);
+     console.log( "this are the values")
     try {
-      const res = await loginUser(values);
-      toast.success("Login Successful");
-      login(res.data);
-      console.log(prevPath);
-      const pattern = /[?redirectTo=]+/g;
-
-      if( pattern.test(history?.location?.search) ){
-          let url_link = history?.location?.search;
-          url_link = url_link.substring(12)
-          // console.log(url_link)
-          //let oldPath =
-          history.push(url_link);
-      }else{
-          if (prevPath.length > 0) {
-            history.push(prevPath);
-          } else {
-
-           if (res.data.user_roles[0].name === "User") {
-              history.push("/dashboard");
-            } else {
-              history.push("/instructor/dashboard");
-            }
-          }
-
-      }
-      
+      values.email = params.email
+      values.token = tokenSplit
+      // values.token =
+      let res = await loggedOutUserForgotPassword(values)
+      console.log(res)
       setSubmitting(false);
+      toast.success("Your Password reset was successful");
+      history.push("../login")
     } catch (err) {
       toast.error(err?.response?.data?.message);
-      logOut();
+      // logOut();
       setSubmitting(false);
     }
     setLoading(false);
@@ -115,22 +95,7 @@ const ChangeCredentials = ({ auth: { prevPath }, login, logOut, setPrevPath }) =
                         onSubmit={handleSubmit}
                       >
                         <p className="form-control">
-                          <label htmlFor="email">Email</label>
-                          <input
-                            type="email"
-                            placeholder="Email here"
-                            id="email"
-                            name="email"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.email}
-                          />
-                          <span className="login_input-msg">
-                            {errors.email && touched.email && errors.email}
-                          </span>
-                        </p>
-                        <p className="form-control">
-                          <label htmlFor="login_password">Password</label>
+                          <label htmlFor="email">Password</label>
                           <input
                             type="password"
                             placeholder="*******"
@@ -141,9 +106,24 @@ const ChangeCredentials = ({ auth: { prevPath }, login, logOut, setPrevPath }) =
                             value={values.password}
                           />
                           <span className="login_input-msg">
-                            {errors.password &&
-                              touched.password &&
-                              errors.password}
+                            {errors.password && touched.password && errors.password}
+                          </span>
+                        </p>
+                        <p className="form-control">
+                          <label htmlFor="login_password">Confirm Password</label>
+                          <input
+                            type="password"
+                            placeholder="*******"
+                            id="password_confirmation"
+                            name="password_confirmation"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.password_confirmation}
+                          />
+                          <span className="login_input-msg">
+                            {errors.password_confirmation &&
+                              touched.password_confirmation &&
+                              errors.password_confirmation}
                           </span>
                         </p>
                         <button type="submit" disabled={isSubmitting}>
@@ -192,9 +172,8 @@ const ChangeCredentials = ({ auth: { prevPath }, login, logOut, setPrevPath }) =
 
 ChangeCredentials.propTypes = {
   auth: PropTypes.object.isRequired,
-  login: PropTypes.func.isRequired,
-  logOut: PropTypes.func.isRequired,
-  setPrevPath: PropTypes.func.isRequired,
+  
+  // setPrevPath: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -202,19 +181,14 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  login,
-  setPrevPath,
-  logOut,
+
 })(ChangeCredentials);
 
 const LoginSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Invalid email")
+   password: Yup.string()
     .min(2, "Too Short!")
     .max(50, "Too Long!")
     .required("Required"),
-  password: Yup.string()
-    .min(2, "Too Short!")
-    .max(50, "Too Long!")
-    .required("Required"),
+  password_confirmation: Yup.string()
+     .oneOf([Yup.ref('password'), null], 'Passwords must match')
 });

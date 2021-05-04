@@ -6,8 +6,8 @@ import Footer from '../../components/Footer';
 import { Styles } from './styles/contact.js';
 
 
-import { useState } from 'react';
-import PropTypes from 'prop-types';
+// import { useState } from 'react';
+// import PropTypes from 'prop-types';
 
 import { init, send } from 'emailjs-com';
 // import { EMAIL_CONFIG } from "../../config"

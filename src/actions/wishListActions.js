@@ -4,11 +4,7 @@ import {
   CLEAR_WISHLIST
 } from "./types";
 
-import { getWishlist } from "services/wishlist";
-
-
-
-
+// import { getWishlist } from "services/wishlist";
 
 export const addToWishList = (id) => async (dispatch) => {
   dispatch({
