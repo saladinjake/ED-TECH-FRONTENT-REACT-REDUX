@@ -40,7 +40,7 @@ const CourseCategory = ({ course: { courses }, setFilterAllCourses }) => {
   useEffect(()=>{
     if(localStorage.getItem("category") && localStorage.getItem("category_clicked")){
         if(localStorage.getItem("category_clicked") ){
-           alert("category :" +  localStorage.getItem("category")+ "category id: " + localStorage.getItem("category_id") )
+           // alert("category :" +  localStorage.getItem("category")+ "category id: " + localStorage.getItem("category_id") )
            let selectBox= document.getElementById("selectedSearch");
 
            selectBox.options[selectBox.selectedIndex].value = localStorage.getItem("category_id");
