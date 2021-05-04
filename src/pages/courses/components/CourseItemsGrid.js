@@ -100,21 +100,7 @@ function CourseItemGrid({ allCourses, courses , auth: { isAuthenticated },
                         <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
                         <div className="widgetImage animation">
                           <img src={`${data.course_cover_image}`} alt="Product 1" />
-                           <div className="course_infox" >
-                             
-                              
-                               <div class="info">
-                                  <h1> {data.course_name}</h1>
-                                  <p>
-                                     {data.category.name}
-                                  </p>
-                                </div>
-
-                                <div class="price">
-                                <i className="fa fa-2x fa-shopping-cart"></i> N {data.price}
-                                </div>
-                            
-                          </div>
+                          
 
                         </div>
                         <div className="widgetContent animation" >
@@ -128,9 +114,38 @@ function CourseItemGrid({ allCourses, courses , auth: { isAuthenticated },
 
                           <div className="short_desc">
                          
-                          <p style={{color:"#333"}}>{data.course_overview}</p>
+                          <p style={{color:"#333"}}>{data.course_description}</p>
 
-                           {isAuthenticated ? (
+                           </div>
+
+
+
+                          <div className="course_infox" >
+                             <br/><br/>
+                              
+                               <div class="info">
+                                 
+                                  <p style={{float:"left", marginLeft:"20px"}}>
+                                   Category  {data.category.name}
+                                  </p>
+
+                                  <p  style={{float:"left", marginLeft:"20px"}}>
+                                     Language {data.language.english}
+                                  </p>
+
+                                  <p  style={{float:"left", marginLeft:"20px"}}>
+                                    Learning Style {data.learning_style}
+                                  </p>
+                                </div>
+
+                                <div class="price" style={{float:"right"}}>
+                                <i className="fa fa-2x fa-shopping-cart"></i> N {data.price}
+                                </div>
+
+                                <div>
+                                <br/>
+
+                                 {isAuthenticated ? (
                               checkCourseStatus(data.id) ? (
                                 ""
                               ) : (
@@ -172,13 +187,12 @@ function CourseItemGrid({ allCourses, courses , auth: { isAuthenticated },
                               >
 
                               <i className="fa fa-heart"></i>Add to Wish List  </button>
-                         </div>
+                                    
+                                </div>
+                            
+                          </div>
 
-                       
-
-
-
-
+                        <br/>
                          <div className="widgetSubTitle">
                          <hr style={{width:"240px"}}/>
                           <h2 >Course</h2>

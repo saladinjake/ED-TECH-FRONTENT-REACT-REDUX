@@ -16,17 +16,15 @@ import { fetchCourses, addToCart } from "actions/cartActions";
 import { getAuthProfile } from "services/learner.js";
 import toast from "react-hot-toast";
 // import { useHistory, useLocation } from "react-router-dom";
-import { addToWishList } from "actions/wishListActions";
-import "./relatedcoursesmodal.css"
+
+// import "./relatedcoursesmodal.css"
 
 const CourseDetails = ({
   history,
   match,
   auth: { isAuthenticated },
   cart: { cart },
-  //wishList:{wishList},
   addToCart,
-  addToWishList,
   fetchCourses,
 }) => {
 
@@ -72,15 +70,18 @@ const CourseDetails = ({
     // eslint-disable-next-line
   }, []);
 
-
   useEffect(() => {
     (async function CheckStatus() {
       if (isAuthenticated === true) {
         try {
           let res = await getAuthProfile();
           let enrolledCourses = res.data.data;
+
           let ids = enrolledCourses.map((course) => course.course.id);
+          
           setEnrolledCourses([...ids]);
+
+
           console.log(ids);
         } catch (err) {
           toast.error(
@@ -112,66 +113,10 @@ const CourseDetails = ({
       });
     });
 
-
+  
 
     // eslint-disable-next-line
   }, []);
-
-  useEffect(() =>{
-    /* Get all elements with data-vidup */
-    const vidupElements = document.querySelectorAll('[data-vidup]');
-
-    const modal = document.getElementById('modalvid');
-    const modalVideo = document.getElementById('modal-video');
-    const mdc = document.getElementById('mdc');
-    const close = document.getElementById('close');
-
-    function closeModal() {
-        // mdc.style.width = "0";
-        mdc.style.transform = "scale(0)";
-        
-        setTimeout(() => {
-            modal.style.visibility = "hidden";
-            modal.style.opacity = "0";
-            modalVideo.src = "";  
-        }, 500);
-    }
-
-    function showModal(element) {
-        modal.style.visibility = "visible";
-        modal.style.opacity = "1";
-        modalVideo.src = element.href;
-        mdc.style.width = "100%";
-
-
-        setTimeout(() => {
-            mdc.style.transform = "scale(1)";
-        }, 300);
-
-    }
-
-    /* Foreach element add an eventlistener and show the popup when clicked and add the src in the link */
-    vidupElements.forEach(element => {
-        element.addEventListener("click", (e) => {
-
-            e.preventDefault();
-            showModal(element);
-        });
-    });
-
-    close.addEventListener('click', (e) => {
-        closeModal();
-    });
-
-    mdc.addEventListener('click', () => {
-        closeModal();
-    });
-
-    modal.addEventListener('click', () => {
-        closeModal();
-    });
-    
-  })
 
   const checkCourseStatus = (courseId) => {
     var check = false;
@@ -182,25 +127,18 @@ const CourseDetails = ({
     return check;
   };
 
-   console.log(coursedetails)
+  console.log("here")
 
-function formaturl(youtube){
-   var url = youtube
-    var idVideo =''
-    var regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    var match = url.match(regExp);
-    if (match && match[2].length == 11) {
-         var id = match[2];
-         idVideo = id
-         console.log(id)
-         var path = 'http://img.youtube.com/vi/'+id+'/0.jpg';
-         // $(this).css('background-image', 'url(' + path + ')');
-      } 
 
-      return {idVideo,path}
+   // 
 
-}
-   
+
+   // result.map(course => {
+   //      // course === response.data.data.course.category.name
+   //       return console.log(course.course_name, //coursedetails.data.category
+   //        )
+
+   //      })
 
   return (
     <div className="main-wrapper course-details-page">
@@ -222,11 +160,11 @@ function formaturl(youtube){
               <Container>
                 <Row>
                   <Col lg="9" md="8" sm="12">
-                    <div className="course-details-top">
+                    <div className="course-details-top" >
                       <div className="heading">
                         <h4>{coursedetails?.data?.course_name}</h4>
                       </div>
-                      <div className="course-top-overview">
+                      <div className="course-top-overview" style={{height:"2000px"}}>
                         <div className="d-flex overviews">
                           <div className="author">
                             <img
@@ -282,12 +220,7 @@ function formaturl(youtube){
                         </div>
                       </div>
                       <div className="course-details-banner">
-                       
-                      <Row>
-                         <Col md="4">
-                                    <div >
-                                       <img
-                          style={{float:"left"}}
+                        <img
                           src={`${
                             coursedetails && coursedetails.data
                               ? coursedetails.data.course_cover_image
@@ -296,44 +229,6 @@ function formaturl(youtube){
                           alt="No Wrapper"
                           className="img-fluid"
                         />
-                                    </div>
-                                  </Col>
-
-                                {coursedetails.data.introduction_video.length > 0 ?
-                                  (
-                                   
-                                   <Col md="4" >
-                                    
-                                
-                           <a class="video-banner-link" href={"https://www.youtube.com/embed/"+ formaturl(coursedetails.data.introduction_video).idVideo } data-vidup>
-                           
-                        <div id="all">
-  <h2>Play Video</h2>
-  <a id="play-video" class="play-button" data-url="https://www.youtube.com/embed/XJj2PbenIsU?rel=0&autoplay=1" data-toggle="modal" data-target="#myModal" title="XJj2PbenIsU"><i class="fab fa-youtube"></i></a>
-</div>
-                           <video class="video-banner" src={`${
-                            coursedetails && coursedetails.data
-                              ? formaturl(coursedetails.data.introduction_video).idVideo
-                              : ""
-                          }`} autoplay muted replay> </video></a>
-
-                        
-                                  </Col>
-
-
-                                  ): (<Fragment />)
-                                    
-
-
-                                }
-                                  
-
-
-                       </Row>
-
-                       
-
-
                       </div>
                       <div className="course-tab-list">
                         <Tab.Container defaultActiveKey="overview">
@@ -802,11 +697,10 @@ function formaturl(youtube){
                               </ul>
                             </div>
 
-                             {isAuthenticated ? (
+                            {isAuthenticated ? (
                               checkCourseStatus(coursedetails.data.id) ? (
                                 ""
                               ) : (
-                              <Fragment>
                                 <button
                                   type="button"
                                   onClick={
@@ -822,25 +716,6 @@ function formaturl(youtube){
                                 >
                                   Enroll Course
                                 </button>
-                                <br/><br/><br/>
-
-                                <button
-                                style={{background:"red"}}
-                                  type="button"
-                                  onClick={
-                                  
-                                     addToWishList.bind(
-                                       this,
-                                       coursedetails?.data?.id
-                                      )
-
-                                      
-                                }
-                                  className=" enroll-btn btn btn-danger"
-                                >
-                                  Add To Wish List
-                                </button>
-                                </Fragment>
                               )
                             ) : (
                               <button
@@ -857,6 +732,7 @@ function formaturl(youtube){
                               </button>
                             )}
 
+                         
                           </div>
                         </Col>
                       </Row>
@@ -871,9 +747,9 @@ function formaturl(youtube){
         )}
       </Styles>
 
-      <br/><br/><br/>
 
-      <div className="md-modal md-effect-12" id="md-modal" >
+
+        <div className="md-modal md-effect-12" id="md-modal" >
         <div className="md-modal md-header"><h4>Course Cart Preview</h4></div>
     <div className="md-content" style={{marginLeft:"0px",width: "900px",height:"400px",overflowY:"scroll"}}><br/>
         <h3>Items in your cart</h3><br/><br/>
@@ -922,23 +798,26 @@ function formaturl(youtube){
 
 
 
-
-
-<div class="modalVid" id="modalvid">
-      <div class="close"><span class="close" id="close">&times;</span></div>
-      <div class="modal-video-container" id="mdc">
-        <iframe class="video-popup" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen id="modal-video"></iframe>
-      </div>
+<div class="modal  youtube-video" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="video-container" class="video-container">
+                    <iframe id="youtubevideo" src="" width="640" height="360" frameborder="0" allowfullscreen></iframe>
+                </div>        
+            </div>
+            <div class="modal-footer">
+                <button id="close-video" type="button" class="button btn btn-default" data-dismiss="modal"><i class="fas fa-times" aria-hidden="true"></i></button>
+            </div>
+        </div> 
+    </div>
 </div>
-
-  <br/><br/><br/>  <br/><br/><br/>  <br/><br/><br/>
 
       {/* Footer 2 */}
       <Footer />
     </div>
   );
 };
-
 
 
 const closeModal =() =>{
@@ -971,5 +850,4 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   addToCart,
   fetchCourses,
-  addToWishList
 })(CourseDetails);

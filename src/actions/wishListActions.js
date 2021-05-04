@@ -12,14 +12,14 @@ import { getWishlist } from "services/wishlist";
 
 export const addToWishList = (id) => async (dispatch) => {
   dispatch({
-    type: ADD_TO_CART,
+    type: ADD_TO_WISHLIST,
     payload: id
   });
 };
 
 export const removeFromWishList = (id) => async (dispatch) => {
   dispatch({
-    type: REMOVE_FROM_CART,
+    type: REMOVE_FROM_WISHLIST,
     payload: id,
   });
 };
@@ -30,6 +30,6 @@ export const removeFromWishList = (id) => async (dispatch) => {
 export const clearWishList = () => async (dispatch) => {
   console.log('cart cleared action');
   dispatch({
-    type: CLEAR_CART
+    type: CLEAR_WISHLIST
   });
 };

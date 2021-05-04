@@ -21,7 +21,7 @@ button.gridsect {
   width: 40px;
   margin-left: 4px;
   font-size: 24px;
-  color: orange;
+  color: blue;
   text-align: center;
   line-height: 1.4;
   border-radius: 4px;
@@ -38,7 +38,7 @@ button.gridsect:hover {
 
 button.gridsect.on {
   color: white;
-  background-color: #ccc;
+  background-color: #000;
 }
 
 

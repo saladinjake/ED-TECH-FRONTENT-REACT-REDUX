@@ -28,3 +28,7 @@ export const SUB_QUANTITY = "SUB_QUANTITY";
 //Path
 export const SET_PATH = "SET_PATH";
 
+ export const ADD_TO_WISHLIST ="ADD_TO_WISHLIST"
+ export const REMOVE_FROM_WISHLIST = "REMOVE_FROM_WISHLIST"
+ export const CLEAR_WISHLIST = "CLEAR_WISHLIST" 
+
