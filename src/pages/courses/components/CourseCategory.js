@@ -40,16 +40,16 @@ const CourseCategory = ({ course: { courses }, setFilterAllCourses }) => {
   useEffect(()=>{
     if(localStorage.getItem("category") && localStorage.getItem("category_clicked")){
         if(localStorage.getItem("category_clicked") ){
-           // alert("works" +  localStorage.getItem("category"))
-           // let selectBox= document.getElementById("selectedSearch");
+           alert("category :" +  localStorage.getItem("category")+ "category id: " + localStorage.getItem("category_id") )
+           let selectBox= document.getElementById("selectedSearch");
 
-           // selectBox.options[selectBox.selectedIndex].value = localStorage.getItem("category_id");
-           // selectBox.options[selectBox.selectedIndex].text = localStorage.getItem("category");
+           selectBox.options[selectBox.selectedIndex].value = localStorage.getItem("category_id");
+           selectBox.options[selectBox.selectedIndex].text = localStorage.getItem("category");
          
-           // selectBox.options.selectedIndex[selectBox].value = localStorage.getItem("category");
-           // localStorage.setItem("category_clicked",false)
+         
+           localStorage.setItem("category_clicked",false)
 
-          // localStorage.setItem("category",'')
+          localStorage.setItem("category",'')
         }else{
           // alert("not from nav")
           localStorage.setItem("category_clicked",false)
