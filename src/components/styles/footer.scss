@@ -61,7 +61,6 @@
         color: $grey;
         margin-bottom: 0.5rem;
 
-
         @include respond(phone) {
           @include fontNormal(1rem, 1.2rem, #30415a);
         }
@@ -99,19 +98,19 @@
 
   a {
     font-style: normal;
-        font-weight: normal;
-        font-size: 1.2rem;
-        line-height: 1rem;
-        color: $grey;
-        margin-bottom: 0.5rem;
+    font-weight: normal;
+    font-size: 1.2rem;
+    line-height: 1rem;
+    color: $grey;
+    margin-bottom: 0.5rem;
   }
 
   h4 {
     font-style: normal;
-            font-weight: bold;
-            font-size: 1.5rem;
-            line-height: 2.5rem;
-            color: #01265b;
-            margin-bottom: 1.5rem;
+    font-weight: bold;
+    font-size: 1.5rem;
+    line-height: 2.5rem;
+    color: #01265b;
+    margin-bottom: 1.5rem;
   }
 }

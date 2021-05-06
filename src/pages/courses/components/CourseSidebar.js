@@ -5,11 +5,7 @@ import CoursePrice from "./CoursePrice";
 import CourseCategory from "./CourseCategory";
 import CourseStyle from "./CourseStyle";
 
-function CourseSidebar({
-  setSearch,
-  search,
-  setFilterAllCourses,
-}) {
+function CourseSidebar({ setSearch, search, setFilterAllCourses }) {
   return (
     <div className="course-sidebar">
       <Row>
@@ -25,7 +21,6 @@ function CourseSidebar({
         <Col md="12">
           <CourseStyle setFilterAllCourses={setFilterAllCourses} />
         </Col>
-        
       </Row>
     </div>
   );

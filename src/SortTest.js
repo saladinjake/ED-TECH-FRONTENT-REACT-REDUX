@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const bands = [
   {
     id: 1,
-    name: 'Nightwish',
+    name: "Nightwish",
     albums: 9,
     members: 6,
     formed_in: 1996,
   },
   {
     id: 2,
-    name: 'Metallica',
+    name: "Metallica",
     albums: 10,
     members: 4,
     formed_in: 1981,
   },
   {
     id: 3,
-    name: 'Nirvana',
+    name: "Nirvana",
     albums: 3,
     members: 3,
     formed_in: 1987,
@@ -26,33 +26,35 @@ const bands = [
 
 function SortTest() {
   const [data, setData] = useState([]);
-  const [sortType, setSortType] = useState('albums');
+  const [sortType, setSortType] = useState("albums");
 
   useEffect(() => {
-    const sortArray = type => {
+    const sortArray = (type) => {
       const types = {
-        albums: 'albums',
-        members: 'members',
-        formed: 'formed_in',
+        albums: "albums",
+        members: "members",
+        formed: "formed_in",
       };
       const sortProperty = types[type];
-      const sorted = [...bands].sort((a, b) => b[sortProperty] - a[sortProperty]);
+      const sorted = [...bands].sort(
+        (a, b) => b[sortProperty] - a[sortProperty]
+      );
       setData(sorted);
     };
 
     sortArray(sortType);
-  }, [sortType]); 
+  }, [sortType]);
 
   return (
     <div className="App">
-      <select onChange={(e) => setSortType(e.target.value)}> 
+      <select onChange={(e) => setSortType(e.target.value)}>
         <option value="albums">Albums</option>
         <option value="members">Members</option>
         <option value="formed">Formed in</option>
       </select>
 
-      {data.map(band => (
-        <div key={band.id} style={{ margin: '30px' }}>
+      {data.map((band) => (
+        <div key={band.id} style={{ margin: "30px" }}>
           <div>{`Band: ${band.name}`}</div>
           <div>{`Albums: ${band.albums}`}</div>
           <div>{`Members: ${band.members}`}</div>

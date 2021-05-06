@@ -9,11 +9,10 @@ import { fetchCourses } from "actions/coursesActions";
 import { getCourses } from "services/course";
 import toast from "react-hot-toast";
 
+import CourseFilteredCarousel from "./CourseFilteredCarousel";
 
-import CourseFilteredCarousel from "./CourseFilteredCarousel"
-
-import "./filter.css"
-import "./carousel.css"
+import "./filter.css";
+import "./carousel.css";
 import Loader from "components/Loader/Loader";
 
 const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
@@ -33,36 +32,24 @@ const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
     // eslint-disable-next-line
   }, [courses]);
 
-  useEffect(() => {
-  });
+  useEffect(() => {});
 
-  const filterCourses = (e) => {
-   
-  };
-
-
-
-
-
-
-
+  const filterCourses = (e) => {};
 
   return (
     <Styles>
-      <section className="course-filter" >
+      <section className="course-filter">
         <Container>
           <Row>
             <Col md="12">
               <div className="sec-title text-center">
-              <br/>
+                <br />
                 <h4>Our Featured Courses</h4>
               </div>
             </Col>
             <Col md="12">
-
-            
-           <BrowseByCategory />
-           </Col>
+              <BrowseByCategory />
+            </Col>
           </Row>
         </Container>
       </section>
@@ -70,110 +57,104 @@ const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
   );
 };
 
-
-
-
-class BrowseByCategory extends React.Component{
-    constructor(props){
-        super(props);
-        this.state ={
-            data:[],
-            length: 0,
-            index: 0
-        }
+class BrowseByCategory extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+      length: 0,
+      index: 0,
+    };
+  }
+  async componentDidMount() {
+    try {
+      const response = await getCourses();
+      this.setState({
+        data: response.data.data.courses,
+        length: response.data.data.courses.length,
+      });
+    } catch (err) {
+      toast.error("Error occured fetching notifications");
     }
-    async componentDidMount(){
-          try{
-        const response = await  getCourses();
-        this.setState({
-            data: response.data.data.courses,
-            length: response.data.data.courses.length
-        })
-          
-       } catch (err) {
-         toast.error("Error occured fetching notifications");
-       }
-    }    
-    render(){
-      const { data } = this.state;
-      let CourseCategoryWrangler = data.reduce(function (groupedByCategory, course) {
-     // console.log(groupedByCategory,course)
-         if (!groupedByCategory[course.category.name]) {
-           groupedByCategory[course.category.name] = [] //cartSet;
-         }
-         groupedByCategory[course.category.name].push(course)
-         return  groupedByCategory;
-      }, []);
-      let children = []
-      var merged =[]
-
-      for(let item in CourseCategoryWrangler){
-        let children = [...Array.from(Object.entries(CourseCategoryWrangler[item]))]
-        // var merged = []  // [].concat.apply([], children);
-        var merged = [].concat.apply(merged, children);
+  }
+  render() {
+    const { data } = this.state;
+    let CourseCategoryWrangler = data.reduce(function (
+      groupedByCategory,
+      course
+    ) {
+      // console.log(groupedByCategory,course)
+      if (!groupedByCategory[course.category.name]) {
+        groupedByCategory[course.category.name] = []; //cartSet;
       }
+      groupedByCategory[course.category.name].push(course);
+      return groupedByCategory;
+    },
+    []);
+    let children = [];
+    var merged = [];
 
+    for (let item in CourseCategoryWrangler) {
+      let children = [
+        ...Array.from(Object.entries(CourseCategoryWrangler[item])),
+      ];
+      // var merged = []  // [].concat.apply([], children);
+      var merged = [].concat.apply(merged, children);
+    }
 
+    function removeDuplicates(arr) {
+      let uniq = {};
+      return arr.filter(
+        (obj) => !uniq[obj.course_code] && (uniq[obj.course_code] = true)
+      );
+    }
 
-        function removeDuplicates(arr) {
-          let uniq = {};
-          return arr.filter(obj => !uniq[obj.course_code] && (uniq[obj.course_code] = true))
-        }
+    function groupByKey(array) {
+      return array.reduce((hash, obj) => {
+        if (obj.category.name === undefined) return hash;
+        return Object.assign(hash, {
+          [obj.category.name]: (hash[obj.category.name] || []).concat(obj),
+        });
+      }, {});
+    }
 
+    var uniqueArray = removeDuplicates(merged);
+    console.log(uniqueArray);
 
+    console.log(groupByKey(uniqueArray.slice(1)));
 
-        function groupByKey(array) {
-           return array
-             .reduce((hash, obj) => {
-               if(obj.category.name === undefined) return hash; 
-               return Object.assign(hash, { [obj.category.name] :( hash[obj.category.name] || [] ).concat(obj)})
-             }, {})
-        }
+    let groupedData = groupByKey(uniqueArray.slice(1));
 
+    return data.length === 0 ? (
+      <Fragment>
+        <br />
+        <Loader width="70" />
+      </Fragment>
+    ) : (
+      <Fragment>
+        <div className="row">
+          <CourseFilteredCarousel title="Business" show={4} children={data} />
 
-        var uniqueArray = removeDuplicates(merged);
-        console.log(uniqueArray)
+          <div className="col-lg-2 pull-left">
+            <Link
+              to="../courses"
+              style={{ background: "#0253c8", color: "#fff" }}
+              className="btn  waves-effect waves-light pull-left m-b-10"
+            >
+              <i className="md  md-chevron-left"></i> See All courses
+            </Link>{" "}
+          </div>
 
-        console.log(groupByKey(uniqueArray.slice(1)))
-
-        let groupedData = groupByKey(uniqueArray.slice(1));
-
-
-
-          
-
-         
-            return (
-              data.length === 0 
-                ?( 
-<Fragment><br/>
-                    <Loader width="70" />
-
-
-
-                       
-            </Fragment>
-
-
-                  )
-                : (
-                      <Fragment>
-                          <div className="row">
-
-                      
-
-                       <CourseFilteredCarousel title="Business"  show={4} children={data}  />
-                          
-
-                            <div className="col-lg-2 pull-left">
-                            <Link to="../courses" style={{background: "#0253c8", color:"#fff"}} className="btn  waves-effect waves-light pull-left m-b-10">
-                            <i className="md  md-chevron-left"></i> See All courses</Link> </div>
-                            
-                           <div className="col-md-12" style={{ maxWidth: 1200, marginLeft: 'auto', marginRight: 'auto', marginTop: 64 }}>
-                       
-
-
-                           {/*<div id="slide">
+          <div
+            className="col-md-12"
+            style={{
+              maxWidth: 1200,
+              marginLeft: "auto",
+              marginRight: "auto",
+              marginTop: 64,
+            }}
+          >
+            {/*<div id="slide">
                                  <div id="toggle">&#9776;</div>
                                  <div class="box">Content</div>
                             </div>
@@ -190,35 +171,18 @@ class BrowseByCategory extends React.Component{
                            <CourseFilteredCarousel title="Social Sciences"  show={4} children={groupedData['Social Sciences']} />
                                   
                         */}
-                                     
-        {/* Object.entries(groupedData).map( (item,value) =>{
+
+            {/* Object.entries(groupedData).map( (item,value) =>{
               return(<div> <CourseFilteredCarousel  show={4} children={item}  /></div>)
 
           
         })*/}
-                                  
-                                        </div>
-
-                          </div>
-
-
-
-
-                          
-
-                    </Fragment>
-                       
-
-
-                      
-
-                 )
-            )
-          
-    }
+          </div>
+        </div>
+      </Fragment>
+    );
+  }
 }
-
-
 
 // export default CourseFilter;
 CourseFilter.propTypes = {

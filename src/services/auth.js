@@ -19,7 +19,6 @@ export const loginUserForgotPassword = async (details) => {
   });
 };
 
-
 export const loggedOutUserForgotPassword = async (details) => {
   let request = axios.post("/auth/reset-password-request", details);
   return request.then((response) => {
@@ -29,9 +28,6 @@ export const loggedOutUserForgotPassword = async (details) => {
   });
 };
 
-
-
-
 export const loginUserForgotChangePassword = async (details) => {
   let request = axios.post("/auth/update-password", details);
   return request.then((response) => {
@@ -40,7 +36,6 @@ export const loginUserForgotChangePassword = async (details) => {
     }
   });
 };
-
 
 export const registerLearner = async (details) => {
   let request = axios.post("learners/register", details);

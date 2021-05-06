@@ -27,12 +27,11 @@ const CourseDetails = ({
   addToCart,
   fetchCourses,
 }) => {
-
   // console.log(cart)
 
   // console.log(history.location.pathname)
 
-  const lastLocation =history.location.pathname;
+  const lastLocation = history.location.pathname;
 
   const [coursedetails, setCourseDetails] = useState({});
   // eslint-disable-next-line
@@ -46,15 +45,11 @@ const CourseDetails = ({
     let courseId = parseInt(match.params.id);
     try {
       let response = await getCourse(courseId);
-        setCourseDetails(response.data);
+      setCourseDetails(response.data);
 
-       let allcourses = await getCourses();
-       setRelatedCourses(allcourses.data.data)     // ;
-      
-     
-       
-     
-    
+      let allcourses = await getCourses();
+      setRelatedCourses(allcourses.data.data); // ;
+
       setStatus("success");
     } catch (err) {
       setStatus("error");
@@ -65,7 +60,7 @@ const CourseDetails = ({
   useEffect(() => {
     (async function loadContent() {
       await fetchCourses();
-       // const lastLocation = useLocation();
+      // const lastLocation = useLocation();
     })();
     // eslint-disable-next-line
   }, []);
@@ -78,9 +73,8 @@ const CourseDetails = ({
           let enrolledCourses = res.data.data;
 
           let ids = enrolledCourses.map((course) => course.course.id);
-          
-          setEnrolledCourses([...ids]);
 
+          setEnrolledCourses([...ids]);
 
           console.log(ids);
         } catch (err) {
@@ -113,8 +107,6 @@ const CourseDetails = ({
       });
     });
 
-  
-
     // eslint-disable-next-line
   }, []);
 
@@ -127,18 +119,16 @@ const CourseDetails = ({
     return check;
   };
 
-  console.log("here")
+  console.log("here");
 
+  //
 
-   // 
+  // result.map(course => {
+  //      // course === response.data.data.course.category.name
+  //       return console.log(course.course_name, //coursedetails.data.category
+  //        )
 
-
-   // result.map(course => {
-   //      // course === response.data.data.course.category.name
-   //       return console.log(course.course_name, //coursedetails.data.category
-   //        )
-
-   //      })
+  //      })
 
   return (
     <div className="main-wrapper course-details-page">
@@ -160,11 +150,14 @@ const CourseDetails = ({
               <Container>
                 <Row>
                   <Col lg="9" md="8" sm="12">
-                    <div className="course-details-top" >
+                    <div className="course-details-top">
                       <div className="heading">
                         <h4>{coursedetails?.data?.course_name}</h4>
                       </div>
-                      <div className="course-top-overview" style={{height:"2000px"}}>
+                      <div
+                        className="course-top-overview"
+                        style={{ height: "2000px" }}
+                      >
                         <div className="d-flex overviews">
                           <div className="author">
                             <img
@@ -703,15 +696,10 @@ const CourseDetails = ({
                               ) : (
                                 <button
                                   type="button"
-                                  onClick={
-                                  
-                                     addToCart.bind(
-                                       this,
-                                       coursedetails?.data?.id
-                                      )
-
-                                      
-                                }
+                                  onClick={addToCart.bind(
+                                    this,
+                                    coursedetails?.data?.id
+                                  )}
                                   className="enroll-btn"
                                 >
                                   Enroll Course
@@ -719,20 +707,17 @@ const CourseDetails = ({
                               )
                             ) : (
                               <button
-                              type="button"
-                               
-                                
+                                type="button"
                                 className=" enroll-btn"
-                                onClick= {(e) =>{
-                                   return window.location.href= process.env.PUBLIC_URL + `/login?redirectTo=${lastLocation}`
-                                 
+                                onClick={(e) => {
+                                  return (window.location.href =
+                                    process.env.PUBLIC_URL +
+                                    `/login?redirectTo=${lastLocation}`);
                                 }}
                               >
                                 Login To Enroll
                               </button>
                             )}
-
-                         
                           </div>
                         </Col>
                       </Row>
@@ -747,71 +732,112 @@ const CourseDetails = ({
         )}
       </Styles>
 
-
-
-        <div className="md-modal md-effect-12" id="md-modal" >
-        <div className="md-modal md-header"><h4>Course Cart Preview</h4></div>
-    <div className="md-content" style={{marginLeft:"0px",width: "900px",height:"400px",overflowY:"scroll"}}><br/>
-        <h3>Items in your cart</h3><br/><br/>
-
-        
-        <div>
-            {cart.length > 0 && cart.map( item =>{
-               return (
-               <div style={{float:"left",  margin:"10px", width:"200px"}}>
-                
-
-                  <img
-                          src={`${
-                            item.course_cover_image && item.course_cover_image
-                              ? item.course_cover_image
-                              : ""
-                          }`}
-                          alt="No Wrapper"
-                          className="img-fluid"
-                        />
-                         <p className="text-muted" style={{marginTop:"20px"}}>{item.course_name}</p>
-                  <p className="text-muted">{item.course_code}</p>
-                </div>
-               )
-            })
-              
-            }
-
-             <div style={{display:"table"}}>
-            <button onClick={()=>{
-              closeModal()
-              window.location.href = process.env.PUBLIC_URL + "/courses"
-
-            }} className="btn btn-primary pull-left">Continue Shopping</button>
-            <button style={{marginLeft:"180px",float:"right", marginRight:"20px"}} onClick={()=>{
-              window.location.href = process.env.PUBLIC_URL + "/cart"
-            }} className="btn btn-danger pull-right">Go to cart</button>
-          </div>
-          
+      <div className="md-modal md-effect-12" id="md-modal">
+        <div className="md-modal md-header">
+          <h4>Course Cart Preview</h4>
         </div>
-    </div>
-    
-</div>
+        <div
+          className="md-content"
+          style={{
+            marginLeft: "0px",
+            width: "900px",
+            height: "400px",
+            overflowY: "scroll",
+          }}
+        >
+          <br />
+          <h3>Items in your cart</h3>
+          <br />
+          <br />
 
-<div className="md-overlay"></div>
+          <div>
+            {cart.length > 0 &&
+              cart.map((item) => {
+                return (
+                  <div
+                    style={{ float: "left", margin: "10px", width: "200px" }}
+                  >
+                    <img
+                      src={`${
+                        item.course_cover_image && item.course_cover_image
+                          ? item.course_cover_image
+                          : ""
+                      }`}
+                      alt="No Wrapper"
+                      className="img-fluid"
+                    />
+                    <p className="text-muted" style={{ marginTop: "20px" }}>
+                      {item.course_name}
+                    </p>
+                    <p className="text-muted">{item.course_code}</p>
+                  </div>
+                );
+              })}
 
+            <div style={{ display: "table" }}>
+              <button
+                onClick={() => {
+                  closeModal();
+                  window.location.href = process.env.PUBLIC_URL + "/courses";
+                }}
+                className="btn btn-primary pull-left"
+              >
+                Continue Shopping
+              </button>
+              <button
+                style={{
+                  marginLeft: "180px",
+                  float: "right",
+                  marginRight: "20px",
+                }}
+                onClick={() => {
+                  window.location.href = process.env.PUBLIC_URL + "/cart";
+                }}
+                className="btn btn-danger pull-right"
+              >
+                Go to cart
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <div className="md-overlay"></div>
 
-<div class="modal  youtube-video" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
+      <div
+        class="modal  youtube-video"
+        id="myModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="myModalLabel"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
             <div class="modal-body">
-                <div id="video-container" class="video-container">
-                    <iframe id="youtubevideo" src="" width="640" height="360" frameborder="0" allowfullscreen></iframe>
-                </div>        
+              <div id="video-container" class="video-container">
+                <iframe
+                  id="youtubevideo"
+                  src=""
+                  width="640"
+                  height="360"
+                  frameborder="0"
+                  allowfullscreen
+                ></iframe>
+              </div>
             </div>
             <div class="modal-footer">
-                <button id="close-video" type="button" class="button btn btn-default" data-dismiss="modal"><i class="fas fa-times" aria-hidden="true"></i></button>
+              <button
+                id="close-video"
+                type="button"
+                class="button btn btn-default"
+                data-dismiss="modal"
+              >
+                <i class="fas fa-times" aria-hidden="true"></i>
+              </button>
             </div>
-        </div> 
-    </div>
-</div>
+          </div>
+        </div>
+      </div>
 
       {/* Footer 2 */}
       <Footer />
@@ -819,22 +845,18 @@ const CourseDetails = ({
   );
 };
 
-
-const closeModal =() =>{
+const closeModal = () => {
   // document.getElementById('md-close').on('click', function() {
-    document.getElementById('md-modal').classList.remove('md-show');
+  document.getElementById("md-modal").classList.remove("md-show");
   // });
-}
+};
 
 // const showModalEffect = () => {
 //   // document.getElementById('md-trigger').addEventListener('click', function() {
 //     document.getElementById('md-modal').classList.add('md-show');
 //   // });
-  
-  
+
 // }
-
-
 
 CourseDetails.propTypes = {
   cart: PropTypes.object.isRequired,

@@ -9,7 +9,7 @@ import ForBusiness from "pages/instructors/ForBusiness";
 import ForGovernment from "pages/instructors/ForGovernment";
 import ForSchool from "pages/instructors/ForSchool";
 import Checkout from "pages/checkout/Checkout";
-import Contact from './pages/contact/Contact';
+import Contact from "./pages/contact/Contact";
 import CourseGrid from "pages/courses/CourseGrid";
 import CourseDetails from "pages/courses/CourseDetails";
 import Instructor from "pages/instructor/Instructors";
@@ -46,16 +46,15 @@ import InstructorsRoute from "routes/InstructorsRoute";
 // import AuthenticatedRoute from "routes/AuthenticatedRoute";
 import PublicRoute from "routes/PublicRoute";
 
+import MylearningDashboard from "./pages/courses/components/MyLearning";
+import OverViewPane from "./pages/dashboard/MyDashboard";
+import SortTest from "./SortTest";
+import NewNotifications from "./pages/mynotifications/Notifications";
+// import WorkBench from "./pages/workbench/WorkSheet"
 
-import MylearningDashboard from "./pages/courses/components/MyLearning"
-import OverViewPane from "./pages/dashboard/MyDashboard"
-import SortTest from "./SortTest"
-import NewNotifications from './pages/mynotifications/Notifications'
-import Purchases from "./pages/purchases/Purchases"
+import Purchases from "./pages/purchases/Purchases";
 
-
-import history from './history';
-
+import history from "./history";
 
 function App() {
   return (
@@ -117,7 +116,6 @@ function App() {
         />
         <Route exact path="/courses/category/:id" component={CourseGrid} />
 
-       
         <Route
           exact
           path={`${process.env.PUBLIC_URL + "/instructors"}`}
@@ -139,7 +137,6 @@ function App() {
           component={InstitutionDetails}
         />
 
-       
         <PublicRoute
           exact
           path={`${process.env.PUBLIC_URL + "/register/instructor"}`}
@@ -213,29 +210,51 @@ function App() {
           path={`${process.env.PUBLIC_URL + "/instructor/course/declined"}`}
           component={InstructorDeclinedCourses}
         />
-          <LearnersRoute exact path="/mycourses" component={MylearningDashboard} />
-          <LearnersRoute exact path="/notifications" component={NewNotifications} />
-          <LearnersRoute path={`${process.env.PUBLIC_URL + "/dashboard"}`} component={OverViewPane} />
-           <Route
-              exact
-              path={`${process.env.PUBLIC_URL + "/courses/:id"}`}
-              component={CourseDetails}
-            />
-            <Route
-              exact
-              path={`${process.env.PUBLIC_URL + "/courses/:id/:slug"}`}
-              component={CourseDetails}
-            />
+        <LearnersRoute
+          exact
+          path="/mycourses"
+          component={MylearningDashboard}
+        />
+        <LearnersRoute
+          exact
+          path="/notifications"
+          component={NewNotifications}
+        />
+        <LearnersRoute
+          path={`${process.env.PUBLIC_URL + "/dashboard"}`}
+          component={OverViewPane}
+        />
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/courses/:id"}`}
+          component={CourseDetails}
+        />
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/courses/:id/:slug"}`}
+          component={CourseDetails}
+        />
 
-            <LearnersRoute path={`${process.env.PUBLIC_URL + "/learner/accounts"}`} component={ResetPassword} />
-            <LearnersRoute path={`${process.env.PUBLIC_URL + "/learner/purchase/history"}`} component={Purchases} />
-            
-            <Route path={`${process.env.PUBLIC_URL + "/password-forgot" }`} component={ForgotPassword} /> 
+        <LearnersRoute
+          path={`${process.env.PUBLIC_URL + "/learner/accounts"}`}
+          component={ResetPassword}
+        />
+        <LearnersRoute
+          path={`${process.env.PUBLIC_URL + "/learner/purchase/history"}`}
+          component={Purchases}
+        />
 
-            <Route path={`${process.env.PUBLIC_URL + "/sorttest" }`} component={SortTest} /> 
+        <Route
+          path={`${process.env.PUBLIC_URL + "/password-forgot"}`}
+          component={ForgotPassword}
+        />
 
+        <Route
+          path={`${process.env.PUBLIC_URL + "/sorttest"}`}
+          component={SortTest}
+        />
 
-             <PublicRoute
+        <PublicRoute
           exact
           path={`${process.env.PUBLIC_URL + "/login"}`}
           component={Login}
@@ -253,13 +272,12 @@ function App() {
           component={ChangeCredentials}
         />
 
+        <LearnersRoute
+          path={`${process.env.PUBLIC_URL + "/learner/wishlists"}`}
+          component={WishLists}
+        />
 
-        <LearnersRoute path={`${process.env.PUBLIC_URL + "/learner/wishlists"}`} component={WishLists} />
-            
-
-
-          
-
+        
 
         <Route component={PageNotFound} />
       </Switch>

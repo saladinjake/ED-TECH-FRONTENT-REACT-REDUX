@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 
 const PublicRoute = ({
   component: Component,
-  auth: { user, isAuthenticated,user_roles },
+  auth: { user, isAuthenticated, user_roles },
   ...rest
 }) => {
   let isLoggedIn = false;

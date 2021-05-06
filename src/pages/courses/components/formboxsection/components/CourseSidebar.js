@@ -5,23 +5,16 @@ import CoursePrice from "./CoursePrice";
 import CourseCategory from "./CourseCategory";
 import CourseStyle from "./CourseStyle";
 
-function CourseSidebar({
-  setSearch,
-  search,
-  setFilterAllCourses,
-}) {
-  
+function CourseSidebar({ setSearch, search, setFilterAllCourses }) {
   return (
     <div className="course-sidebar">
-      
-          <CourseSearch setSearch={setSearch} search={search} />
-       
-          <CourseCategory setFilterAllCourses={setFilterAllCourses} />
-       
-          <CoursePrice setFilterAllCourses={setFilterAllCourses} />
-      
-          <CourseStyle setFilterAllCourses={setFilterAllCourses} />
-        
+      <CourseSearch setSearch={setSearch} search={search} />
+
+      <CourseCategory setFilterAllCourses={setFilterAllCourses} />
+
+      <CoursePrice setFilterAllCourses={setFilterAllCourses} />
+
+      <CourseStyle setFilterAllCourses={setFilterAllCourses} />
     </div>
   );
 }

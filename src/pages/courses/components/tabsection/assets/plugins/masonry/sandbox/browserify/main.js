@@ -1,8 +1,8 @@
 // vanilla js
 
-var Masonry = require('../../masonry');
+var Masonry = require("../../masonry");
 
-new Masonry('#basic', {
+new Masonry("#basic", {
   columnWidth: 60,
 });
 

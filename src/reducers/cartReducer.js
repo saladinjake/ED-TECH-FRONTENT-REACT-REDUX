@@ -96,7 +96,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         cart: [],
-        total: 0
+        total: 0,
       };
     case GET_COURSES:
       return {

@@ -4,13 +4,13 @@ import { Container, Row, Col } from "react-bootstrap";
 import NavBar from "components/Navbar";
 import { BreadcrumbBox } from "../../components/common/Breadcrumb";
 import { Styles } from "./styles/account.js";
-import { useHistory, //useLocation
- } from "react-router-dom";
+import {
+  useHistory, //useLocation
+} from "react-router-dom";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { Formik } from "formik";
 import Footer from "components/Footer";
-
 
 import { loginUser } from "services/auth";
 
@@ -21,12 +21,9 @@ import { login, logOut, setPrevPath } from "actions/authActions";
 const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
   let history = useHistory();
 
-  console.log(history)
-   var pattern2 = /[?redirectTo=]/;
-   console.log(pattern2.test(history?.location?.search))
-
-   
-
+  console.log(history);
+  var pattern2 = /[?redirectTo=]/;
+  console.log(pattern2.test(history?.location?.search));
 
   const [loading, setLoading] = useState(false);
   const initialValues = { email: "", password: "" };
@@ -34,8 +31,7 @@ const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
   useEffect(() => {
     if (history.location.state?.from) {
       setPrevPath(history.location.state?.from);
-    }else {
-
+    } else {
     }
     // eslint-disable-next-line
   }, []);
@@ -49,26 +45,24 @@ const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
       console.log(prevPath);
       const pattern = /[?redirectTo=]+/g;
 
-      if( pattern.test(history?.location?.search) ){
-          let url_link = history?.location?.search;
-          url_link = url_link.substring(12)
-          // console.log(url_link)
-          //let oldPath =
-          history.push(url_link);
-      }else{
-          if (prevPath.length > 0) {
-            history.push(prevPath);
+      if (pattern.test(history?.location?.search)) {
+        let url_link = history?.location?.search;
+        url_link = url_link.substring(12);
+        // console.log(url_link)
+        //let oldPath =
+        history.push(url_link);
+      } else {
+        if (prevPath.length > 0) {
+          history.push(prevPath);
+        } else {
+          if (res.data.user_roles[0].name === "User") {
+            history.push("/dashboard");
           } else {
-
-           if (res.data.user_roles[0].name === "User") {
-              history.push("/dashboard");
-            } else {
-              history.push("/instructor/dashboard");
-            }
+            history.push("/instructor/dashboard");
           }
-
+        }
       }
-      
+
       setSubmitting(false);
     } catch (err) {
       toast.error(err?.response?.data?.message);
@@ -167,8 +161,9 @@ const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
                           </p>
 
                           <p>
-                            
-                            <a href={process.env.PUBLIC_URL + "/password-forgot"}>
+                            <a
+                              href={process.env.PUBLIC_URL + "/password-forgot"}
+                            >
                               {" "}
                               Forgot Password
                             </a>

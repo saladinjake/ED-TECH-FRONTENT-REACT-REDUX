@@ -3,7 +3,7 @@ import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import NavBar from "components/Navbar";
 import Footer from "../../components/Footer";
-// import { BreadcrumbBox } from "../../components/common/Breadcrumb";
+import { BreadcrumbBox } from "../../components/common/Breadcrumb";
 import { Styles } from "./styles/cart.js";
 
 import PropTypes from "prop-types";
@@ -39,7 +39,7 @@ const Cart = ({
         <NavBar />
 
         {/* Breadcroumb */}
-        
+        <BreadcrumbBox title="wishlist" />
 
         {/* Product Details */}
         <section className="cart-area">
@@ -82,12 +82,7 @@ const Cart = ({
                                   </button> */}
                                 </td>
                                 <td className="product-thumbnail">
-                                  <img
-                                    src={
-                                      data.course_cover_image
-                                    }
-                                    alt=""
-                                  />
+                                  <img src={data.course_cover_image} alt="" />
                                 </td>
                                 <td className="product-title">
                                   {data.course_name}

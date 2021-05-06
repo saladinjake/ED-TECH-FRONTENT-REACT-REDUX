@@ -140,7 +140,7 @@ export const Styles = styled.div`
           }
 
           p.author {
-            margin-top:7px;
+            margin-top: 7px;
             font-size: 14px;
             color: ${colors.text3};
             line-height: 16px;

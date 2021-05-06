@@ -59,7 +59,6 @@ export const businessSchema = yup.object({
     .required("Required"),
 });
 
-
 export const instructorSchema = yup.object({
   first_name: yup
     .string()
@@ -150,7 +149,6 @@ export const courseSchema = yup.object({
   course_cover_image: yup.mixed().required(),
 });
 
-
 export const learnerSchema = yup.object({
   first_name: yup
     .string()
@@ -172,7 +170,10 @@ export const learnerSchema = yup.object({
   gender: yup.string().required("Valid Gender Required"),
   date_of_birth: yup.string().required("Valid Date Required"),
   country_id: yup.string().required("Select a Country"),
-  biography: yup.string('Must be a String').required("Biography Required").nullable(),
+  biography: yup
+    .string("Must be a String")
+    .required("Biography Required")
+    .nullable(),
   employment_status: yup.string().required("Required"),
   marital_status: yup.string().required("Required"),
   experience_level: yup.string().required("Required"),

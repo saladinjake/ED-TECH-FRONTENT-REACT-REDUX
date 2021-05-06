@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export const useToggleSuggestions = () => {
   const [show, setShow] = React.useState(false);
@@ -19,7 +19,6 @@ export const useToggleSuggestions = () => {
     show,
     toggle,
     setFalse,
-    setTrue
+    setTrue,
   };
 };
-

@@ -1,8 +1,4 @@
-import {
-  GET_COURSES,
-  COURSE_ERROR,
-  SET_LOADING
-} from "./types";
+import { GET_COURSES, COURSE_ERROR, SET_LOADING } from "./types";
 import { getCourses } from "services/course";
 
 export const fetchCourses = () => async (dispatch) => {

@@ -196,89 +196,90 @@ const InstructorDetails = ({ match }) => {
                   <Col md="12">
                     <div className="instructor-course-title">
                       <h5>
-                        Courses by {`${details.first_name}  ${details.last_name}`}
+                        Courses by{" "}
+                        {`${details.first_name}  ${details.last_name}`}
                       </h5>
                     </div>
                     <div className="instructor-course-slider">
                       {details.instructor_profile.courses.length > 0 ? (
                         details.instructor_profile.courses.map((data, i) => (
                           // <Row>
-                            <Col lg="6" md="12">
-                              <div className="course-item" key={i}>
-                                <Link to={`/courses/${data.id}`}>
-                                  <div
-                                    className="course-image"
-                                    style={{
-                                      backgroundImage: `url(${data.course_thumbnail})`,
-                                    }}
-                                  >
-                                    <div className="author-img d-flex">
-                                      <div className="img">
-                                        <img
-                                          src={
-                                            process.env.PUBLIC_URL +
-                                            `/assets/images/${data.course_name}`
-                                          }
-                                          alt=""
-                                        />
-                                      </div>
-                                      <div className="title">
-                                        <p>
-                                          {`${details.first_name} ${details.last_name}`}
-                                        </p>
-                                      </div>
+                          <Col lg="6" md="12">
+                            <div className="course-item" key={i}>
+                              <Link to={`/courses/${data.id}`}>
+                                <div
+                                  className="course-image"
+                                  style={{
+                                    backgroundImage: `url(${data.course_thumbnail})`,
+                                  }}
+                                >
+                                  <div className="author-img d-flex">
+                                    <div className="img">
+                                      <img
+                                        src={
+                                          process.env.PUBLIC_URL +
+                                          `/assets/images/${data.course_name}`
+                                        }
+                                        alt=""
+                                      />
                                     </div>
-                                    <div className="course-price">
-                                      {/* <p>{data.price}</p> */}
+                                    <div className="title">
+                                      <p>
+                                        {`${details.first_name} ${details.last_name}`}
+                                      </p>
                                     </div>
                                   </div>
-                                </Link>
-                                <div className="course-content">
-                                  <h6 className="heading">
-                                    <Link to={`/courses/${data.id}`}>
-                                      {data.course_name}
-                                    </Link>
-                                  </h6>
-                                  <p className="desc">
-                                    {data.course_description}
-                                  </p>
-                                  <div className="course-face d-flex justify-content-between">
-                                    <div className="duration">
-                                      <p>
-                                        <i className="las la-clock"></i>120
-                                      </p>
-                                    </div>
-                                    <div className="rating">
-                                      <ul className="list-unstyled list-inline">
-                                        <li className="list-inline-item">
-                                          <i className="las la-star"></i>
-                                        </li>
-                                        <li className="list-inline-item">
-                                          <i className="las la-star"></i>
-                                        </li>
-                                        <li className="list-inline-item">
-                                          <i className="las la-star"></i>
-                                        </li>
-                                        <li className="list-inline-item">
-                                          <i className="las la-star"></i>
-                                        </li>
-                                        <li className="list-inline-item">
-                                          <i className="las la-star-half-alt"></i>
-                                        </li>
-                                        <li className="list-inline-item">
-                                          (4.5)
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    <div className="student">
-                                      <p>
-                                        <i className="las la-chair"></i>60
-                                      </p>
-                                    </div>
+                                  <div className="course-price">
+                                    {/* <p>{data.price}</p> */}
+                                  </div>
+                                </div>
+                              </Link>
+                              <div className="course-content">
+                                <h6 className="heading">
+                                  <Link to={`/courses/${data.id}`}>
+                                    {data.course_name}
+                                  </Link>
+                                </h6>
+                                <p className="desc">
+                                  {data.course_description}
+                                </p>
+                                <div className="course-face d-flex justify-content-between">
+                                  <div className="duration">
+                                    <p>
+                                      <i className="las la-clock"></i>120
+                                    </p>
+                                  </div>
+                                  <div className="rating">
+                                    <ul className="list-unstyled list-inline">
+                                      <li className="list-inline-item">
+                                        <i className="las la-star"></i>
+                                      </li>
+                                      <li className="list-inline-item">
+                                        <i className="las la-star"></i>
+                                      </li>
+                                      <li className="list-inline-item">
+                                        <i className="las la-star"></i>
+                                      </li>
+                                      <li className="list-inline-item">
+                                        <i className="las la-star"></i>
+                                      </li>
+                                      <li className="list-inline-item">
+                                        <i className="las la-star-half-alt"></i>
+                                      </li>
+                                      <li className="list-inline-item">
+                                        (4.5)
+                                      </li>
+                                    </ul>
+                                  </div>
+                                  <div className="student">
+                                    <p>
+                                      <i className="las la-chair"></i>60
+                                    </p>
                                   </div>
                                 </div>
                               </div>
-                            </Col>
+                            </div>
+                          </Col>
                           // </Row>
                         ))
                       ) : (

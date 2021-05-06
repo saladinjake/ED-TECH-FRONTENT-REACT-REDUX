@@ -1,21 +1,21 @@
 {
-    "secTitle": "We have experienced and passionate trainers who share their expertise and knowledge with the world.",
-    "secDesc": "Seasoned and certified corporate trainers and instructors can create and market a course on Questence. You can either monetize yur content directly through us or partner with any of our learning partner institutions to create tailored and customized curriculum for specific programmes",
-    "dataList": [
-        {
-            "iconTitle": "Engage learners",
-            "iconSubtitle": "Drive learner engagment with our monitoring tools, conduct tests, quick surveys and interviews with ease"
-        },
-        {
-            "iconTitle": "Institution partnerships",
-            "iconSubtitle": "Partner with any of our accredited institutions or government agencies to deliver customized programmes"
-        },
-        {
-            "iconTitle": "Authoring tools",
-            "iconSubtitle": "We have the latest technology authoring tools to deliver excellent quality image and video quality for your content"
-        }
-    ],
-    "aboutImageOne": "about-2.jpg",
-    "aboutImageTwo": "about-3.jpg",
-    "experianceYear": "15"
+  "secTitle": "We have experienced and passionate trainers who share their expertise and knowledge with the world.",
+  "secDesc": "Seasoned and certified corporate trainers and instructors can create and market a course on Questence. You can either monetize yur content directly through us or partner with any of our learning partner institutions to create tailored and customized curriculum for specific programmes",
+  "dataList": [
+    {
+      "iconTitle": "Engage learners",
+      "iconSubtitle": "Drive learner engagment with our monitoring tools, conduct tests, quick surveys and interviews with ease"
+    },
+    {
+      "iconTitle": "Institution partnerships",
+      "iconSubtitle": "Partner with any of our accredited institutions or government agencies to deliver customized programmes"
+    },
+    {
+      "iconTitle": "Authoring tools",
+      "iconSubtitle": "We have the latest technology authoring tools to deliver excellent quality image and video quality for your content"
+    }
+  ],
+  "aboutImageOne": "about-2.jpg",
+  "aboutImageTwo": "about-3.jpg",
+  "experianceYear": "15"
 }

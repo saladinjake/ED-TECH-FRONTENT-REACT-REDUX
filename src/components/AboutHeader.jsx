@@ -9,14 +9,23 @@ const Features = () => {
         <Row>
           <Col lg="7">
             <div className="features__item shortintro">
-              <span>About us</span> <br/>
-              <h2>TLorem ipsum dolor sit <br/>amet, conconsectetur <br/>adipiscing elit. </h2>
+              <span>About us</span> <br />
+              <h2>
+                TLorem ipsum dolor sit <br />
+                amet, conconsectetur <br />
+                adipiscing elit.{" "}
+              </h2>
             </div>
           </Col>
-        <Col lg="5">
-          <img src={process.env.PUBLIC_URL + `/assets/images/aboutheaders.jpg`} className="main-img" alt="" width="450px" />
-        </Col>
-      </Row>
+          <Col lg="5">
+            <img
+              src={process.env.PUBLIC_URL + `/assets/images/aboutheaders.jpg`}
+              className="main-img"
+              alt=""
+              width="450px"
+            />
+          </Col>
+        </Row>
       </Container>
     </section>
   );

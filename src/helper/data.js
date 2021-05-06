@@ -14,4 +14,10 @@ export const LearnigStyles = ["Self Paced", "Instructor Led"];
 
 export const EmploymentStatus = ["Employed", "Not Employed"];
 export const ExperienceLevel = ["Professional", "Master"];
-export const MaritalStatus = ["Single", "Married", "Widowed", "Divorced", "Seperated"];
+export const MaritalStatus = [
+  "Single",
+  "Married",
+  "Widowed",
+  "Divorced",
+  "Seperated",
+];

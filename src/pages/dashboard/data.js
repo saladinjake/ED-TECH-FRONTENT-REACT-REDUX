@@ -122,5 +122,5 @@ export const INSTRUCTORLINKS = [
   {
     name: "Notifications",
     link: "/instructor/notifications",
-  }
+  },
 ];

@@ -23,13 +23,13 @@ const InstructorDeclinedCourses = () => {
 
   const fetchAuthProfile = async () => {
     try {
-     let allCourses = await getInstructorCourses();
-     setActiveCourses(
-       allCourses.data.data.data.length > 0 &&
-         allCourses.data.data.data.filter((course) => {
-           return parseInt(course.status) === -1;
-         })
-     );
+      let allCourses = await getInstructorCourses();
+      setActiveCourses(
+        allCourses.data.data.data.length > 0 &&
+          allCourses.data.data.data.filter((course) => {
+            return parseInt(course.status) === -1;
+          })
+      );
     } catch (err) {
       toast.error(
         err?.response?.data?.message || `Error occured fetching active courses`

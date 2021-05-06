@@ -5,7 +5,6 @@ import questence from "assets/svgs/questence-logo.svg";
 import { useHistory } from "react-router-dom";
 import { ReactComponent as Dropdown } from "svgs/dropdown.svg";
 
-
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logOut } from "actions/authActions";
@@ -27,7 +26,6 @@ const InstructorNavBar = ({ auth: { isAuthenticated, user }, logOut }) => {
     await logOut();
     history.push("/login");
   };
-
 
   const handleSearch = (e) => {
     e.preventDefault();

@@ -1,22 +1,21 @@
-import React, { useEffect, useState, Fragment } from 'react'
-import './carousel.css';
-import "./wishlist.css"
-import {Link } from "react-router-dom"; 
-import { addToWishlist } from "services/wishlist"
+import React, { useEffect, useState, Fragment } from "react";
+import "./carousel.css";
+import "./wishlist.css";
+import { Link } from "react-router-dom";
+import { addToWishlist } from "services/wishlist";
 import { Container, Row, Col } from "react-bootstrap";
 
-
 const Carousel = (props) => {
-    const {children, show, title} = props
+  const { children, show, title } = props;
 
-    const [currentIndex, setCurrentIndex] = useState(0)
-    const [length, setLength] = useState(children.length)
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [length, setLength] = useState(children.length);
 
-    const [touchPosition, setTouchPosition] = useState(null)
+  const [touchPosition, setTouchPosition] = useState(null);
 
-    // Set the length to match current children from props
+  // Set the length to match current children from props
 
-//     const [coursedetails, setCourseDetails] = useState({});
+  //     const [coursedetails, setCourseDetails] = useState({});
   // eslint-disable-next-line
   const [status, setStatus] = useState("init");
   const [loading, setLoading] = useState(true);
@@ -25,9 +24,9 @@ const Carousel = (props) => {
 
   const addToMyWishList = async (id) => {
     setStatus("loading");
-    console.log(id)
+    console.log(id);
     try {
-       await addToWishlist(id)
+      await addToWishlist(id);
       setStatus("success");
     } catch (err) {
       setStatus("error");
@@ -36,147 +35,191 @@ const Carousel = (props) => {
   };
 
   useEffect(() => {
-    (async function loadContent() {
-      
-    })();
+    (async function loadContent() {})();
     // eslint-disable-next-line
   }, []);
+
+
+
 
   useEffect(() => {
     (async function CheckStatus() {
       // if (isAuthenticated === true) {
-        try {
-          
-        } catch (err) {
-          // toast.error(
-          //   err?.response?.data?.message ||
-          //     `Error occured fetching active courses`
-          // );
-        }
-        setLoading(false);
+      try {
+      } catch (err) {
+        // toast.error(
+        //   err?.response?.data?.message ||
+        //     `Error occured fetching active courses`
+        // );
+      }
+      setLoading(false);
       // }
     })();
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    setLength(children.length);
+  }, [children]);
 
-    useEffect(() => {
-        setLength(children.length)
+  const next = () => {
+    if (currentIndex < length - show) {
+      setCurrentIndex((prevState) => prevState + 1);
+    }
+  };
 
-        
+  const prev = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex((prevState) => prevState - 1);
+    }
+  };
 
-  
-       
-    }, [children])
+  const handleTouchStart = (e) => {
+    const touchDown = e.touches[0].clientX;
+    setTouchPosition(touchDown);
+  };
 
-    const next = () => {
-        if (currentIndex < (length - show)) {
-            setCurrentIndex(prevState => prevState + 1)
-        }
+  const handleTouchMove = (e) => {
+    const touchDown = touchPosition;
+
+    if (touchDown === null) {
+      return;
     }
 
-    const prev = () => {
-        if (currentIndex > 0) {
-            setCurrentIndex(prevState => prevState - 1)
-        }
+    const currentTouch = e.touches[0].clientX;
+    const diff = touchDown - currentTouch;
+
+    if (diff > 5) {
+      next();
     }
 
-    const handleTouchStart = (e) => {
-        const touchDown = e.touches[0].clientX
-        setTouchPosition(touchDown)
+    if (diff < -5) {
+      prev();
     }
 
-    const handleTouchMove = (e) => {
-        const touchDown = touchPosition
+    setTouchPosition(null);
+  };
 
-        if(touchDown === null) {
-            return
-        }
-
-        const currentTouch = e.touches[0].clientX
-        const diff = touchDown - currentTouch
-
-        if (diff > 5) {
-            next()
-        }
-
-        if (diff < -5) {
-            prev()
-        }
-
-        setTouchPosition(null)
-    }
-
-    return (
-    
-        <div className="carousel-container">
-        <h3> { /*title */}</h3>
-            <div className="carousel-wrapper">
-                {/* You can alwas change the content of the button to other things */}
-                <button onClick={prev}   className="left-arrow" style={{background: "#212529", color:"#fff"}}>
-                        &lt;
-                    </button>
-                <div
-                    className="carousel-content-wrapper gridDisplay"
-                    onTouchStart={handleTouchStart}
-                    onTouchMove={handleTouchMove}
-                >
-                    <div
-                        className={`carousel-content show-${8}`}
-                        style={{ transform: `translateX(-${currentIndex * (100 / 4)}%)` }}
-                    >
-
-                    {children.map( (data,i)=> {
-                      
-
-                      return (
-                            <Col lg="3" md="9" key={i}>
+  return (
+    <div className="carousel-container">
+      <h3> {/*title */}</h3>
+      <div className="carousel-wrapper">
+        {/* You can alwas change the content of the button to other things */}
+        <button
+          onClick={prev}
+          className="left-arrow"
+          style={{ background: "#212529", color: "#fff" }}
+        >
+          &lt;
+        </button>
+        <div
+          className="carousel-content-wrapper gridDisplay"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+        >
+          <div
+            className={`carousel-content show-${8}`}
+            style={{ transform: `translateX(-${currentIndex * (100 / 4)}%)` }}
+          >
+            {children.map((item, i) => {
+              return (
 
 
+              <div class="product">
+                            <figure>
+                                <Link
+                                                to={process.env.PUBLIC_URL+ "/courses/" + item.id + "/" + item.slug}
+                                                className="image-popup"
+                                                title="Screenshot-1"
+                                              >
+                                                {item.course_cover_image !== null ? (
+                                                  <img
+                                                    src={item.course_cover_image}
+                                                    className="thumb-img imagemix"
+                                                    alt="work-thumbnail"
+                                                    style={{ width: "100%", height: "auto" }}
+                                                  />
+                                                ) : (
+                                                  <Fragment />
+                                                )}{" "}
+                                                <div className="middle-overlay"></div>
+                                              </Link>
+                                </figure>
+
+                                <div class="product-description">
                             
+                                  <div class="info">
+                                    
+                                    <p style={{height:"50px", color:"blue"}}>
+                                      
+                                          <Link
+                                            to={ process.env.PUBLIC_URL+ "/courses/" + item.id + "/" + item.slug}
+                                            style={{ fontSize: "14px" }}
+                                            className="text-dark"
+                                          >
+                                            {item.course_name}
+                                          </Link>
+                                     
+                                    
+                                    </p>
+                                    <p>A course by {item?.instructor?.user?.first_name !== null &&
+                             item?.instructor?.user?.first_name  +" " + item?.instructor?.user?.last_name}</p>
 
+                                  </div>
 
-                     <div className="widget">
-                        <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
-                        <div className="widgetImage animation">
-                          <img src={`${data.course_cover_image}`} alt="Product 1" />
-                        </div>
-                        <div className="widgetContent animation" >
-                          <h6 className="widgetTitle">
-                        {data.course_name}
-                         </h6>
-                         <p style={{padding: "10px"}}>
-                        A course by {data.instructor.user.first_name}  {data.instructor.user.last_name}  
-                         </p>
-                         <div className="widgetSubTitle">
-                         <hr style={{width:"240px"}}/>
-                          <h2 >Course</h2>
-                         </div>
-                          
-                        </div>
-                        </Link>
-                      </div>
+                                  <div class="priceX">
+                                    {""}
+                                  </div>
+                                </div>
 
-                      </Col>
-                      )
-                    })}
-                        
-                  
-
-
-
-                    </div>
-                </div>
-                {/* You can alwas change the content of the button to other things */}
-                <button onClick={next}   className="right-arrow" style={{background: "#212529", color:"#fff"}}>
-                        &gt;
-                    </button>)
-                    
-                
-            </div>
-        </div>
        
-    )
-}
 
-export default Carousel
+                                  <div class="product-sidebar card-box">
+                                  <h6>{item.course_name} </h6>
+                                  <hr style={{backgroundColor:"blue"}}/>
+                                   <p>{item.course_overview.length > 0 && item.course_overview.substring(0,200)+ "..." }</p>
+                                    <br/>
+                                    <div class="card-box price" style={{float:"right"}}>
+                                    NGN { item.price }
+                                  </div>
+
+                                    <div style={{marginBottom:"0px", paddingTop:"80px"}}>
+
+                                     
+
+                                    <Link
+                                    className="btn btn-primary btn-large" style={{marginRight:"20px"}}
+                                    to={process.env.PUBLIC_URL + "/courses/" + item.id + "/" + item.slug }
+                                      ><span className="fa fa-shopping-cart" ></span>Add to cart</Link> 
+                                    
+                                      <Link
+                                    className="btn btn-danger btn-large"
+                                    to={process.env.PUBLIC_URL + "/courses/" + item.id + "/" + item.slug }
+                                      ><span className="fa fa-heart" ></span>Add to wishlist</Link> 
+
+
+                                     
+                                      
+                                      </div>
+                                  </div>
+                        </div>
+                
+              );
+            })}
+          </div>
+        </div>
+        {/* You can alwas change the content of the button to other things */}
+        <button
+          onClick={next}
+          className="right-arrow"
+          style={{ background: "#212529", color: "#fff" }}
+        >
+          &gt;
+        </button>
+        )
+      </div>
+    </div>
+  );
+};
+
+export default Carousel;

@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 const CourseStyle = ({ course: { courses }, setFilterAllCourses }) => {
-
   const filterStyle = (e) => {
     if (parseInt(e.target.value) === 0) {
       setFilterAllCourses([...courses]);

@@ -10,7 +10,6 @@ export const getCourses = async () => {
   });
 };
 
-
 export const getCourse = async (id) => {
   let request = axios.get(`courses/${id}`);
   return request.then((response) => {

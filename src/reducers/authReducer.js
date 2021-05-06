@@ -9,7 +9,8 @@ import {
 } from "./../actions/types";
 
 const cachedUser = localStorage && JSON?.parse(localStorage.getItem("user"));
-const cachedRole = localStorage && JSON?.parse(localStorage.getItem("user_roles"));
+const cachedRole =
+  localStorage && JSON?.parse(localStorage.getItem("user_roles"));
 const cachedToken = localStorage && localStorage.getItem("token");
 const cachedAuthorization = localStorage.user && localStorage.token;
 
@@ -30,13 +31,16 @@ export default (state = initialState, action) => {
       localStorage.setItem("access_token", action.payload.access_token);
       localStorage.setItem("token", action.payload.access_token);
       localStorage.setItem("user", JSON.stringify(action.payload.user));
-      localStorage.setItem("user_roles", JSON.stringify(action.payload.user_roles));
+      localStorage.setItem(
+        "user_roles",
+        JSON.stringify(action.payload.user_roles)
+      );
       return {
         ...state,
         loading: false,
         user: action.payload.user,
         token: action.payload.access_token,
-        user_roles:action.payload.user_roles,
+        user_roles: action.payload.user_roles,
         isAuthenticated: true,
         errFlag: false,
       };
@@ -49,12 +53,12 @@ export default (state = initialState, action) => {
       localStorage.removeItem("user_roles");
       localStorage.removeItem("cart");
       localStorage.removeItem("total");
-      
+
       return {
         ...state,
         token: null,
         loading: false,
-        user_roles:null,
+        user_roles: null,
         isAuthenticated: false,
         isRegistered: false,
         user: null,

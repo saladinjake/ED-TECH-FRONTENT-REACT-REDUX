@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors } from './elements.js';
+import { colors } from "./elements.js";
 
 export const Styles = styled.div`
   /* Course Category */

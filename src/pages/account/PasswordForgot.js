@@ -10,7 +10,6 @@ import toast from "react-hot-toast";
 import { Formik } from "formik";
 import Footer from "components/Footer";
 
-
 import { loginUserForgotPassword } from "services/auth";
 
 import PropTypes from "prop-types";
@@ -33,16 +32,16 @@ const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
     setLoading(true);
     try {
       const res = await loginUserForgotPassword(values);
-      console.log(res.data)
+      console.log(res.data);
       toast.success("An email has been sent");
       // login(res.data);
-      
-      if (res) {
-          history.push("/reset/password");
-      } else {
-          history.push("/register");
-      }
-      
+
+      // if (res) {
+      //   history.push("/reset/password");
+      // } else {
+      //   history.push("/register");
+      // }
+
       setSubmitting(false);
     } catch (err) {
       toast.error(err?.response?.data?.message);
@@ -106,7 +105,7 @@ const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
                             {errors.email && touched.email && errors.email}
                           </span>
                         </p>
-                        
+
                         <button type="submit" disabled={isSubmitting}>
                           {loading ? (
                             <div className="spinner-border" role="status">
@@ -174,5 +173,4 @@ const LoginSchema = Yup.object().shape({
     .min(2, "Too Short!")
     .max(50, "Too Long!")
     .required("Required"),
-
 });

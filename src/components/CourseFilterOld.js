@@ -9,11 +9,10 @@ import { fetchCourses } from "actions/coursesActions";
 import { getCourses } from "services/course";
 import toast from "react-hot-toast";
 
+import CourseFilteredCarousel from "./CourseFilteredCarousel";
 
-import CourseFilteredCarousel from "./CourseFilteredCarousel"
-
-import "./filter.css"
-import "./carousel.css"
+import "./filter.css";
+import "./carousel.css";
 import Loader from "components/Loader/Loader";
 
 const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
@@ -64,7 +63,7 @@ const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
   const filterCourses = (e) => {
     console.log(parseInt(e.target.getAttribute("data-cat")));
     // // Filter Courses
-    let catId = parseInt(e.target.getAttribute('data-cat'));
+    let catId = parseInt(e.target.getAttribute("data-cat"));
     if (catId > 0) {
       courses.length > 0 &&
         setAllCourses(
@@ -78,13 +77,6 @@ const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
     // Filter Courses
   };
 
-
-
-
-
-
-
-
   return (
     <Styles>
       <section className="course-filter">
@@ -96,10 +88,8 @@ const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
               </div>
             </Col>
             <Col md="12">
+              <BrowseByCategory />
 
-            
-           <BrowseByCategory />
-           
               <div className="filter-btns text-center">
                 <ul className="filter-btn-list list-unstyled list inline">
                   <li
@@ -142,33 +132,43 @@ const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
                 ) : allCourses.length > 0 ? (
                   <Fragment>
                     {allCourses.map((data, i) => (
+                      <Col lg="3" md="9" key={i}>
+                        <div className="widget">
+                          <Link
+                            to={`${process.env.PUBLIC_URL}/courses/${data.id}`}
+                          >
+                            <div className="widgetImage animation">
+                              <img
+                                src={`${data.course_cover_image}`}
+                                alt="Product 1"
+                              />
+                            </div>
+                            <div
+                              className="widgetContent animation"
+                              style={{
+                                background: `linear-gradient(200deg, #fff 30%, #2a0845 60%)`,
+                              }}
+                            >
+                              <h6 className="widgetTitle">
+                                {data.course_name}
+                              </h6>
+                              <h2 className="widgetSubTitle">Course</h2>
 
-
-
-                       
-  
-  
-
-                       <Col lg="3" md="9" key={i}>
-
-                       <div className="widget">
-                        <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
-                        <div className="widgetImage animation">
-                          <img src={`${data.course_cover_image}`} alt="Product 1" />
+                              <p
+                                className="convey_desc"
+                                style={{
+                                  color: "#fff",
+                                  wordWrap: "break-word",
+                                  wordBreak: "break-all",
+                                }}
+                              >
+                                {data.course_description.substring(0, 40)}
+                              </p>
+                            </div>
+                          </Link>
                         </div>
-                        <div className="widgetContent animation" style={{background: `linear-gradient(200deg, #fff 30%, #2a0845 60%)` }}>
-                          <h6 className="widgetTitle">
-                        {data.course_name}
-                         </h6>
-                          <h2 className="widgetSubTitle">Course</h2>
-                         
-                           <p className="convey_desc" style={{color:"#fff", wordWrap: "break-word",  wordBreak: "break-all"}}>{data.course_description.substring(0,40)}</p>
-                        </div>
-                        </Link>
-                      </div>
 
-
-                {/*<div className="course-item " style={{width:"200px",height:"300px", background:"#fff"}}>
+                        {/*<div className="course-item " style={{width:"200px",height:"300px", background:"#fff"}}>
                   <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
                     <div
                       
@@ -233,7 +233,7 @@ const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
                     </div>
                   </div>
                 </div>*/}
-              </Col>
+                      </Col>
                     ))}
                   </Fragment>
                 ) : (
@@ -255,149 +255,162 @@ const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
   );
 };
 
-
-
-
-class BrowseByCategory extends React.Component{
-    constructor(props){
-        super(props);
-        this.state ={
-            data:[],
-            length: 0,
-            index: 0
-        }
+class BrowseByCategory extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+      length: 0,
+      index: 0,
+    };
+  }
+  async componentDidMount() {
+    try {
+      const response = await getCourses();
+      this.setState({
+        data: response.data.data.courses,
+        length: response.data.data.courses.length,
+      });
+    } catch (err) {
+      toast.error("Error occured fetching notifications");
     }
-    async componentDidMount(){
-          try{
-        const response = await  getCourses();
-        this.setState({
-            data: response.data.data.courses,
-            length: response.data.data.courses.length
-        })
-          
-       } catch (err) {
-         toast.error("Error occured fetching notifications");
-       }
-    }    
-    render(){
-      const { data } = this.state;
-      let CourseCategoryWrangler = data.reduce(function (groupedByCategory, course) {
-     // console.log(groupedByCategory,course)
-         if (!groupedByCategory[course.category.name]) {
-           groupedByCategory[course.category.name] = [] //cartSet;
-         }
-         groupedByCategory[course.category.name].push(course)
-         return  groupedByCategory;
-      }, []);
-      let children = []
-      var merged =[]
-
-      for(let item in CourseCategoryWrangler){
-        let children = [...Array.from(Object.entries(CourseCategoryWrangler[item]))]
-        // var merged = []  // [].concat.apply([], children);
-        var merged = [].concat.apply(merged, children);
+  }
+  render() {
+    const { data } = this.state;
+    let CourseCategoryWrangler = data.reduce(function (
+      groupedByCategory,
+      course
+    ) {
+      // console.log(groupedByCategory,course)
+      if (!groupedByCategory[course.category.name]) {
+        groupedByCategory[course.category.name] = []; //cartSet;
       }
+      groupedByCategory[course.category.name].push(course);
+      return groupedByCategory;
+    },
+    []);
+    let children = [];
+    var merged = [];
 
+    for (let item in CourseCategoryWrangler) {
+      let children = [
+        ...Array.from(Object.entries(CourseCategoryWrangler[item])),
+      ];
+      // var merged = []  // [].concat.apply([], children);
+      var merged = [].concat.apply(merged, children);
+    }
 
+    function removeDuplicates(arr) {
+      let uniq = {};
+      return arr.filter(
+        (obj) => !uniq[obj.course_code] && (uniq[obj.course_code] = true)
+      );
+    }
 
-        function removeDuplicates(arr) {
-          let uniq = {};
-          return arr.filter(obj => !uniq[obj.course_code] && (uniq[obj.course_code] = true))
-        }
+    function groupByKey(array) {
+      return array.reduce((hash, obj) => {
+        if (obj.category.name === undefined) return hash;
+        return Object.assign(hash, {
+          [obj.category.name]: (hash[obj.category.name] || []).concat(obj),
+        });
+      }, {});
+    }
 
+    var uniqueArray = removeDuplicates(merged);
+    console.log(uniqueArray);
 
+    console.log(groupByKey(uniqueArray.slice(1)));
 
-        function groupByKey(array) {
-           return array
-             .reduce((hash, obj) => {
-               if(obj.category.name === undefined) return hash; 
-               return Object.assign(hash, { [obj.category.name] :( hash[obj.category.name] || [] ).concat(obj)})
-             }, {})
-        }
+    let groupedData = groupByKey(uniqueArray.slice(1));
 
+    return data.length === 0 ? (
+      <Fragment>
+        <br />
+        <p>Loading..</p>
+      </Fragment>
+    ) : (
+      <Fragment>
+        <br />
 
-        var uniqueArray = removeDuplicates(merged);
-        console.log(uniqueArray)
+        <h4 className="text-header text-dark "> My Courses</h4>
+        <br />
+        <div className="row">
+          <div className="col-lg-2 pull-left">
+            <Link
+              to="../courses"
+              style={{ background: "#0253c8", color: "#fff" }}
+              className="btn  waves-effect waves-light pull-left m-b-10"
+            >
+              <i className="md  md-chevron-left"></i> See All courses
+            </Link>{" "}
+          </div>
 
-        console.log(groupByKey(uniqueArray.slice(1)))
-
-        let groupedData = groupByKey(uniqueArray.slice(1));
-
-
-
-          
-
-         
-            return (
-              data.length === 0 
-                ?( 
-<Fragment><br/>
-                   <p>Loading..</p>
-
-
-
-                       
-            </Fragment>
-
-
-                  )
-                : (
-                      <Fragment>
-                      <br/>
-
-                      <h4 className="text-header text-dark "> My Courses</h4><br/>
-                        <div className="row">
-
-                        <div className="col-lg-2 pull-left"><Link to="../courses" style={{background: "#0253c8", color:"#fff"}} className="btn  waves-effect waves-light pull-left m-b-10"><i className="md  md-chevron-left"></i> See All courses</Link> </div>
-                            
-                           <div className="col-md-12" style={{ maxWidth: 1200, marginLeft: 'auto', marginRight: 'auto', marginTop: 64 }}>
-                       
-                           {/*<div id="slide">
+          <div
+            className="col-md-12"
+            style={{
+              maxWidth: 1200,
+              marginLeft: "auto",
+              marginRight: "auto",
+              marginTop: 64,
+            }}
+          >
+            {/*<div id="slide">
                                  <div id="toggle">&#9776;</div>
                                  <div class="box">Content</div>
                             </div>*/}
-          
-                          
 
-                            <CourseFilteredCarousel title="Business"  show={4} children={groupedData['Business']}  />
-                           <CourseFilteredCarousel title="Technology"  show={4} children={groupedData['Technology']}  />
-                           <CourseFilteredCarousel title="Maths And Sciences"  show={4} children={groupedData['Mathematics and Sciences']} />
-                           <CourseFilteredCarousel title="Languages"  show={4} children={groupedData['Languages']} />
-                           <CourseFilteredCarousel title="Engineering" show={4} children={groupedData['Engineering']} />
-                           <CourseFilteredCarousel title="Law" show={4} children={groupedData['Law']} />
-                           <CourseFilteredCarousel title="Health And Nutrition" show={4} children={groupedData['Health and Nutrition']} />
-                           <CourseFilteredCarousel title="Social Sciences"  show={4} children={groupedData['Social Sciences']} />
-                                  
+            <CourseFilteredCarousel
+              title="Business"
+              show={4}
+              children={groupedData["Business"]}
+            />
+            <CourseFilteredCarousel
+              title="Technology"
+              show={4}
+              children={groupedData["Technology"]}
+            />
+            <CourseFilteredCarousel
+              title="Maths And Sciences"
+              show={4}
+              children={groupedData["Mathematics and Sciences"]}
+            />
+            <CourseFilteredCarousel
+              title="Languages"
+              show={4}
+              children={groupedData["Languages"]}
+            />
+            <CourseFilteredCarousel
+              title="Engineering"
+              show={4}
+              children={groupedData["Engineering"]}
+            />
+            <CourseFilteredCarousel
+              title="Law"
+              show={4}
+              children={groupedData["Law"]}
+            />
+            <CourseFilteredCarousel
+              title="Health And Nutrition"
+              show={4}
+              children={groupedData["Health and Nutrition"]}
+            />
+            <CourseFilteredCarousel
+              title="Social Sciences"
+              show={4}
+              children={groupedData["Social Sciences"]}
+            />
 
-                                     
-        {/* Object.entries(groupedData).map( (item,value) =>{
+            {/* Object.entries(groupedData).map( (item,value) =>{
               return(<div> <CourseFilteredCarousel  show={4} children={item}  /></div>)
 
           
         })*/}
-                                  
-                                        </div>
-
-                          </div>
-
-
-
-
-                          
-
-                    </Fragment>
-                       
-
-
-                      
-
-                 )
-            )
-          
-    }
+          </div>
+        </div>
+      </Fragment>
+    );
+  }
 }
-
-
 
 // export default CourseFilter;
 CourseFilter.propTypes = {

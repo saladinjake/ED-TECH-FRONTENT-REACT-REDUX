@@ -29,9 +29,10 @@ const ImageLoad = React.memo(({ src, placeholder, alt = "" }) => {
 
 export default ImageLoad;
 
-
-{/* <ImageLoad
+{
+  /* <ImageLoad
   src="original-image.jpg"
   placeholder="placeholder.jpg"
   alt="Decription"
-/>; */}
+/>; */
+}

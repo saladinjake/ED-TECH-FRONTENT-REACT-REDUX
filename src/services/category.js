@@ -10,7 +10,6 @@ export const getCategories = () => {
   });
 };
 
-
 export const getCertificates = () => {
   let request = axios.get("certificates");
   return request.then((response) => {

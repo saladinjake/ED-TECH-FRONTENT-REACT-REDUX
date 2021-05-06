@@ -79,7 +79,7 @@ export const AUTHLINKS = [
   {
     name: "Billing",
     link: "/billing",
-  }
+  },
 ];
 
 export const INSTRUCTORLINKS = [
@@ -98,5 +98,5 @@ export const INSTRUCTORLINKS = [
   {
     name: "Notifications",
     link: "/instructor/notifications",
-  }
+  },
 ];

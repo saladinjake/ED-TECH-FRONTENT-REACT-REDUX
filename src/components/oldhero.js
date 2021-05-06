@@ -1,4 +1,5 @@
- {/*<section className="hero-area">
+{
+  /*<section className="hero-area">
       <Container>
       <Row>
         <Col lg="7">
@@ -30,4 +31,5 @@
       </Row>
       </Container>
   
-    </section>*/}
+    </section>*/
+}

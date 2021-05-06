@@ -50,7 +50,11 @@ const Notifications = () => {
                       <Fragment>
                         <ul className="list-group check-list">
                           {notifications.map((item, i) => {
-                            return <li className="list-group-item" key={i}>{item.message}</li>;
+                            return (
+                              <li className="list-group-item" key={i}>
+                                {item.message}
+                              </li>
+                            );
                           })}
                         </ul>
                       </Fragment>

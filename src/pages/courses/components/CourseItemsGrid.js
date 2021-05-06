@@ -2,9 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Col } from "react-bootstrap";
 import Pagination from "./Pagination";
-import "./filter.css"
-
-
+import "./filter.css";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -12,16 +10,24 @@ import { addToCart } from "actions/cartActions";
 import { getAuthProfile } from "services/learner.js";
 import toast from "react-hot-toast";
 
-function CourseItemGrid({ allCourses, courses , auth: { isAuthenticated },
+import { addToWishList } from "actions/wishListActions";
+
+
+function CourseItemGrid({
+  allCourses,
+  courses,
+  auth: { isAuthenticated },
   cart: { cart },
-  addToCart }) {
+  wishList: { wishList },
+  addToCart,
+}) {
   const [currentPage, setCurrentPage] = useState(1);
   const [coursePerPage] = useState(50);
   const [currentCourses, setCurrCourses] = useState([]);
 
-//added
+  //added
   const [enrolledCourses, setEnrolledCourses] = useState([]);
- 
+
   const [coursedetails, setCourseDetails] = useState({});
   // eslint-disable-next-line
   const [status, setStatus] = useState("init");
@@ -31,10 +37,11 @@ function CourseItemGrid({ allCourses, courses , auth: { isAuthenticated },
   var indexOfLastCourse = currentPage * coursePerPage;
   var indexOfFirstCourse = indexOfLastCourse - coursePerPage;
 
-
   //added
 
-   useEffect(() => {
+  console.log(wishList)
+
+  useEffect(() => {
     (async function CheckStatus() {
       if (isAuthenticated === true) {
         try {
@@ -42,9 +49,8 @@ function CourseItemGrid({ allCourses, courses , auth: { isAuthenticated },
           let enrolledCourses = res.data.data;
 
           let ids = enrolledCourses.map((course) => course.course.id);
-          
-          setEnrolledCourses([...ids]);
 
+          setEnrolledCourses([...ids]);
 
           console.log(ids);
         } catch (err) {
@@ -59,8 +65,7 @@ function CourseItemGrid({ allCourses, courses , auth: { isAuthenticated },
     // eslint-disable-next-line
   }, []);
 
-
-   const checkCourseStatus = (courseId) => {
+  const checkCourseStatus = (courseId) => {
     var check = false;
     if (enrolledCourses.length > 0) {
       check = enrolledCourses.includes(courseId);
@@ -91,119 +96,101 @@ function CourseItemGrid({ allCourses, courses , auth: { isAuthenticated },
       {currentCourses.length > 0 ? (
         <Fragment>
           {currentCourses.map((data, i) => {
-            console.log(data)
+            
             return (
-              
-                 
-<Fragment>
-                       <div className="widget grid">
-                        <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
-                        <div className="widgetImage animation">
-                          <img src={`${data.course_cover_image}`} alt="Product 1" />
-                          
-
-                        </div>
-                        <div className="widgetContent animation" >
-                          <h6 className="widgetTitle">
-                        {data.course_name}
-                         </h6>
-                         <p style={{padding: "10px"}}>
+              <Fragment  key={data.id}>
+                <div className="widget grid grid-item" >
+                  
+                    <div className="widgetImage animation">
+                    <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
+                      <img src={`${data.course_cover_image}`} alt="Product 1" />
+                         </Link>
+                    </div>
+                    <div className="widgetContent animation">
+                      <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
+                         <h6 className="widgetTitle">{data.course_name}</h6>
+                      </Link>
+                      <p style={{ padding: "10px" }}>
                         A course by {data.instructor.user.first_name}
-                         </p>
+                      </p>
 
-
-                          <div className="short_desc">
-                         
-                          <p style={{color:"#333"}}>{data.course_description}</p>
-
-                           </div>
-
-
-
-                          <div className="course_infox" >
-                             <br/><br/>
-                              
-                               <div class="info">
-                                 
-                                  <p style={{float:"left", marginLeft:"20px"}}>
-                                   Category  {data.category.name}
-                                  </p>
-
-                                  <p  style={{float:"left", marginLeft:"20px"}}>
-                                     Language {data.language.english}
-                                  </p>
-
-                                  <p  style={{float:"left", marginLeft:"20px"}}>
-                                    Learning Style {data.learning_style}
-                                  </p>
-                                </div>
-
-                                <div class="price" style={{float:"right"}}>
-                                <i className="fa fa-2x fa-shopping-cart"></i> N {data.price}
-                                </div>
-
-                                <div>
-                                <br/>
-
-                                 {isAuthenticated ? (
-                              checkCourseStatus(data.id) ? (
-                                ""
-                              ) : (
-                                <button
-                                  type="button"
-                                  onClick={
-                                  
-                                     addToCart.bind(
-                                       this,
-                                       data?.id
-                                      )
-
-                                      
-                                }
-                                  className="btn btn-primary add-to-cart"
-                                >
-                                  Add to cart
-                                </button>
-                              )
-                            ) : (
-                              <button
-                              className="btn btn-primary add-to-cart"
-                              type="button"
-                        
-                                onClick= {(e) =>{
-                                   return window.location.href= process.env.PUBLIC_URL + `/login`
-                                 
-                                }}
-                              >
-                               <i className="fa fa-lock"></i> Login To Enroll
-                              </button>
-                            )}
-
-
-                            <button
-                              className="btn btn-danger add-to-cart"
-                              type="button"
-                                onClick= {(e) =>{ }}
-                              >
-
-                              <i className="fa fa-heart"></i>Add to Wish List  </button>
-                                    
-                                </div>
-                            
-                          </div>
-
-                        <br/>
-                         <div className="widgetSubTitle">
-                         <hr style={{width:"240px"}}/>
-                          <h2 >Course</h2>
-                         </div>
-                           
-
-
-                        </div>
-                        </Link>
+                      <div className="short_desc">
+                        <p style={{ color: "#333" }}>
+                          {data.course_description}
+                        </p>
                       </div>
 
+                      <div className="course_infox">
+                        <br />
+                        <br />
+
+                        <div className="info">
+                          <p style={{ float: "left", marginLeft: "20px" }}>
+                            Category {data.category.name}
+                          </p>
+
+                          <p style={{ float: "left", marginLeft: "20px" }}>
+                            Language {data.language.english}
+                          </p>
+
+                          <p style={{ float: "left", marginLeft: "20px" }}>
+                            Learning Style {data.learning_style}
+                          </p>
+                        </div>
+
+                        <div className="price" style={{ float: "right" }}>
+                          <i className="fa fa-2x fa-shopping-cart"></i> N{" "}
+                          {data.price}
+                        </div>
+
+                        <div>
+                          <br />
+
+                          {isAuthenticated ? (
+                            checkCourseStatus(data.id) ? (
+                              ""
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={addToCart.bind(this, data?.id)}
+                                className="btn btn-primary add-to-cart"
+                              >
+                                Add to cart
+                              </button>
+                            )
+                          ) : (
+                            <button
+                              className="btn btn-primary add-to-cart"
+                              type="button"
+                              onClick={(e) => {
+                                return (window.location.href =
+                                  process.env.PUBLIC_URL + `/login`);
+                              }}
+                            >
+                              <i className="fa fa-lock"></i> Login To Enroll
+                            </button>
+                          )}
+
+                          <button
+                            className="btn btn-info add-to-cart"
+                            type="button"
+                            onClick={() =>{window.location.href =
+                                  process.env.PUBLIC_URL + `/courses/`+ data.id
+                                }}
+                          >
+                            <i style={{marginRight:"10px"}} className="fa fa-eye"></i>Course Detail{" "}
+                          </button>
+                        </div>
+                      </div>
+
+                      <br />
+                      <div className="widgetSubTitle">
+                        <hr style={{ width: "240px" }} />
+                        <h2>Course</h2>
+                      </div>
+                    </div>
+               
+                </div>
 
                 {/*<div className="course-item " style={{width:"200px",height:"300px", background:"#fff"}}>
                   <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
@@ -293,7 +280,6 @@ function CourseItemGrid({ allCourses, courses , auth: { isAuthenticated },
 
 // export default CourseItemGrid;
 
-
 CourseItemGrid.propTypes = {
   cart: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
@@ -303,9 +289,11 @@ CourseItemGrid.propTypes = {
 const mapStateToProps = (state) => ({
   cart: state.cart,
   auth: state.auth,
+  wishList:state.wishList
+
 });
 
 export default connect(mapStateToProps, {
   addToCart,
-
+  addToWishList
 })(CourseItemGrid);

@@ -164,13 +164,13 @@ export const Styles = styled.div`
         font-size: 3rem;
         line-height: 3.5rem;
         color: #01265b;
-  
+
         @include respond(phone) {
           font-size: 2rem;
           line-height: 2.5rem;
           text-align: center;
         }
-  
+
         span {
           color: #de863e;
         }
@@ -186,7 +186,7 @@ export const Styles = styled.div`
         padding-top: 2.5rem;
         padding-bottom: 2.5rem;
         width: 90%;
-  
+
         @include respond(phone) {
           width: 100%;
           font-size: 1.2rem;

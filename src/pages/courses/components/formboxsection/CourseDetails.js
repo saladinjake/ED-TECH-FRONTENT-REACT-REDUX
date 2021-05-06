@@ -36,7 +36,7 @@ const CourseDetails = ({
     let courseId = parseInt(match.params.id);
     let courseSlug = match.params.slug;
     try {
-      let response = await getCourse(courseId,courseSlug);
+      let response = await getCourse(courseId, courseSlug);
       setCourseDetails(response.data);
       setStatus("success");
     } catch (err) {

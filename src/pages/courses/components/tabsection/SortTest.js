@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { getCategories } from "services/category";
-
-
-
 
 function SortTest({ course: { courses }, setFilterAllCourses }) {
   // console.log(course)
-  
+
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -54,11 +51,10 @@ function SortTest({ course: { courses }, setFilterAllCourses }) {
           </select>
         </div>
       </div>
- 
 
-      {courses.map(band => (
-        <div key={band.id} style={{ margin: '30px' }}>
-         hello
+      {courses.map((band) => (
+        <div key={band.id} style={{ margin: "30px" }}>
+          hello
         </div>
       ))}
     </div>

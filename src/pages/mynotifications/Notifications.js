@@ -12,11 +12,6 @@ import { getNotifications } from "services/notification";
 import toast from "react-hot-toast";
 import Loader from "components/Loader/Loader";
 
-
-
-
-
-
 function getTimeAgoInterval(date) {
   let seconds = Math.floor((Date.now() - date) / 1000);
   let unit = "second";
@@ -39,76 +34,66 @@ function getTimeAgoInterval(date) {
     value = Math.floor(seconds / 60);
     unit = "minute";
   }
-  if (parseInt(value) !== 1)
-    unit = unit + "s";
+  if (parseInt(value) !== 1) unit = unit + "s";
   return value + " " + unit + " " + direction;
 }
 
+const NotificationEmpty = ({ completeness }) => {
+  return (
+    <div>
+      <div className="row">
+        <div className="col-sm-12">
+          <h4 className="page-title">Notifications</h4>
+          <br />
+        </div>
+      </div>
 
+      <div className="row">
+        <div className="col-lg-8">
+          <div
+            className="card-box"
+            style={{
+              height: "330px",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <div className="bar-widget">
+              <div className="table-box">
+                <div className="table-detail">
+                  <div className="iconbox bg-info">
+                    <img
+                      alt="noimagehere"
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/assets/images/notification.png"
+                      }
+                      className="thumbnail"
+                      style={{ border: "none" }}
+                    />
+                  </div>
 
+                  <div style={{ marginTop: "100px", textAlign: "center" }}>
+                    <h4 className="m-t-0 m-b-5">
+                      <b>Don't see anything yet?</b>
+                    </h4>
+                    <p className="text-muted m-b-0 m-t-0">
+                      Dont worry, your notifications would pop up when it
+                      reaches you.
+                    </p>
+                  </div>
 
-
- const NotificationEmpty = ({completeness}) =>{
-    return (<div>
-<div className="row">
-                                <div className="col-sm-12">
-                                
-                                    <h4 className="page-title">Notifications</h4>
-                                    <br/>
-                                    
-                                </div>
-                            </div>
-    
-    
-    
-                            <div className="row">
-                          <div className="col-lg-8">
-                            <div className="card-box" style={{ height:"330px",  display: "flex",
-              justifyContent: "center"}}>
-                              <div className="bar-widget">
-                                <div className="table-box">
-                                  
-                                  <div className="table-detail">
-    
-                                    <div className="iconbox bg-info">
-                                      <img alt="noimagehere" src={process.env.PUBLIC_URL + "/assets/images/notification.png"}  className="thumbnail" style={{border:"none"}} />
-    
-                                    </div>
-    
-                                    <div style={{marginTop:"100px",textAlign:"center"}}>
-    
-                                    <h4 className="m-t-0 m-b-5"><b>Don't see anything yet?</b></h4>
-                                     <p className="text-muted m-b-0 m-t-0">Dont  worry, your notifications would pop up when it reaches you.</p>
-    
-                                     </div>
-                                     
-                                     <br /><br />
-                                    
-                                  </div>
-                                                        
-    
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-    
-                              
-    
-    
-                             
-   
-
-
-
-
-         
-
-</div>
-
-      </div>)
-}
-
-
+                  <br />
+                  <br />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
@@ -128,112 +113,86 @@ const Notifications = () => {
   }, []);
 
   return (
-   
-     
-      <div>
-       
-        <NavBar />
+    <div>
+      <NavBar />
 
-       <div className="container">
+      <div className="container">
+        <div className="row">
+          <div className="col-md-12">
+            <div className="container">
+              <div className="row">
+                <div className="col-sm-12">
+                  <h4 className="page-title">Notifications</h4>
+                </div>
+              </div>
+              <br />
 
-      <div className="row">
-
-
-              
-                <div className="col-md-12" >
-                    <div className="container" >
-
-
-                    <div className="row">
-                            <div className="col-sm-12">
-                                
-
-                                <h4 className="page-title">Notifications</h4>
-                                 
-
-
-                            </div>
-                        </div>
-                        <br />
-
-
-
-                        
-
-
-
-                        
-
-
-
-                       
-
-
-              <div className="container" >
-                 <div className="row">
-                   <div className="table-responsive table-wrapper">
-                      
-
+              <div className="container">
+                <div className="row">
+                  <div className="table-responsive table-wrapper">
                     {loading ? (
                       <Loader width="70" />
                     ) : notifications.length > 0 ? (
                       <Fragment>
-                      <table className="table table-borderless table-reveal" >
-                      <thead>
-                      <tr>
-                         <th scope="col">Type</th>
-                         <th scope="col">Message</th>
-                         <th scope="col">Time</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                        
-                          {notifications.map((item, i) => {
-                            let notify_icon = "fa fa-book"
-                            console.log(item.data.notification_type)
-                            if(item.data.notification_type ==="Course Payment"){
-                              notify_icon = "fa fa-shopping-cart"
-                            }else if (item.data.notification_type ==="Course Enrollment") {
-                              notify_icon = "fa fa-unlock"
-                            }else {
-                              notify_icon = "fa fa-user"
-                            }
-                           console.log(item)
-                            return (
-                            <tr id={ i+ "titanic-"+ new Date().toString()} key={ i+ "titanic-"+ new Date().toString()}>
-                                 <td ><i className={ notify_icon }></i></td>
-                                 <td>{item.data.message}</td>
-                              
-                             
-                                  <td>{getTimeAgoInterval(new Date(item.created_at))}</td>
-                             </tr>
+                        <table className="table table-borderless table-reveal">
+                          <thead>
+                            <tr>
+                              <th scope="col">Type</th>
+                              <th scope="col">Message</th>
+                              <th scope="col">Time</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {notifications.map((item, i) => {
+                              let notify_icon = "fa fa-book";
+                              console.log(item.data.notification_type);
+                              if (
+                                item.data.notification_type === "Course Payment"
+                              ) {
+                                notify_icon = "fa fa-shopping-cart";
+                              } else if (
+                                item.data.notification_type ===
+                                "Course Enrollment"
+                              ) {
+                                notify_icon = "fa fa-unlock";
+                              } else {
+                                notify_icon = "fa fa-user";
+                              }
+                              console.log(item);
+                              return (
+                                <tr
+                                  id={i + "titanic-" + new Date().toString()}
+                                  key={i + "titanic-" + new Date().toString()}
+                                >
+                                  <td>
+                                    <i className={notify_icon}></i>
+                                  </td>
+                                  <td>{item.data.message}</td>
 
-
-                            )
-
-                            
-                          })}
-                        </tbody></table>
+                                  <td>
+                                    {getTimeAgoInterval(
+                                      new Date(item.created_at)
+                                    )}
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
                       </Fragment>
                     ) : (
                       <NotificationEmpty />
                     )}
+                  </div>
+                </div>
               </div>
-       </div></div>
-
-      
-      
-  
-       </div>
-  </div>
-  </div>
-
-
-       </div>
-
-         <Footer/>
+            </div>
+          </div>
+        </div>
       </div>
-   
+
+      <Footer />
+    </div>
   );
 };
 

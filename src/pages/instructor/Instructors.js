@@ -46,12 +46,13 @@ const Instructor = () => {
     // eslint-disable-next-line
   }, []);
 
-    useEffect(() => {
-      instructors.length > 0 &&
-        setCurrInstructors(instructors.slice(indexOfFirstInstructor, indexOfLastInstructor));
-      // eslint-disable-next-line
-    }, [instructors]);
-
+  useEffect(() => {
+    instructors.length > 0 &&
+      setCurrInstructors(
+        instructors.slice(indexOfFirstInstructor, indexOfLastInstructor)
+      );
+    // eslint-disable-next-line
+  }, [instructors]);
 
   return (
     <Styles>

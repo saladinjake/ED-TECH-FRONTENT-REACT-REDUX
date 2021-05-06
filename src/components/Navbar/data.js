@@ -84,7 +84,7 @@ export const AUTHLINKS = [
     name: "Purchase History",
     link: "/learner/purchase/history",
   },
-  
+
   {
     name: "Wishlist",
     link: "/learner/wishlists",
@@ -93,13 +93,12 @@ export const AUTHLINKS = [
     name: "Accomplishment",
     link: "/learner/accomplishment",
   },
-  
-  
+
   {
     name: "Subscriptions",
     link: "/learner/subscriptions",
   },
-  
+
   {
     name: "Help",
     link: "/help/info",
@@ -126,5 +125,5 @@ export const INSTRUCTORLINKS = [
   {
     name: "Notifications",
     link: "/instructor/notifications",
-  }
+  },
 ];

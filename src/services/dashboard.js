@@ -19,16 +19,12 @@ export const getInstructorInfo = async () => {
   });
 };
 
-
-
 export const uuid = () => {
- 
   var now = new Date();
 
-var timestamp = now.getFullYear().toString(); 
-timestamp += (now.getMonth < 9 ? '0' : '') + now.getMonth().toString(); // JS months are 0-based, so +1 and pad with 0's
-timestamp += ((now.getDate < 10) ? '0' : '') + now.getDate().toString(); // pad with a 0
+  var timestamp = now.getFullYear().toString();
+  timestamp += (now.getMonth < 9 ? "0" : "") + now.getMonth().toString(); // JS months are 0-based, so +1 and pad with 0's
+  timestamp += (now.getDate < 10 ? "0" : "") + now.getDate().toString(); // pad with a 0
 
-  
-  return timestamp
-}
+  return timestamp;
+};

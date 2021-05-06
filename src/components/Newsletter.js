@@ -8,18 +8,20 @@ const Newsletter = () => {
       <Container>
         <Row>
           <Col lg="10">
-      <h2 className="mb-sm">Get our latest news, courses & updates in your box</h2>
-      <div className="d-flex">
-        <div className="form__group">
-          <input type="email" name="email" placeholder="Email Address" />
-        </div>
-        <button>Subscribe Now</button>
-      </div>
-      </Col>
-      </Row>
+            <h2 className="mb-sm">
+              Get our latest news, courses & updates in your box
+            </h2>
+            <div className="d-flex">
+              <div className="form__group">
+                <input type="email" name="email" placeholder="Email Address" />
+              </div>
+              <button>Subscribe Now</button>
+            </div>
+          </Col>
+        </Row>
       </Container>
     </section>
   );
 };
 
-export default  Newsletter;
+export default Newsletter;

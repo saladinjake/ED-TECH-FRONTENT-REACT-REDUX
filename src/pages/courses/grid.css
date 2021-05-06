@@ -3,7 +3,7 @@
   position: absolute;
   width: 100%;
   font-size: 27px;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-weight: 600;
   z-index: -1;
 }
@@ -40,9 +40,3 @@ button.gridsect.on {
   color: white;
   background-color: #000;
 }
-
-
-
-
-
-

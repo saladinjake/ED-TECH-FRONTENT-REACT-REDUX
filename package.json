@@ -14,6 +14,7 @@
     "google-map-react": "^2.1.3",
     "history": "^5.0.0",
     "jest-environment-jsdom-fourteen": "^1.0.1",
+    "jquery": "^3.6.0",
     "moment": "^2.29.1",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
@@ -43,7 +44,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "beautiful-code": "prettier --write .",
+    "start:build":"node server.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -61,6 +64,7 @@
     ]
   },
   "devDependencies": {
-    "fslightbox-react": "^1.4.9"
+    "fslightbox-react": "^1.4.9",
+    "prettier": "2.2.1"
   }
 }

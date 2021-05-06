@@ -7,13 +7,11 @@ import { connect } from "react-redux";
 
 const CourseCategory = ({ course: { courses }, setFilterAllCourses }) => {
   const [categories, setCategories] = useState([]);
-  let selectedSearchFormNav =null
+  let selectedSearchFormNav = null;
 
   useEffect(() => {
     (async function loadContent() {
       await fetchCategories();
-
-
     })();
     // eslint-disable-next-line
   }, []);
@@ -36,31 +34,33 @@ const CourseCategory = ({ course: { courses }, setFilterAllCourses }) => {
     }
   };
 
+  useEffect(() => {
+    if (
+      localStorage.getItem("category") &&
+      localStorage.getItem("category_clicked")
+    ) {
+      if (localStorage.getItem("category_clicked")) {
+        // alert("category :" +  localStorage.getItem("category")+ "category id: " + localStorage.getItem("category_id") )
+        // let selectBox = document.getElementById("selectedSearch");
 
-  useEffect(()=>{
-    if(localStorage.getItem("category") && localStorage.getItem("category_clicked")){
-        if(localStorage.getItem("category_clicked") ){
-           // alert("category :" +  localStorage.getItem("category")+ "category id: " + localStorage.getItem("category_id") )
-           let selectBox= document.getElementById("selectedSearch");
+        // selectBox.options[selectBox.selectedIndex].value = localStorage.getItem(
+        //   "category_id"
+        // );
+        // selectBox.options[selectBox.selectedIndex].text = localStorage.getItem(
+        //   "category"
+        // );
 
-           selectBox.options[selectBox.selectedIndex].value = localStorage.getItem("category_id");
-           selectBox.options[selectBox.selectedIndex].text = localStorage.getItem("category");
-         
-         
-           localStorage.setItem("category_clicked",false)
+        // localStorage.setItem("category_clicked", false);
 
-          localStorage.setItem("category",'')
-        }else{
-          // alert("not from nav")
-          localStorage.setItem("category_clicked",false)
-          localStorage.getItem("category_id",'')
-          localStorage.setItem("category",'')
-        }
+        // localStorage.setItem("category", "");
+      } else {
+        // alert("not from nav")
+        // localStorage.setItem("category_clicked", false);
+        // localStorage.getItem("category_id", "");
+        // localStorage.setItem("category", "");
+      }
     }
-
-      
-                          
-  })
+  });
 
   return (
     <Styles>
@@ -69,7 +69,12 @@ const CourseCategory = ({ course: { courses }, setFilterAllCourses }) => {
         <h5>Course Category</h5>
 
         <div className="form__group">
-          <select id="selectedSearch" name="category" onChange={filterCategory} required>
+          <select
+            id="selectedSearch"
+            name="category"
+            onChange={filterCategory}
+            required
+          >
             <option value="">-- Choose Category --</option>
             <option value="0">All</option>
             {categories.length > 0 &&

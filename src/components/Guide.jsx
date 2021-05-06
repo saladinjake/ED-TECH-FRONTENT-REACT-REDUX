@@ -15,8 +15,8 @@ const Guide = () => {
           <Col lg="6">
             <div className="guide__item">
               <h4>
-                Questence learning tools allows you to create and manage your entire
-                learning portfolio from one powerful dashboard
+                Questence learning tools allows you to create and manage your
+                entire learning portfolio from one powerful dashboard
               </h4>
               <div className="guide__box">
                 <div className="guide__box__item">
@@ -39,8 +39,8 @@ const Guide = () => {
                   <div className="guide__box__item-info">
                     <h6>Progress Monitoring</h6>
                     <p>
-                      Check your progress on your active courses and programmes at any
-                      time
+                      Check your progress on your active courses and programmes
+                      at any time
                     </p>
                   </div>
                 </div>
@@ -52,8 +52,8 @@ const Guide = () => {
                   <div className="guide__box__item-info">
                     <h6>Easy Role Management</h6>
                     <p>
-                      Switch between your dashboards with a toggle and manage multiple
-                      features and functions with the same account
+                      Switch between your dashboards with a toggle and manage
+                      multiple features and functions with the same account
                     </p>
                   </div>
                 </div>

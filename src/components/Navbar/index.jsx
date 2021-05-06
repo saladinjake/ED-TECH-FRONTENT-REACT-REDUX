@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useEffect,useState } from "react";
+import React, { Fragment, useRef, useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 import "./navbar.scss";
@@ -12,15 +12,15 @@ import { logOut } from "actions/authActions";
 
 import "./core.css";
 import "./components.css";
-import "./nav.css"
-import { //CATEGORIES,
- PACES,  AUTHLINKS } from "./data";
-
-
+import "./nav.css";
+import {
+  //CATEGORIES,
+  PACES,
+  AUTHLINKS,
+} from "./data";
 
 import { getCategories } from "services/category";
 import toast from "react-hot-toast";
-
 
 const NavBar = ({
   cart: { cart },
@@ -30,28 +30,22 @@ const NavBar = ({
   const toogleBtn = useRef();
   const mobileNav = useRef();
 
+  const [categories, setInfo] = useState([]);
 
-   const [categories,setInfo] = useState([]);
-  
+  useEffect(() => {
+    (async function loadContent() {
+      try {
+        let res = await getCategories(); //await getCategories(user.id);
 
-   useEffect(() => {
-     (async function loadContent() {
-       try {
-         let res = await getCategories(); //await getCategories(user.id);
-         
-    
-         setInfo([...res.data.data]);
-         console.log(res)
-
-        
-       
-       } catch (err) {
-         toast.error("Error occured fetching notifications");
-       }
-       // setLoading(false);
-     })();
-     // eslint-disable-next-line
-   }, []);
+        setInfo([...res.data.data]);
+        console.log(res);
+      } catch (err) {
+        toast.error("Error occured fetching notifications");
+      }
+      // setLoading(false);
+    })();
+    // eslint-disable-next-line
+  }, []);
 
   const openNav = () => {
     toogleBtn.current.classList.toggle("mobActive");
@@ -65,8 +59,6 @@ const NavBar = ({
     history.push("/login");
   };
 
-  
-
   const handleSearch = (e) => {
     e.preventDefault();
     const searchVal = document.getElementById("search")?.value;
@@ -76,135 +68,120 @@ const NavBar = ({
   };
   return (
     <Fragment>
-      <nav className="desktop" style={{position:"fixed"}}>
+      <nav className="desktop" style={{ position: "fixed" }}>
         <figure className="logo">
           <Link to="/">
             <img src={questence} alt="" width="171px" />
           </Link>
         </figure>
 
-
-
-
-
- 
-
- 
-
-
         <ul className="mainNav" ref={mobileNav}>
+          <div className="main-menu">
+            <ul className="">
+              <li style={{cursor: "pointer" }}>
+                <span style={{ marginRight: "5px" }}>
+                  Courses And Programs
+                  <Dropdown />
+                </span>
 
-        <div class="main-menu">
-   <ul className="">
+                <ul className="sub-menu parent" style={{ marginTop: "10px" }}>
+                  <li style={{cursor: "pointer" }}>
+                    <Link
+                      className="DropDown__link"
+                      to={process.env.PUBLIC_URL + "/courses"}
+                    >
+                      All Courses
+                    </Link>
+                  </li>
 
+                  <li style={{cursor: "pointer" }}>
+                    <span>
+                      By Category
+                      <span
+                        className="fa fa-caret-right"
+                        style={{ float: "right", margin: "10px" }}
+                      ></span>{" "}
+                    </span>
+                    <ul className="sub-menu-1 any1 ParentDropDown">
+                      {categories.length > 0 &&
+                        categories.map((item, i) => {
+                          return (
+                            <li
+                              style={{cursor: "pointer" }}
+                              className="ParentDropDown__item"
+                            >
+                              
 
-     <li><span style={{marginRight:"5px"}}>Courses And Programs<Dropdown /></span>
-     
-       <ul className="sub-menu parent" style={{marginTop:"10px"}}>
+                              <span   onClick={(e) => {
+                                  //e.preventDefault();
+                                  //localStorage.setItem("category_id", item.id);
+                                  //localStorage.setItem("category", item.name);
+                                  //localStorage.setItem(
+                                  // "category_clicked",
+                                   // true
+                                  //);
 
-        <li style={{borderBottom:" 1px solid #eeeeee" }}>
-                <Link
-                  className="DropDown__link"
-                  to={process.env.PUBLIC_URL + "/courses"}
-                >
-                  All Courses
-                </Link>
-        </li>
+                                  window.location.href = `${process.env.PUBLIC_URL}/courses/category/${item.id}`;
+                                }}>
+                              
+                                 {item.name}
+                               
+                               
+                                 <span
+                                  className="fa fa-caret-right"
+                                  style={{ float: "right", margin: "10px"  }}
+                                >{" "}
+                              </span></span>
 
-
-
-
-
-         <li style={{borderBottom:" 1px solid #eeeeee" }}><span>By Category<span className="fa fa-caret-right" style={{float:"right", margin:"10px"}}></span> </span>
-         <ul class="sub-menu-1 any1 ParentDropDown">
-
-         {categories.length > 0 &&
-                    categories.map((item, i) => {
-
-                    return (
-
-                     <li style={{borderBottom:" 1px solid #eeeeee" }} className="ParentDropDown__item"><a
-                            onClick= {(e) =>{
-                              e.preventDefault();
-                              localStorage.setItem("category_id",item.id)
-                               localStorage.setItem("category",item.name)
-                              localStorage.setItem("category_clicked",true)
-
-                              window.location.href= `${process.env.PUBLIC_URL}/courses/category/${item.id}`
-                            }}
-                            
-                          >
+                               
+                                
+                              
+                              <ul className="sub-menu-2 any1 more">
+                                {item.subcategories.length > 0 &&
+                                  item.subcategories.map((cat) => {
+                                    return (
+                                      <li
                                         
-                                             {item.name}
-                                             <span className="fa fa-caret-right" style={{float:"right", margin:"10px"}}></span>
-                                           
-                                          </a>
-                             <ul class="sub-menu-2 any1 more">
-                     {item.subcategories.length > 0  && item.subcategories.map( cat =>{
-                                             
-                                              return (
-                                              
-                                                         
+                                        className="ParentDropDown__item"
+                                      >
+                                        <a
+                                          onClick={() => {
+                                            window.location.href = `${process.env.PUBLIC_URL}/courses/${cat.id}`;
+                                          }}
+                                          to={`${process.env.PUBLIC_URL}/courses/${cat.id}`}
+                                        >
+                                          {" "}
+                                          {cat.name}
+                                        </a>
+                                      </li>
+                                    );
+                                  })}
+                              </ul>
+                            </li>
+                          );
+                        })}
+                    </ul>
+                  </li>
 
-                                                          <li style={{borderBottom:" 1px solid #eeeeee" }}  className="ParentDropDown__item" ><a onClick={() =>{
+                  <li >
+                    By Program
+                  </li>
 
-                                                          window.location.href= `${process.env.PUBLIC_URL}/courses/${cat.id}`}} to={`${process.env.PUBLIC_URL}/courses/${cat.id}`}>  {cat.name}</a></li>
-            
-            
-          
-                                             
-                                             
-
-                                              )
-
-
-                                          }) }
-                                           </ul> 
-                                         
-
-
-
-                     </li>
-
-
-                       )
-
-                })}
-
-           
-          
-           </ul>
-         </li>
-
-
-         <li style={{borderBottom:" 1px solid #eeeeee" }}>
-                
-                  By Program
-               
+                  <li >
+                    By Training Partner
+                  </li>
+                </ul>
               </li>
- 
-              <li style={{borderBottom:" 1px solid #eeeeee" }}>
-                
-                  By Training Partner
-                
-              </li>
-
-
-       </ul>
-     
-     </li>
-    </ul>
-  </div>
-
-
-
-          
-
+            </ul>
+          </div>
 
           <li className="NavHover">
             <div className="parent ">
-              <span> For Institutions<Dropdown /></span>
-            
+              <span>
+                {" "}
+                For Institutions
+                <Dropdown />
+              </span>
             </div>
             <ul className="ParentDropDown">
               <li className="ParentDropDown__item">
@@ -234,8 +211,6 @@ const NavBar = ({
             </ul>
           </li>
 
-        
-
           <li className="search__group">
             <div className="search__form">
               <input
@@ -262,14 +237,25 @@ const NavBar = ({
             </div>
           </li>
 
-           <li className="dropdown top-menu-item-xs" style={{float:"left"}}>
-                <Link alt="noimage" to={process.env.PUBLIC_URL + "/cart"} className=" waves-effect waves-light"  aria-expanded="true">
-                   <i className="fa fa-2x fa-shopping-cart" ></i> <span className="badge badge-xs " style={{marginTop:"-25px", color: cart?.length > 0  ? "red" : "#000"  }}>{cart !== undefined && `(${cart?.length})`}</span>
-                                                    </Link>
-
-
-                                                    
-                                                </li>
+          <li className="dropdown top-menu-item-xs" style={{ float: "left" }}>
+            <Link
+              alt="noimage"
+              to={process.env.PUBLIC_URL + "/cart"}
+              className=" waves-effect waves-light"
+              aria-expanded="true"
+            >
+              <i style={{fontSize:"30px"}} className="md  md-add-shopping-cart "></i>{" "}
+              <span
+                className="badge badge-xs "
+                style={{
+                  marginTop: "-25px",
+                  color: cart?.length > 0 ? "red" : "#000",
+                }}
+              >
+                {cart !== undefined && `(${cart?.length})`}
+              </span>
+            </Link>
+          </li>
 
           {!isAuthenticated ? (
             <Fragment>
@@ -312,7 +298,10 @@ const NavBar = ({
                   {`${user?.first_name} ${user?.last_name}`}
                 </label>
 
-                <ul className="DropDown__list userdropdown" style={{marginLeft:"90px"}}>
+                <ul
+                  className="DropDown__list userdropdown"
+                  style={{ marginLeft: "90px" }}
+                >
                   {AUTHLINKS.length > 0 &&
                     AUTHLINKS.map((item, i) => {
                       return (
@@ -350,7 +339,7 @@ const NavBar = ({
           <div className="bar3"></div>
         </button>
       </nav>
-      <br/>
+      <br />
     </Fragment>
   );
 };

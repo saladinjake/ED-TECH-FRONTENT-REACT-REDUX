@@ -5,13 +5,10 @@ import { BreadcrumbBox } from "../../components/common/Breadcrumb";
 import FooterTwo from "../../components/FooterTwo";
 import { Styles } from "./styles/institutions.js";
 
-
 import Loader from "components/Loader/Loader";
 import { getInstitution } from "services/business";
 
-
 const InstitutionDetails = ({ match }) => {
-
   const [details, setDetails] = useState({});
   // eslint-disable-next-line
   const [status, setStatus] = useState("init");

@@ -103,7 +103,7 @@ const Checkout = ({
           {
             display_name: "Course Ids",
             variable_name: "courseIds",
-            value: IDs.join(','),
+            value: IDs.join(","),
           },
         ],
       },
@@ -180,7 +180,7 @@ Checkout.propTypes = {
 
 const mapStateToProps = (state) => ({
   cart: state.cart,
-  auth: state.auth
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, { clearCart })(Checkout);

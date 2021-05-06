@@ -211,7 +211,8 @@ const CreateCourse = () => {
                         </label>
                         <input
                           type="file"
-                          accept="image/jpg,image/png,image/jpeg"                          placeholder="Course thumbnail"
+                          accept="image/jpg,image/png,image/jpeg"
+                          placeholder="Course thumbnail"
                           name="course_thumbnail"
                           id="course_thumbnail"
                           onChange={(event) => {

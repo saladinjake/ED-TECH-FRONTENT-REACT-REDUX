@@ -1,18 +1,18 @@
 import {
-   ADD_TO_WISHLIST,
+  ADD_TO_WISHLIST,
   REMOVE_FROM_WISHLIST,
-  CLEAR_WISHLIST
+  CLEAR_WISHLIST,
 } from "../actions/types";
 
 import toast from "react-hot-toast";
-import {  getCourses } from "services/course";
+import { getCourses } from "services/course";
 
-import { addToWishlist, getWishlist } from "services/wishlist"
+import { addToWishlist, getWishlist } from "services/wishlist";
 
-let cachedCart = [];  
-let  cachedTotal = [];
+let cachedCart = [];
+let cachedTotal = [];
 
-if(localStorage.getItem("wishes")){
+if (localStorage.getItem("wishes")) {
   cachedCart = JSON?.parse(localStorage.getItem("wishes"));
   cachedTotal = localStorage.getItem("totalwish");
 }
@@ -35,65 +35,63 @@ export default async (state = initialState, action) => {
   // }
 
   // console.log(dbWishList)
-  
 
   switch (action.type) {
     case ADD_TO_WISHLIST:
-      document.getElementById("wishlister").disabled="true"
+      if( document.getElementById("wishlister")){
+        document.getElementById("wishlister").disabled = "true";
+      }
+      
       let coursesSet = null;
-      try{
+      try {
         coursesSet = await getCourses();
-         state.courses = [...coursesSet.data.data.courses]
-       
-      }catch(e){
+        state.courses = [...coursesSet.data.data.courses];
+      } catch (e) {
         toast.success(`Some error occured while fetching data`);
       }
-    
+
       let itemToBeAdded = state.courses.find(
         (item) => item.id === action.payload
       );
-      console.log(itemToBeAdded )
+      console.log(itemToBeAdded);
 
-
-      console.log(state.wishBag)
+      console.log(state.wishBag);
       let existingItem = cachedCart.find((item) => action.payload === item.id);
       if (existingItem) {
         toast.success(`Course already in wish list`);
-        document.getElementById("wishlister").textContent="Already in wish list"
+        document.getElementById("wishlister").textContent =
+          "Already in wish list";
         return {
           ...state,
         };
-           
       } else {
         itemToBeAdded.quantity = 1;
-        let newTotal = parseInt(state.totalWishes) + parseInt(itemToBeAdded.price);
+        let newTotal =
+          parseInt(state.totalWishes) + parseInt(itemToBeAdded.price);
         toast.success(`Course added to wish list`);
-        cachedCart.push(itemToBeAdded)
-        localStorage.setItem(
-          "wishes",
-          JSON.stringify([...cachedCart])
-        );
+        cachedCart.push(itemToBeAdded);
+        localStorage.setItem("wishes", JSON.stringify([...cachedCart]));
         localStorage.setItem("totalwish", newTotal);
-        document.getElementById("wishlister").disabled="false"
-        document.getElementById("wishlister").textContent="Add To Wish List"
+        document.getElementById("wishlister").disabled = "false";
+        document.getElementById("wishlister").textContent = "Add To Wish List";
 
         // state.wishBag = cachedCart;
         // state.totalWishes =newTotal;
         // return state;
 
-        await addToWishlist({"course_id": itemToBeAdded.id})
+        await addToWishlist({ course_id: itemToBeAdded.id });
 
         return {
           ...state,
-         wishBag: [...cachedCart],
-         totalWishes: newTotal,
-        }
-        
+          wishBag: [...cachedCart],
+          totalWishes: newTotal,
+        };
       }
     case REMOVE_FROM_WISHLIST:
       let itemToRemove = cachedCart.find((item) => action.payload === item.id);
       let newCart = cachedCart.filter((item) => action.payload !== item.id);
-      let newTotal = state.totalWishes - itemToRemove.price * itemToRemove.quantity;
+      let newTotal =
+        state.totalWishes - itemToRemove.price * itemToRemove.quantity;
       toast.error(`Course removed from wish list`);
 
       localStorage.setItem("wishes", JSON.stringify([...newCart]));
@@ -108,7 +106,7 @@ export default async (state = initialState, action) => {
         wishBag: [...newCart],
         totalWishes: newTotal,
       };
-    
+
     case CLEAR_WISHLIST:
       toast.success(`Wish list Cleared`);
       localStorage.setItem("wishes", JSON.stringify([]));
@@ -116,9 +114,9 @@ export default async (state = initialState, action) => {
       return {
         ...state,
         wishBag: [],
-        totalWishes: 0
+        totalWishes: 0,
       };
-  
+
     default:
       return state || initialState;
   }

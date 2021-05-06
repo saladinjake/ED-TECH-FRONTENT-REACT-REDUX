@@ -19,7 +19,7 @@ export const getInstructor = async (userId) => {
   });
 };
 
-export const getAuthProfile = async  => {
+export const getAuthProfile = (async) => {
   let request = axios.get(`instructors/my/profile`);
   return request.then((response) => {
     if (response.status === 200) {
@@ -45,5 +45,3 @@ export const getInstructorCourses = async () => {
     }
   });
 };
-
-

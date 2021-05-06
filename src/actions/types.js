@@ -1,15 +1,15 @@
 //logs
-export const GET_COURSES = 'GET_COURSES';
-export const ADD_COURSE ='ADD_COURSE';
-export const DELETE_COURSE = 'DELETE_COURSE';
-export const SET_CURRENT = 'SET_CURRENT';
-export const CLEAR_CURRENT = 'CLEAR_CURRENT';
-export const UPDATE_COURSE = 'UPDATE_COURSE';
-export const CLEAR_COURSES = 'CLEAR_COURSES';
-export const COURSE_ERROR = 'COURSE_ERROR';
-export const SEARCH_COURSES = 'SEARCH_COURSES';
+export const GET_COURSES = "GET_COURSES";
+export const ADD_COURSE = "ADD_COURSE";
+export const DELETE_COURSE = "DELETE_COURSE";
+export const SET_CURRENT = "SET_CURRENT";
+export const CLEAR_CURRENT = "CLEAR_CURRENT";
+export const UPDATE_COURSE = "UPDATE_COURSE";
+export const CLEAR_COURSES = "CLEAR_COURSES";
+export const COURSE_ERROR = "COURSE_ERROR";
+export const SEARCH_COURSES = "SEARCH_COURSES";
 //Alerts & Loading
-export const SET_LOADING = 'SET_LOADING';
+export const SET_LOADING = "SET_LOADING";
 export const RESET_ERROR = "RESET_ERROR";
 //Auth
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
@@ -28,7 +28,6 @@ export const SUB_QUANTITY = "SUB_QUANTITY";
 //Path
 export const SET_PATH = "SET_PATH";
 
- export const ADD_TO_WISHLIST ="ADD_TO_WISHLIST"
- export const REMOVE_FROM_WISHLIST = "REMOVE_FROM_WISHLIST"
- export const CLEAR_WISHLIST = "CLEAR_WISHLIST" 
-
+export const ADD_TO_WISHLIST = "ADD_TO_WISHLIST";
+export const REMOVE_FROM_WISHLIST = "REMOVE_FROM_WISHLIST";
+export const CLEAR_WISHLIST = "CLEAR_WISHLIST";

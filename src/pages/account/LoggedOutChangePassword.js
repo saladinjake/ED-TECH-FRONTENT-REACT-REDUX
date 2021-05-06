@@ -12,43 +12,40 @@ import Footer from "components/Footer";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import qs from "qs"
-import { loggedOutUserForgotPassword } from "services/auth"
+import qs from "qs";
+import { loggedOutUserForgotPassword } from "services/auth";
 const ChangeCredentials = ({ auth: { prevPath } }) => {
   let history = useHistory();
 
-  const getTokenItemFromString = thePath => thePath.substring(thePath.lastIndexOf('/') + 1)
+  const getTokenItemFromString = (thePath) =>
+    thePath.substring(thePath.lastIndexOf("/") + 1);
 
- 
-
-  let params = qs.parse(history?.location?.search, { ignoreQueryPrefix: true })
+  let params = qs.parse(history?.location?.search, { ignoreQueryPrefix: true });
 
   let token = getTokenItemFromString(window.location.href);
   let tokenSplit = token.split("?")[0];
   // alert(tokenSplit)
 
-
   const [loading, setLoading] = useState(false);
   const initialValues = { password_confirmation: "", password: "" };
 
   // useEffect(() => {
-   
+
   //   // eslint-disable-next-line
   // }, []);
 
-  
   const handleSubmit = async (values, { setSubmitting }) => {
     setLoading(true);
-     console.log( "this are the values")
+    console.log("this are the values");
     try {
-      values.email = params.email
-      values.token = tokenSplit
+      values.email = params.email;
+      values.token = tokenSplit;
       // values.token =
-      let res = await loggedOutUserForgotPassword(values)
-      console.log(res)
+      let res = await loggedOutUserForgotPassword(values);
+      console.log(res);
       setSubmitting(false);
       toast.success("Your Password reset was successful");
-      history.push("../login")
+      history.push("../login");
     } catch (err) {
       toast.error(err?.response?.data?.message);
       // logOut();
@@ -63,8 +60,6 @@ const ChangeCredentials = ({ auth: { prevPath } }) => {
       <div className="main-wrapper login-page">
         {/* Header 2 */}
         <NavBar />
-
-        
 
         {/* Login Area */}
         <section className="login-area">
@@ -106,11 +101,15 @@ const ChangeCredentials = ({ auth: { prevPath } }) => {
                             value={values.password}
                           />
                           <span className="login_input-msg">
-                            {errors.password && touched.password && errors.password}
+                            {errors.password &&
+                              touched.password &&
+                              errors.password}
                           </span>
                         </p>
                         <p className="form-control">
-                          <label htmlFor="login_password">Confirm Password</label>
+                          <label htmlFor="login_password">
+                            Confirm Password
+                          </label>
                           <input
                             type="password"
                             placeholder="*******"
@@ -145,7 +144,6 @@ const ChangeCredentials = ({ auth: { prevPath } }) => {
                           </p>
 
                           <p>
-                            
                             <a href={process.env.PUBLIC_URL + "/login"}>
                               {" "}
                               Remember my password? Login Here
@@ -172,7 +170,7 @@ const ChangeCredentials = ({ auth: { prevPath } }) => {
 
 ChangeCredentials.propTypes = {
   auth: PropTypes.object.isRequired,
-  
+
   // setPrevPath: PropTypes.func.isRequired,
 };
 
@@ -180,15 +178,15 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, {
-
-})(ChangeCredentials);
+export default connect(mapStateToProps, {})(ChangeCredentials);
 
 const LoginSchema = Yup.object().shape({
-   password: Yup.string()
+  password: Yup.string()
     .min(2, "Too Short!")
     .max(50, "Too Long!")
     .required("Required"),
-  password_confirmation: Yup.string()
-     .oneOf([Yup.ref('password'), null], 'Passwords must match')
+  password_confirmation: Yup.string().oneOf(
+    [Yup.ref("password"), null],
+    "Passwords must match"
+  ),
 });

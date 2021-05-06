@@ -1,15 +1,12 @@
-import React from 'react';
-import Datas from 'data/service/learnerdash.json';
-import { Container, Row, Col } from 'react-bootstrap';
+import React from "react";
+import Datas from "data/service/learnerdash.json";
+import { Container, Row, Col } from "react-bootstrap";
 import { Styles } from "./styles/learnerBox.js";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-const LearnerBox = ({
-  auth: { user },
-  info
-}) => {
+const LearnerBox = ({ auth: { user }, info }) => {
   return (
     <Styles>
       {/* Service Box */}
@@ -87,15 +84,14 @@ const LearnerBox = ({
   );
 };
 
-
 LearnerBox.propTypes = {
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, {  })(LearnerBox);
+export default connect(mapStateToProps, {})(LearnerBox);
 
 // export default LearnerBox;

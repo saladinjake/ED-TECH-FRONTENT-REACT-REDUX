@@ -13,69 +13,67 @@ import { getCountries } from "services/country";
 import { getIndustries } from "services/industry";
 import { businessSchema } from "helper/validations";
 
-
 const BusinessRegister = () => {
-   const [loading, setLoading] = useState(false);
-   const [countries, setCountries] = useState([]);
-   const [industries, setIndustries] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [countries, setCountries] = useState([]);
+  const [industries, setIndustries] = useState([]);
 
-   const initialValues = {
-     first_name: "",
-     last_name: "",
-     email: "",
-     password: "",
-     country_id: "",
-     industry_id: "",
-     phone_number: "",
-     company_name: "",
-     company_phone: "",
-     no_of_employees: "100 above",
-     type_of_institution: "",
-     company_description: "",
-     registration_number: "",
-     linkedin_page: "",
-     color_theme: "",
-     facebook_page: "",
-     website: "",
-   };
+  const initialValues = {
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    country_id: "",
+    industry_id: "",
+    phone_number: "",
+    company_name: "",
+    company_phone: "",
+    no_of_employees: "100 above",
+    type_of_institution: "",
+    company_description: "",
+    registration_number: "",
+    linkedin_page: "",
+    color_theme: "",
+    facebook_page: "",
+    website: "",
+  };
 
-   useEffect(() => {
-     Promise.all(
-       [getCountries(), getIndustries()].map((err) => err.catch(() => err))
-     )
-       .then((res) => {
-         setCountries([...res[0].data.data]);
-         setIndustries([...res[1].data.data]);
-       })
-       .catch((err) => {
-         toast.error("Error Occured fetching data");
-       });
-   }, []);
+  useEffect(() => {
+    Promise.all(
+      [getCountries(), getIndustries()].map((err) => err.catch(() => err))
+    )
+      .then((res) => {
+        setCountries([...res[0].data.data]);
+        setIndustries([...res[1].data.data]);
+      })
+      .catch((err) => {
+        toast.error("Error Occured fetching data");
+      });
+  }, []);
 
-   const handleSubmit = async (values, { setSubmitting }) => {
-     console.log("Values", values);
-     setLoading(true);
-     values.phone_number = values.phone_number.toString();
-     values.company_phone = values.company_phone.toString();
-     values.country_id = parseInt(values.country_id);
-     values.industry_id = parseInt(values.industry_id);
-     try {
-       await createBusiness(values);
-       toast.success("Business Created.");
-       setSubmitting(false);
-     } catch (err) {
-       toast.error(err?.response?.data?.message);
-       setSubmitting(false);
-     }
-     setLoading(false);
-   };
+  const handleSubmit = async (values, { setSubmitting }) => {
+    console.log("Values", values);
+    setLoading(true);
+    values.phone_number = values.phone_number.toString();
+    values.company_phone = values.company_phone.toString();
+    values.country_id = parseInt(values.country_id);
+    values.industry_id = parseInt(values.industry_id);
+    try {
+      await createBusiness(values);
+      toast.success("Business Created.");
+      setSubmitting(false);
+    } catch (err) {
+      toast.error(err?.response?.data?.message);
+      setSubmitting(false);
+    }
+    setLoading(false);
+  };
 
-   const formik = useFormik({
-     initialValues: initialValues,
-     validationSchema: businessSchema,
-     onSubmit: handleSubmit,
-   });
-
+  const formik = useFormik({
+    initialValues: initialValues,
+    validationSchema: businessSchema,
+    onSubmit: handleSubmit,
+  });
 
   return (
     <Styles>

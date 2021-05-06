@@ -5,34 +5,34 @@ import {
   REMOVE_FROM_CART,
   ADD_QUANTITY,
   SUB_QUANTITY,
-  CLEAR_CART
+  CLEAR_CART,
 } from "./types";
 
 import { getCourses } from "services/course";
 
-
-
-
-export const fetchCourses =  () => async (dispatch) => {
- try {
-   const res = await getCourses();
-   dispatch({
-     type: GET_COURSES,
-     payload: res.data.data.courses,
-   });
- } catch (err) {
-   dispatch({
-     type: COURSE_ERROR,
-     payload: "An Error occured",
-   });
- }
+export const fetchCourses = () => async (dispatch) => {
+  try {
+    const res = await getCourses();
+    dispatch({
+      type: GET_COURSES,
+      payload: res.data.data.courses,
+    });
+  } catch (err) {
+    dispatch({
+      type: COURSE_ERROR,
+      payload: "An Error occured",
+    });
+  }
 };
 
 export const addToCart = (id) => async (dispatch) => {
-   document.getElementById('md-modal').classList.add('md-show');
+  if(document.getElementById("md-modal")){
+    document.getElementById("md-modal").classList.add("md-show");
+  }
+  
   dispatch({
     type: ADD_TO_CART,
-    payload: id
+    payload: id,
   });
 };
 
@@ -57,10 +57,9 @@ export const subQuantity = (id) => async (dispatch) => {
   });
 };
 
-
 export const clearCart = () => async (dispatch) => {
-  console.log('cart cleared action');
+  console.log("cart cleared action");
   dispatch({
-    type: CLEAR_CART
+    type: CLEAR_CART,
   });
 };

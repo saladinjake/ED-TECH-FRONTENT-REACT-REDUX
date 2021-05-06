@@ -396,7 +396,7 @@ export const Styles = styled.div`
           text-transform: uppercase;
           font-weight: 500;
           padding: 11px;
-          border-radius:5px;
+          border-radius: 5px;
           position: relative;
 
           &.outline {

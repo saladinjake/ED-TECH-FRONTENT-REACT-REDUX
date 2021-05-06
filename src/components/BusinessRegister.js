@@ -1,11 +1,9 @@
 import React from "react";
-import { Container, Row, Col,Button } from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { Styles } from "./styles/busRegister.js";
 import { useHistory } from "react-router-dom";
 
-
 function FreeCourse() {
-
   let history = useHistory();
 
   // useEffect(() => {

@@ -2,7 +2,7 @@
 import axios from "services/axiosConfig";
 
 export const getWishlist = async () => {
-  let request =  axios.get("wishlists/me");
+  let request = axios.get("wishlists/me");
   return request.then((response) => {
     if (response.status === 200) {
       return response && response;
@@ -11,7 +11,7 @@ export const getWishlist = async () => {
 };
 
 export const addToWishlist = async (data) => {
-  let request =  axios.post("wishlists/add", data);
+  let request = axios.post("wishlists/add", data);
   return request.then((response) => {
     if (response.status === 200) {
       return response && response;

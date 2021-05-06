@@ -17,24 +17,23 @@ import { getAuthProfile } from "services/learner.js";
 import toast from "react-hot-toast";
 // import { useHistory, useLocation } from "react-router-dom";
 import { addToWishList } from "actions/wishListActions";
-import "./relatedcoursesmodal.css"
+import "./relatedcoursesmodal.css";
 
 const CourseDetails = ({
   history,
   match,
   auth: { isAuthenticated },
   cart: { cart },
-  wishList:{ wishList },
+  wishList: { wishList },
   addToCart,
   addToWishList,
   fetchCourses,
 }) => {
-
   // console.log(cart)
 
   // console.log(history.location.pathname)
 
-  const lastLocation =history.location.pathname;
+  const lastLocation = history.location.pathname;
 
   const [coursedetails, setCourseDetails] = useState({});
   // eslint-disable-next-line
@@ -48,15 +47,11 @@ const CourseDetails = ({
     let courseId = parseInt(match.params.id);
     try {
       let response = await getCourse(courseId);
-        setCourseDetails(response.data);
+      setCourseDetails(response.data);
 
-       let allcourses = await getCourses();
-       setRelatedCourses(allcourses.data.data)     // ;
-      
-     
-       
-     
-    
+      let allcourses = await getCourses();
+      setRelatedCourses(allcourses.data.data); // ;
+
       setStatus("success");
     } catch (err) {
       setStatus("error");
@@ -67,11 +62,10 @@ const CourseDetails = ({
   useEffect(() => {
     (async function loadContent() {
       await fetchCourses();
-       // const lastLocation = useLocation();
+      // const lastLocation = useLocation();
     })();
     // eslint-disable-next-line
   }, []);
-
 
   useEffect(() => {
     (async function CheckStatus() {
@@ -112,66 +106,60 @@ const CourseDetails = ({
       });
     });
 
-
-
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() =>{
+  useEffect(() => {
     /* Get all elements with data-vidup */
-    const vidupElements = document.querySelectorAll('[data-vidup]');
+    const vidupElements = document.querySelectorAll("[data-vidup]");
 
-    const modal = document.getElementById('modalvid');
-    const modalVideo = document.getElementById('modal-video');
-    const mdc = document.getElementById('mdc');
-    const close = document.getElementById('close');
+    const modal = document.getElementById("modalvid");
+    const modalVideo = document.getElementById("modal-video");
+    const mdc = document.getElementById("mdc");
+    const close = document.getElementById("close");
 
     function closeModal() {
-        // mdc.style.width = "0";
-        mdc.style.transform = "scale(0)";
-        
-        setTimeout(() => {
-            modal.style.visibility = "hidden";
-            modal.style.opacity = "0";
-            modalVideo.src = "";  
-        }, 500);
+      // mdc.style.width = "0";
+      mdc.style.transform = "scale(0)";
+
+      setTimeout(() => {
+        modal.style.visibility = "hidden";
+        modal.style.opacity = "0";
+        modalVideo.src = "";
+      }, 500);
     }
 
     function showModal(element) {
-        modal.style.visibility = "visible";
-        modal.style.opacity = "1";
-        modalVideo.src = element.href;
-        mdc.style.width = "100%";
+      modal.style.visibility = "visible";
+      modal.style.opacity = "1";
+      modalVideo.src = element.href;
+      mdc.style.width = "100%";
 
-
-        setTimeout(() => {
-            mdc.style.transform = "scale(1)";
-        }, 300);
-
+      setTimeout(() => {
+        mdc.style.transform = "scale(1)";
+      }, 300);
     }
 
     /* Foreach element add an eventlistener and show the popup when clicked and add the src in the link */
-    vidupElements.forEach(element => {
-        element.addEventListener("click", (e) => {
-
-            e.preventDefault();
-            showModal(element);
-        });
+    vidupElements.forEach((element) => {
+      element.addEventListener("click", (e) => {
+        e.preventDefault();
+        showModal(element);
+      });
     });
 
-    close.addEventListener('click', (e) => {
-        closeModal();
+    close.addEventListener("click", (e) => {
+      closeModal();
     });
 
-    mdc.addEventListener('click', () => {
-        closeModal();
+    mdc.addEventListener("click", () => {
+      closeModal();
     });
 
-    modal.addEventListener('click', () => {
-        closeModal();
+    modal.addEventListener("click", () => {
+      closeModal();
     });
-    
-  })
+  });
 
   const checkCourseStatus = (courseId) => {
     var check = false;
@@ -182,36 +170,32 @@ const CourseDetails = ({
     return check;
   };
 
-   console.log(coursedetails)
+  console.log(coursedetails);
 
-function formaturl(youtube){
-   var url = youtube
-    var idVideo =''
+  function formaturl(youtube) {
+    var url = youtube;
+    var idVideo = "";
     var regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     var match = url.match(regExp);
     if (match && match[2].length == 11) {
-         var id = match[2];
-         idVideo = id
-         console.log(id)
-         var path = 'http://img.youtube.com/vi/'+id+'/0.jpg';
-         // $(this).css('background-image', 'url(' + path + ')');
-      } 
+      var id = match[2];
+      idVideo = id;
+      console.log(id);
+      var path = "http://img.youtube.com/vi/" + id + "/0.jpg";
+      // $(this).css('background-image', 'url(' + path + ')');
+    }
 
-      return {idVideo,path}
-
-}
-   
+    return { idVideo, path };
+  }
 
   return (
     <div className="main-wrapper course-details-page">
       {/* Header 2 */}
       <NavBar />
-
       {/* Breadcroumb */}
       {Object.entries(coursedetails).length !== 0 && (
         <BreadcrumbBox title={coursedetails.data.category.name} />
       )}
-
       <Styles>
         {/* Course Details */}
         {loading ? (
@@ -282,58 +266,73 @@ function formaturl(youtube){
                         </div>
                       </div>
                       <div className="course-details-banner">
-                       
-                      <Row>
-                         <Col md="4">
-                                    <div >
-                                       <img
-                          style={{float:"left"}}
-                          src={`${
-                            coursedetails && coursedetails.data
-                              ? coursedetails.data.course_cover_image
-                              : ""
-                          }`}
-                          alt="No Wrapper"
-                          className="img-fluid"
-                        />
-                                    </div>
-                                  </Col>
+                        <Row>
+                          <Col md="4">
+                            <div>
+                              <img
+                                style={{ float: "left" }}
+                                src={`${
+                                  coursedetails && coursedetails.data
+                                    ? coursedetails.data.course_cover_image
+                                    : ""
+                                }`}
+                                alt="No Wrapper"
+                                className="img-fluid"
+                              />
+                            </div>
+                          </Col>
 
-                                {coursedetails.data.introduction_video.length > 0 ?
-                                  (
-                                   
-                                   <Col md="4" >
-                                    
-                                
-                           <a class="video-banner-link" href={"https://www.youtube.com/embed/"+ formaturl(coursedetails.data.introduction_video).idVideo } data-vidup>
-                           
-                        <div id="all">
-  <h2>Play Video</h2>
-  <a id="play-video" class="play-button" data-url="https://www.youtube.com/embed/XJj2PbenIsU?rel=0&autoplay=1" data-toggle="modal" data-target="#myModal" title="XJj2PbenIsU"><i class="fab fa-youtube"></i></a>
-</div>
-                           <video class="video-banner" src={`${
-                            coursedetails && coursedetails.data
-                              ? formaturl(coursedetails.data.introduction_video).idVideo
-                              : ""
-                          }`} autoplay muted replay> </video></a>
-
+                          {coursedetails.data.introduction_video.length > 0 ? (
+                            <div className="course-details-banner img-fluid card-box"
+                             style={{background:"#000",height:"150px",width:"300px",display:"flex",justifyContent:"center"}}>
                         
-                                  </Col>
-
-
-                                  ): (<Fragment />)
-                                    
-
-
+                          <Col md="4" >
+                              <a
+                               style={{marginTop:"60px"}}
+                                className="video-banner-link"
+                                href={
+                                  "https://www.youtube.com/embed/" +
+                                  formaturl(
+                                    coursedetails.data.introduction_video
+                                  ).idVideo
                                 }
-                                  
-
-
-                       </Row>
-
-                       
-
-
+                                data-vidup
+                              >
+                                <div id="all" >
+                                 
+                                  <a
+                                    id="play-video"
+                                    className="play-button"
+                                    data-url="https://www.youtube.com/embed/XJj2PbenIsU?rel=0&autoplay=1"
+                                    data-toggle="modal"
+                                    data-target="#myModal"
+                                    title="XJj2PbenIsU"
+                                  >
+                                    <i className="fa fa-play"></i>
+                                  </a>
+                                </div>
+                                <video
+                                  className="video-banner"
+                                  src={`${
+                                    coursedetails && coursedetails.data
+                                      ? formaturl(
+                                          coursedetails.data.introduction_video
+                                        ).idVideo
+                                      : ""
+                                  }`}
+                                  autoplay
+                                  muted
+                                  replay
+                                >
+                                  {" "}
+                                </video>
+                              </a>
+                            </Col>
+                            </div>
+                          ) : (
+                            <Fragment />
+                          )}
+                        </Row>
                       </div>
                       <div className="course-tab-list">
                         <Tab.Container defaultActiveKey="overview">
@@ -802,62 +801,55 @@ function formaturl(youtube){
                               </ul>
                             </div>
 
-                             {isAuthenticated ? (
+                            {isAuthenticated ? (
                               checkCourseStatus(coursedetails.data.id) ? (
                                 ""
                               ) : (
-                              <Fragment>
-                                <button
-                                  type="button"
-                                  onClick={
-                                  
-                                     addToCart.bind(
-                                       this,
-                                       coursedetails?.data?.id
-                                      )
+                                <Fragment>
+                                  <button
+                                    type="button"
+                                    onClick={addToCart.bind(
+                                      this,
+                                      coursedetails?.data?.id
+                                    )}
+                                    className="enroll-btn"
+                                  >
+                                    Enroll Course
+                                  </button>
+                                  <br />
+                                  <br />
+                                  <br />
 
-                                      
-                                }
-                                  className="enroll-btn"
-                                >
-                                  Enroll Course
-                                </button>
-                                <br/><br/><br/>
+                                  <button
+                                    id="wishlister"
+                                    style={{ background: "red" }}
+                                    type="button"
+                                    onClick={
+                                      addToWishList.bind(
+                                      this,
+                                      coursedetails?.data?.id
+                                    )
 
-                                <button
-                                id="wishlister"
-                                style={{background:"red"}}
-                                  type="button"
-                                  onClick={
-                                  
-                                     addToWishList.bind(
-                                       this,
-                                       coursedetails?.data?.id
-                                      )
-
-                                      
-                                }
-                                  className=" enroll-btn btn btn-danger"
-                                >
-                                  Add To Wish List
-                                </button>
+                                   }
+                                    className=" enroll-btn btn btn-danger"
+                                  >
+                                    Add To Wish List
+                                  </button>
                                 </Fragment>
                               )
                             ) : (
                               <button
-                              type="button"
-                               
-                                
+                                type="button"
                                 className=" enroll-btn"
-                                onClick= {(e) =>{
-                                   return window.location.href= process.env.PUBLIC_URL + `/login?redirectTo=${lastLocation}`
-                                 
+                                onClick={(e) => {
+                                  return (window.location.href =
+                                    process.env.PUBLIC_URL +
+                                    `/login?redirectTo=${lastLocation}`);
                                 }}
                               >
                                 Login To Enroll
                               </button>
                             )}
-
                           </div>
                         </Col>
                       </Row>
@@ -871,92 +863,120 @@ function formaturl(youtube){
           <p>No Details for this course yet</p>
         )}
       </Styles>
-
-      <br/><br/><br/>
-
-      <div className="md-modal md-effect-12" id="md-modal" >
-        <div className="md-modal md-header"><h4>Course Cart Preview</h4></div>
-    <div className="md-content" style={{marginLeft:"0px",width: "900px",height:"400px",overflowY:"scroll"}}><br/>
-        <h3>Items in your cart</h3><br/><br/>
-
-        
-        <div>
-            {cart.length > 0 && cart.map( item =>{
-               return (
-               <div style={{float:"left",  margin:"10px", width:"200px"}}>
-                
-
-                  <img
-                          src={`${
-                            item.course_cover_image && item.course_cover_image
-                              ? item.course_cover_image
-                              : ""
-                          }`}
-                          alt="No Wrapper"
-                          className="img-fluid"
-                        />
-                         <p className="text-muted" style={{marginTop:"20px"}}>{item.course_name}</p>
-                  <p className="text-muted">{item.course_code}</p>
-                </div>
-               )
-            })
-              
-            }
-
-             <div style={{display:"table"}}>
-            <button onClick={()=>{
-              closeModal()
-              window.location.href = process.env.PUBLIC_URL + "/courses"
-
-            }} className="btn btn-primary pull-left">Continue Shopping</button>
-            <button style={{marginLeft:"180px",float:"right", marginRight:"20px"}} onClick={()=>{
-              window.location.href = process.env.PUBLIC_URL + "/cart"
-            }} className="btn btn-danger pull-right">Go to cart</button>
-          </div>
-          
+      <br />
+      <br />
+      <br />
+      <div className="md-modal md-effect-12" id="md-modal">
+        <div className="md-modal md-header">
+          <h4>Course Cart Preview</h4>
         </div>
-    </div>
-    
-</div>
+        <div
+          className="md-content"
+          style={{
+            marginLeft: "0px",
+            width: "900px",
+            height: "400px",
+            overflowY: "scroll",
+          }}
+        >
+          <br />
+          <h3>Items in your cart</h3>
+          <br />
+          <br />
 
-<div className="md-overlay"></div>
+          <div>
+            {cart.length > 0 &&
+              cart.map((item) => {
+                return (
+                  <div
+                    style={{ float: "left", margin: "10px", width: "200px" }}
+                  >
+                    <img
+                      src={`${
+                        item.course_cover_image && item.course_cover_image
+                          ? item.course_cover_image
+                          : ""
+                      }`}
+                      alt="No Wrapper"
+                      className="img-fluid"
+                    />
+                    <p className="text-muted" style={{ marginTop: "20px" }}>
+                      {item.course_name}
+                    </p>
+                    <p className="text-muted">{item.course_code}</p>
+                  </div>
+                );
+              })}
 
-
-
-
-
-<div class="modalVid" id="modalvid">
-      <div class="close"><span class="close" id="close">&times;</span></div>
-      <div class="modal-video-container" id="mdc">
-        <iframe class="video-popup" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen id="modal-video"></iframe>
+            <div style={{ display: "table" }}>
+              <button
+                onClick={() => {
+                  closeModal();
+                  window.location.href = process.env.PUBLIC_URL + "/courses";
+                }}
+                className="btn btn-primary pull-left"
+              >
+                Continue Shopping
+              </button>
+              <button
+                style={{
+                  marginLeft: "180px",
+                  float: "right",
+                  marginRight: "20px",
+                }}
+                onClick={() => {
+                  window.location.href = process.env.PUBLIC_URL + "/cart";
+                }}
+                className="btn btn-danger pull-right"
+              >
+                Go to cart
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-</div>
-
-  <br/><br/><br/>  <br/><br/><br/>  <br/><br/><br/>
-
+      <div className="md-overlay"></div>
+      <div className="modalVid" id="modalvid">
+        <div className="close">
+          <span className="close" id="close">
+            &times;
+          </span>
+        </div>
+        <div className="modal-video-container" id="mdc">
+          <iframe
+            className="video-popup"
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+            id="modal-video"
+          ></iframe>
+        </div>
+      </div>
+      <br />
+      <br />
+      <br /> <br />
+      <br />
+      <br /> <br />
+      <br />
+      <br />
       {/* Footer 2 */}
       <Footer />
     </div>
   );
 };
 
-
-
-const closeModal =() =>{
+const closeModal = () => {
   // document.getElementById('md-close').on('click', function() {
-    document.getElementById('md-modal').classList.remove('md-show');
+  document.getElementById("md-modal").classList.remove("md-show");
   // });
-}
+};
 
 // const showModalEffect = () => {
 //   // document.getElementById('md-trigger').addEventListener('click', function() {
 //     document.getElementById('md-modal').classList.add('md-show');
 //   // });
-  
-  
+
 // }
-
-
 
 CourseDetails.propTypes = {
   cart: PropTypes.object.isRequired,
@@ -967,11 +987,11 @@ CourseDetails.propTypes = {
 const mapStateToProps = (state) => ({
   cart: state.cart,
   auth: state.auth,
-  wishList:state.wishList
+  wishList: state.wishList,
 });
 
 export default connect(mapStateToProps, {
   addToCart,
   fetchCourses,
-  addToWishList
+  addToWishList,
 })(CourseDetails);
