@@ -69,39 +69,36 @@ export const AUTHLINKS = [
     link: "/mycourses",
   },
   {
-    name: "Profile",
-    link: "/learner/profile",
+    name: "Wishlist",
+    link: "/learner/wislist",
   },
   {
-    name: "Account Settings",
-    link: "/learner/accounts",
+    name: "Accomplishment",
+    link: "/learner/accomplishment",
   },
   {
     name: "Notifications",
     link: "/notifications",
   },
   {
-    name: "Purchase History",
-    link: "/learner/purchase/history",
+    name: "Account Settings",
+    link: "/notifications",
   },
-
-  {
-    name: "Wishlist",
-    link: "/learner/wishlists",
-  },
-  {
-    name: "Accomplishment",
-    link: "/learner/accomplishment",
-  },
-
   {
     name: "Subscriptions",
-    link: "/learner/subscriptions",
+    link: "/notifications",
   },
-
+  {
+    name: "Purchase History",
+    link: "/notifications",
+  },
+  {
+    name: "Profile",
+    link: "/learner/profile",
+  },
   {
     name: "Help",
-    link: "/help/info",
+    link: "/notifications",
   },
   {
     name: "Billing",
@@ -125,5 +122,5 @@ export const INSTRUCTORLINKS = [
   {
     name: "Notifications",
     link: "/instructor/notifications",
-  },
+  }
 ];

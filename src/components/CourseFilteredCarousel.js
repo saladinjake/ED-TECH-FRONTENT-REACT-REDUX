@@ -174,34 +174,7 @@ const Carousel = (props) => {
 
        
 
-                                  <div class="product-sidebar card-box">
-                                  <h6>{item.course_name} </h6>
-                                  <hr style={{backgroundColor:"blue"}}/>
-                                   <p>{item.course_overview.length > 0 && item.course_overview.substring(0,200)+ "..." }</p>
-                                    <br/>
-                                    <div class="card-box price" style={{float:"right"}}>
-                                    NGN { item.price }
-                                  </div>
-
-                                    <div style={{marginBottom:"0px", paddingTop:"80px"}}>
-
-                                     
-
-                                    <Link
-                                    className="btn btn-primary btn-large" style={{marginRight:"20px"}}
-                                    to={process.env.PUBLIC_URL + "/courses/" + item.id + "/" + item.slug }
-                                      ><span className="fa fa-shopping-cart" ></span>Add to cart</Link> 
-                                    
-                                      <Link
-                                    className="btn btn-danger btn-large"
-                                    to={process.env.PUBLIC_URL + "/courses/" + item.id + "/" + item.slug }
-                                      ><span className="fa fa-heart" ></span>Add to wishlist</Link> 
-
-
-                                     
-                                      
-                                      </div>
-                                  </div>
+                                  
                         </div>
                 
               );

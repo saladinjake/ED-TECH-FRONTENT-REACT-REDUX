@@ -240,7 +240,7 @@ const CourseDetails = ({
                           </div>
                           <div className="rating">
                             <h6>Rating</h6>
-                            <ul className="list-unstyled list-inline">
+                            {/*<ul className="list-unstyled list-inline">
                               <li className="list-inline-item">
                                 <i className="las la-star"></i>
                               </li>
@@ -257,7 +257,7 @@ const CourseDetails = ({
                                 <i className="las la-star-half-alt"></i>
                               </li>
                               <li className="list-inline-item">(4.5)</li>
-                            </ul>
+                            </ul>*/}
                           </div>
                           <div className="price">
                             <h6>Price</h6>
@@ -282,56 +282,7 @@ const CourseDetails = ({
                             </div>
                           </Col>
 
-                          {coursedetails.data.introduction_video.length > 0 ? (
-                            <div className="course-details-banner img-fluid card-box"
-                             style={{background:"#000",height:"150px",width:"300px",display:"flex",justifyContent:"center"}}>
-                        
-                          <Col md="4" >
-                              <a
-                               style={{marginTop:"60px"}}
-                                className="video-banner-link"
-                                href={
-                                  "https://www.youtube.com/embed/" +
-                                  formaturl(
-                                    coursedetails.data.introduction_video
-                                  ).idVideo
-                                }
-                                data-vidup
-                              >
-                                <div id="all" >
-                                 
-                                  <a
-                                    id="play-video"
-                                    className="play-button"
-                                    data-url="https://www.youtube.com/embed/XJj2PbenIsU?rel=0&autoplay=1"
-                                    data-toggle="modal"
-                                    data-target="#myModal"
-                                    title="XJj2PbenIsU"
-                                  >
-                                    <i className="fa fa-play"></i>
-                                  </a>
-                                </div>
-                                <video
-                                  className="video-banner"
-                                  src={`${
-                                    coursedetails && coursedetails.data
-                                      ? formaturl(
-                                          coursedetails.data.introduction_video
-                                        ).idVideo
-                                      : ""
-                                  }`}
-                                  autoplay
-                                  muted
-                                  replay
-                                >
-                                  {" "}
-                                </video>
-                              </a>
-                            </Col>
-                            </div>
-                          ) : (
-                            <Fragment />
-                          )}
+                          
                         </Row>
                       </div>
                       <div className="course-tab-list">
@@ -365,23 +316,21 @@ const CourseDetails = ({
                               className="overview-tab"
                             >
                               <div className="course-desc">
-                                <h5>Course Description</h5>
+                                <h5>Course Overview</h5>
                                 <p>
-                                  {coursedetails && coursedetails.data
-                                    ? coursedetails.data.course_description
-                                    : ""}
+                                  
+                                    {coursedetails?.data?.course_overview}
                                 </p>
                               </div>
                               <div className="course-feature">
-                                <h5>Course Summary</h5>
+                                <h5>What you will learn</h5>
                                 <p>{coursedetails?.data?.course_overview}</p>
                                 {/* <ul className="list-unstyled">
                               <li>
-                                <i className="las la-arrow-right"></i> Lorem
-                                ipsum dolor sit amet, consectetur adipisicing
-                                elit. Voluptatum amet quo eius saepe et quis
-                                necessitatibus hic natus facere excepturi
-                                aliquid dolor ducimus.
+                                <i className="las la-arrow-right"></i> 
+                                {coursedetails && coursedetails.data
+                                    ? coursedetails.data.course_description
+                                    : ""}
                               </li>
                             </ul> */}
                               </div>
@@ -747,9 +696,93 @@ const CourseDetails = ({
                       <Row>
                         <Col md="12">
                           <div className="course-details-feature">
+                            {coursedetails.data.introduction_video.length > 0 ? (
+                            <div className="course-details-banner "
+                             style={{background:"#f6f9ff",display:"flex",justifyContent:"center"}}>
+                        
+                          <Col md="4" >
+
+
+                              <a
+                               style={{marginTop:"60px"}}
+                                className=""
+                                href={
+                                  "https://www.youtube.com/embed/" +
+                                  formaturl(
+                                    coursedetails.data.introduction_video
+                                  ).idVideo
+                                }
+                                data-vidup
+                              >
+
+
+                                <div id="all" >
+
+
+                                 
+                                  <a
+                                    id="play-video"
+                                    className="play-button"
+                                    data-url={`${
+                                    coursedetails && coursedetails.data
+                                      ? formaturl(
+                                          coursedetails.data.introduction_video
+                                        ).idVideo
+                                      : ""
+                                  }`  }
+                                    data-toggle="modal"
+                                    data-target="#myModal"
+                                    title="XJj2PbenIsU"
+                                  >
+
+                                  <iframe
+                                  style={{marginLeft:"-90px",height:"150px",width:"200px",marginTop:"-20px"}}
+                           src={
+                                  "https://www.youtube.com/embed/" +
+                                  formaturl(
+                                    coursedetails.data.introduction_video
+                                  ).idVideo
+                                }
+          
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+            id="modal-videox"
+          ></iframe>
+                                  
+                                  </a>
+                                </div>
+
+
+
+                                <video
+                                  className=""
+                                  src={`${
+                                    coursedetails && coursedetails.data
+                                      ? formaturl(
+                                          coursedetails.data.introduction_video
+                                        ).idVideo
+                                      : ""
+                                  }`}
+                                  autoplay
+                                  muted
+                                  replay
+                                >
+                                  {" "}
+                                </video>
+                              </a>
+                            </Col>
+                            </div>
+                          ) : (
+                            <Fragment />
+                          )}
+
+
                             <h5 className="title">Course Details</h5>
 
                             <div>
+
+
                               <ul className="list-unstyled feature-list">
                                 <li>
                                   <i className="las la-calendar"></i> Start

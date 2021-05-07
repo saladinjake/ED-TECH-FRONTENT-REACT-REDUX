@@ -263,7 +263,7 @@ nav.desktop {
             border-bottom: 1px solid #eeeeee;
             position: relative;
 
-            &:hover ul.NavSubMenu {
+            &:hover  ul.NavSubMenu {
               visibility: visible;
               opacity: 1;
             }
@@ -391,7 +391,7 @@ nav.desktop {
           }
 
           li {
-            padding: 5px;
+            padding: 10px;
             display: block;
             width: 100%;
 

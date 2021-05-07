@@ -11,8 +11,8 @@ class ImageUpload extends React.Component {
   _handleSubmit(e) {
     e.preventDefault();
     // TODO: do something with -> this.state.file
-    this.upload(this.state.file);
-    console.log("handle uploading-", this.state.file);
+    // this.upload(this.state.file);
+    // console.log("handle uploading-", this.state.file);
   }
 
   _handleImageChange(e) {
@@ -28,13 +28,17 @@ class ImageUpload extends React.Component {
         file: file,
         imagePreviewUrl: reader.result,
       });
+      console.log(reader.result)
+       this.upload(reader.result);
+      
     };
 
-    setTimeout(() => {
-      this.upload(file);
-    }, 3000);
+    // setTimeout(() => {
+    //   this.upload(file);
+    // }, 10000);
 
     reader.readAsDataURL(file);
+
   }
 
   upload = (file) => {

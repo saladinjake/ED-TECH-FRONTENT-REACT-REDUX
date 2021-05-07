@@ -167,11 +167,11 @@ const CourseGrid = ({
               </Col>
 
               <Col lg="9" md="8" sm="7">
-                <div className="buttons-sec gridsect">
-                  <button className="gridsect list-view on">
+                <div className="buttons-sec gridsect" >
+                  <button className="gridsect list-view " style={{display:"none"}}>
                     <i className="fa fa-bars"></i>
                   </button>
-                  <button className="gridsect grid-view">
+                  <button className="gridsect grid-view on">
                     <i className="fa fa-th"></i>
                   </button>
                 </div>

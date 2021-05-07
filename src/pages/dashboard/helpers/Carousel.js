@@ -174,32 +174,7 @@ const Carousel = (props) => {
 
        
 
-                                  <div class="product-sidebar card-box">
-
-
-
-                                  <h4>{item.course_name} </h4>
-                                  <hr style={{backgroundColor:"blue"}}/>
-                                   <p>{item.course_overview.length > 0 && item.course_overview.substring(0,200)+ "..." }</p>
-                                    <br/>
-
-                                    <div class="card-box price" style={{float:"right"}}>
-                                    NGN { item.price }
-                                  </div>
-
-                                    <div style={{marginBottom:"0px", paddingTop:"40px"}}>
-                                    <Link
-                                    className="btn btn-primary btn-large" style={{marginRight:"20px"}}
-                                    to={process.env.PUBLIC_URL + "/courses/" + item.id + "/" + item.slug }
-                                      >Course Detail</Link> 
-                                    
-                                      <Link
-                                    className="btn btn-primary btn-large"
-                                    to={process.env.PUBLIC_URL + "/courses/" + item.id + "/" + item.slug }
-                                      >Start Course</Link> 
-
-                                      </div>
-                                  </div>
+                                  
                         </div>
                 );
               })}

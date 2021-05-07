@@ -3,10 +3,11 @@ import axios from "services/axiosConfig";
 import qs from "qs";
 
 const upload = (file) => {
-  // let formData = new FormData();
+  let formData = new FormData();
   const image = file;
-  // formData.append("file", file);
-  console.log(image);
+  formData.append("image", image);
+  formData.append("__method", "PUT");
+  console.log(formData, image);
   const config = {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -14,16 +15,16 @@ const upload = (file) => {
   };
   let request = axios.post(
     `users/profile-photo`,
-    {image,_method: "PUT"},
+    formData,
     
-    config
+    // config
   );
   return request.then((response) => {
     console.log(response);
     if (response.status === 200) {
       return response && response;
     }
-  });
+  })
 };
 
 export default {
