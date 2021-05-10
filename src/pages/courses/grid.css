@@ -40,3 +40,55 @@ button.gridsect.on {
   color: white;
   background-color: #000;
 }
+
+
+
+.single-details-sidbar{
+  display:none;
+}
+
+
+
+.btn-actions{
+  display:block;
+}
+
+
+
+iframe{
+    visibility: hidden;
+   }
+
+
+
+ @media (min-width: 40em) {
+  .single-details-sidbar{
+      display:block;
+   }
+
+   iframe{
+    visibility:visible;
+   }
+
+   .single-details-sidbar{
+    position:absolute;top:-80px;width:350px; left:90px;
+   }
+
+
+   .btn-actions{
+    display:none;
+   }
+
+   .video-lever-view{
+         position:absolute;
+         right:62px; top:-100px;
+   }
+
+   .iframe-magnet{
+    height:300px;margin-top:40px;margin-left:-65px;width:340px;
+   }
+
+
+
+
+} 

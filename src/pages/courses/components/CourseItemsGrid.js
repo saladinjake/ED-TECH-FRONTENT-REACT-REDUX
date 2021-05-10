@@ -95,172 +95,63 @@ function CourseItemGrid({
     <Fragment>
       {currentCourses.length > 0 ? (
         <Fragment>
+        <div class="category-course-list">
+                    <ul>
           {currentCourses.map((data, i) => {
             
             return (
-              <Fragment  key={data.id}>
-                <div className="widget grid grid-item" >
-                  
-                    <div className="widgetImage animation">
-                    <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
-                      <img src={`${data.course_cover_image}`} alt="Product 1" />
-                         </Link>
-                    </div>
-                    <div className="widgetContent animation">
-                      <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
-                         <h6 className="widgetTitle">{data.course_name}</h6>
-                      </Link>
-                      <p style={{ padding: "10px" }}>
-                        A course by {data.instructor.user.first_name}
-                      </p>
+             
 
-                      <div className="short_desc">
-                        <p style={{ color: "#333" }}>
-                          {data.course_description}
-                        </p>
-                      </div>
+              
 
-                      <div className="course_infox">
-                        <br />
-                        <br />
-
-                        <div className="info">
-                          <p style={{ float: "left", marginLeft: "20px" }}>
-                            Category {data.category.name}
-                          </p>
-
-                          <p style={{ float: "left", marginLeft: "20px" }}>
-                            Language {data.language.english}
-                          </p>
-
-                          <p style={{ float: "left", marginLeft: "20px" }}>
-                            Learning Style {data.learning_style}
-                          </p>
-                        </div>
-
-                        <div className="price" style={{ float: "right" }}>
-                          <i className="fa fa-2x fa-shopping-cart"></i> N{" "}
-                          {data.price}
-                        </div>
-
-                        <div>
-                          <br />
-
-                          {isAuthenticated ? (
-                            checkCourseStatus(data.id) ? (
-                              ""
-                            ) : (
-                              <button
-                                type="button"
-                                onClick={addToCart.bind(this, data?.id)}
-                                className="btn btn-primary add-to-cart"
-                              >
-                                Add to cart
-                              </button>
-                            )
-                          ) : (
-                            <button
-                              className="btn btn-primary add-to-cart"
-                              type="button"
-                              onClick={(e) => {
-                                return (window.location.href =
-                                  process.env.PUBLIC_URL + `/login`);
-                              }}
-                            >
-                              <i className="fa fa-lock"></i> Login To Enroll
-                            </button>
-                          )}
-
-                          <button
-                            className="btn btn-info add-to-cart"
-                            type="button"
-                            onClick={() =>{window.location.href =
-                                  process.env.PUBLIC_URL + `/courses/`+ data.id
-                                }}
-                          >
-                            <i style={{marginRight:"10px"}} className="fa fa-eye"></i>Course Detail{" "}
-                          </button>
-                        </div>
-                      </div>
-
-                      <br />
-                      <div className="widgetSubTitle">
-                        <hr style={{ width: "240px" }} />
-                        <h2>Course</h2>
-                      </div>
-                    </div>
-               
+        <li>
+        <div class="course-box-2">
+            <div class="course-image">
+                <a href={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
+                    <img style={{height:"180px"}} src={`${data.course_cover_image}`} alt="" class="img-fluid" />
+                </a>
+            </div>
+            <div class="course-details">
+                <a href={`${process.env.PUBLIC_URL}/courses/${data.id}`} class="course-title">{data.course_name}</a>
+                <a href={`${process.env.PUBLIC_URL}/courses/${data.id}`} class="course-instructor">
+                    <span class="instructor-name">{data.instructor.user.first_name} {data.instructor.user.last_name}</span>
+                </a>
+                <div class="course-subtitle">
+                    {data.course_description}</div>
+                <div class="course-meta">
+                    <span class=""><i class="fa fa-play-circle"></i>
+                       {data.learning_style}                   </span>
+                    <span class=""><i class="fa fa-clock"></i>
+                                           </span>
+                    <span class=""><i class="fa fa-closed-captioning"></i>{data.language.english}</span>
+                    <span class=""><i class="fa fa-level-up"></i>Level</span>
                 </div>
-
-                {/*<div className="course-item " style={{width:"200px",height:"300px", background:"#fff"}}>
-                  <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
-                    <div
-                      
-                      style={{
-                        height:"150px",
-                        backgroundImage: data
-
-                          ? `url(${data.course_cover_image})`
-                          : "",
-                             backgroundRepeat:"no-repeat",
-    backgroundPosition: "center center",
+            </div>
+            <div class="course-price-rating">
+                <div class="course-price">
+                                            <span class="current-price">NGN {data.price}</span>
+                                    </div>
+                <div class="rating">
+                             <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <span class="d-inline-block average-rating">0</span>
+                </div>
+                <div class="rating-number">0 Ratings </div>
+            </div>
+        </div>
+    </li>
     
-    minHeight:"20%"
-                      }}
-                    >
-                      
-                      
-                    </div>
-                  </Link>
 
-                   <div
-                      className="card-box"
-                      style={{
-                        height:"30px",
-                        width:"50px",
-                        position:"absolute",
-                        top:"120px",
-                        right:"90px",
-                        padding:"5px",
-                        backgroundImage: data
-
-                          ? `url(${data.course_cover_image})`
-                          : "",
-                             backgroundRepeat:"no-repeat",
-    backgroundPosition: "center center",
-    
-    minHeight:"20%"
-                      }}
-                    >
-                      
-                      
-                    </div>
-                  <div className="course-content" >
-                    <h6 className="" style={{fontSize:"10px", color:"#fff"}}><br/>
-                      <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`} >
-                        {data.course_name}
-                      </Link>
-                    </h6>
-                  
-                    <div className="course-face " style={{position:"absolute",bottom: "40px"}}>
-                      <div className="duration pull-left" style={{marginLeft:"40px",float:"left"}}>
-                        <p style={{fontSize:"10px"}}>
-                         Course
-                        </p>
-                      </div>
-                     
-                      <div className="student pull-right">
-                        <p style={{fontSize:"10px", float:"right"}}>
-                          
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>*/}
-              </Fragment>
+               
             );
           })}
+           </ul>
+                                    </div>
         </Fragment>
+
       ) : (
         <p>No courses yet.</p>
       )}
@@ -274,6 +165,7 @@ function CourseItemGrid({
           currentPage={currentPage}
         />
       </Col>
+
     </Fragment>
   );
 }

@@ -19,7 +19,6 @@ import toast from "react-hot-toast";
 import { addToWishList } from "actions/wishListActions";
 import "./relatedcoursesmodal.css";
 
-
 const CourseDetails = ({
   history,
   match,
@@ -209,7 +208,7 @@ const CourseDetails = ({
       <div className="col-lg-8">
         <div className="course-header-wrap">
           <h1 className="t">{ coursedetails?.data?.course_name }</h1>
-          <p className="subtitle">{ coursedetails?.data?.course_overview.length > 0 && coursedetails?.data?.course_description.substring(0,150)+ "..." }</p>
+          <p className="subtitle">{ coursedetails?.data?.course_overview.length > 0 && coursedetails?.data?.course_description.substring(0,100) }</p>
           <div className="rating-row">
             <span className="course-badge best-seller">Level</span>
                                       <i className="fas fa-star"></i>
@@ -229,18 +228,18 @@ const CourseDetails = ({
         </div>
       </div>
     </div>
-    <div className="col-lg-4  video-lever-view"  style={{}}>
+    <div className="col-lg-4"  style={{position:"absolute", right:"20px", top:"200px"}}>
     <div className="single-details-sidbar">
         <div className="course-details-feature">
                             { coursedetails &&  coursedetails?.data?.introduction_video?.length > 0 ? (
-                            <div 
-                             style={{display:"flex",justifyContent:"center"}}>
+                            <div className="course-details-banner "
+                             style={{background:"#0253c8",display:"flex",justifyContent:"center"}}>
                         
                           <Col md="4" >
 
 
                               <a
-                              
+                               style={{marginTop:"60px"}}
                                 className=""
                                 href={
                                   "https://www.youtube.com/embed/" +
@@ -272,8 +271,7 @@ const CourseDetails = ({
                                   >
 
                                   <iframe
-                                  className="iframe-magnet"
-                                  style={{}}
+                                  style={{marginTop:"40px",marginLeft:"-90px",width:"300px"}}
                            src={
                                   "https://www.youtube.com/embed/" +
                                   formaturl(
@@ -315,10 +313,6 @@ const CourseDetails = ({
                           )}
 
 
-
-
-
-
                             
                            
                           </div>
@@ -336,13 +330,89 @@ const CourseDetails = ({
           <Loader width="70" />
         ) : Object.entries(coursedetails).length !== 0 ? (
           <Fragment>
-            <section className="course-details-area" style={{height:"3000px"}}>
+            <section className="course-details-area">
               <Container>
                 <Row>
-                  <Col lg="8" md="8" sm="12">
-                    <div className="course-details-top" style={{marginTop:"-10px"}}>
-                     
-                      
+                  <Col lg="9" md="8" sm="12">
+                    <div className="course-details-top">
+                      <div className="heading">
+                        <h4>{coursedetails?.data?.course_name}</h4>
+                      </div>
+                      <div className="course-top-overview">
+                        <div className="d-flex overviews">
+                          <div className="author">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                `/assets/images/author.jpg`
+                              }
+                              alt="author"
+                            />
+                            <div className="author-name">
+                              <h6>Author</h6>
+                              <p>
+                                {
+                                  coursedetails?.data?.instructor?.user
+                                    ?.first_name
+                                }
+                              </p>
+                            </div>
+                          </div>
+                          <div className="category">
+                            <h6>Category</h6>
+                            <p>
+                              {coursedetails && coursedetails.data
+                                ? coursedetails.data.category.name
+                                : ""}
+                            </p>
+                          </div>
+                          <div className="rating">
+                            <h6>Rating</h6>
+                            {/*<ul className="list-unstyled list-inline">
+                              <li className="list-inline-item">
+                                <i className="las la-star"></i>
+                              </li>
+                              <li className="list-inline-item">
+                                <i className="las la-star"></i>
+                              </li>
+                              <li className="list-inline-item">
+                                <i className="las la-star"></i>
+                              </li>
+                              <li className="list-inline-item">
+                                <i className="las la-star"></i>
+                              </li>
+                              <li className="list-inline-item">
+                                <i className="las la-star-half-alt"></i>
+                              </li>
+                              <li className="list-inline-item">(4.5)</li>
+                            </ul>*/}
+                          </div>
+                          <div className="price">
+                            <h6>Price</h6>
+                            <p>NGN{coursedetails?.data?.price}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="course-details-banner">
+                        <Row>
+                          <Col md="4">
+                            <div>
+                              <img
+                                style={{ float: "left" }}
+                                src={`${
+                                  coursedetails && coursedetails.data
+                                    ? coursedetails.data.course_cover_image
+                                    : ""
+                                }`}
+                                alt="No Wrapper"
+                                className="img-fluid"
+                              />
+                            </div>
+                          </Col>
+
+                          
+                        </Row>
+                      </div>
                       <div className="course-tab-list">
                         <Tab.Container defaultActiveKey="overview">
                           <Nav className="flex-column">
@@ -382,64 +452,7 @@ const CourseDetails = ({
                               </div>
                               <div className="course-feature">
                                 <h5>What you will learn</h5>
-                                <ul>
-                                {coursedetails?.data?.outcomes.map((detail)=>{
-                                    return( <p>{ detail } </p>)
-                                })}
-                                </ul>
-
-                                <div className="btn-actions">
-                                     {isAuthenticated ? (
-                              checkCourseStatus(coursedetails.data.id) ? (
-                                ""
-                              ) : (
-                                <Fragment>
-                                  <button
-                                    type="button"
-                                    onClick={addToCart.bind(
-                                      this,
-                                      coursedetails?.data?.id
-                                    )}
-                                    className="enroll-btn btn btn-primary"
-                                  >
-                                    Enroll Course
-                                  </button>
-                                  <br />
-                                  <br />
-                                  <br />
-
-                                  <button
-                                    id="wishlister"
-                                    style={{ background: "red" }}
-                                    type="button"
-                                    onClick={
-                                      addToWishList.bind(
-                                      this,
-                                      coursedetails?.data?.id
-                                    )
-
-                                   }
-                                    className=" enroll-btn btn btn-danger"
-                                  >
-                                    Add To Wish List
-                                  </button>
-                                </Fragment>
-                              )
-                            ) : (
-                              <button
-                                type="button"
-                                className=" enroll-btn"
-                                onClick={(e) => {
-                                  return (window.location.href =
-                                    process.env.PUBLIC_URL +
-                                    `/login?redirectTo=${lastLocation}`);
-                                }}
-                              >
-                                Login To Enroll
-                              </button>
-                            )}
-
-                                </div>
+                                <p>{coursedetails?.data?.course_overview}</p>
                                 {/* <ul className="list-unstyled">
                               <li>
                                 <i className="las la-arrow-right"></i> 
@@ -449,8 +462,57 @@ const CourseDetails = ({
                               </li>
                             </ul> */}
                               </div>
-                             
-                             
+                              {/* <div className="course-learn">
+                            <h5>Learning Outcome</h5>
+                            <p>
+                              Lorem ipsum dolor sit, amet consectetur
+                              adipisicing elit. Quae impedit eligendi
+                              perspiciatis animi maxime ab minus corporis omnis
+                              similique excepturi, quidem facere quisquam
+                              aperiam neque dolorem saepe. Laboriosam, quam
+                              aliquam odit modi harum libero culpa distinctio.
+                            </p>
+                            <ul className="list-unstyled">
+                              <li>
+                                <i className="fa fa-check"></i> Lorem ipsum
+                                dolor sit amet, consectetur adipisicing elit.
+                                Voluptatum amet quo eius saepe et quis
+                                necessitatibus hic natus facere Quae impedit
+                                eligendi perspiciatis animi maxime ab minus
+                                corporis omnis similique excepturi.
+                              </li>
+                            </ul>
+                          </div> */}
+                              {/* <div className="course-share">
+                            <h5>Share This Course</h5>
+                            <ul className="social list-unstyled list-inline">
+                              <li className="list-inline-item">
+                                <a href={process.env.PUBLIC_URL + "/"}>
+                                  <i className="fab fa-facebook-f"></i>
+                                </a>
+                              </li>
+                              <li className="list-inline-item">
+                                <a href={process.env.PUBLIC_URL + "/"}>
+                                  <i className="fab fa-twitter"></i>
+                                </a>
+                              </li>
+                              <li className="list-inline-item">
+                                <a href={process.env.PUBLIC_URL + "/"}>
+                                  <i className="fab fa-linkedin-in"></i>
+                                </a>
+                              </li>
+                              <li className="list-inline-item">
+                                <a href={process.env.PUBLIC_URL + "/"}>
+                                  <i className="fab fa-youtube"></i>
+                                </a>
+                              </li>
+                              <li className="list-inline-item">
+                                <a href={process.env.PUBLIC_URL + "/"}>
+                                  <i className="fab fa-dribbble"></i>
+                                </a>
+                              </li>
+                            </ul>
+                          </div> */}
                             </Tab.Pane>
                             <Tab.Pane
                               eventKey="curriculum"
@@ -458,31 +520,116 @@ const CourseDetails = ({
                             >
                               <div className="course-element">
                                 <h5>Course Content</h5>
-
-                                {coursedetails?.data?.curriculum.map((detail, i)=>{
-                                    return(<div className="course-item">
+                                <div className="course-item">
                                   <button className="course-button active">
-                                    Topic {i+1}: {detail.topic}
+                                    Topic 1: Topic Header
                                   </button>
                                   <div className="course-content show">
                                     <ul className="list-unstyled">
                                       <li>
                                         <span className="play-icon">
                                           <i className="las la-play"></i>{" "}
-                                          Lesson: {detail.topic}
+                                          Lesson: 01
                                         </span>
                                         <span className="lecture-title">
                                           Lesson 1 title
                                         </span>
                                       </li>
-                                      
+                                      <li>
+                                        <span className="play-icon">
+                                          <i className="las la-play"></i>{" "}
+                                          Lesson: 02
+                                        </span>
+                                        <span className="lecture-title">
+                                          Lesson 2 title
+                                        </span>
+                                      </li>
+                                      <li>
+                                        <span className="play-icon">
+                                          <i className="las la-play"></i>{" "}
+                                          Lesson: 03
+                                        </span>
+                                        <span className="lecture-title">
+                                          Lesson 3 title
+                                        </span>
+                                      </li>
                                     </ul>
                                   </div>
-                                </div>)
-                                })}
-                                
-                                
-                                
+                                </div>
+                                <div className="course-item">
+                                  <button className="course-button active">
+                                    Topic 2: Topic Header
+                                    <span>03 Lectures - 43 Min</span>
+                                  </button>
+                                  <div className="course-content show">
+                                    <ul className="list-unstyled">
+                                      <li>
+                                        <span className="play-icon">
+                                          <i className="las la-play"></i>{" "}
+                                          Lesson: 01
+                                        </span>
+                                        <span className="lecture-title">
+                                          Lesson 1 title
+                                        </span>
+                                      </li>
+                                      <li>
+                                        <span className="play-icon">
+                                          <i className="las la-play"></i>{" "}
+                                          Lesson: 02
+                                        </span>
+                                        <span className="lecture-title">
+                                          Lesson 2 title
+                                        </span>
+                                      </li>
+                                      <li>
+                                        <span className="play-icon">
+                                          <i className="las la-play"></i>{" "}
+                                          Lesson: 03
+                                        </span>
+                                        <span className="lecture-title">
+                                          Lesson 3 title
+                                        </span>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                                <div className="course-item">
+                                  <button className="course-button active">
+                                    Topic 3: Topic Header
+                                    <span>04 Lectures - 59 Min</span>
+                                  </button>
+                                  <div className="course-content show">
+                                    <ul className="list-unstyled">
+                                      <li>
+                                        <span className="play-icon">
+                                          <i className="las la-play"></i>{" "}
+                                          Lesson: 01
+                                        </span>
+                                        <span className="lecture-title">
+                                          Lesson 1 title
+                                        </span>
+                                      </li>
+                                      <li>
+                                        <span className="play-icon">
+                                          <i className="las la-play"></i>{" "}
+                                          Lesson: 02
+                                        </span>
+                                        <span className="lecture-title">
+                                          Lesson 2 title
+                                        </span>
+                                      </li>
+                                      <li>
+                                        <span className="play-icon">
+                                          <i className="las la-play"></i>{" "}
+                                          Lesson: 03
+                                        </span>
+                                        <span className="lecture-title">
+                                          Lesson 3 title
+                                        </span>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
                               </div>
                             </Tab.Pane>
                             <Tab.Pane
@@ -517,12 +664,6 @@ const CourseDetails = ({
                                                   coursedetails?.data
                                                     ?.instructor?.user
                                                     ?.first_name
-                                                }
-
-                                                {
-                                                  coursedetails?.data
-                                                    ?.instructor?.user
-                                                    ?.last_name
                                                 }
                                               </h6>
                                             </Link>
@@ -678,8 +819,8 @@ const CourseDetails = ({
                       </div>
                     </div>
                   </Col>
-                  <Col lg="4" md="4" sm="12">
-                    <div className="single-details-sidbar" style={{}}>
+                  <Col lg="3" md="4" sm="12">
+                    <div className="single-details-sidbar">
                       <Row>
                         <Col md="12">
                           <div className="course-details-feature">
@@ -690,20 +831,8 @@ const CourseDetails = ({
 
                             <div>
 
-                           <br/><br/><br/>
-
 
                               <ul className="list-unstyled feature-list">
-
-                              <li>
-                                  <i className="las la-calendar"></i> Price
-                                  Date:
-                                  <span>
-                                    NGN{coursedetails?.data?.price}
-                                  </span>
-                                </li>
-
-
                                 <li>
                                   <i className="las la-calendar"></i> Start
                                   Date:

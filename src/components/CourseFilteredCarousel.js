@@ -125,7 +125,7 @@ const Carousel = (props) => {
               return (
 
 
-              <div class="product">
+              <div class="product hoverme">
                             <figure>
                                 <Link
                                                 to={process.env.PUBLIC_URL+ "/courses/" + item.id + "/" + item.slug}
@@ -172,7 +172,8 @@ const Carousel = (props) => {
                                   </div>
                                 </div>
 
-       
+                                
+
 
                                   
                         </div>

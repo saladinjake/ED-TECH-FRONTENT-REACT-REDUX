@@ -11,6 +11,7 @@ import ForSchool from "pages/instructors/ForSchool";
 import Checkout from "pages/checkout/Checkout";
 import Contact from "./pages/contact/Contact";
 import CourseGrid from "pages/courses/CourseGrid";
+import CourseGridList from "pages/courses/CourseGridList";
 import CourseDetails from "pages/courses/CourseDetails";
 import Instructor from "pages/instructor/Instructors";
 import InstructorDetails from "pages/instructor/InstructorDetails";
@@ -114,6 +115,12 @@ function App() {
           path={`${process.env.PUBLIC_URL + "/courses"}`}
           component={CourseGrid}
         />
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/course-grid/list"}`}
+          component={CourseGridList}
+        />
+
         <Route exact path="/courses/category/:id" component={CourseGrid} />
 
         <Route

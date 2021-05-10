@@ -256,3 +256,39 @@ figure {
     z-index: 999999999999999;
   }*/
 }
+
+
+
+
+
+
+
+
+
+
+.hoverme:hover > .pop {
+   opacity: 1;
+   width: 400px;
+   height: 400px;
+   position:absolute;
+   top:10px;
+   right:-200px;
+   z-index: 9999999999999;
+}
+ .pop {
+   opacity: 0;
+   width: 0;
+   height: 0;
+   background: #fafafa;
+  
+   z-index: -1;
+   margin: auto;
+   transition: all 0.3s ease;
+}
+ .pop > p {
+   color: #353535;
+   font-size: 20px;
+}
+ 
+
+

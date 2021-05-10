@@ -70,7 +70,7 @@ export const AUTHLINKS = [
   },
   {
     name: "Wishlist",
-    link: "/learner/wislist",
+    link: "/learner/wishlists",
   },
   {
     name: "Accomplishment",

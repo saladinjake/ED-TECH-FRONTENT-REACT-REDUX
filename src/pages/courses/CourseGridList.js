@@ -3,7 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import NavBar from "components/Navbar";
 import { PageTitle } from "../../components/common/PageTitle";
 import CourseSidebar from "./components/CourseSidebar";
-import CourseItemGrid from "./components/CourseItemsGrid";
+import CourseItemsList from "./components/CourseGridList";
 import Footer from "../../components/Footer";
 import { Styles } from "./styles/course.js";
 
@@ -171,12 +171,12 @@ const CourseGrid = ({
 
               <Col lg="9" md="8" sm="7">
                 <div className="buttons-sec gridsect" >
-                  <button className="gridsect list-view on" onClick={()=> {
+                  <button className="gridsect list-view " onClick={()=> {
                      history.push("/courses")
                   }}>
                     <i className="fa fa-bars"></i>
                   </button>
-                  <button className="gridsect grid-view "  onClick={()=> {
+                  <button className="gridsect grid-view on"  onClick={()=> {
                      history.push("/course-grid/list")
                   }}>
                     <i className="fa fa-th"></i>
@@ -184,13 +184,13 @@ const CourseGrid = ({
                 </div>
                 <br />
 
-                <div className="course-items viewCourses gridDisplay">
+                <div className="course-items ">
                   <Row>
                     {courseLoading ? (
                       <Loader width="70" />
                     ) : courses.length > 0 ? (
                       <Fragment>
-                        <CourseItemGrid
+                        <CourseItemsList
                           courses={courses}
                           allCourses={filterAllCourses}
                         />
