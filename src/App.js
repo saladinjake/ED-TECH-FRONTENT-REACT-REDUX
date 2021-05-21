@@ -12,6 +12,10 @@ import Checkout from "pages/checkout/Checkout";
 import Contact from "./pages/contact/Contact";
 import CourseGrid from "pages/courses/CourseGrid";
 import CourseGridList from "pages/courses/CourseGridList";
+
+import ProgramGrid from "pages/courses/ProgramGrid";
+import ProgramGridList from "pages/courses/ProgramGridList";
+
 import CourseDetails from "pages/courses/CourseDetails";
 import Instructor from "pages/instructor/Instructors";
 import InstructorDetails from "pages/instructor/InstructorDetails";
@@ -31,8 +35,12 @@ import BusinessRegister from "pages/account/BusinessRegister";
 import PageNotFound from "pages/404/PageNotFound";
 // import Product from "pages/shop/Products";
 import InstructorCourses from "pages/instructors/InstructorCourses";
+import MyInstructorCourses from "pages/instructorAuthoredCourses/MyLearning";
 import CreateCourse from "pages/account/CreateCourse";
+import CreateCourseOld from "pages/account/CreateCourseOld";
 import InstructorDashboard from "pages/instructors/InstructorDashboard";
+import NewInstructorDashboard from "pages/dashboardInstructor/MyDashboard";
+
 import Cart from "pages/shop/Cart";
 import WishLists from "pages/shop/Wishlist";
 // import DashBoard from "pages/shop/Dashboard";
@@ -51,6 +59,7 @@ import MylearningDashboard from "./pages/courses/components/MyLearning";
 import OverViewPane from "./pages/dashboard/MyDashboard";
 import SortTest from "./SortTest";
 import NewNotifications from "./pages/mynotifications/Notifications";
+import  NewInstructorNotifications from  "./pages/mynotifications/NewInstructorNotification";
 // import WorkBench from "./pages/workbench/WorkSheet"
 
 import Purchases from "./pages/purchases/Purchases";
@@ -177,44 +186,64 @@ function App() {
         />
         <LearnersRoute exact path="/billing" component={Billing} />
 
-        <InstructorsRoute
+        {/*<InstructorsRoute
           exact
-          path="/instructor/dashboard"
+          path="/instructor-pages/dashboard"
           component={InstructorDashboard}
-        />
+        />*/}
+
         <InstructorsRoute
           exact
-          path="/instructor/profile"
+          path="/instructor-pages/dashboard"
+          component={NewInstructorDashboard}
+        />
+
+        <InstructorsRoute
+          exact
+          path="/instructor-pages/profile"
           component={InstructorProfiler}
         />
+        {/*<InstructorsRoute
+          exact
+          path="/instructor-pages/mycourses"
+          component={InstructorCourses}
+        />*/}
+
         <InstructorsRoute
           exact
-          path="/instructor/mycourses"
-          component={InstructorCourses}
+          path="/instructor-pages/mycourses"
+          component={MyInstructorCourses}
         />
         <InstructorsRoute
           exact
-          path={`${process.env.PUBLIC_URL + "/instructor/profile/update"}`}
+          path={`${process.env.PUBLIC_URL + "/instructor-detail/profile/update"}`}
           component={UpdateInstructor}
         />
         <InstructorsRoute
           exact
-          path={`${process.env.PUBLIC_URL + "/instructor/notifications"}`}
-          component={InstructorNotifications}
+          path={`${process.env.PUBLIC_URL + "/instructor-pages/notifications"}`}
+          component={NewInstructorNotifications}
         />
         <InstructorsRoute
           exact
-          path={`${process.env.PUBLIC_URL + "/instructor/course/create"}`}
+          path={`${process.env.PUBLIC_URL + "/instructor-pages/course/create"}`}
+          component={CreateCourseOld}
+        />
+
+        <InstructorsRoute
+          exact
+          path={`${process.env.PUBLIC_URL + "/instructor-pages/course/create-old"}`}
           component={CreateCourse}
         />
+
         <InstructorsRoute
           exact
-          path={`${process.env.PUBLIC_URL + "/instructor/course/pending"}`}
+          path={`${process.env.PUBLIC_URL + "/instructor-pages/course/pending"}`}
           component={InstructorPendingCourses}
         />
         <InstructorsRoute
           exact
-          path={`${process.env.PUBLIC_URL + "/instructor/course/declined"}`}
+          path={`${process.env.PUBLIC_URL + "/instructor-pages/course/declined"}`}
           component={InstructorDeclinedCourses}
         />
         <LearnersRoute
@@ -282,6 +311,18 @@ function App() {
         <LearnersRoute
           path={`${process.env.PUBLIC_URL + "/learner/wishlists"}`}
           component={WishLists}
+        />
+
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/programs"}`}
+          component={ProgramGrid}
+        />
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/programs-grid/list"}`}
+          component={ProgramGridList}
         />
 
         

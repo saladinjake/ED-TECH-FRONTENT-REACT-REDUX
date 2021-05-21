@@ -40,25 +40,7 @@ const CourseGrid = ({
   }, []);
 
   useEffect(() => {
-    // let listButton = document.querySelector(".list-view");
-    // let gridButton = document.querySelector(".grid-view");
-    // let wrapper = document.querySelector(".viewCourses");
-
-    // listButton.addEventListener("click", function () {
-    //   gridButton.classList.remove("on");
-    //   listButton.classList.add("on");
-    //   wrapper.classList.remove("gridDisplay");
-    //   wrapper.classList.add("listDisplay");
-
-    //   //wrapper.querySelector("widget")
-    // });
-
-    // gridButton.addEventListener("click", function () {
-    //   listButton.classList.remove("on");
-    //   gridButton.classList.add("on");
-    //   wrapper.classList.remove("listDisplay");
-    //   wrapper.classList.add("gridDisplay");
-    // });
+    
   });
 
   useEffect(() => {
@@ -78,11 +60,13 @@ const CourseGrid = ({
   const FilterAll = async () => {
     let catId = parseInt(match.params.id);
 
+
+
     if (catId > 0) {
       courses.length > 0 &&
         setFilterAllCourses(
           courses.filter((course) => {
-            return parseInt(course.category_id) === catId;
+            return parseInt(course.category_id) === catId  && parseInt(course.status) === 1;
           })
         );
     } else {
@@ -98,19 +82,19 @@ const CourseGrid = ({
                 courses.filter((course) => {
                   return course.course_name
                     .toLowerCase()
-                    .includes(query.get("search").toLowerCase());
+                    .includes(query.get("search").toLowerCase()) && parseInt(course.status) === 1;
                 })
             );
             break;
           case "pace":
             if (query.get("pace") === "self") {
               filtered = courses.filter((course) => {
-                return course.learning_style === "Self Paced";
+                return course.learning_style === "Self Paced" && parseInt(course.status) === 1;
               });
               setFilterAllCourses([...filtered]);
             } else {
               filtered = courses.filter((course) => {
-                return course.learning_style === "Instructor Paced";
+                return course.learning_style === "Instructor Paced" && parseInt(course.status) === 1;
               });
               setFilterAllCourses([...filtered]);
             }
@@ -118,12 +102,12 @@ const CourseGrid = ({
           case "fee":
             if (query.get("amount") === "free") {
               filtered = courses.filter((course) => {
-                return parseInt(course.price) === parseInt(0);
+                return parseInt(course.price) === parseInt(0) && parseInt(course.status) === 1;
               });
               setFilterAllCourses([...filtered]);
             } else {
               filtered = courses.filter((course) => {
-                return parseInt(course.price) > parseInt(0);
+                return parseInt(course.price) > parseInt(0) && parseInt(course.status) === 1;
               });
               setFilterAllCourses([...filtered]);
             }
@@ -139,7 +123,7 @@ const CourseGrid = ({
             courses.filter((course) => {
               return course.course_name
                 .toLowerCase()
-                .includes(searchVal.toLowerCase());
+                .includes(searchVal.toLowerCase()) && parseInt(course.status) === 1;
             })
         );
       }

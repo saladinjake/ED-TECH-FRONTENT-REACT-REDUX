@@ -24,7 +24,7 @@ import {
 
 import Loader from "components/Loader/Loader";
 import { connect } from "react-redux";
-
+import "./instructor.css"
 const UpdateInstructor = ({ auth: { user } }) => {
   // let history = useHistory();
   const [loading, setLoading] = useState(true);
@@ -33,6 +33,10 @@ const UpdateInstructor = ({ auth: { user } }) => {
   // eslint-disable-next-line
   const [industries, setIndustries] = useState([]);
   const [profile, setProfile] = useState({});
+  let preInst =null;
+  let courseNiche = null;
+
+  
 
   let initialValues = useMemo(() => {
     return Object.entries(profile).length !== 0
@@ -58,6 +62,13 @@ const UpdateInstructor = ({ auth: { user } }) => {
           facebook_url: profile?.instructor_profile.facebook_url || "",
           linkedin_url: profile?.instructor_profile.linkedin_url || "",
           twitter_url: profile?.instructor_profile.twitter_url || "",
+
+         
+          category_id:  profile?.instructor_profile.industry_id  || "",
+          other_info: profile?.instructor_profile.other_info || "",
+          previous_institutions : JSON.parse(profile?.instructor_profile.previous_institutions).join(" , ") || "",
+          niche_courses: JSON.parse(profile?.instructor_profile.niche_courses).join(" ,") || "",
+
         }
       : {};
   }, [profile]);
@@ -97,6 +108,15 @@ const UpdateInstructor = ({ auth: { user } }) => {
   const handleSubmit = async (values, { setSubmitting }) => {
     setLoading(true);
     values.email = user.email;
+    // values.niche_courses = values.niche_courses.split(',');
+    // values.previous_institutions = values.previous_institutions.split(',') ;
+     values.phone_number = values.phone_number.toString();
+    values.country_id = parseInt(values.country_id);
+    values.category_id = parseInt(values.category_id);
+    values.niche_courses = JSON.stringify(values.niche_courses.split(','));
+    values.previous_institutions = JSON.stringify(values.previous_institutions.split(','));
+   
+    console.log(values)
     try {
       await updateInstructorProfile(user.id, values);
       toast.success("Your Profile has been updated.");
@@ -118,7 +138,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
         <BreadcrumbBox title="Update Profile" />
 
         {/* Registration Area */}
-        <section className="registration-area">
+        <section className="form_wrapper">
           <Container>
             {loading ? (
               <Loader width="70" />
@@ -126,7 +146,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
               <Fragment>
                 <Row>
                   <Col lg="12">
-                    <div className="registration-box instructorregister">
+                    <div className="form_container">
                       <div className="registration-title text-center">
                         <h3>Update Profile</h3>
                       </div>
@@ -151,7 +171,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
                             onSubmit={handleSubmit}
                           >
                             <Row>
-                              <p className="form-control">
+                              <p className="input_field col_half">
                                 <label htmlFor="registration_fname">
                                   First Name
                                 </label>
@@ -171,7 +191,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                     errors.first_name}
                                 </span>
                               </p>
-                              <p className="form-control">
+                              <p className="input_field col_half">
                                 <label htmlFor="registration_lname">
                                   Last Name
                                 </label>
@@ -191,7 +211,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                              <p className="form-control">
+                              <p className="input_field col_half">
                                 <label htmlFor="registration_email">
                                   Middle Name
                                 </label>
@@ -211,9 +231,8 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                            </Row>
-                            <Row>
-                              <p className="form-control">
+                           
+                              <p className="input_field col_half">
                                 <label htmlFor="registration_user">
                                   Phone Number
                                 </label>
@@ -232,116 +251,27 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                              {/* <p className="form-control">
+                              <p className="input_field col_half">
                                 <label htmlFor="registration_email">
-                                  Imagee Url
-                                </label>
-                                <input
-                                  type="url"
-                                  placeholder="https://image.com"
-                                  name="image_url"
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  value={values.image_url}
-                                  id="registration_email"
-                                />
-                                {touched.image_url && errors.image_url ? (
-                                  <span className="registration_input-msg">
-                                    {errors.image_url}
-                                  </span>
-                                ) : null}
-                              </p> */}
-                              <p className="form-control">
-                                <label htmlFor="registration_email">
-                                  Biography
+                                  Other Info
                                 </label>
                                 <textarea
                                   placeholder="Biography here"
-                                  name="biography"
+                                  name="other_info"
                                   onChange={handleChange}
                                   onBlur={handleBlur}
-                                  value={values.biography}
+                                  value={values.other_info}
                                   id="registration_biography"
                                 ></textarea>
 
-                                {touched.biography && errors.biography ? (
+                                {touched.biography && errors.other_info ? (
                                   <span className="registration_input-msg">
-                                    {errors.biography}
-                                  </span>
-                                ) : null}
-                              </p>
-                              <p className="form-control">
-                                <label htmlFor="registration_user">
-                                  Date Of Birth
-                                </label>
-                                <input
-                                  type="date"
-                                  required
-                                  id="date_of_birth"
-                                  name="date_of_birth"
-                                  placeholder="Your date of birth here"
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  value={values.date_of_birth}
-                                />
-                                {touched.phone_number && errors.phone_number ? (
-                                  <span className="registration_input-msg">
-                                    {errors.date_of_birth}
-                                  </span>
-                                ) : null}
-                              </p>
-                            </Row>
-                            <Row>
-                              <p className="form-control">
-                                <label htmlFor="registration_user">
-                                  Gender
-                                </label>
-                                <select
-                                  name="gender"
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  value={values.gender}
-                                  required
-                                >
-                                  <option>-- Gender --</option>
-                                  <option value="Male">Male</option>
-                                  <option value="Female">Female</option>
-                                </select>
-                                {touched.gender && errors.gender ? (
-                                  <span className="registration_input-msg">
-                                    {errors.gender}
+                                    {errors.other_info}
                                   </span>
                                 ) : null}
                               </p>
 
-                              <p className="form-control">
-                                <label htmlFor="registration_user">
-                                  Country
-                                </label>
-                                <select
-                                  name="country_id"
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  value={values.country_id}
-                                  required
-                                >
-                                  {countries.length > 0 &&
-                                    countries.map((country, i) => {
-                                      return (
-                                        <option key={i} value={country.id}>
-                                          {country.name}
-                                        </option>
-                                      );
-                                    })}
-                                </select>
-                                {touched.country_id && errors.country_id ? (
-                                  <span className="registration_input-msg">
-                                    {errors.country_id}
-                                  </span>
-                                ) : null}
-                              </p>
-
-                              {/* <p className="form-control">
+                               <p className="input_field col_half">
                                 <label htmlFor="registration_user">
                                   Industry ID
                                 </label>
@@ -369,9 +299,146 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                     {errors.industry_id}
                                   </span>
                                 ) : null}
-                              </p> */}
+                              </p> 
 
-                              <p className="form-control">
+                              <p className="input_field col_half">
+                        <label htmlFor="registration_email">
+                          Previous Institution seperated by comma
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="Previous Institution"
+                          name="previous_institutions"
+                        
+                          id="registration_email"
+                            onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.previous_institutions}
+                        />
+                        {touched.previous_institutions &&
+                        errors.previous_institutions ? (
+                          <span className="registration_input-msg">
+                            {errors.previous_institutions}
+                          </span>
+                        ) : null}
+                      </p><br/>
+
+
+                      <p className="input_field col_half">
+                        <label htmlFor="registration_email">
+                          Niche courses seperated by comma
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="Courses"
+                          name="niche_courses"
+                          onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.niche_courses}
+                          id="registration_email"
+                        />
+                        {touched.niche_courses &&
+                        errors.niche_courses ? (
+                          <span className="registration_input-msg">
+                            {errors.niche_courses}
+                          </span>
+                        ) : null}
+                      </p><br/>
+
+                              
+                            
+                              <p className="input_field col_half">
+                                <label htmlFor="registration_email">
+                                  Biography
+                                </label>
+                                <textarea
+                                  placeholder="Biography here"
+                                  name="biography"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.biography}
+                                  id="registration_biography"
+                                ></textarea>
+
+                                {touched.biography && errors.biography ? (
+                                  <span className="registration_input-msg">
+                                    {errors.biography}
+                                  </span>
+                                ) : null}
+                              </p>
+                              <p className="input_field col_half">
+                                <label htmlFor="registration_user">
+                                  Date Of Birth
+                                </label>
+                                <input
+                                  type="date"
+                                  required
+                                  id="date_of_birth"
+                                  name="date_of_birth"
+                                  placeholder="Your date of birth here"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.date_of_birth}
+                                />
+                                {touched.phone_number && errors.phone_number ? (
+                                  <span className="registration_input-msg">
+                                    {errors.date_of_birth}
+                                  </span>
+                                ) : null}
+                              </p>
+                              <p className="input_field col_half">
+                                <label htmlFor="registration_user">
+                                  Gender
+                                </label>
+                                <select
+                                  name="gender"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.gender}
+                                  required
+                                >
+                                  <option>-- Gender --</option>
+                                  <option value="Male">Male</option>
+                                  <option value="Female">Female</option>
+                                </select>
+                                {touched.gender && errors.gender ? (
+                                  <span className="registration_input-msg">
+                                    {errors.gender}
+                                  </span>
+                                ) : null}
+                              </p>
+
+                              <p className="input_field col_half">
+                                <label htmlFor="registration_user">
+                                  Country
+                                </label>
+                                <select
+                                  name="country_id"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.country_id}
+                                  required
+                                >
+                                  {countries.length > 0 &&
+                                    countries.map((country, i) => {
+                                      return (
+                                        <option key={i} value={country.id}>
+                                          {country.name}
+                                        </option>
+                                      );
+                                    })}
+                                </select>
+                                {touched.country_id && errors.country_id ? (
+                                  <span className="registration_input-msg">
+                                    {errors.country_id}
+                                  </span>
+                                ) : null}
+                              </p>
+
+                              
+                              <p className="input_field col_half">
                                 <label htmlFor="registration_email">
                                   Username
                                 </label>
@@ -391,9 +458,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                            </Row>
-                            <Row>
-                              <p className="form-control">
+                              <p className="input_field col_half">
                                 <label htmlFor="registration_user">
                                   Language{" "}
                                   {profile?.instructor_profile.language}
@@ -424,7 +489,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                              <p className="form-control">
+                              <p className="input_field col_half">
                                 <label htmlFor="registration_user">
                                   Educational Level
                                 </label>
@@ -450,7 +515,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                              <p className="form-control">
+                              <p className="input_field col_half">
                                 <label htmlFor="registration_user">
                                   Degree Obtained
                                 </label>
@@ -476,9 +541,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                            </Row>
-                            <Row>
-                              <p className="form-control">
+                              <p className="input_field col_half">
                                 <label htmlFor="registration_user">
                                   Employment Status
                                 </label>
@@ -504,7 +567,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                              <p className="form-control">
+                              <p className="input_field col_half">
                                 <label htmlFor="registration_user">
                                   Experience Level
                                 </label>
@@ -517,9 +580,9 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                 >
                                   <option>-- Experience Level --</option>
                                   {ExperienceLevel.length > 0 &&
-                                    ExperienceLevel.map((item) => {
+                                    ExperienceLevel.map((item, i) => {
                                       return (
-                                        <option value={item}>{item}</option>
+                                        <option value={i+1}>{item}</option>
                                       );
                                     })}
                                 </select>
@@ -530,7 +593,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                              <p className="form-control">
+                              <p className="input_field col_half">
                                 <label htmlFor="registration_user">
                                   Marital Status
                                 </label>
@@ -556,9 +619,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                            </Row>
-                            <Row>
-                              <p className="form-control">
+                              <p className="input_field col_half">
                                 <label htmlFor="registration_email">
                                   Facebook Url
                                 </label>
@@ -577,7 +638,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                              <p className="form-control">
+                              <p className="input_field col_half">
                                 <label htmlFor="registration_email">
                                   Twitter Url
                                 </label>
@@ -596,7 +657,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                              <p className="form-control">
+                              <p className="input_field col_half">
                                 <label htmlFor="registration_email">
                                   Linkedin Url
                                 </label>

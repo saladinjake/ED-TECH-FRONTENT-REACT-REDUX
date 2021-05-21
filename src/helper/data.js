@@ -13,7 +13,7 @@ export const Degrees = ["B.sc", "M.sc", "Ph.d"];
 export const LearnigStyles = ["Self Paced", "Instructor Led"];
 
 export const EmploymentStatus = ["Employed", "Not Employed"];
-export const ExperienceLevel = ["Professional", "Master"];
+export const ExperienceLevel = ["Professional", "Master", "Senior"];
 export const MaritalStatus = [
   "Single",
   "Married",

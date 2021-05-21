@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { fetchCourses } from "actions/coursesActions";
 
-import { getCourses } from "services/course";
+import { getCourses, getFeaturedCourses } from "services/course";
 import toast from "react-hot-toast";
 
 import CourseFilteredCarousel from "./CourseFilteredCarousel";
@@ -18,9 +18,15 @@ import Loader from "components/Loader/Loader";
 const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
   const [allCourses, setAllCourses] = useState([]);
 
+  const [featuredCourses, setFeaturedCourses] = useState([])
+
   useEffect(() => {
     (async function loadContent() {
       await fetchCourses();
+      // let res = getFeaturedCourses();
+      // setFeaturedCourses([...res.data.data.courses])
+
+      console.log(featuredCourses)
     })();
     // eslint-disable-next-line
   }, []);
@@ -68,7 +74,7 @@ class BrowseByCategory extends React.Component {
   }
   async componentDidMount() {
     try {
-      const response = await getCourses();
+      const response = await getFeaturedCourses();
       this.setState({
         data: response.data.data.courses,
         length: response.data.data.courses.length,
@@ -79,51 +85,8 @@ class BrowseByCategory extends React.Component {
   }
   render() {
     const { data } = this.state;
-    let CourseCategoryWrangler = data.reduce(function (
-      groupedByCategory,
-      course
-    ) {
-      // console.log(groupedByCategory,course)
-      if (!groupedByCategory[course.category.name]) {
-        groupedByCategory[course.category.name] = []; //cartSet;
-      }
-      groupedByCategory[course.category.name].push(course);
-      return groupedByCategory;
-    },
-    []);
-    let children = [];
-    var merged = [];
-
-    for (let item in CourseCategoryWrangler) {
-      let children = [
-        ...Array.from(Object.entries(CourseCategoryWrangler[item])),
-      ];
-      // var merged = []  // [].concat.apply([], children);
-      var merged = [].concat.apply(merged, children);
-    }
-
-    function removeDuplicates(arr) {
-      let uniq = {};
-      return arr.filter(
-        (obj) => !uniq[obj.course_code] && (uniq[obj.course_code] = true)
-      );
-    }
-
-    function groupByKey(array) {
-      return array.reduce((hash, obj) => {
-        if (obj.category.name === undefined) return hash;
-        return Object.assign(hash, {
-          [obj.category.name]: (hash[obj.category.name] || []).concat(obj),
-        });
-      }, {});
-    }
-
-    var uniqueArray = removeDuplicates(merged);
-    console.log(uniqueArray);
-
-    console.log(groupByKey(uniqueArray.slice(1)));
-
-    let groupedData = groupByKey(uniqueArray.slice(1));
+    console.log(data)
+    
 
     return data.length === 0 ? (
       <Fragment>
@@ -133,7 +96,9 @@ class BrowseByCategory extends React.Component {
     ) : (
       <Fragment>
         <div className="row">
-          <CourseFilteredCarousel title="Business" show={4} children={data} />
+         {/* <CourseFilteredCarousel title="Business" show={4} children={data} /> */}
+
+         <CourseFilteredCarousel title="Business" show={4} children={data} />
 
           <div className="col-lg-2 pull-left">
             <Link

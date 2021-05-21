@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.21.1",
     "bootstrap": "^4.5.0",
+    "draft-js": "^0.11.7",
     "emailjs-com": "^2.6.4",
     "express": "^4.17.1",
     "formik": "^2.2.6",
@@ -22,6 +23,8 @@
     "react-compound-timer": "^1.2.0",
     "react-countup": "^4.3.3",
     "react-dom": "^16.13.1",
+    "react-draft-wysiwyg": "^1.14.7",
+    "react-dropzone": "^11.3.2",
     "react-feather": "^2.0.9",
     "react-hot-toast": "^1.0.2",
     "react-id-swiper": "^4.0.0",
@@ -46,7 +49,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "beautiful-code": "prettier --write .",
-    "start:build":"node server.js"
+    "start:build": "node server.js"
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -6,6 +6,7 @@ let token;
 
 axios.defaults.headers.common["Content-Type"] =
   "application/x-www-form-urlencoded";
+axios.defaults.headers.common["Content-Type"] = 'multipart/form-data';
 axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
 const instance = axios.create({

@@ -22,10 +22,11 @@ const Hero = () => {
                 pace and space.
               </p>
               <div className="cta">
-                <button onClick={() => history.push("/courses")}>
+                <button style={{width:"200px",height:"50px"}} className="btn" onClick={() => history.push("/courses")}>
                   Find Courses
                 </button>
                 <button
+                style={{width:"200px",height:"50px"}}
                   className="outline"
                   onClick={() => history.push("/register")}
                 >

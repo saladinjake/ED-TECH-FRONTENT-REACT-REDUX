@@ -4,6 +4,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import { Styles } from "./styles/learnerBox.js";
 
 const InstructorBox = ({ info }) => {
+  console.log(info)
   return (
     <Styles>
       {/* Service Box */}

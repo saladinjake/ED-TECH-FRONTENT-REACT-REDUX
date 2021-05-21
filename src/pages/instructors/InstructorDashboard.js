@@ -12,6 +12,7 @@ const DashBoard = () => {
       try {
         let res = await getInstructorInfo();
         setInfo({ ...res.data.data });
+        console.log({...res.data.data})
       } catch (err) {
         console.log("err", err);
       }

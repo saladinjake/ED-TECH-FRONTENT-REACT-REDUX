@@ -109,18 +109,18 @@ export const AUTHLINKS = [
 export const INSTRUCTORLINKS = [
   {
     name: "Dashboard",
-    link: "/instructor/dashboard",
+    link: "/instructor-pages/dashboard",
   },
   {
     name: "Profile",
-    link: "/instructor/profile",
+    link: "/instructor-pages/profile",
   },
   {
     name: "My Courses",
-    link: "/instructor/mycourses",
+    link: "/instructor-pages/mycourses",
   },
   {
     name: "Notifications",
-    link: "/instructor/notifications",
+    link: "/instructor-pages/notifications",
   }
 ];

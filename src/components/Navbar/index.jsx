@@ -94,7 +94,7 @@ const NavBar = ({
                 <Link
               
                   className="DropDown__link"
-                  to={process.env.PUBLIC_URL + "/courses"}
+                  to={process.env.PUBLIC_URL + "/programs"}
                 >
                   By Program
                 </Link>
@@ -104,7 +104,7 @@ const NavBar = ({
                 <Link
             
                   className="DropDown__link"
-                  to={process.env.PUBLIC_URL + "/courses"}
+                  to={process.env.PUBLIC_URL + "#"}
                 >
                   By Training Partner
                 </Link>

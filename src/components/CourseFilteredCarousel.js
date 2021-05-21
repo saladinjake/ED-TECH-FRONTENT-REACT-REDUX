@@ -128,13 +128,13 @@ const Carousel = (props) => {
               <div class="product hoverme">
                             <figure>
                                 <Link
-                                                to={process.env.PUBLIC_URL+ "/courses/" + item.id + "/" + item.slug}
+                                                to={process.env.PUBLIC_URL+ "/courses/" + item?.course?.id + "/" + item?.course?.slug}
                                                 className="image-popup"
                                                 title="Screenshot-1"
                                               >
-                                                {item.course_cover_image !== null ? (
+                                                {item?.course?.course_cover_image !== null ? (
                                                   <img
-                                                    src={item.course_cover_image}
+                                                    src={item?.course?.course_cover_image}
                                                     className="thumb-img imagemix"
                                                     alt="work-thumbnail"
                                                     style={{ width: "100%", height: "auto" }}
@@ -153,7 +153,7 @@ const Carousel = (props) => {
                                     <p style={{height:"50px", color:"blue"}}>
                                       
                                           <Link
-                                            to={ process.env.PUBLIC_URL+ "/courses/" + item.id + "/" + item.slug}
+                                            to={ process.env.PUBLIC_URL+ "/courses/" + item?.course?.id + "/" + item.slug}
                                             style={{ fontSize: "14px" }}
                                             className="text-dark"
                                           >
@@ -162,8 +162,8 @@ const Carousel = (props) => {
                                      
                                     
                                     </p>
-                                    <p>A course by {item?.instructor?.user?.first_name !== null &&
-                             item?.instructor?.user?.first_name  +" " + item?.instructor?.user?.last_name}</p>
+                                    <p>A course by {item?.course?.instructor?.user?.first_name !== null &&
+                             item?.course?.instructor?.user?.first_name  +" " + item?.course?.instructor?.user?.last_name}</p>
 
                                   </div>
 

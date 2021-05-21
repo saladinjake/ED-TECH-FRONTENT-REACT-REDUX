@@ -86,7 +86,7 @@ const NewDashBoard = ({ auth: { user } }) => {
         <Loader width="70" />
       ) : !loading ? (
         <Fragment>
-          <div class="container">
+          <div className="container">
             <WelcomeHero info={info} 
                          wishlists={wishlists}
                          activeCoursesTotal={coursesActive}

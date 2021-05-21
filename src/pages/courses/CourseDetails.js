@@ -383,7 +383,7 @@ const CourseDetails = ({
                               <div className="course-feature">
                                 <h5>What you will learn</h5>
                                 <ul>
-                                {coursedetails?.data?.outcomes.map((detail)=>{
+                                {coursedetails?.data?.outcomes.length> 0 && coursedetails?.data?.outcomes.map((detail)=>{
                                     return( <p>{ detail } </p>)
                                 })}
                                 </ul>
@@ -459,7 +459,7 @@ const CourseDetails = ({
                               <div className="course-element">
                                 <h5>Course Content</h5>
 
-                                {coursedetails?.data?.curriculum.map((detail, i)=>{
+                                {coursedetails?.data?.curriculum.length > 0 && coursedetails?.data?.curriculum.map((detail, i)=>{
                                     return(<div className="course-item">
                                   <button className="course-button active">
                                     Topic {i+1}: {detail.topic}

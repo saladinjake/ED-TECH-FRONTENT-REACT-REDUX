@@ -58,7 +58,7 @@ const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
           if (res.data.user_roles[0].name === "User") {
             history.push("/dashboard");
           } else {
-            history.push("/instructor/dashboard");
+            history.push("/instructor-pages/dashboard");
           }
         }
       }

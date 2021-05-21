@@ -1,447 +1,161 @@
-import React, { useEffect, useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import NavBar from "components/Navbar";
-import Footer from "components/Footer";
-import { BreadcrumbBox } from "../../components/common/Breadcrumb";
-import { Styles } from "./styles/account.js";
+import React, { useEffect } from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
+import { Styles } from "components/styles/busRegister.js";
 
-import toast from "react-hot-toast";
-import { useFormik } from "formik";
 
-import { createBusiness } from "services/business";
-import { getCountries } from "services/country";
-import { getIndustries } from "services/industry";
-import { businessSchema } from "helper/validations";
+function FreeCourse() {
+    useEffect(() => {
+        const form = document.getElementById("form3");
+        const name = document.getElementById("name3");
+        const email = document.getElementById("email3");
+        const phone = document.getElementById("phone3");
 
-const BusinessRegister = () => {
-  const [loading, setLoading] = useState(false);
-  const [countries, setCountries] = useState([]);
-  const [industries, setIndustries] = useState([]);
+        form.addEventListener("submit", formSubmit);
 
-  const initialValues = {
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "",
-    country_id: "",
-    industry_id: "",
-    phone_number: "",
-    company_name: "",
-    company_phone: "",
-    no_of_employees: "100 above",
-    type_of_institution: "",
-    company_description: "",
-    registration_number: "",
-    linkedin_page: "",
-    color_theme: "",
-    facebook_page: "",
-    website: "",
-  };
+        function formSubmit(e) {
+            e.preventDefault();
 
-  useEffect(() => {
-    Promise.all(
-      [getCountries(), getIndustries()].map((err) => err.catch(() => err))
-    )
-      .then((res) => {
-        setCountries([...res[0].data.data]);
-        setIndustries([...res[1].data.data]);
-      })
-      .catch((err) => {
-        toast.error("Error Occured fetching data");
-      });
-  }, []);
+            const nameValue = name.value.trim();
+            const emailValue = email.value.trim();
+            const phoneValue = phone.value.trim();
 
-  const handleSubmit = async (values, { setSubmitting }) => {
-    console.log("Values", values);
-    setLoading(true);
-    values.phone_number = values.phone_number.toString();
-    values.company_phone = values.company_phone.toString();
-    values.country_id = parseInt(values.country_id);
-    values.industry_id = parseInt(values.industry_id);
-    try {
-      await createBusiness(values);
-      toast.success("Business Created.");
-      setSubmitting(false);
-    } catch (err) {
-      toast.error(err?.response?.data?.message);
-      setSubmitting(false);
-    }
-    setLoading(false);
-  };
+            if (nameValue === "") {
+                setError(name, "Name can't be blank");
+            } else {
+                setSuccess(name);
+            }
 
-  const formik = useFormik({
-    initialValues: initialValues,
-    validationSchema: businessSchema,
-    onSubmit: handleSubmit,
-  });
+            if (emailValue === "") {
+                setError(email, "Email can't be blank");
+            } else if (!isEmail(emailValue)) {
+                setError(email, "Not a valid email");
+            } else {
+                setSuccess(email);
+            }
 
-  return (
-    <Styles>
-      {/* Main Wrapper */}
-      <div className="main-wrapper registration-page">
-        {/* Header 2 */}
-        <NavBar />
+            if (phoneValue === "") {
+                setError(phone, "Phone number can't be blank");
+            } else if (isNaN(phoneValue)) {
+                setError(phone, "Not a valid phone number");
+            } else {
+                setSuccess(phone);
+            }
+        }
 
-        {/* Breadcroumb */}
-        <BreadcrumbBox title="Registration" />
+        function setError(input, message) {
+            const formControl = input.parentElement;
+            const errorMsg = formControl.querySelector(".input-msg3");
+            formControl.className = "form-control text-left error";
+            errorMsg.innerText = message;
+        }
 
-        {/* Registration Area */}
-        <section className="registration-area">
-          <Container>
-            <Row>
-              <Col lg="12">
-                <div className="registration-box instructorregister">
-                  <div className="registration-title text-center">
-                    <h3>Registration</h3>
-                  </div>
+        function setSuccess(input) {
+            const formControl = input.parentElement;
+            formControl.className = "form-control success";
+        }
 
-                  <form
-                    id="form_registration"
-                    className="form"
-                    onSubmit={formik.handleSubmit}
-                  >
+        function isEmail(email) {
+            return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email);
+        }
+    });
+
+    return (
+        <Styles>
+            {/* Free Course */}
+            <section className="free-course-area">
+                <Container>
                     <Row>
-                      <p className="form-control">
-                        <label htmlFor="registration_fname">First Name</label>
-                        <input
-                          type="text"
-                          required
-                          placeholder="First name"
-                          name="first_name"
-                          {...formik.getFieldProps("first_name")}
-                          id="registration_fname"
-                        />
-                        {formik.touched.first_name &&
-                        formik.errors.first_name ? (
-                          <span className="registration_input-msg">
-                            {formik.errors.first_name}
-                          </span>
-                        ) : null}
-                      </p>
-                      <p className="form-control">
-                        <label htmlFor="registration_lname">Last Name</label>
-                        <input
-                          type="text"
-                          required
-                          placeholder="Last name"
-                          name="last_name"
-                          {...formik.getFieldProps("last_name")}
-                          id="registration_lname"
-                        />
-                        {formik.touched.last_name && formik.errors.last_name ? (
-                          <span className="registration_input-msg">
-                            {formik.errors.last_name}
-                          </span>
-                        ) : null}
-                      </p>
-                      <p className="form-control">
-                        <label htmlFor="registration_email">
-                          Email Address
-                        </label>
-                        <input
-                          type="email"
-                          required
-                          placeholder="Email here"
-                          name="email"
-                          {...formik.getFieldProps("email")}
-                          id="registration_email"
-                        />
-                        {formik.touched.email && formik.errors.email ? (
-                          <span className="registration_input-msg">
-                            {formik.errors.email}
-                          </span>
-                        ) : null}
-                      </p>
+                        <Col md="6">
+                            <div className="course-text">
+                                <h4>Create your business profile today</h4>
+                                <p>If you're interested in training your team or employees using Questence, please apply on this form. </p>
+                                <p>After you submit the form, we will reach out to you to gain better knowledge of how we can help you achieve your goals.
+                                Please note that it might take between 24 - 72 hours to respond to your application.</p>
+                                
+                            </div>
+                            
+                        </Col>
+                        <Col md="6">
+                            <div className="register-form text-center" style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/business-about.png)` }}>
+                                <div className="form-box">
+                                    {/* <h4 className="title"></h4> */}
+                                    <form id="form3" className="form">
+                                        <Row>
+                                            <Col lg="12">
+                                                <p className="form-control">
+                                                    <input type="text" placeholder="Contact Person" id="name3" />
+                                                    <span className="input-msg3"></span>
+                                                </p>  
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col lg="12">
+                                                <p className="form-control">
+                                                    <input type="text" placeholder="Company Name" id="" />
+                                                    <span className="input-msg3"></span>
+                                                </p>  
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col lg="6">
+                                                <p className="form-control">
+                                                    <input type="text" placeholder="Phone Number" id="phone3" />
+                                                    <span className="input-msg3"></span>
+                                                </p>
+                                            </Col>
+                                            <Col lg="6">
+                                                <p className="form-control">
+                                                    <input type="email" placeholder="Corporate Email" id="email3" />
+                                                    <span className="input-msg3"></span>
+                                                </p>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col lg="6">
+                                                <p className="form-control">
+                                                    <input type="text" placeholder="Country of operation" id="" />
+                                                    <span className="input-msg3"></span>
+                                                </p>
+                                            </Col>
+                                            <Col lg="6">
+                                                <p className="form-control">
+                                                    <input type="text" placeholder="Service industry" id="" />
+                                                    <span className="input-msg3"></span>
+                                                </p>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col lg="6">
+                                                <p className="form-control">
+                                                    <input type="text" placeholder="Your Role at Company" id="" />
+                                                    <span className="input-msg3"></span>
+                                                </p>
+                                            </Col>
+                                            <Col lg="6">
+                                                <p className="form-control">
+                                                    <input type="text" placeholder="Est. number of users" id="" />
+                                                    <span className="input-msg3"></span>
+                                                </p>
+                                            </Col>
+                                        </Row>
+                                        <Row>
+                                            <Col lg="12">
+                                                <p className="form-control">
+                                                    <input type="textarea" placeholder="Any other information you'd like us to know?" id="" />
+                                                    <span className="input-msg3"></span>
+                                                </p>  
+                                            </Col>
+                                        </Row>
+                                            <button type="submit">Send Request</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </Col>
                     </Row>
-                    <Row>
-                      <p className="form-control">
-                        <label htmlFor="registration_user">Password</label>
-                        <input
-                          type="password"
-                          id="password"
-                          name="password"
-                          placeholder="08112345687"
-                          {...formik.getFieldProps("password")}
-                        />
-                        {formik.touched.password && formik.errors.password ? (
-                          <span className="registration_input-msg">
-                            {formik.errors.password}
-                          </span>
-                        ) : null}
-                      </p>
-                      <p className="form-control">
-                        <label htmlFor="registration_user">Phone Number</label>
-                        <input
-                          type="number"
-                          id="phone_number"
-                          name="phone_number"
-                          placeholder="08112345687"
-                          {...formik.getFieldProps("phone_number")}
-                        />
-                        {formik.touched.phone_number &&
-                        formik.errors.phone_number ? (
-                          <span className="registration_input-msg">
-                            {formik.errors.phone_number}
-                          </span>
-                        ) : null}
-                      </p>
-                      <p className="form-control">
-                        <label htmlFor="registration_user">
-                          Company Number
-                        </label>
-                        <input
-                          type="number"
-                          id="company_phone"
-                          name="company_phone"
-                          placeholder="08112345687"
-                          {...formik.getFieldProps("company_phone")}
-                        />
-                        {formik.touched.company_phone &&
-                        formik.errors.company_phone ? (
-                          <span className="registration_input-msg">
-                            {formik.errors.company_phone}
-                          </span>
-                        ) : null}
-                      </p>
-                      <p className="form-control">
-                        <label htmlFor="registration_email">
-                          Company Description
-                        </label>
-                        <textarea
-                          placeholder="Company description here"
-                          name="company_description"
-                          {...formik.getFieldProps("company_description")}
-                          id="company_description"
-                        ></textarea>
+                </Container>
+            </section>
+        </Styles>
+    );
+}
 
-                        {formik.touched.company_description &&
-                        formik.errors.company_description ? (
-                          <span className="registration_input-msg">
-                            {formik.errors.company_description}
-                          </span>
-                        ) : null}
-                      </p>
-                    </Row>
-                    <Row>
-                      <p className="form-control">
-                        <label htmlFor="registration_lname">
-                          Company Name<i>At least 5 characters</i>
-                        </label>
-                        <input
-                          type="text"
-                          required
-                          placeholder="company name"
-                          name="company_name"
-                          {...formik.getFieldProps("company_name")}
-                          id="registration_lname"
-                        />
-                        {formik.touched.company_name &&
-                        formik.errors.company_name ? (
-                          <span className="registration_input-msg">
-                            {formik.errors.company_name}
-                          </span>
-                        ) : null}
-                      </p>
-
-                      <p className="form-control">
-                        <label htmlFor="registration_user">Country</label>
-                        <select
-                          name="country_id"
-                          {...formik.getFieldProps("country_id")}
-                          required
-                        >
-                          <option>-- Country --</option>
-                          {countries.length > 0 &&
-                            countries.map((country, i) => {
-                              return (
-                                <option value={country.id}>
-                                  {country.name}
-                                </option>
-                              );
-                            })}
-                        </select>
-                        {formik.touched.country_id &&
-                        formik.errors.country_id ? (
-                          <span className="registration_input-msg">
-                            {formik.errors.country_id}
-                          </span>
-                        ) : null}
-                      </p>
-
-                      <p className="form-control">
-                        <label htmlFor="registration_user">Industry</label>
-                        <select
-                          name="industry_id"
-                          {...formik.getFieldProps("industry_id")}
-                          required
-                        >
-                          <option>-- Industry --</option>
-                          {industries.length > 0 &&
-                            industries.map((industry, i) => {
-                              return (
-                                <option value={industry.id}>
-                                  {industry.name}
-                                </option>
-                              );
-                            })}
-                        </select>
-                        {formik.touched.industry_id &&
-                        formik.errors.industry_id ? (
-                          <span className="registration_input-msg">
-                            {formik.errors.industry_id}
-                          </span>
-                        ) : null}
-                      </p>
-                    </Row>
-                    <Row>
-                      <p className="form-control">
-                        <label htmlFor="registration_fname">
-                          No of Employees
-                        </label>
-                        <input
-                          type="text"
-                          required
-                          placeholder="No of Employees"
-                          name="no_of_employees"
-                          {...formik.getFieldProps("no_of_employees")}
-                          id="registration_fname"
-                        />
-                        {formik.touched.no_of_employees &&
-                        formik.errors.no_of_employees ? (
-                          <span className="registration_input-msg">
-                            {formik.errors.no_of_employees}
-                          </span>
-                        ) : null}
-                      </p>
-                      <p className="form-control">
-                        <label htmlFor="registration_fname">
-                          Type of Institutuon
-                        </label>
-                        <select
-                          name="type_of_institution"
-                          {...formik.getFieldProps("type_of_institution")}
-                          required
-                        >
-                          <option>-- Country --</option>
-                          <option value="Tertiary">Tertiary</option>
-                          <option value="Polytechnic">Polytechnic</option>
-                          <option value="Secondary">Secondary</option>
-                        </select>
-                        {formik.touched.type_of_institution &&
-                        formik.errors.type_of_institution ? (
-                          <span className="registration_input-msg">
-                            {formik.errors.type_of_institution}
-                          </span>
-                        ) : null}
-                      </p>
-                      <p className="form-control">
-                        <label htmlFor="registration_fname">
-                          Registration Number
-                        </label>
-                        <input
-                          type="text"
-                          required
-                          placeholder="Registration Number"
-                          name="registration_number"
-                          {...formik.getFieldProps("registration_number")}
-                          id="registration_fname"
-                        />
-                        {formik.touched.registration_number &&
-                        formik.errors.registration_number ? (
-                          <span className="registration_input-msg">
-                            {formik.errors.registration_number}
-                          </span>
-                        ) : null}
-                      </p>
-                      <p className="form-control">
-                        <label htmlFor="registration_fname">Color Theme</label>
-                        <input
-                          type="text"
-                          required
-                          placeholder="Color Theme"
-                          name="color_theme"
-                          {...formik.getFieldProps("color_theme")}
-                          id="registration_fname"
-                        />
-                        {formik.touched.color_theme &&
-                        formik.errors.color_theme ? (
-                          <span className="registration_input-msg">
-                            {formik.errors.color_theme}
-                          </span>
-                        ) : null}
-                      </p>
-                    </Row>
-
-                    <Row>
-                      <p className="form-control">
-                        <label htmlFor="registration_email">Facebook Url</label>
-                        <input
-                          type="url"
-                          placeholder="https://facebook.com"
-                          name="facebook_page"
-                          {...formik.getFieldProps("facebook_page")}
-                          id="registration_email"
-                        />
-                        {formik.touched.facebook_page &&
-                        formik.errors.facebook_page ? (
-                          <span className="registration_input-msg">
-                            {formik.errors.facebook_page}
-                          </span>
-                        ) : null}
-                      </p>
-                      <p className="form-control">
-                        <label htmlFor="registration_email">Website Url</label>
-                        <input
-                          type="url"
-                          placeholder="https://twitter.com"
-                          name="website"
-                          {...formik.getFieldProps("website")}
-                          id="registration_email"
-                        />
-                        {formik.touched.website && formik.errors.website ? (
-                          <span className="registration_input-msg">
-                            {formik.errors.website}
-                          </span>
-                        ) : null}
-                      </p>
-                      <p className="form-control">
-                        <label htmlFor="registration_email">Linkedin Url</label>
-                        <input
-                          type="url"
-                          placeholder="https://linkedin.com"
-                          name="linkedin_page"
-                          {...formik.getFieldProps("linkedin_page")}
-                          id="registration_email"
-                        />
-                        {formik.touched.linkedin_page &&
-                        formik.errors.linkedin_page ? (
-                          <span className="registration_input-msg">
-                            {formik.errors.linkedin_page}
-                          </span>
-                        ) : null}
-                      </p>
-                    </Row>
-
-                    <button type="submit" disabled={formik.isSubmitting}>
-                      {loading ? (
-                        <div className="spinner-border" role="status">
-                          <span className="sr-only">Loading...</span>
-                        </div>
-                      ) : (
-                        "Register Business"
-                      )}
-                    </button>
-                  </form>
-                </div>
-              </Col>
-            </Row>
-          </Container>
-        </section>
-
-        <Footer />
-      </div>
-    </Styles>
-  );
-};
-
-export default BusinessRegister;
+export default FreeCourse

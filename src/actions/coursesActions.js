@@ -5,9 +5,13 @@ export const fetchCourses = () => async (dispatch) => {
   try {
     await setLoading();
     const res = await getCourses();
+
+    const courses = res.data.data.courses.filter((course) => {
+            return  parseInt(course.status) === 1;
+          })
     dispatch({
       type: GET_COURSES,
-      payload: res.data.data.courses,
+      payload: courses,
     });
   } catch (err) {
     dispatch({

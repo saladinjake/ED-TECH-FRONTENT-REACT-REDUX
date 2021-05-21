@@ -19,6 +19,7 @@ const InstructorNotifications = () => {
       setLoading(true);
       try {
         let res = await getNotifications();
+        console.log([...res.data.data])
         setNotifications([...res.data.data]);
       } catch (err) {
         toast.error(`Error occured fetching notifications`);

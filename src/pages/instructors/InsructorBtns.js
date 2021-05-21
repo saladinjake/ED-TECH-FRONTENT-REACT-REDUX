@@ -10,42 +10,43 @@ const InstructorBtns = () => {
     <Styles>
       <Row>
         <Col md="12">
-          <Button
-            className="mt-4 mr-4"
-            variant="primary"
+        
+          <button
+            className="btn btn-primary"
+          
             onClick={() => {
-              history.push("/instructor/course/create");
-            }}
-          >
+              history.push("/instructor-pages/course/create");
+            }}>
+          
             Create Course
-          </Button>
-          <Button
-            className="mt-4 mr-4"
-            variant="primary"
+          </button>
+          <button
+            className="btn btn-primary"
+           
             onClick={() => {
               history.push("/instructor/mycourses");
             }}
           >
             Active Courses
-          </Button>
-          <Button
-            className="mt-4 mr-4"
-            variant="primary"
+          </button>
+          <button
+            className="btn btn-primary"
+          
             onClick={() => {
-              history.push("/instructor/course/pending");
+              history.push("/instructor-pages/course/pending");
             }}
           >
             Pending Course
-          </Button>
-          <Button
-            className="mt-4 mr-4"
-            variant="primary"
+          </button>
+          <button
+            className="btn btn-primary"
+           
             onClick={() => {
-              history.push("/instructor/course/declined");
+              history.push("/instructor-pages/course/declined");
             }}
           >
             Declined Courses
-          </Button>
+          </button>
         </Col>
       </Row>
     </Styles>
