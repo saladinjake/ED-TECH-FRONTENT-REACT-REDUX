@@ -1,4 +1,3 @@
-
 .md-modal {
   margin: auto;
   position: fixed;
@@ -14,7 +13,6 @@
   -moz-backface-visibility: hidden;
   backface-visibility: hidden;
   background: #fff;
- 
 }
 
 .md-show {
@@ -69,7 +67,6 @@
   opacity: 1;
 }
 
-/*give it some style for the related products*/
 .br-found-heading {
   font-weight: bold;
   color: #999;
@@ -117,119 +114,368 @@ div.br-sf-widget-merchant-title {
   text-overflow: ellipsis;
 }
 
- 
-
-#play-video {
- 
-  color: #ae2f3b;
-  border-color: #ae2f3b;
-  height: 56px;
-  width: 56px;
-  display: inline-block;
-  vertical-align: middle;
-  transition: all 0.3s ease !important;
-  
-}
-#play-video:hover {
-  transform: scale(1.05);
-  -moz-transform: scale(1.05);
-  -webkit-transform: scale(1.05);
-  -o-transform: scale(1.05);
-}
-#play-video i {
-  transition: all 0s ease !important;
-  -webkit-transition: all 0s ease;
-  -moz-transition: all 0s ease;
-  -o-transition: all 0s ease;
-  line-height: 0;
-}
-#play-video:hover {
- 
-}
-
-
 .video-banner {
+  display: block;
+}
+@media (min-width: 641px) {
+  .video-banner {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 0;
+  }
+}
+
+.video-banner .video-banner-img {
+  display: block;
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
 }
-
-.video-banner-link {
-  transition: all 0.8s ease-in-out;
-}
-
-.video-banner-link:hover {
-  opacity: 0.8;
-}
-
-/* Modal */
-.modalVid {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  visibility: hidden;
-  opacity: 0;
-  z-index: 100;
-  transition: all 1.5s ease;
-  background: rgba(0, 0, 0, 0.85);
-}
-
-.modal-video-container {
+.video-banner-headline {
   position: absolute;
-  top: 20%;
-  left: 15%;
-  transform: scale(0);
-  width: 0;
-  height: 0%;
-  padding-top: 56.25%;
-  transition: all 1.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
+  left: 40.5rem;
+  bottom: 10.5rem;
 
-.video-popup {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 900;
-  width: 70%;
-  height: 60%;
-  transition: all 0.5s ease;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 1.25em;
+  font-weight: 900;
+  line-height: 1em;
+  color: #000;
+  text-transform: uppercase;
+  letter-spacing: 0.045em;
 }
-
-@media only screen and (min-width: 1300px) {
-  .modal-video-container {
-    top: 10%;
+@media (min-width: 641px) {
+  .video-banner-headline {
+    left: 30em;
+    bottom: 1.15em;
+    font-size: 1.5em;
+    line-height: 1.5em;
   }
 }
-
-@media only screen and (max-width: 1024px) {
-  .video-popup {
-    width: 70%;
-    height: 60%;
-  }
-  .modal-video-container {
-    left: 7%;
-  }
-}
-
-@media only screen and (max-width: 600px) {
-  .modal-video-container {
-    top: 30%;
-  }
-}
-
-.close {
+.video-banner-icon-play {
   position: absolute;
-  width: 100%;
-  height: 50px;
-  z-index: 999;
-  font-size: 2rem;
-  color: #fff;
-  cursor: pointer;
-}
-
-.close > span {
-  position: absolute;
-  left: 95%;
+  left: 50%;
   top: 50%;
+
+  display: block;
+  width: 2.5em;
+  height: 2.5em;
+  color: #000;
+
+  -webkit-transform: translateX(-50%) translateY(-50%) scale(1);
+  -moz-transform: translateX(-50%) translateY(-50%) scale(1);
+  -ms-transform: translateX(-50%) translateY(-50%) scale(1);
+  -o-transform: translateX(-50%) translateY(-50%) scale(1);
+  transform: translateX(-50%) translateY(-50%) scale(1);
+
+  -webkit-transition: all 0.2s ease-out 0.05s;
+  transition: all 0.2s ease-out 0.05s;
+
+  display: none;
+}
+@media (min-width: 641px) {
+  .video-banner-icon-play {
+    width: 4.5em;
+    height: 4.5em;
+    color: #000;
+    display: block;
+  }
+}
+.video-banner-icon-play:hover {
+  -webkit-transform: translateX(-50%) translateY(-50%) scale(1.2);
+  -moz-transform: translateX(-50%) translateY(-50%) scale(1.2);
+  -ms-transform: translateX(-50%) translateY(-50%) scale(1.2);
+  -o-transform: translateX(-50%) translateY(-50%) scale(1.2);
+  transform: translateX(-50%) translateY(-50%) scale(1.2);
+
+  backgound: #fff;
+}
+
+.content {
+  display: block;
+  min-height: 100vh;
+  max-width: 40rem;
+  margin: 2.5rem auto;
+  padding: 1.5rem;
+}
+@media (min-width: 641px) {
+  .content {
+    margin: 5.75rem auto;
+    padding: 2.5rem;
+  }
+}
+
+.content h1,
+.content h2,
+.content p {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 1em;
+  font-weight: 300;
+  line-height: 1.5em;
+  color: #0d013d;
+}
+.content h1 {
+  font-size: 3.25em;
+  font-weight: 200;
+  line-height: 1em;
+
+  margin: 0 0 0.5rem 0;
+}
+@media (min-width: 641px) {
+  .content h1 {
+    font-size: 4em;
+  }
+}
+.content h2 {
+  font-size: 1em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.155em;
+
+  margin-top: 3em;
+}
+
+/* buttons */
+.content .button-group {
+  margin-top: 1em;
+}
+.content .button {
+  display: inline-block;
+  padding: 1em 2em;
+  min-width: 8em;
+  text-align: center;
+  font-weight: 900;
+  text-decoration: none;
+  border-radius: 1.5em;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+
+  /* button theme - secondary is default */
+  background: #f0f0f0;
+  color: #2b2b2b;
+
+  -webkit-transition: all 0.2s ease-out 0.05s;
+  transition: all 0.2s ease-out 0.05s;
+}
+.content .button ~ .button {
+  margin-left: 0.5em;
+}
+.content .button:hover {
+  background: #e5e5e5;
+}
+/* primary button overrides */
+.content .button.primary {
+  background: #e50055;
+  color: #fff;
+}
+.content .button.primary:hover {
+  background: #9d00e5;
+}
+
+/* video thumbnail grid */
+.content .video-thumb-grid {
+  position: relative;
+  font-size: 0; /* collapse the white-space */
+  width: calc(100% + 2rem);
+  margin: 0 -1rem;
+}
+.content .video-thumb {
+  display: inline-block;
+  vertical-align: top;
+
+  text-decoration: none;
+
+  /* calculate the width, gutters, and aspect ratio */
+  width: calc((100% - 4rem) / 2);
+  height: 0;
+  padding-top: calc(((100% - 4rem) / 2) * 0.5625); /* 16:9 calc */
+
+  margin: 1rem 1rem; /* gutters */
+
+  overflow: hidden; /* clipping */
+
+  position: relative; /* enable positioning for inner content */
+
+  font-size: 1rem; /* reset the font size */
+
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+
+  -webkit-transition: all 0.2s ease-out 0.05s;
+  transition: all 0.2s ease-out 0.05s;
+}
+.content .video-thumb:hover {
+  -webkit-transform: scale(1.05);
+  transform: scale(1.05);
+  box-shadow: 0 2px 4px rgba(13, 1, 61, 0.35);
+}
+.content .video-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  /* position inside the 16:9 container */
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  /* clipping for source images that are letterboxed */
+  object-fit: cover;
+  object-position: 50% 50%;
+
+  background: #2b2b2b;
+}
+
+/* Video Modal
+-----------------------------------------*/
+.video-modal,
+.video-modal .overlay-video {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 3000;
+}
+
+.expanded-iframe {
+  width: 500px;
+}
+.video-modal {
+  overflow: hidden;
+  position: fixed;
+  opacity: 0;
+
+  -webkit-transform: translate(500%, 0%);
+  transform: translate(500%, 0%);
+
+  -webkit-transition: -webkit-transform 0s linear 0s;
+  transition: transform 0s linear 0s;
+
+  /* using flexbox for vertical centering */
+
+  /* Flexbox display */
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+
+  /* Vertical alignment */
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+.video-modal .overlay-video {
+  z-index: 0;
+  background: rgba(13, 1, 61, 0.82); /* overlay color */
+
+  opacity: 0;
+
+  -webkit-transition: opacity 0.2s ease-out 0.05s;
+  transition: opacity 0.2s ease-out 0.05s;
+}
+
+.video-modal-content {
+  position: relative;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  z-index: 1;
+
+  margin: 0 auto;
+
+  overflow-y: visible;
+
+  background: #000;
+
+  width: calc(100% - 12em);
+  height: 0;
+  padding-top: calc((100% - 12em) * 0.5625); /* 16:9 calc */
+}
+
+/* Scaling to fit within the current Viewport size:
+   When viewport aspect ratio is greater than 16:9
+   work off the height instead of the width for calc */
+@media (min-aspect-ratio: 16/9) {
+  .video-modal-content {
+    width: 0;
+    height: calc(100vh - 10em);
+    padding-top: 0;
+    padding-left: calc((100vh - 10em) * 1.7778); /* 16:9 calc */
+  }
+}
+
+/* Mobile Layout Tweaks - side margins reduced */
+@media (max-width: 640px) {
+  .video-modal-content {
+    width: calc(100% - 1em);
+    padding-top: calc((100% - 1em) * 0.5625); /* 16:9 calc */
+  }
+}
+
+/* modal close button */
+.close-video-modal {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: -40px;
+
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* set the iframe element to stretch to fit its parent element */
+iframe#youtube {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+
+  background: #000;
+  box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.5);
+}
+
+/* show the modal: 
+   add class to the body to reveal */
+.show-video-modal .video-modal {
+  opacity: 1;
+
+  transform: translate(0%, 0%);
+  -webkit-transform: translate(0%, 0%);
+}
+.show-video-modal .video-modal .overlay-video {
+  opacity: 1;
+}
+.show-video-modal .video-modal-content {
+  transform: translate(0%, 0%);
+  -webkit-transform: translate(0%, 0%);
+}
+
+
+.nav-item, .nav-link{
+ 
+ background: #fff;
+ color: #000;
+ padding: 1px;
+ margin: 3px;
+}
+
+.nav-link.active{
+  background: #fff;
 }

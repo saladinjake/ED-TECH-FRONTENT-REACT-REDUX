@@ -9,12 +9,12 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     ::-moz-selection {
-        background : #b3d4fc;
+        // background : #b3d4fc;
         text-shadow: none;
     }
 
     ::selection {
-        background : #b3d4fc;
+        // background : #b3d4fc;
         text-shadow: none;
     }
 
@@ -51,7 +51,9 @@ export const GlobalStyle = createGlobalStyle`
         background    : #ffffff;
         color         : ${colors.text1};
         letter-spacing: 0.3px;
-        font-family   : ${fonts.sequel};
+        // font-family   : ${fonts.sequel};
+        font-family:Source Sans Pro,Arial,sans-serif;
+         
     }
 
     h1,
@@ -96,7 +98,8 @@ export const GlobalStyle = createGlobalStyle`
     h5 a,
     h6,
     h6 a {
-        font-family: ${fonts.sequel};
+        // font-family: ${fonts.sequel};
+        font-family:Source Sans Pro,Arial,sans-serif;
         margin     : 0;
     }
 
@@ -105,7 +108,8 @@ export const GlobalStyle = createGlobalStyle`
     li,
     p {
         font-size     : 13px;
-        font-family   : ${fonts.sequel};
+        // font-family   : ${fonts.sequel};
+        font-family:Source Sans Pro,Arial,sans-serif;
         margin        : 0;
         letter-spacing: 0.3px;
     }

@@ -1,0 +1,99 @@
+{
+	 "id":3,
+	"institution":"NIM",
+	"intro":"Our NIM pathway offers all the courses you need for your next Diet.",
+    "hero-image":"",
+    "courses":[
+			    	{
+			    		"title":"MPE 003/102 Communication Skills For Managers",
+			    		"image":""
+			    	},
+
+
+			    	{
+			    		"title":"MPE 005 Principles of Accounting",
+			    		"image":""
+			    	},
+					{
+					    		"title":"MPE 006/103 Entrepreneurship",
+					    		"image":""
+					    	},
+					{
+					    		"title":"MPE 007 Principles of Economics",
+					    		"image":""
+					    	},
+					{
+					    		"title":"MPE 008/104 Corporate Law",
+					    		"image":""
+					    	},
+
+					{
+					    		"title":"MPE 101 Management Principles and Techniques ",
+					    		"image":""
+					    	},
+					{
+					    		"title":"MPE 105/208 Marketing Management",
+					    		"image":""
+					    	},
+					{
+					    		"title":"MPE 106 Financial Management",
+					    		"image":""
+					    	},
+					{
+					    		"title":"MPE 107/209/307 Business Ethics And NIM Act",
+					    		"image":""
+					    	},
+					{
+					    		"title":"MPE 108/201 Leadership Development",
+					    		"image":""
+					    	},
+
+					{
+					    		"title":"MPE 202 Public Relations ",
+					    		"image":""
+					    	},
+					{
+					    		"title":"MPE 203/304 Human Capital Management",
+					    		"image":""
+					    	},
+					{
+					    		"title":"MPE 204/305 Managerial Finance",
+					    		"image":""
+					    	},
+					{
+					    		"title":"MPE 205 Operations Management",
+					    		"image":""
+					    	},
+					{
+					    		"title":"MPE 206 Health, Safety and Environmental Management",
+					    		"image":""
+					    	},
+					{
+					    		"title":"MPE 207 Management Information System(MIS)",
+					    		"image":""
+					    	},
+
+					{
+					    		"title":"MPE 301 Management Case Analysis",
+					    		"image":""
+					    	},
+					{
+					    		"title":"MPE 302 Business Policy andStrategy",
+					    		"image":""
+					    	},
+					{
+					    		"title":"MPE 303 Comparative Management",
+					    		"image":""
+					    	},
+					{
+					    		"title":"MPE 306 Organizational Behaviour",
+					    		"image":""
+					    	},
+    ]
+
+}
+
+
+
+
+

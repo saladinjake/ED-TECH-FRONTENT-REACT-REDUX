@@ -4,12 +4,14 @@ import { colors } from "components/common/element/elements.js";
 export const Styles = styled.div`
   .btn-pays {
     margin-top: 2rem;
-    padding: 1rem 2rem;
+    padding: 10px;
     color: ${colors.white};
     background: ${colors.gr_bg2};
     outline: none;
     border: none;
     border-radius: 5px;
+    height:48px;
+    width:300px;
 
     &:hover {
       background: linear-gradient(90deg, #0253c8 10%, #0253c8 100%);

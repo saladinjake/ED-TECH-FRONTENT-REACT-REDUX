@@ -3,6 +3,7 @@ import { colors } from "../../../components/common/element/elements.js";
 
 export const Styles = styled.div`
   form.form {
+
     ul.topics {
       padding-top: 10px;
 
@@ -31,13 +32,18 @@ export const Styles = styled.div`
   .login-page {
     .login-area {
       padding: 70px 0;
+
       .login-box {
+
         max-width: 500px;
+        background:#fafafa;
         margin: auto;
-        border: 1px solid ${colors.border1};
-        box-shadow: 0 0px 20px rgba(0, 0, 0, 0.08);
+        margin-top:-60px;
+        // border: 1px solid ${colors.border1};
+        // box-shadow: 0 0px 20px rgba(0, 0, 0, 0.08);
         padding: 25px 30px 35px;
-        border-radius: 5px;
+        // border-radius: 5px;
+         height: 400px;
         .login-title {
           h3 {
             color: ${colors.black2};
@@ -46,16 +52,16 @@ export const Styles = styled.div`
             padding-bottom: 10px;
             margin-bottom: 20px;
             position: relative;
-            &:before {
-              position: absolute;
-              content: "";
-              background: #205fdd;
-              width: 50px;
-              height: 2px;
-              bottom: 0;
-              left: 50%;
-              margin-left: -25px;
-            }
+            // &:before {
+            //   position: absolute;
+            //   content: "";
+            //   background: #205fdd;
+            //   width: 50px;
+            //   height: 2px;
+            //   bottom: 0;
+            //   left: 50%;
+            //   margin-left: -25px;
+            // }
 
             @media (max-width: 575px) {
               font-size: 20px;
@@ -68,7 +74,7 @@ export const Styles = styled.div`
             padding: 0;
             width: auto;
             height: auto;
-            background: transparent;
+            background:  #fafafa;
             border: none;
             margin-bottom: 28px;
             position: relative;
@@ -79,6 +85,7 @@ export const Styles = styled.div`
               font-size: 15px;
               color: ${colors.text1};
               font-weight: 500;
+              text-align:left;
 
               i {
                 font-size: 10px;
@@ -93,7 +100,7 @@ export const Styles = styled.div`
             input {
               width: 100%;
               height: 48px;
-              background-color: #ffffff;
+              background-color:  #fafafafff;
               font-size: 14px;
               padding: 15px 20px;
               color: ${colors.black1};
@@ -171,7 +178,7 @@ export const Styles = styled.div`
 
           button {
             font-size: 16px;
-            color: #fff;
+            color:  #fafafa;
             background: ${colors.gr_bg2};
             width: 100%;
             height: 48px;
@@ -185,7 +192,7 @@ export const Styles = styled.div`
               background: ${colors.gr_bg2};
 
               i {
-                color: #ffffff;
+                color:  #fafafafff;
               }
             }
 
@@ -205,6 +212,7 @@ export const Styles = styled.div`
                 font-weight: 500;
                 margin-bottom: 0;
                 cursor: pointer;
+
 
                 input[type="checkbox"] {
                   border: 2px solid ${colors.border3};
@@ -271,7 +279,7 @@ export const Styles = styled.div`
               li {
                 a {
                   font-size: 14px;
-                  color: #ffffff;
+                  color:  #fafafafff;
                   display: inline-block;
                   width: 110px;
                   height: 40px;
@@ -312,15 +320,19 @@ export const Styles = styled.div`
   }
 
   .registration-page {
+     
     .registration-area {
       padding: 70px 0;
       .registration-box {
-        max-width: 500px;
+          background:#fafafa;
+        max-width: 100%;
         margin: auto;
-        border: 1px solid ${colors.border1};
-        box-shadow: 0 0px 20px rgba(0, 0, 0, 0.08);
-        padding: 25px 30px;
-        border-radius: 5px;
+        // border: 1px solid ${colors.border1};
+        // box-shadow: 0 0px 20px rgba(0, 0, 0, 0.08);
+        // padding: 25px 30px;
+        // border-radius: 5px;
+        
+
 
         &.instructorregister {
           max-width: 100%;
@@ -359,7 +371,7 @@ export const Styles = styled.div`
             padding: 0;
             width: auto;
             height: auto;
-            background: transparent;
+            background:  #fafafa;
             border: none;
             margin-bottom: 28px;
             position: relative;
@@ -370,6 +382,7 @@ export const Styles = styled.div`
               font-size: 15px;
               color: ${colors.text1};
               font-weight: 500;
+              text-align:left;
 
               i {
                 font-size: 10px;
@@ -385,7 +398,7 @@ export const Styles = styled.div`
             textarea {
               width: 100%;
               height: 48px;
-              background-color: #ffffff;
+              background-color:  #fafafafff;
               font-size: 14px;
               padding: 15px 20px;
               color: ${colors.black1};
@@ -412,7 +425,7 @@ export const Styles = styled.div`
             }
 
             select {
-              background: transparent;
+              background:   #fafafa;
               border: none;
               border: 1px solid ${colors.border3};
               outline: none;
@@ -424,18 +437,18 @@ export const Styles = styled.div`
               display: inline-block;
 
               &:-moz-focusring {
-                color: transparent;
+                color:   #fafafa;
                 text-shadow: 0 0 0 #000;
               }
 
               &:-webkit-focusring {
-                color: transparent;
+                color:   #fafafa;
                 text-shadow: 0 0 0 #000;
               }
 
               option {
                 padding: 1rem;
-                background-color: transparent;
+                background-color:  #fafafa;
                 cursor: pointer;
               }
             }
@@ -492,7 +505,7 @@ export const Styles = styled.div`
 
           button {
             font-size: 16px;
-            color: #fff;
+            color:  #fafafa;
             background: ${colors.gr_bg2};
             width: 100%;
             height: 48px;
@@ -506,7 +519,7 @@ export const Styles = styled.div`
               background: ${colors.gr_bg2};
 
               i {
-                color: #ffffff;
+                color:  #fafafafff;
               }
             }
 

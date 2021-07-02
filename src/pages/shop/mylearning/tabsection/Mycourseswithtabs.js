@@ -2,12 +2,13 @@ import React, {useState} from 'react'
 
 
 import './Tab.css'
-
-// import MyCourses from './MyCourses.js';
+import {CourseDataList, CourseDataLists, CourseData} from './data/data'
+import CoursePrice from './CoursePrice.js';
+import MyCourses from './MyCourses.js';
 import { Grid, List } from 'react-feather';
 import {Link} from 'react-router-dom'
 import "./scrollbars.css"
-
+import CourseSidebar from '../formboxsection/components/CourseSidebar';
 
 
 
@@ -42,7 +43,7 @@ import { connect } from "react-redux";
 import { getAuthProfile } from "services/learner.js";
 
 import Loader from "components/Loader/Loader";
-//import { useQuery } from "hooks/useQuery.js";
+import { useQuery } from "hooks/useQuery.js";
 
 // import Loader from "components/Loader/Loader";
 import toast from "react-hot-toast";
@@ -59,7 +60,7 @@ const MycoursesWithTabs = (props) => {
  
 
    const [courses, setActiveCourses] = useState([]);
-  // const [filterAllCourses, setFilterAllCourses] = useState([]);
+   const [filterAllCourses, setFilterAllCourses] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -96,7 +97,7 @@ const MycoursesWithTabs = (props) => {
     const  filterSelection = (c) => {
       var x, i;
       x = document.getElementsByClassName("requestedFilter");
-      if (c === "all") c = "";
+      if (c == "all") c = "";
      
       for (i = 0; i < x.length; i++) {
         RemoveClass(x[i], "show");
@@ -109,7 +110,7 @@ const MycoursesWithTabs = (props) => {
       arr1 = element.className.split(" ");
       arr2 = name.split(" ");
       for (i = 0; i < arr2.length; i++) {
-        if (arr1.indexOf(arr2[i]) === -1) {
+        if (arr1.indexOf(arr2[i]) == -1) {
           element.className += " " + arr2[i];
         }
       }
@@ -149,7 +150,7 @@ const MycoursesWithTabs = (props) => {
                         
      
         <div >
-        <br/><br/><br/><br/>
+        <br/><br/><br/><br/><br/><br/>
                 <div className="row">
                     <div className="col-md-12">
                         <div className="mylearning-title">
@@ -313,14 +314,14 @@ const MycoursesWithTabs = (props) => {
                                                                                              {courses.map((course, i)=>  { 
                                                                                                       let status_state = "Active"
                                                                                                       let activity = "alert-info"
-                                                                                                       if(course.status===1){
+                                                                                                       if(course.status==1){
                                                                                                            status_state = "Active"
                                                                                                            activity = "alert-success"
 
-                                                                                                       }else if (course.status===2){
+                                                                                                       }else if (course.status==2){
                                                                                                           status_state = "Upcoming"
                                                                                                           activity = "alert-success"
-                                                                                                       }else if(course.status===3){
+                                                                                                       }else if(course.status==3){
                                                                                                           status_state = "Completed"
                                                                                                           activity = "alert-warning"
                                                                                                        }else{
@@ -389,7 +390,7 @@ const MycoursesWithTabs = (props) => {
           </div> 
 
 <Footer />
-        <footer className="footer text-right">
+        <footer class="footer text-right">
                     © 2021. All rights reserved.
                 </footer>  
         

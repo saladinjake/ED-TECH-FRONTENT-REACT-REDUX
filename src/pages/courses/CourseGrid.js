@@ -1,9 +1,10 @@
 import React, { useEffect, useState, Fragment } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import NavBar from "components/Navbar";
-import { PageTitle } from "../../components/common/PageTitle";
+import PageTitle2 from "../../components/common/PageTitle2";
 import CourseSidebar from "./components/CourseSidebar";
 import CourseItemGrid from "./components/CourseItemsGrid";
+import CourseItemsList from "./components/CourseGridList";
 import Footer from "../../components/Footer";
 import { Styles } from "./styles/course.js";
 
@@ -27,10 +28,11 @@ const CourseGrid = ({
   const query = useQuery();
   let routeQuery = query.get("filter");
 
-   let history = useHistory();
+  let history = useHistory();
 
   const [querySearchVal, setVal] = useState(query.get("search"));
   const [querySearchMethod, setMethod] = useState(query.get("method"));
+  const [viewGrid,setViewGrid] = useState(true)
 
   useEffect(() => {
     (async function loadContent() {
@@ -39,9 +41,7 @@ const CourseGrid = ({
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    
-  });
+  useEffect(() => {});
 
   useEffect(() => {
     if (routeQuery !== null && routeQuery.length > 0) {
@@ -60,13 +60,14 @@ const CourseGrid = ({
   const FilterAll = async () => {
     let catId = parseInt(match.params.id);
 
-
-
     if (catId > 0) {
       courses.length > 0 &&
         setFilterAllCourses(
           courses.filter((course) => {
-            return parseInt(course.category_id) === catId  && parseInt(course.status) === 1;
+            return (
+              parseInt(course.category_id) === catId &&
+              parseInt(course.status) === 1
+            );
           })
         );
     } else {
@@ -80,21 +81,30 @@ const CourseGrid = ({
             setFilterAllCourses(
               courses.length > 0 &&
                 courses.filter((course) => {
-                  return course.course_name
-                    .toLowerCase()
-                    .includes(query.get("search").toLowerCase()) && parseInt(course.status) === 1;
+                  return (
+                    course.course_name
+                      .toLowerCase()
+                      .includes(query.get("search").toLowerCase()) &&
+                    parseInt(course.status) === 1
+                  );
                 })
             );
             break;
           case "pace":
             if (query.get("pace") === "self") {
               filtered = courses.filter((course) => {
-                return course.learning_style === "Self Paced" && parseInt(course.status) === 1;
+                return (
+                  course.learning_style === "Self Paced" &&
+                  parseInt(course.status) === 1
+                );
               });
               setFilterAllCourses([...filtered]);
             } else {
               filtered = courses.filter((course) => {
-                return course.learning_style === "Instructor Paced" && parseInt(course.status) === 1;
+                return (
+                  course.learning_style === "Instructor Paced" &&
+                  parseInt(course.status) === 1
+                );
               });
               setFilterAllCourses([...filtered]);
             }
@@ -102,12 +112,18 @@ const CourseGrid = ({
           case "fee":
             if (query.get("amount") === "free") {
               filtered = courses.filter((course) => {
-                return parseInt(course.price) === parseInt(0) && parseInt(course.status) === 1;
+                return (
+                  parseInt(course.price) === parseInt(0) &&
+                  parseInt(course.status) === 1
+                );
               });
               setFilterAllCourses([...filtered]);
             } else {
               filtered = courses.filter((course) => {
-                return parseInt(course.price) > parseInt(0) && parseInt(course.status) === 1;
+                return (
+                  parseInt(course.price) > parseInt(0) &&
+                  parseInt(course.status) === 1
+                );
               });
               setFilterAllCourses([...filtered]);
             }
@@ -121,9 +137,12 @@ const CourseGrid = ({
         setFilterAllCourses(
           courses.length > 0 &&
             courses.filter((course) => {
-              return course.course_name
-                .toLowerCase()
-                .includes(searchVal.toLowerCase()) && parseInt(course.status) === 1;
+              return (
+                course.course_name
+                  .toLowerCase()
+                  .includes(searchVal.toLowerCase()) &&
+                parseInt(course.status) === 1
+              );
             })
         );
       }
@@ -133,18 +152,17 @@ const CourseGrid = ({
   return (
     <div className="main-wrapper course-page">
       <NavBar />
-      <br />
-      <br />
-      <br />
-      <PageTitle />
+      <br/>
+      <br/><br/>
+      <PageTitle2 />
 
       <Styles>
         {/* Course Grid */}
-        <section className="course-grid-area">
+        <section className="course-grid-area" style={{ marginTop: "-50px" }}>
           <Container>
             <Row>
               <Col lg="3" md="4" sm="5">
-                <div style={{ marginTop: "90px" }}>
+                <div style={{ marginTop: "50px" }}>
                   <CourseSidebar
                     setFilterAllCourses={setFilterAllCourses}
                     setSearch={setSearch}
@@ -154,34 +172,83 @@ const CourseGrid = ({
               </Col>
 
               <Col lg="9" md="8" sm="7">
-                <div className="buttons-sec gridsect" >
-                  <button className="gridsect list-view on" onClick={()=> {
-                     history.push("/courses")
-                  }}>
-                    <i className="fa fa-bars"></i>
-                  </button>
-                  <button className="gridsect grid-view "  onClick={()=> {
-                     history.push("/course-grid/list")
-                  }}>
-                    <i className="fa fa-th"></i>
-                  </button>
+                <div className="row   shown" >
+                  <div className="">
+
+
+
+                  <div className="container  col-merge-12" id="container-actions" >
+                      <div className="buttons">
+                      
+                     
+                        <button
+                        id="grid"
+                       
+                      onClick={(e) => {
+                        e.preventDefault()
+                        // history.push("/course-grid/list");
+                        setViewGrid(false)
+                        document.getElementById("grid").style.backgroundColor ="#ddd"
+                        document.getElementById("list").style.backgroundColor="#fff"
+                        // document.getElementById("listv").style.backgroundColor="#fff"
+
+                      }}
+
+                         className="list square-btn"><i id="listv" className="fa fa-bars fa-3x"></i></button>
+                            <button id="list"
+                             style={{background:"#ddd"}}
+                     
+                      onClick={(e) => {
+                        // history.push("/courses");
+                          setViewGrid(true)
+                           document.getElementById("list").style.backgroundColor ="#ddd"
+                        document.getElementById("grid").style.backgroundColor="#fff"
+                         // document.getElementById("gridv").style.backgroundColor="#fff"
+                      }} 
+                      className="grid square-btn"><i id="gridv" className="fa fa-th-large fa-3x"></i></button>
+                      </div>
+                    </div>
+
+
+                   
+                  </div>
                 </div>
                 <br />
 
-                <div className="course-items viewCourses gridDisplay">
+                <div
+                  className="course-items viewCourses gridDisplay"
+                  style={{ marginTop: "-20px" }}
+                >
                   <Row>
                     {courseLoading ? (
                       <Loader width="70" />
                     ) : courses.length > 0 ? (
                       <Fragment>
-                        <CourseItemGrid
+                        
+                        {viewGrid ===true ? (
+
+                          
+
+
+                        <CourseItemsList
                           courses={courses}
                           allCourses={filterAllCourses}
                         />
+                            
+
+                         ) : (
+
+                         <CourseItemGrid
+                          courses={courses}
+                          allCourses={filterAllCourses}
+                        />
+
+                         
+                        ) }
                       </Fragment>
                     ) : (
                       <Row>
-                        <h1>No courses yet</h1>
+                        <h1>No Search Found</h1>
                       </Row>
                     )}
                   </Row>

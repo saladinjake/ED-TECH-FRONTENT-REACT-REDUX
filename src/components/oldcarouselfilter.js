@@ -1,4 +1,5 @@
-{/*<Col lg="3" md="9" key={i}>
+{
+  /*<Col lg="3" md="9" key={i}>
                   <div className="widget">
                     <Link to={`${process.env.PUBLIC_URL}/courses/${data.id}`}>
                       <div className="widgetImage animation">
@@ -20,4 +21,5 @@
                       </div>
                     </Link>
                   </div>
-                </Col>*/}
+                </Col>*/
+}

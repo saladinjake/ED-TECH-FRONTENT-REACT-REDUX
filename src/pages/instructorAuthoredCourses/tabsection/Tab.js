@@ -25,12 +25,11 @@ const MyLearningContainer = (props) => {
     course: { courses },
     fetchCourses,
     match,
-    auth: { user }
+    auth: { user },
   } = props;
 
+  // console.log(user)
 
-  console.log(user)
- 
   //for aside content forbox left
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -45,13 +44,20 @@ const MyLearningContainer = (props) => {
 
   const history = useHistory();
 
+  const [showEditor, setShowEdit] = useState(false)
+
+  const handleShowEdit =(value) =>{
+    setShowEdit(value)
+    props.handleShowEdit(value)
+  }
+
   useEffect(() => {
     (async function loadContent() {
       try {
         await fetchCourses();
         // let dataUser = await getEnrolledCourse();
- 
-        // console.log(dataUser.data.data);
+
+        // // console.log(dataUser.data.data);
         // setData([...dataUser.data.data]);
       } catch (e) {
         toast.error("Error occured fetching data");
@@ -75,7 +81,7 @@ const MyLearningContainer = (props) => {
     // eslint-disable-next-line
   }, [match, courses, search]);
 
-  console.log([match, courses, search]);
+  // console.log([match, courses, search]);
 
   const FilterAll = async () => {
     let catId = match.params.id;
@@ -102,7 +108,7 @@ const MyLearningContainer = (props) => {
                 courses.filter((course) => {
                   return course.course_name
                     .toLowerCase()
-                    .includes(query.get("search").toLowerCase())
+                    .includes(query.get("search").toLowerCase());
                 })
             );
             break;
@@ -150,22 +156,10 @@ const MyLearningContainer = (props) => {
     }
   };
 
+  const [activeCourses, setActiveCourses] = useState([]);
+  const [pendingCourses, setPendingCourses] = useState([]);
+  const [deactivatedCourses, setDeactivatedCourses] = useState([]);
 
-
-
-
-
-
-
-
-
-
-
-
-    const [activeCourses, setActiveCourses] = useState([]);
-    const [pendingCourses, setPendingCourses] = useState([]);
-    const [deactivatedCourses, setDeactivatedCourses] = useState([]);
-  
   // let history = useHistory();
 
   useEffect(() => {
@@ -175,45 +169,61 @@ const MyLearningContainer = (props) => {
   const fetchAuthProfile = async () => {
     try {
       let allCourses = await getInstructorCourses();
-      // console.log( [...allCourses.data.data.data])
-      setActiveCourses(
-        allCourses.data.data.data.length > 0 &&
-          allCourses.data.data.data.filter((course) => {
-            return parseInt(course.status) === 1 && user.email === course?.instructor?.user?.email;
-          })
-      );
+      // console.log( [...allCourses.data.data])
 
- setDeactivatedCourses(
-        allCourses.data.data.data.length > 0 &&
-          allCourses.data.data.data.filter((course) => {
-            return parseInt(course.status) === 0 && user.email === course?.instructor?.user?.email;
-          })
-      );
+      console.log(allCourses.data);
 
-      setPendingCourses(
-        allCourses.data.data.data.length > 0 &&
-          allCourses.data.data.data.filter((course) => {
-            return parseInt(course.status) === -1 && user.email === course?.instructor?.user?.email;
-          })
-      );
+      if (allCourses.data.data) {
+        let seiveOfInstructors = allCourses.data.data[0].instructors;
+        let bottleNeckedInstructor = seiveOfInstructors.find(
+          (instructor) => instructor.id == user.id
+        );
+
+        // let bottleNeckedInstructor = allCourses.data.data[0].instructor_id
+        // alert(bottleNeckedInstructor)
+
+        setActiveCourses(
+          allCourses.data.data.length > 0 &&
+            allCourses.data.data.filter((course) => {
+              return (
+                parseInt(course.status) === 1 &&
+                  user.id == bottleNeckedInstructor.id
+                // user.email === bottleNeckedInstructor.email
+              );
+            })
+        );
+
+        setDeactivatedCourses(
+          allCourses.data.data.length > 0 &&
+            allCourses.data.data.filter((course) => {
+              return (
+                parseInt(course.status) === 0 &&
+                  user.id == bottleNeckedInstructor.id
+                // user.email === bottleNeckedInstructor.email
+              );
+            })
+        );
+
+        setPendingCourses(
+          allCourses.data.data.length > 0 &&
+            allCourses.data.data.filter((course) => {
+              return (
+                parseInt(course.status) === -1 &&
+                user.id == bottleNeckedInstructor.id
+                // user.email === bottleNeckedInstructor.email
+              );
+            })
+        );
+      }
     } catch (err) {
       toast.error(
-        err?.response?.data?.message || `Error occured fetching active courses`
+        err?.response?.data?.message || `Error occured fetching active courses `
       );
     }
     setLoading(false);
   };
 
-
-
-
-
-
-  console.log(activeCourses, pendingCourses, deactivatedCourses)
-  
-
-  
-
+  // console.log(activeCourses, pendingCourses, deactivatedCourses)
 
   //for sidecontent main
 
@@ -222,7 +232,7 @@ const MyLearningContainer = (props) => {
     setToggleGridList((previous) => !previous);
   };
 
-  const courseSet = []
+  const courseSet = [];
 
   return (
     <div className="container">
@@ -235,11 +245,16 @@ const MyLearningContainer = (props) => {
           <div className="mylearning-title">
             <h4 className="pull-left">My Authoring</h4>
 
-            <button style={{float:"right", width:"200px"}} className="btn btn-primary pull-right" onClick={()=>{
-                       history.push("/instructor-pages/course/create")
-                  }}>Add course</button>
+            <button
+              style={{ float: "right", width: "200px" }}
+              className="btn btn-primary pull-right"
+              onClick={() => {
+                history.push("/instructor-pages/course/create");
+              }}
+            >
+              Add course
+            </button>
           </div>
-         
         </div>
       </div>
       <div className="row">
@@ -249,14 +264,7 @@ const MyLearningContainer = (props) => {
           <Fragment>
             <div className="col-md-2 col-sm-12">
               <div style={{ marginTop: "60px" }}>
-
-                
-         
-         
-
                 <div className="filter-sidebar">
-                 
-
                   <CourseSidebar
                     setFilterAllCourses={setFilterAllCourses}
                     setSearch={setSearch}
@@ -266,8 +274,23 @@ const MyLearningContainer = (props) => {
               </div>
             </div>
 
-            <div className="col-md-10 col-sm-12 mt-sm-4">
-              <Tabs defaultActiveKey="activecourses" id="uncontrolled-tab-example">
+            <div
+              className="col-md-10 col-sm-12 mt-sm-4"
+              style={{ height: "3000px" }}
+            >
+
+            <div
+                      className="course-details-top nav nav-pills"
+                      style={{ marginTop: "-10px" }}
+                    >
+
+
+
+                      <div className="course-tab-list ">
+              <Tabs
+                defaultActiveKey="activecourses"
+                id="uncontrolled-tab-example"
+              >
                 <Tab eventKey="activecourses" title="Active Courses">
                   <div className="toggleBtn">
                     <div className="d-flex justify-content-end">
@@ -282,7 +305,7 @@ const MyLearningContainer = (props) => {
                     </div>
                   </div>
                   {toggleGridList ? (
-                    <MyCourses courses={activeCourses} />
+                    <MyCourses courses={activeCourses} editable={false} handleShowEdit={handleShowEdit}/>
                   ) : (
                     <div className="table-responsive table-wrapper">
                       <table className="table table-borderless responsive">
@@ -290,7 +313,7 @@ const MyLearningContainer = (props) => {
                           <tr>
                             {/*<th scope="col">Course Code</th>*/}
                             <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
+                           
                             <th scope="col">Price</th>
                             <th scope="col">Start Date</th>
 
@@ -310,12 +333,10 @@ const MyLearningContainer = (props) => {
                                   {/*<td>{course.course_code}</td>*/}
                                   <td>
                                     <Link to="">
-                                      <strong>
-                                        {course?.course_name}
-                                      </strong>
+                                      <strong>{course?.course_name}</strong>
                                     </Link>
                                   </td>
-                                  <td>{course?.instructor?.user?.first_name}  {course?.instructor?.user?.first_name}</td>
+                                  
                                   <td>{course?.price}</td>
                                   <td>
                                     {dateStarted.toLocaleDateString("en-US")}
@@ -335,7 +356,8 @@ const MyLearningContainer = (props) => {
                     </div>
                   )}
                 </Tab>
-                <Tab eventKey="pending" title="Approval/Pending Courses">
+
+                <Tab eventKey="deactivated" title="Pending Courses">
                   <div className="toggleBtn">
                     <div className="d-flex justify-content-end">
                       <div className="toggle-icon" onClick={toggle}>
@@ -349,21 +371,102 @@ const MyLearningContainer = (props) => {
                     </div>
                   </div>
                   {toggleGridList ? (
-                    <MyCourses courses={pendingCourses} />
+                    <MyCourses courses={deactivatedCourses} editable={true}/>
+                  ) : (
+                    <div className="table-responsive table-wrapper">
+                      <table className="table table-borderless ">
+                        <thead>
+                          <tr>
+                            {/*<th scope="col">Course Code</th>*/}
+                            <th scope="col">Course Name</th>
+                          
+                            <th scope="col">Price</th>
+                            <th scope="col">Start Date</th>
+
+                            <th scope="col">End Date</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Ownership</th>
+                            <th scope="col">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {deactivatedCourses.length > 0 &&
+                            deactivatedCourses.map((course, i) => {
+                              var dateStarted = new Date(course.start_date);
+                              var dateEnd = new Date(course.end_date);
+
+                              return (
+                                <tr key={i}>
+                                  {/* <td>{course?.course_code}</td> */}
+                                  <td>
+                                    <Link to="">
+                                      <strong>{course?.course_name}</strong>
+                                    </Link>
+                                  </td>
+                                  
+                                  <td>NGN {course?.price}</td>
+                                  <td>
+                                    {dateStarted.toLocaleDateString("en-US")}
+                                  </td>
+                                  <td>{dateEnd.toLocaleDateString("en-US")}</td>
+                                  <td>{course?.category?.name}</td>
+                                  <td>{course?.learning_style}</td>
+
+                                  <td>
+                                    <div className={"alert alert-danger"}>
+                                      Pending
+                                    </div>
+                                  </td>
+
+                                  <td>
+                                       <Link
+                              className="btn course-btn"
+                              to={
+                                process.env.PUBLIC_URL +  "/course-preview/" + course?.id
+                              }
+                            >
+                              Edit 
+                            </Link>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </Tab>
+
+                <Tab eventKey="pending" title="Deactivated Courses">
+                  <div className="toggleBtn">
+                    <div className="d-flex justify-content-end">
+                      <div className="toggle-icon" onClick={toggle}>
+                        {toggleGridList ? (
+                          <Grid size={15} />
+                        ) : (
+                          <List size={15} />
+                        )}{" "}
+                        {toggleGridList ? " View as List" : " View as Grid"}
+                      </div>
+                    </div>
+                  </div>
+                  {toggleGridList ? (
+                    <MyCourses courses={pendingCourses} editable={true} handleShowEdit={handleShowEdit}/>
                   ) : (
                     <div className="table-responsive table-wrapper">
                       <table className="table table-borderless responsive">
                         <thead>
                           <tr>
-                           {/* <th scope="col">Course Code</th> */} 
+                            {/* <th scope="col">Course Code</th> */}
                             <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
+                           
                             <th scope="col">Price</th>
                             <th scope="col">Start Date</th>
 
                             <th scope="col">End Date</th>
 
                             <th scope="col">Status</th>
+                            <th scope="col">Edit</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -391,8 +494,19 @@ const MyLearningContainer = (props) => {
 
                                   <td>
                                     <div className={"alert alert-warning"}>
-                                      Upcoming
+                                      Deactivated
                                     </div>
+                                  </td>
+
+                                   <td>
+                                       <Link
+                              className="btn course-btn"
+                              to={
+                                process.env.PUBLIC_URL + "/course-preview/" + course?.id
+                              }
+                            >
+                              Preview 
+                            </Link>
                                   </td>
                                 </tr>
                               );
@@ -416,7 +530,7 @@ const MyLearningContainer = (props) => {
                     </div>
                   </div>
                   {toggleGridList ? (
-                    <MyCourses courses={[]} />
+                    <MyCourses courses={[]} editable={true} handleShowEdit={handleShowEdit}/>
                   ) : (
                     <div className="table-responsive table-wrapper">
                       <table className="table table-borderless ">
@@ -424,7 +538,7 @@ const MyLearningContainer = (props) => {
                           <tr>
                             <th scope="col">Course Code</th>
                             <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
+                            
                             <th scope="col">Price</th>
                             <th scope="col">Start Date</th>
 
@@ -475,77 +589,16 @@ const MyLearningContainer = (props) => {
                                       {status_state}
                                     </div>
                                   </td>
-                                </tr>
-                              );
-                            })}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-                </Tab>
-                <Tab eventKey="deactivated" title="Deactivated Courses">
-                  <div className="toggleBtn">
-                    <div className="d-flex justify-content-end">
-                      <div className="toggle-icon" onClick={toggle}>
-                        {toggleGridList ? (
-                          <Grid size={15} />
-                        ) : (
-                          <List size={15} />
-                        )}{" "}
-                        {toggleGridList ? " View as List" : " View as Grid"}
-                      </div>
-                    </div>
-                  </div>
-                  {toggleGridList ? (
-                    <MyCourses courses={deactivatedCourses}/>
-                  ) : (
-                    <div className="table-responsive table-wrapper">
-                      <table className="table table-borderless ">
-                        <thead>
-                          <tr>
-                            {/*<th scope="col">Course Code</th>*/}
-                            <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Start Date</th>
 
-                            <th scope="col">End Date</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Ownership</th>
-                            <th scope="col">Status</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {deactivatedCourses.length > 0 &&
-                            deactivatedCourses.map((course, i) => {
-                              var dateStarted = new Date(course.start_date);
-                              var dateEnd = new Date(course.end_date);
-
-                             
-                              return (
-                                <tr key={i}>
-                                 {/* <td>{course?.course_code}</td> */} 
-                                  <td>
-                                    <Link to="">
-                                      <strong>{course?.course_name}</strong>
-                                    </Link>
-                                  </td>
-                                  <td>
-                                    {course?.instructor?.user?.last_name}{" "}
-                                    {course?.instructor?.user?.first_name}
-                                  </td>
-                                  <td>NGN {course?.price}</td>
-                                  <td>
-                                    {dateStarted.toLocaleDateString("en-US")}
-                                  </td>
-                                  <td>{dateEnd.toLocaleDateString("en-US")}</td>
-                                  <td>{course?.category?.name}</td>
-                                  <td>{course?.learning_style}</td>
-
-                                  <td>
-                                    <div className={"alert alert-danger"}>
-                                      Deactivated
-                                    </div>
+                                   <td>
+                                       <Link
+                              className="btn course-btn"
+                              to={
+                                process.env.PUBLIC_URL +  "/course-preview/" + course?.id
+                              }
+                            >
+                              Edit 
+                            </Link>
                                   </td>
                                 </tr>
                               );
@@ -555,8 +608,9 @@ const MyLearningContainer = (props) => {
                     </div>
                   )}
                 </Tab>
-                
               </Tabs>
+            </div>
+            </div>
             </div>
           </Fragment>
         ) : (
@@ -574,6 +628,17 @@ const MyLearningContainer = (props) => {
             </div>
 
             <div className="col-md-10 col-sm-12 mt-sm-4">
+
+            <div
+                      className="course-details-top nav nav-pills"
+                      style={{ marginTop: "-10px" }}
+                    >
+
+
+
+                      <div className="course-tab-list ">
+
+
               <Tabs defaultActiveKey="allcourses" id="uncontrolled-tab-example">
                 <Tab eventKey="allcourses" title="All Courses">
                   <div className="toggleBtn">
@@ -589,7 +654,7 @@ const MyLearningContainer = (props) => {
                     </div>
                   </div>
                   {toggleGridList ? (
-                    <MyCourses courses={courseSet} />
+                    <MyCourses courses={courseSet} editable={true} handleShowEdit={handleShowEdit}/>
                   ) : (
                     <div className="table-responsive table-wrapper">
                       <table className="table table-borderless">
@@ -597,7 +662,7 @@ const MyLearningContainer = (props) => {
                           <tr>
                             <th scope="col">Course Code</th>
                             <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
+                           
                             <th scope="col">Price</th>
                             <th scope="col">Start Date</th>
 
@@ -628,7 +693,7 @@ const MyLearningContainer = (props) => {
                                     <strong>{course.course.course_name}</strong>
                                   </Link>
                                 </td>
-                                <td></td>
+                               
                                 <td>{course?.course?.price}</td>
                                 <td>
                                   {dateStarted.toLocaleDateString("en-US")}
@@ -640,6 +705,16 @@ const MyLearningContainer = (props) => {
                                     {course.set_status}
                                   </div>
                                 </td>
+                                 <td>
+                                       <Link
+                              className="btn course-btn"
+                              to={
+                                process.env.PUBLIC_URL +  "/course-preview/" + course?.id
+                              }
+                            >
+                              Edit 
+                            </Link>
+                                  </td>
                               </tr>
                             );
                           })}
@@ -662,7 +737,7 @@ const MyLearningContainer = (props) => {
                     </div>
                   </div>
                   {toggleGridList ? (
-                    <MyCourses courses={courseSet} />
+                    <MyCourses courses={courseSet}  editable={false} handleShowEdit={handleShowEdit}/>
                   ) : (
                     <div className="table-responsive table-wrapper">
                       <table className="table table-borderless responsive">
@@ -670,7 +745,7 @@ const MyLearningContainer = (props) => {
                           <tr>
                             <th scope="col">Course Code</th>
                             <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
+                           
                             <th scope="col">Price</th>
                             <th scope="col">Start Date</th>
 
@@ -695,7 +770,7 @@ const MyLearningContainer = (props) => {
                                       </strong>
                                     </Link>
                                   </td>
-                                  <td></td>
+                                
                                   <td>{course?.course?.price}</td>
                                   <td>
                                     {dateStarted.toLocaleDateString("en-US")}
@@ -729,7 +804,7 @@ const MyLearningContainer = (props) => {
                     </div>
                   </div>
                   {toggleGridList ? (
-                    <MyCourses courses={courseSet} />
+                    <MyCourses courses={courseSet} editable={false} handleShowEdit={handleShowEdit}/>
                   ) : (
                     <div className="table-responsive table-wrapper">
                       <table className="table table-borderless responsive">
@@ -737,7 +812,7 @@ const MyLearningContainer = (props) => {
                           <tr>
                             <th scope="col">Course Code</th>
                             <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
+                           
                             <th scope="col">Price</th>
                             <th scope="col">Start Date</th>
 
@@ -762,7 +837,7 @@ const MyLearningContainer = (props) => {
                                       </strong>
                                     </Link>
                                   </td>
-                                  <td></td>
+                                
                                   <td>{course?.course?.price}</td>
                                   <td>
                                     {dateStarted.toLocaleDateString("en-US")}
@@ -796,7 +871,7 @@ const MyLearningContainer = (props) => {
                     </div>
                   </div>
                   {toggleGridList ? (
-                    <MyCourses courses={courseSet} />
+                    <MyCourses courses={courseSet}  editable={false} handleShowEdit={handleShowEdit}/>
                   ) : (
                     <div className="table-responsive table-wrapper">
                       <table className="table table-borderless ">
@@ -804,7 +879,7 @@ const MyLearningContainer = (props) => {
                           <tr>
                             <th scope="col">Course Code</th>
                             <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
+                           
                             <th scope="col">Price</th>
                             <th scope="col">Start Date</th>
 
@@ -839,10 +914,7 @@ const MyLearningContainer = (props) => {
                                       <strong>{course.course_name}</strong>
                                     </Link>
                                   </td>
-                                  <td>
-                                    {course?.instructor?.user?.last_name}{" "}
-                                    {course?.instructor?.user?.first_name}
-                                  </td>
+                                  
                                   <td>{course.price}</td>
                                   <td>
                                     {dateStarted.toLocaleDateString("en-US")}
@@ -877,7 +949,7 @@ const MyLearningContainer = (props) => {
                     </div>
                   </div>
                   {toggleGridList ? (
-                    <MyCourses courses={courseSet} />
+                    <MyCourses courses={courseSet} editable={false} handleShowEdit={handleShowEdit}/>
                   ) : (
                     <div className="table-responsive table-wrapper">
                       <table className="table table-borderless ">
@@ -885,7 +957,7 @@ const MyLearningContainer = (props) => {
                           <tr>
                             <th scope="col">Course Code</th>
                             <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
+                           
                             <th scope="col">Price</th>
                             <th scope="col">Start Date</th>
 
@@ -897,7 +969,7 @@ const MyLearningContainer = (props) => {
                         </thead>
                         <tbody>
                           {[].length > 0 &&
-                           [].map((course, i) => {
+                            [].map((course, i) => {
                               var dateStarted = new Date(course.start_date);
                               var dateEnd = new Date(course.end_date);
 
@@ -923,10 +995,7 @@ const MyLearningContainer = (props) => {
                                       <strong>{course.course_name}</strong>
                                     </Link>
                                   </td>
-                                  <td>
-                                    {course?.instructor?.user?.last_name}{" "}
-                                    {course?.instructor?.user?.first_name}
-                                  </td>
+                                  
                                   <td>{course.price}</td>
                                   <td>
                                     {dateStarted.toLocaleDateString("en-US")}
@@ -962,7 +1031,7 @@ const MyLearningContainer = (props) => {
                     </div>
                   </div>
                   {toggleGridList ? (
-                    <MyCourses courses={courseSet} />
+                    <MyCourses courses={courseSet} editable={false} handleShowEdit={handleShowEdit}/>
                   ) : (
                     <div className="table-responsive table-wrapper">
                       <table className="table table-borderless ">
@@ -970,7 +1039,7 @@ const MyLearningContainer = (props) => {
                           <tr>
                             <th scope="col">Course Code</th>
                             <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
+                           
                             <th scope="col">Price</th>
                             <th scope="col">Start Date</th>
 
@@ -1008,10 +1077,7 @@ const MyLearningContainer = (props) => {
                                       <strong>{course.course_name}</strong>
                                     </Link>
                                   </td>
-                                  <td>
-                                    {course?.instructor?.user?.last_name}{" "}
-                                    {course?.instructor?.user?.first_name}
-                                  </td>
+                                  
                                   <td>{course.price}</td>
                                   <td>
                                     {dateStarted.toLocaleDateString("en-US")}
@@ -1034,6 +1100,9 @@ const MyLearningContainer = (props) => {
                   )}
                 </Tab>
               </Tabs>
+
+                 </div>
+                    </div>
             </div>
           </div>
         )}
@@ -1045,17 +1114,14 @@ const MyLearningContainer = (props) => {
 MyLearningContainer.propTypes = {
   course: PropTypes.object.isRequired,
   fetchCourses: PropTypes.func.isRequired,
-   auth: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   course: state.course,
-    auth: state.auth,
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, {
   fetchCourses,
-
 })(MyLearningContainer);
-
-

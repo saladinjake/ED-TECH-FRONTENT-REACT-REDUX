@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Fragment } from "react";
-// import { Link } from "react-router-dom";
-// import { Container, Row,  Col, Tab, Nav} from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { Container, Row,  Col, Tab, Nav} from "react-bootstrap";
 
 // import Pagination from "./../../components/Pagination";
 import { Styles } from "./styles/course.js";
@@ -22,17 +22,17 @@ import "./magnify.css"
 import Sidebar from "../newdashboard/Sidebar";
 // import NewHeader from "../newdashboard/NewHeader";
 
-// import $ from "jquery";
-// import jQueryBridget from "jquery-bridget"
-// import Isotope from "isotope-layout";
-// import magnificPopup from "magnific-popup"
+import $ from "jquery";
+import jQueryBridget from "jquery-bridget"
+import Isotope from "isotope-layout";
+import magnificPopup from "magnific-popup"
 // // make Isotope a jQuery plugin
 
 
 
 
 import NavBar from "components/Navbar";
-// import Footer from "components/Footer";
+import Footer from "components/Footer";
 
 
 
@@ -163,7 +163,7 @@ const CourseDetails = ({
           <Fragment>
             <section className="course-details-area">
 
-            <div className="content-page" >
+            <div className="content-page" class="col-md-12">
       
         <div className="content">
           <div className="container">
@@ -172,23 +172,23 @@ const CourseDetails = ({
 
              <div className="row">
               <div className="col-sm-12">
-                                <div className="btn-group pull-right m-t-15 open">
-                                <button type="button" className="btn  dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="true" style={{background: "rgb(2, 83, 200)", color: "rgb(255, 255, 255)"}}>
-                                Settings <span className="m-l-5"><i className="fa fa-cog"></i></span></button>
-                                <ul className="dropdown-menu drop-menu-right" role="menu"><li>
-                                <a alt="no links" href="#">Upcoming courses</a></li><li><a alt="no links" href="/profile">Profile</a></li>
-                                <li><a alt="no links" href="/notifications">Account Settings</a></li><li><a alt="no links" href="/cart">Cart</a></li>
-                                <li className="divider"></li><li><a alt="no links" href="#">Reload</a></li></ul>
+                                <div class="btn-group pull-right m-t-15 open">
+                                <button type="button" class="btn  dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="true" style={{background: "rgb(2, 83, 200)", color: "rgb(255, 255, 255)"}}>
+                                Settings <span class="m-l-5"><i class="fa fa-cog"></i></span></button>
+                                <ul class="dropdown-menu drop-menu-right" role="menu"><li>
+                                <a href="#">Upcoming courses</a></li><li><a href="/profile">Profile</a></li>
+                                <li><a href="/notifications">Account Settings</a></li><li><a href="/cart">Cart</a></li>
+                                <li class="divider"></li><li><a href="#">Reload</a></li></ul>
                                 </div>
 
 
                 <h4 className="page-title">Course  Detail</h4>
                 <ol className="breadcrumb" style={{display:"block"}}>
                   <li>
-                    <a alt="no links" href="#">Courses</a>
+                    <a href="#">Courses</a>
                   </li>
                   <li>
-                    <a alt="no links" href="#">Detail</a>
+                    <a href="#">Detail</a>
                   </li>
                   <li className="active">
                     Product Detail
@@ -208,17 +208,17 @@ const CourseDetails = ({
                                                
                                                <img className="img-responsive card-box" src={`${
                             coursedetails && coursedetails.data
-                              ? coursedetails.data.course_cover_image!=="" ? coursedetails.data.course_cover_image  : "/assets/images/gallery/1.jpg"
+                              ? coursedetails.data.course_cover_image!="" ? coursedetails.data.course_cover_image  : "/assets/images/gallery/1.jpg"
                               : "/assets/images/gallery/1.jpg"
                           }`} />
                             <br/>
                            <div className="rating">
                                                     <ul className="list-inline">
-                                                        <li><a alt="no links" className="fa fa-star" href=""></a></li>
-                                                        <li><a alt="no links" className="fa fa-star" href=""></a></li>
-                                                        <li><a alt="no links" className="fa fa-star" href=""></a></li>
-                                                        <li><a alt="no links" className="fa fa-star" href=""></a></li>
-                                                        <li><a alt="no links" className="fa fa-star-o" href=""></a></li>
+                                                        <li><a className="fa fa-star" href=""></a></li>
+                                                        <li><a className="fa fa-star" href=""></a></li>
+                                                        <li><a className="fa fa-star" href=""></a></li>
+                                                        <li><a className="fa fa-star" href=""></a></li>
+                                                        <li><a className="fa fa-star-o" href=""></a></li>
                                                     </ul>
                                                 </div>
 
@@ -235,11 +235,11 @@ const CourseDetails = ({
                                                <h3><b> {coursedetails?.data?.course_name}</b></h3>
                                                <div className="rating">
                                                     <ul className="list-inline">
-                                                        <li><a alt="no links" className="fa fa-star" href=""></a></li>
-                                                        <li><a alt="no links" className="fa fa-star" href=""></a></li>
-                                                        <li><a alt="no links" className="fa fa-star" href=""></a></li>
-                                                        <li><a alt="no links" className="fa fa-star" href=""></a></li>
-                                                        <li><a alt="no links" className="fa fa-star-o" href=""></a></li>
+                                                        <li><a className="fa fa-star" href=""></a></li>
+                                                        <li><a className="fa fa-star" href=""></a></li>
+                                                        <li><a className="fa fa-star" href=""></a></li>
+                                                        <li><a className="fa fa-star" href=""></a></li>
+                                                        <li><a className="fa fa-star-o" href=""></a></li>
                                                     </ul>
                                                 </div>
 
@@ -327,36 +327,36 @@ const CourseDetails = ({
 
 
 
-                  <div className="col-md-12"> 
-                                <ul className="nav nav-tabs tabs" style={{width: "100%"}}>
-                                    <li className="active tab" style={{width: "25%"}}>
-                                        <a alt="no links" href="#home-2" data-toggle="tab" aria-expanded="false" className="active"> 
-                                            <span className="visible-xs"><i className="fa fa-home"></i></span> 
-                                            <span className="hidden-xs">Course overview</span> 
+                  <div class="col-md-12"> 
+                                <ul class="nav nav-tabs tabs" style={{width: "100%"}}>
+                                    <li class="active tab" style={{width: "25%"}}>
+                                        <a href="#home-2" data-toggle="tab" aria-expanded="false" class="active"> 
+                                            <span class="visible-xs"><i class="fa fa-home"></i></span> 
+                                            <span class="hidden-xs">Course overview</span> 
                                         </a> 
                                     </li> 
-                                    <li className="tab" style={{width: "25%"}}> 
-                                        <a alt="no links" href="#profile-2" data-toggle="tab" aria-expanded="false"> 
-                                            <span className="visible-xs"><i className="fa fa-user"></i></span> 
-                                            <span className="hidden-xs">Curriculum</span> 
+                                    <li class="tab" style={{width: "25%"}}> 
+                                        <a href="#profile-2" data-toggle="tab" aria-expanded="false"> 
+                                            <span class="visible-xs"><i class="fa fa-user"></i></span> 
+                                            <span class="hidden-xs">Curriculum</span> 
                                         </a> 
                                     </li> 
-                                    <li className="tab" style={{width: "25%"}}> 
-                                        <a alt="no links" href="#messages-2" data-toggle="tab" aria-expanded="true"> 
-                                            <span className="visible-xs"><i className="fa fa-envelope-o"></i></span> 
-                                            <span className="hidden-xs">Instructor</span> 
+                                    <li class="tab" style={{width: "25%"}}> 
+                                        <a href="#messages-2" data-toggle="tab" aria-expanded="true"> 
+                                            <span class="visible-xs"><i class="fa fa-envelope-o"></i></span> 
+                                            <span class="hidden-xs">Instructor</span> 
                                         </a> 
                                     </li> 
-                                    <li className="tab" style={{width: "25%"}}> 
-                                        <a alt="no links" href="#settings-2" data-toggle="tab" aria-expanded="false"> 
-                                            <span className="visible-xs"><i className="fa fa-cog"></i></span> 
-                                            <span className="hidden-xs">Reviews</span> 
+                                    <li class="tab" style={{width: "25%"}}> 
+                                        <a href="#settings-2" data-toggle="tab" aria-expanded="false"> 
+                                            <span class="visible-xs"><i class="fa fa-cog"></i></span> 
+                                            <span class="hidden-xs">Reviews</span> 
                                         </a> 
                                     </li> 
-                                <div className="indicator" style={{right: "393px", left: "0px"}}></div>
+                                <div class="indicator" style={{right: "393px", left: "0px"}}></div>
                           </ul> 
-                                <div className="tab-content"> 
-                                    <div className="tab-pane active card-box" id="home-2"> 
+                                <div class="tab-content"> 
+                                    <div class="tab-pane active card-box" id="home-2"> 
                                     <h3>Course Detail</h3><br/>
                                         <p>{coursedetails && coursedetails.data
                                     ? coursedetails.data.course_description
@@ -402,27 +402,27 @@ const CourseDetails = ({
                             <hr/>
                             <ul className="social list-unstyled list-inline">
                               <li className="list-inline-item">
-                                <a alt="no links" href={process.env.PUBLIC_URL + "/"}>
+                                <a href={process.env.PUBLIC_URL + "/"}>
                                   <i className="fa fa-2x fa-facebook-f"></i>
                                 </a>
                               </li>
                               <li className="list-inline-item">
-                                <a alt="no links" href={process.env.PUBLIC_URL + "/"}>
+                                <a href={process.env.PUBLIC_URL + "/"}>
                                   <i className="fa fa-2x fa-twitter"></i>
                                 </a>
                               </li>
                               <li className="list-inline-item">
-                                <a alt="no links" href={process.env.PUBLIC_URL + "/"}>
+                                <a href={process.env.PUBLIC_URL + "/"}>
                                   <i className="fa fa-2x fa-linkedin-in"></i>
                                 </a>
                               </li>
                               <li className="list-inline-item">
-                                <a alt="no links" href={process.env.PUBLIC_URL + "/"}>
+                                <a href={process.env.PUBLIC_URL + "/"}>
                                   <i className="fa fa-2x fa-youtube"></i>
                                 </a>
                               </li>
                               <li className="list-inline-item">
-                                <a alt="no links" href={process.env.PUBLIC_URL + "/"}>
+                                <a href={process.env.PUBLIC_URL + "/"}>
                                   <i className="fa fa-2x fa-dribbble"></i>
                                 </a>
                               </li>
@@ -495,15 +495,15 @@ const CourseDetails = ({
 
                           </div>
                                     </div> 
-                                    <div className="tab-pane" id="profile-2" style={{display: "none"}}>
+                                    <div class="tab-pane" id="profile-2" style={{display: "none"}}>
                                         <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p> 
                                         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p> 
                                     </div> 
-                                    <div className="tab-pane" id="messages-2" style={{display: "none"}}>
+                                    <div class="tab-pane" id="messages-2" style={{display: "none"}}>
                                         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p> 
                                             <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p> 
                                     </div> 
-                                    <div className="tab-pane" id="settings-2" style={{display: "none"}}>
+                                    <div class="tab-pane" id="settings-2" style={{display: "none"}}>
                                         <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>  
                                         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p> 
                                     </div> 
@@ -511,9 +511,95 @@ const CourseDetails = ({
  </div>
       
 
-                 
-      </div> </div> 
+                  <div class="col-md-2" style={{position:"absolute",top:"200px", right:"30px"}}>
+                                      <div className="single-details-sidbar">
+                                       
+                                            <div className="course-details-feature">
+                                              <h5 className="title">Course Details</h5>
 
+                                              <div>
+                                                <ul className="list-unstyled feature-list">
+                                                  <li>
+                                                    <i className="las la-calendar"></i> Start
+                                                    Date:
+                                                    <span>
+                                                      {moment(
+                                                        `${
+                                                          coursedetails && coursedetails.data
+                                                            ? coursedetails.data.start_date
+                                                            : ""
+                                                        }`
+                                                      ).format("ll")}
+                                                    </span>
+                                                  </li>
+                                                  <li>
+                                                    <i className="las la-clock"></i> Duration:
+                                                    <span>
+                                                      {coursedetails && coursedetails.data
+                                                        ? coursedetails.data.duration
+                                                        : ""}
+                                                    </span>
+                                                  </li>
+                                                  <li>
+                                                    <i className="las la-globe"></i> Language:
+                                                    <span>English</span>
+                                                  </li>
+                                                  <li>
+                                                    <i className="las la-sort-amount-up"></i>{" "}
+                                                    Skill Level: <span>Beginner</span>
+                                                  </li>
+                                                  <li>
+                                                    <i className="las la-graduation-cap"></i>{" "}
+                                                    Learning Partner:
+                                                    <span>Questence</span>
+                                                  </li>
+                                                  <li>
+                                                    <i className="las la-certificate"></i>
+                                                    Learning Style:{" "}
+                                                    <span>
+                                                      {coursedetails && coursedetails.data
+                                                        ? coursedetails.data.learning_style
+                                                        : ""}
+                                                    </span>
+                                                  </li>
+                                                  <li>
+                                                    <i className="las la-certificate"></i>
+                                                    Certification: <span>Yes</span>
+                                                  </li>
+                                                </ul>
+                                              </div>
+                  </div><br/>
+                                              {isAuthenticated ? (
+                                                checkCourseStatus(coursedetails.data.id) ? (
+                                                  ""
+                                                ) : (
+                                                  <button
+                                                    type="button"
+                                                    onClick={addToCart.bind(
+                                                      this,
+                                                      coursedetails?.data?.id
+                                                    )}
+                                                    className="btn enroll-btn btn-danger waves-effect waves-light m-l-10"
+                                                  >
+                                                    Enroll Course
+                                                  </button>
+                                                )
+                                              ) : (
+                                                <button
+                                                  type="button"
+                                                  onClick={addToCart.bind(
+                                                    this,
+                                                    coursedetails?.data?.id
+                                                  )}
+                                                  className="btn enroll-btn btn-danger waves-effect waves-light m-l-10"
+                                                >
+                                                  Enroll Course
+                                                </button>
+                                              )}
+                                            </div>
+                                          </div>
+      </div> </div> 
+<Sidebar />
       </div>
               
             </section>
@@ -523,7 +609,7 @@ const CourseDetails = ({
         )}
       </Styles>
 
-   <Sidebar />
+   
     
     </div>
   );
@@ -546,4 +632,29 @@ export default connect(mapStateToProps, {
 })(CourseDetails);
 
 
+class MyCourseDetail extends React.Component{
+	constructor(props){
+		super(props)
+	}
 
+	componentDidMount(){
+
+	}
+
+
+	render(){
+	  return(
+	  	 
+   
+      <Footer />
+    
+
+
+
+
+	  )
+	}
+}
+
+
+// export default MyCourseDetail;

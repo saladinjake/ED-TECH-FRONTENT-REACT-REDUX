@@ -34,6 +34,8 @@ export const updateLearnerProfile = async (userId, data) => {
   return request.then((response) => {
     if (response.status === 200) {
       return response && response;
+    } else {
+      console.log(response);
     }
   });
 };
@@ -52,6 +54,8 @@ export const updateInstructorProfile = async (userId, data) => {
   return request.then((response) => {
     if (response.status === 200) {
       return response && response;
+    } else {
+      console.log(response);
     }
   });
 };

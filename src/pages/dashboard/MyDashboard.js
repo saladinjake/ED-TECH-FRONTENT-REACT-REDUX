@@ -8,7 +8,7 @@ import TopCourses from "./TopCourses";
 import { getLearnerInfo } from "services/dashboard";
 
 import { getWishlist } from "services/wishlist";
-import { getAuthProfile } from "services/learner"
+import { getAuthProfile } from "services/learner";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -21,23 +21,19 @@ const NewDashBoard = ({ auth: { user } }) => {
   const [info, setInfo] = useState({});
   const [wishlists, setWishlist] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [coursesActive,setCoursesActive] = useState(0);
+  const [coursesActive, setCoursesActive] = useState(0);
 
   const isDistantFuture = (date, seconds = 0) => {
     // number of milliseconds tolerance (i.e. 60000 == one minute)
     return date.getTime() > Date.now() + seconds;
   };
 
-  
-  
-
-
   useEffect(() => {
     (async function loadContent() {
       try {
         let res = await getLearnerInfo(user.id);
-        let   courseRes = await getAuthProfile();  
-          
+        let courseRes = await getAuthProfile();
+
         let enrolledCourses = courseRes.data.data;
         let allcoursesFetched = enrolledCourses;
 
@@ -48,26 +44,26 @@ const NewDashBoard = ({ auth: { user } }) => {
           return !isDistantFuture(requestedDateToStart); // &&  (today.getMonth() == requestedDateToStart.getMonth() && today.getFullYear()+1 >= requestedDateToStart.getFullYear()+1)
         });
 
-       let totalActiveCourses = activecoursesFetched.length;
-       setCoursesActive(totalActiveCourses)
+        let totalActiveCourses = activecoursesFetched.length;
+        setCoursesActive(totalActiveCourses);
 
-      
-      let reswish = [];
-      const cachedWishlist = localStorage && JSON?.parse(localStorage.getItem("wishes"));
-       
-      let wishListedItems = cachedWishlist ? cachedWishlist : [];
-      
-      if (localStorage.getItem("wishes")) {
-        wishListedItems = wishListedItems ;
-      }else{
-         wishListedItems =  [] ;
-      }
+        let reswish = [];
+        const cachedWishlist =
+          localStorage && JSON?.parse(localStorage.getItem("wishes"));
 
-      setWishlist(wishListedItems.length);
+        let wishListedItems = cachedWishlist ? cachedWishlist : [];
+
+        if (localStorage.getItem("wishes")) {
+          wishListedItems = wishListedItems;
+        } else {
+          wishListedItems = [];
+        }
+
+        setWishlist(wishListedItems.length);
 
         // console.log(reswish);
 
-        console.log(res.data.data )
+        console.log(res.data.data);
 
         setInfo({ ...res.data.data });
       } catch (err) {
@@ -87,10 +83,11 @@ const NewDashBoard = ({ auth: { user } }) => {
       ) : !loading ? (
         <Fragment>
           <div className="container">
-            <WelcomeHero info={info} 
-                         wishlists={wishlists}
-                         activeCoursesTotal={coursesActive}
-             />
+            <WelcomeHero
+              info={info}
+              wishlists={wishlists}
+              activeCoursesTotal={coursesActive}
+            />
             <TopCourses />
             <Notification />
           </div>

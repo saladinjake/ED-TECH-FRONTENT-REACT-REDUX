@@ -204,7 +204,7 @@ const MyLearningContainer = (props) => {
 
   let wishListedItems = [];
   if (localStorage.getItem("wishes")) {
-    wishListedItems = JSON?.parse(localStorage.getItem("wishes")) ;
+    wishListedItems = JSON?.parse(localStorage.getItem("wishes"));
   }
 
   //for sidecontent main
@@ -425,11 +425,11 @@ const MyLearningContainer = (props) => {
 
                               return (
                                 <tr key={i}>
-                                  <td>{course.course.course_code}</td>
+                                  <td>{course?.course?.course_code}</td>
                                   <td>
                                     <Link to="">
                                       <strong>
-                                        {course.course.course_name}
+                                        {course?.course?.course_name}
                                       </strong>
                                     </Link>
                                   </td>
@@ -504,15 +504,15 @@ const MyLearningContainer = (props) => {
                               }
                               return (
                                 <tr key={i}>
-                                  <td>{course.course_code}</td>
+                                  <td>{course?.course_code}</td>
                                   <td>
                                     <Link to="">
-                                      <strong>{course.course_name}</strong>
+                                      <strong>{course?.course_name}</strong>
                                     </Link>
                                   </td>
                                   <td>
-                                    {course?.instructor?.user?.last_name}{" "}
-                                    {course?.instructor?.user?.first_name}
+                                    {course?.instructor?.last_name}{" "}
+                                    {course?.instructor?.first_name}
                                   </td>
                                   <td>{course.price}</td>
                                   <td>
@@ -548,7 +548,13 @@ const MyLearningContainer = (props) => {
                     </div>
                   </div>
                   {toggleGridList ? (
-                    <MyCourses courses={wishlistcourses.length === 0 ? wishListedItems : wishlistcourses } />
+                    <MyCourses
+                      courses={
+                        wishlistcourses.length === 0
+                          ? wishListedItems
+                          : wishlistcourses
+                      }
+                    />
                   ) : (
                     <div className="table-responsive table-wrapper">
                       <table className="table table-borderless ">
@@ -588,23 +594,23 @@ const MyLearningContainer = (props) => {
                               }
                               return (
                                 <tr key={i}>
-                                  <td>{course.course_code}</td>
+                                  <td>{course?.course_code}</td>
                                   <td>
                                     <Link to="">
-                                      <strong>{course.course_name}</strong>
+                                      <strong>{course?.course_name}</strong>
                                     </Link>
                                   </td>
                                   <td>
-                                    {course?.instructor?.user?.last_name}{" "}
-                                    {course?.instructor?.user?.first_name}
+                                    {course?.instructor?.last_name}{" "}
+                                    {course?.instructor?.first_name}
                                   </td>
-                                  <td>{course.price}</td>
+                                  <td>{course?.price}</td>
                                   <td>
                                     {dateStarted.toLocaleDateString("en-US")}
                                   </td>
                                   <td>{dateEnd.toLocaleDateString("en-US")}</td>
-                                  <td>{course.category.name}</td>
-                                  <td>{course.learning_style}</td>
+                                  <td>{course?.category?.name}</td>
+                                  <td>{course?.learning_style}</td>
 
                                   <td>
                                     <div className={"alert " + activity}>
@@ -680,8 +686,8 @@ const MyLearningContainer = (props) => {
                                     </Link>
                                   </td>
                                   <td>
-                                    {course?.instructor?.user?.last_name}{" "}
-                                    {course?.instructor?.user?.first_name}
+                                    {course?.instructor?.last_name}{" "}
+                                    {course?.instructor?.first_name}
                                   </td>
                                   <td>{course.price}</td>
                                   <td>

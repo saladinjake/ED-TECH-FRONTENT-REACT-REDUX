@@ -20,9 +20,7 @@ import "./magnify.css"
 import Sidebar from "../newdashboard/Sidebar";
 import NewHeader from "../newdashboard/NewHeader";
 
-import $ from 'jquery';
-import Popper from 'popper.js';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
+import $ from "jquery";
 import jQueryBridget from "jquery-bridget"
 import Isotope from "isotope-layout";
 import magnificPopup from "magnific-popup"
@@ -124,13 +122,13 @@ class Products extends React.Component {
                                 
 
                                 <h4 className="page-title">My Course Gallery</h4>
-                                 <div className="btn-group pull-right m-t-15 open">
-                                <button type="button" className="btn  dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="true" style={{background: "rgb(2, 83, 200)", color: "rgb(255, 255, 255)"}}>
-                                Settings <span className="m-l-5"><i className="fa fa-cog"></i></span></button>
-                                <ul className="dropdown-menu drop-menu-right" role="menu"><li>
+                                 <div class="btn-group pull-right m-t-15 open">
+                                <button type="button" class="btn  dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="true" style={{background: "rgb(2, 83, 200)", color: "rgb(255, 255, 255)"}}>
+                                Settings <span class="m-l-5"><i class="fa fa-cog"></i></span></button>
+                                <ul class="dropdown-menu drop-menu-right" role="menu"><li>
                                 <a href="#">Upcoming courses</a></li><li><a href="/profile">Profile</a></li>
                                 <li><a href="/notifications">Account Settings</a></li><li><a href="/cart">Cart</a></li>
-                                <li className="divider"></li><li><a href="#">Reload</a></li></ul>
+                                <li class="divider"></li><li><a href="#">Reload</a></li></ul>
                                 </div>
 
 
@@ -170,7 +168,7 @@ class Products extends React.Component {
                             </div>
                         </div>
 
-                        <div className="" >
+                        <div className="row port" >
                             <div className="portfolioContainer" >
                                 <div className="col-sm-6 col-lg-3 col-md-4 Active illustrator photography">
                                     <div className="gal-detail thumb">

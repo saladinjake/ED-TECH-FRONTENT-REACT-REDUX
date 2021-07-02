@@ -28,9 +28,8 @@ class ImageUpload extends React.Component {
         file: file,
         imagePreviewUrl: reader.result,
       });
-      console.log(reader.result)
-       this.upload(reader.result);
-      
+      console.log(reader.result);
+      this.upload(reader.result);
     };
 
     // setTimeout(() => {
@@ -38,7 +37,6 @@ class ImageUpload extends React.Component {
     // }, 10000);
 
     reader.readAsDataURL(file);
-
   }
 
   upload = (file) => {

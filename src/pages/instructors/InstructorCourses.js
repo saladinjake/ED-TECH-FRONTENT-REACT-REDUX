@@ -45,78 +45,57 @@ const InstructorCourses = () => {
       {/* Main Wrapper */}
       <div className="main-wrapper product-page">
         {/* Header 2   <InstructorNavBar /> */}
-       
 
         {/* Breadcroumb */}
         <BreadcrumbBox title="My Courses" />
 
         {/* New Poducts Area */}
         <Container>
+          <Fragment>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <Container>
+              <Row class="row">
+                <Col lg="3" sm="6">
+                  <div class="widget-panel widget-style-2 bg-white">
+                    <i class="md md-add text-info"></i>
+                    <h2 class="m-0 text-dark counter font-600"></h2>
+                    <div class="text-muted m-t-5">Create A course</div>
+                  </div>
+                </Col>
 
+                <Col lg="3" sm="6">
+                  <div class="widget-panel widget-style-2 bg-white">
+                    <Link to={process.env.PUBLIC_URL + `/learner/wishlists`}>
+                      <i class="md md-store-mall-directory  text-brown"></i>
+                      <h2 class="m-0 text-dark counter font-600"></h2>
+                      <div class="text-muted m-t-5">Wishlists</div>
+                    </Link>
+                  </div>
+                </Col>
+                <Col lg="3" sm="6">
+                  <Link to={process.env.PUBLIC_URL + `/cart`}>
+                    <div class="widget-panel widget-style-2 bg-white">
+                      <i class="md md-add-shopping-cart text-pink"></i>
+                      <h2 class="m-0 text-dark counter font-600"></h2>
+                      <div class="text-muted m-t-5">Cart</div>
+                    </div>
+                  </Link>
+                </Col>
+                <Col lg="3" sm="6">
+                  <div class="widget-panel widget-style-2 bg-white">
+                    <i class="md md-account-child text-custom"></i>
+                    <h2 class="m-0 text-dark counter font-600"></h2>
+                    <div class="text-muted m-t-5">Enrollments</div>
+                  </div>
+                </Col>
+              </Row>
+            </Container>
+          </Fragment>
 
-        <Fragment>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <Container>
-      
-
-        <Row class="row">
-          <Col lg="3" sm="6">
-            <div class="widget-panel widget-style-2 bg-white">
-            
-              <i class="md md-add text-info"></i>
-              <h2 class="m-0 text-dark counter font-600">
-                
-              </h2>
-              <div class="text-muted m-t-5">Create A course</div>
-            
-            </div>
-          </Col>
-
-          <Col lg="3" sm="6">
-            <div class="widget-panel widget-style-2 bg-white">
-             <Link to={process.env.PUBLIC_URL +`/learner/wishlists` }>
-              <i class="md md-store-mall-directory  text-brown"></i>
-              <h2 class="m-0 text-dark counter font-600">
-                
-              </h2>
-              <div class="text-muted m-t-5">Wishlists</div>
-              </Link>
-            </div>
-          </Col>
-          <Col lg="3" sm="6">
-            <Link to={process.env.PUBLIC_URL +`/cart` }>
-      
-              <div class="widget-panel widget-style-2 bg-white">
-
-                <i class="md md-add-shopping-cart text-pink"></i>
-                <h2 class="m-0 text-dark counter font-600">
-                 
-                </h2>
-                <div class="text-muted m-t-5">Cart</div>
-              </div>
-            </Link>
-          </Col>
-          <Col lg="3" sm="6">
-            <div class="widget-panel widget-style-2 bg-white">
-          
-             
-           
-              <i class="md md-account-child text-custom"></i>
-              <h2 class="m-0 text-dark counter font-600">
-               
-              </h2>
-              <div class="text-muted m-t-5">Enrollments</div>
-            
-            </div>
-          </Col>
-        </Row>
-      </Container>
-    </Fragment>
-         
           <Row>
             <Col md="12">
               <div className="sec-title text-center">

@@ -7,7 +7,9 @@ import { connect } from "react-redux";
 
 import "./css/topitem.css";
 import toast from "react-hot-toast";
-import { getCourses } from "services/course";
+// import { getCourses } from "services/course";
+
+import { getCourses, getFeaturedCourses } from "services/course";
 
 import Carousel from "./helpers/Carousel";
 
@@ -22,7 +24,8 @@ class TopCourses extends React.Component {
   }
   async componentDidMount() {
     try {
-      const response = await getCourses();
+      const response = await getFeaturedCourses();
+      console.log(response.data.data.courses)
       this.setState({
         data: response.data.data.courses,
         length: response.data.data.courses.length,
@@ -36,17 +39,28 @@ class TopCourses extends React.Component {
 
     return data.length === 0 ? (
       <Fragment>
-        <br />
+    
         <p>Loading..</p>
       </Fragment>
     ) : (
       <Fragment>
-        <br />
-
-        <h4 className="text-header text-dark "> My Courses</h4>
+        
+        <br/>
+        <h1
+          className=""
+          style={{ color: "#000"}}
+        >
+          <b style={{ color: "#000" }}> Featured Courses</b>
+        </h1>
         <br />
         <div className="row">
+          <div className="col-md-12">
+            
+            <Carousel show={2} children={data} />
+          </div>
+          
           <div className="col-lg-2 pull-left">
+          <br/><br/>
             <Link
               to="../courses"
               style={{ background: "#0253c8", color: "#fff" }}
@@ -55,13 +69,8 @@ class TopCourses extends React.Component {
               <i className="md  md-chevron-left"></i> See All courses
             </Link>{" "}
           </div>
-
-          <div className="col-md-12">
-            <br />
-            <br />
-            <Carousel show={2} children={data} />
-          </div>
         </div>
+        <br/> <br/>
       </Fragment>
     );
   }

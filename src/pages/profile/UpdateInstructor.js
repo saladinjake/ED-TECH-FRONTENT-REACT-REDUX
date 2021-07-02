@@ -4,7 +4,7 @@ import InstructorNavBar from "components/Navbar/InstructorNavbar";
 import { BreadcrumbBox } from "../../components/common/Breadcrumb";
 import Footer from "components/Footer";
 import { Styles } from "./styles/account.js";
-// import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Formik } from "formik";
 import PropTypes from "prop-types";
@@ -24,60 +24,161 @@ import {
 
 import Loader from "components/Loader/Loader";
 import { connect } from "react-redux";
-import "./instructor.css"
+import "./instructor.css";
+import $ from "jquery";
+
 const UpdateInstructor = ({ auth: { user } }) => {
-  // let history = useHistory();
+  console.log(user)
+  let history = useHistory();
   const [loading, setLoading] = useState(true);
   const [countries, setCountries] = useState([]);
   const [languages, setLanguages] = useState([]);
   // eslint-disable-next-line
   const [industries, setIndustries] = useState([]);
   const [profile, setProfile] = useState({});
-  let preInst =null;
+  let preInst = null;
   let courseNiche = null;
+  let dummyAvatar = "https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png"
+  const [image_url, setImageProfile] = useState("");
 
-  
+  // alert(user?.image_url,profile?.user?.image_url, "hello Nija" )
+
+  // const realImg =
+
+  const [userId, setUserId] = useState(user.id)
+
+  const [lang_id, setLangId] = useState(1);
 
   let initialValues = useMemo(() => {
+    console.log(profile)
+    setImageProfile(profile?.user?.image_url);
     return Object.entries(profile).length !== 0
       ? {
-          username: profile?.username || "",
-          first_name: profile?.first_name || "",
-          middle_name: profile?.middle_name || "",
-          last_name: profile?.last_name || "",
-          phone_number: profile?.phone_number || "",
-          // image_url: profile?.image_url || "",
-          gender: profile?.instructor_profile.gender || "",
-          date_of_birth: profile?.instructor_profile.date_of_birth || "",
-          country_id: profile?.instructor_profile.country_id || "",
-          industry_id: profile?.instructor_profile.industry_id || "",
-          biography: profile?.instructor_profile.biography || "",
+          
+          username: profile?.user?.username || "",
+          first_name: profile?.user?.first_name || "",
+          middle_name: profile?.user?.middle_name || "",
+          last_name: profile?.user?.last_name || "",
+          phone_number: profile?.user?.phone_number || "",
+          
+          gender: profile?.user?.instructor_profile?.gender || "",
+          date_of_birth: profile?.user?.instructor_profile?.date_of_birth || "",
+          country_id: profile?.user?.instructor_profile?.country_id || "",
+          industry_id: profile?.user?.instructor_profile?.industry_id || "",
+          // biography: profile?.user?.instructor_profile?.biography || "",
           employment_status:
-            profile?.instructor_profile.employment_status || "",
-          marital_status: profile?.instructor_profile.marital_status || "",
-          experience_level: profile?.instructor_profile.experience_level || "",
-          education_level: profile?.instructor_profile.education_level || "",
-          degree_obtained: profile?.instructor_profile.degree_obtained || "",
-          language: profile?.instructor_profile.language || "",
-          facebook_url: profile?.instructor_profile.facebook_url || "",
-          linkedin_url: profile?.instructor_profile.linkedin_url || "",
-          twitter_url: profile?.instructor_profile.twitter_url || "",
+            profile?.user?.instructor_profile?.employment_status || "",
+          marital_status:
+            profile?.user?.instructor_profile?.marital_status || "",
+          experience_level:
+            profile?.user?.instructor_profile?.experience_level || "",
+          education_level:
+            profile?.user?.instructor_profile?.education_level || "",
+          degree_obtained:
+            profile?.user?.instructor_profile?.degree_obtained || "",
+          language: profile?.user?.instructor_profile?.language || "",
+          facebook_url: profile?.user?.instructor_profile?.facebook_url || "",
+          linkedin_url: profile?.user?.instructor_profile?.linkedin_url || "",
+          twitter_url: profile?.user?.instructor_profile?.twitter_url || "",
 
-         
-          category_id:  profile?.instructor_profile.industry_id  || "",
-          other_info: profile?.instructor_profile.other_info || "",
-          previous_institutions : JSON.parse(profile?.instructor_profile.previous_institutions).join(" , ") || "",
-          niche_courses: JSON.parse(profile?.instructor_profile.niche_courses).join(" ,") || "",
+          brief_introduction:
+            profile?.user?.instructor_profile?.brief_introduction || "",
+          detailed_introduction:
+            profile?.user?.instructor_profile?.detailed_introduction || "",
 
+          category_id: profile?.user?.instructor_profile?.industry_id || "",
+          other_info: profile?.user?.instructor_profile?.other_info || "",
+          previous_institutions:
+            profile?.user?.instructor_profile?.previous_institutions || "",
+          niche_courses: profile?.user?.instructor_profile?.niche_courses || "",
+          image_url: profile?.user?.image_url || dummyAvatar,
+
+          current_employer_name:
+            profile?.user?.instructor_profile?.current_employer_name || "",
+          current_employer_designation:
+            profile?.user?.instructor_profile?.current_employer_designation ||
+            "",
+          previous_employer_name:
+            profile?.user?.instructor_profile?.previous_employer_name || "",
+          previous_employer_designation:
+            profile?.user?.instructor_profile?.previous_employer_designation ||
+            "",
         }
       : {};
   }, [profile]);
+
+  
+
+  // if (!initialValues.image_url) {
+  //   initialValues.image_url ="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png";
+  // }
 
   useEffect(() => {
     (async function loadContent() {
       await fetchContent();
     })();
   }, []);
+
+  function previewFile() {
+    var preview = document.querySelector("img.linkprofile");
+    var file = document.querySelector("input[type=file]").files[0];
+    var reader = new FileReader();
+
+    reader.addEventListener(
+      "load",
+      function () {
+        preview.src = reader.result;
+        //set the image field after upload to cloudinary
+        uploadImageAndsetImageField(file);
+      },
+      false
+    );
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  }
+
+  const uploadImageAndsetImageField = (imageFile) => {
+    const file = imageFile;
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "hpvklb3p");
+    // eslint-disable-next-line no-undef
+    fetch("https://api.cloudinary.com/v1_1/questence/image/upload", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (typeof data.secure_url !== "undefined") {
+          let imageUrl = data.secure_url;
+          // console.log(imageUrl);
+          toast.success("upload successful");
+
+          setImageProfile(imageUrl);
+
+          // handleUploads();
+        } else {
+          toast.error("could not upload image");
+        }
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
+  function startUpload() {
+    $("#profile-image-upload").click();
+  }
+
+  useEffect(() => {
+    // $(function() {
+    //     $('#profile-image11').on('click', function() {
+    //         $('#profile-image-upload').click();
+    //     });
+    // });
+  });
 
   const fetchContent = async () => {
     Promise.all(
@@ -93,8 +194,8 @@ const UpdateInstructor = ({ auth: { user } }) => {
         setLanguages([...res[1].data.data]);
         setProfile({ ...res[2].data.data });
         setIndustries([...res[3].data.data]);
-        console.log("profile", res[2].data.data);
-        console.log("industries", res[3].data.data);
+        // console.log("profile", res[2].data.data);
+        // console.log("languages", [...res[1].data.data]);
 
         setLoading(false);
       })
@@ -106,39 +207,91 @@ const UpdateInstructor = ({ auth: { user } }) => {
   };
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    setLoading(true);
-    values.email = user.email;
-    // values.niche_courses = values.niche_courses.split(',');
-    // values.previous_institutions = values.previous_institutions.split(',') ;
-     values.phone_number = values.phone_number.toString();
-    values.country_id = parseInt(values.country_id);
-    values.category_id = parseInt(values.category_id);
-    values.niche_courses = JSON.stringify(values.niche_courses.split(','));
-    values.previous_institutions = JSON.stringify(values.previous_institutions.split(','));
-   
-    console.log(values)
-    try {
-      await updateInstructorProfile(user.id, values);
-      toast.success("Your Profile has been updated.");
-    } catch (err) {
-      toast.error("Error occured updating Profile");
+    try{
+
+
+      setLoading(true);
+      values.email = user.email;
+      let langObject = languages.find((lang) => lang.english == values.language);
+      console.log(langObject)
+      if(langObject){
+         values.language = langObject.id;
+      }else{
+         values.language = "38";
+      }
+     
+
+      // values.niche_courses = values.niche_courses.split(',');
+      // values.previous_institutions = values.previous_institutions.split(',') ;
+      values.phone_number = values.phone_number.toString();
+      values.country_id = parseInt(values.country_id);
+      values.category_id = parseInt(values.category_id);
+      values.niche_courses = values.niche_courses;
+      values.previous_institutions = values.previous_institutions;
+      values.image_url = image_url;
+
+      console.log(values.language);
+      let langIn = { ...values };
+      langIn.language = values.language;
+      // langIn.username = values.username;
+      // langIn.middle_name = values.middle_name
+      // values.language = values.language
+
+      console.log(langIn);
+
+      let error = false;
+      Object.keys(values).forEach((item) => {
+        if (!values[item] || values[item] === null || values[item] === "") {
+          error = true;
+          toast.error(`${item} is required`);
+        } else {
+          // toast.success(`${item} is added here`)
+          error = false;
+        }
+      });
+
+      if (error) {
+        return false;
+      }
+
+      // console.log(values)
+      try {
+        await updateInstructorProfile(userId, langIn);
+        history.push("/")
+        toast.success("Your Profile has been updated.");
+
+        // setTimeout(()=>{window.location.href= process.env.PUBLIC_URL+ "/"},2000)
+      } catch (err) {
+        console.log(err);
+        toast.error("Error occured updating Profile");
+      }
+      setSubmitting(false);
+      setLoading(false);
+
+
+    }catch(err){
+      console.log(err)
     }
-    setSubmitting(false);
-    setLoading(false);
+
   };
+
+  let niche = [];
+  let previousInst = [];
+
+  //alert(initialValues.language)
 
   return (
     <Styles>
       {/* Main Wrapper */}
-      <div className="main-wrapper registration-page">
+      <div
+        className="main-wrapper registration-page "
+        style={{ background: "#fff" }}
+      >
         {/* Header 2 */}
         <InstructorNavBar />
 
-        {/* Breadcroumb */}
-        <BreadcrumbBox title="Update Profile" />
-
         {/* Registration Area */}
-        <section className="form_wrapper">
+        <section className="form_wrapper card-box">
           <Container>
             {loading ? (
               <Loader width="70" />
@@ -146,14 +299,9 @@ const UpdateInstructor = ({ auth: { user } }) => {
               <Fragment>
                 <Row>
                   <Col lg="12">
-                    <div className="form_container">
-                      <div className="registration-title text-center">
-                        <h3>Update Profile</h3>
-                      </div>
-
+                    <div className="form_container card-box">
                       <Formik
                         initialValues={initialValues}
-                        validationSchema={learnerSchema}
                         onSubmit={handleSubmit}
                       >
                         {({
@@ -168,8 +316,45 @@ const UpdateInstructor = ({ auth: { user } }) => {
                           <form
                             id="form_registration"
                             className="form"
-                            onSubmit={handleSubmit}
+                          
+                            style={{ padding: "20px" }}
                           >
+                            <div className="container">
+                              <div className="row">
+                                <div className=" profile-badge">
+                                  <h6>Click the image to upload</h6>
+
+                                  <div>
+                                    
+                                      <img
+                                        alt="User Pic"
+                                        src={initialValues?.image_url}
+                                        id="profile-image11"
+                                        height="200"
+                                        className="linkprofile"
+                                        onClick={startUpload}
+                                      />
+                                     
+                                    <input
+                                      id="profile-image-upload"
+                                      className="hidden"
+                                      type="file"
+                                      onChange={previewFile}
+                                    />
+                                    <div style={{ color: "#999" }}> </div>
+                                  </div>
+                                </div>
+                              </div>{" "}
+                            </div>
+
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+
                             <Row>
                               <p className="input_field col_half">
                                 <label htmlFor="registration_fname">
@@ -231,7 +416,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                           
+
                               <p className="input_field col_half">
                                 <label htmlFor="registration_user">
                                   Phone Number
@@ -253,25 +438,141 @@ const UpdateInstructor = ({ auth: { user } }) => {
                               </p>
                               <p className="input_field col_half">
                                 <label htmlFor="registration_email">
-                                  Other Info
+                                  Brief Introduction
                                 </label>
                                 <textarea
-                                  placeholder="Biography here"
-                                  name="other_info"
+                                  style={{ height: "300px" }}
+                                  placeholder="Brief Introduction"
+                                  name="brief_introduction"
                                   onChange={handleChange}
                                   onBlur={handleBlur}
-                                  value={values.other_info}
+                                  value={values.brief_introduction}
                                   id="registration_biography"
                                 ></textarea>
 
-                                {touched.biography && errors.other_info ? (
+                                {touched.brief_introduction &&
+                                errors.brief_introduction ? (
                                   <span className="registration_input-msg">
-                                    {errors.other_info}
+                                    {errors.brief_introduction}
                                   </span>
                                 ) : null}
                               </p>
 
-                               <p className="input_field col_half">
+                              <p className="input_field col_half">
+                                <label htmlFor="registration_email">
+                                  Detailed Introduction
+                                </label>
+                                <textarea
+                                  placeholder="Detailed Introduction"
+                                  name="detailed_introduction"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.detailed_introduction}
+                                  id="registration_biography9"
+                                  style={{ height: "300px" }}
+                                ></textarea>
+
+                                {touched.detailed_introduction &&
+                                errors.detailed_introduction ? (
+                                  <span className="registration_input-msg">
+                                    {errors.detailed_introduction}
+                                  </span>
+                                ) : null}
+                              </p>
+
+                              <p className="input_field col_half">
+                                <label htmlFor="registration_email">
+                                  current employer name
+                                </label>
+                                <input
+                                  type="text"
+                                  required
+                                  placeholder="Previous Institution"
+                                  name="current_employer_name"
+                                  id="registration_email"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.current_employer_name}
+                                />
+                                {touched.current_employer_name &&
+                                errors.current_employer_name ? (
+                                  <span className="registration_input-msg">
+                                    {errors.current_employer_name}
+                                  </span>
+                                ) : null}
+                              </p>
+                              <br />
+
+                              <p className="input_field col_half">
+                                <label htmlFor="registration_email">
+                                  current employer designation
+                                </label>
+                                <input
+                                  type="text"
+                                  required
+                                  placeholder="Previous Institution"
+                                  name="current_employer_designation"
+                                  id="registration_email"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.current_employer_designation}
+                                />
+                                {touched.current_employer_designation &&
+                                errors.current_employer_designation ? (
+                                  <span className="registration_input-msg">
+                                    {errors.current_employer_designation}
+                                  </span>
+                                ) : null}
+                              </p>
+                              <br />
+
+                              <p className="input_field col_half">
+                                <label htmlFor="registration_email">
+                                  previous employer name
+                                </label>
+                                <input
+                                  type="text"
+                                  required
+                                  placeholder="Previous Employer"
+                                  name="previous_employer_name"
+                                  id="registration_email"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.previous_employer_name}
+                                />
+                                {touched.previous_employer_name &&
+                                errors.previous_employer_name ? (
+                                  <span className="registration_input-msg">
+                                    {errors.previous_employer_name}
+                                  </span>
+                                ) : null}
+                              </p>
+                              <br />
+
+                              <p className="input_field col_half">
+                                <label htmlFor="registration_email">
+                                  previous employer designation
+                                </label>
+                                <input
+                                  type="text"
+                                  required
+                                  placeholder="Previous Employer"
+                                  name="previous_employer_designation"
+                                  id="registration_email"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.previous_employer_designation}
+                                />
+                                {touched.previous_employer_designation &&
+                                errors.previous_employer_designation ? (
+                                  <span className="registration_input-msg">
+                                    {errors.previous_employer_designation}
+                                  </span>
+                                ) : null}
+                              </p>
+                              <br />
+
+                              <p className="input_field col_half">
                                 <label htmlFor="registration_user">
                                   Industry ID
                                 </label>
@@ -299,72 +600,70 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                     {errors.industry_id}
                                   </span>
                                 ) : null}
-                              </p> 
+                              </p>
 
-                              <p className="input_field col_half">
-                        <label htmlFor="registration_email">
-                          Previous Institution seperated by comma
-                        </label>
-                        <input
-                          type="text"
-                          required
-                          placeholder="Previous Institution"
-                          name="previous_institutions"
-                        
-                          id="registration_email"
-                            onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  value={values.previous_institutions}
-                        />
-                        {touched.previous_institutions &&
-                        errors.previous_institutions ? (
-                          <span className="registration_input-msg">
-                            {errors.previous_institutions}
-                          </span>
-                        ) : null}
-                      </p><br/>
-
-
-                      <p className="input_field col_half">
-                        <label htmlFor="registration_email">
-                          Niche courses seperated by comma
-                        </label>
-                        <input
-                          type="text"
-                          required
-                          placeholder="Courses"
-                          name="niche_courses"
-                          onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  value={values.niche_courses}
-                          id="registration_email"
-                        />
-                        {touched.niche_courses &&
-                        errors.niche_courses ? (
-                          <span className="registration_input-msg">
-                            {errors.niche_courses}
-                          </span>
-                        ) : null}
-                      </p><br/>
-
-                              
-                            
                               <p className="input_field col_half">
                                 <label htmlFor="registration_email">
-                                  Biography
+                                  Previous Institution seperated by comma
                                 </label>
-                                <textarea
-                                  placeholder="Biography here"
-                                  name="biography"
+                                <input
+                                  type="text"
+                                  required
+                                  placeholder="Previous Institution"
+                                  name="previous_institutions"
+                                  id="registration_email"
                                   onChange={handleChange}
                                   onBlur={handleBlur}
-                                  value={values.biography}
+                                  value={values.previous_institutions}
+                                />
+                                {touched.previous_institutions &&
+                                errors.previous_institutions ? (
+                                  <span className="registration_input-msg">
+                                    {errors.previous_institutions}
+                                  </span>
+                                ) : null}
+                              </p>
+                              <br />
+
+                              <p className="input_field col_half">
+                                <label htmlFor="registration_email">
+                                  Niche courses seperated by comma
+                                </label>
+                                <input
+                                  type="text"
+                                  required
+                                  placeholder="Courses"
+                                  name="niche_courses"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.niche_courses}
+                                  id="registration_email"
+                                />
+                                {touched.niche_courses &&
+                                errors.niche_courses ? (
+                                  <span className="registration_input-msg">
+                                    {errors.niche_courses}
+                                  </span>
+                                ) : null}
+                              </p>
+                              <br />
+
+                              <p className="input_field col_half">
+                                <label htmlFor="registration_email">
+                                  Other Info
+                                </label>
+                                <textarea
+                                  placeholder="Other information here"
+                                  name="other_info"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.other_info}
                                   id="registration_biography"
                                 ></textarea>
 
-                                {touched.biography && errors.biography ? (
+                                {touched.other_info && errors.other_info ? (
                                   <span className="registration_input-msg">
-                                    {errors.biography}
+                                    {errors.other_info}
                                   </span>
                                 ) : null}
                               </p>
@@ -437,7 +736,6 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                 ) : null}
                               </p>
 
-                              
                               <p className="input_field col_half">
                                 <label htmlFor="registration_email">
                                   Username
@@ -461,7 +759,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
                               <p className="input_field col_half">
                                 <label htmlFor="registration_user">
                                   Language{" "}
-                                  {profile?.instructor_profile.language}
+                                  {profile?.user?.instructor_profile.language}
                                 </label>
                                 <select
                                   name="language"
@@ -470,7 +768,6 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   value={values.language}
                                   required
                                 >
-                                  {/* <option>-- Language --</option> */}
                                   {languages.length > 0 &&
                                     languages.map((language, i) => {
                                       return (
@@ -489,6 +786,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
+
                               <p className="input_field col_half">
                                 <label htmlFor="registration_user">
                                   Educational Level
@@ -582,7 +880,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   {ExperienceLevel.length > 0 &&
                                     ExperienceLevel.map((item, i) => {
                                       return (
-                                        <option value={i+1}>{item}</option>
+                                        <option value={i + 1}>{item}</option>
                                       );
                                     })}
                                 </select>
@@ -677,7 +975,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                 ) : null}
                               </p>
                             </Row>
-                            <button type="submit" disabled={isSubmitting}>
+                            <button  onClick={handleSubmit}>
                               {loading ? (
                                 <div className="spinner-border" role="status">
                                   <span className="sr-only">Loading...</span>

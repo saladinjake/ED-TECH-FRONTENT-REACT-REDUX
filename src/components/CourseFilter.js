@@ -18,7 +18,7 @@ import Loader from "components/Loader/Loader";
 const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
   const [allCourses, setAllCourses] = useState([]);
 
-  const [featuredCourses, setFeaturedCourses] = useState([])
+  const [featuredCourses, setFeaturedCourses] = useState([]);
 
   useEffect(() => {
     (async function loadContent() {
@@ -26,7 +26,7 @@ const CourseFilter = ({ course: { courses, courseLoading }, fetchCourses }) => {
       // let res = getFeaturedCourses();
       // setFeaturedCourses([...res.data.data.courses])
 
-      console.log(featuredCourses)
+      console.log(featuredCourses);
     })();
     // eslint-disable-next-line
   }, []);
@@ -85,8 +85,7 @@ class BrowseByCategory extends React.Component {
   }
   render() {
     const { data } = this.state;
-    console.log(data)
-    
+    console.log(data);
 
     return data.length === 0 ? (
       <Fragment>
@@ -96,9 +95,9 @@ class BrowseByCategory extends React.Component {
     ) : (
       <Fragment>
         <div className="row">
-         {/* <CourseFilteredCarousel title="Business" show={4} children={data} /> */}
+          {/* <CourseFilteredCarousel title="Business" show={4} children={data} /> */}
 
-         <CourseFilteredCarousel title="Business" show={4} children={data} />
+          <CourseFilteredCarousel title="Business" show={4} children={data} />
 
           <div className="col-lg-2 pull-left">
             <Link
@@ -107,7 +106,7 @@ class BrowseByCategory extends React.Component {
               className="btn  waves-effect waves-light pull-left m-b-10"
             >
               <i className="md  md-chevron-left"></i> See All courses
-            </Link>{" "}
+            </Link>
           </div>
 
           <div

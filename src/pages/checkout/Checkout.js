@@ -25,6 +25,8 @@ const Checkout = ({
   let history = useHistory();
   const [loading, setLoading] = useState(false);
 
+  console.log(user);
+
   useEffect(() => {
     if (!isAuthenticated) {
       history.push("/login", { from: history.location.pathname });
@@ -36,11 +38,15 @@ const Checkout = ({
     setLoading(true);
     if (cart.length > 0) {
       let payload = [];
+
+      //check for free
       cart.forEach((item) => {
         let newObj = {};
         newObj.user_id = user.id;
         newObj.course_id = item.id;
         payload.push(newObj);
+
+        // console.log(item)
       });
 
       try {
@@ -82,7 +88,7 @@ const Checkout = ({
       });
 
     setConfig({
-      publicKey: "pk_test_5dca9a796da0a59391c7f15c6cdc0275db4c8093",
+      publicKey: "pk_live_8bda1438b3a12a521e690adcd27d99b1224b72c9", //"pk_test_5dca9a796da0a59391c7f15c6cdc0275db4c8093",
       reference: new Date().getTime(),
       email: user?.email,
       amount: total * 100,
@@ -150,7 +156,11 @@ const Checkout = ({
                 {cart.length > 0 && (
                   <Fragment>
                     {loading ? (
-                      <Button className="mt-4" variant="success">
+                      <Button
+                        className="mt-4"
+                        variant="success"
+                        style={{ height: "50px" }}
+                      >
                         <div className="spinner-border" role="status">
                           <span className="sr-only">Loading...</span>
                         </div>

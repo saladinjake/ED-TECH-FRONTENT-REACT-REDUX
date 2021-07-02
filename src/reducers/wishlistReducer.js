@@ -38,29 +38,28 @@ export default async (state = initialState, action) => {
 
   switch (action.type) {
     case ADD_TO_WISHLIST:
-      if( document.getElementById("wishlister")){
-        document.getElementById("wishlister").disabled = "true";
-      }
-      
+      // if (document.getElementById("wishlister")) {
+      //   document.getElementById("wishlister").disabled = "true";
+      // }
+
       let coursesSet = null;
       try {
         coursesSet = await getCourses();
         state.courses = [...coursesSet.data.data.courses];
       } catch (e) {
-        toast.success(`Some error occured while fetching data`);
+        toast.error(`Some error occured while fetching data`);
       }
 
       let itemToBeAdded = state.courses.find(
         (item) => item.id === action.payload
       );
-      console.log(itemToBeAdded);
+      // console.log(itemToBeAdded);
 
-      console.log(state.wishBag);
+      // console.log(state.wishBag);
       let existingItem = cachedCart.find((item) => action.payload === item.id);
       if (existingItem) {
         toast.success(`Course already in wish list`);
-        document.getElementById("wishlister").textContent =
-          "Already in wish list";
+      
         return {
           ...state,
         };
@@ -68,18 +67,19 @@ export default async (state = initialState, action) => {
         itemToBeAdded.quantity = 1;
         let newTotal =
           parseInt(state.totalWishes) + parseInt(itemToBeAdded.price);
-        toast.success(`Course added to wish list`);
+       
         cachedCart.push(itemToBeAdded);
         localStorage.setItem("wishes", JSON.stringify([...cachedCart]));
         localStorage.setItem("totalwish", newTotal);
-        document.getElementById("wishlister").disabled = "false";
-        document.getElementById("wishlister").textContent = "Add To Wish List";
+        // document.getElementById("wishlister").disabled = "false";
+        // document.getElementById("wishlister").textContent = "Add To Wish List";
 
         // state.wishBag = cachedCart;
         // state.totalWishes =newTotal;
         // return state;
 
         await addToWishlist({ course_id: itemToBeAdded.id });
+         toast.success(`Course added to wish list`);
 
         return {
           ...state,

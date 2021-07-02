@@ -1,11 +1,11 @@
 import React, {Fragment, useState } from "react";
 import { Link } from "react-router-dom";
-// import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import NavBar from "components/Navbar";
 
-// import { BreadcrumbBox } from "../../components/common/Breadcrumb";
+import { BreadcrumbBox } from "../../components/common/Breadcrumb";
 import Footer from "../../components/Footer";
-// import { Styles } from "./styles/account.js";
+import { Styles } from "./styles/account.js";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
@@ -20,8 +20,8 @@ import "./assets/css/components.css";
 import "./assets/css/icons.css";
 import "./assets/css/pages.css";
 import "./assets/css/responsive.css";
-// import "./assets/css/login.css";
-// import "./basic.css";
+import "./assets/css/login.css";
+import "./basic.css";
 // import BasicSlider from "./components/BasicSlider/BasicSlider";
 
 const Register = () => {
@@ -61,34 +61,84 @@ const Register = () => {
   return (
     <Fragment>
       {/* Main Wrapper */}
-      <div style={{marginTop:"-20px"}}>
+      <div className="">
         {/* Header 2 */}
         <NavBar />
 
          <div class="account-pages"></div>
   
  
-      <div  class="col-lg-8 col-md-6 hidden-md-down hidden-xs hidden-sm "  style={{backgroundColor:"#fff", background: "url('dontexist.jpg') #fff no-repeat"}}  >
-       <div style={{padding:"43%", background:"#fff"}}></div>
+      <div  class="col-lg-8 col-md-6 hidden-md-down hidden-xs hidden-sm "  >
+       <div class="container">
+    <header class="clearfix">
+      
+    </header>
+    <div class="main">
+      <ul class="cbp-ig-grid">
+        <li>
+          <a href="#">
+            <span class="cbp-ig-icon cbp-ig-icon-shoe"></span>
+            <h3 class="cbp-ig-title">Distance Learning</h3>
+            <span class="cbp-ig-category">Distance Learning</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="cbp-ig-icon cbp-ig-icon-ribbon"></span>
+            <h3 class="cbp-ig-title">Learning management</h3>
+            <span class="cbp-ig-category">learning management system</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="cbp-ig-icon cbp-ig-icon-milk"></span>
+            <h3 class="cbp-ig-title">Online uinversity</h3>
+            <span class="cbp-ig-category">Online university</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="cbp-ig-icon cbp-ig-icon-whippy"></span>
+            <h3 class="cbp-ig-title">Learning programs</h3>
+            <span class="cbp-ig-category">Learning programs</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="cbp-ig-icon cbp-ig-icon-spectacles"></span>
+            <h3 class="cbp-ig-title">Learning Bundles</h3>
+            <span class="cbp-ig-category">Bundle Subscriptions</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="cbp-ig-icon cbp-ig-icon-doumbek"></span>
+            <h3 class="cbp-ig-title">Online Training</h3>
+            <span class="cbp-ig-category">Online Training</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
     
     </div>
 
-    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pull-right" style={{background:"#fff",marginTop:"40px",height:"auto"}}>
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pull-right" style={{background:"#fafafa",marginTop:"40px",height:"auto"}}>
       <div   >
-       
+        <div class="panel-heading">
+          <h3 class="text-center"><strong class="text-custom">
+
+               <a href="#" style={{fontSize:"20px",marginTop:"30px"}} class="waves-effect waves-light">Log in </a>
+                           <br/>
+               <img class="logo-wide" height="40" src={"/static/media/questence-logo.dba08b1d.svg"} /> 
+               <h6 style={{fontSize:"10px"}} class="waves-effect waves-light">Login.</h6>
+          </strong></h3>
+        </div>
 
         <div class="panel-body " style={{marginTop:"24px"}}>
 
                 <div class="form-group m-t-20 m-b-0" style={{height:"700px"}}>
-                     <div className="not_account-btn text-center">
-                          <p>
-                            Already have an account?
-                            <Link to={process.env.PUBLIC_URL + "/login"}>
-                              {" "}
-                              Login here{" "}
-                            </Link>
-                          </p>
-                        </div>
+
 
 
       <Formik
@@ -106,14 +156,13 @@ const Register = () => {
                       isSubmitting,
                     }) => (
                       <form
-                      key={new Date().getUTCMilliseconds() + Math.random()}
                         id="form_registration"
-                        className="form card-box"
+                        className="form"
                         onSubmit={handleSubmit}
                       >
                         <p className="form-group">
-                          <label style={{color: "#0253c8"}} htmlFor="registration_fname" key={new Date().getUTCMilliseconds() + Math.random()}>First Name</label>
-                          <input key={new Date().getUTCMilliseconds() + Math.random()}
+                          <label htmlFor="registration_fname">First Name</label>
+                          <input
                           className="form-control"
                             type="text"
                             placeholder="First name"
@@ -123,7 +172,7 @@ const Register = () => {
                             value={values.first_name}
                             id="registration_fname"
                           />
-                          <span className="registration_input-msg" key={new Date().getUTCMilliseconds() + Math.random()}>
+                          <span className="registration_input-msg">
                             {" "}
                             {errors.first_name &&
                               touched.first_name &&
@@ -131,9 +180,8 @@ const Register = () => {
                           </span>
                         </p>
                         <p className="form-group">
-                          <label style={{color: "#0253c8"}} htmlFor="registration_lname" key={new Date().getUTCMilliseconds() + Math.random()}>Last Name</label>
+                          <label htmlFor="registration_lname">Last Name</label>
                           <input
-                          key={new Date().getUTCMilliseconds() + Math.random()}
                           className="form-control"
                             type="text"
                             placeholder="Last name"
@@ -143,18 +191,17 @@ const Register = () => {
                             value={values.last_name}
                             id="registration_lname"
                           />
-                          <span className="registration_input-msg" key={new Date().getUTCMilliseconds() + Math.random()}>
+                          <span className="registration_input-msg">
                             {errors.last_name &&
                               touched.last_name &&
                               errors.last_name}
                           </span>
                         </p>
-                        <p className="form-group" key={new Date().getUTCMilliseconds() + Math.random()}>
-                          <label style={{color: "#0253c8"}} htmlFor="registration_email" key={new Date().getUTCMilliseconds() + Math.random()}>
+                        <p className="form-group">
+                          <label htmlFor="registration_email">
                             Email Address
                           </label>
                           <input
-                          key={new Date().getUTCMilliseconds() + Math.random()}
                           className="form-control"
                             type="email"
                             placeholder="Email here"
@@ -164,16 +211,15 @@ const Register = () => {
                             value={values.email}
                             id="registration_email"
                           />
-                          <span className="registration_input-msg" key={new Date().getUTCMilliseconds() + Math.random()}>
+                          <span className="registration_input-msg">
                             {errors.email && touched.email && errors.email}
                           </span>
                         </p>
-                        <p className="form-group" key={new Date().getUTCMilliseconds() + Math.random()}>
-                          <label style={{color: "#0253c8"}} htmlFor="registration_user" key={new Date().getUTCMilliseconds() + Math.random()}>
+                        <p className="form-group">
+                          <label htmlFor="registration_user">
                             Phone Number
                           </label>
                           <input
-                          key={new Date().getUTCMilliseconds() + Math.random()}
                           className="form-control"
                             type="number"
                             id="phone_number"
@@ -183,24 +229,23 @@ const Register = () => {
                             onBlur={handleBlur}
                             value={values.phone_number}
                           />
-                          <span className="registration_input-msg" key={new Date().getUTCMilliseconds() + Math.random()}>
+                          <span className="registration_input-msg">
                             {errors.phone_number &&
                               touched.phone_number &&
                               errors.phone_number}
                           </span>
                         </p>
-                        <p className="form-group" key={new Date().getUTCMilliseconds() + Math.random()}>
-                          <label style={{color: "#0253c8"}} htmlFor="registration_password" key={new Date().getUTCMilliseconds() + Math.random()}>
+                        <p className="form-group">
+                          <label htmlFor="registration_password">
                             Password
                           </label>
-                          <label style={{color: "red"}} htmlFor="registration_password" key={new Date().getUTCMilliseconds() + Math.random()}>
+                          <label htmlFor="registration_password" >
                             <i>
                               At least eight chatracters,one letter and one
                               number
                             </i>
                           </label>
                           <input
-                          key={new Date().getUTCMilliseconds() + Math.random()}
                           className="form-control"
                             type="password"
                             placeholder="*******"
@@ -210,18 +255,17 @@ const Register = () => {
                             onBlur={handleBlur}
                             value={values.password}
                           />
-                          <span className="registration_input-msg" key={new Date().getUTCMilliseconds() + Math.random()}>
+                          <span className="registration_input-msg">
                             {errors.password &&
                               touched.password &&
                               errors.password}
                           </span>
                         </p>
                         <p className="form-group">
-                          <label style={{color: "#0253c8"}} htmlFor="registration_cpassword" key={new Date().getUTCMilliseconds() + Math.random()}>
+                          <label htmlFor="registration_cpassword">
                             Confirm Password
                           </label>
                           <input
-                          key={new Date().getUTCMilliseconds() + Math.random()}
                           className="form-control"
                             type="password"
                             placeholder="Confirm password"
@@ -231,13 +275,13 @@ const Register = () => {
                             onBlur={handleBlur}
                             value={values.password_confirmation}
                           />
-                          <span className="registration_input-msg" key={new Date().getUTCMilliseconds() + Math.random()}>
+                          <span className="registration_input-msg">
                             {errors.password_confirmation &&
                               touched.password_confirmation &&
                               errors.password_confirmation}
                           </span>
                         </p>
-                        <button type="submit" className="btn btn-default" disabled={isSubmitting} key={new Date().getUTCMilliseconds() + Math.random()}>
+                        <button type="submit" className="btn btn-default" disabled={isSubmitting}>
                           {loading ? (
                             <div className="spinner-border" role="status">
                               <span className="sr-only">Loading...</span>

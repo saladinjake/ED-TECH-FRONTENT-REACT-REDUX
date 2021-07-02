@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment, useState} from "react";
 // import Datas from './data/filter.json'
 import { Link } from "react-router-dom";
 
@@ -7,58 +7,117 @@ import "./Tab.css";
 
 // import Loader from "components/Loader/Loader";
 
-function MyCourses({ courses }) {
+function MyCourses(props) {
+  const {courses, editable} = props
+  const [showEditor, setShowEdit] = useState(false)
+
+  const handleShowEdit =(value) =>{
+    setShowEdit(value)
+    // props.handleShowEdit(value)
+  }
+
   return (
     <Styles>
       {/* Course Area */}
-      <section className="course-filter">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <div className=" row filter-items">
-                {courses.map((data, i) => (
+      <Fragment>
+                {courses.map((item, i) => (
+                  <Fragment className="container-fluid" key={item.id}>
 
-                  <div className="col-md-4" key={i}>
-                    <div className="course-item" >
-                     
-                        <div
-                          className="course-image"
-                          style={{
-                            backgroundImage: `url(${data?.course_cover_image})`,
-                          }}
-                        ></div>
-                      
-                      <div className="course-content" >
-                        <h6 className=""  style={{height:"40px", fontSize: 14}}>
-                         
-                            {data?.course_name}
-                          
-                        </h6>
-                        <p className="desc">
-                           {data?.learning_style}
-                        </p>
-                      {  /*<p className="desc">
-                          Instructor: {data?.instructor?.user?.first_name}{" "}
-                          {data?.instructor?.user.last_name}
-                        </p>*/}
-                        <br/>
-                        <div className="course-face d-flex justify-content-between">
-                         
-                          <div className="student">
-                            <button className="btn course-btn">
-                              Go to course
-                            </button>
-                          </div>
-                        </div>
-                      </div>
+
+              <div className="product-view col-merge-12 col-merge-s-4 col-merge-d3" style={{marginRight:"-15px",width:"250px"}}>
+                <div class="product product-set left_adjust" style={{ height: "290px" }}>
+                  <figure>
+                    <Link
+                      to={
+                        process.env.PUBLIC_URL +
+                        "/courses/" +
+                        item.id +
+                        "/" +
+                        item.slug
+                      }
+                      className="image-popup"
+                      title="Screenshot-1"
+                    >
+                      {item.course_cover_image !== null ? (
+                        <img
+                          src={item.course_cover_image}
+                          className="thumb-img imagemix"
+                          alt="work-thumbnail"
+                          style={{ width: "100%", height: "auto" }}
+                        />
+                      ) : (
+                        <Fragment />
+                      )}{" "}
+                      <div className="middle-overlay"></div>
+                    </Link>
+                  </figure>
+
+                  <div class="">
+                    <div  style={{padding:"10px", marginLeft:"10px"}}>
+                      <p style={{  color: "blue" ,width:"100%",fontWeight:"bold"}}>
+                        <Link
+                          to={
+                            process.env.PUBLIC_URL +
+                            "/courses/" +
+                            item.id +
+                            "/" +
+                            item.slug
+                          }
+                          style={{ fontSize: "13px",width:"100%",color: "blue" }}
+                          className="text-dark"
+                        >
+                          {item.course_name}
+                        </Link>
+                      </p>
+                      <p style={{ width:"100%"}}>
+                        A course by{" "}
+                        {item?.instructor?.first_name !== null &&
+                          item?.instructor?.first_name +
+                            " " +
+                            item?.instructor?.last_name}
+                      </p>
                     </div>
+                    
+                 
+
+
+                    <a href="#" onClick={(e)=>{
+                      window.location.href=process.env.PUBLIC_URL+ "/course-preview/"+ item.id
+                    }
+
+                    }
+                    style={{color:"#000", 
+                               position:"absolute",
+                               padding:"5px",width:"60px",
+                               right:"10px",
+                               borderRadius:"20px",
+                               
+                               color:"#000",
+                               
+
+                             }}>Preview
+
+                             </a>
+
+
                   </div>
-                ))}
+                  
+                    <p style={{borderTop:"1px solid #000",color:"#000", 
+                               display:"table",position:"absolute",
+                               bottom:"0px",width:"100%",padding:"10px",
+                               float:"left"
+
+                             }}>Course</p>
+
+                    
+                </div>
+
+                
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
+            </Fragment>
+                ))}
+              
+      </Fragment>
     </Styles>
   );
 }

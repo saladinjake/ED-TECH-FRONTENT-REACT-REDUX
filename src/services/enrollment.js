@@ -2,7 +2,7 @@
 import axios from "services/axiosConfig";
 
 export const enrollCourses = async (data) => {
-  let request = axios.post("enrollments/enroll/learnerEnrolMultiple", data);
+  let request = axios.post("enrollments/enrol/learnerEnrolMultiple", data);
   return request.then((response) => {
     if (response.status === 200) {
       return response && response;

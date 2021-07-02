@@ -29,7 +29,7 @@ export const getAuthProfile = (async) => {
 };
 
 export const getActiveInstructors = async () => {
-  let request = axios.get("instructors/activeProfiles");
+  let request = axios.get("instructors/active/Profiles");
   return request.then((response) => {
     if (response.status === 200) {
       return response && response;

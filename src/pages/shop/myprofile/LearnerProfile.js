@@ -25,10 +25,6 @@ import "../newdashboard/assets/css/pages.css";
 import "../newdashboard/assets/css/responsive.css";
 import "./tabnotifications.css"
 
-// import $ from 'jquery';
-// import Popper from 'popper.js';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
-
 const LearnerProfiler = ({ auth: { user, user_roles } }) => {
   const [profile, setProfile] = useState({});
   const [loading, setLoading] = useState(true);
@@ -49,21 +45,14 @@ console.log(profile)
   return (
  
    
-       <div className="wrapper">
-
-      <div className="content-page">
-
-
-              
-                <div className="content" style={{height:"1200px"}}>
-                    <div className="container" >
+      <div className="main-wrapper product-details-page " >
      
         <NavBar />
 
     
 
         <br/><br/> <br/><br/>
-        <section className="content">
+        <section className="product-details-area ">
           <Container>
             {loading ? (
               <Loader width="70" />
@@ -116,12 +105,12 @@ console.log(profile)
                   <Col md="12">
                     <div className="product-tab ">
 
-                    <div className="col-lg-4">
-                <div className="panel panel-border panel-success">
-                  <div className="panel-heading">
-                    <h3 className="panel-title">username</h3>
+                    <div class="col-lg-4">
+                <div class="panel panel-border panel-success">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">username</h3>
                   </div>
-                  <div className="panel-body">
+                  <div class="panel-body">
                     <p>Username 
                     {`${profile.user?.username}`}
                     </p>
@@ -133,24 +122,24 @@ console.log(profile)
                 </div>
               </div>
 
-              <div className="col-lg-4">
-                <div className="panel panel-border panel-success">
-                  <div className="panel-heading">
-                    <h3 className="panel-title">Firstname</h3>
+              <div class="col-lg-4">
+                <div class="panel panel-border panel-success">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Firstname</h3>
                   </div>
-                  <div className="panel-body">
+                  <div class="panel-body">
                     <p>{`${profile.user?.first_name}`}
                         </p>
                   </div>
                 </div>
               </div>
 
-              <div className="col-lg-4">
-                <div className="panel panel-border panel-success">
-                  <div className="panel-heading">
-                    <h3 className="panel-title">Lastname</h3>
+              <div class="col-lg-4">
+                <div class="panel panel-border panel-success">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Lastname</h3>
                   </div>
-                  <div className="panel-body">
+                  <div class="panel-body">
                     <p>
                       {`${profile.user?.last_name}`}     </p>
                   </div>
@@ -181,12 +170,12 @@ console.log(profile)
 
 
 
-                                          <div className="col-lg-4">
-                <div className="panel panel-border panel-success">
-                  <div className="panel-heading">
-                    <h3 className="panel-title">Date of birth</h3>
+                                          <div class="col-lg-4">
+                <div class="panel panel-border panel-success">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Date of birth</h3>
                   </div>
-                  <div className="panel-body">
+                  <div class="panel-body">
                     <p>Username 
                     {`${profile.user.learner_profile?.date_of_birth}`}
                     </p>
@@ -198,24 +187,24 @@ console.log(profile)
                 </div>
               </div>
 
-              <div className="col-lg-4">
-                <div className="panel panel-border panel-success">
-                  <div className="panel-heading">
-                    <h3 className="panel-title">Marital Status</h3>
+              <div class="col-lg-4">
+                <div class="panel panel-border panel-success">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Marital Status</h3>
                   </div>
-                  <div className="panel-body">
+                  <div class="panel-body">
                     <p>{`${profile.user.learner_profile?.marital_status}`}
                         </p>
                   </div>
                 </div>
               </div>
 
-              <div className="col-lg-4">
-                <div className="panel panel-border panel-success">
-                  <div className="panel-heading">
-                    <h3 className="panel-title">Linkedin Url</h3>
+              <div class="col-lg-4">
+                <div class="panel panel-border panel-success">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Linkedin Url</h3>
                   </div>
-                  <div className="panel-body">
+                  <div class="panel-body">
                     <p>{`${profile.user.learner_profile?.linkedin_url}`}
                          </p>
                   </div>
@@ -224,12 +213,12 @@ console.log(profile)
 
 
 
-                          <div className="col-lg-4">
-                <div className="panel panel-border panel-success">
-                  <div className="panel-heading">
-                    <h3 className="panel-title">Educational Level</h3>
+                          <div class="col-lg-4">
+                <div class="panel panel-border panel-success">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Educational Level</h3>
                   </div>
-                  <div className="panel-body">
+                  <div class="panel-body">
                     <p>Username 
                     {`${profile.user.learner_profile?.education_level}`}
                     </p>
@@ -241,24 +230,24 @@ console.log(profile)
                 </div>
               </div>
 
-              <div className="col-lg-4">
-                <div className="panel panel-border panel-success">
-                  <div className="panel-heading">
-                    <h3 className="panel-title">Degree Obtained</h3>
+              <div class="col-lg-4">
+                <div class="panel panel-border panel-success">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Degree Obtained</h3>
                   </div>
-                  <div className="panel-body">
+                  <div class="panel-body">
                     <p>{`${profile.user.learner_profile?.degree_obtained}`}
                         </p>
                   </div>
                 </div>
               </div>
 
-              <div className="col-lg-4">
-                <div className="panel panel-border panel-success">
-                  <div className="panel-heading">
-                    <h3 className="panel-title">Employment Status</h3>
+              <div class="col-lg-4">
+                <div class="panel panel-border panel-success">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Employment Status</h3>
                   </div>
-                  <div className="panel-body">
+                  <div class="panel-body">
                     <p>
                       {`${profile.user.learner_profile?.employment_status}`}    </p>
                   </div>
@@ -276,15 +265,9 @@ console.log(profile)
         </section>
 
    
-
+  <Sidebar />
 
   <Footer />
-
- 
-      </div>
-      </div>
-      </div>
-         <Sidebar />
       </div>
 
   );

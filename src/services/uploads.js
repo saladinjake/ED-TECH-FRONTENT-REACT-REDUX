@@ -15,8 +15,8 @@ const upload = (file) => {
   };
   let request = axios.post(
     `users/profile-photo`,
-    formData,
-    
+    formData
+
     // config
   );
   return request.then((response) => {
@@ -24,7 +24,7 @@ const upload = (file) => {
     if (response.status === 200) {
       return response && response;
     }
-  })
+  });
 };
 
 export default {

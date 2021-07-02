@@ -9,6 +9,12 @@ const InstructorsRoute = ({
   ...rest
 }) => {
   let isLoggedIn = false;
+  // if (token && isAuthenticated && user && user_roles[0].name === "Instructor") {
+  //   isLoggedIn = true;
+  // }
+
+  // console.log(user_roles)
+
   if (token && isAuthenticated && user && user_roles[0].name === "Instructor") {
     isLoggedIn = true;
   }
@@ -17,7 +23,7 @@ const InstructorsRoute = ({
     <Route
       {...rest}
       render={(props) =>
-        !isLoggedIn ? <Redirect to="/login" /> : <Component {...props} />
+        !isLoggedIn ? <Redirect to="/" /> : <Component {...props} />
       }
     />
   );

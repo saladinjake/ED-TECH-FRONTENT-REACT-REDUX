@@ -1,10 +1,10 @@
 import React, {useState} from 'react'
-import {  Row} from 'react-bootstrap';
-// import { Styles } from './styles/course.js';
+import { Container, Row, Col, Tab,Tabs, Nav} from 'react-bootstrap';
+import { Styles } from './styles/course.js';
 import './Tab.css'
-// import {CourseDataList, CourseDataLists, CourseData} from './data/data'
-// import CoursePrice from './CoursePrice.js';
-// import MyCourses from './MyCourses.js';
+import {CourseDataList, CourseDataLists, CourseData} from './data/data'
+import CoursePrice from './CoursePrice.js';
+import MyCourses from './MyCourses.js';
 import { Grid, List } from 'react-feather';
 import {Link} from 'react-router-dom'
 import "./scrollbars.css"
@@ -18,7 +18,7 @@ import CourseSidebar from '../formboxsection/components/CourseSidebar';
 
 import { useEffect,  Fragment } from "react";
 import CourseItemGrid from "../formboxsection/components/CourseItemsGrid";
-// import { Stylesx } from "../formboxsection/styles/course.js";
+import { Stylesx } from "../formboxsection/styles/course.js";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { fetchCourses } from "actions/coursesActions";
@@ -173,7 +173,7 @@ const MyLearningContainer = (props) => {
     const  filterSelection = (c) => {
       var x, i;
       x = document.getElementsByClassName("requestedFilter");
-      if (c === "all") c = "";
+      if (c == "all") c = "";
      
       for (i = 0; i < x.length; i++) {
         RemoveClass(x[i], "show");
@@ -186,7 +186,7 @@ const MyLearningContainer = (props) => {
       arr1 = element.className.split(" ");
       arr2 = name.split(" ");
       for (i = 0; i < arr2.length; i++) {
-        if (arr1.indexOf(arr2[i]) === -1) {
+        if (arr1.indexOf(arr2[i]) == -1) {
           element.className += " " + arr2[i];
         }
       }
@@ -212,20 +212,20 @@ const MyLearningContainer = (props) => {
     
     return (
      
-        <div className="container"  style={{height:"1700px",overflow:"scroll"}}>
-        <br/><br/><br/>
+        <div className="container-fluid"  style={{height:"1700px",overflow:"scroll"}}>
+        <br/><br/><br/><br/><br/><br/>
                 <div className="row">
                     <div className="col-md-10">
                         <div className="mylearning-title">
                             <h4>My Learning</h4>
 
-                            <div className="btn-group pull-right m-t-15 open">
-                                <button type="button" className="btn  dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="true" style={{background: "rgb(2, 83, 200)", color: "rgb(255, 255, 255)"}}>
-                                Settings <span className="m-l-5"><i className="fa fa-cog"></i></span></button>
-                                <ul className="dropdown-menu drop-menu-right" role="menu"><li>
+                            <div class="btn-group pull-right m-t-15 open">
+                                <button type="button" class="btn  dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="true" style={{background: "rgb(2, 83, 200)", color: "rgb(255, 255, 255)"}}>
+                                Settings <span class="m-l-5"><i class="fa fa-cog"></i></span></button>
+                                <ul class="dropdown-menu drop-menu-right" role="menu"><li>
                                 <a href="#">Upcoming courses</a></li><li><a href="/profile">Profile</a></li>
                                 <li><a href="/notifications">Account Settings</a></li><li><a href="/cart">Cart</a></li>
-                                <li className="divider"></li><li><a href="#">Reload</a></li></ul>
+                                <li class="divider"></li><li><a href="#">Reload</a></li></ul>
                                 </div>
 
 
@@ -264,7 +264,7 @@ const MyLearningContainer = (props) => {
 
 
 
-                       <div className="col-md-10 col-sm-12 " > 
+                       <div className="col-md-8 col-sm-12 " > 
                              {toggleGridList ?  <Fragment /> : <ul className="nav nav-tabs tabs"  id="nav-tabs">
                                     <li className="active tab" style={{width: "25%"}} onClick={()=>{ filterSelection('all') }}>
                                         <a href="#home-2" data-toggle="tab" aria-expanded="false" className="active" > 
@@ -413,14 +413,14 @@ const MyLearningContainer = (props) => {
                                                                                              {courses.map((course, i)=>  { 
                                                                                                       let status_state = "Active"
                                                                                                       let activity = "alert-info"
-                                                                                                       if(course.status===1){
+                                                                                                       if(course.status==1){
                                                                                                            status_state = "Active"
                                                                                                            activity = "alert-success"
 
-                                                                                                       }else if (course.status===2){
+                                                                                                       }else if (course.status==2){
                                                                                                           status_state = "Upcoming"
                                                                                                           activity = "alert-success"
-                                                                                                       }else if(course.status===3){
+                                                                                                       }else if(course.status==3){
                                                                                                           status_state = "Completed"
                                                                                                           activity = "alert-warning"
                                                                                                        }else{

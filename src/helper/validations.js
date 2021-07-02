@@ -81,15 +81,17 @@ export const instructorSchema = yup.object({
     .required("Required")
     .positive("No negative number")
     .integer(),
-  
+
   country_id: yup.string().required("Select a Country"),
   category_id: yup.string().required("Select a category"),
+  brief_introduction: yup.string().required("Breif summary"),
   other_info: yup.string().required("Other information"),
- 
+
+  detailed_introduction: yup.string().required("Detailed summary"),
+
   experience_level: yup.string().required("Required"),
   // previous_institutions: yup.array().required("Required"),
   // niche_courses: yup.string().required("Required")
-  
 });
 
 export const courseSchema = yup.object({
@@ -100,7 +102,7 @@ export const courseSchema = yup.object({
   certificate_id: yup.number().required("Required"),
   category_id: yup.number().required("Required"),
   course_description: yup.string().required("Required"),
-   // course_thumbnail: yup.mixed().required(),
+  // course_thumbnail: yup.mixed().required(),
   business_id: yup.number().required("Required"),
   introduction_video: yup
     .string()
@@ -119,7 +121,7 @@ export const courseSchema = yup.object({
   license: yup.string().required("Required"),
   overall_grade_range: yup.number().required("Required"),
   grace_period_on_deadline: yup.string().required("Required"),
-   // course_cover_image: yup.mixed().required(),
+  // course_cover_image: yup.mixed().required(),
 });
 
 export const learnerSchema = yup.object({

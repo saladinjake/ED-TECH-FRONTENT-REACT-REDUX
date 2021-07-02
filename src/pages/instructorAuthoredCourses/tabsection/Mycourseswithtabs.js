@@ -7,7 +7,6 @@ import { Grid, List } from "react-feather";
 import { Link } from "react-router-dom";
 import "./scrollbars.css";
 
-
 // import "./topitem.css"
 
 import Navbar from "components/Navbar";

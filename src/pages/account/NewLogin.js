@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-// import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import NavBar from "components/Navbar";
-// import { BreadcrumbBox } from "../../components/common/Breadcrumb";
-// import { Styles } from "./styles/account.js";
+import { BreadcrumbBox } from "../../components/common/Breadcrumb";
+import { Styles } from "./styles/account.js";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { Formik } from "formik";
-// import Footer from "components/Footer";
-
+import Footer from "components/Footer";
 
 
 import { loginUser } from "services/auth";
@@ -27,7 +26,7 @@ import "./assets/css/icons.css";
 import "./assets/css/pages.css";
 import "./assets/css/responsive.css";
 import "./assets/css/login.css";
-// import "./basic.css";
+import "./basic.css";
 // import BasicSlider from "./components/BasicSlider/BasicSlider";
 
 
@@ -83,14 +82,72 @@ const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
         <div class="account-pages"></div>
   
  
-      <div  class="col-lg-8 col-md-6 hidden-md-down hidden-xs hidden-sm "  style={{background:"#fff"}} >
-           <div style={{padding:"43%", background:"#fff"}}></div>
-      </div>
+      <div  class="col-lg-8 col-md-6 hidden-md-down hidden-xs hidden-sm "  >
+       <div class="container">
+    <header class="clearfix">
+      
+    </header>
+    <div class="main">
+      <ul class="cbp-ig-grid">
+        <li>
+          <a href="#">
+            <span class="cbp-ig-icon cbp-ig-icon-shoe"></span>
+            <h3 class="cbp-ig-title">Distance Learning</h3>
+            <span class="cbp-ig-category">Distance Learning</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="cbp-ig-icon cbp-ig-icon-ribbon"></span>
+            <h3 class="cbp-ig-title">Learning management</h3>
+            <span class="cbp-ig-category">learning management system</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="cbp-ig-icon cbp-ig-icon-milk"></span>
+            <h3 class="cbp-ig-title">Online uinversity</h3>
+            <span class="cbp-ig-category">Online university</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="cbp-ig-icon cbp-ig-icon-whippy"></span>
+            <h3 class="cbp-ig-title">Learning programs</h3>
+            <span class="cbp-ig-category">Learning programs</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="cbp-ig-icon cbp-ig-icon-spectacles"></span>
+            <h3 class="cbp-ig-title">Learning Bundles</h3>
+            <span class="cbp-ig-category">Bundle Subscriptions</span>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="cbp-ig-icon cbp-ig-icon-doumbek"></span>
+            <h3 class="cbp-ig-title">Online Training</h3>
+            <span class="cbp-ig-category">Online Training</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+    </div>
 
 
-    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pull-right" style={{background:"#fff",marginTop:"40px",height:"auto"}}>
+    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 pull-right" style={{background:"#fafafa",marginTop:"40px",height:"auto"}}>
       <div   >
-        
+        <div class="panel-heading">
+          <h3 class="text-center"><strong class="text-custom">
+
+               <a href="#" style={{fontSize:"20px",marginTop:"30px"}} class="waves-effect waves-light">Log in </a>
+                           <br/>
+               <img class="logo-wide" height="40" src={"/static/media/questence-logo.dba08b1d.svg"} /> 
+               <h6 style={{fontSize:"10px"}} class="waves-effect waves-light">Login.</h6>
+          </strong></h3>
+        </div>
 
         <div class="panel-body " style={{marginTop:"74px"}}>
           <Formik
@@ -109,15 +166,15 @@ const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
                   }) => (
                     <div className="login-box ">
                       <div className="login-title text-center">
-                        <h3 style={{color: "#0253c8"}}>Log In</h3>
+                        <h3>Log In</h3>
                       </div>
                       <form
                         id="form_login"
-                        className="form form-horizontal baseForm card-box"
+                        className="form form-horizontal baseForm"
                         onSubmit={handleSubmit}
                       >
                         <p className="form-group">
-                          <label class="formFieldLabel " style={{color: "#0253c8"}}  htmlFor="email">Email</label>
+                          <label class="formFieldLabel "  htmlFor="email">Email</label>
                           <input
                           className="form-control"
                             type="email"
@@ -128,12 +185,12 @@ const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
                             onBlur={handleBlur}
                             value={values.email}
                           />
-                          <span className="login_input-msg" style={{color: "red"}}>
+                          <span className="login_input-msg">
                             {errors.email && touched.email && errors.email}
                           </span>
                         </p>
                         <p className="form-group">
-                          <label style={{color: "#0253c8"}} htmlFor="login_password" class="formFieldLabel">Password</label>
+                          <label htmlFor="login_password" class="formFieldLabel">Password</label>
                           <input
                           className="form-control"
                             type="password"
@@ -144,13 +201,13 @@ const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
                             onBlur={handleBlur}
                             value={values.password}
                           />
-                          <span className="login_input-msg" style={{color: "red"}}>
+                          <span className="login_input-msg">
                             {errors.password &&
                               touched.password &&
                               errors.password}
                           </span>
                         </p>
-                        <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                        <button type="submit" className="btn btn-default" disabled={isSubmitting}>
                           {loading ? (
                             <div className="spinner-border" role="status">
                               <span className="sr-only">Loading...</span>
@@ -159,9 +216,8 @@ const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
                             "Login"
                           )}
                         </button>
-                       
                         <div className="not_account-btn text-center">
-                          <p> <br/> <br/>
+                          <p>
                             Don't have an account yet?
                             <Link to={process.env.PUBLIC_URL + "/register"}>
                               {" "}

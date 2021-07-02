@@ -194,7 +194,7 @@ const Notifications = () => {
                     <thead>
                       <tr>
                         <th scope="col">Type</th>
-                         <th scope="col">Message</th>
+                        <th scope="col">Message</th>
                         <th scope="col">Time</th>
                       </tr>
                     </thead>

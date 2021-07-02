@@ -15,7 +15,6 @@ import toast from "react-hot-toast";
 
 import "./avatar.css";
 
-
 function getTimeAgoInterval(date) {
   let seconds = Math.floor((Date.now() - date) / 1000);
   let unit = "second";
@@ -44,6 +43,10 @@ function getTimeAgoInterval(date) {
 const InstructorProfiler = ({ auth: { user, user_roles } }) => {
   const [profile, setProfile] = useState({});
   const [loading, setLoading] = useState(true);
+   let dummyAvatar = "https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png"
+  const [image_url, setImageProfile] = useState("");
+
+  // console.log(user);
 
   useEffect(() => {
     (async function loadContent() {
@@ -58,6 +61,7 @@ const InstructorProfiler = ({ auth: { user, user_roles } }) => {
     // eslint-disable-next-line
   }, []);
 
+  // console.log(profile);
   return (
     <Styles>
       {/* Main Wrapper */}
@@ -69,7 +73,10 @@ const InstructorProfiler = ({ auth: { user, user_roles } }) => {
         <BreadcrumbBox title="Profile" />
 
         {/* Product Details */}
-        <br/><br/><br/><br/>
+        <br />
+        <br />
+        <br />
+        <br />
         <section className="">
           <Container>
             {loading ? (
@@ -80,25 +87,46 @@ const InstructorProfiler = ({ auth: { user, user_roles } }) => {
                   <Col md="5">
                     <div className="product-slider">
                       <div className="slider-item">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            `/assets/images/product-01.jpg`
-                          }
-                          alt=""
-                          height="200"
-                        width="200"
-                        alt=""
-                        className="circle card-box"
-                        />
+                        {profile?.user?.image_url ? (
+                          <img
+                            src={profile?.user?.image_url}
+                            alt=""
+                            height="200"
+                            width="200"
+                            alt=""
+                            className="circle card-box"
+                          />
+                        ) : (
+                          <img
+                            src={dummyAvatar}
+                            alt=""
+                            height="200"
+                            width="200"
+                            alt=""
+                            className="circle card-box"
+                          />
+                        )}
                       </div>
+                      <Link
+                        className="btn btn-primary"
+                        to={
+                          process.env.PUBLIC_URL +
+                          "/instructors/" +
+                          profile?.user?.id
+                        }
+                      >
+                        See Details >>>
+                      </Link>
                     </div>
+                    <br />
+                    <br /> <br />
+                    <br />
                   </Col>
 
                   <Col md="7">
                     <div className="product-information pull-right">
                       <div className="product-title">
-                        <h4>{`${profile?.first_name}  ${profile?.last_name}`}</h4>
+                        <h4>{`${profile?.user?.first_name}  ${profile?.user?.last_name}`}</h4>
                       </div>
                       <div className="product-rating d-flex">
                         <div className="review-num">
@@ -115,7 +143,9 @@ const InstructorProfiler = ({ auth: { user, user_roles } }) => {
                           <span className="stock">{user_roles[0].name}</span>
                         </p>
                       </div>
-                      <br/><br/><br/>
+                      <br />
+                      <br />
+                      <br />
 
                       <div className="product-cart-wh-com-btn">
                         <Link
@@ -132,132 +162,248 @@ const InstructorProfiler = ({ auth: { user, user_roles } }) => {
                     <div className="product-tab">
                       <Table className="table table-bordered">
                         <tbody>
-                          <tr>
+                          {/*<tr>
                             <td><i
                               className="fa fa-user"
                               style={{ marginRight: "20px" }}
                             ></i>Username</td>
                             <td style={{border:"none"}} className="pull-right">{`${profile?.username}`}</td>
+                          </tr>*/}
+                          <tr>
+                            <td>
+                              <i
+                                className="fa fa-user"
+                                style={{ marginRight: "20px" }}
+                              ></i>
+                              Fisrt Name
+                            </td>
+                            <td
+                              style={{ border: "none" }}
+                              className="pull-right"
+                            >{`${profile?.user?.first_name}`}</td>
+                          </tr>
+
+                          <tr>
+                            <td>
+                              <i
+                                className="fa fa-user"
+                                style={{ marginRight: "20px" }}
+                              ></i>
+                              Last Name
+                            </td>
+                            <td
+                              style={{ border: "none" }}
+                              className="pull-right"
+                            >{`${profile?.user?.last_name}`}</td>
+                          </tr>
+
+                          <tr>
+                            <td>
+                              <i
+                                className="fa fa-user"
+                                style={{ marginRight: "20px" }}
+                              ></i>
+                              Email
+                            </td>
+                            <td
+                              style={{ border: "none" }}
+                              className="pull-right"
+                            >{`${profile?.user?.email}`}</td>
                           </tr>
                           <tr>
-                            <td><i
-                              className="fa fa-user"
-                              style={{ marginRight: "20px" }}
-                            ></i>Fisrt Name</td>
-                            <td style={{border:"none"}} className="pull-right">{`${profile?.first_name}`}</td>
+                            <td>
+                              <i
+                                className="fa fa-user"
+                                style={{ marginRight: "20px" }}
+                              ></i>
+                              Gender
+                            </td>
+                            <td
+                              style={{ border: "none" }}
+                              className="pull-right"
+                            >{`${profile?.user?.instructor_profile?.gender}`}</td>
                           </tr>
                           <tr>
-                            <td><i
-                              className="fa fa-user"
-                              style={{ marginRight: "20px" }}
-                            ></i>Last Name</td>
-                            <td style={{border:"none"}} className="pull-right">{`${profile?.last_name}`}</td>
+                            <td>
+                              <i
+                                className="fa fa-user"
+                                style={{ marginRight: "20px" }}
+                              ></i>
+                              Phone
+                            </td>
+                            <td
+                              style={{ border: "none" }}
+                              className="pull-right"
+                            >{`${profile?.user?.phone_number}`}</td>
                           </tr>
                           <tr>
-                            <td><i
-                              className="fa fa-user"
-                              style={{ marginRight: "20px" }}
-                            ></i>Email</td>
-                            <td style={{border:"none"}} className="pull-right">{`${profile?.email}`}</td>
+                            <td>
+                              <i
+                                className="fa fa-user"
+                                style={{ marginRight: "20px" }}
+                              ></i>
+                              Employment Status
+                            </td>
+                            <td
+                              style={{ border: "none" }}
+                              className="pull-right"
+                            >{`${profile?.user?.instructor_profile?.employment_status}`}</td>
+                          </tr>
+
+                          <tr>
+                            <td>
+                              <i
+                                className="fa fa-user"
+                                style={{ marginRight: "20px" }}
+                              ></i>
+                              Breif Introduction
+                            </td>
+                            <td
+                              style={{ border: "none" }}
+                              className="pull-right"
+                            >{`${profile?.user?.instructor_profile?.brief_introduction}`}</td>
+                          </tr>
+
+                          <tr>
+                            <td>
+                              <i
+                                className="fa fa-user"
+                                style={{ marginRight: "20px" }}
+                              ></i>
+                              Detailed Introduction
+                            </td>
+                            <td
+                              style={{ border: "none" }}
+                              className="pull-right"
+                            >{`${profile?.user?.instructor_profile?.detailed_introduction}`}</td>
+                          </tr>
+
+                          <tr>
+                            <td>
+                              <i
+                                className="fa fa-user"
+                                style={{ marginRight: "20px" }}
+                              ></i>
+                              Education Level
+                            </td>
+                            <td
+                              style={{ border: "none" }}
+                              className="pull-right"
+                            >{`${profile?.user?.instructor_profile?.education_level}`}</td>
                           </tr>
                           <tr>
-                            <td><i
-                              className="fa fa-user"
-                              style={{ marginRight: "20px" }}
-                            ></i>Gender</td>
-                            <td style={{border:"none"}} className="pull-right">{`${profile?.instructor_profile?.gender}`}</td>
+                            <td>
+                              <i
+                                className="fa fa-user"
+                                style={{ marginRight: "20px" }}
+                              ></i>
+                              Degree Obtained
+                            </td>
+                            <td
+                              style={{ border: "none" }}
+                              className="pull-right"
+                            >{`${profile?.user?.instructor_profile?.degree_obtained}`}</td>
                           </tr>
                           <tr>
-                            <td><i
-                              className="fa fa-user"
-                              style={{ marginRight: "20px" }}
-                            ></i>Phone</td>
-                            <td style={{border:"none"}} className="pull-right">{`${profile?.phone_number}`}</td>
+                            <td>
+                              <i
+                                className="fa fa-user"
+                                style={{ marginRight: "20px" }}
+                              ></i>
+                              Date of Birth
+                            </td>
+                            <td
+                              style={{ border: "none" }}
+                              className="pull-right"
+                            >{`${profile?.user?.instructor_profile?.date_of_birth}`}</td>
                           </tr>
                           <tr>
-                            <td><i
-                              className="fa fa-user"
-                              style={{ marginRight: "20px" }}
-                            ></i>Employment Status</td>
-                            <td style={{border:"none"}} className="pull-right">{`${profile?.instructor_profile?.employment_status}`}</td>
+                            <td>
+                              <i
+                                className="fa fa-user"
+                                style={{ marginRight: "20px" }}
+                              ></i>
+                              Marital Status
+                            </td>
+                            <td
+                              style={{ border: "none" }}
+                              className="pull-right"
+                            >{`${profile?.user?.instructor_profile?.marital_status}`}</td>
                           </tr>
                           <tr>
-                            <td><i
-                              className="fa fa-user"
-                              style={{ marginRight: "20px" }}
-                            ></i>Education Level</td>
-                            <td style={{border:"none"}} className="pull-right">{`${profile?.instructor_profile?.education_level}`}</td>
+                            <td>
+                              <i
+                                className="fa fa-user"
+                                style={{ marginRight: "20px" }}
+                              ></i>
+                              LinkedIn
+                            </td>
+                            <td
+                              style={{ border: "none" }}
+                              className="pull-right"
+                            >{`${profile?.user?.instructor_profile?.linkedin_url}`}</td>
+                          </tr>
+
+                          <tr>
+                            <td>Current employer Name</td>
+                            <td
+                              style={{ border: "none" }}
+                              className="pull-right"
+                            >{`${profile?.user?.instructor_profile?.current_employer_name}`}</td>
+                          </tr>
+
+                          <tr>
+                            <td>Current employer designation</td>
+                            <td
+                              style={{ border: "none" }}
+                              className="pull-right"
+                            >{`${profile?.user?.instructor_profile?.current_employer_designation}`}</td>
+                          </tr>
+
+                          <tr>
+                            <td>Previous employer Name</td>
+                            <td
+                              style={{ border: "none" }}
+                              className="pull-right"
+                            >{`${profile?.user?.instructor_profile?.previous_employer_name}`}</td>
+                          </tr>
+
+                          <tr>
+                            <td>Previous employer designation</td>
+                            <td
+                              style={{ border: "none" }}
+                              className="pull-right"
+                            >{`${profile?.user?.instructor_profile?.previous_employer_designation}`}</td>
+                          </tr>
+
+                          <tr>
+                            <td>
+                              <i
+                                className="fa fa-user"
+                                style={{ marginRight: "20px" }}
+                              ></i>
+                              Brief Introduction
+                            </td>
+                            <td
+                              style={{ border: "none" }}
+                              className="pull-right"
+                            >{`${profile?.user?.instructor_profile?.brief_introduction}`}</td>
                           </tr>
                           <tr>
-                            <td><i
-                              className="fa fa-user"
-                              style={{ marginRight: "20px" }}
-                            ></i>Degree Obtained</td>
-                            <td style={{border:"none"}} className="pull-right">{`${profile?.instructor_profile?.degree_obtained}`}</td>
+                            <td>
+                              <i
+                                className="fa fa-user"
+                                style={{ marginRight: "20px" }}
+                              ></i>
+                              Detailed Introduction
+                            </td>
+                            <td
+                              style={{ border: "none" }}
+                              className="pull-right"
+                            >{`${profile?.user?.instructor_profile?.detailed_introduction}`}</td>
                           </tr>
-                          <tr>
-                            <td><i
-                              className="fa fa-user"
-                              style={{ marginRight: "20px" }}
-                            ></i>Date of Birth</td>
-                            <td style={{border:"none"}} className="pull-right">{`${profile?.instructor_profile?.instructor_profile}`}</td>
-                          </tr>
-                          <tr>
-                            <td><i
-                              className="fa fa-user"
-                              style={{ marginRight: "20px" }}
-                            ></i>Marital Status</td>
-                            <td style={{border:"none"}} className="pull-right">{`${profile?.instructor_profile?.marital_status}`}</td>
-                          </tr>
-                          <tr>
-                            <td><i
-                              className="fa fa-user"
-                              style={{ marginRight: "20px" }}
-                            ></i>LinkedIn</td>
-                            <td style={{border:"none"}} className="pull-right">{`${profile?.instructor_profile?.linkedin_url}`}</td>
-                          </tr>
-                          
                         </tbody>
                       </Table>
-
-
-
-                       <h1>My Courses</h1>
-                       <hr/>
-
-                       <table className="table table-borderless table-reveal">
-                          <thead>
-                            <tr>
-                              <th scope="col">Course Name</th>
-                              <th scope="col">Course Created Date</th>
-                              <th scope="col">Course End Date</th>
-                              <th scope="col" className="pull-right">Last Updated</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                      
-
-                       
-
-                        {profile?.instructor_profile?.courses.length > 0 && profile?.instructor_profile?.courses.map(course =>{
-                           return (
-
-                            <tr>
-                            <td>{`${course?.course_name}`}</td>
-                            <td> {getTimeAgoInterval(new Date(course?.start_date)) }</td>
-                            <td> {getTimeAgoInterval(new Date(course?.end_date)) }</td>
-
-                            <td className="pull-right"> {getTimeAgoInterval(new Date(course?.updated_at)) }</td>
-                          </tr>
-
-
-                           )
-                        })}
-                         
-                         
-                        </tbody>
-                      </table>
-
                     </div>
                   </Col>
                 </Row>

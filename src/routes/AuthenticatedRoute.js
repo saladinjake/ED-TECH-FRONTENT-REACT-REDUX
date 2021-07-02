@@ -17,7 +17,7 @@ const AuthenticatedRoute = ({
     <Route
       {...rest}
       render={(props) => {
-        return isLoggedIn ? <Component {...props} /> : <Redirect to="/login" />;
+        return isLoggedIn ? <Component {...props} /> : <Redirect to="/" />;
       }}
     />
   );

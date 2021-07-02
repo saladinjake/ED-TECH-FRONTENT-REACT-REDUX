@@ -196,134 +196,135 @@ const CourseDetails = ({
       {/*Object.entries(coursedetails).length !== 0 && (
         <BreadcrumbBox title={coursedetails.data.category.name} />
       )*/}
-      <br/><br/><br/>
-
+      <br />
+      <br />
+      <br />
       {loading ? (
-          <Fragment />
-        ): (
-
-      <section className="course-header-area">
-  <div className="container">
-    <div className="row align-items-end">
-      <div className="col-lg-8">
-        <div className="course-header-wrap">
-          <h1 className="t">{ coursedetails?.data?.course_name }</h1>
-          <p className="subtitle">{ coursedetails?.data?.course_overview.length > 0 && coursedetails?.data?.course_description.substring(0,100) }</p>
-          <div className="rating-row">
-            <span className="course-badge best-seller">Level</span>
-                                      <i className="fas fa-star"></i>
-                                                <i className="fa fa-star"></i>
-                                                <i className="fa fa-star"></i>
-                                                <i className="fa fa-star"></i>
-                                                <i className="fa fa-star"></i>
-                                <span className="d-inline-block average-rating">0</span><span>(0 Ratings)</span>
-       
-        </div>
-        <div className="created-row">
-          <span className="created-by">
-          A course  by { coursedetails?.data?.instructor?.user?.first_name } {coursedetails?.data?.instructor?.user?.last_name}
-          </span>
-                      <span className="last-updated-date">Last updated {}</span>
-                    <span className="comment"><i className="fa fa-comment"></i>{coursedetails?.data?.language?.english}</span>
-        </div>
-      </div>
-    </div>
-    <div className="col-lg-4"  style={{position:"absolute", right:"20px", top:"200px"}}>
-    <div className="single-details-sidbar">
-        <div className="course-details-feature">
-                            { coursedetails &&  coursedetails?.data?.introduction_video?.length > 0 ? (
-                            <div className="course-details-banner "
-                             style={{background:"#0253c8",display:"flex",justifyContent:"center"}}>
-                        
-                          <Col md="4" >
-
-
+        <Fragment />
+      ) : (
+        <section className="course-header-area">
+          <div className="container">
+            <div className="row align-items-end">
+              <div className="col-lg-8">
+                <div className="course-header-wrap">
+                  <h1 className="t">{coursedetails?.data?.course_name}</h1>
+                  <p className="subtitle">
+                    {coursedetails?.data?.course_overview.length > 0 &&
+                      coursedetails?.data?.course_description.substring(0, 100)}
+                  </p>
+                  <div className="rating-row">
+                    <span className="course-badge best-seller">Level</span>
+                    <i className="fas fa-star"></i>
+                    <i className="fa fa-star"></i>
+                    <i className="fa fa-star"></i>
+                    <i className="fa fa-star"></i>
+                    <i className="fa fa-star"></i>
+                    <span className="d-inline-block average-rating">0</span>
+                    <span>(0 Ratings)</span>
+                  </div>
+                  <div className="created-row">
+                    <span className="created-by">
+                      A course by{" "}
+                      {coursedetails?.data?.instructor?.user?.first_name}{" "}
+                      {coursedetails?.data?.instructor?.user?.last_name}
+                    </span>
+                    <span className="last-updated-date">Last updated {}</span>
+                    <span className="comment">
+                      <i className="fa fa-comment"></i>
+                      {coursedetails?.data?.language?.english}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="col-lg-4"
+                style={{ position: "absolute", right: "20px", top: "200px" }}
+              >
+                <div className="single-details-sidbar">
+                  <div className="course-details-feature">
+                    {coursedetails &&
+                    coursedetails?.data?.introduction_video?.length > 0 ? (
+                      <div
+                        className="course-details-banner "
+                        style={{
+                          background: "#0253c8",
+                          display: "flex",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Col md="4">
+                          <a
+                            style={{ marginTop: "60px" }}
+                            className=""
+                            href={
+                              "https://www.youtube.com/embed/" +
+                              formaturl(coursedetails?.data?.introduction_video)
+                                .idVideo
+                            }
+                            data-vidup
+                          >
+                            <div id="all">
                               <a
-                               style={{marginTop:"60px"}}
-                                className=""
-                                href={
-                                  "https://www.youtube.com/embed/" +
-                                  formaturl(
-                                    coursedetails?.data?.introduction_video
-                                  ).idVideo
-                                }
-                                data-vidup
+                                id="play-video"
+                                data-url={`${
+                                  coursedetails && coursedetails?.data
+                                    ? formaturl(
+                                        coursedetails?.data?.introduction_video
+                                      ).idVideo
+                                    : ""
+                                }`}
+                                data-toggle="modal"
+                                data-target="#myModal"
+                                title="XJj2PbenIsU"
                               >
-
-
-                                <div id="all" >
-
-
-                                 
-                                  <a
-                                    id="play-video"
-                                    
-                                    data-url={`${
-                                    coursedetails && coursedetails?.data
-                                      ? formaturl(
-                                          coursedetails?.data?.introduction_video
-                                        ).idVideo
-                                      : ""
-                                  }`  }
-                                    data-toggle="modal"
-                                    data-target="#myModal"
-                                    title="XJj2PbenIsU"
-                                  >
-
-                                  <iframe
-                                  style={{marginTop:"40px",marginLeft:"-90px",width:"300px"}}
-                           src={
-                                  "https://www.youtube.com/embed/" +
-                                  formaturl(
-                                    coursedetails?.data?.introduction_video
-                                  ).idVideo
-                                }
-          
-            frameborder="0"
-            allow="autoplay; encrypted-media"
-            allowfullscreen
-            id="modal-videox"
-          ></iframe>
-                                  
-                                  </a>
-                                </div>
-
-
-
-                                <video
-                                  className=""
-                                  src={`${
-                                    coursedetails && coursedetails?.data
-                                      ? formaturl(
-                                          coursedetails?.data?.introduction_video
-                                        ).idVideo
-                                      : ""
-                                  }`}
-                                  autoplay
-                                  muted
-                                  replay
-                                >
-                                  {" "}
-                                </video>
+                                <iframe
+                                  style={{
+                                    marginTop: "40px",
+                                    marginLeft: "-90px",
+                                    width: "300px",
+                                  }}
+                                  src={
+                                    "https://www.youtube.com/embed/" +
+                                    formaturl(
+                                      coursedetails?.data?.introduction_video
+                                    ).idVideo
+                                  }
+                                  frameborder="0"
+                                  allow="autoplay; encrypted-media"
+                                  allowfullscreen
+                                  id="modal-videox"
+                                ></iframe>
                               </a>
-                            </Col>
                             </div>
-                          ) : (
-                            <Fragment />
-                          )}
 
-
-                            
-                           
-                          </div>
-
+                            <video
+                              className=""
+                              src={`${
+                                coursedetails && coursedetails?.data
+                                  ? formaturl(
+                                      coursedetails?.data?.introduction_video
+                                    ).idVideo
+                                  : ""
+                              }`}
+                              autoplay
+                              muted
+                              replay
+                            >
+                              {" "}
+                            </video>
+                          </a>
+                        </Col>
+                      </div>
+                    ) : (
+                      <Fragment />
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-
-    </div>
-  </div>
-</div>
-</section>
-)}
+        </section>
+      )}
       <Styles>
         {/* Course Details */}
         {loading ? (
@@ -409,8 +410,6 @@ const CourseDetails = ({
                               />
                             </div>
                           </Col>
-
-                          
                         </Row>
                       </div>
                       <div className="course-tab-list">
@@ -445,10 +444,7 @@ const CourseDetails = ({
                             >
                               <div className="course-desc">
                                 <h5>Course Overview</h5>
-                                <p>
-                                  
-                                    {coursedetails?.data?.course_overview}
-                                </p>
+                                <p>{coursedetails?.data?.course_overview}</p>
                               </div>
                               <div className="course-feature">
                                 <h5>What you will learn</h5>
@@ -824,14 +820,9 @@ const CourseDetails = ({
                       <Row>
                         <Col md="12">
                           <div className="course-details-feature">
-                            
-
-
                             <h5 className="title">Course Details</h5>
 
                             <div>
-
-
                               <ul className="list-unstyled feature-list">
                                 <li>
                                   <i className="las la-calendar"></i> Start
@@ -906,13 +897,10 @@ const CourseDetails = ({
                                     id="wishlister"
                                     style={{ background: "red" }}
                                     type="button"
-                                    onClick={
-                                      addToWishList.bind(
+                                    onClick={addToWishList.bind(
                                       this,
                                       coursedetails?.data?.id
-                                    )
-
-                                   }
+                                    )}
                                     className=" enroll-btn btn btn-danger"
                                   >
                                     Add To Wish List

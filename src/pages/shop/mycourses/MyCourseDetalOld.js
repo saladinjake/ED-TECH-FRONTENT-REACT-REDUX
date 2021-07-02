@@ -113,13 +113,13 @@ const CourseDetails = ({
       
             <div className="row">
               <div className="col-sm-12">
-                                <div className="btn-group pull-right m-t-15 open">
-                                <button type="button" className="btn  dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="true" style={{background: "rgb(2, 83, 200)", color: "rgb(255, 255, 255)"}}>
-                                Settings <span className="m-l-5"><i className="fa fa-cog"></i></span></button>
-                                <ul className="dropdown-menu drop-menu-right" role="menu"><li>
+                                <div class="btn-group pull-right m-t-15 open">
+                                <button type="button" class="btn  dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="true" style={{background: "rgb(2, 83, 200)", color: "rgb(255, 255, 255)"}}>
+                                Settings <span class="m-l-5"><i class="fa fa-cog"></i></span></button>
+                                <ul class="dropdown-menu drop-menu-right" role="menu"><li>
                                 <a href="#">Upcoming courses</a></li><li><a href="/profile">Profile</a></li>
                                 <li><a href="/notifications">Account Settings</a></li><li><a href="/cart">Cart</a></li>
-                                <li className="divider"></li><li><a href="#">Reload</a></li></ul>
+                                <li class="divider"></li><li><a href="#">Reload</a></li></ul>
                                 </div>
 
 
@@ -240,35 +240,35 @@ const CourseDetails = ({
   </div>  </div>  </div>  </div>  </div>  </div>  </div>
 
 
-                  <div className="col-md-12"> 
-                                <ul className="nav nav-tabs tabs" style={{width: "100%"}}>
-                                    <li className="active tab" style={{width: "25%"}}>
-                                        <a href="#home-2" data-toggle="tab" aria-expanded="false" className="active"> 
-                                            <span className="visible-xs"><i className="fa fa-home"></i></span> 
-                                            <span className="hidden-xs">Course overview</span> 
+                  <div class="col-md-12"> 
+                                <ul class="nav nav-tabs tabs" style={{width: "100%"}}>
+                                    <li class="active tab" style={{width: "25%"}}>
+                                        <a href="#home-2" data-toggle="tab" aria-expanded="false" class="active"> 
+                                            <span class="visible-xs"><i class="fa fa-home"></i></span> 
+                                            <span class="hidden-xs">Course overview</span> 
                                         </a> 
                                     </li> 
-                                    <li className="tab" style={{width: "25%"}}> 
+                                    <li class="tab" style={{width: "25%"}}> 
                                         <a href="#profile-2" data-toggle="tab" aria-expanded="false"> 
-                                            <span className="visible-xs"><i className="fa fa-user"></i></span> 
-                                            <span className="hidden-xs">Curriculum</span> 
+                                            <span class="visible-xs"><i class="fa fa-user"></i></span> 
+                                            <span class="hidden-xs">Curriculum</span> 
                                         </a> 
                                     </li> 
-                                    <li className="tab" style={{width: "25%"}}> 
+                                    <li class="tab" style={{width: "25%"}}> 
                                         <a href="#messages-2" data-toggle="tab" aria-expanded="true"> 
-                                            <span className="visible-xs"><i className="fa fa-envelope-o"></i></span> 
-                                            <span className="hidden-xs">Instructor</span> 
+                                            <span class="visible-xs"><i class="fa fa-envelope-o"></i></span> 
+                                            <span class="hidden-xs">Instructor</span> 
                                         </a> 
                                     </li> 
-                                    <li className="tab" style={{width: "25%"}}> 
+                                    <li class="tab" style={{width: "25%"}}> 
                                         <a href="#settings-2" data-toggle="tab" aria-expanded="false"> 
-                                            <span className="visible-xs"><i className="fa fa-cog"></i></span> 
-                                            <span className="hidden-xs">Reviews</span> 
+                                            <span class="visible-xs"><i class="fa fa-cog"></i></span> 
+                                            <span class="hidden-xs">Reviews</span> 
                                         </a> 
                                     </li> 
-                                <div className="indicator" style={{right: "393px", left: "0px"}}></div></ul> 
-                                <div className="tab-content"> 
-                                    <div className="tab-pane active card-box" id="home-2"> 
+                                <div class="indicator" style={{right: "393px", left: "0px"}}></div></ul> 
+                                <div class="tab-content"> 
+                                    <div class="tab-pane active card-box" id="home-2"> 
                                     <h3>Course Detail</h3><br/>
                                         <p>{coursedetails && coursedetails.data
                                     ? coursedetails.data.course_description
@@ -407,15 +407,15 @@ const CourseDetails = ({
 
                           </div>
                                     </div> 
-                                    <div className="tab-pane" id="profile-2" style={{display: "none"}}>
+                                    <div class="tab-pane" id="profile-2" style={{display: "none"}}>
                                         <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p> 
                                         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p> 
                                     </div> 
-                                    <div className="tab-pane" id="messages-2" style={{display: "none"}}>
+                                    <div class="tab-pane" id="messages-2" style={{display: "none"}}>
                                         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p> 
                                             <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p> 
                                     </div> 
-                                    <div className="tab-pane" id="settings-2" style={{display: "none"}}>
+                                    <div class="tab-pane" id="settings-2" style={{display: "none"}}>
                                         <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>  
                                         <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p> 
                                     </div> 
@@ -435,8 +435,8 @@ const CourseDetails = ({
 
                                        <div className="col-xs-12 ">
                                            <h4><b>Specifications:</b></h4>
-                                           <div className="table-responsive table-wrapper">
-                      <table className="table table-borderless table-reveal card-box" id="table1" style={{background:"#ebeff2"}}>
+                                           <div class="table-responsive table-wrapper">
+                      <table class="table table-borderless table-reveal card-box" id="table1" style={{background:"#ebeff2"}}>
                                                    <tbody>
                                                        <tr className="card-box">
                                                            <td width="400">Instructor</td>

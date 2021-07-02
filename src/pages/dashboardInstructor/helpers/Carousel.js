@@ -124,58 +124,52 @@ const Carousel = (props) => {
             {children.length > 0 &&
               children.map((item, i) => {
                 return (
-                    <div class="product" style={{marginRight:"20px"}}>
-                            <figure>
-                                <Link
-                                                to={"../courses/" + item.id + "/" + item.slug}
-                                                className="image-popup"
-                                                title="Screenshot-1"
-                                              >
-                                                {item.course_cover_image !== null ? (
-                                                  <img
-                                                    src={item.course_cover_image}
-                                                    className="thumb-img imagemix"
-                                                    alt="work-thumbnail"
-                                                    style={{ width: "100%", height: "auto" }}
-                                                  />
-                                                ) : (
-                                                  <Fragment />
-                                                )}{" "}
-                                                <div className="middle-overlay"></div>
-                                              </Link>
-                                </figure>
+                  <div class="product" style={{ marginRight: "20px" }}>
+                    <figure>
+                      <Link
+                        to={"../courses/" + item.id + "/" + item.slug}
+                        className="image-popup"
+                        title="Screenshot-1"
+                      >
+                        {item.course_cover_image !== null ? (
+                          <img
+                            src={item.course_cover_image}
+                            className="thumb-img imagemix"
+                            alt="work-thumbnail"
+                            style={{ width: "100%", height: "auto" }}
+                          />
+                        ) : (
+                          <Fragment />
+                        )}{" "}
+                        <div className="middle-overlay"></div>
+                      </Link>
+                    </figure>
 
-                                <div class="product-description">
-                            
-                                  <div class="info">
-                                    
-                                    <p style={{height:"50px", color:"blue"}}>
-                                      <Link to={"../courses/" + item.id + "/" + item.slug}>
-                                       
-                                          <Link
-                                            to={"../courses/" + item.id + "/" + item.slug}
-                                            style={{ fontSize: "14px" }}
-                                            className="text-dark"
-                                          >
-                                            {item.course_name}
-                                          </Link>
-                                     
-                                      </Link>
-                                    </p>
-                                    <p>A course by {item?.instructor?.user?.first_name !== null &&
-                             item?.instructor?.user?.first_name  +" " + item?.instructor?.user?.last_name}</p>
+                    <div class="product-description">
+                      <div class="info">
+                        <p style={{ height: "50px", color: "blue" }}>
+                          <Link to={"../courses/" + item.id + "/" + item.slug}>
+                            <Link
+                              to={"../courses/" + item.id + "/" + item.slug}
+                              style={{ fontSize: "14px" }}
+                              className="text-dark"
+                            >
+                              {item.course_name}
+                            </Link>
+                          </Link>
+                        </p>
+                        <p>
+                          A course by{" "}
+                          {item?.instructor?.user?.first_name !== null &&
+                            item?.instructor?.user?.first_name +
+                              " " +
+                              item?.instructor?.user?.last_name}
+                        </p>
+                      </div>
 
-                                  </div>
-
-                                  <div class="priceX">
-                                    {""}
-                                  </div>
-                                </div>
-
-       
-
-                                  
-                        </div>
+                      <div class="priceX">{""}</div>
+                    </div>
+                  </div>
                 );
               })}
           </div>

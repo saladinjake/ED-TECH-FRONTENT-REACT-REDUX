@@ -8,6 +8,7 @@ import {
   CLEAR_CART,
 } from "./types";
 
+import $ from "jquery";
 import { getCourses } from "services/course";
 
 export const fetchCourses = () => async (dispatch) => {
@@ -26,14 +27,27 @@ export const fetchCourses = () => async (dispatch) => {
 };
 
 export const addToCart = (id) => async (dispatch) => {
-  if(document.getElementById("md-modal")){
-    document.getElementById("md-modal").classList.add("md-show");
-  }
-  
+  // if(document.getElementById("md-modal")){
+  //   document.getElementById("md-modal").classList.add("md-show");
+  // }
+  // if($('.slideout')){
+  //   $('.slideout').addClass('on');
+  // }
+
+  // if($('.hide')){
+  //     $('.hide').click(function() {
+  //       $('.slideout').removeClass('on');
+  //     });
+  // }
+
   dispatch({
     type: ADD_TO_CART,
     payload: id,
   });
+
+  setTimeout(() => {
+    window.location.reload()
+  }, 3000);
 };
 
 export const removeFromCart = (id) => async (dispatch) => {

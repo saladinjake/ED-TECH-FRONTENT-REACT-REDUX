@@ -4,6 +4,7 @@ import { colors } from "../../../components/common/element/elements.js";
 export const Styles = styled.div`
   /* Course Grid */
   .course-grid-area {
+    
     padding: 70px 0;
     .course-items {
       .course-item {
@@ -473,16 +474,17 @@ export const Styles = styled.div`
               color: ${colors.black2};
               font-weight: 500;
               text-transform: uppercase;
-              padding: 12px 30px 10px;
-              border-radius: 5px;
+              // padding: 12px 30px 10px;
+             border-radius: 5px;
 
               @media (max-width: 991px) {
                 padding: 12px 16px 9px;
               }
             }
             a.nav-link.active {
-              background: ${colors.gr_bg2};
+              background: ${"#fefefe"};
               color: #ffffff;
+              border:2px solid #fafafa;
             }
           }
         }
@@ -1196,13 +1198,15 @@ export const Styles = styled.div`
           }
         }
 
-        ul.feature-list {
+        ul.feature-list-maker {
           margin-bottom: 20px;
           li {
             border-top: 1px dashed ${colors.border3};
             padding: 12px 0;
             font-size: 14px;
             color: ${colors.black2};
+            list-style-type: none;
+
             font-weight: 500;
             i {
               font-size: 20px;

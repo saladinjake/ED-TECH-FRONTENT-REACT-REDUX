@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import axios from "services/axiosConfig";
+import qs from "qs";
 
 export const getCourses = async () => {
   let request = axios.get("courses");
@@ -10,7 +11,6 @@ export const getCourses = async () => {
   });
 };
 
-
 export const getFeaturedCourses = async () => {
   let request = axios.get("courses/topPicks");
   return request.then((response) => {
@@ -19,8 +19,6 @@ export const getFeaturedCourses = async () => {
     }
   });
 };
-
-
 
 export const getCourse = async (id) => {
   let request = axios.get(`courses/${id}`);
@@ -40,23 +38,37 @@ export const createCourse = async (details) => {
   });
 };
 
+export const updateCourse = async (courseId, data) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      _method: "PUT",
+    },
+  };
 
+  let request = axios.put(
+    `courses/${courseId}`,
+    qs.stringify(data),
+    // data,
+    config
+  );
+  return request.then((response) => {
+    if (response.status === 200) {
+      return response && response;
+    }
+  });
+};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export const getInstructors = async () => {
+  let request = axios.get("instructors/active/Profiles");
+  return request.then((response) => {
+    if (response.status === 200) {
+      return response && response;
+    } else {
+      console.log(response);
+    }
+  });
+};
 
 export const getBusiness = async () => {
   let request = axios.get("business/activeProfiles");
@@ -94,26 +106,16 @@ export const getCertificates = () => {
   });
 };
 
-
-
-
-
-
-
-
-
-
 //bundles or programs
 
 export const createBundles = async (details) => {
-   let request = axios.post("bundles/create", details);
+  let request = axios.post("bundles/create", details);
   return request.then((response) => {
     if (response.status === 200) {
       return response && response;
     }
   });
-}
-
+};
 
 export const getBundles = () => {
   let request = axios.get("bundles/mybundles");
@@ -133,9 +135,8 @@ export const getBundle = (bundleId) => {
   });
 };
 
-
-export const updateBundle = (bundleId,data) => {
-  let request = axios.put(`bundles/${bundleId}`,data);
+export const updateBundle = (bundleId, data) => {
+  let request = axios.put(`bundles/${bundleId}`, data);
   return request.then((response) => {
     if (response.status === 200) {
       return response && response;

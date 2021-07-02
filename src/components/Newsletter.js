@@ -15,7 +15,15 @@ const Newsletter = () => {
               <div className="form__group">
                 <input type="email" name="email" placeholder="Email Address" />
               </div>
-              <button style={{width:"160px",padding:"25px"}}>Subscribe Now</button>
+              <button
+                style={{
+                  width: "160px",
+                  padding: "25px",
+                  background: "#ffffff",
+                }}
+              >
+                Subscribe Now
+              </button>
             </div>
           </Col>
         </Row>

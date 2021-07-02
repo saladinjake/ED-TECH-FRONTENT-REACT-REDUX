@@ -18,7 +18,9 @@ const CTA = () => {
           and train every employee with the highest quality eLearning
           experiences, in today's most job-relevant subject areas.
         </p>
-        <button style={{width:"150px"}} className="mt-xs">Read More</button>
+        <button style={{ width: "150px" }} className="mt-xs">
+          Read More
+        </button>
       </div>
 
       <div className="cta__item inst">
@@ -33,7 +35,9 @@ const CTA = () => {
           are poised to work with any government agency to help them achieve
           these training needs using our world-class eLearning platform.
         </p>
-        <button style={{width:"150px"}} className="mt-xs">Read More</button>
+        <button style={{ width: "150px" }} className="mt-xs">
+          Read More
+        </button>
       </div>
     </section>
   );

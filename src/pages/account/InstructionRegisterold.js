@@ -14,7 +14,7 @@ import { getCountries } from "services/country";
 import { getIndustries } from "services/industry";
 import { getLanguages } from "services/language";
 import { instructorSchema } from "helper/validations";
-import "./instructorReg.css"
+import "./instructorReg.css";
 
 import {
   Degrees,
@@ -78,7 +78,7 @@ const InstructorRegister = () => {
     values.country_id = parseInt(values.country_id);
     values.industry_id = parseInt(values.industry_id);
     try {
-    console.log(values)
+      console.log(values);
       await registerInstructor(values);
       toast.success("We have sent a verification mail to your email.");
       setTimeout(() => {
@@ -86,7 +86,7 @@ const InstructorRegister = () => {
       }, 2000);
       setSubmitting(false);
     } catch (err) {
-      console.log(err)
+      console.log(err);
       toast.error(err?.response?.data?.message);
       setSubmitting(false);
     }
@@ -105,8 +105,6 @@ const InstructorRegister = () => {
       <div className="main-wrapper registration-page">
         {/* Header 2 */}
         <NavBar />
-
-      
 
         {/* Registration Area */}
         <section className="form_wrapper">
@@ -140,7 +138,8 @@ const InstructorRegister = () => {
                             {formik.errors.first_name}
                           </span>
                         ) : null}
-                      </p><br/>
+                      </p>
+                      <br />
                       <p className="input_field col_half">
                         <label htmlFor="registration_lname">Last Name</label>
                         <input
@@ -156,7 +155,8 @@ const InstructorRegister = () => {
                             {formik.errors.last_name}
                           </span>
                         ) : null}
-                      </p><br/>
+                      </p>
+                      <br />
                       <p className="input_field col_half">
                         <label htmlFor="registration_email">
                           Email Address
@@ -174,8 +174,9 @@ const InstructorRegister = () => {
                             {formik.errors.email}
                           </span>
                         ) : null}
-                      </p><br/>
-                    
+                      </p>
+                      <br />
+
                       <p className="input_field col_half">
                         <label htmlFor="registration_user">Phone Number</label>
                         <input
@@ -191,7 +192,8 @@ const InstructorRegister = () => {
                             {formik.errors.phone_number}
                           </span>
                         ) : null}
-                      </p><br/>
+                      </p>
+                      <br />
                       <p className="input_field col_half">
                         <label htmlFor="registration_email">Biography</label>
                         <textarea
@@ -206,7 +208,8 @@ const InstructorRegister = () => {
                             {formik.errors.biography}
                           </span>
                         ) : null}
-                      </p><br/>
+                      </p>
+                      <br />
                       <p className="input_field col_half">
                         <label htmlFor="registration_user">Date Of Birth</label>
                         <input
@@ -223,7 +226,8 @@ const InstructorRegister = () => {
                             {formik.errors.date_of_birth}
                           </span>
                         ) : null}
-                      </p><br/>
+                      </p>
+                      <br />
                       <p className="input_field col_half">
                         <label htmlFor="registration_user">Gender</label>
                         <select
@@ -240,7 +244,8 @@ const InstructorRegister = () => {
                             {formik.errors.gender}
                           </span>
                         ) : null}
-                      </p><br/>
+                      </p>
+                      <br />
 
                       <p className="input_field col_half">
                         <label htmlFor="registration_user">Country</label>
@@ -265,7 +270,8 @@ const InstructorRegister = () => {
                             {formik.errors.country_id}
                           </span>
                         ) : null}
-                      </p><br/>
+                      </p>
+                      <br />
 
                       <p className="input_field col_half">
                         <label htmlFor="registration_user">Industry</label>
@@ -290,8 +296,9 @@ const InstructorRegister = () => {
                             {formik.errors.industry_id}
                           </span>
                         ) : null}
-                      </p><br/>
-                    
+                      </p>
+                      <br />
+
                       <p className="input_field col_half">
                         <label htmlFor="registration_user">Language</label>
                         <select
@@ -314,7 +321,8 @@ const InstructorRegister = () => {
                             {formik.errors.language}
                           </span>
                         ) : null}
-                      </p><br/>
+                      </p>
+                      <br />
                       <p className="input_field col_half">
                         <label htmlFor="registration_user">
                           Educational Level
@@ -336,7 +344,8 @@ const InstructorRegister = () => {
                             {formik.errors.education_level}
                           </span>
                         ) : null}
-                      </p><br/>
+                      </p>
+                      <br />
                       <p className="input_field col_half">
                         <label htmlFor="registration_user">
                           Degree Obtained
@@ -358,8 +367,9 @@ const InstructorRegister = () => {
                             {formik.errors.degree_obtained}
                           </span>
                         ) : null}
-                      </p><br/>
-                    
+                      </p>
+                      <br />
+
                       <p className="input_field col_half">
                         <label htmlFor="registration_user">
                           Employment Status
@@ -380,7 +390,8 @@ const InstructorRegister = () => {
                             {formik.errors.language}
                           </span>
                         ) : null}
-                      </p><br/>
+                      </p>
+                      <br />
                       <p className="input_field col_half">
                         <label htmlFor="registration_user">
                           Experience Level
@@ -402,7 +413,8 @@ const InstructorRegister = () => {
                             {formik.errors.experience_level}
                           </span>
                         ) : null}
-                      </p><br/>
+                      </p>
+                      <br />
                       <p className="input_field col_half">
                         <label htmlFor="registration_user">
                           Marital Status
@@ -424,8 +436,9 @@ const InstructorRegister = () => {
                             {formik.errors.marital_status}
                           </span>
                         ) : null}
-                      </p><br/>
-                    
+                      </p>
+                      <br />
+
                       <p className="input_field col_half">
                         <label htmlFor="registration_email">Facebook Url</label>
                         <input
@@ -441,7 +454,8 @@ const InstructorRegister = () => {
                             {formik.errors.facebook_url}
                           </span>
                         ) : null}
-                      </p><br/>
+                      </p>
+                      <br />
                       <p className="input_field col_half">
                         <label htmlFor="registration_email">Twitter Url</label>
                         <input
@@ -457,7 +471,8 @@ const InstructorRegister = () => {
                             {formik.errors.twitter_url}
                           </span>
                         ) : null}
-                      </p><br/>
+                      </p>
+                      <br />
                       <p className="input_field col_half">
                         <label htmlFor="registration_email">Linkedin Url</label>
                         <input
@@ -473,8 +488,9 @@ const InstructorRegister = () => {
                             {formik.errors.linkedin_url}
                           </span>
                         ) : null}
-                      </p><br/>
-                    
+                      </p>
+                      <br />
+
                       <p className="input_field col_half">
                         <label htmlFor="registration_email">
                           Current Employer Name
@@ -493,7 +509,8 @@ const InstructorRegister = () => {
                             {formik.errors.current_employer_name}
                           </span>
                         ) : null}
-                      </p><br/>
+                      </p>
+                      <br />
                       <p className="input_field col_half">
                         <label htmlFor="registration_email">
                           Current Employer Designation
@@ -514,7 +531,8 @@ const InstructorRegister = () => {
                             {formik.errors.current_employer_designation}
                           </span>
                         ) : null}
-                      </p><br/>
+                      </p>
+                      <br />
                       <p className="input_field col_half">
                         <label htmlFor="registration_email">
                           Previous Employer Name
@@ -533,7 +551,8 @@ const InstructorRegister = () => {
                             {formik.errors.previous_employer_name}
                           </span>
                         ) : null}
-                      </p><br/>
+                      </p>
+                      <br />
                       <p className="input_field col_half">
                         <label htmlFor="registration_email">
                           Previous Employer Designation
@@ -554,7 +573,8 @@ const InstructorRegister = () => {
                             {formik.errors.previous_employer_designation}
                           </span>
                         ) : null}
-                      </p><br/>
+                      </p>
+                      <br />
                     </Row>
 
                     <button type="submit" disabled={formik.isSubmitting}>

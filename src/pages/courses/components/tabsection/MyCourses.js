@@ -18,7 +18,7 @@ function MyCourses({ courses }) {
               <div className=" row filter-items">
                 {courses.map((data, i) => (
                   <div className="col-md-4" key={i}>
-                    <div className="course-item" >
+                    <div className="course-item">
                       <Link to={process.env.PUBLIC_URL + data.courseLink}>
                         <div
                           className="course-image"
@@ -27,19 +27,21 @@ function MyCourses({ courses }) {
                           }}
                         ></div>
                       </Link>
-                      <div className="course-content" >
-                        <h6 className=""  style={{height:"40px", fontSize: 14}}>
+                      <div className="course-content">
+                        <h6
+                          className=""
+                          style={{ height: "40px", fontSize: 14 }}
+                        >
                           <Link to={data?.course?.course_cover_image}>
                             {data?.course?.course_name}
                           </Link>
                         </h6>
-                      {  /*<p className="desc">
+                        {/*<p className="desc">
                           Instructor: {data?.instructor?.user?.first_name}{" "}
                           {data?.instructor?.user.last_name}
                         </p>*/}
-                        <br/>
+                        <br />
                         <div className="course-face d-flex justify-content-between">
-                         
                           <div className="student">
                             <button className="btn course-btn">
                               Go to course

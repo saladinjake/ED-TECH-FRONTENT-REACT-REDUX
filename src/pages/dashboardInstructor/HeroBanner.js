@@ -19,7 +19,7 @@ const WelcomeBanner = ({
   info,
   infoInst,
   wishlists,
-  activeCoursesTotal
+  activeCoursesTotal,
 }) => {
   return (
     <Fragment>
@@ -82,14 +82,12 @@ const WelcomeBanner = ({
             <div class="card-box">
               <div class="bar-widget">
                 <div class="table-box">
-                
                   <div
                     class="table-detail"
                     style={{ height: "250px", textAlign: "center" }}
                   >
                     <div>
                       <div>
-                         
                         <img
                           alt="not-found"
                           src={
@@ -97,7 +95,6 @@ const WelcomeBanner = ({
                             "/assets/images/book-open.png"
                           }
                         />
-                      
                       </div>
                     </div>
                     <h6 class="m-t-0 ">
@@ -111,7 +108,6 @@ const WelcomeBanner = ({
                     </p>
                   </div>
                   <div class="center"></div>
-                  
                 </div>
               </div>
             </div>
@@ -121,33 +117,28 @@ const WelcomeBanner = ({
         <Row class="row">
           <Col lg="3" sm="6">
             <div class="widget-panel widget-style-2 bg-white">
-            
               <i class="md md-switch text-info"></i>
               <h2 class="m-0 text-dark counter font-600">
                 {info?.upcoming_courses}
               </h2>
               <div class="text-muted m-t-5">Upcoming Courses</div>
-            
             </div>
           </Col>
 
           <Col lg="3" sm="6">
             <div class="widget-panel widget-style-2 bg-white">
-             <Link to={process.env.PUBLIC_URL +`/learner/wishlists` }>
-              <i class="md md-store-mall-directory  text-brown"></i>
-              <h2 class="m-0 text-dark counter font-600">
-                {wishlists !== undefined &&  (`(${wishlists})`)
-                  }
-              </h2>
-              <div class="text-muted m-t-5">Wishlists</div>
+              <Link to={process.env.PUBLIC_URL + `/learner/wishlists`}>
+                <i class="md md-store-mall-directory  text-brown"></i>
+                <h2 class="m-0 text-dark counter font-600">
+                  {wishlists !== undefined && `(${wishlists})`}
+                </h2>
+                <div class="text-muted m-t-5">Wishlists</div>
               </Link>
             </div>
           </Col>
           <Col lg="3" sm="6">
-            <Link to={process.env.PUBLIC_URL +`/cart` }>
-      
+            <Link to={process.env.PUBLIC_URL + `/cart`}>
               <div class="widget-panel widget-style-2 bg-white">
-
                 <i class="md md-add-shopping-cart text-pink"></i>
                 <h2 class="m-0 text-dark counter font-600">
                   {cart !== undefined && `(${cart?.length})`}
@@ -158,18 +149,13 @@ const WelcomeBanner = ({
           </Col>
           <Col lg="3" sm="6">
             <div class="widget-panel widget-style-2 bg-white">
-          
-             
-           
               <i class="md md-account-child text-custom"></i>
               <h2 class="m-0 text-dark counter font-600">
                 {info?.all_enrollments}
               </h2>
               <div class="text-muted m-t-5">Enrollments</div>
-            
             </div>
           </Col>
-
 
           {/*<Col lg="3" sm="6">
             <div class="widget-panel widget-style-2 bg-white">
@@ -223,12 +209,6 @@ const WelcomeBanner = ({
             </div>
             </Link>
           </Col>*/}
-
-
-
-
-           
-
         </Row>
       </Container>
     </Fragment>

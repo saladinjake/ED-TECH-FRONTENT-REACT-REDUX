@@ -27,7 +27,7 @@ const ProgramGrid = ({
   const query = useQuery();
   let routeQuery = query.get("filter");
 
-   let history = useHistory();
+  let history = useHistory();
 
   const [querySearchVal, setVal] = useState(query.get("search"));
   const [querySearchMethod, setMethod] = useState(query.get("method"));
@@ -43,16 +43,13 @@ const ProgramGrid = ({
     // let listButton = document.querySelector(".list-view");
     // let gridButton = document.querySelector(".grid-view");
     // let wrapper = document.querySelector(".viewCourses");
-
     // listButton.addEventListener("click", function () {
     //   gridButton.classList.remove("on");
     //   listButton.classList.add("on");
     //   wrapper.classList.remove("gridDisplay");
     //   wrapper.classList.add("listDisplay");
-
     //   //wrapper.querySelector("widget")
     // });
-
     // gridButton.addEventListener("click", function () {
     //   listButton.classList.remove("on");
     //   gridButton.classList.add("on");
@@ -170,15 +167,21 @@ const ProgramGrid = ({
               </Col>
 
               <Col lg="9" md="8" sm="7">
-                <div className="buttons-sec gridsect" >
-                  <button className="gridsect list-view on" onClick={()=> {
-                     history.push("/programs")
-                  }}>
+                <div className="buttons-sec gridsect">
+                  <button
+                    className="gridsect list-view on"
+                    onClick={() => {
+                      history.push("/programs");
+                    }}
+                  >
                     <i className="fa fa-bars"></i>
                   </button>
-                  <button className="gridsect grid-view "  onClick={()=> {
-                     history.push("/programs-grid/list")
-                  }}>
+                  <button
+                    className="gridsect grid-view "
+                    onClick={() => {
+                      history.push("/programs-grid/list");
+                    }}
+                  >
                     <i className="fa fa-th"></i>
                   </button>
                 </div>
@@ -213,7 +216,6 @@ const ProgramGrid = ({
     </div>
   );
 };
-
 
 ProgramGrid.propTypes = {
   course: PropTypes.object.isRequired,

@@ -1,0 +1,25 @@
+.parentAlert {
+  display: flex;
+}
+
+.leftAlert,
+.rightAlert {
+  flex: 1;
+}
+
+
+/* Styles for demonstration */
+.parentAlert {
+  padding: 5px;
+  border: 2px solid #000;
+}
+.leftAlert,
+.rightAlert {
+  padding: 3px;
+  border: 2px solid red;
+}
+.centerAlert {
+  margin: 0 3px;
+  padding: 3px;
+  border: 2px solid blue;
+}

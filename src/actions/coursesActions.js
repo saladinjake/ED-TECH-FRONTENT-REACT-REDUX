@@ -7,8 +7,8 @@ export const fetchCourses = () => async (dispatch) => {
     const res = await getCourses();
 
     const courses = res.data.data.courses.filter((course) => {
-            return  parseInt(course.status) === 1;
-          })
+      return parseInt(course.status) === 1;
+    });
     dispatch({
       type: GET_COURSES,
       payload: courses,

@@ -202,48 +202,6 @@ h6 a {
 .filter-sidebar {
   padding-top: 1.5rem;
 }
-.nav-tabs {
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
-  flex-wrap: nowrap !important;
-}
-.nav-tab .nav-link.active {
-  color: #f8f9fa !important;
-  background-color: #05509e !important;
-  border-color: #dee2e6 #dee2e6 #fff;
-}
-.nav-tabs .nav-link.active {
-  color: #f8f9fa !important;
-  background: linear-gradient(90deg, #044298, #1d6be4) !important;
-  border-color: #dee2e6 #dee2e6 #fff;
-  border-radius: 5px;
-  font-size: 14px;
-  font-weight: 600;
-}
-.nav-tabs .nav-link {
-  margin-bottom: -1px;
-  border: 1px solid transparent;
-  border-top-left-radius: 0.25rem;
-  border-top-right-radius: 0.25rem;
-  color: rgb(68, 68, 68);
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.tab-content {
-  border-top: 1px solid #e6e6e6;
-  padding-top: 1.5rem;
-  /* background: #F6F9FF; */
-  max-height: 100vh;
-  padding: 1rem 0rem;
-  display: block;
-}
-
-@media (max-width: 600px) {
-  .nav-tabs {
-    margin-top: 1rem;
-  }
-}
 
 .show {
   display: block;

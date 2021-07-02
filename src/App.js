@@ -17,6 +17,8 @@ import ProgramGrid from "pages/courses/ProgramGrid";
 import ProgramGridList from "pages/courses/ProgramGridList";
 
 import CourseDetails from "pages/courses/CourseDetails";
+import CoursePreview from "pages/courses/CoursePreview";
+
 import Instructor from "pages/instructor/Instructors";
 import InstructorDetails from "pages/instructor/InstructorDetails";
 import Institution from "pages/institution/Institutions";
@@ -36,8 +38,9 @@ import PageNotFound from "pages/404/PageNotFound";
 // import Product from "pages/shop/Products";
 import InstructorCourses from "pages/instructors/InstructorCourses";
 import MyInstructorCourses from "pages/instructorAuthoredCourses/MyLearning";
-import CreateCourse from "pages/account/CreateCourse";
-import CreateCourseOld from "pages/account/CreateCourseOld";
+// import CreateCourse from "pages/account/CreateCourse";
+import CreateCourseForm from "pages/account/CreateCourseForm";
+import EditCourseForm from "pages/account/NewEditForm";
 import InstructorDashboard from "pages/instructors/InstructorDashboard";
 import NewInstructorDashboard from "pages/dashboardInstructor/MyDashboard";
 
@@ -49,7 +52,7 @@ import Billing from "pages/shop/Billing";
 import InstructorNotifications from "pages/instructors/InstructorNotifications";
 import InstructorPendingCourses from "pages/instructors/InstructorPendingCourses";
 import InstructorDeclinedCourses from "pages/instructors/InstructorDeclinedCourses";
-import { Toaster } from "react-hot-toast";
+// import { Toaster } from "react-hot-toast";
 import LearnersRoute from "routes/LearnersRoute";
 import InstructorsRoute from "routes/InstructorsRoute";
 // import AuthenticatedRoute from "routes/AuthenticatedRoute";
@@ -59,39 +62,57 @@ import MylearningDashboard from "./pages/courses/components/MyLearning";
 import OverViewPane from "./pages/dashboard/MyDashboard";
 import SortTest from "./SortTest";
 import NewNotifications from "./pages/mynotifications/Notifications";
-import  NewInstructorNotifications from  "./pages/mynotifications/NewInstructorNotification";
-// import WorkBench from "./pages/workbench/WorkSheet"
+import NewInstructorNotifications from "./pages/mynotifications/NewInstructorNotification";
+import WorkBench from "./pages/workbench/WorkSheet";
 
 import Purchases from "./pages/purchases/Purchases";
 
 import history from "./history";
 
-function App() {
+import HomePageDesign from "./newHome/home";
+import HomePageDesignTwo from "./newHome/home2";
+
+
+import DynamicContentForInstitutions from "./pages/institution/NewInstitutionDetailLanding"
+import "./responsive.css";
+import "./app.css"
+import Notification from "./Toaster"
+
+
+function App(props) {
+
   return (
     <Router history={history}>
-      <Toaster
+      {/*<Toaster
+       
         toastOptions={{
           success: {
             style: {
               background: "green",
               color: "#ffffff",
+              
+
             },
           },
           error: {
             style: {
               background: "orangered",
               color: "#ffffff",
+              
+
             },
           },
         }}
-      />
+      />*/}
+
+      <Notification />
       <GlobalStyle />
       <ScrollToTop />
       <Switch>
         <Route
           exact
           path={`${process.env.PUBLIC_URL + "/"}`}
-          component={HomeOne}
+          component={HomePageDesignTwo}
         />
 
         <Route
@@ -122,12 +143,13 @@ function App() {
         <Route
           exact
           path={`${process.env.PUBLIC_URL + "/courses"}`}
-          component={CourseGrid}
+          component={ CourseGrid //CourseGridList
+          }
         />
         <Route
           exact
           path={`${process.env.PUBLIC_URL + "/course-grid/list"}`}
-          component={CourseGridList}
+          component={ CourseGrid}
         />
 
         <Route exact path="/courses/category/:id" component={CourseGrid} />
@@ -147,6 +169,13 @@ function App() {
           path={`${process.env.PUBLIC_URL + "/institutions"}`}
           component={Institution}
         />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/institute/:id"}`}
+          component={DynamicContentForInstitutions}
+        />
+
         <Route
           exact
           path={`${process.env.PUBLIC_URL + "/institution/:id"}`}
@@ -216,34 +245,53 @@ function App() {
         />
         <InstructorsRoute
           exact
-          path={`${process.env.PUBLIC_URL + "/instructor-detail/profile/update"}`}
+          path={`${
+            process.env.PUBLIC_URL + "/instructor-detail/profile/update"
+          }`}
           component={UpdateInstructor}
         />
+
+        
         <InstructorsRoute
           exact
           path={`${process.env.PUBLIC_URL + "/instructor-pages/notifications"}`}
           component={NewInstructorNotifications}
         />
+
+        {/*<InstructorsRoute
+          exact
+          path={`${
+            process.env.PUBLIC_URL + "/instructor-pages/course-edit/:id"
+          }`}
+          component={EditCourseForm}
+        />*/}
+
+        <InstructorsRoute
+          exact
+          path={`${
+            process.env.PUBLIC_URL + "/course-preview/:id"
+          }`}
+          component={CoursePreview}
+        />
+
         <InstructorsRoute
           exact
           path={`${process.env.PUBLIC_URL + "/instructor-pages/course/create"}`}
-          component={CreateCourseOld}
+          component={CreateCourseForm}
         />
 
         <InstructorsRoute
           exact
-          path={`${process.env.PUBLIC_URL + "/instructor-pages/course/create-old"}`}
-          component={CreateCourse}
-        />
-
-        <InstructorsRoute
-          exact
-          path={`${process.env.PUBLIC_URL + "/instructor-pages/course/pending"}`}
+          path={`${
+            process.env.PUBLIC_URL + "/instructor-pages/course/pending"
+          }`}
           component={InstructorPendingCourses}
         />
         <InstructorsRoute
           exact
-          path={`${process.env.PUBLIC_URL + "/instructor-pages/course/declined"}`}
+          path={`${
+            process.env.PUBLIC_URL + "/instructor-pages/course/declined"
+          }`}
           component={InstructorDeclinedCourses}
         />
         <LearnersRoute
@@ -290,7 +338,7 @@ function App() {
           component={SortTest}
         />
 
-        <PublicRoute
+        {/*<PublicRoute
           exact
           path={`${process.env.PUBLIC_URL + "/login"}`}
           component={Login}
@@ -300,7 +348,7 @@ function App() {
           exact
           path={`${process.env.PUBLIC_URL + "/register"}`}
           component={Register}
-        />
+        />*/}
 
         <PublicRoute
           exact
@@ -313,7 +361,6 @@ function App() {
           component={WishLists}
         />
 
-
         <Route
           exact
           path={`${process.env.PUBLIC_URL + "/programs"}`}
@@ -323,6 +370,24 @@ function App() {
           exact
           path={`${process.env.PUBLIC_URL + "/programs-grid/list"}`}
           component={ProgramGridList}
+        />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/home"}`}
+          component={HomePageDesign}
+        />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/home-2"}`}
+          component={HomePageDesignTwo}
+        />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/home-work"}`}
+          component={WorkBench}
         />
 
         

@@ -9,7 +9,7 @@ import { Styles } from "./styles/cart.js";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { removeFromCart } from "actions/cartActions";
-
+import $ from "jquery"
 const Cart = ({
   auth: { isAuthenticated },
   cart: { cart, total },
@@ -19,7 +19,16 @@ const Cart = ({
 
   useEffect(() => {
     if (!isAuthenticated) {
-      history.push("/login", { from: history.location.pathname });
+      // $(".modal-link").click(function(e){
+ 
+
+       $('.overlay').addClass('modal-window').css({display:"block"})
+       $(".overlay__close").css({display:"none"})
+       $(".overlay__close2").css({display:"none"})
+       $(".overlay__close3").css({display:"none"})
+
+    // })
+      // history.push("/login", { from: history.location.pathname });
     }
     // eslint-disable-next-line
   }, []);
@@ -66,6 +75,7 @@ const Cart = ({
                               <tr key={i}>
                                 <td className="product-remove">
                                   <Button
+                                    style={{ height: "50px" }}
                                     onClick={removeItemFromCart.bind(
                                       this,
                                       data.id

@@ -80,16 +80,16 @@ const WishList = (props) => {
                             return (
                               <tr key={i}>
                                 <td className="product-remove">
-                                  <Button
+                                  <button
+                                    className="btn btn-danger"
                                     onClick={removeItemFromWish.bind(
                                       this,
                                       data.id
                                     )}
-                                    variant="danger"
                                   >
-                                    remove item
+                                    remove
                                     <i className="las la-trash"></i>
-                                  </Button>
+                                  </button>
                                   {/* <button
                                     onClick={removeFromCart.bind(this, data.id)}
                                   >
@@ -153,18 +153,16 @@ const WishList = (props) => {
   );
 };
 
-
-const cachedWishlist = localStorage && JSON?.parse(localStorage.getItem("wishes"));
+const cachedWishlist =
+  localStorage && JSON?.parse(localStorage.getItem("wishes"));
 const cachedTotal = localStorage && localStorage.getItem("total");
-
-
 
 let wishListedItems = cachedWishlist ? cachedWishlist : [];
 let total = cachedTotal ? cachedTotal : 0;
 if (localStorage.getItem("wishes")) {
   wishListedItems = { wishBag: wishListedItems };
-}else{
-   wishListedItems = { wishBag: [] };
+} else {
+  wishListedItems = { wishBag: [] };
 }
 WishList.propTypes = {
   auth: PropTypes.object.isRequired,

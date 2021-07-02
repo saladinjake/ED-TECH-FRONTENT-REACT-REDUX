@@ -19,6 +19,8 @@ const LearnerProfiler = ({ auth: { user, user_roles } }) => {
   const [profile, setProfile] = useState({});
   const [loading, setLoading] = useState(true);
 
+  console.log(user);
+
   useEffect(() => {
     (async function loadContent() {
       try {
@@ -31,7 +33,7 @@ const LearnerProfiler = ({ auth: { user, user_roles } }) => {
     })();
     // eslint-disable-next-line
   }, []);
-  console.log(profile.user);
+  // console.log(profile.user);
   return (
     <div className=" ">
       <NavBar />
@@ -49,23 +51,32 @@ const LearnerProfiler = ({ auth: { user, user_roles } }) => {
                 <Col md="5">
                   <div className="product-slider">
                     <div className="slider-item">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          `/assets/images/product-01.jpg`
-                        }
-                        height="200"
-                        width="200"
-                        alt=""
-                        className="circle card-box"
-                      />
+                      {profile?.user?.image_url?.length > 0 ? (
+                        <img
+                          src={profile?.user?.image_url}
+                          alt=""
+                          height="200"
+                          width="200"
+                          alt=""
+                          className="circle card-box"
+                        />
+                      ) : (
+                        <img
+                          src="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png"
+                          alt=""
+                          height="200"
+                          width="200"
+                          alt=""
+                          className="circle card-box"
+                        />
+                      )}
                     </div>
                   </div>
 
                   <Col>
                     <Table className="table table-borderless table-reveal ">
                       <tbody>
-                        <tr>
+                        {/*<tr>
                           <td>
                             <i
                               className="fa fa-user"
@@ -74,8 +85,8 @@ const LearnerProfiler = ({ auth: { user, user_roles } }) => {
                             Username{" "}
                           </td>
 
-                          <td className="pull-right">{`${profile.user?.username}`}</td>
-                        </tr>
+                          <td className="pull-right">{`${profile?.user?.username}`}</td>
+                        </tr>*/}
 
                         <tr>
                           <td>
@@ -86,7 +97,7 @@ const LearnerProfiler = ({ auth: { user, user_roles } }) => {
                             First Name{" "}
                           </td>
 
-                          <td className="pull-right">{`${profile.user?.first_name}`}</td>
+                          <td className="pull-right">{`${profile?.user?.first_name}`}</td>
                         </tr>
 
                         <tr>
@@ -99,7 +110,7 @@ const LearnerProfiler = ({ auth: { user, user_roles } }) => {
                           </td>
 
                           <td className="pull-right">
-                            {`${profile.user?.last_name}`}{" "}
+                            {`${profile?.user?.last_name}`}{" "}
                           </td>
                         </tr>
 
@@ -111,7 +122,7 @@ const LearnerProfiler = ({ auth: { user, user_roles } }) => {
                             ></i>
                             Email
                           </td>
-                          <td className="pull-right">{`${profile.user?.email}`}</td>
+                          <td className="pull-right">{`${profile?.user?.email}`}</td>
                         </tr>
                         <tr>
                           <td>
@@ -121,7 +132,7 @@ const LearnerProfiler = ({ auth: { user, user_roles } }) => {
                             ></i>
                             Gender
                           </td>
-                          <td className="pull-right">{`${profile.user.learner_profile?.gender}`}</td>
+                          <td className="pull-right">{`${profile?.user?.learner_profile?.gender}`}</td>
                         </tr>
                         <tr>
                           <td>
@@ -131,7 +142,7 @@ const LearnerProfiler = ({ auth: { user, user_roles } }) => {
                             ></i>
                             Phone
                           </td>
-                          <td className="pull-right">{`${profile.user?.phone_number}`}</td>
+                          <td className="pull-right">{`${profile?.user?.phone_number}`}</td>
                         </tr>
                       </tbody>
                     </Table>
@@ -149,7 +160,7 @@ const LearnerProfiler = ({ auth: { user, user_roles } }) => {
                           ></i>
                           Marital Status
                         </td>
-                        <td className="pull-right">{`${profile.user.learner_profile?.marital_status}`}</td>
+                        <td className="pull-right">{`${profile?.user?.learner_profile?.marital_status}`}</td>
                       </tr>
 
                       <tr>
@@ -161,12 +172,12 @@ const LearnerProfiler = ({ auth: { user, user_roles } }) => {
                           Date Of Birth
                         </td>
                         <td className="pull-right">
-                          >{`${profile.user.learner_profile?.date_of_birth}`}
+                          >{`${profile?.user?.learner_profile?.date_of_birth}`}
                         </td>
                       </tr>
                       <tr>
                         <td>Employment Status</td>
-                        <td className="pull-right">{`${profile.user.learner_profile?.employment_status}`}</td>
+                        <td className="pull-right">{`${profile?.user?.learner_profile?.employment_status}`}</td>
                       </tr>
                       <tr>
                         <td>
@@ -176,7 +187,7 @@ const LearnerProfiler = ({ auth: { user, user_roles } }) => {
                           ></i>
                           Education Level
                         </td>
-                        <td className="pull-right">{`${profile.user.learner_profile?.education_level}`}</td>
+                        <td className="pull-right">{`${profile?.user?.learner_profile?.education_level}`}</td>
                       </tr>
                       <tr>
                         <td>
@@ -186,7 +197,7 @@ const LearnerProfiler = ({ auth: { user, user_roles } }) => {
                           ></i>{" "}
                           Degree Obtained
                         </td>
-                        <td className="pull-right">{`${profile.user.learner_profile?.degree_obtained}`}</td>
+                        <td className="pull-right">{`${profile?.user?.learner_profile?.degree_obtained}`}</td>
                       </tr>
                       <tr>
                         <td>
@@ -196,7 +207,7 @@ const LearnerProfiler = ({ auth: { user, user_roles } }) => {
                           ></i>
                           Twitter Link
                         </td>
-                        <td className="pull-right">{`${profile.user.learner_profile?.twitter_url}`}</td>
+                        <td className="pull-right">{`${profile?.user?.learner_profile?.twitter_url}`}</td>
                       </tr>
                       <tr>
                         <td>
@@ -206,8 +217,9 @@ const LearnerProfiler = ({ auth: { user, user_roles } }) => {
                           ></i>
                           Facebook Link
                         </td>
-                        <td className="pull-right">{`${profile.user.learner_profile?.facebook_url}`}</td>
+                        <td className="pull-right">{`${profile?.user?.learner_profile?.facebook_url}`}</td>
                       </tr>
+
                       <tr>
                         <td>
                           <i
@@ -216,7 +228,39 @@ const LearnerProfiler = ({ auth: { user, user_roles } }) => {
                           ></i>
                           LinkedIn Link
                         </td>
-                        <td className="pull-right">{`${profile.user.learner_profile?.linkedin_url}`}</td>
+                        <td className="pull-right">{`${profile?.user?.learner_profile?.linkedin_url}`}</td>
+                      </tr>
+
+                      <tr>
+                        <td>Current employer Name</td>
+                        <td
+                          style={{ border: "none" }}
+                          className="pull-right"
+                        >{`${profile?.user?.instructor_profile?.current_employer_name}`}</td>
+                      </tr>
+
+                      <tr>
+                        <td>Current employer designation</td>
+                        <td
+                          style={{ border: "none" }}
+                          className="pull-right"
+                        >{`${profile?.user?.instructor_profile?.current_employer_designation}`}</td>
+                      </tr>
+
+                      <tr>
+                        <td>Previous employer Name</td>
+                        <td
+                          style={{ border: "none" }}
+                          className="pull-right"
+                        >{`${profile?.user?.instructor_profile?.previous_employer_name}`}</td>
+                      </tr>
+
+                      <tr>
+                        <td>Previous employer designation</td>
+                        <td
+                          style={{ border: "none" }}
+                          className="pull-right"
+                        >{`${profile?.user?.instructor_profile?.previous_employer_designation}`}</td>
                       </tr>
                     </tbody>
                   </Table>

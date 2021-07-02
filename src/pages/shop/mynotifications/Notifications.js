@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment } from "react";
-// import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import NavBar from "components/Navbar";
 
 import Footer from "components/Footer";
@@ -23,9 +23,7 @@ import "../newdashboard/assets/css/pages.css";
 import "../newdashboard/assets/css/responsive.css";
 import "./tabnotifications.css"
 
-// import $ from 'jquery';
-// import Popper from 'popper.js';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
+
 
 function getTimeAgoInterval(date) {
   let seconds = Math.floor((Date.now() - date) / 1000);
@@ -49,7 +47,7 @@ function getTimeAgoInterval(date) {
     value = Math.floor(seconds / 60);
     unit = "minute";
   }
-  if (Number(value) !== 1)
+  if (value != 1)
     unit = unit + "s";
   return value + " " + unit + " " + direction;
 }
@@ -79,13 +77,13 @@ const Notifications = () => {
        
         <NavBar />
 
-       <div className="wrapper">
+       <div className="container">
 
-      <div className="content-page">
+      <div className="row">
 
 
               
-                <div className="content" style={{height:"1200px"}}>
+                <div className="col-md-12" >
                     <div className="container" >
 
 
@@ -94,28 +92,9 @@ const Notifications = () => {
                                 
 
                                 <h4 className="page-title">Notifications</h4>
-                                 <div className="btn-group pull-right m-t-15 open">
-                                <button type="button" className="btn  dropdown-toggle waves-effect" data-toggle="dropdown" aria-expanded="true" style={{background: "rgb(2, 83, 200)", color: "rgb(255, 255, 255)"}}>
-                                Settings <span className="m-l-5"><i className="fa fa-cog"></i></span></button>
-                                <ul className="dropdown-menu drop-menu-right" role="menu"><li>
-                                <a href="#">Upcoming courses</a></li><li><a href="/profile">Profile</a></li>
-                                <li><a href="/notifications">Account Settings</a></li><li><a href="/cart">Cart</a></li>
-                                <li className="divider"></li><li><a href="#">Reload</a></li></ul>
-                                </div>
+                                 
 
 
-               
-                <ol className="breadcrumb" style={{display:"block"}}>
-                  <li>
-                    <a href="#">Notifications</a>
-                  </li>
-                  <li>
-                    <a href="#">Dashboard</a>
-                  </li>
-                  <li className="active">
-                    notify
-                  </li>
-                </ol>
                             </div>
                         </div>
                         <br />
@@ -135,14 +114,14 @@ const Notifications = () => {
 
               <div className="container" >
                  <div className="row">
-                   <div className="table-responsive table-wrapper">
+                   <div class="table-responsive table-wrapper">
                       
 
                     {loading ? (
                       <Loader width="70" />
                     ) : notifications.length > 0 ? (
                       <Fragment>
-                      <table className="table table-borderless table-reveal" >
+                      <table class="table table-borderless table-reveal" >
                       <thead>
                       <tr>
                          <th scope="col">Type</th>
@@ -155,9 +134,9 @@ const Notifications = () => {
                           {notifications.map((item, i) => {
                             let notify_icon = "fa fa-book"
                             console.log(item.data.notification_type)
-                            if(item.data.notification_type ==="Course Payment"){
+                            if(item.data.notification_type =="Course Payment"){
                               notify_icon = "fa-shopping-cart"
-                            }else if (item.data.notification_type ==="Course Enrollment") {
+                            }else if (item.data.notification_type =="Course Enrollment") {
                               notify_icon = "fa-unlock"
                             }else {
                               notify_icon = "fa-user"
@@ -192,13 +171,10 @@ const Notifications = () => {
   </div>
   </div>
 
-    <Sidebar/>
+
        </div>
 
-           <Footer />
-        <footer className="footer text-right">
-                    © 2021. All rights reserved.
-                </footer> 
+         
       </div>
    
   );

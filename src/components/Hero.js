@@ -11,7 +11,7 @@ const Hero = () => {
       <Container>
         <Row>
           <Col lg="7">
-            <div className="hero-area__left" style={{ marginTop: "40px" }}>
+            <div className="hero-area__left" style={{ marginTop: "20px" }}>
               <h2>
                 Accelerate your quest,<br></br>
                 <span>learn</span> anywhere, anytime.
@@ -22,11 +22,15 @@ const Hero = () => {
                 pace and space.
               </p>
               <div className="cta">
-                <button style={{width:"200px",height:"50px"}} className="btn" onClick={() => history.push("/courses")}>
+                <button
+                  style={{ width: "250px", height: "55px" }}
+                  className="btn"
+                  onClick={() => history.push("/courses")}
+                >
                   Find Courses
                 </button>
                 <button
-                style={{width:"200px",height:"50px"}}
+                  style={{ width: "250px", height: "55px" }}
                   className="outline"
                   onClick={() => history.push("/register")}
                 >

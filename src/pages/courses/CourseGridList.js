@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Fragment } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import NavBar from "components/Navbar";
-import { PageTitle } from "../../components/common/PageTitle";
+import PageTitle2 from "../../components/common/PageTitle2";
 import CourseSidebar from "./components/CourseSidebar";
 import CourseItemsList from "./components/CourseGridList";
 import Footer from "../../components/Footer";
@@ -27,7 +27,7 @@ const CourseGrid = ({
   const query = useQuery();
   let routeQuery = query.get("filter");
 
-   let history = useHistory();
+  let history = useHistory();
 
   const [querySearchVal, setVal] = useState(query.get("search"));
   const [querySearchMethod, setMethod] = useState(query.get("method"));
@@ -43,16 +43,13 @@ const CourseGrid = ({
     // let listButton = document.querySelector(".list-view");
     // let gridButton = document.querySelector(".grid-view");
     // let wrapper = document.querySelector(".viewCourses");
-
     // listButton.addEventListener("click", function () {
     //   gridButton.classList.remove("on");
     //   listButton.classList.add("on");
     //   wrapper.classList.remove("gridDisplay");
     //   wrapper.classList.add("listDisplay");
-
     //   //wrapper.querySelector("widget")
     // });
-
     // gridButton.addEventListener("click", function () {
     //   listButton.classList.remove("on");
     //   gridButton.classList.add("on");
@@ -149,18 +146,17 @@ const CourseGrid = ({
   return (
     <div className="main-wrapper course-page">
       <NavBar />
-      <br />
-      <br />
-      <br />
-      <PageTitle />
+
+<br/><br/><br/>
+      <PageTitle2 />
 
       <Styles>
         {/* Course Grid */}
-        <section className="course-grid-area">
+        <section className="course-grid-area" style={{ marginTop: "-20px" }}>
           <Container>
             <Row>
               <Col lg="3" md="4" sm="5">
-                <div style={{ marginTop: "90px" }}>
+                <div style={{ marginTop: "50px" }}>
                   <CourseSidebar
                     setFilterAllCourses={setFilterAllCourses}
                     setSearch={setSearch}
@@ -170,19 +166,38 @@ const CourseGrid = ({
               </Col>
 
               <Col lg="9" md="8" sm="7">
-                <div className="buttons-sec gridsect" >
-                  <button className="gridsect list-view " onClick={()=> {
-                     history.push("/courses")
-                  }}>
-                    <i className="fa fa-bars"></i>
-                  </button>
-                  <button className="gridsect grid-view on"  onClick={()=> {
-                     history.push("/course-grid/list")
-                  }}>
-                    <i className="fa fa-th"></i>
-                  </button>
+                <div className="row hidden-sm-down  shown" >
+                  <div className="">
+
+
+
+                  <div className="container" id="container-actions" style={{marginRight:"40px"}}>
+                      <div className="buttons">
+                      
+                         <button
+                        id="grid"
+                    
+                      onClick={() => {
+                        history.push("/course-grid/list");
+                      }}
+
+                         className="list square-btn"><i className="fa fa-bars fa-3x"></i></button>
+                          <button id="list"
+                     
+                      onClick={() => {
+                        history.push("/courses");
+                      }} 
+                      className="grid square-btn active" style={{background:"#fafafa"}}><i className="fa fa-th-large fa-3x"></i></button>
+                      
+                      </div>
+                    </div>
+
+
+                   
+                  </div>
                 </div>
                 <br />
+
 
                 <div className="course-items ">
                   <Row>
@@ -197,9 +212,22 @@ const CourseGrid = ({
                       </Fragment>
                     ) : (
                       <Row>
-                        <h1>No courses yet</h1>
+                        <h1>No Search Found</h1>
                       </Row>
                     )}
+                  </Row>
+
+                  <br/><br/>
+                  <Row>
+                     
+                     <Col md="12">
+                        {query?.get("search")?.toLowerCase()?.length > 0 
+                          && filterAllCourses?.length <= 0  && ( <h1>No Search Found</h1>)
+
+
+                         }
+                     
+                     </Col>
                   </Row>
                 </div>
               </Col>

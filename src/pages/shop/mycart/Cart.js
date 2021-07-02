@@ -1,8 +1,8 @@
 import React, { useEffect, Fragment } from "react";
-
+import { Container, Row, Col, Table } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import NavBar from "components/Navbar";
-// import Footer from "components/Footer";
+import Footer from "components/Footer";
 
 
 import "../newdashboard/assets/css/bootstrap.min.css";
@@ -17,8 +17,6 @@ import "./cart.css"
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { removeFromCart } from "actions/cartActions";
-
-import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 const Cart = ({
   auth: { isAuthenticated },
@@ -53,21 +51,18 @@ console.log(cart)
 
 
 
-   <div >
 
-         <div className="content-page" >
-      
-        <div className="content">
-          <div className="container">
 
+      <div className="main-wrapper cart-page">
+    
         <NavBar />
 
        
 
     
-        <section>
+        <section className="cart-area">
            
-         <div > 
+         <div className="container-cart"> 
    <h1> Shopping Cart</h1>
    <p>Item list in cart.</p>
    <p>Click 'Empty Cart' button to remove session cookies from browser.</p>
@@ -75,7 +70,7 @@ console.log(cart)
           
 
 
-                  <div className="container">
+                  <div class="container">
 
     <section id="cart"> 
       
@@ -88,9 +83,9 @@ console.log(cart)
                             return (
 
                             
-                            <article className="product col-md-10">
+                            <article class="product col-md-12">
                                 <header className="card-box">
-                                  <a className="remove">
+                                  <a class="remove">
                                      <img
                                     src={
                                       process.env.PUBLIC_URL +
@@ -105,7 +100,7 @@ console.log(cart)
 
 
 
-                                <div className="content">
+                                <div class="content">
                                     <button
                                     className="shop"
                                     onClick={removeItemFromCart.bind(
@@ -120,21 +115,22 @@ console.log(cart)
                                   <h1>
                                   {data.course_name}
                                 </h1>
-                               {data.course_overview.substring(0,100)+ "..."}
+                               {data.course_overview}
                       
                                  
-                                      </div>
+                                  <div style={{top: "43px",width:140}} class="type small card-box"><h3>Instructor</h3> <p>{data.instructor.user.last_name } {data.instructor.user.first_name }</p></div>
+                                </div>
 
-                              <footer className="content">
+                              <footer class="content">
                               
                                
                            
 
-                                <h2 className="full-price">
+                                <h2 class="full-price">
                                   #{data.price}
                                 </h2>
 
-                                <h2 className="price">
+                                <h2 class="price">
                                  
                                 </h2>
 
@@ -195,14 +191,11 @@ console.log(cart)
         </section>
 
      
-      
+       <Sidebar />
       </div>
 
-    </div>
-
-    </div>  
-     <Sidebar /> 
-   </div>
+       
+   
   );
 };
 

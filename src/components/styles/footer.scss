@@ -8,7 +8,8 @@
   //   rgba(2, 83, 200, 0.03) 0%,
   //   rgba(2, 83, 200, 0) 100%
   // );
-  background-color: #f4f8fc;
+ //  background-color: #f4f8fc;
+ background:rgb(2, 83, 200);
 
   @include respond(tab-port) {
     padding: 5rem;
@@ -58,7 +59,8 @@
         font-weight: normal;
         font-size: 1.2rem;
         line-height: 2rem;
-        color: $grey;
+        //color: $grey;
+        color:#fff;
         margin-bottom: 0.5rem;
 
         @include respond(phone) {
@@ -73,6 +75,7 @@
               height: 2.4rem;
               width: 2.4rem;
               margin-right: 1.5rem;
+              color:#fff;
 
               img {
                 width: 100%;
@@ -87,11 +90,13 @@
     ul.d-col {
       @include respond(phone) {
         margin-bottom: 2rem;
+        color:#fff;
       }
 
       li {
         margin-bottom: 1.2rem;
         line-height: 1.2rem;
+        color:#fff;
       }
     }
   }
@@ -101,7 +106,8 @@
     font-weight: normal;
     font-size: 1.2rem;
     line-height: 1rem;
-    color: $grey;
+    //color: $grey;
+color:#fff;
     margin-bottom: 0.5rem;
   }
 
@@ -110,7 +116,8 @@
     font-weight: bold;
     font-size: 1.5rem;
     line-height: 2.5rem;
-    color: #01265b;
+    //color: #01265b;
+    color:#fff;
     margin-bottom: 1.5rem;
   }
 }

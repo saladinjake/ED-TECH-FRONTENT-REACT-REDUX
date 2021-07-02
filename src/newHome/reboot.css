@@ -1,0 +1,203 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.section-home{
+  min-height: 100vh;
+  height: 100vh;
+}
+
+header.topbar {
+  width: 100%;
+  height: 50px;
+  background-color: #fff;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+header.topbar > .logo {
+  float: left;
+  color: #000;
+  font-size: 28px;
+  line-height: 50px;
+  padding: 0 20px;
+  background-color: #fff;
+}
+
+header.topbar > nav {
+  float: right;
+}
+
+header.topbar > nav > div {
+  float: left;
+  height: 100%;
+  position: relative;
+}
+
+header.topbar > nav > div > a {
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  display: block;
+  line-height: 50px;
+  padding: 0 15px;
+  color: #fbfbfb;
+  transition: background-color 0.2s ease;
+  text-transform: uppercase;
+  font-size: 10px;
+}
+
+header.topbar > nav > div:hover > a {
+  background-color: rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+header.topbar > nav > div > div {
+  display: none;
+  overflow: hidden;
+  background-color: white;
+  min-width: 200%;
+  position: absolute;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  padding: 10px;
+}
+
+header.topbar > nav > div:not(:first-of-type):not(:last-of-type) > div {
+  left: -50%;
+  border-radius: 0 0 3px 3px;
+}
+
+header.topbar > nav > div:first-of-type > div {
+  left: 0;
+  border-radius: 0 0 3px 0;
+}
+
+header.topbar > nav > div:last-of-type > div {
+  right: 0;
+  border-radius: 0 0 0 3px;
+  min-width: 400%;
+}
+
+header.topbar > nav > div:hover > div {
+  display: block;
+  z-index: 1;
+}
+
+header.topbar > nav > div > div > a {
+  display: block;
+  float: left;
+  padding: 8px 10px;
+  width: 46%;
+  margin: 2%;
+  text-align: center;
+  background-color: #f44355;
+  color: #000;
+  border-radius: 2px;
+  font-size: 10px;
+  transition: background-color 0.2s ease;
+}
+
+header.topbar > nav > div > div > a:hover {
+  background-color: #212121;
+  cursor: pointer;
+}
+
+header.topbar > .material-icons {
+  display: none;
+}
+
+h1 {
+  margin-top: 100px;
+  font-weight: 100;
+}
+
+p {
+  color: #aaa;
+  font-weight: 300;
+}
+
+@media (max-width: 600px) {
+  header.topbar > nav > div > div > a {
+    margin: 5px 0;
+    width: 100%;
+  }
+  header.topbar > nav > div > a > span {
+    display: none;
+  }
+}
+
+@media (max-width: 715px) {
+  header.topbar > nav {
+    overflow-y: scroll;
+    background-color: white;
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 200px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    height: 100%;
+    transition: right 0.3s ease;
+    z-index: 2;
+  }
+  header.topbar > nav > div {
+    height: initial;
+    float: none;
+    position: relative;
+  }
+  header.topbar > nav > div > a {
+    color: #212121;
+    text-align: right;
+  }
+  header.topbar > nav > div > div {
+    display: block;
+    position: static;
+    min-width: 100% !important;
+    float: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 1px !important;
+  }
+  header.topbar > nav > div > div > a {
+    float: none;
+    width: 100%;
+    margin: 0;
+    text-align: right;
+    border-radius: 1px;
+    padding: 8px 20px;
+    background-color: #eee;
+    color: #777;
+  }
+  header.topbar > nav > div > div > a:hover {
+    background-color: #ccc;
+  }
+  header.topbar > .material-icons {
+    display: block;
+    color: #fbfbfb;
+    line-height: 50px;
+    float: right;
+    font-size: 32px;
+    padding: 0 15px;
+    transition: background-color 0.2s ease;
+  }
+  header.topbar > .material-icons:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+  }
+  header.topbar > .material-icons:hover + nav,
+  .topbar nav:hover {
+    right: 0;
+  }
+  header.topbar .black {
+    transition: background-color 0.3s ease;
+  }
+  header.topbar > .material-icons:hover ~ .black,
+  .topbar nav:hover ~ .black {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    pointer-events: none;
+  }
+}

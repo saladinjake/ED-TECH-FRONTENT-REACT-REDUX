@@ -90,7 +90,7 @@ const BusinessRegister = () => {
           <Container>
             <Row>
               <Col lg="12">
-                 <div className="  form_container">
+                <div className="  form_container">
                   <div className="title_container">
                     <h3>Registration</h3>
                   </div>
@@ -101,7 +101,7 @@ const BusinessRegister = () => {
                     onSubmit={formik.handleSubmit}
                   >
                     <Row>
-                      <p  className="input_field col_half">
+                      <p className="input_field col_half">
                         <label htmlFor="registration_fname">First Name</label>
                         <input
                           type="text"
@@ -118,7 +118,7 @@ const BusinessRegister = () => {
                           </span>
                         ) : null}
                       </p>
-                      <p  className="input_field col_half">
+                      <p className="input_field col_half">
                         <label htmlFor="registration_lname">Last Name</label>
                         <input
                           type="text"
@@ -134,7 +134,7 @@ const BusinessRegister = () => {
                           </span>
                         ) : null}
                       </p>
-                      <p  className="input_field col_half">
+                      <p className="input_field col_half">
                         <label htmlFor="registration_email">
                           Email Address
                         </label>
@@ -152,8 +152,8 @@ const BusinessRegister = () => {
                           </span>
                         ) : null}
                       </p>
-                   
-                      <p  className="input_field col_half">
+
+                      <p className="input_field col_half">
                         <label htmlFor="registration_user">Password</label>
                         <input
                           type="password"
@@ -168,7 +168,7 @@ const BusinessRegister = () => {
                           </span>
                         ) : null}
                       </p>
-                      <p  className="input_field col_half">
+                      <p className="input_field col_half">
                         <label htmlFor="registration_user">Phone Number</label>
                         <input
                           type="number"
@@ -184,7 +184,7 @@ const BusinessRegister = () => {
                           </span>
                         ) : null}
                       </p>
-                      <p  className="input_field col_half">
+                      <p className="input_field col_half">
                         <label htmlFor="registration_user">
                           Company Number
                         </label>
@@ -202,7 +202,7 @@ const BusinessRegister = () => {
                           </span>
                         ) : null}
                       </p>
-                      <p  className="input_field col_half">
+                      <p className="input_field col_half">
                         <label htmlFor="registration_email">
                           Company Description
                         </label>
@@ -220,8 +220,8 @@ const BusinessRegister = () => {
                           </span>
                         ) : null}
                       </p>
-                   
-                      <p  className="input_field col_half">
+
+                      <p className="input_field col_half">
                         <label htmlFor="registration_lname">
                           Company Name<i>At least 5 characters</i>
                         </label>
@@ -241,7 +241,7 @@ const BusinessRegister = () => {
                         ) : null}
                       </p>
 
-                      <p  className="input_field col_half">
+                      <p className="input_field col_half">
                         <label htmlFor="registration_user">Country</label>
                         <select
                           name="country_id"
@@ -266,7 +266,7 @@ const BusinessRegister = () => {
                         ) : null}
                       </p>
 
-                      <p  className="input_field col_half">
+                      <p className="input_field col_half">
                         <label htmlFor="registration_user">Industry</label>
                         <select
                           name="industry_id"
@@ -290,8 +290,8 @@ const BusinessRegister = () => {
                           </span>
                         ) : null}
                       </p>
-                    
-                      <p  className="input_field col_half">
+
+                      <p className="input_field col_half">
                         <label htmlFor="registration_fname">
                           No of Employees
                         </label>
@@ -310,7 +310,7 @@ const BusinessRegister = () => {
                           </span>
                         ) : null}
                       </p>
-                      <p  className="input_field col_half">
+                      <p className="input_field col_half">
                         <label htmlFor="registration_fname">
                           Type of Institutuon
                         </label>
@@ -331,7 +331,7 @@ const BusinessRegister = () => {
                           </span>
                         ) : null}
                       </p>
-                      <p  className="input_field col_half">
+                      <p className="input_field col_half">
                         <label htmlFor="registration_fname">
                           Registration Number
                         </label>
@@ -350,8 +350,6 @@ const BusinessRegister = () => {
                           </span>
                         ) : null}
                       </p>
-                     
-                     
                     </Row>
 
                     <button type="submit" disabled={formik.isSubmitting}>

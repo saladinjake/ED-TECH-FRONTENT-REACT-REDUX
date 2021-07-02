@@ -10,19 +10,16 @@ const InstructorBtns = () => {
     <Styles>
       <Row>
         <Col md="12">
-        
           <button
             className="btn btn-primary"
-          
             onClick={() => {
               history.push("/instructor-pages/course/create");
-            }}>
-          
+            }}
+          >
             Create Course
           </button>
           <button
             className="btn btn-primary"
-           
             onClick={() => {
               history.push("/instructor/mycourses");
             }}
@@ -31,7 +28,6 @@ const InstructorBtns = () => {
           </button>
           <button
             className="btn btn-primary"
-          
             onClick={() => {
               history.push("/instructor-pages/course/pending");
             }}
@@ -40,7 +36,6 @@ const InstructorBtns = () => {
           </button>
           <button
             className="btn btn-primary"
-           
             onClick={() => {
               history.push("/instructor-pages/course/declined");
             }}

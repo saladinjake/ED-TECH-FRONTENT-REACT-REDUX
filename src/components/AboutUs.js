@@ -20,7 +20,7 @@ class AboutUs extends Component {
     return (
       <Styles>
         {/* About Us */}
-        <section className="about-us">
+        <section className="about-us" style={{ background: "#fafafa" }}>
           <Container>
             <Row>
               <Col md="6">
@@ -34,10 +34,10 @@ class AboutUs extends Component {
               </Col>
               <Col md="6">
                 <div className="about-content">
-                  <h2 className="about-title">
+                  <h2 className="about-title" style={{fontFamily:"Open Sans", color:"#000"}}>
                     Building new skill with ease and earn recognized credential
                   </h2>
-                  <p className="about-para">
+                  <p className="about-para" style={{fontFamily:"Open Sans", color:"#000"}}>
                     Learn anytime, anywhere, at your own pace and in your own
                     space with an interactive, multimedia content provided by
                     world-class institutions and trainers, while receiving
@@ -46,6 +46,7 @@ class AboutUs extends Component {
                     successful completion of a course.
                   </p>
                   <Link
+                  style={{fontFamily:"Open Sans"}}
                     className="readmore-btn"
                     to={process.env.PUBLIC_URL + "/courses"}
                   >

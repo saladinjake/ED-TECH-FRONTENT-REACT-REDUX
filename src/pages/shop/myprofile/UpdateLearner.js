@@ -111,15 +111,6 @@ const UpdateLearner = ({ auth: { user } }) => {
   return (
     <Styles>
       {/* Main Wrapper */}
-
-      <div className="wrapper">
-
-      <div className="content-page">
-
-
-              
-                <div className="content" style={{height:"1200px"}}>
-                    <div className="container" >
       <div className="main-wrapper registration-page">
         {/* Header 2 */}
         <NavBar />
@@ -160,12 +151,11 @@ const UpdateLearner = ({ auth: { user } }) => {
                             onSubmit={handleSubmit}
                           >
                             <Row>
-                              <p className="form-control" key={new Date().getUTCMilliseconds() + Math.random()}>
-                                <label htmlFor="registration_fname" key={new Date().getUTCMilliseconds() + Math.random()}>
+                              <p className="form-control">
+                                <label htmlFor="registration_fname">
                                   First Name
                                 </label>
                                 <input
-                                key={new Date().getUTCMilliseconds() + Math.random()}
                                   type="text"
                                   required
                                   placeholder="First name"
@@ -175,18 +165,17 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   value={values.first_name}
                                 />
 
-                                <span className="registration_input-msg" key={new Date().getUTCMilliseconds() + Math.random()}>
+                                <span className="registration_input-msg">
                                   {errors.first_name &&
                                     touched.first_name &&
                                     errors.first_name}
                                 </span>
                               </p>
-                              <p className="form-control" key={new Date().getUTCMilliseconds() + Math.random()}>
-                                <label htmlFor="registration_lname" key={new Date().getUTCMilliseconds() + Math.random()}>
+                              <p className="form-control">
+                                <label htmlFor="registration_lname">
                                   Last Name
                                 </label>
                                 <input
-                                key={new Date().getUTCMilliseconds() + Math.random()}
                                   type="text"
                                   required
                                   placeholder="Last name"
@@ -197,16 +186,16 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   id="registration_lname"
                                 />
                                 {touched.last_name && errors.last_name ? (
-                                  <span className="registration_input-msg" key={new Date().getUTCMilliseconds() + Math.random()}>
+                                  <span className="registration_input-msg">
                                     {errors.last_name}
                                   </span>
                                 ) : null}
                               </p>
-                              <p className="form-control" key={new Date().getUTCMilliseconds() + Math.random()}>
-                                <label htmlFor="registration_email" key={new Date().getUTCMilliseconds() + Math.random()}>
+                              <p className="form-control">
+                                <label htmlFor="registration_email">
                                   Middle Name
                                 </label>
-                                <input key={new Date().getUTCMilliseconds() + Math.random()}
+                                <input
                                   type="text"
                                   required
                                   placeholder="Middle name"
@@ -217,18 +206,18 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   id="registration_email"
                                 />
                                 {touched.middle_name && errors.middle_name ? (
-                                  <span className="registration_input-msg" key={new Date().getUTCMilliseconds() + Math.random()}>
+                                  <span className="registration_input-msg">
                                     {errors.middle_name}
                                   </span>
                                 ) : null}
                               </p>
                             </Row>
                             <Row>
-                              <p className="form-control" key={new Date().getUTCMilliseconds() + Math.random()}>
-                                <label htmlFor="registration_user" key={new Date().getUTCMilliseconds() + Math.random()}>
+                              <p className="form-control">
+                                <label htmlFor="registration_user">
                                   Phone Number
                                 </label>
-                                <input key={new Date().getUTCMilliseconds() + Math.random()}
+                                <input
                                   type="number"
                                   id="phone_number"
                                   name="phone_number"
@@ -238,7 +227,7 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   value={values.phone_number}
                                 />
                                 {touched.phone_number && errors.phone_number ? (
-                                  <span className="registration_input-msg" key={new Date().getUTCMilliseconds() + Math.random()}>
+                                  <span className="registration_input-msg">
                                     {errors.phone_number}
                                   </span>
                                 ) : null}
@@ -262,12 +251,11 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p> */}
-                              <p className="form-control" key={new Date().getUTCMilliseconds() + Math.random()}>
-                                <label htmlFor="registration_biography" key={new Date().getUTCMilliseconds() + Math.random()}>
+                              <p className="form-control">
+                                <label htmlFor="registration_email">
                                   Biography
                                 </label>
                                 <textarea
-                                key={new Date().getUTCMilliseconds() + Math.random()}
                                   placeholder="Biography here"
                                   name="biography"
                                   onChange={handleChange}
@@ -277,16 +265,16 @@ const UpdateLearner = ({ auth: { user } }) => {
                                 ></textarea>
 
                                 {touched.biography && errors.biography ? (
-                                  <span className="registration_input-msg" key={new Date().getUTCMilliseconds() + Math.random()}>
+                                  <span className="registration_input-msg">
                                     {errors.biography}
                                   </span>
                                 ) : null}
                               </p>
-                              <p className="form-control" key={new Date().getUTCMilliseconds() + Math.random()}>
-                                <label htmlFor="registration_user" key={new Date().getUTCMilliseconds() + Math.random()}>
+                              <p className="form-control">
+                                <label htmlFor="registration_user">
                                   Date Of Birth
                                 </label>
-                                <input key={new Date().getUTCMilliseconds() + Math.random()}
+                                <input
                                   type="date"
                                   required
                                   id="date_of_birth"
@@ -297,41 +285,40 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   value={values.date_of_birth}
                                 />
                                 {touched.phone_number && errors.phone_number ? (
-                                  <span className="registration_input-msg" key={new Date().getUTCMilliseconds() + Math.random()}>
+                                  <span className="registration_input-msg">
                                     {errors.date_of_birth}
                                   </span>
                                 ) : null}
                               </p>
                             </Row>
                             <Row>
-                              <p className="form-control" key={new Date().getUTCMilliseconds() + Math.random()}>
-                                <label htmlFor="registration_user" key={new Date().getUTCMilliseconds() + Math.random()}>
+                              <p className="form-control">
+                                <label htmlFor="registration_user">
                                   Gender
                                 </label>
                                 <select
-                                key={new Date().getUTCMilliseconds() + Math.random()}
                                   name="gender"
                                   onChange={handleChange}
                                   onBlur={handleBlur}
                                   value={values.gender}
                                   required
                                 >
-                                  <option key={new Date().getUTCMilliseconds() + Math.random()}>-- Gender --</option>
-                                  <option key={new Date().getUTCMilliseconds() + Math.random()} value="Male">Male</option>
-                                  <option key={new Date().getUTCMilliseconds() + Math.random()} value="Female">Female</option>
+                                  <option>-- Gender --</option>
+                                  <option value="Male">Male</option>
+                                  <option value="Female">Female</option>
                                 </select>
                                 {touched.gender && errors.gender ? (
-                                  <span key={new Date().getUTCMilliseconds() + Math.random()} className="registration_input-msg" >
+                                  <span className="registration_input-msg">
                                     {errors.gender}
                                   </span>
                                 ) : null}
                               </p>
 
-                              <p className="form-control" key={new Date().getUTCMilliseconds() + Math.random()}>
-                                <label htmlFor="registration_user" key={new Date().getUTCMilliseconds() + Math.random()}>
+                              <p className="form-control">
+                                <label htmlFor="registration_user">
                                   Country
                                 </label>
-                                <select key={new Date().getUTCMilliseconds() + Math.random()}
+                                <select
                                   name="country_id"
                                   onChange={handleChange}
                                   onBlur={handleBlur}
@@ -342,21 +329,21 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   {countries.length > 0 &&
                                     countries.map((country, i) => {
                                       return (
-                                        <option key={new Date().getUTCMilliseconds() + Math.random()} value={country.id}>
+                                        <option value={country.id}>
                                           {country.name}
                                         </option>
                                       );
                                     })}
                                 </select>
                                 {touched.country_id && errors.country_id ? (
-                                  <span key={new Date().getUTCMilliseconds() + Math.random()} className="registration_input-msg">
+                                  <span className="registration_input-msg">
                                     {errors.country_id}
                                   </span>
                                 ) : null}
                               </p>
 
                               <p className="form-control">
-                                <label htmlFor="registration_username" key={new Date().getUTCMilliseconds() + Math.random()}>
+                                <label htmlFor="registration_email">
                                   Username
                                 </label>
                                 <input
@@ -367,8 +354,7 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   onChange={handleChange}
                                   onBlur={handleBlur}
                                   value={values.username}
-                                  id="registration_username"
-                                  key={new Date().getUTCMilliseconds() + Math.random()}
+                                  id="registration_email"
                                 />
                                 {touched.username && errors.username ? (
                                   <span className="registration_input-msg">
@@ -423,7 +409,7 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   {EducationLevel.length > 0 &&
                                     EducationLevel.map((item) => {
                                       return (
-                                        <option key={new Date().getUTCMilliseconds() + Math.random()} value={item}>{item}</option>
+                                        <option value={item}>{item}</option>
                                       );
                                     })}
                                 </select>
@@ -449,7 +435,7 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   {Degrees.length > 0 &&
                                     Degrees.map((item) => {
                                       return (
-                                        <option key={new Date().getUTCMilliseconds() + Math.random()} value={item}>{item}</option>
+                                        <option value={item}>{item}</option>
                                       );
                                     })}
                                 </select>
@@ -477,7 +463,7 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   {EmploymentStatus.length > 0 &&
                                     EmploymentStatus.map((item) => {
                                       return (
-                                        <option key={new Date().getUTCMilliseconds() + Math.random()} value={item}>{item}</option>
+                                        <option value={item}>{item}</option>
                                       );
                                     })}
                                 </select>
@@ -503,7 +489,7 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   {ExperienceLevel.length > 0 &&
                                     ExperienceLevel.map((item) => {
                                       return (
-                                        <option key={new Date().getUTCMilliseconds() + Math.random()} value={item}>{item}</option>
+                                        <option value={item}>{item}</option>
                                       );
                                     })}
                                 </select>
@@ -529,7 +515,7 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   {MaritalStatus.length > 0 &&
                                     MaritalStatus.map((item) => {
                                       return (
-                                        <option key={new Date().getUTCMilliseconds() + Math.random()} value={item}>{item}</option>
+                                        <option value={item}>{item}</option>
                                       );
                                     })}
                                 </select>
@@ -543,7 +529,7 @@ const UpdateLearner = ({ auth: { user } }) => {
                             </Row>
                             <Row>
                               <p className="form-control">
-                                <label htmlFor="registration_url">
+                                <label htmlFor="registration_email">
                                   Facebook Url
                                 </label>
                                 <input
@@ -553,7 +539,7 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   onChange={handleChange}
                                   onBlur={handleBlur}
                                   value={values.facebook_url}
-                                  id="registration_url"
+                                  id="registration_email"
                                 />
                                 {touched.facebook_url && errors.facebook_url ? (
                                   <span className="registration_input-msg">
@@ -562,7 +548,7 @@ const UpdateLearner = ({ auth: { user } }) => {
                                 ) : null}
                               </p>
                               <p className="form-control">
-                                <label htmlFor="registration_twitter">
+                                <label htmlFor="registration_email">
                                   Twitter Url
                                 </label>
                                 <input
@@ -572,7 +558,7 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   onChange={handleChange}
                                   onBlur={handleBlur}
                                   value={values.twitter_url}
-                                  id="registration_twitter"
+                                  id="registration_email"
                                 />
                                 {touched.twitter_url && errors.twitter_url ? (
                                   <span className="registration_input-msg">
@@ -581,7 +567,7 @@ const UpdateLearner = ({ auth: { user } }) => {
                                 ) : null}
                               </p>
                               <p className="form-control">
-                                <label htmlFor="registration_linked">
+                                <label htmlFor="registration_email">
                                   Linkedin Url
                                 </label>
                                 <input
@@ -591,7 +577,7 @@ const UpdateLearner = ({ auth: { user } }) => {
                                   onChange={handleChange}
                                   onBlur={handleBlur}
                                   value={values.linkedin_url}
-                                  id="registration_linked"
+                                  id="registration_email"
                                 />
                                 {touched.linkedin_url && errors.linkedin_url ? (
                                   <span className="registration_input-msg">
@@ -626,11 +612,6 @@ const UpdateLearner = ({ auth: { user } }) => {
         
       </div>
 
-
-  </div>
-    </div>
-      </div>
-        </div>
       <Sidebar />
     </Styles>
   );

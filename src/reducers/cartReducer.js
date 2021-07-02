@@ -25,6 +25,9 @@ export default (state = initialState, action) => {
       let itemToBeAdded = state.courses.find(
         (item) => item.id === action.payload
       );
+
+      console.log(state.courses)
+
       let existingItem = state.cart.find((item) => action.payload === item.id);
       if (existingItem) {
         toast.success(`Course already in cart`);
@@ -52,7 +55,7 @@ export default (state = initialState, action) => {
       let itemToRemove = state.cart.find((item) => action.payload === item.id);
       let newCart = state.cart.filter((item) => action.payload !== item.id);
       let newTotal = state.total - itemToRemove.price * itemToRemove.quantity;
-      toast.error(`Course removed from cart`);
+      toast.success(`Course removed from cart`);
 
       localStorage.setItem("cart", JSON.stringify([...newCart]));
       localStorage.setItem("total", newTotal);

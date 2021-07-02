@@ -12,7 +12,7 @@ const MainArea = () => {
 		   </div>
 		   <div id="right">
 							This is the right window
-			                <div class="demo">
+			                <div class="demo courseset">
 							  <div role="tabpanel">
 
 
