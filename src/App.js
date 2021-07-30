@@ -91,6 +91,8 @@ import "./app.css";
 import "./pre-style.css";
 import Notification from "./Toaster";
 
+import AuthoringDashboard from "./pages/AuthoringTool/dashboard"
+
 import $ from "jquery";
 
 function App(props) {
@@ -99,56 +101,6 @@ function App(props) {
       $(this).css({ color: "#fff" });
     });
 
-    //  var queryVal =""
-    // var jump=function(e)
-    // {
-    //    if (e){
-    //        e.preventDefault();
-    //        var target = $(this).attr("href");
-    //    }else{
-    //        var target = window.location.hash;
-    //    }
-
-    //    if(  e && ( e.target.getAttribute("href")=="#honour-code" || e.target.getAttribute("href")=="#privacy-policy" || e.target.getAttribute("href")=="#terms-of-use") ){
-
-    //         $('.tab-menu a').parents().each(function(){
-    //            // $(e.target).removeClass("visited-now")
-    //           $(e.target).css({color:"#000" })
-    //          $(e.target).parent().css({"background-color":"rgba(255,255,255)" })
-    //         })
-    //         $(e.target).tab('show')
-    //          $(e.target).css({color:"#fff" })
-    //          $(e.target).parent().css({"background-color":"rgba(8,23,200)" })
-
-    //   }else{
-
-    //        $('html,body').animate(
-    //      {
-    //          scrollTop: $(target).offset().top
-    //      },1000,function()
-    //      {
-    //          window.location.hash = target;
-    //      });
-
-    //    }
-
-    // }
-
-    // // $('html, body').hide()
-
-    // $(document).ready(function()
-    // {
-    //     $('a[href^=\\#]').bind("click", jump);
-
-    //     if (window.location.hash){
-    //         setTimeout(function(){
-    //             $('html, body').scrollTop(0).show()
-    //             jump()
-    //         }, 0);
-    //     }else{
-    //       $('html, body').show()
-    //     }
-    // });
   });
 
   return (
@@ -516,6 +468,18 @@ function App(props) {
           exact
           path={`${process.env.PUBLIC_URL + "/test-grid"}`}
           component={ResponsiveGrid}
+        />
+
+
+
+
+
+
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/authoring-dashboard"}`}
+          component={AuthoringDashboard}
         />
 
         <Route component={PageNotFound} />

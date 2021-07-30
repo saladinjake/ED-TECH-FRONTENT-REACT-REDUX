@@ -174,19 +174,19 @@ class Tmobile extends React.Component{
         // $(this).css({display:"block"})
       });
 
-      $(".no-ripper").on("click", function (e) {
-        e.preventDefault();
-        alert("clicked an li")
-        $(".show-me").css({display:"block"})
-        let ch = $(this).find("ul")[0];
+      // $(".no-ripper").on("click", function (e) {
+      //   e.preventDefault();
+      //   alert("clicked an li")
+      //   $(".show-me").css({display:"block"})
+      //   let ch = $(this).find("ul")[0];
 
-        // let ch = $(this).find('ul')[0]
-        // if ($(ch).css("display") == "none") {
-        //   $(ch).css({ display: "block" });
-        // } else {
-        //    $(ch).css({display:"none"})
-        // }
-      });
+      //   // let ch = $(this).find('ul')[0]
+      //   // if ($(ch).css("display") == "none") {
+      //   //   $(ch).css({ display: "block" });
+      //   // } else {
+      //   //    $(ch).css({display:"none"})
+      //   // }
+      // });
 
       $(".dropdown_menu a").append("<span></span>");
 

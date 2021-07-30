@@ -6,7 +6,7 @@ import OldNavBar from "components/Navbar";
 import Hero from "./hero";
 import Infosection from "./infosection";
 import Sideicons from "./gallerysection";
-import Gallery from "./sideicons";
+import Gallery from "./categories_sets";
 import newsletter from "./newsletter";
 import Joinup from "./joinup";
 // import Testimonial from "./testimonial_slide";

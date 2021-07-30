@@ -4,6 +4,7 @@ export const Styles = styled.div`
    .authoring-sidebar{
      width:300px;
      background:#fff;
+     float:left;
 
    }
 `;
