@@ -13,7 +13,7 @@ const NewDashBoard = ({ auth: { user }, match }) => {
     <div className="main-wrapper course-page">
       {/* the transformer for different ui design*  col-md-10*/}
       <Navbar />
-      <div className="col-md-12 ">
+      <div className="col-md-12 " style={{ height: "2500px" }}>
         {/*   <NewHeader /> */}
 
         <MyLearningContainer match={match} />

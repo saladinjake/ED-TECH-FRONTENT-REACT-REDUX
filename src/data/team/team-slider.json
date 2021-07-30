@@ -3,9 +3,9 @@
   "dataList": [
     {
       "id": "1",
-      "personImage": "team-1.jpg",
-      "personName": "Emily Perrey",
-      "personTitle": "Teacher",
+      "personImage": "testimoniala.png",
+      "personName": "Oluyemi Adeosun",
+      "personTitle": "Instructor",
       "socialLinks": {
         "facebook": "//www.facebook.com",
         "twitter": "//www.twitter.com",
@@ -15,9 +15,9 @@
     },
     {
       "id": "2",
-      "personImage": "team-2.jpg",
-      "personName": "Justin Timbr",
-      "personTitle": "Teacher",
+      "personImage": "testimonial---gb.png",
+      "personName": "Gbolahon Odukoya",
+      "personTitle": "Instructor",
       "socialLinks": {
         "facebook": "//www.facebook.com",
         "twitter": "//www.twitter.com",
@@ -27,33 +27,9 @@
     },
     {
       "id": "3",
-      "personImage": "team-3.jpg",
-      "personName": "Medison White",
-      "personTitle": "Teacher",
-      "socialLinks": {
-        "facebook": "//www.facebook.com",
-        "twitter": "//www.twitter.com",
-        "linkedin": "//www.linkedin.com",
-        "youtube": "//www.youtube.com"
-      }
-    },
-    {
-      "id": "4",
-      "personImage": "team-4.jpg",
-      "personName": "Mark Shadow",
-      "personTitle": "Teacher",
-      "socialLinks": {
-        "facebook": "//www.facebook.com",
-        "twitter": "//www.twitter.com",
-        "linkedin": "//www.linkedin.com",
-        "youtube": "//www.youtube.com"
-      }
-    },
-    {
-      "id": "5",
-      "personImage": "team-5.jpg",
-      "personName": "Katy Perrey",
-      "personTitle": "Teacher",
+      "personImage": "testimonyaa.png",
+      "personName": "Ife Oluwa Asaolu",
+      "personTitle": "Instructor",
       "socialLinks": {
         "facebook": "//www.facebook.com",
         "twitter": "//www.twitter.com",
@@ -61,5 +37,6 @@
         "youtube": "//www.youtube.com"
       }
     }
+    
   ]
 }

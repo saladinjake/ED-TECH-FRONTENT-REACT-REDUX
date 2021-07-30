@@ -37,7 +37,7 @@ const Section = () => {
       <Gallery />
 
       {/*<Sideicons />*/}
-      
+
       <Infosection />
       <div class="container">
         <Featured />
@@ -45,7 +45,6 @@ const Section = () => {
       <br />
 
       <Joinup />
-      
 
       {/*
           <Header />

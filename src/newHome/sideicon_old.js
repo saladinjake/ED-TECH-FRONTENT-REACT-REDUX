@@ -24,16 +24,12 @@ const Section = ({ match }) => {
     // "item--full"
   ];
 
-
-  useEffect(() =>{
-    try{
+  useEffect(() => {
+    try {
       let res = getCategories();
-      setFilterAllCourses([...res.data.data])
-
-    }catch(err){
-
-    }
-  })
+      setFilterAllCourses([...res.data.data]);
+    } catch (err) {}
+  });
 
   function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -55,7 +51,7 @@ const Section = ({ match }) => {
         </h1>
         <br />
         <div className="grid grid-sect">
-          <div className="row" style={{display:"none"}}>
+          <div className="row" style={{ display: "none" }}>
             <div className="item col-md-8 col-merge-12 shown">
               <img
                 onClick={() => {
@@ -100,11 +96,7 @@ const Section = ({ match }) => {
           <br />
           <div className="container">
             <div className="row">
-
-              
-
-
-<div className="col-md-4 item col-merge-12 ">
+              <div className="col-md-4 item col-merge-12 ">
                 <img
                   className=" millow"
                   style={{ width: "370px" }}
@@ -116,15 +108,6 @@ const Section = ({ match }) => {
                 />
                 <div className="item__details">Technology</div>
               </div>
-
-
-
-
-
-
-
-
-
 
               <div className="col-md-4 item col-merge-12">
                 <img

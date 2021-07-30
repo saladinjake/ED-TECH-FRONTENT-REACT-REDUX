@@ -113,7 +113,8 @@
     right: 75px;
     bottom: 70px;
   }
-  .owl-next, .owl-prev {
+  .owl-next,
+  .owl-prev {
     position: relative;
     display: inline-block;
     height: 75px;
@@ -128,13 +129,15 @@
     -o-transition: all 300ms ease;
     transition: all 300ms ease;
   }
-  .owl-next:hover, .owl-prev:hover {
+  .owl-next:hover,
+  .owl-prev:hover {
     background-color: #00df97;
     box-shadow: 0 24px 24px rgba(187, 187, 187, 0.75);
   }
 }
 
-.arrow-right, .arrow-left {
+.arrow-right,
+.arrow-left {
   position: relative;
   display: inline-block;
   height: 9px;
@@ -182,7 +185,8 @@
       margin-top: 20px;
       text-align: center;
     }
-    .owl-next, .owl-prev {
+    .owl-next,
+    .owl-prev {
       border: 2px solid #f1f1f1;
     }
   }

@@ -221,10 +221,21 @@ const MyLearningContainer = (props) => {
       <br />
       <br />
       <div className="row">
-        <div className="col-md-12">
-          <div className="mylearning-title">
-            <h4>My Learning</h4>
-          </div>
+        <div className="col-sm-12">
+          <h4
+            className="page-title"
+            style={{
+              fontWeight: "300px",
+              color: "#333",
+              fontSize: "45px",
+              fontFamily: "Open Sans",
+              lineHight: "34px",
+              letterSpacing: "-1px",
+              fontWeight: "normal",
+            }}
+          >
+            My Learning
+          </h4>
         </div>
       </div>
       <div className="row">
@@ -232,7 +243,7 @@ const MyLearningContainer = (props) => {
           <Loader width="70" />
         ) : !loading ? (
           <Fragment>
-            <div className="col-md-2 col-sm-12">
+            <div className="col-md-2 col-sm-12" style={{ display: "none" }}>
               <div style={{ marginTop: "60px" }}>
                 <div className="filter-sidebar">
                   <CourseSidebar
@@ -244,7 +255,7 @@ const MyLearningContainer = (props) => {
               </div>
             </div>
 
-            <div className="col-md-10 col-sm-12 mt-sm-4">
+            <div className="col-md-12 col-sm-12 ">
               <Tabs defaultActiveKey="allcourses" id="uncontrolled-tab-example">
                 <Tab eventKey="allcourses" title="All Courses">
                   <div className="toggleBtn">
@@ -266,15 +277,113 @@ const MyLearningContainer = (props) => {
                       <table className="table table-borderless">
                         <thead>
                           <tr>
-                            <th scope="col">Course Code</th>
-                            <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Start Date</th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
 
-                            <th scope="col">End Date</th>
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Code
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
 
-                            <th scope="col">Status</th>
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Instructor Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Price
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Start Date
+                            </th>
+
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              End Date
+                            </th>
+
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Status
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -293,20 +402,70 @@ const MyLearningContainer = (props) => {
                             }
                             return (
                               <tr key={i}>
-                                <td>{course.course.course_code}</td>
-                                <td>
+                                <td
+                                  style={{
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                >
+                                  {course.course.course_code}
+                                </td>
+                                <td
+                                  style={{
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                >
                                   <Link to="">
                                     <strong>{course.course.course_name}</strong>
                                   </Link>
                                 </td>
-                                <td></td>
-                                <td>{course?.course?.price}</td>
-                                <td>
+                                <td
+                                  style={{
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                >
+                                  {course?.course?.instructor?.first_name}
+                                </td>
+                                <td
+                                  style={{
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                >
+                                  {course?.course?.price}
+                                </td>
+                                <td
+                                  style={{
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                >
                                   {dateStarted.toLocaleDateString("en-US")}
                                 </td>
-                                <td>{dateEnd.toLocaleDateString("en-US")}</td>
+                                <td
+                                  style={{
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                >
+                                  {dateEnd.toLocaleDateString("en-US")}
+                                </td>
 
-                                <td>
+                                <td
+                                  style={{
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                >
                                   <div className={"alert " + activity}>
                                     {course.set_status}
                                   </div>
@@ -339,15 +498,113 @@ const MyLearningContainer = (props) => {
                       <table className="table table-borderless responsive">
                         <thead>
                           <tr>
-                            <th scope="col">Course Code</th>
-                            <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Start Date</th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
 
-                            <th scope="col">End Date</th>
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Code
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
 
-                            <th scope="col">Status</th>
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Instructor Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Price
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Start Date
+                            </th>
+
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              End Date
+                            </th>
+
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Status
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -358,22 +615,70 @@ const MyLearningContainer = (props) => {
 
                               return (
                                 <tr key={i}>
-                                  <td>{course.course.course_code}</td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course.course.course_code}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     <Link to="">
                                       <strong>
                                         {course.course.course_name}
                                       </strong>
                                     </Link>
                                   </td>
-                                  <td></td>
-                                  <td>{course?.course?.price}</td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  ></td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course?.course?.price}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     {dateStarted.toLocaleDateString("en-US")}
                                   </td>
-                                  <td>{dateEnd.toLocaleDateString("en-US")}</td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {dateEnd.toLocaleDateString("en-US")}
+                                  </td>
 
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     <div className={"alert alert-success"}>
                                       Active
                                     </div>
@@ -406,15 +711,113 @@ const MyLearningContainer = (props) => {
                       <table className="table table-borderless responsive">
                         <thead>
                           <tr>
-                            <th scope="col">Course Code</th>
-                            <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Start Date</th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
 
-                            <th scope="col">End Date</th>
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Code
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
 
-                            <th scope="col">Status</th>
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Instructor Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Price
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Start Date
+                            </th>
+
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              End Date
+                            </th>
+
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Status
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -425,22 +828,70 @@ const MyLearningContainer = (props) => {
 
                               return (
                                 <tr key={i}>
-                                  <td>{course?.course?.course_code}</td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course?.course?.course_code}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     <Link to="">
                                       <strong>
                                         {course?.course?.course_name}
                                       </strong>
                                     </Link>
                                   </td>
-                                  <td></td>
-                                  <td>{course?.course?.price}</td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  ></td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course?.course?.price}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     {dateStarted.toLocaleDateString("en-US")}
                                   </td>
-                                  <td>{dateEnd.toLocaleDateString("en-US")}</td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {dateEnd.toLocaleDateString("en-US")}
+                                  </td>
 
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     <div className={"alert alert-warning"}>
                                       Upcoming
                                     </div>
@@ -473,16 +924,142 @@ const MyLearningContainer = (props) => {
                       <table className="table table-borderless ">
                         <thead>
                           <tr>
-                            <th scope="col">Course Code</th>
-                            <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Start Date</th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
 
-                            <th scope="col">End Date</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Ownership</th>
-                            <th scope="col">Status</th>
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Code
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Instructor Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Price
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Start Date
+                            </th>
+
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              End Date
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Category
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Ownership
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Status
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -504,24 +1081,80 @@ const MyLearningContainer = (props) => {
                               }
                               return (
                                 <tr key={i}>
-                                  <td>{course?.course_code}</td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course?.course_code}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     <Link to="">
                                       <strong>{course?.course_name}</strong>
                                     </Link>
                                   </td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     {course?.instructor?.last_name}{" "}
                                     {course?.instructor?.first_name}
                                   </td>
-                                  <td>{course.price}</td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course.price}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     {dateStarted.toLocaleDateString("en-US")}
                                   </td>
-                                  <td>{dateEnd.toLocaleDateString("en-US")}</td>
-                                  <td>{course.learning_style}</td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {dateEnd.toLocaleDateString("en-US")}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course.learning_style}
+                                  </td>
 
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     <div className={"alert alert-danger"}>
                                       {status_state}
                                     </div>
@@ -560,16 +1193,142 @@ const MyLearningContainer = (props) => {
                       <table className="table table-borderless ">
                         <thead>
                           <tr>
-                            <th scope="col">Course Code</th>
-                            <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Start Date</th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
 
-                            <th scope="col">End Date</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Ownership</th>
-                            <th scope="col">Status</th>
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Code
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Instructor Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Price
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Start Date
+                            </th>
+
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              End Date
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Category
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Ownership
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Status
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -594,25 +1353,89 @@ const MyLearningContainer = (props) => {
                               }
                               return (
                                 <tr key={i}>
-                                  <td>{course?.course_code}</td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course?.course_code}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     <Link to="">
                                       <strong>{course?.course_name}</strong>
                                     </Link>
                                   </td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     {course?.instructor?.last_name}{" "}
                                     {course?.instructor?.first_name}
                                   </td>
-                                  <td>{course?.price}</td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course?.price}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     {dateStarted.toLocaleDateString("en-US")}
                                   </td>
-                                  <td>{dateEnd.toLocaleDateString("en-US")}</td>
-                                  <td>{course?.category?.name}</td>
-                                  <td>{course?.learning_style}</td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {dateEnd.toLocaleDateString("en-US")}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course?.category?.name}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course?.learning_style}
+                                  </td>
 
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     <div className={"alert " + activity}>
                                       {status_state}
                                     </div>
@@ -645,16 +1468,142 @@ const MyLearningContainer = (props) => {
                       <table className="table table-borderless ">
                         <thead>
                           <tr>
-                            <th scope="col">Course Code</th>
-                            <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Start Date</th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
 
-                            <th scope="col">End Date</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Ownership</th>
-                            <th scope="col">Status</th>
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Code
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Instructor Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Price
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Start Date
+                            </th>
+
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              End Date
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Category
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Ownership
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Status
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -679,25 +1628,89 @@ const MyLearningContainer = (props) => {
                               }
                               return (
                                 <tr key={i}>
-                                  <td>{course.course_code}</td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course.course_code}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     <Link to="">
                                       <strong>{course.course_name}</strong>
                                     </Link>
                                   </td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     {course?.instructor?.last_name}{" "}
                                     {course?.instructor?.first_name}
                                   </td>
-                                  <td>{course.price}</td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course.price}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     {dateStarted.toLocaleDateString("en-US")}
                                   </td>
-                                  <td>{dateEnd.toLocaleDateString("en-US")}</td>
-                                  <td>{course.category.name}</td>
-                                  <td>{course.learning_style}</td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {dateEnd.toLocaleDateString("en-US")}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course.category.name}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course.learning_style}
+                                  </td>
 
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     <div className={"alert " + activity}>
                                       {status_state}
                                     </div>
@@ -749,15 +1762,113 @@ const MyLearningContainer = (props) => {
                       <table className="table table-borderless">
                         <thead>
                           <tr>
-                            <th scope="col">Course Code</th>
-                            <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Start Date</th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
 
-                            <th scope="col">End Date</th>
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Code
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
 
-                            <th scope="col">Status</th>
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Instructor Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Price
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Start Date
+                            </th>
+
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              End Date
+                            </th>
+
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Status
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -776,20 +1887,68 @@ const MyLearningContainer = (props) => {
                             }
                             return (
                               <tr key={i}>
-                                <td>{course.course.course_code}</td>
-                                <td>
+                                <td
+                                  style={{
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                >
+                                  {course.course.course_code}
+                                </td>
+                                <td
+                                  style={{
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                >
                                   <Link to="">
                                     <strong>{course.course.course_name}</strong>
                                   </Link>
                                 </td>
-                                <td></td>
-                                <td>{course?.course?.price}</td>
-                                <td>
+                                <td
+                                  style={{
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                ></td>
+                                <td
+                                  style={{
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                >
+                                  {course?.course?.price}
+                                </td>
+                                <td
+                                  style={{
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                >
                                   {dateStarted.toLocaleDateString("en-US")}
                                 </td>
-                                <td>{dateEnd.toLocaleDateString("en-US")}</td>
+                                <td
+                                  style={{
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                >
+                                  {dateEnd.toLocaleDateString("en-US")}
+                                </td>
 
-                                <td>
+                                <td
+                                  style={{
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                >
                                   <div className={"alert " + activity}>
                                     {course.set_status}
                                   </div>
@@ -822,15 +1981,113 @@ const MyLearningContainer = (props) => {
                       <table className="table table-borderless responsive">
                         <thead>
                           <tr>
-                            <th scope="col">Course Code</th>
-                            <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Start Date</th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
 
-                            <th scope="col">End Date</th>
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Code
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
 
-                            <th scope="col">Status</th>
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Instructor Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Price
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Start Date
+                            </th>
+
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              End Date
+                            </th>
+
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Status
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -841,22 +2098,70 @@ const MyLearningContainer = (props) => {
 
                               return (
                                 <tr key={i}>
-                                  <td>{course.course.course_code}</td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course.course.course_code}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     <Link to="">
                                       <strong>
                                         {course.course.course_name}
                                       </strong>
                                     </Link>
                                   </td>
-                                  <td></td>
-                                  <td>{course?.course?.price}</td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  ></td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course?.course?.price}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     {dateStarted.toLocaleDateString("en-US")}
                                   </td>
-                                  <td>{dateEnd.toLocaleDateString("en-US")}</td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {dateEnd.toLocaleDateString("en-US")}
+                                  </td>
 
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     <div className={"alert alert-success"}>
                                       Active
                                     </div>
@@ -889,15 +2194,113 @@ const MyLearningContainer = (props) => {
                       <table className="table table-borderless responsive">
                         <thead>
                           <tr>
-                            <th scope="col">Course Code</th>
-                            <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Start Date</th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
 
-                            <th scope="col">End Date</th>
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Code
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
 
-                            <th scope="col">Status</th>
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Instructor Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Price
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Start Date
+                            </th>
+
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              End Date
+                            </th>
+
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Status
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -908,22 +2311,70 @@ const MyLearningContainer = (props) => {
 
                               return (
                                 <tr key={i}>
-                                  <td>{course.course.course_code}</td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course.course.course_code}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     <Link to="">
                                       <strong>
                                         {course.course.course_name}
                                       </strong>
                                     </Link>
                                   </td>
-                                  <td></td>
-                                  <td>{course?.course?.price}</td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  ></td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course?.course?.price}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     {dateStarted.toLocaleDateString("en-US")}
                                   </td>
-                                  <td>{dateEnd.toLocaleDateString("en-US")}</td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {dateEnd.toLocaleDateString("en-US")}
+                                  </td>
 
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     <div className={"alert alert-warning"}>
                                       Upcoming
                                     </div>
@@ -956,16 +2407,142 @@ const MyLearningContainer = (props) => {
                       <table className="table table-borderless ">
                         <thead>
                           <tr>
-                            <th scope="col">Course Code</th>
-                            <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Start Date</th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
 
-                            <th scope="col">End Date</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Ownership</th>
-                            <th scope="col">Status</th>
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Code
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Instructor Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Price
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Start Date
+                            </th>
+
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              End Date
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Category
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Ownership
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Status
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -987,24 +2564,80 @@ const MyLearningContainer = (props) => {
                               }
                               return (
                                 <tr key={i}>
-                                  <td>{course.course_code}</td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course.course_code}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     <Link to="">
                                       <strong>{course.course_name}</strong>
                                     </Link>
                                   </td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     {course?.instructor?.user?.last_name}{" "}
                                     {course?.instructor?.user?.first_name}
                                   </td>
-                                  <td>{course.price}</td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course.price}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     {dateStarted.toLocaleDateString("en-US")}
                                   </td>
-                                  <td>{dateEnd.toLocaleDateString("en-US")}</td>
-                                  <td>{course.learning_style}</td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {dateEnd.toLocaleDateString("en-US")}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course.learning_style}
+                                  </td>
 
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     <div className={"alert alert-danger"}>
                                       {status_state}
                                     </div>
@@ -1037,16 +2670,142 @@ const MyLearningContainer = (props) => {
                       <table className="table table-borderless ">
                         <thead>
                           <tr>
-                            <th scope="col">Course Code</th>
-                            <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Start Date</th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
 
-                            <th scope="col">End Date</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Ownership</th>
-                            <th scope="col">Status</th>
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Code
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Instructor Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Price
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Start Date
+                            </th>
+
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              End Date
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Category
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Ownership
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Status
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -1071,25 +2830,89 @@ const MyLearningContainer = (props) => {
                               }
                               return (
                                 <tr key={i}>
-                                  <td>{course.course_code}</td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course.course_code}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     <Link to="">
                                       <strong>{course.course_name}</strong>
                                     </Link>
                                   </td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     {course?.instructor?.user?.last_name}{" "}
                                     {course?.instructor?.user?.first_name}
                                   </td>
-                                  <td>{course.price}</td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course.price}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     {dateStarted.toLocaleDateString("en-US")}
                                   </td>
-                                  <td>{dateEnd.toLocaleDateString("en-US")}</td>
-                                  <td>{course.category.name}</td>
-                                  <td>{course.learning_style}</td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {dateEnd.toLocaleDateString("en-US")}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course.category.name}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course.learning_style}
+                                  </td>
 
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     <div className={"alert " + activity}>
                                       {status_state}
                                     </div>
@@ -1122,16 +2945,142 @@ const MyLearningContainer = (props) => {
                       <table className="table table-borderless ">
                         <thead>
                           <tr>
-                            <th scope="col">Course Code</th>
-                            <th scope="col">Course Name</th>
-                            <th scope="col">Instructor Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Start Date</th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
 
-                            <th scope="col">End Date</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Ownership</th>
-                            <th scope="col">Status</th>
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Code
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Course Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Instructor Name
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Price
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Start Date
+                            </th>
+
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              End Date
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Category
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Ownership
+                            </th>
+                            <th
+                              scope="col"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+
+                                marginTop: "14px",
+                                marginRight: "7px",
+                              }}
+                            >
+                              Status
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -1156,25 +3105,89 @@ const MyLearningContainer = (props) => {
                               }
                               return (
                                 <tr key={i}>
-                                  <td>{course.course_code}</td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course.course_code}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     <Link to="">
                                       <strong>{course.course_name}</strong>
                                     </Link>
                                   </td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     {course?.instructor?.user?.last_name}{" "}
                                     {course?.instructor?.user?.first_name}
                                   </td>
-                                  <td>{course.price}</td>
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course.price}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     {dateStarted.toLocaleDateString("en-US")}
                                   </td>
-                                  <td>{dateEnd.toLocaleDateString("en-US")}</td>
-                                  <td>{course.category.name}</td>
-                                  <td>{course.learning_style}</td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {dateEnd.toLocaleDateString("en-US")}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course.category.name}
+                                  </td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {course.learning_style}
+                                  </td>
 
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     <div className={"alert " + activity}>
                                       {status_state}
                                     </div>

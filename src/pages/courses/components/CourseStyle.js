@@ -27,7 +27,6 @@ const CourseStyle = ({ course: { courses }, setFilterAllCourses }) => {
     // const isChecked = e.target.checked;
     // if (isChecked) {
     //   //checked
-
     //   if (parseInt(e.target.value) === 0) {
     //     setFilterAllCourses([...courses]);
     //   } else {
@@ -61,8 +60,20 @@ const CourseStyle = ({ course: { courses }, setFilterAllCourses }) => {
   return (
     <Styles>
       {/* Course Tag */}
-      <div className="course-category" style={{ background: "#fff" }}>
-        <h5>Learning Style</h5>
+      <div className="course-category " style={{ background: "#fff" }}>
+        <h5
+          style={{
+            fontWeight: "300px",
+            color: "#000",
+            fontSize: "24px",
+            fontFamily: "Open Sans",
+            lineHight: "34px",
+            letterSpacing: "-1px",
+            fontWeight: "normal",
+          }}
+        >
+          Learning Style
+        </h5>
 
         <div className="form__group">
           {/*<select name="category" onChange={filterStyle} required>

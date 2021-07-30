@@ -125,8 +125,7 @@ const Notifications = () => {
                   <h4 className="page-title">Notifications</h4>
                 </div>
               </div>
-              <br />
-
+              <br /> <br />
               <div className="container">
                 <div className="row">
                   <div className="table-responsive table-wrapper">
@@ -137,9 +136,51 @@ const Notifications = () => {
                         <table className="table table-borderless table-reveal">
                           <thead>
                             <tr>
-                              <th scope="col">Type</th>
-                              <th scope="col">Message</th>
-                              <th scope="col">Time</th>
+                              <th
+                                scope="col"
+                                style={{
+                                  fontWeight: "700",
+                                  fontFamily: "Open Sans",
+                                  color: "#000",
+                                  fontSize: "12px",
+                                  lineHeight: "20px",
+
+                                  marginTop: "14px",
+                                  marginRight: "7px",
+                                }}
+                              >
+                                Type
+                              </th>
+                              <th
+                                scope="col"
+                                style={{
+                                  fontWeight: "700",
+                                  fontFamily: "Open Sans",
+                                  color: "#000",
+                                  fontSize: "12px",
+                                  lineHeight: "20px",
+
+                                  marginTop: "14px",
+                                  marginRight: "7px",
+                                }}
+                              >
+                                Message
+                              </th>
+                              <th
+                                scope="col"
+                                style={{
+                                  fontWeight: "700",
+                                  fontFamily: "Open Sans",
+                                  color: "#000",
+                                  fontSize: "12px",
+                                  lineHeight: "20px",
+
+                                  marginTop: "14px",
+                                  marginRight: "7px",
+                                }}
+                              >
+                                Time
+                              </th>
                             </tr>
                           </thead>
                           <tbody>
@@ -164,12 +205,32 @@ const Notifications = () => {
                                   id={i + "titanic-" + new Date().toString()}
                                   key={i + "titanic-" + new Date().toString()}
                                 >
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     <i className={notify_icon}></i>
                                   </td>
-                                  <td>{item.data.message}</td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
+                                    {item.data.message}
+                                  </td>
 
-                                  <td>
+                                  <td
+                                    style={{
+                                      fontFamily: "Open Sans",
+                                      color: "#000",
+                                      fontSize: "14px",
+                                    }}
+                                  >
                                     {getTimeAgoInterval(
                                       new Date(item.created_at)
                                     )}

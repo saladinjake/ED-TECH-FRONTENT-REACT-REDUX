@@ -508,12 +508,10 @@ const CreateCourse = (props) => {
         setInstructors([...res[4].data.data]);
         console.log(res[4].data.data);
 
-          
-
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         toast.error("Error Occured fetching data");
 
         setLoading(false);

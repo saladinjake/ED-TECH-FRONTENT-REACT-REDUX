@@ -11,7 +11,7 @@ export class ProgramsTitle extends Component {
     return (
       <Styles>
         <section
-          className="breadcrumb-area"
+          className="breadcrumb-area article-dummy"
           style={{
             backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/${this.state.backgroundImage})`,
           }}

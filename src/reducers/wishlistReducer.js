@@ -59,7 +59,7 @@ export default async (state = initialState, action) => {
       let existingItem = cachedCart.find((item) => action.payload === item.id);
       if (existingItem) {
         toast.success(`Course already in wish list`);
-      
+
         return {
           ...state,
         };
@@ -67,7 +67,7 @@ export default async (state = initialState, action) => {
         itemToBeAdded.quantity = 1;
         let newTotal =
           parseInt(state.totalWishes) + parseInt(itemToBeAdded.price);
-       
+
         cachedCart.push(itemToBeAdded);
         localStorage.setItem("wishes", JSON.stringify([...cachedCart]));
         localStorage.setItem("totalwish", newTotal);
@@ -79,7 +79,7 @@ export default async (state = initialState, action) => {
         // return state;
 
         await addToWishlist({ course_id: itemToBeAdded.id });
-         toast.success(`Course added to wish list`);
+        toast.success(`Course added to wish list`);
 
         return {
           ...state,

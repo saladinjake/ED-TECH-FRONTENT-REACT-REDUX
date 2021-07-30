@@ -8,18 +8,22 @@ import { connect } from "react-redux";
 import { addToCart, fetchCourses } from "actions/cartActions";
 
 import PropTypes from "prop-types";
-import $ from "jquery"
+import $ from "jquery";
 
 import toast from "react-hot-toast";
 
 import { addToWishList } from "actions/wishListActions";
-import moment from "moment"
+import moment from "moment";
 
 import { enrollCourses } from "services/enrollment.js";
 
 
-function isElementOutViewport (el) {
+import { Container, Row, Col } from "react-bootstrap";
+import Swiper from "react-id-swiper";
+import { Styles } from "components/styles/courseSlider.js";
 
+
+function isElementOutViewport(el) {
   // var parent = el.parentNode.parentElement,
   //   parentComputedStyle = window.getComputedStyle(parent, null),
   //   parentBorderTopWidth = parseInt(parentComputedStyle.getPropertyValue('border-top-width')),
@@ -33,53 +37,43 @@ function isElementOutViewport (el) {
   //   if(overRight){
   //     alert("way over right")
   //   }
-
   //   if(overLeft){
   //     alert("way over left")
   //   }
-
-
-
-
 }
 
-
 function inParentViewport(el, pa) {
-    //if (typeof jQuery === "function"){
-        // if (el instanceof jQuery)
-            el = el[0];
-        // if (pa instanceof jQuery)
-            pa = pa[0];
-    // }
+  //if (typeof jQuery === "function"){
+  // if (el instanceof jQuery)
+  el = el[0];
+  // if (pa instanceof jQuery)
+  pa = pa[0];
+  // }
 
-    el.style.marginLeft="0px";
-      el.style.position="absolute";
-      el.style.zIndex ="9000000"
+  el.style.marginLeft = "0px";
+  el.style.position = "absolute";
+  el.style.zIndex = "9000000";
 
+  var e = el.getBoundingClientRect();
+  var p = pa.getBoundingClientRect();
 
-    var e = el.getBoundingClientRect();
-    var p = pa.getBoundingClientRect();
+  if (e.right >= p.right) {
+    console.log(e.right, p.right);
+    // el.style.
+    // alert("way over right")
+  }
 
-    if(e.right >= p.right){
-      console.log(e.right,p.right)
-       // el.style.
-      // alert("way over right")
-    }
+  if (e.left <= p.left) {
+    console.log(e.left, p.left);
+    // alert("way over left")
+  }
 
-
-    if(e.left <= p.left){
-      console.log(e.left,p.left)
-      // alert("way over left")
-     
-
-    }
-
-    // alert(
-    //     e.bottom >= p.top &&
-    //     e.right >= p.left &&
-    //     e.top <= p.bottom &&
-    //     e.left <= p.right
-    // );
+  // alert(
+  //     e.bottom >= p.top &&
+  //     e.right >= p.left &&
+  //     e.top <= p.bottom &&
+  //     e.left <= p.right
+  // );
 }
 
 const Carousel = (props) => {
@@ -88,14 +82,13 @@ const Carousel = (props) => {
   const {
     history,
     match,
-    auth: { isAuthenticated,user },
+    auth: { isAuthenticated, user },
     cart: { cart },
     wishList: { wishList },
     addToCart,
     addToWishList,
-    fetchCourses
-    
-} = props
+    fetchCourses,
+  } = props;
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [length, setLength] = useState(children.length);
@@ -123,8 +116,6 @@ const Carousel = (props) => {
     setLoading(false);
   };
 
-
-
   useEffect(() => {
     (async function loadContent() {
       await fetchCourses();
@@ -132,8 +123,6 @@ const Carousel = (props) => {
     })();
     // eslint-disable-next-line
   }, []);
-
-
 
   useEffect(() => {
     (async function CheckStatus() {
@@ -167,11 +156,10 @@ const Carousel = (props) => {
     }
   };
 
-  
-  const handleWishList = async (e,id) =>{
-    e.preventDefault()
-    return await addToWishList(id)
-  }
+  const handleWishList = async (e, id) => {
+    e.preventDefault();
+    return await addToWishList(id);
+  };
 
   const handleTouchStart = (e) => {
     const touchDown = e.touches[0].clientX;
@@ -199,79 +187,111 @@ const Carousel = (props) => {
     setTouchPosition(null);
   };
 
-  console.log(children)
+  console.log(children);
 
-  useEffect(()=>{
+  useEffect(() => {
     // Only the class elements in view
-      $('.info2').mouseover(function(){
-        $(".carousel-content-wrapper").css({
-          overflow:"inherit",
-          // width:"1000px"
-        })
-          
-         // inParentViewport($(this), $("#myboxwrap"))
+    $(".info2").mouseover(function () {
+      $(".carousel-content-wrapper").css({
+        overflow: "inherit",
+        // width:"1000px"
       });
 
+      // inParentViewport($(this), $("#myboxwrap"))
+    });
 
-      $('.info2').mouseout(function(){
-        $(".carousel-content-wrapper").css({
-          overflow:"hidden",
-           // width:"100%"
-        })
-          
+    $(".info2").mouseout(function () {
+      $(".carousel-content-wrapper").css({
+        overflow: "hidden",
+        // width:"100%"
       });
+    });
 
+    // var carousels = Array.prototype.map.call(
+    //   document.querySelectorAll(".carousel"),
+    //   function (element) {
+    //     var carousel = new Carousel2(element);
+    //     carousel.auto(9000);
+    //     return carousel;
+    //   }
+    // );
 
+    $(".info2 p,.info2 span,.info b").each(function () {
+      $(this).css({ color: "#000" });
+    });
+  });
 
-
-      $(".info2 p,.info2 span,.info b").each(function(){
-        $(this).css({"color":"#777"})
-      })
-  })
-
-
-
-  
-  const handleAddToCart = async (e, course) =>{
-    e.preventDefault()
-    console.log(course?.price)
-    if( parseInt(course?.price) <=0){
+  const handleAddToCart = async (e, course) => {
+    e.preventDefault();
+    console.log(course?.price);
+    if (parseInt(course?.price) <= 0) {
       //automaitcally enroll
-        let payload = [];
-        let newObj = {};
-        newObj.user_id = user?.id;
-        newObj.course_id = course?.id;
-        payload.push(newObj);
+      let payload = [];
+      let newObj = {};
+      newObj.user_id = user?.id;
+      newObj.course_id = course?.id;
+      payload.push(newObj);
 
-    
       try {
         await enrollCourses({
           enrollments: payload,
         });
         toast.success(`Free Course enrolled succesfully`);
 
-        setTimeout(()=>{window.location.reload()},2000)
-
-      }catch(err){
-         toast.error(`Could not enroll you in for the free course: `+ course.course_name);
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      } catch (err) {
+        toast.error(
+          `Could not enroll you in for the free course: ` + course.course_name
+        );
       }
-
-
-    }else{
-      let paidCourseId = course?.id
-      addToCart(course.id)
+    } else {
+      let paidCourseId = course?.id;
+      addToCart(course.id);
     }
+  };
 
-  }
 
+
+  //swipper for mobile device
+  const settings = {
+      slidesPerView: 3,
+      loop: true,
+      speed: 1000,
+      // autoplay: {
+      //   delay: 3000,
+      //   disableOnInteraction: false,
+      // },
+      spaceBetween: 30,
+      watchSlidesVisibility: true,
+      pagination: {
+        el: ".slider-dot.text-center",
+        clickable: true,
+      },
+      breakpoints: {
+        0: {
+          slidesPerView: 1,
+        },
+        576: {
+          slidesPerView: 1,
+        },
+        768: {
+          slidesPerView: 2,
+        },
+        992: {
+          slidesPerView: 3,
+        },
+      },
+    };
 
   return (
     <div className="carousel-container">
       <h3> {/*title */}</h3>
-      <div className="carousel-wrapper">
+      <div className="carousel-wrapper shown">
         {/* You can alwas change the content of the button to other things */}
         <div
-        id="myboxwrap"
+          id="myboxwrap"
           className="carousel-content-wrapper gridDisplay"
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
@@ -282,26 +302,99 @@ const Carousel = (props) => {
           >
             {children.map((item, i) => {
               return (
-                <div key={"ramlink"+item?.id} className="card-box bookset product-view col-merge-12 col-merge-s-4 col-merge-d3" style={{marginRight:"3px",height:"310px"}}>
-                   
-
-                    <div id={"mei"+item?.id } className="info2 full-width " style={{zIndex:"21474894399999999", margin:"70px auto", padding:"10px"}}>
-                         
-                        <div style={{width:"100%",marginTop:"20px",height:"50px"}}> 
-                       <img src={item?.course?.instructor?.image_url}  style={{width:"50px", height:"50px", borderRadius:"50%", float:"left",marginLeft:"20px", marginRight:"10px"}}/>
-                         <div>
-                         <h5 style={{width:"100%",  fontSize:"14px", fontWeight:"small",color:"#777", marginLeft:"20px"}}>{item?.course?.instructor?.first_name} {item?.course?.instructor?.last_name}</h5>
-                         <p style={{ width:"100%",marginTop:"4px", textTransform:"capitalize", fontWeight:"bold"}}>
-                        {item?.course?.instructor?.instructor_profile?.current_employer_designation} 
-                        
-                      </p>
-                        </div>
+                <div
+                  key={"ramlink" + item?.id}
+                  className="card-box bookset product-view col-merge-12 col-merge-s-4 col-merge-d3 "
+                  style={{
+                    marginRight: "3px",
+                    height: "310px",
+                    margin: "10px",
+                  }}
+                >
+                  <div
+                    id={"mei" + item?.id}
+                    className="info2 full-width "
+                    style={{
+                      zIndex: "21474894399999999",
+                      margin: "70px auto",
+                      padding: "10px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "100%",
+                        marginTop: "20px",
+                        height: "50px",
+                      }}
+                    >
+                      <img
+                        src={item?.course?.instructor?.image_url}
+                        style={{
+                          width: "50px",
+                          height: "50px",
+                          borderRadius: "50%",
+                          float: "left",
+                          marginLeft: "20px",
+                          marginRight: "10px",
+                        }}
+                      />
+                      <div>
+                        <h5
+                          className="fm"
+                          style={{
+                            width: "100%",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                            color: "#000",
+                            marginLeft: "20px",
+                          }}
+                        >
+                          {item?.course?.instructor?.first_name}{" "}
+                          {item?.course?.instructor?.last_name}
+                        </h5>
+                        <p
+                          className="fm"
+                          style={{
+                            color: "#000",
+                            fontSize: "14px",
+                            width: "100%",
+                            marginTop: "4px",
+                            textTransform: "capitalize",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {
+                            item?.course?.instructor?.instructor_profile
+                              ?.current_employer_designation
+                          }
+                        </p>
                       </div>
-                      <div style={{padding:"5px",color:"#000",width:"100%",margin:"10px auto",clear:"both"}}>
-                         <h4 className="stori-line" style={{fontSize:"18px",lineHeight: "22px",fontWeight: "600",margin: "0 0 15px"}}>  {item?.course?.course_name}</h4>
-                          
+                    </div>
+                    <div
+                      className="fm"
+                      style={{
+                        padding: "5px",
+                        color: "#000",
+                        width: "100%",
+                        margin: "10px auto",
+                        clear: "both",
+                      }}
+                    >
+                      <h4
+                        className="stori-line fm"
+                        style={{
+                          fontSize: "25px",
+                          lineHeight: "32px",
+                          fontWeight: "600",
+                          margin: "0 0 15px",
+                          color: "#000",
+                        }}
+                      >
+                        {" "}
+                        {item?.course?.course_name}
+                      </h4>
 
-                          {/*<div style={{width:"100%",padding:"10px"}}><form className="rating-form" action="#" method="post" name="rating-movie">
+                      {/*<div style={{width:"100%",padding:"10px"}}><form className="rating-form" action="#" method="post" name="rating-movie">
                               <fieldset className="form-group">
                                 
                                 <legend className="form-legend">Rating:</legend>
@@ -363,32 +456,41 @@ const Carousel = (props) => {
                             </form>
                             </div>*/}
 
+                      {/^/.test(item?.course?.course_description) ? (
+                        <p
+                          style={{
+                            margin: "0 0 13px",
+                            fontSize: "14px",
+                            lineHeight: "26px",
+                            color: "#000",
+                            fontWeight: "bold",
+                          }}
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              item?.course?.course_description?.substring(
+                                0,
+                                180
+                              ) + "...",
+                          }}
+                        />
+                      ) : (
+                        <p
+                          className="course-subtitle"
+                          style={{
+                            margin: "0 0 13px",
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontWeight: "bold",
+                            fontSize: "14px",
+                            lineHeight: "26px",
+                          }}
+                        >
+                          {item?.course?.course_description.substring(0, 180) +
+                            "..."}
+                        </p>
+                      )}
 
-                          {/^/.test(item?.course?.course_description) ? (
-                      <p
-                        style={{margin: "0 0 13px",fontSize: "14px",lineHeight: "26px",color: "#777"}}
-                        dangerouslySetInnerHTML={{
-                          __html:item?.course?.course_description?.substring(
-                          0,
-                          100
-                        ) + "..."
-                        }}
-                      />
-                    ) : (
-                      <p
-                        className="course-subtitle"
-                        style={{margin: "0 0 13px",fontSize: "14px",lineHeight: "26px",color: "#777"}}
-                        
-                      >
-                        {item?.course?.course_description.substring(
-                          0,
-                          100
-                        ) + "..."}
-                      </p>
-                    )}
-
-
-                   <div className="stm_lms_courses__single--info_meta" style={{marginBottom:"-10px"}}>
+                      {/*<div className="stm_lms_courses__single--info_meta" style={{marginBottom:"-10px"}}>
                       <div className="stm_lms_course__meta"> 
                          <i className="fa fa-signal " style={{marginLeft:"4px"}}>Beginner</i> 
                       </div>
@@ -398,75 +500,99 @@ const Carousel = (props) => {
                       <div className="stm_lms_course__meta"> 
                         <i className="fa fa-clock " style={{marginLeft:"4px"}}>{item?.course?.duration} hrs</i>
                       </div>
-                    </div>
+                    </div>*/}
 
-
-
-
-                    <div className="stm_lms_courses__single--info_meta" style={{position:"absolute",bottom:"30px"}}>
-                      <div className="stm_lms_course__meta"> 
-                         
-                    <a style={{ background:"rgba(8,23,200)", color:"#fff", width:"150px"}}  href="#detailView"  onClick={()=>{
-                        window.location.href= process.env.PUBLIC_URL + "/courses/"+ item?.id
-                       }} className="button-c button-rounded-right seedetail">See Detail</a>
-                       
-                      </div>
-                      <div className="stm_lms_course__meta" style={{marginLeft:"30px"}}> 
-                       {isAuthenticated ? (
-                          
-                          <a href="#addTowishBox" style={{ color:"#fff",   background:"red", width:"150px"}} 
-                          
-                           className=" button-c button-rounded-top" 
-                           onClick={(e)=>{ handleWishList(e,item?.id)}}
-
-                           >Wishlist</a>
-
+                      <div
+                        className="stm_lms_courses__single--info_meta"
+                        style={{ position: "absolute", bottom: "30px" }}
+                      >
+                        <div className="stm_lms_course__meta">
+                          <a
+                            style={{
+                              background: "rgba(8,23,200)",
+                              color: "#fff",
+                              width: "150px",
+                            }}
+                            href="#detailView"
+                            onClick={() => {
+                              window.location.href =
+                                process.env.PUBLIC_URL + "/courses/" + item?.id;
+                            }}
+                            className="button-c button-rounded-right seedetail fm"
+                          >
+                            See Detail
+                          </a>
+                        </div>
+                        <div
+                          className="stm_lms_course__meta"
+                          style={{ marginLeft: "30px" }}
+                        >
+                          {isAuthenticated ? (
+                            <a
+                              href="#addTowishBox"
+                              style={{
+                                color: "#fff",
+                                background: "red",
+                                width: "150px",
+                              }}
+                              className=" button-c button-rounded-top fm"
+                              onClick={(e) => {
+                                handleWishList(e, item?.id);
+                              }}
+                            >
+                              Wishlist
+                            </a>
                           ) : (
-                            
-                            <a href="#loginRequired" style={{ color:"#fff", background:"red", width:"150px"}} 
-                          
-                           className="button-c button-rounded-right modal-link" 
-                           
-
-                           >Wishlist</a>
-
-                          )} 
-                      </div>
-                      <div className="stm_lms_course__meta" style={{marginLeft:"30px"}}> 
-                        
-
-
-
-                          {
-                            isAuthenticated ? (
-
-
-                            <a href="#addTocart" className="button-c button-rounded-left" style={{ backgroundColor:"rgba(8,23,200)", color:"#fff", width:"150px"}}
-
-                       onClick={(e)=>{
-                                     handleAddToCart(e,item?.course)
-                                    }}
-                                     >Buy</a>
-
-                            ) : (
-
-
-
-                      <a href="#addTocart" className="button-c button-rounded-left  modal-link" style={{ backgroundColor:"rgba(8,23,200)", color:"#fff", width:"150px"}}>Buy</a>
-
-
-                            )
-                          }
+                            <a
+                              href="#loginRequired"
+                              style={{
+                                color: "#fff",
+                                background: "red",
+                                width: "150px",
+                              }}
+                              className="button-c button-rounded-right fm modal-link"
+                            >
+                              Wishlist
+                            </a>
+                          )}
+                        </div>
+                        <div
+                          className="stm_lms_course__meta fm"
+                          style={{ marginLeft: "30px" }}
+                        >
+                          {isAuthenticated ? (
+                            <a
+                              href="#addTocart"
+                              className="button-c fm button-rounded-left"
+                              style={{
+                                backgroundColor: "rgba(8,23,200)",
+                                color: "#fff",
+                                width: "150px",
+                              }}
+                              onClick={(e) => {
+                                handleAddToCart(e, item?.course);
+                              }}
+                            >
+                              Buy
+                            </a>
+                          ) : (
+                            <a
+                              href="#addTocart"
+                              className="button-c button-rounded-left fm  modal-link"
+                              style={{
+                                backgroundColor: "rgba(8,23,200)",
+                                color: "#fff",
+                                width: "150px",
+                              }}
+                            >
+                              Buy
+                            </a>
+                          )}
+                        </div>
                       </div>
                     </div>
 
-                          
-                      </div>
-                          
-
-                      
-
-                       <div
+                    <div
                       className="bottom-sect"
                       style={{
                         display: "table",
@@ -474,33 +600,49 @@ const Carousel = (props) => {
                         height: "30px",
                       }}
                     >
-                      
-                    <p style={{borderTop:"1px solid #000",color:"#000", 
-                               display:"table",position:"absolute",
-                               bottom:"0px",width:"95%",padding:"10px",fontSize: "10px",
+                      <p
+                        style={{
+                          borderTop: "1px solid #000",
+                          color: "#000",
+                          display: "table",
+                          position: "absolute",
+                          bottom: "0px",
+                          width: "95%",
+                          padding: "10px",
+                          fontSize: "10px",
+                        }}
+                        className="fm"
+                      >
+                        Reviews
+                      </p>
 
-                             }}>Reviews</p>
-
-                    <div style={{
-                               color:"#000", 
-                               position:"absolute",
-                               bottom:"0px",padding:"10px", float:"right",right:"0px"}}>
-
-                               NGN{item?.course?.price}
-
-                        </div>
+                      <div
+                        className="fm"
+                        style={{
+                          color: "#000",
+                          position: "absolute",
+                          bottom: "0px",
+                          padding: "10px",
+                          float: "right",
+                          right: "0px",
+                        }}
+                      >
+                        NGN{item?.course?.price}
+                      </div>
                     </div>
+                  </div>
 
-
-
-                   </div>
-
-                  <figure style={{border:"1px solid #f5f5f5",borderBottom:"2px solid #000"}}>
+                  <figure
+                    style={{
+                      border: "1px solid #f5f5f5",
+                      borderBottom: "2px solid #000",
+                    }}
+                  >
                     <Link
                       to={
                         process.env.PUBLIC_URL +
                         "/courses/" +
-                        item?.id+
+                        item?.id +
                         "/" +
                         item?.course?.slug
                       }
@@ -512,7 +654,7 @@ const Carousel = (props) => {
                           src={item?.course?.course_cover_image}
                           className="thumb-img imagemix"
                           alt="work-thumbnail"
-                          style={{ width: "100%", height: "140px",  }}
+                          style={{ width: "100%", height: "140px" }}
                         />
                       ) : (
                         <Fragment />
@@ -521,10 +663,18 @@ const Carousel = (props) => {
                     </Link>
                   </figure>
 
-                  <div className="" style={{ height: "200px", marginLeft:"10px",width:"100%" }}>
+                  <div
+                    className=""
+                    style={{
+                      height: "200px",
+                      marginLeft: "10px",
+                      width: "100%",
+                    }}
+                  >
                     <div className="">
-<p>
-  <Link
+                      <p className="style-9b">
+                        <Link
+                          className="style-9b"
                           to={
                             process.env.PUBLIC_URL +
                             "/courses/" +
@@ -532,14 +682,47 @@ const Carousel = (props) => {
                             "/" +
                             item.slug
                           }
-                          style={{ fontSize: "10px",width:"100%",color: "gray",lineHeight:"10px" }}
-                          
+                          style={{
+                            fontWeight: "700",
+                            fontFamily: "Open Sans",
+                            fontSize: "12px",
+                            color: "#000",
+                            lineHeight: "20px",
+                          }}
                         >
-                          {item?.category?.name} 
+                          {item?.category?.name}
                         </Link>
                       </p>
 
-                       <p style={{   width:"100%",fontWeight:"bold",marginTop:"3px"}}>
+                      <p className="style-9b">
+                        <Link
+                          className="style-9b"
+                          style={{
+                            fontWeight: "700",
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontSize: "12px",
+                            lineHeight: "20px",
+                          }}
+                          to={
+                            process.env.PUBLIC_URL +
+                            "/courses/" +
+                            item.id +
+                            "/" +
+                            item?.course?.slug
+                          }
+                        >
+                          {item?.course?.course_code}
+                        </Link>
+                      </p>
+
+                      <p
+                        style={{
+                          width: "100%",
+                          fontWeight: "bold",
+                          marginTop: "3px",
+                        }}
+                      >
                         <Link
                           to={
                             process.env.PUBLIC_URL +
@@ -548,41 +731,44 @@ const Carousel = (props) => {
                             "/" +
                             item?.course?.slug
                           }
-                          style={{ fontSize: "13px",width:"100%",color: "#000" }}
-                          className="text-dark"
+                          style={{
+                            fontWeight: "700",
+                            fontFamily: "Open Sans",
+                            fontSize: "12px",
+                            width: "100%",
+                            marginTop: "2px",
+                            color: "#000",
+                            margin: "0 0 15px",
+                            lineHeight: "20px",
+                          }}
+                          className="style-8a"
                         >
-                          {item?.course?.course_code}  
+                          {item?.course?.course_name?.substring(0, 30) + "..."}
                         </Link>
                       </p>
-
-
-                      <p style={{   width:"100%",fontWeight:"bold",marginTop:"3px"}}>
-                        <Link
-                          to={
-                            process.env.PUBLIC_URL +
-                            "/courses/" +
-                            item.id +
-                            "/" +
-                            item?.course?.slug
-                          }
-                          style={{ fontSize: "13px",width:"100%",color: "#000" ,marginTop:"2px"}}
-                          className="text-dark"
-                        >
-                           {item?.course?.course_name?.substring(0,30)+ "..."}
-                        </Link>
-                      </p>
-                      <p style={{ width:"100%",marginTop:"4px"}}>
-                        {item?.course?.instructor?.instructor_profile?.current_employer_designation} 
-                        
+                      <p
+                        style={{
+                          width: "100%",
+                          marginTop: "4px",
+                          color: "#000",
+                        }}
+                        className="style-8a"
+                      >
+                        {
+                          item?.course?.instructor?.instructor_profile
+                            ?.current_employer_designation
+                        }
                       </p>
 
-                      <p style={{ width:"100%"}}>
-                        { item?.course?.instructor?.first_name !== null &&
+                      <p
+                        style={{ width: "100%", color: "#000" }}
+                        className="style-8a"
+                      >
+                        {item?.course?.instructor?.first_name !== null &&
                           item?.course?.instructor?.first_name +
                             " " +
                             item?.course?.instructor?.last_name}
                       </p>
-
                     </div>
                     <div
                       className="bottom-sect"
@@ -592,19 +778,32 @@ const Carousel = (props) => {
                         height: "30px",
                       }}
                     >
-                      
-                    <p style={{borderTop:"1px solid #000",color:"#000", 
-                               display:"table",position:"absolute",
-                               bottom:"0px",width:"90%",padding:"10px",fontSize: "10px",
+                      <p
+                        style={{
+                          borderTop: "1px solid #000",
+                          color: "#000",
+                          display: "table",
+                          position: "absolute",
+                          bottom: "0px",
+                          width: "90%",
+                          padding: "10px",
+                          fontSize: "10px",
+                        }}
+                      >
+                        Course
+                      </p>
 
-                             }}>Course</p>
-
-                    <div style={{
-                               color:"#000", 
-                               position:"absolute",
-                               bottom:"0px",padding:"10px", float:"right",right:"0px"}}>
-
-                                <Link
+                      <div
+                        style={{
+                          color: "#000",
+                          position: "absolute",
+                          bottom: "0px",
+                          padding: "10px",
+                          float: "right",
+                          right: "0px",
+                        }}
+                      >
+                        <Link
                           to={
                             process.env.PUBLIC_URL +
                             "/courses/" +
@@ -612,13 +811,15 @@ const Carousel = (props) => {
                             "/" +
                             item?.course?.slug
                           }
-                          style={{ fontSize: "10px",width:"100%",color: "gray" }}
-                          
+                          style={{
+                            fontSize: "10px",
+                            width: "100%",
+                            color: "gray",
+                          }}
                         >
                           Details
                         </Link>
-
-                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -630,7 +831,7 @@ const Carousel = (props) => {
 
         <button
           onClick={prev}
-          className="left-arrow wing-right"
+          className="left-arrow wing-right shown"
           style={{
             background: "#fff",
             borderRadius: "0%",
@@ -639,42 +840,270 @@ const Carousel = (props) => {
           }}
         >
           &lt;
-        </button>
-        
-        <button
-          onClick={next}
-          className="right-arrow wing-right2"
-          style={{
-            background: "#fff",
-            borderRadius: "0%",
-            color: "#eee",
-            fontSize: "20px",
-          }}
-        >
-          &gt;
         </button>
 
-        {/*
-        <button
-          onClick={prev}
-          className="left-arrow-top reset-left-carosel hide"
-          style={{ background: "#fff", borderRadius: "0%" ,color: "#eee", fontSize:"20px" }}
-        >
-          &lt;
-        </button>
         <button
           onClick={next}
-          className="right-arrow-top reset-right-carosel hide"
-          style={{  background: "#fff", borderRadius: "0%" ,color: "#eee", fontSize:"20px"  }}
+          className="right-arrow wing-right2 shown"
+          style={{
+            background: "#fff",
+            borderRadius: "0%",
+            color: "#eee",
+            fontSize: "20px",
+          }}
         >
           &gt;
-        </button>*/}
+        </button>
       </div>
+
+
+
+
+
+
+
+
+
+     
+<Styles>
+      <div className="hide ">
+        <section class=" hide course-slider-area">
+
+
+          
+          <Col md="12" className="course-slider">
+                <Swiper {...settings}>
+            {children.map((item, i) => {
+              return (
+                <div
+                  data-link={
+                    process.env.PUBLIC_URL +
+                    "/courses/" +
+                    item.id +
+                    "/" +
+                    item?.course?.slug
+                  }
+                  key={"ramlink" + item?.id}
+                  className="card-box  course-item  "
+                  style={{ marginRight: "10px" }}
+                >
+                  <figure
+                    style={{
+                      border: "1px solid #f5f5f5",
+                      borderBottom: "2px solid #000",
+                    }}
+                  >
+                    <Link
+                      to={
+                        process.env.PUBLIC_URL +
+                        "/courses/" +
+                        item?.id +
+                        "/" +
+                        item?.course?.slug
+                      }
+                      className="image-popup"
+                      title="Screenshot-1"
+                    >
+                      {item?.course?.course_cover_image !== null ? (
+                        <img
+                          src={item?.course?.course_cover_image}
+                          className="thumb-img imagemix course-image"
+                          alt="work-thumbnail"
+                          style={{ width: "100%", height: "140px" }}
+                        />
+                      ) : (
+                        <Fragment />
+                      )}{" "}
+                      <div className="middle-overlay"></div>
+                    </Link>
+                  </figure>
+
+                  <div
+                    className=""
+                    style={{
+                      textAlign: "left",
+                      height: "200px",
+                      marginLeft: "10px",
+                      width: "100%",
+                    }}
+                  >
+                    <div className="course-content">
+                      <p className="style-9b">
+                        <Link
+                          className="style-9b"
+                          to={
+                            process.env.PUBLIC_URL +
+                            "/courses/" +
+                            item.id +
+                            "/" +
+                            item.slug
+                          }
+                          style={{
+                            fontWeight: "700",
+                            fontFamily: "Open Sans",
+                            fontSize: "12px",
+                            color: "#000",
+                            textAlign: "left",
+                            lineHeight: "20px",
+                          }}
+                        >
+                          {item?.category?.name}
+                        </Link>
+                      </p>
+
+                      <p className="style-9b">
+                        <Link
+                          className="style-9b"
+                          style={{
+                            fontWeight: "700",
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontSize: "12px",
+                            textAlign: "left",
+                            lineHeight: "20px",
+                          }}
+                          to={
+                            process.env.PUBLIC_URL +
+                            "/courses/" +
+                            item.id +
+                            "/" +
+                            item?.course?.slug
+                          }
+                        >
+                          {item?.course?.course_code}
+                        </Link>
+                      </p>
+
+                      <p
+                        style={{
+                          textAlign: "left",
+                          width: "100%",
+                          fontWeight: "bold",
+                          marginTop: "3px",
+                        }}
+                      >
+                        <Link
+                          to={
+                            process.env.PUBLIC_URL +
+                            "/courses/" +
+                            item.id +
+                            "/" +
+                            item?.course?.slug
+                          }
+                          style={{
+                            fontWeight: "700",
+                            fontFamily: "Open Sans",
+                            fontSize: "12px",
+                            textAlign: "left",
+                            width: "100%",
+                            marginTop: "2px",
+                            color: "#000",
+                            margin: "0 0 15px",
+                            lineHeight: "20px",
+                          }}
+                          className="style-8a"
+                        >
+                          {item?.course?.course_name?.substring(0, 30) + "..."}
+                        </Link>
+                      </p>
+                      <p
+                        style={{
+                          textAlign: "left",
+                          width: "100%",
+                          marginTop: "4px",
+                          color: "#000",
+                        }}
+                        className="style-8a"
+                      >
+                        {
+                          item?.course?.instructor?.instructor_profile
+                            ?.current_employer_designation
+                        }
+                      </p>
+
+                      <p
+                        style={{ width: "100%", color: "#000" }}
+                        className="style-8a"
+                      >
+                        {item?.course?.instructor?.first_name !== null &&
+                          item?.course?.instructor?.first_name +
+                            " " +
+                            item?.course?.instructor?.last_name}
+                      </p>
+                    </div>
+                    <div
+                      className="bottom-sect"
+                      style={{
+                        display: "table",
+                        clear: "both",
+                        height: "30px",
+                        textAlign: "left",
+                      }}
+                    >
+                      <p
+                        style={{
+                          borderTop: "1px solid #000",
+                          color: "#000",
+                          display: "table",
+                          position: "absolute",
+                          marginLeft: "10px",
+                          textAlign: "left",
+                          marginLeft: "-10px",
+                          bottom: "0px",
+                          width: "82%",
+                          padding: "10px",
+                          fontSize: "10px",
+                        }}
+                      >
+                        Course
+                      </p>
+
+                      <div
+                        style={{
+                          color: "#000",
+                          position: "absolute",
+                          textAlign: "left",
+                          bottom: "0px",
+                          padding: "10px",
+                          float: "right",
+                          right: "0px",
+                        }}
+                      >
+                        <Link
+                          to={
+                            process.env.PUBLIC_URL +
+                            "/courses/" +
+                            item.id +
+                            "/" +
+                            item?.course?.slug
+                          }
+                          style={{
+                            textAlign: "left",
+                            fontSize: "10px",
+                            width: "100%",
+                            color: "gray",
+                          }}
+                        >
+                          Details
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+
+            </Swiper>
+          </Col>
+
+
+        </section>
+      </div>
+
+      </Styles>
     </div>
   );
 };
-
-
 
 Carousel.propTypes = {
   cart: PropTypes.object.isRequired,

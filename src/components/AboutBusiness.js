@@ -13,8 +13,31 @@ class AboutUsTwo extends Component {
             <Row>
               <Col md="6">
                 <div className="about-content">
-                  <h4 className="about-title">{Datas.secTitle}</h4>
-                  <p className="about-para">{Datas.secDesc}</p>
+                  <h4
+                    className="about-title"
+                    style={{
+                      width: "100%",
+                      fontWeight: "300px",
+                      color: "#000",
+                      fontSize: "24px",
+                      fontFamily: "Open Sans",
+                      lineHight: "34px",
+                      letterSpacing: "-1px",
+                      fontWeight: "normal",
+                    }}
+                  >
+                    {Datas.secTitle}
+                  </h4>
+                  <p
+                    className="about-para"
+                    style={{
+                      fontFamily: "Open Sans",
+                      color: "#000",
+                      fontSize: "14px",
+                    }}
+                  >
+                    {Datas.secDesc}
+                  </p>
 
                   {Datas.dataList.map((data, i) => (
                     <div className="cta-box d-flex" key={i}>
@@ -22,8 +45,29 @@ class AboutUsTwo extends Component {
                         <i className="las la-thumbs-up"></i>
                       </div>
                       <div className="cta-content">
-                        <h6>{data.iconTitle}</h6>
-                        <p>{data.iconSubtitle}</p>
+                        <h6
+                          style={{
+                            width: "100%",
+                            fontWeight: "300px",
+                            color: "#000",
+                            fontSize: "24px",
+                            fontFamily: "Open Sans",
+                            lineHight: "34px",
+                            letterSpacing: "-1px",
+                            fontWeight: "normal",
+                          }}
+                        >
+                          {data.iconTitle}
+                        </h6>
+                        <p
+                          style={{
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontSize: "14px",
+                          }}
+                        >
+                          {data.iconSubtitle}
+                        </p>
                       </div>
                     </div>
                   ))}

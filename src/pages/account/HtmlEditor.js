@@ -241,7 +241,20 @@ class Editor extends React.Component {
         <br />
         <br />
         <div>
-          <p>{this.props.title} </p>
+          <p
+            style={{
+              fontWeight: "700",
+              fontFamily: "Open Sans",
+              color: "#000",
+              fontSize: "12px",
+              lineHeight: "20px",
+
+              marginTop: "14px",
+              marginRight: "7px",
+            }}
+          >
+            {this.props.title}{" "}
+          </p>
           <div className="md-trigger button-preview" data-modal="modal-12">
             Live Edit Preview
           </div>

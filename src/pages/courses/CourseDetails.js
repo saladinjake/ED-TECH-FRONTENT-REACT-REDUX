@@ -22,14 +22,14 @@ import $ from "jquery";
 
 import "./playvideo.scss";
 
-import NewEditForm from "../account/NewEditForm"
+import NewEditForm from "../account/NewEditForm";
 
 import { enrollCourses } from "services/enrollment.js";
 
 const CourseDetails = ({
   history,
   match,
-  auth: { isAuthenticated,user },
+  auth: { isAuthenticated, user },
   cart: { cart },
   wishList: { wishList },
   addToCart,
@@ -49,58 +49,88 @@ const CourseDetails = ({
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [relatedCourses, setRelatedCourses] = useState([]);
 
-  const [editClicked, setEditClicked] = useState(false)
+  const [editClicked, setEditClicked] = useState(false);
 
-  const handleAddToCart = async (e, course) =>{
-    e.preventDefault()
-    if(course.price <=0){
+  const handleAddToCart = async (e, course) => {
+    e.preventDefault();
+    if (course.price <= 0) {
       //automaitcally enroll
-        let payload = [];
-        let newObj = {};
-        newObj.user_id = user?.id;
-        newObj.course_id = course?.id;
-        payload.push(newObj);
+      let payload = [];
+      let newObj = {};
+      newObj.user_id = user?.id;
+      newObj.course_id = course?.id;
+      payload.push(newObj);
 
-    
       try {
         await enrollCourses({
           enrollments: payload,
         });
         toast.success(`Courses enrolled succesfully`);
 
-        setTimeout(()=>{window.location.reload()},2000)
-
-      }catch(err){
-         toast.error(`Could not enroll for free course`+ course.course_name);
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      } catch (err) {
+        toast.error(`Could not enroll for free course` + course.course_name);
       }
-
-
-    }else{
-      let paidCourseId = course?.id
-      addToCart(course.id)
+    } else {
+      let paidCourseId = course?.id;
+      addToCart(course.id);
     }
+  };
 
-  }
+  useEffect(() => {
+    $("body").css({ backgroundColor: "#fff" });
+    $(document).ready(function () {
+      $(".mydetail")
+        .find("p, strong, span")
+        .each(function () {
+          $(this).css({ color: "#fff", fontFamily: "Open Sans" });
+        });
 
-  useEffect(()=>{
-    $("body").css({backgroundColor:"#fff"})
-    $(document).ready(function(){
+      $("body")
+        .find("div, p, strong, span,ul,li,b")
+        .each(function () {
+          $(this).css({ fontFamily: "Open Sans" });
+        });
 
-        $('.mydetail').find('p, strong, span').each(function() {
-              $(this).css({color:"#fff", fontFamily:"Open Sans"})
-           });
+      $(".footer p,.footer span, footer p, footer span").each(function () {
+        $(this).css({ color: "#fff", fontFamily: "Open Sans" });
+      });
 
-        $('body').find("div, p, strong, span,ul,li,b").each(function() {
-              $(this).css({fontFamily:"Open Sans"})
-           });
+      $(".dark")
+        .find("p,div, strong, span,ul,li,div,ol")
+        .each(function () {
+          $(this).css({
+            color: "#000",
+            fontFamily: "Open Sans",
+            fontSize: "14px",
+          });
+        });
 
+      $(".spacing")
+        .find("p,div, strong, span,ul,li,div,ol")
+        .each(function () {
+          $(this).css({
+            color: "#000",
+            fontFamily: "Open Sans",
+            fontSize: "14px",
+            margin: "10px",
+          });
+        });
 
-        $('.dark').find('p, strong, span,ul,li,div').each(function() {
-              $(this).css({color:"#000", fontFamily:"Open Sans"})
-           });
-    })
-    
-  })
+      $(".dark")
+        .find("li,ul,ol")
+        .each(function () {
+          $(this).css({
+            color: "#000",
+            fontFamily: "Open Sans",
+            fontSize: "14px",
+            margin: "10px",
+          });
+        });
+    });
+  });
 
   const init = async () => {
     setStatus("loading");
@@ -176,8 +206,6 @@ const CourseDetails = ({
 
   useEffect(() => {
     function toggle_video_modal() {
-      
-
       $(".closeBtn").click(function () {
         // $($(this).data("target")).fadeOut(500);
         close_video_modal();
@@ -207,9 +235,8 @@ const CourseDetails = ({
 
         // Add class to the body to visually reveal the modal
         $("body").addClass("show-video-modal noscroll");
-      
 
-         // $("body").addClass("md-modal")
+        // $("body").addClass("md-modal")
 
         $("#slideout").addClass("on");
       });
@@ -281,127 +308,225 @@ const CourseDetails = ({
   }
 
   return (
-
-
     <Fragment>
+      <div className="main-wrapper course-details-page">
+        {/* Header 2 */}
+        <NavBar />
 
-    <div className="main-wrapper course-details-page">
-      {/* Header 2 */}
-      <NavBar />
+        {editClicked == true ? (
+          <NewEditForm initialValues={coursedetails?.data} />
+        ) : (
+          <Fragment>
+            <br />
+            <br />
+            <br />
+            {loading ? (
+              <Fragment />
+            ) : (
+              <section
+                className="course-header-area article-dummy"
+                style={{ marginTop: "-90px", height: "390px" }}
+              >
+                <div className="container">
+                  <div className="row align-items-end">
+                    <div className="col-md-8">
+                      <br />
+                      <div className="course-header-wrap">
+                        <h1
+                          className="t-x hide"
+                          style={{
+                            marginTop: "-10px",
+                            fontWeight: "300px",
+                            color: "#fff",
+                            margin: "20px",
+                            fontSize: "20px",
+                            fontFamily: "Open Sans",
+                            lineHight: "24px",
+                            fontWeight: "normal",
+                          }}
+                        >
+                          {coursedetails?.data?.course_name}
+                        </h1>
 
-
-
-    {editClicked == true ? (
-           <NewEditForm initialValues={coursedetails?.data} />
-
-      ):(
-
-    
-      <Fragment>
-      <br />
-      <br />
-      <br />
-      {loading ? (
-        <Fragment />
-      ) : (
-        <section className="course-header-area" style={{ marginTop: "-70px" , height:"370px"}}>
-          <div className="container">
-            <div className="row align-items-end">
-              <div className="col-md-8">
-                <br />
-                <div className="course-header-wrap">
-                  <h1 className="t" style={{ color: "#fff" }}>
-                    {coursedetails?.data?.course_name}
-                  </h1>
-                  <p className="subtitle"  style={{ color: "#fff" }}>
-                    {/^/.test(coursedetails?.data?.course_description) ? (
-                      <div
-                        className="mydetail"
-                        style={{ color: "#fff" }}
-                        dangerouslySetInnerHTML={{
-                          __html: coursedetails?.data?.course_description,
-                        }}
-                      />
-                    ) : (
-                      <div
-                        className="course-subtitle mydetail"
-                        style={{ color: "#fff" }}
-                      >
-                        {coursedetails?.data?.course_description.substring(
-                          0,
-                          150
-                        ) + "..."}
+                        <h1
+                          className="t-x shown"
+                          style={{
+                            marginTop: "-10px",
+                            fontWeight: "300px",
+                            color: "#fff",
+                            margin: "20px",
+                            fontSize: "45px",
+                            fontFamily: "Open Sans",
+                            lineHight: "54px",
+                            fontWeight: "normal",
+                          }}
+                        >
+                          {coursedetails?.data?.course_name}
+                        </h1>
+                        <p
+                          className="subtitle"
+                          style={{
+                            marginLeft: "30px",
+                            fontFamily: "Open Sans",
+                            color: "#fff",
+                            fontSize: "14px",
+                          }}
+                        >
+                          {/^/.test(coursedetails?.data?.course_description) ? (
+                            <div
+                              className="mydetail"
+                              style={{
+                                fontFamily: "Open Sans",
+                                color: "#fff",
+                                fontSize: "14px",
+                              }}
+                              dangerouslySetInnerHTML={{
+                                __html: coursedetails?.data?.course_description,
+                              }}
+                            />
+                          ) : (
+                            <div
+                              className="course-subtitle mydetail"
+                              style={{
+                                fontFamily: "Open Sans",
+                                color: "#fff",
+                                fontSize: "14px",
+                              }}
+                            >
+                              {coursedetails?.data?.course_description.substring(
+                                0,
+                                150
+                              ) + "..."}
+                            </div>
+                          )}
+                        </p>
+                        <div
+                          className="rating-row"
+                          style={{ marginLeft: "30px" }}
+                        >
+                          <span
+                            className="course-badge best-seller"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#fff",
+                              fontSize: "14px",
+                            }}
+                          >
+                            Level
+                          </span>
+                          <i className="fas fa-star"></i>
+                          <i className="fa fa-star"></i>
+                          <i className="fa fa-star"></i>
+                          <i className="fa fa-star"></i>
+                          <i className="fa fa-star"></i>
+                          <span
+                            className="d-inline-block average-rating"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#fff",
+                              fontSize: "14px",
+                            }}
+                          >
+                            0
+                          </span>
+                          <span
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#fff",
+                              fontSize: "14px",
+                            }}
+                          >
+                            (0 Ratings)
+                          </span>
+                        </div>
+                        <div
+                          className="created-row"
+                          style={{ marginLeft: "30px" }}
+                        >
+                          <span
+                            className="created-by"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#fff",
+                              fontSize: "14px",
+                            }}
+                          >
+                            A course by{" "}
+                            {coursedetails?.data?.instructor?.first_name}{" "}
+                            {coursedetails?.data?.instructor?.last_name}
+                          </span>
+                          <span
+                            className="last-updated-date"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#fff",
+                              fontSize: "14px",
+                            }}
+                          >
+                            Last updated {}
+                          </span>
+                          <span
+                            className="comment"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#fff",
+                              fontSize: "14px",
+                            }}
+                          >
+                            <i className="fa fa-comment"></i>
+                            {coursedetails?.data?.language?.english}
+                          </span>
+                        </div>
                       </div>
-                    )}
-                  </p>
-                  <div className="rating-row">
-                    <span className="course-badge best-seller">Level</span>
-                    <i className="fas fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <i className="fa fa-star"></i>
-                    <span className="d-inline-block average-rating">0</span>
-                    <span>(0 Ratings)</span>
-                  </div>
-                  <div className="created-row">
-                    <span className="created-by">
-                      A course by {coursedetails?.data?.instructor?.first_name}{" "}
-                      {coursedetails?.data?.instructor?.last_name}
-                    </span>
-                    <span className="last-updated-date">Last updated {}</span>
-                    <span className="comment">
-                      <i className="fa fa-comment"></i>
-                      {coursedetails?.data?.language?.english}
-                    </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-          <br />
-          <br />
-          <br />
-          <br />
-        </section>
-      )}
-      <Styles>
-        {/* Course Details */}
-        {loading ? (
-          <Loader width="70" />
-        ) : Object.entries(coursedetails).length !== 0 ? (
-          <Fragment>
-            <section
-              className="course-details-area"
-              style={{ height: "3000px", marginTop: "-20px" , background:"#fff"}}
-            >
-              <Container>
-                <Row>
-                  <Col lg="8" md="8" sm="12">
-                    <div
-                      className="course-details-top nav nav-pills"
-                      style={{ marginTop: "-10px" }}
-                    >
-
-
-
-                      <div className="course-tab-list ">
-                        <Tab.Container defaultActiveKey="overview">
-                          <Nav className="flex-column">
-                            <Nav.Item>
-                              <Nav.Link eventKey="overview">Overview</Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                              <Nav.Link eventKey="curriculum">
-                                Curriculum
-                              </Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                              <Nav.Link eventKey="instructor">
-                                Instructors
-                              </Nav.Link>
-                            </Nav.Item>
-                            {/*<Nav.Item>
+                <br />
+                <br />
+                <br />
+                <br />
+              </section>
+            )}
+            <Styles>
+              {/* Course Details */}
+              {loading ? (
+                <Loader width="70" />
+              ) : Object.entries(coursedetails).length !== 0 ? (
+                <Fragment>
+                  <section
+                    className="course-details-area"
+                    style={{
+                      height: "3000px",
+                      marginTop: "-20px",
+                      background: "#fff",
+                    }}
+                  >
+                    <Container>
+                      <Row>
+                        <Col lg="8" md="8" sm="12">
+                          <div
+                            className="course-details-top nav nav-pills "
+                            style={{ marginTop: "-10px" }}
+                          >
+                            <div className="course-tab-list ">
+                              <Tab.Container defaultActiveKey="overview">
+                                <Nav className="flex-column">
+                                  <Nav.Item>
+                                    <Nav.Link eventKey="overview">
+                                      Overview
+                                    </Nav.Link>
+                                  </Nav.Item>
+                                  <Nav.Item>
+                                    <Nav.Link eventKey="curriculum">
+                                      Curriculum
+                                    </Nav.Link>
+                                  </Nav.Item>
+                                  <Nav.Item>
+                                    <Nav.Link eventKey="instructor">
+                                      Instructors
+                                    </Nav.Link>
+                                  </Nav.Item>
+                                  {/*<Nav.Item>
                               <Nav.Link eventKey="review">Reviews</Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
@@ -409,265 +534,579 @@ const CourseDetails = ({
                                 Announcements
                               </Nav.Link>
                             </Nav.Item>*/}
-                          </Nav>
-                          <Tab.Content>
-                            <Tab.Pane
-                              eventKey="overview"
-                              className="overview-tab"
-                            >
-                              <div className="course-desc">
-                                <h5>Course Overview</h5>
-
-                                <div
-                                  className=" main-videosection"
-                                  style={{
-                                    position: "relative",
-                                    marginTop: "-20px",
-                                  }}
-                                >
-                                  <section
-                                    className="column left banner"
-                                    style={{ marginTop: "-20px" }}
+                                </Nav>
+                                <Tab.Content>
+                                  <Tab.Pane
+                                    eventKey="overview"
+                                    className="overview-tab"
                                   >
-                                    <a
-                                      href={
-                                        "https://www.youtube.com/embed/" +
-                                        formaturl(
-                                          coursedetails?.data
-                                            ?.introduction_video
-                                        ).idVideo
-                                      }
-                                      data-youtube-id={YouTubeGetID(
-                                        coursedetails?.data?.introduction_video
-                                      )}
-                                      className="video-banner js-trigger-video-modal"
-                                    >
-                                      <img
-                                        className="video-banner-img"
-                                        src={
-                                          "http://img.youtube.com/vi/" +
-                                          YouTubeGetID(
-                                            coursedetails?.data
-                                              ?.introduction_video
-                                          ) +
-                                          "/0.jpg"
-                                        }
-                                        alt=""
-                                      />
-                                    </a>
-                                  </section>
-                                </div>
-                                <p>
-                                  <br />
-                              
-
-                                  {/^/.test(
-                                    coursedetails?.data?.course_overview
-                                  ) ? (
-                                    <div
-                                      className="course-subtitle dark"
-                                      dangerouslySetInnerHTML={{
-                                        __html:
-                                          coursedetails?.data?.course_overview,
-                                      }}
-                                    />
-                                  ) : (
-                                    <div className="course-subtitle dark">
-                                      {coursedetails?.data?.course_overview}
-                                    </div>
-                                  )}
-                                </p>
-                              </div>
-                              <div className="course-feature" style={{marginTop:"-20px"}}>
-                                <h5>What you will learn</h5>
-                                <div>
-                                  {/^/.test(coursedetails?.data?.outcomes) ? (
-                                    <div
-                                      className="course-subtitle dark"
-                                      dangerouslySetInnerHTML={{
-                                        __html: coursedetails?.data?.outcomes,
-                                      }}
-                                    />
-                                  ) : (
-                                    <div className="course-subtitle dark">
-                                      {coursedetails?.data?.outcomes}
-                                    </div>
-                                  )}
-                                </div>
-
-                                <div className="course-element dark">
-                                  <h5>Course Prerequisites</h5>
-                          
-
-                                  {/^/.test(
-                                    coursedetails?.data?.prerequisite_course
-                                  ) ? (
-                                    <div
-                                      className="course-subtitle dark"
-                                      dangerouslySetInnerHTML={{
-                                        __html:
-                                          coursedetails?.data
-                                            ?.prerequisite_course,
-                                      }}
-                                    />
-                                  ) : (
-                                    <div className="course-subtitle dark">
-                                      {coursedetails?.data?.prerequisite_course}
-                                    </div>
-                                  )}
-                                </div>
-
-                                <div className="btn-actions">
-                                  {isAuthenticated ? (
-                                    checkCourseStatus(coursedetails.data.id) ? (
-                                      ""
-                                    ) : (
-                                      <Fragment>
-                                        <button
-                                          type="button"
-                                          onClick={addToCart.bind(
-                                            this,
-                                            coursedetails?.data?.id
-                                          )}
-                                          className="enroll-btn btn btn-primary"
+                                    <div className="course-desc-x">
+                                      <h5
+                                        className="shown"
+                                        style={{
+                                          fontWeight: "300px",
+                                          color: "#000",
+                                          fontSize: "25px",
+                                          fontFamily: "Open Sans",
+                                          lineHight: "34px",
+                                          fontWeight: "normal",
+                                        }}
+                                      >
+                                        Course Overview
+                                      </h5>
+                                      <h5
+                                        className="hide"
+                                        style={{
+                                          fontWeight: "300px",
+                                          color: "#000",
+                                          fontSize: "25px",
+                                          fontFamily: "Open Sans",
+                                          lineHight: "24px",
+                                          fontWeight: "normal",
+                                        }}
+                                      >
+                                        Course Overview
+                                      </h5>
+                                      <br className="hide article-dummy" />
+                                      <div
+                                        className=" main-videosection "
+                                        style={{
+                                          position: "relative",
+                                          marginTop: "-20px",
+                                        }}
+                                      >
+                                        <section
+                                          className="column left banner"
+                                          style={{ marginTop: "-20px" }}
                                         >
-                                          Enroll Course
-                                        </button>
-                                        <br />
-                                        <br />
-                                        <br />
-
-                                        <button
-                                          id="wishlister"
-                                          style={{ background: "red" }}
-                                          type="button"
-                                          onClick={addToWishList.bind(
-                                            this,
-                                            coursedetails?.data?.id
-                                          )}
-                                          className=" enroll-btn btn btn-danger"
-                                        >
-                                          Add To Wish List
-                                        </button>
-                                      </Fragment>
-                                    )
-                                  ) : (
-                                    <button
-                                      type="button"
-                                      className=" enroll-btn"
-                                      onClick={(e) => {
-                                        return (window.location.href =
-                                          process.env.PUBLIC_URL +
-                                          `/login?redirectTo=${lastLocation}`);
-                                      }}
-                                    >
-                                      Login To Enroll
-                                    </button>
-                                  )}
-                                </div>
-                              </div>
-                            </Tab.Pane>
-                            <Tab.Pane
-                              eventKey="curriculum"
-                              className="curriculum-tab"
-                            >
-                              <div className="course-element dark">
-                                <h5>Course Curriculum</h5>
-                                
-
-                                {/^/.test(coursedetails?.data?.topics) ? (
-                                  <div
-                                    className="course-subtitle dark"
-                                    dangerouslySetInnerHTML={{
-                                      __html: coursedetails?.data?.topics,
-                                    }}
-                                  />
-                                ) : (
-                                  <div className="course-subtitle dark">
-                                    {coursedetails?.data?.topics}
-                                  </div>
-                                )}
-                              </div>
-                            </Tab.Pane>
-                            <Tab.Pane
-                              eventKey="instructor"
-                              className="instructor-tab"
-                            >
-                              <h5>Course Instructors</h5>
-
-                              <Link
-                                to={`/instructors/${coursedetails?.data?.instructor?.id}`}
-                              >
-                                <Col md="12">
-                                  <header style={{boxShadow:"-12px 12px 12px 12px #fafafa"}} >
-                                    <div class="container" >
-                                      <div class="profile-sect " >
-                                        <div class="profile-image-sect">
-                                          {coursedetails?.data?.instructor
-                                            ?.image_url ? (
-                                            <img
-                                              style={{
-                                                width: "100px",
-                                                height: "100px",
-                                              }}
-                                              src={`${coursedetails?.data?.instructor?.image_url}`}
-                                            />
-                                          ) : (
-                                            <p></p>
-                                          )}
-
-
-                                           
-                                        </div>
-
-                                        <div class="profile-user-settings" style={{marginTop:"-30px",}}>
-                                          <h4  style={{color:"#000",marginLeft:"10px"}}>
-                                            {
-                                              coursedetails?.data?.instructor
-                                                ?.first_name
-                                            }{" "}
-                                            {
-                                              coursedetails?.data?.instructor
-                                                ?.last_name
+                                          <a
+                                            href={
+                                              "https://www.youtube.com/embed/" +
+                                              formaturl(
+                                                coursedetails?.data
+                                                  ?.introduction_video
+                                              ).idVideo
                                             }
-                                          </h4>
-                                          <hr/>
-                                      
-                                          <div class="profile-bio-sect" style={{color:"#000",padding:"5px"}}>
-                                          
+                                            data-youtube-id={YouTubeGetID(
+                                              coursedetails?.data
+                                                ?.introduction_video
+                                            )}
+                                            className="video-banner js-trigger-video-modal"
+                                          >
+                                            <img
+                                              className="video-banner-img"
+                                              src={
+                                                "http://img.youtube.com/vi/" +
+                                                YouTubeGetID(
+                                                  coursedetails?.data
+                                                    ?.introduction_video
+                                                ) +
+                                                "/0.jpg"
+                                              }
+                                              alt=""
+                                            />
 
-
-                                            {/^/.test(coursedetails?.data?.instructor
-                                                  ?.instructor_profile
-                                                  ?.brief_introduction) ? (
-                                  <h6
-                                    style={{color:"#000",marginLeft:"10px", lineHeight:"25px"}}
-                                    dangerouslySetInnerHTML={{
-                                      __html: coursedetails?.data?.instructor
-                                                  ?.instructor_profile
-                                                  ?.brief_introduction,
-                                    }}
-                                  />
-                                ) : (
-                                  <h6 style={{color:"#000",marginLeft:"10px", lineHeight:"25px"}}>
-                                    {coursedetails?.data?.instructor
-                                                  ?.instructor_profile
-                                                  ?.brief_introduction}
-                                  </h6>
-                                )}
-
-
-                                            
-                                          </div>
-                                        </div>
-
-
+                                            <div class="triangle"></div>
+                                          </a>
+                                        </section>
                                       </div>
-                                      
+                                      <p
+                                        style={{
+                                          fontFamily: "Open Sans",
+                                          color: "#000",
+                                          fontSize: "14px",
+                                        }}
+                                      >
+                                        <br />
 
+                                        {/^/.test(
+                                          coursedetails?.data?.course_overview
+                                        ) ? (
+                                          <div
+                                            className="course-subtitle dark"
+                                            style={{
+                                              fontFamily: "Open Sans",
+                                              color: "#000",
+                                              fontSize: "14px",
+                                            }}
+                                            dangerouslySetInnerHTML={{
+                                              __html:
+                                                coursedetails?.data
+                                                  ?.course_overview,
+                                            }}
+                                          />
+                                        ) : (
+                                          <div
+                                            className="course-subtitle dark"
+                                            style={{
+                                              fontFamily: "Open Sans",
+                                              color: "#000",
+                                              fontSize: "14px",
+                                            }}
+                                          >
+                                            {
+                                              coursedetails?.data
+                                                ?.course_overview
+                                            }
+                                          </div>
+                                        )}
+                                      </p>
                                     </div>
+                                    <br />
+                                    <div
+                                      className="course-feature"
+                                      style={{ marginTop: "-20px" }}
+                                    >
+                                      <h5
+                                        className="shown"
+                                        style={{
+                                          fontWeight: "300px",
+                                          color: "#333",
+                                          fontSize: "25px",
+                                          fontFamily: "Open Sans",
+                                          lineHight: "34px",
+                                          fontWeight: "normal",
+                                        }}
+                                      >
+                                        What you will learn
+                                      </h5>
+                                      <h5
+                                        className="hide"
+                                        style={{
+                                          fontWeight: "300px",
+                                          color: "#333",
+                                          fontSize: "25px",
+                                          fontFamily: "Open Sans",
+                                          lineHight: "24px",
+                                          fontWeight: "normal",
+                                        }}
+                                      >
+                                        What you will learn
+                                      </h5>
 
-                                    <div className="instructor-social" >
+                                      <div>
+                                        {/^/.test(
+                                          coursedetails?.data?.outcomes
+                                        ) ? (
+                                          <div
+                                            className="course-subtitle dark"
+                                            style={{
+                                              fontFamily: "Open Sans",
+                                              color: "#000",
+                                              fontSize: "14px",
+                                            }}
+                                            dangerouslySetInnerHTML={{
+                                              __html:
+                                                coursedetails?.data?.outcomes,
+                                            }}
+                                          />
+                                        ) : (
+                                          <div
+                                            className="course-subtitle dark"
+                                            style={{
+                                              fontFamily: "Open Sans",
+                                              color: "#000",
+                                              fontSize: "14px",
+                                            }}
+                                          >
+                                            {coursedetails?.data?.outcomes}
+                                          </div>
+                                        )}
+                                      </div>
+
+                                      <div className="course-element dark">
+                                        <h5
+                                          className="shown"
+                                          style={{
+                                            fontWeight: "300px",
+                                            color: "#000",
+                                            fontSize: "25px",
+                                            fontFamily: "Open Sans",
+                                            lineHight: "34px",
+                                            fontWeight: "normal",
+                                          }}
+                                        >
+                                          Course Prerequisites
+                                        </h5>
+                                        <h5
+                                          className="hide"
+                                          style={{
+                                            fontWeight: "300px",
+                                            color: "#333",
+                                            fontSize: "25px",
+                                            fontFamily: "Open Sans",
+                                            lineHight: "24px",
+                                            fontWeight: "normal",
+                                          }}
+                                        >
+                                          Course Prerequisites
+                                        </h5>
+
+                                        {/^/.test(
+                                          coursedetails?.data
+                                            ?.prerequisite_course
+                                        ) ? (
+                                          <div
+                                            className="course-subtitle dark"
+                                            style={{
+                                              fontFamily: "Open Sans",
+                                              color: "#000",
+                                              fontSize: "14px",
+                                            }}
+                                            dangerouslySetInnerHTML={{
+                                              __html:
+                                                coursedetails?.data
+                                                  ?.prerequisite_course,
+                                            }}
+                                          />
+                                        ) : (
+                                          <div
+                                            className="course-subtitle dark"
+                                            style={{
+                                              fontFamily: "Open Sans",
+                                              color: "#000",
+                                              fontSize: "14px",
+                                            }}
+                                          >
+                                            {
+                                              coursedetails?.data
+                                                ?.prerequisite_course
+                                            }
+                                          </div>
+                                        )}
+                                      </div>
+
+                                      <div className="btn-actions">
+                                        {isAuthenticated ? (
+                                          checkCourseStatus(
+                                            coursedetails.data.id
+                                          ) ? (
+                                            ""
+                                          ) : (
+                                            <Fragment>
+                                              <button
+                                                type="button"
+                                                onClick={addToCart.bind(
+                                                  this,
+                                                  coursedetails?.data?.id
+                                                )}
+                                                className="enroll-btn btn btn-primary"
+                                              >
+                                                Enroll Course
+                                              </button>
+                                              <br />
+                                              <br />
+                                              <br />
+
+                                              <button
+                                                id="wishlister"
+                                                style={{ background: "red" }}
+                                                type="button"
+                                                onClick={addToWishList.bind(
+                                                  this,
+                                                  coursedetails?.data?.id
+                                                )}
+                                                className=" enroll-btn btn btn-danger"
+                                              >
+                                                Add To Wish List
+                                              </button>
+                                            </Fragment>
+                                          )
+                                        ) : (
+                                          <a
+                                            style={{
+                                              background: "rgba(8,23,200)",
+                                              borderRadius: "43px",
+                                              width: "200px",
+                                            }}
+                                            href="#modal"
+                                            className="enroll-btn modal-link btn btn-primary btn-large"
+                                          >
+                                            Login To Enroll
+                                          </a>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </Tab.Pane>
+                                  <Tab.Pane
+                                    eventKey="curriculum"
+                                    className="curriculum-tab"
+                                  >
+                                    <div className="course-element dark">
+                                      <h5
+                                        className="shown"
+                                        style={{
+                                          fontWeight: "300px",
+                                          color: "#333",
+                                          fontSize: "25px",
+                                          fontFamily: "Open Sans",
+                                          lineHight: "34px",
+                                          fontWeight: "normal",
+                                        }}
+                                      >
+                                        Course Curriculum
+                                      </h5>
+                                      <h5
+                                        className="hide"
+                                        style={{
+                                          fontWeight: "300px",
+                                          color: "#333",
+                                          fontSize: "25px",
+                                          fontFamily: "Open Sans",
+                                          lineHight: "24px",
+                                          fontWeight: "normal",
+                                        }}
+                                      >
+                                        Course Curriculum
+                                      </h5>
+
+                                      {/^/.test(coursedetails?.data?.topics) ? (
+                                        <div
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            color: "#000",
+                                            fontSize: "14px",
+                                          }}
+                                          className="course-subtitle dark spacing"
+                                          dangerouslySetInnerHTML={{
+                                            __html: coursedetails?.data?.topics,
+                                          }}
+                                        />
+                                      ) : (
+                                        <div
+                                          className="course-subtitle dark spacing"
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            color: "#000",
+                                            fontSize: "14px",
+                                          }}
+                                        >
+                                          {coursedetails?.data?.topics}
+                                        </div>
+                                      )}
+                                    </div>
+                                  </Tab.Pane>
+                                  <Tab.Pane
+                                    eventKey="instructor"
+                                    className="instructor-tab"
+                                  >
+                                    <h5
+                                      className="shown"
+                                      style={{
+                                        fontWeight: "300px",
+                                        color: "#333",
+                                        fontSize: "25px",
+                                        fontFamily: "Open Sans",
+                                        lineHight: "34px",
+                                        fontWeight: "normal",
+                                      }}
+                                    >
+                                      Course Instructors
+                                    </h5>
+                                    <h5
+                                      className="hide"
+                                      style={{
+                                        fontWeight: "300px",
+                                        color: "#333",
+                                        fontSize: "25px",
+                                        fontFamily: "Open Sans",
+                                        lineHight: "24px",
+                                        fontWeight: "normal",
+                                      }}
+                                    >
+                                      Course Instructors
+                                    </h5>
+
+                                    <Link
+                                      to={`/instructors/${coursedetails?.data?.instructor?.id}`}
+                                    >
+                                      <Col md="12">
+                                        <header
+                                          className="col-merge-s-3 col-merge-s-12"
+                                          style={{
+                                            boxShadow:
+                                              "-12px 12px 12px 12px #fafafa",
+                                          }}
+                                        >
+                                          <div class="container">
+                                            <div class="profile-sect ">
+                                              <div class="profile-image-sect shown">
+                                                {coursedetails?.data?.instructor
+                                                  ?.image_url ? (
+                                                  <img
+                                                    className="shown"
+                                                    style={{
+                                                      width: "100px",
+                                                      height: "100px",
+                                                    }}
+                                                    src={`${coursedetails?.data?.instructor?.image_url}`}
+                                                  />
+                                                ) : (
+                                                  <p></p>
+                                                )}
+                                              </div>
+
+                                              <div class="profile-image-sect hide col-merge-s3">
+                                                {coursedetails?.data?.instructor
+                                                  ?.image_url ? (
+                                                  <img
+                                                    className="hide"
+                                                    style={{
+                                                      width: "150px",
+                                                      height: "150px",
+                                                    }}
+                                                    src={`${coursedetails?.data?.instructor?.image_url}`}
+                                                  />
+                                                ) : (
+                                                  <p></p>
+                                                )}
+                                              </div>
+                                              <div
+                                                style={{ clear: "both" }}
+                                                className="card-box hide col-merge-s-3"
+                                              >
+                                                <h5
+                                                  className="hide"
+                                                  style={{
+                                                    fontSize: "20px",
+                                                    color: "#000",
+                                                    width: "100%",
+                                                    marginTop: "30px",
+                                                  }}
+                                                >
+                                                  {
+                                                    coursedetails?.data
+                                                      ?.instructor?.first_name
+                                                  }{" "}
+                                                  {
+                                                    coursedetails?.data
+                                                      ?.instructor?.last_name
+                                                  }
+                                                </h5>
+
+                                                {/^/.test(
+                                                  coursedetails?.data
+                                                    ?.instructor
+                                                    ?.instructor_profile
+                                                    ?.brief_introduction
+                                                ) ? (
+                                                  <div>
+                                                    <p
+                                                      className="dark hide"
+                                                      style={{
+                                                        color: "#000",
+                                                        marginLeft: "-10px",
+                                                        fontSize: "12px",
+                                                        marginTop: "-30px",
+                                                        width: "100%",
+                                                      }}
+                                                      dangerouslySetInnerHTML={{
+                                                        __html:
+                                                          coursedetails?.data
+                                                            ?.instructor
+                                                            ?.instructor_profile
+                                                            ?.brief_introduction,
+                                                      }}
+                                                    />
+                                                  </div>
+                                                ) : (
+                                                  <div>
+                                                    <p
+                                                      style={{
+                                                        color: "#000",
+                                                        marginLeft: "-10px",
+                                                        fontSize: "12px",
+                                                        marginTop: "-30px",
+                                                      }}
+                                                      className="height"
+                                                    >
+                                                      {
+                                                        coursedetails?.data
+                                                          ?.instructor
+                                                          ?.instructor_profile
+                                                          ?.brief_introduction
+                                                      }
+                                                    </p>
+                                                  </div>
+                                                )}
+                                              </div>
+
+                                              <div
+                                                class="profile-user-settings  shown"
+                                                style={{
+                                                  marginTop: "30px",
+                                                  width: "100%",
+                                                }}
+                                              >
+                                                <h5 className="shown">
+                                                  {
+                                                    coursedetails?.data
+                                                      ?.instructor?.first_name
+                                                  }{" "}
+                                                  {
+                                                    coursedetails?.data
+                                                      ?.instructor?.last_name
+                                                  }
+                                                </h5>
+
+                                                <div
+                                                  class="profile-bio-sect col-merge-s-3"
+                                                  style={{
+                                                    color: "#000",
+                                                    padding: "5px",
+                                                  }}
+                                                >
+                                                  {/^/.test(
+                                                    coursedetails?.data
+                                                      ?.instructor
+                                                      ?.instructor_profile
+                                                      ?.brief_introduction
+                                                  ) ? (
+                                                    <div>
+                                                      <p
+                                                        className="dark shown"
+                                                        style={{
+                                                          color: "#000",
+                                                          marginLeft: "-10px",
+                                                          lineHeight: "25px",
+                                                          marginTop: "-30px",
+                                                          width: "100%",
+                                                        }}
+                                                        dangerouslySetInnerHTML={{
+                                                          __html:
+                                                            coursedetails?.data
+                                                              ?.instructor
+                                                              ?.instructor_profile
+                                                              ?.brief_introduction,
+                                                        }}
+                                                      />
+                                                    </div>
+                                                  ) : (
+                                                    <div>
+                                                      <p
+                                                        style={{
+                                                          color: "#000",
+                                                          marginLeft: "-10px",
+                                                          lineHeight: "25px",
+                                                          marginTop: "-30px",
+                                                          width: "100%",
+                                                        }}
+                                                        className="shown"
+                                                      >
+                                                        {
+                                                          coursedetails?.data
+                                                            ?.instructor
+                                                            ?.instructor_profile
+                                                            ?.brief_introduction
+                                                        }
+                                                      </p>
+                                                    </div>
+                                                  )}
+                                                </div>
+                                              </div>
+                                            </div>
+
+                                            {/*<div className="instructor-social shown" style={{float:"right", position:"absolute",top:"10px",right:"10px"}} >
                                             <ul className="social list-unstyled list-inline" style={{marginBottom:"10px",marginLeft:"10px"}}>
                                               <li className="list-inline-item">
                                                 <Link
@@ -709,99 +1148,232 @@ const CourseDetails = ({
                                                 </Link>
                                               </li>
                                             </ul>
+                                          </div>*/}
                                           </div>
-                                  </header>
-                                </Col>
-                              </Link>
+                                        </header>
+                                      </Col>
+                                    </Link>
 
-                              <br/><br/>
+                                    <br />
+                                    <br />
 
-                              <div className="instructor-item">
-                                
+                                    <div className="instructor-item">
+                                      {coursedetails?.data?.instructors
+                                        ?.length > 0 &&
+                                        coursedetails?.data?.instructors.map(
+                                          (collaborators) => {
+                                            if (
+                                              collaborators?.id !==
+                                              coursedetails?.data?.instructor
+                                                ?.id
+                                            ) {
+                                              return (
+                                                <Link
+                                                  to={`/instructors/${collaborators?.id}`}
+                                                >
+                                                  <Col md="12">
+                                                    <header
+                                                      className="col-merge-s-3 col-merge-s-12"
+                                                      style={{
+                                                        boxShadow:
+                                                          "-12px 12px 12px 12px #fafafa",
+                                                      }}
+                                                    >
+                                                      <div class="container">
+                                                        <div class="profile-sect ">
+                                                          <div class="profile-image-sect shown">
+                                                            {collaborators?.image_url ? (
+                                                              <img
+                                                                className="shown"
+                                                                style={{
+                                                                  width:
+                                                                    "100px",
+                                                                  height:
+                                                                    "100px",
+                                                                }}
+                                                                src={`${collaborators?.image_url}`}
+                                                              />
+                                                            ) : (
+                                                              <p></p>
+                                                            )}
+                                                          </div>
 
-                                {coursedetails?.data?.instructors?.length > 0 &&
-                                  coursedetails?.data?.instructors.map(
-                                    (collaborators) => {
+                                                          <div class="profile-image-sect hide col-merge-s3">
+                                                            {collaborators?.image_url ? (
+                                                              <img
+                                                                className="hide"
+                                                                style={{
+                                                                  width:
+                                                                    "150px",
+                                                                  height:
+                                                                    "150px",
+                                                                }}
+                                                                src={`${collaborators?.image_url}`}
+                                                              />
+                                                            ) : (
+                                                              <p></p>
+                                                            )}
+                                                          </div>
+                                                          <div
+                                                            style={{
+                                                              clear: "both",
+                                                            }}
+                                                            className="card-box hide col-merge-s-3"
+                                                          >
+                                                            <h5
+                                                              className="hide"
+                                                              style={{
+                                                                fontSize:
+                                                                  "20px",
+                                                                color: "#000",
+                                                                width: "100%",
+                                                                marginTop:
+                                                                  "30px",
+                                                              }}
+                                                            >
+                                                              {
+                                                                collaborators?.first_name
+                                                              }{" "}
+                                                              {
+                                                                collaborators?.last_name
+                                                              }
+                                                            </h5>
 
-                                      if(collaborators?.id !== coursedetails?.data?.instructor?.id){
+                                                            {/^/.test(
+                                                              collaborators
+                                                                ?.instructor_profile
+                                                                ?.brief_introduction
+                                                            ) ? (
+                                                              <div>
+                                                                <p
+                                                                  className="dark hide"
+                                                                  style={{
+                                                                    color:
+                                                                      "#000",
+                                                                    marginLeft:
+                                                                      "-10px",
+                                                                    fontSize:
+                                                                      "12px",
+                                                                    marginTop:
+                                                                      "-30px",
+                                                                    width:
+                                                                      "100%",
+                                                                  }}
+                                                                  dangerouslySetInnerHTML={{
+                                                                    __html:
+                                                                      collaborators
+                                                                        ?.instructor_profile
+                                                                        ?.brief_introduction,
+                                                                  }}
+                                                                />
+                                                              </div>
+                                                            ) : (
+                                                              <div>
+                                                                <p
+                                                                  style={{
+                                                                    color:
+                                                                      "#000",
+                                                                    marginLeft:
+                                                                      "-10px",
+                                                                    fontSize:
+                                                                      "12px",
+                                                                    marginTop:
+                                                                      "-30px",
+                                                                  }}
+                                                                  className="height"
+                                                                >
+                                                                  {
+                                                                    collaborators
+                                                                      ?.instructor_profile
+                                                                      ?.brief_introduction
+                                                                  }
+                                                                </p>
+                                                              </div>
+                                                            )}
+                                                          </div>
 
-                                      
-                                      return (
-                                        <Link
-                                        
-                                          to={`/instructors/${collaborators?.id}`}
-                                        >
-                                          <Col md="12" style={{margin:"10px",border:"1px solid #fefefe"}}>
-                                            <header style={{boxShadow:"-12px 12px 12px 12px #fafafa"}}>
-                                              <div class="container">
-                                                <div class="profile-sect " >
-                                                  <div class="profile-image-sect ">
-                                                    {collaborators?.image_url ? (
-                                                      <img
-                                                        style={{
-                                                          width: "100px",
-                                                          height: "100px",
-                                                        }}
-                                                        src={`${collaborators?.image_url}`}
-                                                      />
-                                                    ) : (
-                                                      <p></p>
-                                                    )}
+                                                          <div
+                                                            class="profile-user-settings  shown"
+                                                            style={{
+                                                              marginTop: "30px",
+                                                              width: "100%",
+                                                            }}
+                                                          >
+                                                            <h5 className="shown">
+                                                              {
+                                                                collaborators?.first_name
+                                                              }{" "}
+                                                              {
+                                                                collaborators?.last_name
+                                                              }
+                                                            </h5>
 
+                                                            <div
+                                                              class="profile-bio-sect col-merge-s-3"
+                                                              style={{
+                                                                color: "#000",
+                                                                padding: "5px",
+                                                              }}
+                                                            >
+                                                              {/^/.test(
+                                                                collaborators
+                                                                  ?.instructor_profile
+                                                                  ?.brief_introduction
+                                                              ) ? (
+                                                                <div>
+                                                                  <p
+                                                                    className="dark shown"
+                                                                    style={{
+                                                                      color:
+                                                                        "#000",
+                                                                      marginLeft:
+                                                                        "-10px",
+                                                                      lineHeight:
+                                                                        "25px",
+                                                                      marginTop:
+                                                                        "-30px",
+                                                                      width:
+                                                                        "100%",
+                                                                    }}
+                                                                    dangerouslySetInnerHTML={{
+                                                                      __html:
+                                                                        collaborators
+                                                                          ?.instructor_profile
+                                                                          ?.brief_introduction,
+                                                                    }}
+                                                                  />
+                                                                </div>
+                                                              ) : (
+                                                                <div>
+                                                                  <p
+                                                                    style={{
+                                                                      color:
+                                                                        "#000",
+                                                                      marginLeft:
+                                                                        "-10px",
+                                                                      lineHeight:
+                                                                        "25px",
+                                                                      marginTop:
+                                                                        "-30px",
+                                                                      width:
+                                                                        "100%",
+                                                                    }}
+                                                                    className="shown"
+                                                                  >
+                                                                    {
+                                                                      collaborators
+                                                                        ?.instructor_profile
+                                                                        ?.brief_introduction
+                                                                    }
+                                                                  </p>
+                                                                </div>
+                                                              )}
+                                                            </div>
+                                                          </div>
+                                                        </div>
 
-                                                    
-                                                  </div>
-
-                                                  <div class="profile-user-settings" style={{ marginTop:"-40px"}}>
-                                                    <h1  style={{color:"#000",marginLeft:"10px"}}>
-                                                      {
-                                                        collaborators?.first_name
-                                                      }{" "}
-                                                      {collaborators?.last_name}
-                                                    </h1>
-                                                    <hr/>
-                                                    <div class="profile-bio-sect" style={{color:"#000",padding:"5px"}}>
-                                                      <h6 style={{color:"#000", marginLeft:"10px"}}>
-                                                        {
-                                                          
-                                                        }
-                                                      </h6>
-
-
-
-                                            {/^/.test(collaborators
-                                                            ?.instructor_profile
-                                                            ?.brief_introduction) ? (
-                                  <h6
-                                    style={{color:"#000",marginLeft:"10px", lineHeight:"25px"}}
-                                    dangerouslySetInnerHTML={{
-                                      __html: collaborators?.instructor_profile
-                                                            ?.brief_introduction,
-                                    }}
-                                  />
-                                ) : (
-
-
-
-                                  <h6 style={{color:"#000",marginLeft:"10px", lineHeight:"25px"}}>
-                                    {collaborators?.instructor_profile
-                                                            ?.brief_introduction}
-                                  </h6>
-                                )}
-                                                      
-                                                    </div>
-                                                
-                                                  </div>
-
-
-                                                    
-                                                </div>
-                                               
-                                              </div>
-                                               <br/>
-
-                                                <div className="instructor-social" >
-                                            <ul className="social list-unstyled list-inline" style={{marginLeft:"10px",marginBottom:"10px"}}>
+                                                        {/*<div className="instructor-social shown" style={{float:"right", position:"absolute",top:"10px",right:"10px"}} >
+                                            <ul className="social list-unstyled list-inline" style={{marginBottom:"10px",marginLeft:"10px"}}>
                                               <li className="list-inline-item">
                                                 <Link
                                                   to={{
@@ -838,23 +1410,22 @@ const CourseDetails = ({
                                                   }}
                                                   target="_blank"
                                                 >
-                                                  <i className="fa fa-linkedin fa-2x"></i>
+                                                  <i className="fa  fa-linkedin fa-2x"></i>
                                                 </Link>
                                               </li>
                                             </ul>
-                                          </div>
-                                            </header>
-                                            <br/>
-                                          </Col>
-                                        </Link>
-                                      );
-
-                                    }
-                                    }
-                                  )}
-                              </div>
-                            </Tab.Pane>
-                            {/* <Tab.Pane eventKey="review" className="review-tab">
+                                          </div>*/}
+                                                      </div>
+                                                    </header>
+                                                  </Col>
+                                                </Link>
+                                              );
+                                            }
+                                          }
+                                        )}
+                                    </div>
+                                  </Tab.Pane>
+                                  {/* <Tab.Pane eventKey="review" className="review-tab">
                           <Row>
                             <Col md="12">
                               <div className="review-comments">
@@ -936,226 +1507,356 @@ const CourseDetails = ({
                                 </Col>
                               </Row>
                             </Tab.Pane>*/}
-                          </Tab.Content>
-                        </Tab.Container>
-                      </div>
-                    </div>
-                  </Col>
+                                </Tab.Content>
+                              </Tab.Container>
+                            </div>
+                          </div>
+                        </Col>
 
-                  <Col lg="4" md="4" sm="12">
-                    <div
-                      className="single-details-sidbar shown"
-                      style={{ marginTop: "-240px",zIndex:"99",opacity:"1" }}
-                    >
-                      <Row>
-                        <Col md="12">
-                          <div className="course-details-feature" style={{zIndex:"99",opacity:"1" }}>
-                            <div
-                              className="video_poster"
-                              style={{ height: "234px", width: "308px",border:"1px solid #fafafa" }}
-                            >
-                              <div className="overplay">
-                                <div className="">
-                                  {coursedetails &&
-                                  coursedetails?.data?.introduction_video
-                                    ?.length > 0 ? (
-                                    <div
-                                      style={{
-                                        display: "flex",
-                                        justifyContent: "center",
-                                      }}
-                                    >
-                                      <a
-                                        href={
-                                          "https://www.youtube.com/embed/" +
-                                          formaturl(
-                                            coursedetails?.data
-                                              ?.introduction_video
-                                          ).idVideo
-                                        }
-                                        data-youtube-id={YouTubeGetID(
-                                          coursedetails?.data
-                                            ?.introduction_video
+                        <Col lg="4" md="4" sm="12">
+                          <div
+                            className="single-details-sidbar shown "
+                            style={{
+                              marginTop: "-240px",
+                              zIndex: "99",
+                              opacity: "1",
+                            }}
+                          >
+                            <Row>
+                              <Col md="12">
+                                <div
+                                  className="course-details-feature "
+                                  style={{ zIndex: "99", opacity: "1" }}
+                                >
+                                  <div
+                                    className="video_poster"
+                                    style={{
+                                      height: "234px",
+                                      width: "308px",
+                                      border: "1px solid #fafafa",
+                                    }}
+                                  >
+                                    <div className="overplay">
+                                      <div className="">
+                                        {coursedetails &&
+                                        coursedetails?.data?.introduction_video
+                                          ?.length > 0 ? (
+                                          <div
+                                            style={{
+                                              display: "flex",
+                                              justifyContent: "center",
+                                            }}
+                                          >
+                                            <a
+                                              href={
+                                                "https://www.youtube.com/embed/" +
+                                                formaturl(
+                                                  coursedetails?.data
+                                                    ?.introduction_video
+                                                ).idVideo
+                                              }
+                                              data-youtube-id={YouTubeGetID(
+                                                coursedetails?.data
+                                                  ?.introduction_video
+                                              )}
+                                              className="video-banner js-trigger-video-modal"
+                                            >
+                                              <img
+                                                className=""
+                                                src={
+                                                  "http://img.youtube.com/vi/" +
+                                                  YouTubeGetID(
+                                                    coursedetails?.data
+                                                      ?.introduction_video
+                                                  ) +
+                                                  "/0.jpg"
+                                                }
+                                                alt=""
+                                              />
+                                              <div class="triangle"></div>
+                                            </a>
+                                          </div>
+                                        ) : (
+                                          <Fragment />
                                         )}
-                                        className="video-banner js-trigger-video-modal"
-                                      >
-                                        <img
-                                          className=""
-                                          src={
-                                            "http://img.youtube.com/vi/" +
-                                            YouTubeGetID(
-                                              coursedetails?.data
-                                                ?.introduction_video
-                                            ) +
-                                            "/0.jpg"
-                                          }
-                                          alt=""
-                                        />
-                                        <div class="triangle"></div>
-                                      </a>
+                                      </div>
                                     </div>
+                                  </div>
+                                  <br />
+                                  <br />
+
+                                  <h5
+                                    className="title"
+                                    style={{
+                                      textAlign: "left",
+                                      fontWeight: "300px",
+                                      color: "#000",
+                                      margin: "20px",
+                                      fontSize: "24px",
+                                      fontFamily: "Open Sans",
+                                      lineHight: "34px",
+                                      fontWeight: "normal",
+                                    }}
+                                  >
+                                    Course Details
+                                  </h5>
+                                  <br />
+                                  <br />
+                                  <br />
+                                  <br />
+
+                                  <div style={{ marginTop: "-70px" }}>
+                                    <ul className="list-unstyled feature-list-maker">
+                                      <li
+                                        style={{
+                                          fontFamily: "Open Sans",
+                                          color: "#000",
+                                        }}
+                                      >
+                                        <i className="fa fa-shopping-cart"></i>{" "}
+                                        Price Date:
+                                        <span
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            color: "#000",
+                                          }}
+                                        >
+                                          NGN{coursedetails?.data?.price}
+                                        </span>
+                                      </li>
+
+                                      <li
+                                        style={{
+                                          fontFamily: "Open Sans",
+                                          color: "#000",
+                                        }}
+                                      >
+                                        <i className="fa fa-calendar dark"></i>{" "}
+                                        Start Date:
+                                        <span
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            color: "#000",
+                                          }}
+                                        >
+                                          {moment(
+                                            `${
+                                              coursedetails &&
+                                              coursedetails.data
+                                                ? coursedetails.data.start_date
+                                                : ""
+                                            }`
+                                          ).format("ll")}
+                                        </span>
+                                      </li>
+
+                                      <li
+                                        style={{
+                                          fontFamily: "Open Sans",
+                                          color: "#000",
+                                        }}
+                                      >
+                                        <i className="fa fa-calendar "></i>End
+                                        Date:
+                                        <span
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            color: "#000",
+                                          }}
+                                        >
+                                          {moment(
+                                            `${
+                                              coursedetails &&
+                                              coursedetails.data
+                                                ? coursedetails.data.end_date
+                                                : ""
+                                            }`
+                                          ).format("ll")}
+                                        </span>
+                                      </li>
+
+                                      <li
+                                        style={{
+                                          fontFamily: "Open Sans",
+                                          color: "#000",
+                                        }}
+                                      >
+                                        <i className="fa fa-clock"></i>{" "}
+                                        Duration:
+                                        <span
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            color: "#000",
+                                          }}
+                                        >
+                                          {coursedetails && coursedetails.data
+                                            ? coursedetails.data.duration
+                                            : ""}
+                                        </span>
+                                      </li>
+                                      <li
+                                        style={{
+                                          fontFamily: "Open Sans",
+                                          color: "#000",
+                                        }}
+                                      >
+                                        <i className="fa fa-globe"></i>{" "}
+                                        Language:
+                                        <span
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            color: "#000",
+                                          }}
+                                        >
+                                          {coursedetails && coursedetails.data
+                                            ? coursedetails?.data?.language
+                                                ?.english
+                                            : ""}
+                                        </span>
+                                      </li>
+                                      <li
+                                        style={{
+                                          fontFamily: "Open Sans",
+                                          color: "#000",
+                                        }}
+                                      >
+                                        <i className="fa fa-user"></i> Skill
+                                        Level:{" "}
+                                        <span
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            color: "#000",
+                                          }}
+                                        >
+                                          Beginner
+                                        </span>
+                                      </li>
+                                      <li
+                                        style={{
+                                          fontFamily: "Open Sans",
+                                          color: "#000",
+                                        }}
+                                      >
+                                        <i className="fa fa-graduation-cap"></i>{" "}
+                                        Learning Partner:
+                                        <span>Questence</span>
+                                      </li>
+                                      <li
+                                        style={{
+                                          fontFamily: "Open Sans",
+                                          color: "#000",
+                                        }}
+                                      >
+                                        <i className="fa fa-user"></i>
+                                        Learning Style:{" "}
+                                        <span
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            color: "#000",
+                                          }}
+                                        >
+                                          {coursedetails && coursedetails.data
+                                            ? coursedetails.data.learning_style
+                                            : ""}
+                                        </span>
+                                      </li>
+                                      <li
+                                        style={{
+                                          fontFamily: "Open Sans",
+                                          color: "#000",
+                                        }}
+                                      >
+                                        <i className="fa fa-certificate"></i>
+                                        Certification:{" "}
+                                        <span
+                                          style={{
+                                            fontFamily: "Open Sans",
+                                            color: "#000",
+                                          }}
+                                        >
+                                          Yes
+                                        </span>
+                                      </li>
+                                    </ul>
+                                  </div>
+
+                                  {isAuthenticated ? (
+                                    checkCourseStatus(coursedetails.data.id) ? (
+                                      ""
+                                    ) : (
+                                      <Fragment>
+                                        <button
+                                          type="button"
+                                          // onClick={addToCart.bind(
+                                          //   this,
+                                          //   coursedetails?.data?.id
+                                          // )}
+
+                                          onClick={(e) => {
+                                            handleAddToCart(
+                                              e,
+                                              coursedetails?.data
+                                            );
+                                          }}
+                                          className="enroll-btn"
+                                        >
+                                          Enroll Course
+                                        </button>
+                                        <br />
+                                        <br />
+                                        <br />
+
+                                        <button
+                                          id="wishlister"
+                                          style={{ background: "red" }}
+                                          type="button"
+                                          onClick={addToWishList.bind(
+                                            this,
+                                            coursedetails?.data?.id
+                                          )}
+                                          className=" enroll-btn btn btn-danger wishlister"
+                                        >
+                                          Add To Wish List
+                                        </button>
+                                      </Fragment>
+                                    )
                                   ) : (
-                                    <Fragment />
+                                    <a
+                                      style={{
+                                        borderRadius: "43px",
+
+                                        height: "40px",
+                                        padding: "7px",
+                                        color: "#fff",
+                                        background: "rgb(2, 83, 200)",
+                                      }}
+                                      className="btn btn-large modal-link"
+                                      href="#"
+                                      id="register_form"
+                                    >
+                                      <b
+                                        style={{
+                                          textTransform: "capitalize",
+                                          fontFamily: "Open Sans",
+                                          fontSize: "12px",
+                                          fontWeight: "bold",
+                                        }}
+                                      >
+                                        Log in to enroll
+                                      </b>
+                                    </a>
                                   )}
                                 </div>
-                              </div>
-                            </div>
-                            <br/><br/>
-
-                            <h5 className="title" style={{ color: "#000" }}>
-                              Course Details
-                            </h5>
-                            <br/><br/><br/><br/>
-
-                            <div style={{ marginTop: "-70px" }}>
-                              <ul className="list-unstyled feature-list-maker">
-                                <li>
-                                  <i className="fa fa-shopping-cart"></i> Price
-                                  Date:
-                                  <span>NGN{coursedetails?.data?.price}</span>
-                                </li>
-
-                                <li>
-                                  <i className="fa fa-calendar"></i> Start Date:
-                                  <span>
-                                    {moment(
-                                      `${
-                                        coursedetails && coursedetails.data
-                                          ? coursedetails.data.start_date
-                                          : ""
-                                      }`
-                                    ).format("ll")}
-                                  </span>
-                                </li>
-
-                                <li>
-                                  <i className="fa fa-calendar"></i>End Date:
-                                  <span>
-                                    {moment(
-                                      `${
-                                        coursedetails && coursedetails.data
-                                          ? coursedetails.data.end_date
-                                          : ""
-                                      }`
-                                    ).format("ll")}
-                                  </span>
-                                </li>
-
-                                <li>
-                                  <i className="fa fa-clock"></i> Duration:
-                                  <span>
-                                    {coursedetails && coursedetails.data
-                                      ? coursedetails.data.duration
-                                      : ""}
-                                  </span>
-                                </li>
-                                <li>
-                                  <i className="fa fa-globe"></i> Language:
-                                  <span>
-                                    {coursedetails && coursedetails.data
-                                      ? coursedetails?.data?.language?.english
-                                      : ""}
-                                  </span>
-                                </li>
-                                <li>
-                                  <i className="fa fa-user"></i> Skill Level:{" "}
-                                  <span>Beginner</span>
-                                </li>
-                                <li>
-                                  <i className="fa fa-graduation-cap"></i>{" "}
-                                  Learning Partner:
-                                  <span>Questence</span>
-                                </li>
-                                <li>
-                                  <i className="fa fa-user"></i>
-                                  Learning Style:{" "}
-                                  <span>
-                                    {coursedetails && coursedetails.data
-                                      ? coursedetails.data.learning_style
-                                      : ""}
-                                  </span>
-                                </li>
-                                <li>
-                                  <i className="fa fa-certificate"></i>
-                                  Certification: <span>Yes</span>
-                                </li>
-                              </ul>
-                            </div>
-
-                            {isAuthenticated ? (
-                              checkCourseStatus(coursedetails.data.id) ? (
-                                ""
-                              ) : (
-                                <Fragment>
-                                  <button
-                                    type="button"
-                                    // onClick={addToCart.bind(
-                                    //   this,
-                                    //   coursedetails?.data?.id
-                                    // )}
-
-                                    onClick={(e)=>{
-                                     handleAddToCart(e,coursedetails?.data)
-                                    }}
-                                    className="enroll-btn"
-                                  >
-                                    Enroll Course
-                                  </button>
-                                  <br />
-                                  <br />
-                                  <br />
-
-                                  <button
-                                    id="wishlister"
-                                    style={{ background: "red" }}
-                                    type="button"
-                                    onClick={addToWishList.bind(
-                                      this,
-                                      coursedetails?.data?.id
-                                    )}
-                                    className=" enroll-btn btn btn-danger wishlister"
-                                  >
-                                    Add To Wish List
-                                  </button>
-                                </Fragment>
-                              )
-                            ) : (
-                              <button
-                                type="button"
-                                className=" enroll-btn modal-link"
-                                onClick={(e) => {
-                                  e.preventDefault()
-
-
-                                $('.overlay-video').addClass('modal-window').css({display:"block"})
-
-   
-                                }}
-                              >
-                                Login To Enroll
-                              </button>
-                            )}
-
-
-
-                               
-
-
-
-                                
-
-
+                              </Col>
+                            </Row>
                           </div>
                         </Col>
                       </Row>
-                    </div>
-                  </Col>
-                </Row>
-              </Container>
-            </section>
+                    </Container>
+                  </section>
 
-            <section>
-              {/*cart.length > 0 &&
+                  <section>
+                    {/*cart.length > 0 &&
               cart.map((item) => {
                 return (
                   <div
@@ -1178,8 +1879,8 @@ const CourseDetails = ({
                 );
               })*/}
 
-              <div style={{ display: "table", clear: "both" }}>
-                {/*<button
+                    <div style={{ display: "table", clear: "both" }}>
+                      {/*<button
                 onClick={() => {
                   closeModal();
                   window.location.href = process.env.PUBLIC_URL + "/courses";
@@ -1201,117 +1902,108 @@ const CourseDetails = ({
               >
                 Go to cart
               </button>*/}
+                    </div>
+                  </section>
+                  <footer></footer>
+
+                  <div class="slideout">
+                    <button type="button" class="hide">
+                      Close
+                    </button>
+                    <p>
+                      Clever girl. That is one big pile of shit. I thought you
+                      were one of your big brothers. Don't you see the danger,
+                      John, inherent in what you're doing here? They show
+                      extreme intelligence, even problem-solving intelligence.
+                    </p>
+                    <p>
+                      Dinosaurs eat man; woman inherits the earth. T-Rex doesn't
+                      want to be fed. Boy, do I hate being right all the time.
+                      White rabbit object: whatever it did, it did it all.
+                    </p>
+                  </div>
+                </Fragment>
+              ) : (
+                <p>No Details for this course yet</p>
+              )}
+            </Styles>
+            <br />
+            <br />
+            <br />
+            <section
+              className="video-modal col-merge-12 "
+              style={{ zIndex: "999999999999999999" }}
+            >
+              <div
+                id="video-modal-content"
+                style={{
+                  margin: "0px auto",
+                  width: "500px",
+                  zIndex: "999999999999999999",
+                }}
+              >
+                <a
+                  href="#"
+                  className="close-video-modal btn btn-primary"
+                  style={{
+                    position: "absolute",
+                    top: "35px",
+                    right: "20px",
+                    fontSize: "30px",
+                  }}
+                  style={{ background: "#fafafa" }}
+                >
+                  close window
+                </a>
+
+                <div
+                  className="closeBtn"
+                  data-target="#video-modal-content"
+                  style={{ position: "absolute", right: "300px" }}
+                >
+                  <img
+                    src="https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/512x512/close.png"
+                    width="30"
+                    height="30"
+                  />
+                </div>
+
+                <iframe
+                  className="iframe-magnet col-merge-10 video-reset-size"
+                  style={{}}
+                  id="youtube"
+                  width="50%"
+                  frameborder="0"
+                  allow="autoplay"
+                  allowfullscreen="true"
+                  src=""
+                ></iframe>
               </div>
+
+              <div id="slideout">
+                <button
+                  style={{ display: "none" }}
+                  type="button"
+                  className="closebtn"
+                >
+                  Close Video
+                </button>
+              </div>
+
+              <div className="overlay-video" style={{}}></div>
             </section>
-            <footer></footer>
-
-            <div class="slideout">
-              <button type="button" class="hide">
-                Close
-              </button>
-              <p>
-                Clever girl. That is one big pile of shit. I thought you were
-                one of your big brothers. Don't you see the danger, John,
-                inherent in what you're doing here? They show extreme
-                intelligence, even problem-solving intelligence.
-              </p>
-              <p>
-                Dinosaurs eat man; woman inherits the earth. T-Rex doesn't want
-                to be fed. Boy, do I hate being right all the time. White rabbit
-                object: whatever it did, it did it all.
-              </p>
-            </div>
+            <br />
+            <br />
+            <br /> <br />
+            <br />
+            <br /> <br />
+            <br />
+            <br />
           </Fragment>
-        ) : (
-          <p>No Details for this course yet</p>
         )}
-      </Styles>
-      <br />
-      <br />
-      <br />
-      <section
-        className="video-modal col-merge-12 "
-        style={{ zIndex: "999999999999999999" }}
-      >
-        <div
-          id="video-modal-content"
-          style={{
-            margin: "0px auto",
-            width: "500px",
-            zIndex: "999999999999999999",
-          }}
-        >
-          <a
-            href="#"
-            className="close-video-modal btn btn-primary"
-            style={{
-              position: "absolute",
-              top: "35px",
-              right: "20px",
-              fontSize: "30px",
-            }}
-            style={{ background: "#fafafa" }}
-          >
-            close window
-          </a>
 
-           <div className="closeBtn" data-target="#video-modal-content" style={{position:"absolute",right:"300px"}}>
-            <img
-              src="https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/512x512/close.png"
-              width="30"
-              height="30"
-            />
-          </div>
-
-         
-
-          <iframe
-            className="iframe-magnet col-merge-10 video-reset-size"
-            style={{}}
-            id="youtube"
-            width="50%"
-            frameborder="0"
-            allow="autoplay"
-            allowfullscreen="true"
-            src=""
-          >
-
-
-
-          </iframe>
-        </div>
-
-        <div id="slideout">
-          <button
-            style={{ display: "none" }}
-            type="button"
-            className="closebtn"
-          >
-            Close Video
-          </button>
-        </div>
-
-        <div className="overlay-video" style={{}}></div>
-      </section>
-      <br />
-      <br />
-      <br /> <br />
-      <br />
-      <br /> <br />
-      <br />
-      <br />
-      
-       </Fragment>
-
-
-    )}
- 
-
-
-      <Footer />
-
-
-  </div>
+        <Footer />
+      </div>
     </Fragment>
   );
 };

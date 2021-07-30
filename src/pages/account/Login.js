@@ -36,6 +36,8 @@ const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
     // eslint-disable-next-line
   }, []);
 
+  const LogInToLMS = () => {};
+
   const handleSubmit = async (values, { setSubmitting }) => {
     setLoading(true);
     try {

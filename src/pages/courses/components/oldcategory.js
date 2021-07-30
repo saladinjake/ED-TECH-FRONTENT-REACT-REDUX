@@ -89,9 +89,9 @@ const CourseCategory = ({ course: { courses }, setFilterAllCourses }) => {
   const filterCategory = (e) => {
     let unselected = [];
 
-    if(document.getElementById("search-result")){
-          let element = document.getElementById("search-result")
-          element.style.display="none"
+    if (document.getElementById("search-result")) {
+      let element = document.getElementById("search-result");
+      element.style.display = "none";
     }
 
     let newBatch = batchedCategories;

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import ScrollToTop from "helper/ScrollToTop";
 import { GlobalStyle } from "components/common/styles/global.js";
 import HomeOne from "HomeOne";
 import About from "pages/about/About";
+import NewAbout from "pages/about/NewAbout"
 import ForInstructor from "pages/instructors/ForInstructor";
 import ForBusiness from "pages/instructors/ForBusiness";
 import ForGovernment from "pages/instructors/ForGovernment";
@@ -12,6 +13,8 @@ import Checkout from "pages/checkout/Checkout";
 import Contact from "./pages/contact/Contact";
 import CourseGrid from "pages/courses/CourseGrid";
 import CourseGridList from "pages/courses/CourseGridList";
+
+import ResponsiveGrid from "pages/courses/components/ResponsiveGrid";
 
 import ProgramGrid from "pages/courses/ProgramGrid";
 import ProgramGridList from "pages/courses/ProgramGridList";
@@ -72,14 +75,81 @@ import history from "./history";
 import HomePageDesign from "./newHome/home";
 import HomePageDesignTwo from "./newHome/home2";
 
+import Terms from "./pages/terms/Terms";
+import Privacy from "./pages/terms/Privacy";
+import Honor from "./pages/terms/Honor";
+import BlogClassic from "./pages/blog/BlogClassic";
+import BlogDetail from "./pages/blog/BlogDetails";
+import Events from "./pages/events/Events";
+import EventsDetails from "./pages/events/EventsDetails";
+import CareersPage from "./pages/careers/Career";
+import HelpCenter from "./pages/help/Help";
 
-import DynamicContentForInstitutions from "./pages/institution/NewInstitutionDetailLanding"
+import DynamicContentForInstitutions from "./pages/institution/NewInstitutionDetailLanding";
 import "./responsive.css";
-import "./app.css"
-import Notification from "./Toaster"
+import "./app.css";
+import "./pre-style.css";
+import Notification from "./Toaster";
 
+import $ from "jquery";
 
 function App(props) {
+  useEffect(() => {
+    $(".footer p , .footer span").each(function () {
+      $(this).css({ color: "#fff" });
+    });
+
+    //  var queryVal =""
+    // var jump=function(e)
+    // {
+    //    if (e){
+    //        e.preventDefault();
+    //        var target = $(this).attr("href");
+    //    }else{
+    //        var target = window.location.hash;
+    //    }
+
+    //    if(  e && ( e.target.getAttribute("href")=="#honour-code" || e.target.getAttribute("href")=="#privacy-policy" || e.target.getAttribute("href")=="#terms-of-use") ){
+
+    //         $('.tab-menu a').parents().each(function(){
+    //            // $(e.target).removeClass("visited-now")
+    //           $(e.target).css({color:"#000" })
+    //          $(e.target).parent().css({"background-color":"rgba(255,255,255)" })
+    //         })
+    //         $(e.target).tab('show')
+    //          $(e.target).css({color:"#fff" })
+    //          $(e.target).parent().css({"background-color":"rgba(8,23,200)" })
+
+    //   }else{
+
+    //        $('html,body').animate(
+    //      {
+    //          scrollTop: $(target).offset().top
+    //      },1000,function()
+    //      {
+    //          window.location.hash = target;
+    //      });
+
+    //    }
+
+    // }
+
+    // // $('html, body').hide()
+
+    // $(document).ready(function()
+    // {
+    //     $('a[href^=\\#]').bind("click", jump);
+
+    //     if (window.location.hash){
+    //         setTimeout(function(){
+    //             $('html, body').scrollTop(0).show()
+    //             jump()
+    //         }, 0);
+    //     }else{
+    //       $('html, body').show()
+    //     }
+    // });
+  });
 
   return (
     <Router history={history}>
@@ -117,7 +187,7 @@ function App(props) {
 
         <Route
           path={`${process.env.PUBLIC_URL + "/about"}`}
-          component={About}
+          component={NewAbout}
         />
         <Route
           path={`${process.env.PUBLIC_URL + "/contact"}`}
@@ -143,13 +213,14 @@ function App(props) {
         <Route
           exact
           path={`${process.env.PUBLIC_URL + "/courses"}`}
-          component={ CourseGrid //CourseGridList
+          component={
+            CourseGrid //CourseGridList
           }
         />
         <Route
           exact
           path={`${process.env.PUBLIC_URL + "/course-grid/list"}`}
-          component={ CourseGrid}
+          component={CourseGrid}
         />
 
         <Route exact path="/courses/category/:id" component={CourseGrid} />
@@ -251,7 +322,6 @@ function App(props) {
           component={UpdateInstructor}
         />
 
-        
         <InstructorsRoute
           exact
           path={`${process.env.PUBLIC_URL + "/instructor-pages/notifications"}`}
@@ -268,9 +338,7 @@ function App(props) {
 
         <InstructorsRoute
           exact
-          path={`${
-            process.env.PUBLIC_URL + "/course-preview/:id"
-          }`}
+          path={`${process.env.PUBLIC_URL + "/course-preview/:id"}`}
           component={CoursePreview}
         />
 
@@ -323,6 +391,11 @@ function App(props) {
           path={`${process.env.PUBLIC_URL + "/learner/accounts"}`}
           component={ResetPassword}
         />
+        <InstructorsRoute
+          path={`${process.env.PUBLIC_URL + "/instructor-account/reset"}`}
+          component={ResetPassword}
+        />
+
         <LearnersRoute
           path={`${process.env.PUBLIC_URL + "/learner/purchase/history"}`}
           component={Purchases}
@@ -338,6 +411,7 @@ function App(props) {
           component={SortTest}
         />
 
+        {/*THESE HAS NOW BEEN PLACED IN A MODAL*/}
         {/*<PublicRoute
           exact
           path={`${process.env.PUBLIC_URL + "/login"}`}
@@ -352,7 +426,7 @@ function App(props) {
 
         <PublicRoute
           exact
-          path={`${process.env.PUBLIC_URL + "/reset/password/:id"}`}
+          path={`${process.env.PUBLIC_URL + "/password/reset/:id"}`}
           component={ChangeCredentials}
         />
 
@@ -384,13 +458,65 @@ function App(props) {
           component={HomePageDesignTwo}
         />
 
-        <Route
+        <LearnersRoute
           exact
-          path={`${process.env.PUBLIC_URL + "/home-work"}`}
+          path={`${process.env.PUBLIC_URL + "/learning/workbench"}`}
           component={WorkBench}
         />
 
-        
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/terms"}`}
+          component={Terms}
+        />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/privacy"}`}
+          component={Privacy}
+        />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/honor"}`}
+          component={Honor}
+        />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/blog"}`}
+          component={BlogClassic}
+        />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/blog-details"}`}
+          component={BlogDetail}
+        />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/news"}`}
+          component={Events}
+        />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/event-details"}`}
+          component={EventsDetails}
+        />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/careers"}`}
+          component={CareersPage}
+        />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/test-grid"}`}
+          component={ResponsiveGrid}
+        />
 
         <Route component={PageNotFound} />
       </Switch>

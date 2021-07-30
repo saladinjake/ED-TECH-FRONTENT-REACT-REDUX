@@ -57,8 +57,8 @@ class TestimonialSlider extends Component {
                   {Datas.dataList.map((data, i) => (
                     <div className="slider-item" key={i}>
                       <div className="desc">
-                        <h5>{data.testimonialTitle}</h5>
-                        <p>{data.testimonialDesc}</p>
+                        <h5 style={{color:"#fff"}}>{data.testimonialTitle}</h5>
+                        <p style={{color:"#fff"}}>{data.testimonialDesc}</p>
                       </div>
                       <div className="writer">
                         <img
@@ -69,8 +69,8 @@ class TestimonialSlider extends Component {
                           className="slider-image"
                           alt={data.authorImg}
                         />
-                        <h6>{data.authorName}</h6>
-                        <p>{data.authorTitle}</p>
+                        <h6 style={{color:"#fff"}}>{data.authorName}</h6>
+                        <p style={{color:"#fff"}}>{data.authorTitle}</p>
                       </div>
                     </div>
                   ))}

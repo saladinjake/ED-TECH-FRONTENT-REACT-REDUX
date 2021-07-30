@@ -55,7 +55,20 @@ class Editor extends React.Component {
         <br />
         <br />
         <div>
-          <p>{this.props.placeholder} </p>
+          <p
+            style={{
+              fontWeight: "700",
+              fontFamily: "Open Sans",
+              color: "#000",
+              fontSize: "12px",
+              lineHeight: "20px",
+
+              marginTop: "14px",
+              marginRight: "7px",
+            }}
+          >
+            {this.props.placeholder}{" "}
+          </p>
           {/*<button className="md-trigger button-preview" data-modal="modal-12">Live Edit Preview</button>*/}
         </div>
         <ReactQuill

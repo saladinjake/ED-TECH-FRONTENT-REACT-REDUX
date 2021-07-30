@@ -72,38 +72,41 @@ export const AUTHLINKS = [
     name: "Wishlist",
     link: "/learner/wishlists",
   },
-  {
-    name: "Accomplishment",
-    link: "/learner/accomplishment",
-  },
+
   {
     name: "Notifications",
     link: "/notifications",
   },
   {
     name: "Account Settings",
-    link: "/notifications",
+    link: "/learner/accounts",
   },
-  {
-    name: "Subscriptions",
-    link: "/notifications",
-  },
-  {
-    name: "Purchase History",
-    link: "/notifications",
-  },
+
+  // {
+  //   name: "Accomplishment",
+  //   link: "/learner/accomplishment",
+  // },
+
+  // {
+  //   name: "Subscriptions",
+  //   link: "/notifications",
+  // },
+  // {
+  //   name: "Purchase History",
+  //   link: "/notifications",
+  // },
   {
     name: "Profile",
     link: "/learner/profile",
   },
-  {
-    name: "Help",
-    link: "/notifications",
-  },
-  {
-    name: "Billing",
-    link: "/billing",
-  },
+  // {
+  //   name: "Help",
+  //   link: "#",
+  // },
+  // {
+  //   name: "Billing",
+  //   link: "/billing",
+  // },
 ];
 
 export const INSTRUCTORLINKS = [
@@ -136,23 +139,25 @@ export const INSTRUCTORLINKS = [
     name: "Wishlist",
     link: "/learner/wishlists",
   },
-  {
-    name: "Accomplishment",
-    link: "#",
-  },
 
   {
     name: "Account Settings",
-    link: "#",
+    link: "/instructor-account/reset",
   },
-  {
-    name: "Subscriptions",
-    link: "#",
-  },
-  {
-    name: "Purchase History",
-    link: "#",
-  },
+
+  // {
+  //   name: "Accomplishment",
+  //   link: "#",
+  // },
+
+  // {
+  //   name: "Subscriptions",
+  //   link: "#",
+  // },
+  // {
+  //   name: "Purchase History",
+  //   link: "#",
+  // },
 
   {
     name: "Help",
@@ -164,62 +169,60 @@ export const INSTRUCTORLINKS = [
   },
 ];
 
-
-
-export const PROGRAM_LINK =[
+export const PROGRAM_LINK = [
   // {
   //   id:"1",
   //   name:"Institute of Chartered Institute Of Personnel Management"
   // },
 
-
   {
-     id:"1",
-    name:"Nigerian Institute Of Management",
-    logo: process.env.PUBLIC_URL + "/assets/images/institutions/nim.png"
-  },
-
-  
-
-  {
-    id:2,
-    name:"Institute of Public Analysts of Nigeria ",
-    logo: process.env.PUBLIC_URL + "/assets/images/institutions/ipan.png"
+    id: "3",
+    name: "Nigerian Institute Of Management",
+    logo: process.env.PUBLIC_URL + "/assets/images/institutions/nim.png",
+    link: process.env.PUBLIC_URL + "institute/" + 3,
   },
 
   {
-     id:"3",
-    name:"Institute Of Chattered Accountant Of Nigeria",
-    logo: process.env.PUBLIC_URL + "/assets/images/institutions/ican.jpg"
+    id: 6,
+    name: "Institute of Chartered Secretaries and Administrators of Nigeria ",
+    logo: process.env.PUBLIC_URL + "/assets/images/institutions/icsan.jpg",
+    link: process.env.PUBLIC_URL + "institute/" + 6,
   },
 
   {
-     id:"4",
-    name:"Association Of National Accountant Of Nigeria",
-    logo: process.env.PUBLIC_URL + "/assets/images/institutions/anan.jpg"
+    id: "2",
+    name: "Institute Of Chattered Accountant Of Nigeria",
+    logo: process.env.PUBLIC_URL + "/assets/images/institutions/ican.jpg",
+    link: process.env.PUBLIC_URL + "institute/" + 2,
   },
 
   {
-    id:5,
-    name:"Chartered Institute of Taxation Of Nigeria ",
-    logo: process.env.PUBLIC_URL + "/assets/images/institutions/citn.png"
+    id: "5",
+    name: "Association Of National Accountant Of Nigeria",
+    logo: process.env.PUBLIC_URL + "/assets/images/institutions/anan.jpg",
+    link: process.env.PUBLIC_URL + "institute/" + 5,
   },
 
   {
-    id:6,
-    name:"Chartered Institute of Personnel Management of Nigeria ",
-    logo: process.env.PUBLIC_URL + "/assets/images/institutions/cipm.jpg"
+    id: 4,
+    name: "Chartered Institute of Taxation Of Nigeria ",
+    logo: process.env.PUBLIC_URL + "/assets/images/institutions/citn.png",
+    link: process.env.PUBLIC_URL + "institute/" + 4,
   },
-
-  
 
   {
-    id:8,
-    name:"Chartered Institute of Bankers of Nigeria ",
-    logo: process.env.PUBLIC_URL + "/assets/images/institutions/cibn.jpg"
+    id: 1,
+    name: "Chartered Institute of Personnel Management of Nigeria ",
+    logo: process.env.PUBLIC_URL + "/assets/images/institutions/cipm.jpg",
+    link: process.env.PUBLIC_URL + "institute/" + 1,
   },
 
-
+  {
+    id: 8,
+    name: "Chartered Institute of Bankers of Nigeria ",
+    logo: process.env.PUBLIC_URL + "/assets/images/institutions/cibn.jpg",
+    link: process.env.PUBLIC_URL + "institute/" + 8,
+  },
 
   // {
   //    id:"4",
@@ -240,7 +243,6 @@ export const PROGRAM_LINK =[
   //   id:7,
   //   name:"Nigerian Institute of Marketing of Nigeria "
   // },
-
 
   // {
   //   id:7,
@@ -288,18 +290,13 @@ export const PROGRAM_LINK =[
   //   name:"Nigerian Institute of Building  "
   // },
 
-  
-  
-
-  // {
-  //   id:7,
-  //   name:"Nigerian Institute of Marketing of Nigeria "
-  // },
-  
   // {
   //   id:7,
   //   name:"Nigerian Institute of Marketing of Nigeria "
   // },
 
-
-]
+  // {
+  //   id:7,
+  //   name:"Nigerian Institute of Marketing of Nigeria "
+  // },
+];

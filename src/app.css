@@ -1,51 +1,3 @@
-*{
-  /*font-family: Montserrat;*/
- /* font-family: "Helvetica Neue,Helvetica,Arial,sans-serif";*/
- font-family: "Open Sans";
-}
-
-
-body, .normal_font, .h6.normal_font, body.rtl.rtl-demo .stm_testimonials_wrapper_style_2 .stm_lms_testimonials_single__excerpt p, .stm_product_list_widget.widget_woo_stm_style_2 li a .meta .title {
-    font-family: "Open Sans";
-    color: #273044;
-    font-size: 14px;
-}
-
-
-li, li a, a{
-   /*font-family: Montserrat;
-   font-family: "Helvetica Neue,Helvetica,Arial,sans-serif";*/
-   font-family: "Open Sans";
-}
-
-
-.desktop ul li,
-.desktop ul li span ,nav, ul 
-.desktop ul li a{
-    /*font-family:Source Sans Pro,Arial,sans-serif;*/
-    /*font-family: "Helvetica Neue,Helvetica,Arial,sans-serif";*/
-    font-family: "Open Sans";
-}
-
-
-
-h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6{
-    /*font-family: Montserrat;*/
-    /*font-family: "Helvetica Neue,Helvetica,Arial,sans-serif";*/
-    color: #273044;
-    font-family: "Open Sans";
-}
-
-
-
-
-
-
-
-
-
-
-
 /*
 .button_container {
     margin-top: 20px;
@@ -60,235 +12,255 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6{
     margin-top: 0;
 }*/
 
-
 /* 
     Button styling starts here, include button class when you use any buttons
 */
 
 .button-c {
-    padding: 8px 16px;
-    cursor: pointer;
+  padding: 8px 16px;
+  cursor: pointer;
 }
-
 
 /* 
     Square Buttons
 */
 
 .button-square-right {
-    font-family: "Open Sans";
-    border: 3px solid rgb(230, 230, 230);
-    color: rgba(100, 100, 100, 0.75);
-    background: #ededed;
-    box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff, inset 0 0 0 transparent, inset 0 0 0 transparent;
-    transition: 0.5s ease-in-out;
+  font-family: "Open Sans";
+  border: 3px solid rgb(230, 230, 230);
+  color: rgba(100, 100, 100, 0.75);
+  background: #ededed;
+  box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff,
+    inset 0 0 0 transparent, inset 0 0 0 transparent;
+  transition: 0.5s ease-in-out;
 }
 
 .button-square-right:hover {
-    transform: scale(1.03);
-    color: white;
-    box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd, inset 8rem 0 4px #ff9900, inset 0 0 0 transparent;
-    border-color: #ff8033;
+  transform: scale(1.03);
+  color: white;
+  box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd,
+    inset 8rem 0 4px #ff9900, inset 0 0 0 transparent;
+  border-color: #ff8033;
 }
 
 .button-square-left {
-    font-family: "Open Sans";
-    border: 3px solid rgb(230, 230, 230);
-    color: rgba(100, 100, 100, 0.75);
-    background: #f6f6f6;
-    box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff, inset 0 0 0 transparent, inset 0 0 0 transparent;
-    transition: 0.5s ease-in-out;
+  font-family: "Open Sans";
+  border: 3px solid rgb(230, 230, 230);
+  color: rgba(100, 100, 100, 0.75);
+  background: #f6f6f6;
+  box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff,
+    inset 0 0 0 transparent, inset 0 0 0 transparent;
+  transition: 0.5s ease-in-out;
 }
 
 .button-square-left:hover {
-    transform: scale(1.03);
-    color: white;
-    box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd, inset -8rem 0 4px #ff9900, inset 0 0 0 transparent;
-    border-color: #ff8033;
+  transform: scale(1.03);
+  color: white;
+  box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd,
+    inset -8rem 0 4px #ff9900, inset 0 0 0 transparent;
+  border-color: #ff8033;
 }
 
 .button-square-top {
-    font-family: "Open Sans";
-    border: 3px solid rgb(230, 230, 230);
-    color: rgba(100, 100, 100, 0.75);
-    background: #ededed;
-    box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff, inset 0 0 0 transparent, inset 0 0 0 transparent;
-    transition: 0.5s ease-in-out;
+  font-family: "Open Sans";
+  border: 3px solid rgb(230, 230, 230);
+  color: rgba(100, 100, 100, 0.75);
+  background: #ededed;
+  box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff,
+    inset 0 0 0 transparent, inset 0 0 0 transparent;
+  transition: 0.5s ease-in-out;
 }
 
 .button-square-top:hover {
-    transform: scale(1.03);
-    color: white;
-    box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd, inset 0 4rem 4px #ff9900, inset 0 0 0 transparent;
-    border-color: #ff8033;
+  transform: scale(1.03);
+  color: white;
+  box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd,
+    inset 0 4rem 4px #ff9900, inset 0 0 0 transparent;
+  border-color: #ff8033;
 }
 
 .button-square-bottom {
-    font-family: "Open Sans";
-    border: 3px solid rgb(230, 230, 230);
-    color: rgba(100, 100, 100, 0.75);
-    background: #ededed;
-    box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff, inset 0 0 0 transparent, inset 0 0 0 transparent;
-    transition: 0.5s ease-in-out;
+  font-family: "Open Sans";
+  border: 3px solid rgb(230, 230, 230);
+  color: rgba(100, 100, 100, 0.75);
+  background: #ededed;
+  box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff,
+    inset 0 0 0 transparent, inset 0 0 0 transparent;
+  transition: 0.5s ease-in-out;
 }
 
 .button-square-bottom:hover {
-    transform: scale(1.03);
-    color: white;
-    box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd, inset 0 -4rem 4px #ff9900, inset 0 0 0 transparent;
-    border-color: #ff8033;
+  transform: scale(1.03);
+  color: white;
+  box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd,
+    inset 0 -4rem 4px #ff9900, inset 0 0 0 transparent;
+  border-color: #ff8033;
 }
-
 
 /* 
     Rounded Buttons
 */
 
 .button-rounded-right {
-    text-align: center;
-    font-family: "Open Sans";
-    border: 3px solid rgb(230, 230, 230);
-    color: rgba(100, 100, 100, 0.75);
-    border-radius: 8px;
-    background: #ededed;
-    box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff, inset 0 0 0 transparent, inset 0 0 0 transparent;
-    transition: 0.5s ease-in-out;
+  text-align: center;
+  font-family: "Open Sans";
+  border: 3px solid rgb(230, 230, 230);
+  color: rgba(100, 100, 100, 0.75);
+  border-radius: 8px;
+  background: #ededed;
+  box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff,
+    inset 0 0 0 transparent, inset 0 0 0 transparent;
+  transition: 0.5s ease-in-out;
 }
 
 .button-rounded-right:hover {
-    transform: scale(1.03);
-    color: white;
-    box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd, inset 8rem 0 4px #ff9900, inset 0 0 0 transparent;
-    border-color: #ff8033;
+  transform: scale(1.03);
+  color: white;
+  box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd,
+    inset 8rem 0 4px #ff9900, inset 0 0 0 transparent;
+  border-color: #ff8033;
 }
 
 .button-rounded-left {
-    text-align: center;
-    font-family: "Open Sans";
-    border: 3px solid rgb(230, 230, 230);
-    color: rgba(100, 100, 100, 0.75);
-    border-radius: 8px;
-    background: #ededed;
-    box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff, inset 0 0 0 transparent, inset 0 0 0 transparent;
-    transition: 0.5s ease-in-out;
+  text-align: center;
+  font-family: "Open Sans";
+  border: 3px solid rgb(230, 230, 230);
+  color: rgba(100, 100, 100, 0.75);
+  border-radius: 8px;
+  background: #ededed;
+  box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff,
+    inset 0 0 0 transparent, inset 0 0 0 transparent;
+  transition: 0.5s ease-in-out;
 }
 
 .button-rounded-left:hover {
-    transform: scale(1.03);
-    color: white;
-    box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd, inset -8rem 0 4px #ff9900, inset 0 0 0 transparent;
-    border-color: #ff8033;
+  transform: scale(1.03);
+  color: white;
+  box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd,
+    inset -8rem 0 4px #ff9900, inset 0 0 0 transparent;
+  border-color: #ff8033;
 }
 
 .button-rounded-top {
-    text-align: center;
-    font-family: "Open Sans";
-    border: 3px solid rgb(230, 230, 230);
-    color: rgba(100, 100, 100, 0.75);
-    border-radius: 8px;
-    background: #ededed;
-    box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff, inset 0 0 0 transparent, inset 0 0 0 transparent;
-    transition: 0.5s ease-in-out;
+  text-align: center;
+  font-family: "Open Sans";
+  border: 3px solid rgb(230, 230, 230);
+  color: rgba(100, 100, 100, 0.75);
+  border-radius: 8px;
+  background: #ededed;
+  box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff,
+    inset 0 0 0 transparent, inset 0 0 0 transparent;
+  transition: 0.5s ease-in-out;
 }
 
 .button-rounded-top:hover {
-    transform: scale(1.03);
-    color: white;
-    box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd, inset 0 4rem 4px #ff9900, inset 0 0 0 transparent;
-    border-color: #ff8033;
+  transform: scale(1.03);
+  color: white;
+  box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd,
+    inset 0 4rem 4px #ff9900, inset 0 0 0 transparent;
+  border-color: #ff8033;
 }
 
 .button-rounded-bottom {
-    text-align: center;
-    font-family: "Open Sans";
-    border: 3px solid rgb(230, 230, 230);
-    color: rgba(100, 100, 100, 0.75);
-    border-radius: 8px;
-    background: #ededed;
-    box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff, inset 0 0 0 transparent, inset 0 0 0 transparent;
-    transition: 0.5s ease-in-out;
+  text-align: center;
+  font-family: "Open Sans";
+  border: 3px solid rgb(230, 230, 230);
+  color: rgba(100, 100, 100, 0.75);
+  border-radius: 8px;
+  background: #ededed;
+  box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff,
+    inset 0 0 0 transparent, inset 0 0 0 transparent;
+  transition: 0.5s ease-in-out;
 }
 
 .button-rounded-bottom:hover {
-    transform: scale(1.03);
-    color: white;
-    box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd, inset 0 -4rem 4px #ff9900, inset 0 0 0 transparent;
-    border-color: #ff8033;
+  transform: scale(1.03);
+  color: white;
+  box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd,
+    inset 0 -4rem 4px #ff9900, inset 0 0 0 transparent;
+  border-color: #ff8033;
 }
-
 
 /* 
     Circle Buttons
 */
 
 .button-circle-right {
-    padding: 1.3rem 1rem;
-    font-family: "Open Sans";
-    border: 3px solid rgb(230, 230, 230);
-    color: rgba(100, 100, 100, 0.75);
-    border-radius: 50%;
-    background: #ededed;
-    box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff, inset 0 0 0 transparent, inset 0 0 0 transparent;
-    transition: 0.5s ease-in-out;
+  padding: 1.3rem 1rem;
+  font-family: "Open Sans";
+  border: 3px solid rgb(230, 230, 230);
+  color: rgba(100, 100, 100, 0.75);
+  border-radius: 50%;
+  background: #ededed;
+  box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff,
+    inset 0 0 0 transparent, inset 0 0 0 transparent;
+  transition: 0.5s ease-in-out;
 }
 
 .button-circle-right:hover {
-    transform: scale(1.03);
-    color: white;
-    box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd, inset 8rem 0 4px #ff9900, inset 0 0 0 transparent;
-    border-color: #ff8033;
+  transform: scale(1.03);
+  color: white;
+  box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd,
+    inset 8rem 0 4px #ff9900, inset 0 0 0 transparent;
+  border-color: #ff8033;
 }
 
 .button-circle-left {
-    padding: 1.3rem 1rem;
-    font-family: "Open Sans";
-    border: 3px solid rgb(230, 230, 230);
-    color: rgba(100, 100, 100, 0.75);
-    border-radius: 50%;
-    background: #ededed;
-    box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff, inset 0 0 0 transparent, inset 0 0 0 transparent;
-    transition: 0.5s ease-in-out;
+  padding: 1.3rem 1rem;
+  font-family: "Open Sans";
+  border: 3px solid rgb(230, 230, 230);
+  color: rgba(100, 100, 100, 0.75);
+  border-radius: 50%;
+  background: #ededed;
+  box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff,
+    inset 0 0 0 transparent, inset 0 0 0 transparent;
+  transition: 0.5s ease-in-out;
 }
 
 .button-circle-left:hover {
-    transform: scale(1.03);
-    color: white;
-    box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd, inset -8rem 0 4px #ff9900, inset 0 0 0 transparent;
-    border-color: #ff8033;
+  transform: scale(1.03);
+  color: white;
+  box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd,
+    inset -8rem 0 4px #ff9900, inset 0 0 0 transparent;
+  border-color: #ff8033;
 }
 
 .button-circle-top {
-    padding: 1.3rem 1rem;
-    font-family: "Open Sans";
-    border: 3px solid rgb(230, 230, 230);
-    color: rgba(100, 100, 100, 0.75);
-    border-radius: 50%;
-    background: #ededed;
-    box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff, inset 0 0 0 transparent, inset 0 0 0 transparent;
-    transition: 0.5s ease-in-out;
+  padding: 1.3rem 1rem;
+  font-family: "Open Sans";
+  border: 3px solid rgb(230, 230, 230);
+  color: rgba(100, 100, 100, 0.75);
+  border-radius: 50%;
+  background: #ededed;
+  box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff,
+    inset 0 0 0 transparent, inset 0 0 0 transparent;
+  transition: 0.5s ease-in-out;
 }
 
 .button-circle-top:hover {
-    transform: scale(1.03);
-    color: white;
-    box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd, inset 0 5rem 4px #ff9900, inset 0 0 0 transparent;
-    border-color: #ff8033;
+  transform: scale(1.03);
+  color: white;
+  box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd,
+    inset 0 5rem 4px #ff9900, inset 0 0 0 transparent;
+  border-color: #ff8033;
 }
 
 .button-circle-bottom {
-    padding: 1.3rem 1rem;
-    font-family: "Open Sans";
-    border: 3px solid rgb(230, 230, 230);
-    color: rgba(100, 100, 100, 0.75);
-    border-radius: 50%;
-    background: #ededed;
-    box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff, inset 0 0 0 transparent, inset 0 0 0 transparent;
-    transition: 0.5s ease-in-out;
+  padding: 1.3rem 1rem;
+  font-family: "Open Sans";
+  border: 3px solid rgb(230, 230, 230);
+  color: rgba(100, 100, 100, 0.75);
+  border-radius: 50%;
+  background: #ededed;
+  box-shadow: 7px 7px 15px #d9d9d9, -7px -7px 15px #ffffff,
+    inset 0 0 0 transparent, inset 0 0 0 transparent;
+  transition: 0.5s ease-in-out;
 }
 
 .button-circle-bottom:hover {
-    transform: scale(1.03);
-    color: white;
-    box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd, inset 0 -5rem 4px #ff9900, inset 0 0 0 transparent;
-    border-color: #ff8033;
+  transform: scale(1.03);
+  color: white;
+  box-shadow: 7px 7px 15px 6px rgba(55, 55, 55, 0.2), -7px -7px 15px #ddd,
+    inset 0 -5rem 4px #ff9900, inset 0 0 0 transparent;
+  border-color: #ff8033;
 }

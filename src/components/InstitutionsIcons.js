@@ -21,13 +21,33 @@ class AboutUs extends Component {
     return (
       <Styles>
         {/* About Us */}
-        <section className="about-us" style={{background:"#fff"}}>
+        <section className="about-us" style={{ background: "#fff" }}>
           <Container>
             <Row>
               <Col md="6">
                 <div className="about-content">
-                  <h2 className="about-title">Get Certified!</h2>
-                  <p className="about-para">
+                  <h2
+                    className="about-title-x"
+                    style={{
+                      fontWeight: "300px",
+                      color: "#333",
+                      fontSize: "45px",
+                      fontFamily: "Open Sans",
+                      lineHight: "34px",
+                      letterSpacing: "-1px",
+                      fontWeight: "normal",
+                    }}
+                  >
+                    Get Certified!
+                  </h2>
+                  <p
+                    className="about-para-x"
+                    style={{
+                      fontFamily: "Open Sans",
+                      color: "#777",
+                      fontSize: "14px",
+                    }}
+                  >
                     The Questence Digital Learning Centre deploys cutting edge
                     technology to aid your quest for your next certification.
                     Providing unparalled levels of interactivity and

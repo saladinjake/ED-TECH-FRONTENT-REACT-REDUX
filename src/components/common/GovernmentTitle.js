@@ -20,7 +20,18 @@ export class GovernmentTitle extends Component {
             <Row>
               <Col md="12" className="text-left">
                 <div className="breadcrumb-box">
-                  <h2 className="breadcrumb-title">
+                  <h2
+                    className="breadcrumb-title"
+                    style={{
+                      fontWeight: "300px",
+                      color: "#fff",
+                      fontSize: "45px",
+                      fontFamily: "Open Sans",
+                      lineHight: "34px",
+                      letterSpacing: "-1px",
+                      fontWeight: "normal",
+                    }}
+                  >
                     Questence <br />
                     for Government
                   </h2>

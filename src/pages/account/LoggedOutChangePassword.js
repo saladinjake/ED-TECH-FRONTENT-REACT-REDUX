@@ -66,6 +66,10 @@ const ChangeCredentials = ({ auth: { prevPath } }) => {
           <Container>
             <Row>
               <Col md="12">
+                <br />
+                <br />
+                <br />
+                <br />
                 <Formik
                   initialValues={initialValues}
                   validationSchema={LoginSchema}
@@ -131,20 +135,12 @@ const ChangeCredentials = ({ auth: { prevPath } }) => {
                               <span className="sr-only">Loading...</span>
                             </div>
                           ) : (
-                            "Login"
+                            "Change Password"
                           )}
                         </button>
                         <div className="not_account-btn text-center">
                           <p>
-                            Don't have an account yet?
-                            <Link to={process.env.PUBLIC_URL + "/register"}>
-                              {" "}
-                              Register Here{" "}
-                            </Link>
-                          </p>
-
-                          <p>
-                            <a href={process.env.PUBLIC_URL + "/login"}>
+                            <a href="#login" className="modal-link">
                               {" "}
                               Remember my password? Login Here
                             </a>

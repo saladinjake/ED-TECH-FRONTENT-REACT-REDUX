@@ -43,7 +43,7 @@ function getTimeAgoInterval(date) {
 const InstructorProfiler = ({ auth: { user, user_roles } }) => {
   const [profile, setProfile] = useState({});
   const [loading, setLoading] = useState(true);
-   let dummyAvatar = "https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png"
+  let dummyAvatar = "https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png";
   const [image_url, setImageProfile] = useState("");
 
   // console.log(user);
@@ -69,8 +69,7 @@ const InstructorProfiler = ({ auth: { user, user_roles } }) => {
         {/* Header 2 */}
         <InstructorNavBar />
 
-        {/* Breadcroumb */}
-        <BreadcrumbBox title="Profile" />
+        {/* Breadcroumb <BreadcrumbBox title="Profile" /> */}
 
         {/* Product Details */}
         <br />
@@ -79,6 +78,22 @@ const InstructorProfiler = ({ auth: { user, user_roles } }) => {
         <br />
         <section className="">
           <Container>
+            <div className="col-sm-12">
+              <h4
+                className="page-title"
+                style={{
+                  fontWeight: "300px",
+                  color: "#333",
+                  fontSize: "45px",
+                  fontFamily: "Open Sans",
+                  lineHight: "34px",
+                  letterSpacing: "-1px",
+                  fontWeight: "normal",
+                }}
+              >
+                My Profile
+              </h4>
+            </div>
             {loading ? (
               <Loader width="70" />
             ) : Object.entries(profile).length !== 0 ? (
@@ -114,8 +129,16 @@ const InstructorProfiler = ({ auth: { user, user_roles } }) => {
                           "/instructors/" +
                           profile?.user?.id
                         }
+                        style={{
+                          background: "rgba(8,23,200)",
+                          fontSize: "12px",
+                          marginLeft: "10px",
+                          fontWeight: "bold",
+                          fontFamily: "Open Sans",
+                          color: "#fff",
+                        }}
                       >
-                        See Details >>>
+                        See Details
                       </Link>
                     </div>
                     <br />
@@ -135,12 +158,38 @@ const InstructorProfiler = ({ auth: { user, user_roles } }) => {
                         </div>
                       </div>
                       <div className="product-desc">
-                        <p>{profile.email}</p>
+                        <p
+                          style={{
+                            border: "none",
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontSize: "14px",
+                          }}
+                        >
+                          {profile.email}
+                        </p>
                       </div>
                       <div className="product-stock">
-                        <p>
-                          User type :{" "}
-                          <span className="stock">{user_roles[0].name}</span>
+                        <p
+                          style={{
+                            border: "none",
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontSize: "14px",
+                          }}
+                        >
+                          Role :{" "}
+                          <span
+                            className="stock"
+                            style={{
+                              border: "none",
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+                          >
+                            {user_roles[0].name}
+                          </span>
                         </p>
                       </div>
                       <br />
@@ -151,6 +200,14 @@ const InstructorProfiler = ({ auth: { user, user_roles } }) => {
                         <Link
                           to="/instructor-detail/profile/update"
                           className="cart-btn btn btn-primary"
+                          style={{
+                            background: "rgba(8,23,200)",
+                            fontSize: "12px",
+                            marginLeft: "10px",
+                            fontWeight: "bold",
+                            fontFamily: "Open Sans",
+                            color: "#fff",
+                          }}
                         >
                           Update Profile
                         </Link>
@@ -173,12 +230,22 @@ const InstructorProfiler = ({ auth: { user, user_roles } }) => {
                             <td>
                               <i
                                 className="fa fa-user"
-                                style={{ marginRight: "20px" }}
+                                style={{
+                                  marginRight: "20px",
+                                  border: "none",
+                                  color: "#000",
+                                  fontSize: "14px",
+                                }}
                               ></i>
                               Fisrt Name
                             </td>
                             <td
-                              style={{ border: "none" }}
+                              style={{
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
                               className="pull-right"
                             >{`${profile?.user?.first_name}`}</td>
                           </tr>
@@ -187,12 +254,22 @@ const InstructorProfiler = ({ auth: { user, user_roles } }) => {
                             <td>
                               <i
                                 className="fa fa-user"
-                                style={{ marginRight: "20px" }}
+                                style={{
+                                  marginRight: "20px",
+                                  border: "none",
+                                  color: "#000",
+                                  fontSize: "14px",
+                                }}
                               ></i>
                               Last Name
                             </td>
                             <td
-                              style={{ border: "none" }}
+                              style={{
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
                               className="pull-right"
                             >{`${profile?.user?.last_name}`}</td>
                           </tr>
@@ -201,12 +278,22 @@ const InstructorProfiler = ({ auth: { user, user_roles } }) => {
                             <td>
                               <i
                                 className="fa fa-user"
-                                style={{ marginRight: "20px" }}
+                                style={{
+                                  marginRight: "20px",
+                                  border: "none",
+                                  color: "#000",
+                                  fontSize: "14px",
+                                }}
                               ></i>
                               Email
                             </td>
                             <td
-                              style={{ border: "none" }}
+                              style={{
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
                               className="pull-right"
                             >{`${profile?.user?.email}`}</td>
                           </tr>
@@ -214,12 +301,22 @@ const InstructorProfiler = ({ auth: { user, user_roles } }) => {
                             <td>
                               <i
                                 className="fa fa-user"
-                                style={{ marginRight: "20px" }}
+                                style={{
+                                  marginRight: "20px",
+                                  border: "none",
+                                  color: "#000",
+                                  fontSize: "14px",
+                                }}
                               ></i>
                               Gender
                             </td>
                             <td
-                              style={{ border: "none" }}
+                              style={{
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
                               className="pull-right"
                             >{`${profile?.user?.instructor_profile?.gender}`}</td>
                           </tr>
@@ -227,12 +324,22 @@ const InstructorProfiler = ({ auth: { user, user_roles } }) => {
                             <td>
                               <i
                                 className="fa fa-user"
-                                style={{ marginRight: "20px" }}
+                                style={{
+                                  marginRight: "20px",
+                                  border: "none",
+                                  color: "#000",
+                                  fontSize: "14px",
+                                }}
                               ></i>
                               Phone
                             </td>
                             <td
-                              style={{ border: "none" }}
+                              style={{
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
                               className="pull-right"
                             >{`${profile?.user?.phone_number}`}</td>
                           </tr>
@@ -240,12 +347,22 @@ const InstructorProfiler = ({ auth: { user, user_roles } }) => {
                             <td>
                               <i
                                 className="fa fa-user"
-                                style={{ marginRight: "20px" }}
+                                style={{
+                                  marginRight: "20px",
+                                  border: "none",
+                                  color: "#000",
+                                  fontSize: "14px",
+                                }}
                               ></i>
                               Employment Status
                             </td>
                             <td
-                              style={{ border: "none" }}
+                              style={{
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
                               className="pull-right"
                             >{`${profile?.user?.instructor_profile?.employment_status}`}</td>
                           </tr>
@@ -254,12 +371,22 @@ const InstructorProfiler = ({ auth: { user, user_roles } }) => {
                             <td>
                               <i
                                 className="fa fa-user"
-                                style={{ marginRight: "20px" }}
+                                style={{
+                                  marginRight: "20px",
+                                  border: "none",
+                                  color: "#000",
+                                  fontSize: "14px",
+                                }}
                               ></i>
                               Breif Introduction
                             </td>
                             <td
-                              style={{ border: "none" }}
+                              style={{
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
                               className="pull-right"
                             >{`${profile?.user?.instructor_profile?.brief_introduction}`}</td>
                           </tr>
@@ -268,57 +395,129 @@ const InstructorProfiler = ({ auth: { user, user_roles } }) => {
                             <td>
                               <i
                                 className="fa fa-user"
-                                style={{ marginRight: "20px" }}
+                                style={{
+                                  marginRight: "20px",
+                                  border: "none",
+                                  color: "#000",
+                                  fontSize: "14px",
+                                }}
                               ></i>
                               Detailed Introduction
                             </td>
                             <td
-                              style={{ border: "none" }}
+                              style={{
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
                               className="pull-right"
                             >{`${profile?.user?.instructor_profile?.detailed_introduction}`}</td>
                           </tr>
 
                           <tr>
-                            <td>
+                            <td
+                              style={{
+                                fontFamily: "Open Sans",
+                                marginRight: "20px",
+                                border: "none",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
+                            >
                               <i
                                 className="fa fa-user"
-                                style={{ marginRight: "20px" }}
+                                style={{
+                                  marginRight: "20px",
+                                  border: "none",
+                                  color: "#000",
+                                  fontSize: "14px",
+                                }}
                               ></i>
                               Education Level
                             </td>
                             <td
-                              style={{ border: "none" }}
+                              style={{
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
                               className="pull-right"
                             >{`${profile?.user?.instructor_profile?.education_level}`}</td>
                           </tr>
                           <tr>
-                            <td>
+                            <td
+                              style={{
+                                marginRight: "20px",
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
+                            >
                               <i
                                 className="fa fa-user"
-                                style={{ marginRight: "20px" }}
+                                style={{
+                                  marginRight: "20px",
+                                  border: "none",
+                                  color: "#000",
+                                  fontSize: "14px",
+                                }}
                               ></i>
                               Degree Obtained
                             </td>
                             <td
-                              style={{ border: "none" }}
+                              style={{
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
                               className="pull-right"
                             >{`${profile?.user?.instructor_profile?.degree_obtained}`}</td>
                           </tr>
                           <tr>
-                            <td>
+                            <td
+                              style={{
+                                marginRight: "20px",
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
+                            >
                               <i
                                 className="fa fa-user"
-                                style={{ marginRight: "20px" }}
+                                style={{
+                                  marginRight: "20px",
+                                  border: "none",
+                                  color: "#000",
+                                  fontSize: "14px",
+                                }}
                               ></i>
                               Date of Birth
                             </td>
                             <td
-                              style={{ border: "none" }}
+                              style={{
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
                               className="pull-right"
                             >{`${profile?.user?.instructor_profile?.date_of_birth}`}</td>
                           </tr>
                           <tr>
-                            <td>
+                            <td
+                              style={{
+                                marginRight: "20px",
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
+                            >
                               <i
                                 className="fa fa-user"
                                 style={{ marginRight: "20px" }}
@@ -326,34 +525,83 @@ const InstructorProfiler = ({ auth: { user, user_roles } }) => {
                               Marital Status
                             </td>
                             <td
-                              style={{ border: "none" }}
+                              style={{
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
                               className="pull-right"
                             >{`${profile?.user?.instructor_profile?.marital_status}`}</td>
                           </tr>
                           <tr>
-                            <td>
+                            <td
+                              style={{
+                                marginRight: "20px",
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
+                            >
                               <i
                                 className="fa fa-user"
-                                style={{ marginRight: "20px" }}
+                                style={{
+                                  marginRight: "20px",
+                                  border: "none",
+                                  fontFamily: "Open Sans",
+                                  color: "#000",
+                                  fontSize: "14px",
+                                }}
                               ></i>
                               LinkedIn
                             </td>
                             <td
-                              style={{ border: "none" }}
+                              style={{
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
                               className="pull-right"
                             >{`${profile?.user?.instructor_profile?.linkedin_url}`}</td>
                           </tr>
 
                           <tr>
-                            <td>Current employer Name</td>
                             <td
-                              style={{ border: "none" }}
+                              style={{
+                                marginRight: "20px",
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
+                            >
+                              Current employer Name
+                            </td>
+                            <td
+                              style={{
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
                               className="pull-right"
                             >{`${profile?.user?.instructor_profile?.current_employer_name}`}</td>
                           </tr>
 
                           <tr>
-                            <td>Current employer designation</td>
+                            <td
+                              style={{
+                                marginRight: "20px",
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
+                            >
+                              Current employer designation
+                            </td>
                             <td
                               style={{ border: "none" }}
                               className="pull-right"
@@ -361,44 +609,112 @@ const InstructorProfiler = ({ auth: { user, user_roles } }) => {
                           </tr>
 
                           <tr>
-                            <td>Previous employer Name</td>
                             <td
-                              style={{ border: "none" }}
+                              style={{
+                                marginRight: "20px",
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
+                            >
+                              Previous employer Name
+                            </td>
+                            <td
+                              style={{
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
                               className="pull-right"
                             >{`${profile?.user?.instructor_profile?.previous_employer_name}`}</td>
                           </tr>
 
                           <tr>
-                            <td>Previous employer designation</td>
                             <td
-                              style={{ border: "none" }}
+                              style={{
+                                marginRight: "20px",
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
+                            >
+                              Previous employer designation
+                            </td>
+                            <td
+                              style={{
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
                               className="pull-right"
                             >{`${profile?.user?.instructor_profile?.previous_employer_designation}`}</td>
                           </tr>
 
                           <tr>
-                            <td>
+                            <td
+                              style={{
+                                marginRight: "20px",
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
+                            >
                               <i
                                 className="fa fa-user"
-                                style={{ marginRight: "20px" }}
+                                style={{
+                                  marginRight: "20px",
+                                  border: "none",
+                                  fontFamily: "Open Sans",
+                                  color: "#000",
+                                  fontSize: "14px",
+                                }}
                               ></i>
                               Brief Introduction
                             </td>
                             <td
-                              style={{ border: "none" }}
+                              style={{
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
                               className="pull-right"
                             >{`${profile?.user?.instructor_profile?.brief_introduction}`}</td>
                           </tr>
                           <tr>
-                            <td>
+                            <td
+                              style={{
+                                marginRight: "20px",
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
+                            >
                               <i
                                 className="fa fa-user"
-                                style={{ marginRight: "20px" }}
+                                style={{
+                                  marginRight: "20px",
+                                  border: "none",
+                                  fontFamily: "Open Sans",
+                                  color: "#000",
+                                  fontSize: "14px",
+                                }}
                               ></i>
                               Detailed Introduction
                             </td>
                             <td
-                              style={{ border: "none" }}
+                              style={{
+                                border: "none",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
                               className="pull-right"
                             >{`${profile?.user?.instructor_profile?.detailed_introduction}`}</td>
                           </tr>

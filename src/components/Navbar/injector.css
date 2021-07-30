@@ -1379,7 +1379,7 @@ course content
   position: relative;
 }
 .what-you-get-box ul li:before {
-  font-family: Font Awesome\5 Free;
+  font-family: Font awesome\5 Free;
   font-weight: 900;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -1806,7 +1806,7 @@ course content
   font-variant: normal;
   text-rendering: auto;
   line-height: 1;
-  font-family: Font Awesome\5 Free;
+  font-family: Font awesome\5 Free;
   font-weight: 900;
   position: absolute;
   left: 22px;
@@ -1857,7 +1857,7 @@ course content
 }
 
 .course-curriculum-accordion .lecture-list .lecture:before {
-  font-family: Font Awesome\5 Free;
+  font-family: Font awesome\5 Free;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   display: inline-block;

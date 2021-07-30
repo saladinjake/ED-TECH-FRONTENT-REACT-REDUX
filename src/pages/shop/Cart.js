@@ -9,7 +9,8 @@ import { Styles } from "./styles/cart.js";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { removeFromCart } from "actions/cartActions";
-import $ from "jquery"
+import $ from "jquery";
+import "./empty.css";
 const Cart = ({
   auth: { isAuthenticated },
   cart: { cart, total },
@@ -18,16 +19,19 @@ const Cart = ({
   let history = useHistory();
 
   useEffect(() => {
+    document.getElementsByTagName("body")[0].style.backgroundColor = "#fff";
+  });
+
+  useEffect(() => {
     if (!isAuthenticated) {
       // $(".modal-link").click(function(e){
- 
 
-       $('.overlay').addClass('modal-window').css({display:"block"})
-       $(".overlay__close").css({display:"none"})
-       $(".overlay__close2").css({display:"none"})
-       $(".overlay__close3").css({display:"none"})
+      $(".overlay").addClass("modal-window").css({ display: "block" });
+      $(".overlay__close").css({ display: "none" });
+      $(".overlay__close2").css({ display: "none" });
+      $(".overlay__close3").css({ display: "none" });
 
-    // })
+      // })
       // history.push("/login", { from: history.location.pathname });
     }
     // eslint-disable-next-line
@@ -53,16 +57,70 @@ const Cart = ({
         {/* Product Details */}
         <section className="cart-area">
           <Container>
+            <div className="col-sm-12">
+              <h4
+                className="page-title"
+                style={{
+                  fontWeight: "300px",
+                  color: "#333",
+                  fontSize: "25px",
+                  fontFamily: "Open Sans",
+                  lineHight: "34px",
+                  letterSpacing: "-1px",
+                  fontWeight: "normal",
+                  marginTop: "-20x",
+                }}
+              >
+                Shopping Cart
+              </h4>
+            </div>
+            <br />
             <Row>
               <Col lg="8" md="12">
                 <div className="product-list table-responsive">
                   <Table className="table-bordered">
                     <thead>
                       <tr>
-                        <th className="product-remove"></th>
-                        <th className="product-thumbnail"></th>
-                        <th className="product-name">Product</th>
-                        <th className="product-price">Price</th>
+                        <th
+                          className="product-remove"
+                          style={{
+                            border: "none",
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontSize: "14px",
+                          }}
+                        ></th>
+                        <th
+                          className="product-thumbnail"
+                          style={{
+                            border: "none",
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontSize: "14px",
+                          }}
+                        ></th>
+                        <th
+                          className="product-name"
+                          style={{
+                            border: "none",
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontSize: "14px",
+                          }}
+                        >
+                          Product
+                        </th>
+                        <th
+                          className="product-price"
+                          style={{
+                            border: "none",
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontSize: "14px",
+                          }}
+                        >
+                          Price
+                        </th>
                         {/* <th className="product-quantity">Quantity</th> */}
                         {/* <th className="product-subtotal">Subtotal</th> */}
                       </tr>
@@ -73,9 +131,25 @@ const Cart = ({
                           {cart.map((data, i) => {
                             return (
                               <tr key={i}>
-                                <td className="product-remove">
+                                <td
+                                  className="product-remove"
+                                  style={{
+                                    border: "none",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                >
                                   <Button
-                                    style={{ height: "50px" }}
+                                    style={{
+                                      height: "50px",
+                                      background: "rgba(8,23,200)",
+                                      fontSize: "12px",
+                                      marginLeft: "10px",
+                                      fontWeight: "bold",
+                                      fontFamily: "Open Sans",
+                                      color: "#fff",
+                                    }}
                                     onClick={removeItemFromCart.bind(
                                       this,
                                       data.id
@@ -91,13 +165,37 @@ const Cart = ({
                                     <i className="las la-trash"></i>
                                   </button> */}
                                 </td>
-                                <td className="product-thumbnail">
+                                <td
+                                  className="product-thumbnail"
+                                  style={{
+                                    border: "none",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                >
                                   <img src={data.course_cover_image} alt="" />
                                 </td>
-                                <td className="product-title">
+                                <td
+                                  className="product-title"
+                                  style={{
+                                    border: "none",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                >
                                   {data.course_name}
                                 </td>
-                                <td className="product-price">
+                                <td
+                                  className="product-price"
+                                  style={{
+                                    border: "none",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                >
                                   <span className="amount">#{data.price}</span>
                                 </td>
                               </tr>
@@ -105,11 +203,60 @@ const Cart = ({
                           })}
                         </Fragment>
                       ) : (
-                        <tr>
-                          <td className="product-subtotal">
-                            <span className="subtotal">No items in cart</span>
-                          </td>
-                        </tr>
+                        <Fragment>
+                          <div class="empty-cart">
+                            <br />
+                            <br />
+                            <br />
+                            <h3
+                              style={{
+                                fontWeight: "300px",
+                                color: "#333",
+                                fontSize: "25px",
+                                fontFamily: "Open Sans",
+                                lineHight: "34px",
+                                letterSpacing: "-1px",
+                                fontWeight: "normal",
+                              }}
+                            >
+                              Your cart is empty
+                            </h3>
+                            <br />
+                            <br />
+                            <p
+                              style={{
+                                width: "100%",
+                                fontWeight: "300px",
+                                color: "#333",
+                                fontSize: "14px",
+                                fontFamily: "Open Sans",
+                                lineHight: "34px",
+                                letterSpacing: "-1px",
+                                fontWeight: "normal",
+                              }}
+                            >
+                              Click on browse a course and add to your wishlist.
+                            </p>
+
+                            <br />
+                            <br />
+                            <button
+                              type="button"
+                              onClick={() => history.push("/courses")}
+                              style={{
+                                width: "50%",
+                                background: "rgba(8,23,200)",
+                                fontSize: "12px",
+                                marginLeft: "10px",
+                                fontWeight: "bold",
+                                fontFamily: "Open Sans",
+                                color: "#fff",
+                              }}
+                            >
+                              Browse a course
+                            </button>
+                          </div>
+                        </Fragment>
                       )}
                     </tbody>
                   </Table>
@@ -144,6 +291,14 @@ const Cart = ({
                     {cart.length > 0 ? (
                       <button
                         type="button"
+                        style={{
+                          background: "rgba(8,23,200)",
+                          fontSize: "12px",
+                          marginLeft: "10px",
+                          fontWeight: "bold",
+                          fontFamily: "Open Sans",
+                          color: "#fff",
+                        }}
                         onClick={() => history.push("/checkout")}
                         className="checkout-btn"
                       >
@@ -154,6 +309,14 @@ const Cart = ({
                         type="button"
                         onClick={() => history.push("/courses")}
                         className="checkout-btn"
+                        style={{
+                          background: "rgba(8,23,200)",
+                          fontSize: "12px",
+                          marginLeft: "10px",
+                          fontWeight: "bold",
+                          fontFamily: "Open Sans",
+                          color: "#fff",
+                        }}
                       >
                         Browse a course
                       </button>

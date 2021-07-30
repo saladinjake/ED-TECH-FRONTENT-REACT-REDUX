@@ -76,7 +76,24 @@ const PasswordReset = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
       <div class="container mt-5">
         <div class="row">
           <div class="col-md-10 ml-auto col-xl-6 mr-auto">
-            <h3>Account Reset</h3>
+            <br />
+            <br />
+            <br />
+            <h3
+              style={{
+                fontWeight: "300px",
+                color: "#333",
+                fontSize: "45px",
+                fontFamily: "Open Sans",
+                lineHight: "34px",
+                letterSpacing: "-1px",
+                fontWeight: "normal",
+              }}
+            >
+              Reset Password
+            </h3>
+            <br />
+            <br />
             <br />
 
             <div class="card">
@@ -221,6 +238,13 @@ const PasswordReset = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
                                   <button
                                     className="btn btn-lg btn-primary"
                                     type="submit"
+                                    style={{
+                                      background: "rgba(8,23,200)",
+                                      fontSize: "12px",
+                                      fontWeight: "bold",
+                                      fontFamily: "Open Sans",
+                                      color: "#fff",
+                                    }}
                                     disabled={isSubmitting}
                                   >
                                     {loading ? (

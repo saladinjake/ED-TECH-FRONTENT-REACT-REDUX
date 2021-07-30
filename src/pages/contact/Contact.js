@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import facebook from "assets/pngs/facebook.png";
 import twitter from "assets/pngs/twitter.png";
 import linkedin from "assets/pngs/linkedin.png";
+import $ from "jquery";
 
 init("user_G3PO2EisAWs0dlZT1qu0g");
 
@@ -33,6 +34,11 @@ function Contact() {
   // };
 
   useEffect(() => {
+    $("body").css({ "background-color": "#fff" });
+    $(".footer p,.footer span, footer p, footer span").each(function () {
+      $(this).css({ color: "#fff", fontFamily: "Open Sans" });
+    });
+
     const form = document.getElementById("form_contact");
     const name = document.getElementById("contact_name");
     const email = document.getElementById("contact_email");
@@ -125,41 +131,50 @@ function Contact() {
         <section className="contact-area">
           <Container>
             <Row>
-              <Col md="4">
+              <Col md="4" className="">
                 <div className="contact-box-title">
-                  <h4>Contact Info</h4>
+                  <h4 className="style-3">Contact Info</h4>
                 </div>
                 <div className="contact-icon-box d-flex">
                   <div className="icon">
                     <i className="las la-map-marker"></i>
                   </div>
-                  <div className="box-content">
-                    <h5>Our Location</h5>
-                    <p>Olawale Lawal, Ikoyi, Lagos Nigeria</p>
+                  <div className="box-content card-box">
+                    <h5 className="style-3">Our Location</h5>
+                    <p className="style-8a" style={{ color: "#000" }}>
+                      8A Adekunle Lawal, Ikoyi, Lagos Nigeria
+                    </p>
                   </div>
                 </div>
                 <div className="contact-icon-box d-flex">
                   <div className="icon">
                     <i className="las la-envelope-open"></i>
                   </div>
-                  <div className="box-content">
-                    <h5>Email Address</h5>
-                    <p>info@questence.org</p>
+                  <div className="box-content card-box">
+                    <h5 className="style-3">Email Address</h5>
+                    <p
+                      className="style-8a"
+                      style={{ color: "#000", textTransform: "none" }}
+                    >
+                      info@questence.org
+                    </p>
                   </div>
                 </div>
                 <div className="contact-icon-box d-flex">
                   <div className="icon">
                     <i className="las la-phone"></i>
                   </div>
-                  <div className="box-content">
-                    <h5>Phone Number</h5>
-                    <p>+234 0700 0000 0000</p>
+                  <div className="box-content card-box">
+                    <h5 className="style-3">Phone Number</h5>
+                    <p className="style-8a" style={{ color: "#000" }}>
+                      +234{" "}
+                    </p>
                   </div>
                 </div>
-                <div className="">
+                {/*<div className="">
                   <ul className="social list-unstyled list-inline">
                     <li className="list-inline-item">
-                      {" "}
+                      
                       <Link to="#">
                         <figure>
                           <img src={facebook} alt="facebook" />
@@ -181,12 +196,12 @@ function Contact() {
                       </Link>
                     </li>
                   </ul>
-                </div>
+                </div>*/}
               </Col>
               <Col md="8">
-                <div className="contact-form">
+                <div className="contact-form card-box">
                   <div className="form-title">
-                    <h4>Get In Touch</h4>
+                    <h4 className="style-3">Get In Touch</h4>
                   </div>
                   <div className="form-box">
                     <form id="form_contact" className="form">

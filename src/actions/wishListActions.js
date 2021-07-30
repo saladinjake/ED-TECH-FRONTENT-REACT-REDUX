@@ -1,38 +1,32 @@
 import { ADD_TO_WISHLIST, REMOVE_FROM_WISHLIST, CLEAR_WISHLIST } from "./types";
-import $ from "jquery"
+import $ from "jquery";
 // import { getWishlist } from "services/wishlist";
 
 export const addToWishList = (id) => async (dispatch) => {
-  if ($(".wishlister")  ) {
+  if ($(".wishlister")) {
     //detail page
 
     $(".wishlister").css({
       // disabled: true,
       // color:"#ccc",
       // opacity:"0.5"
-    })
-     // $(".wishlister").html("Added to wish list")
-    
+    });
+    // $(".wishlister").html("Added to wish list")
 
     console.log(id + "called to wishlist");
 
-  dispatch({
-    type: ADD_TO_WISHLIST,
-    payload: id,
-  });
-
-  }else{
-
+    dispatch({
+      type: ADD_TO_WISHLIST,
+      payload: id,
+    });
+  } else {
     console.log(id + "called to wishlist");
 
-  dispatch({
-    type: ADD_TO_WISHLIST,
-    payload: id,
-  });
-
+    dispatch({
+      type: ADD_TO_WISHLIST,
+      payload: id,
+    });
   }
-
-  
 };
 
 export const removeFromWishList = (id) => async (dispatch) => {

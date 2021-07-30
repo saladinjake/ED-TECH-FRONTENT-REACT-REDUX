@@ -3,7 +3,7 @@
 .guide {
   display: flex;
   padding: 8rem 10rem;
-  background:"#fafafa";
+  background: "#fafafa";
 
   @media only screen and (min-width: 90rem) {
     padding: 8rem 35rem;
@@ -30,17 +30,11 @@
       font-weight: bold;
       font-size: 2rem;
       line-height: 2.5rem;
-      color: #01265b;
+      color: #000;
       margin-bottom: 2rem;
 
-      @include respond(phone) {
-        font-size: 2rem;
-        line-height: 2.5rem;
-        text-align: center;
-      }
-
       span {
-        color: #de863e;
+        color: #000;
       }
     }
 
@@ -77,12 +71,8 @@
             font-weight: bold;
             font-size: 1.5rem;
             line-height: 2.5rem;
-            color: #01265b;
+            color: #000;
             margin-bottom: 0.5rem;
-
-            @include respond(phone) {
-              @include fontNormal(1rem, 1.2rem, #30415a);
-            }
           }
 
           p {
@@ -92,10 +82,6 @@
             line-height: 1.7rem;
             color: #01265b;
             margin-bottom: 0.5rem;
-
-            @include respond(phone) {
-              @include fontNormal(1rem, 1.2rem, #30415a);
-            }
           }
         }
       }

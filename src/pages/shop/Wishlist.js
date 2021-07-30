@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import { removeFromWishList } from "actions/wishListActions";
 
 import { getWishlist } from "services/wishlist";
+import "./empty.css";
 
 const WishList = (props) => {
   console.log(props);
@@ -35,6 +36,7 @@ const WishList = (props) => {
     // let wishes =dbWishList.data.data.course
     // }catch(e){
     // }
+    document.getElementsByTagName("body")[0].style.backgroundColor = "#fff";
   });
 
   const removeItemFromWish = async (id) => {
@@ -53,7 +55,7 @@ const WishList = (props) => {
       <div className="main-wrapper wishList-page">
         {/* Header 2 */}
         <NavBar />
-        <BreadcrumbBox title="wishlist" />
+        {/* <BreadcrumbBox title="wishlist" />*/}
 
         <section className="wishList-area">
           <br />
@@ -61,16 +63,73 @@ const WishList = (props) => {
           <br />
           <br />
           <Container>
+            <div className="col-sm-12">
+              <h4
+                className="page-title"
+                style={{
+                  fontWeight: "300px",
+                  color: "#333",
+                  fontSize: "25px",
+                  fontFamily: "Open Sans",
+                  lineHight: "34px",
+                  letterSpacing: "-1px",
+                  fontWeight: "normal",
+                }}
+              >
+                Wishlist
+              </h4>
+            </div>
+
             <Row>
               <Col lg="8" md="12">
                 <div className="product-list table-responsive">
                   <Table className="table-bordered">
                     <thead>
                       <tr>
-                        <th className="product-remove">Action</th>
-                        <th className="product-thumbnail">Course</th>
-                        <th className="product-name">Course Title</th>
-                        <th className="product-price">Price</th>
+                        <th
+                          className="product-remove"
+                          style={{
+                            border: "none",
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontSize: "14px",
+                          }}
+                        >
+                          Action
+                        </th>
+                        <th
+                          className="product-thumbnail"
+                          style={{
+                            border: "none",
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontSize: "14px",
+                          }}
+                        >
+                          Course
+                        </th>
+                        <th
+                          className="product-name"
+                          style={{
+                            border: "none",
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontSize: "14px",
+                          }}
+                        >
+                          Course Title
+                        </th>
+                        <th
+                          className="product-price"
+                          style={{
+                            border: "none",
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontSize: "14px",
+                          }}
+                        >
+                          Price
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -79,13 +138,29 @@ const WishList = (props) => {
                           {wishBag.map((data, i) => {
                             return (
                               <tr key={i}>
-                                <td className="product-remove">
+                                <td
+                                  className="product-remove"
+                                  style={{
+                                    border: "none",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                >
                                   <button
-                                    className="btn btn-danger"
+                                    className=""
                                     onClick={removeItemFromWish.bind(
                                       this,
                                       data.id
                                     )}
+                                    style={{
+                                      background: "rgba(8,23,200)",
+                                      fontSize: "12px",
+                                      marginLeft: "10px",
+                                      fontWeight: "bold",
+                                      fontFamily: "Open Sans",
+                                      color: "#fff",
+                                    }}
                                   >
                                     remove
                                     <i className="las la-trash"></i>
@@ -96,13 +171,37 @@ const WishList = (props) => {
                                     <i className="las la-trash"></i>
                                   </button> */}
                                 </td>
-                                <td className="product-thumbnail">
+                                <td
+                                  className="product-thumbnail"
+                                  style={{
+                                    border: "none",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                >
                                   <img src={data.course_cover_image} alt="" />
                                 </td>
-                                <td className="product-title">
+                                <td
+                                  className="product-title"
+                                  style={{
+                                    border: "none",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                >
                                   {data.course_name}
                                 </td>
-                                <td className="product-price">
+                                <td
+                                  className="product-price"
+                                  style={{
+                                    border: "none",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "14px",
+                                  }}
+                                >
                                   <span className="amount">#{data.price}</span>
                                 </td>
                               </tr>
@@ -110,13 +209,58 @@ const WishList = (props) => {
                           })}
                         </Fragment>
                       ) : (
-                        <tr>
-                          <td className="product-subtotal">
-                            <span className="subtotal">
-                              No items in wishList
-                            </span>
-                          </td>
-                        </tr>
+                        <Fragment>
+                          <div class="empty-cart">
+                            <br />
+                            <br />
+                            <br />
+                            <h3
+                              style={{
+                                fontWeight: "300px",
+                                color: "#333",
+                                fontSize: "25px",
+                                fontFamily: "Open Sans",
+                                lineHight: "34px",
+                                letterSpacing: "-1px",
+                                fontWeight: "normal",
+                              }}
+                            >
+                              Your Wish list is empty
+                            </h3>
+                            <br />
+                            <br />
+                            <p
+                              style={{
+                                width: "100%",
+                                fontWeight: "300px",
+                                color: "#333",
+                                fontSize: "14px",
+                                fontFamily: "Open Sans",
+                                lineHight: "34px",
+                                letterSpacing: "-1px",
+                                fontWeight: "normal",
+                              }}
+                            >
+                              Click on browse a course and add to your wishlist.
+                            </p>
+
+                            <button
+                              type="button"
+                              onClick={() => history.push("/courses")}
+                              style={{
+                                width: "50%",
+                                background: "rgba(8,23,200)",
+                                fontSize: "12px",
+                                marginLeft: "10px",
+                                fontWeight: "bold",
+                                fontFamily: "Open Sans",
+                                color: "#fff",
+                              }}
+                            >
+                              Browse a course
+                            </button>
+                          </div>
+                        </Fragment>
                       )}
                     </tbody>
                   </Table>
@@ -134,7 +278,14 @@ const WishList = (props) => {
                       <button
                         type="button"
                         onClick={() => history.push("/courses")}
-                        className="btn btn-primary"
+                        style={{
+                          background: "rgba(8,23,200)",
+                          fontSize: "12px",
+                          marginLeft: "10px",
+                          fontWeight: "bold",
+                          fontFamily: "Open Sans",
+                          color: "#fff",
+                        }}
                       >
                         Browse a course
                       </button>

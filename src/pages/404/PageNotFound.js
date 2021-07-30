@@ -3,9 +3,9 @@ import Datas from "../../data/404/error.json";
 import { Link } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import HeaderTwo from "../../components/HeaderTwo";
-import FooterTwo from "../../components/FooterTwo";
+import Footer from "../../components/Footer";
 import { Styles } from "./styles/pageNotFound.js";
-
+import NavBar from "components/Navbar";
 class PageNotFound extends Component {
   render() {
     return (
@@ -13,7 +13,7 @@ class PageNotFound extends Component {
         {/* Main Wrapper */}
         <div className="main-wrapper error-page">
           {/* Header 2 */}
-          <HeaderTwo />
+          <NavBar />
 
           {/* 404 Area */}
           <section
@@ -43,7 +43,7 @@ class PageNotFound extends Component {
           </section>
 
           {/* Footer 2 */}
-          <FooterTwo />
+          <Footer />
         </div>
       </Styles>
     );

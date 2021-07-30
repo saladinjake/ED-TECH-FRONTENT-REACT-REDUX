@@ -1,0 +1,84 @@
+.hero-help h1 {
+  font-size: 2rem;
+  margin-bottom: 25px;
+  color: white;
+  margin-top: -100px;
+}
+
+.hero-help {
+  background: rgba(8, 23, 200);
+  width: 100vw;
+  height: 75vh;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  padding-top: 45vh;
+}
+
+.search-help {
+  text-align: center;
+}
+
+.search-help input,
+.search-help .button-help {
+  padding: 10px 20px;
+  border: none;
+  outline: none;
+  font-size: 20px;
+}
+
+.search-help input {
+  border-radius: 25px 0 0 25px;
+  width: 60vw;
+  max-width: 600px;
+}
+
+.search-help .button-help {
+  border-radius: 0 25px 25px 0;
+  margin-left: -5px;
+  color: white;
+  background-color: black;
+  cursor: pointer;
+  width: 100px;
+  padding: 14px;
+}
+
+.modal-help button {
+  border: none;
+  outline: none;
+  background-color: inherit;
+  cursor: pointer;
+  margin: 5px;
+  font-size: 20px;
+}
+
+.close-help {
+  text-align: right;
+}
+
+.modal-help {
+  display: none;
+  width: 96vw;
+  height: 96vh;
+  margin-left: 2vw;
+  margin-top: 2vh;
+  background-color: white;
+  /*position: absolute;*/
+  z-index: 100;
+  left: 0;
+  top: 10px;
+}
+
+#modal-results {
+  text-transform: capitalize;
+  text-align: center;
+  margin-top: 25px;
+}
+
+#modal-results img {
+  max-width: 200px;
+}
+
+strong {
+  /*font-weight: 700;*/
+}

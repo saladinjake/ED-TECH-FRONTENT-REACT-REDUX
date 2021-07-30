@@ -10,8 +10,8 @@ export const Styles = styled.div`
     outline: none;
     border: none;
     border-radius: 5px;
-    height:48px;
-    width:300px;
+    height: 48px;
+    width: 300px;
 
     &:hover {
       background: linear-gradient(90deg, #0253c8 10%, #0253c8 100%);

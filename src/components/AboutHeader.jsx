@@ -8,9 +8,21 @@ const Features = () => {
       <Container>
         <Row>
           <Col lg="7">
-            <div className="features__item shortintro">
+            <div className="features__item shortintro-x">
+              <br />
               <span>About us</span> <br />
-              <h2>
+              <br />
+              <h2
+                style={{
+                  fontWeight: "300px",
+                  color: "#fff",
+                  fontSize: "45px",
+                  fontFamily: "Open Sans",
+                  lineHight: "34px",
+                  letterSpacing: "-1px",
+                  fontWeight: "normal",
+                }}
+              >
                 TLorem ipsum dolor sit <br />
                 amet, conconsectetur <br />
                 adipiscing elit.{" "}

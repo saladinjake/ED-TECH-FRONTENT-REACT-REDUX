@@ -15,7 +15,18 @@ class TabBox extends Component {
             <Row>
               <Col lg="12">
                 <div className="features__item shortintro">
-                  <h2>
+                  <h2
+                    style={{
+                      width: "100%",
+                      fontWeight: "300px",
+                      color: "#000",
+                      fontSize: "24px",
+                      fontFamily: "Open Sans",
+                      lineHight: "34px",
+                      letterSpacing: "-1px",
+                      fontWeight: "normal",
+                    }}
+                  >
                     We Have Experienced Professionals & We <br /> Do Our Best To
                     Achieve Your Goal. Your
                     <br /> Happiness Is Our First Priority.{" "}
@@ -31,7 +42,14 @@ class TabBox extends Component {
                       <figure class="features__box__item-icon">
                         <img src={student} alt="student" />
                       </figure>
-                      <h3 class="mb-xs">
+                      <h3
+                        class="mb-xs"
+                        style={{
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "14px",
+                        }}
+                      >
                         970+ <br></br> Students
                       </h3>
                     </div>
@@ -39,7 +57,14 @@ class TabBox extends Component {
                       <figure class="features__box__item-icon">
                         <img src={professor} alt="professor" />
                       </figure>
-                      <h3 class="mb-xs">
+                      <h3
+                        class="mb-xs"
+                        style={{
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "14px",
+                        }}
+                      >
                         100+ <br></br>Instructors
                       </h3>
                     </div>
@@ -47,7 +72,14 @@ class TabBox extends Component {
                       <figure class="features__box__item-icon">
                         <img src={university} alt="university" />
                       </figure>
-                      <h3 class="mb-xs">
+                      <h3
+                        class="mb-xs"
+                        style={{
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "14px",
+                        }}
+                      >
                         340+ <br></br>Institutions
                       </h3>
                     </div>
@@ -55,7 +87,14 @@ class TabBox extends Component {
                       <figure class="features__box__item-icon">
                         <img src={book} alt="book" />
                       </figure>
-                      <h3 class="mb-xs">
+                      <h3
+                        class="mb-xs"
+                        style={{
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "14px",
+                        }}
+                      >
                         340+ <br></br>Courses
                       </h3>
                     </div>
@@ -68,7 +107,7 @@ class TabBox extends Component {
                 <div className="oneup">
                   <img
                     src={process.env.PUBLIC_URL + `/assets/images/mission.jpg`}
-                    className="main-img"
+                    className="main-img card-box"
                     alt=""
                     width="400px"
                   />
@@ -76,15 +115,32 @@ class TabBox extends Component {
               </Col>
               <Col lg="6">
                 <div className="oneup">
-                  <h3>
+                  <h3
+                    style={{
+                      width: "100%",
+                      fontWeight: "300px",
+                      color: "#000",
+                      fontSize: "24px",
+                      fontFamily: "Open Sans",
+                      lineHight: "34px",
+                      letterSpacing: "-1px",
+                      fontWeight: "normal",
+                    }}
+                  >
                     <img
                       src={process.env.PUBLIC_URL + `/assets/images/target.png`}
-                      className="icon-img"
+                      className="icon-img card-box"
                       alt=""
                     />{" "}
                     Our Mission
                   </h3>
-                  <p>
+                  <p
+                    style={{
+                      fontFamily: "Open Sans",
+                      color: "#000",
+                      fontSize: "14px",
+                    }}
+                  >
                     Acquire new knowledge and skills, train for certifications,
                     diplomas and degrees from world-class institutions at your
                     own pace and space. Acquire new knowledge and skills, train
@@ -99,7 +155,7 @@ class TabBox extends Component {
                 <div className="twoup">
                   <img
                     src={process.env.PUBLIC_URL + `/assets/images/vision.jpg`}
-                    className="main-img"
+                    className="main-img card-box"
                     alt=""
                     width="400px"
                   />
@@ -107,15 +163,32 @@ class TabBox extends Component {
               </Col>
               <Col lg="6">
                 <div className="twoup">
-                  <h3>
+                  <h3
+                    style={{
+                      width: "100%",
+                      fontWeight: "300px",
+                      color: "#000",
+                      fontSize: "24px",
+                      fontFamily: "Open Sans",
+                      lineHight: "34px",
+                      letterSpacing: "-1px",
+                      fontWeight: "normal",
+                    }}
+                  >
                     <img
                       src={process.env.PUBLIC_URL + `/assets/images/vision.png`}
-                      className="icon-img"
+                      className="icon-img card-box"
                       alt=""
                     />{" "}
                     Our Vision
                   </h3>
-                  <p>
+                  <p
+                    style={{
+                      fontFamily: "Open Sans",
+                      color: "#000",
+                      fontSize: "14px",
+                    }}
+                  >
                     Acquire new knowledge and skills, train for certifications,
                     diplomas and degrees from world-class institutions at your
                     own pace and space. Acquire new knowledge and skills, train

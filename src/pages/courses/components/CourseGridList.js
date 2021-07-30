@@ -12,18 +12,18 @@ import toast from "react-hot-toast";
 
 import { addToWishList } from "actions/wishListActions";
 import { useQuery } from "hooks/useQuery.js";
-import "./rating.css"
-import moment from "moment"
+import "./rating.css";
+import moment from "moment";
 import { enrollCourses } from "services/enrollment.js";
-import $ from "jquery"
+import $ from "jquery";
 function CourseItemGrid({
   allCourses,
   courses,
-  auth: { isAuthenticated , user},
+  auth: { isAuthenticated, user },
   cart: { cart },
   wishList: { wishList },
   addToCart,
-  fetchCourses
+  fetchCourses,
 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [coursePerPage] = useState(50);
@@ -41,8 +41,7 @@ function CourseItemGrid({
   var indexOfLastCourse = currentPage * coursePerPage;
   var indexOfFirstCourse = indexOfLastCourse - coursePerPage;
 
-
-    useEffect(() => {
+  useEffect(() => {
     (async function loadContent() {
       await fetchCourses();
       // const lastLocation = useLocation();
@@ -50,26 +49,37 @@ function CourseItemGrid({
     // eslint-disable-next-line
   }, []);
 
-    const handleWishList = async (e,id) =>{
-    e.preventDefault()
-    return await addToWishList(id)
-  }
+  const handleWishList = async (e, id) => {
+    e.preventDefault();
+    return await addToWishList(id);
+  };
 
+  useEffect(() => {
+    $(".dark")
+      .find("p")
+      .each(function () {
+        $(this).css({ color: "#000", "font-family": "Open Sans" });
+        // $("i").css({color:"#000"})
+      });
 
+    $(".info p,.info span,.info b").each(function () {
+      $(this).css({ color: "#000", "font-family": "Open Sans" });
+    });
 
-  useEffect(()=>{
-    $(".dark").find("p").each(function(){
-       $(this).css({color:"#000"})
-       // $("i").css({color:"#000"})
-    })
+    $(".product-view p").each(function () {
+      $(this).css({ color: "#000", "font-family": "Open Sans" });
+    });
 
-    $(".info p,.info span,.info b").each(function(){
-        $(this).css({"color":"#000"})
-      })
-  })
+    $(".product-view span").each(function () {
+      $(this).css({ color: "#000", "font-family": "Open Sans" });
+    });
 
-
-
+    $(".found-item p, .found-item span, .found-item div, .found-item a").each(
+      function () {
+        $(this).css({ color: "#000", "font-family": "Open Sans" });
+      }
+    );
+  });
 
   useEffect(() => {
     (async function CheckStatus() {
@@ -121,52 +131,58 @@ function CourseItemGrid({
     setCurrCourses(allCourses.slice(indexOfFirstCourse, indexOfLastCourse));
   };
 
-
-
-  const handleAddToCart = async (e, course) =>{
-    e.preventDefault()
-    console.log(course?.price)
-    if( parseInt(course?.price) <=0){
+  const handleAddToCart = async (e, course) => {
+    e.preventDefault();
+    console.log(course?.price);
+    if (parseInt(course?.price) <= 0) {
       //automaitcally enroll
-        let payload = [];
-        let newObj = {};
-        newObj.user_id = user?.id;
-        newObj.course_id = course?.id;
-        payload.push(newObj);
+      let payload = [];
+      let newObj = {};
+      newObj.user_id = user?.id;
+      newObj.course_id = course?.id;
+      payload.push(newObj);
 
-    
       try {
         await enrollCourses({
           enrollments: payload,
         });
         toast.success(`Free Course enrolled succesfully`);
 
-        setTimeout(()=>{window.location.reload()},2000)
-
-      }catch(err){
-         toast.error(`Could not enroll you in for the free course: `+ course.course_name);
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      } catch (err) {
+        toast.error(
+          `Could not enroll you in for the free course: ` + course.course_name
+        );
       }
-
-
-    }else{
-      let paidCourseId = course?.id
-      addToCart(course.id)
+    } else {
+      let paidCourseId = course?.id;
+      addToCart(course.id);
     }
-
-  }
+  };
 
   return (
     <Fragment>
-     
       {currentCourses.length > 0 &&
         currentCourses.map((item, i) => {
-          
+
+
           return (
-            <Fragment className="container-fluid" key={item.id}>
+            
 
 
-              <div className="product-view col-merge-12 col-merge-s-4 col-merge-d3 bookset" style={{marginRight:"-15px"}}>
-                <div className="product product-set left_adjust" style={{ height: "350px" }}>
+                <Fragment className="container-fluid found-item" key={item.id}>
+              <div
+                className="product-view col-merge-12 col-md-3 col-sm-12 col-merge-s-4 col-merge-d3 bookset"
+                style={{ marginRight: "-15px" }}
+              >
+                <div
+                  className="product product-set left_adjust"
+                 
+                >
+                  
+                     
                   <figure>
                     <Link
                       to={
@@ -184,7 +200,11 @@ function CourseItemGrid({
                           src={item.course_cover_image}
                           className="thumb-img imagemix"
                           alt="work-thumbnail"
-                          style={{ width: "100%", height: "100px",borderBottom:"2px solid #000" }}
+                          style={{
+                            width: "100%",
+                            height: "100px",
+                            borderBottom: "2px solid #000",
+                          }}
                         />
                       ) : (
                         <Fragment />
@@ -193,139 +213,208 @@ function CourseItemGrid({
                     </Link>
                   </figure>
 
+                  <div
+                    className="info full-width card-box"
+                    style={{ zIndex: 2147483647 + 900, height: "110%" }}
+                  >
+                    <div
+                      style={{ padding: "5px", color: "#000", width: "100%" }}
+                    >
+                      <div style={{ width: "100%", height: "50px" }}>
+                        <img
+                          src={item?.instructor?.image_url}
+                          style={{
+                            width: "50px",
+                            height: "50px",
+                            borderRadius: "50%",
+                            float: "left",
+                            marginRight: "10px",
+                          }}
+                        />
 
-
-
-                  <div className="info full-width card-box" style={{zIndex:2147483647+ 900, height:"110%"}}>
-
-                      <div style={{padding:"5px",color:"#000",width:"100%"}}>
-
-
-                         <div style={{width:"100%",height:"50px"}}> 
-                       <img src={item?.instructor?.image_url}  style={{width:"50px", height:"50px", borderRadius:"50%", float:"left", marginRight:"10px"}}/>
-                         
-                         <div>
-                         <h5 style={{width:"100%",  fontSize:"14px", fontWeight:"small",color:"#777", marginLeft:"20px"}}>{item?.instructor?.first_name} {item?.instructor?.last_name}</h5>
-                        <p style={{ width:"100%",marginTop:"4px", textTransform:"capitalize", fontWeight:"bold"}}>
-                        {item?.instructor?.instructor_profile?.current_employer_designation} 
-                        
-                      </p>
+                        <div>
+                          <h5
+                            style={{
+                                  width: "100%",
+                                  fontSize: "14px",
+                                  fontWeight: "small",
+                                  color: "#000",
+                                  marginLeft: "20px",
+                                  fontFamily: "Open Sans",
+                                }}
+                          >
+                            {item?.instructor?.first_name}{" "}
+                            {item?.instructor?.last_name}
+                          </h5>
+                          <p
+                            style={{
+                                  width: "100%",
+                                  marginTop: "4px",
+                                  textTransform: "capitalize",
+                                  fontWeight: "bold",
+                                  color: "#000",
+                                }}
+                          >
+                            {
+                              item?.instructor?.instructor_profile
+                                ?.current_employer_designation
+                            }
+                          </p>
                         </div>
-                         
-                        </div>
-                        <br/>
+                      </div>
+                      <br />
 
-                         <h4 className="stori-line" style={{fontSize:"14px",lineHeight: "22px",fontWeight: "600",margin: "0 0 15px"}}>  {item?.course_name}</h4>
-                        
-
-
-                          {/^/.test(item?.course_description) ? (
-                      <p
-                      className="course-subtitle dark"
-                        style={{color:"#000" }}
-                        dangerouslySetInnerHTML={{
-                          __html:item?.course_description?.substring(
-                          0,
-                          150
-                        ) + "..."
-                        }}
-                      />
-                    ) : (
-                      <p
-                        className="course-subtitle dark"
-                        style={{color:"#000"}}
+                      <h4
+                        className="stori-line"
+                        style={{
+                              fontSize: "25px",
+                              lineHeight: "32px",
+                              fontWeight: "600",
+                              width: "100%",
+                              color: "#000",
+                              margin: "0 0 15px",
+                            }}
                       >
-                        {item?.course_description.substring(
-                          0,
-                          150
-                        ) + "..."}
-                      </p>
-                    )}
+                        {" "}
+                        {item?.course_name}
+                      </h4>
 
-                     
-                          
-                      </div>
+                      {/^/.test(item?.course_description) ? (
+                        <p
+                          className="course-subtitle dark"
+                          style={{
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontSize: "12px",
+                          }}
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              item?.course_description?.substring(0, 100) +
+                              "...",
+                          }}
+                        />
+                      ) : (
+                        <p
+                          className="course-subtitle dark"
+                          style={{
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontSize: "12px",
+                          }}
+                        >
+                          {item?.course_description.substring(0, 100) + "..."}
+                        </p>
+                      )}
+                    </div>
 
-
-                       <div className="stm_lms_courses__single--info_meta" style={{marginBottom:"-10px"}}>
-                      <div className="stm_lms_course__meta"> 
-                         <i className="fa fa-signal " style={{marginLeft:"4px"}}>Beginner</i> 
+                    <div
+                      className="stm_lms_courses__single--info_meta style-8a"
+                      style={{ marginBottom: "-10px" }}
+                    >
+                      <div className="stm_lms_course__meta style-8a">
+                        <i
+                          className="fa fa-signal "
+                          style={{ marginRight: "4px", fontWeight:"bold"  }}
+                        ></i>{" "}
+                        Beginner
                       </div>
-                      <div className="stm_lms_course__meta"> 
-                        <i className="fa fa-bars " style={{marginLeft:"4px"}}>{item?.course?.learning_style}</i> 
+                      <div className="stm_lms_course__meta style-8a">
+                        <i
+                          className="fa fa-bars "
+                          style={{ marginLeft: "4px", fontWeight:"bold"  }}
+                        >
+                          {item?.course?.learning_style}
+                        </i>
                       </div>
-                      <div className="stm_lms_course__meta"> 
-                        <i className="fa fa-clock " style={{marginLeft:"4px"}}>{item?.course?.duration} hrs</i>
+                      <div className="stm_lms_course__meta style-8a">
+                        <i
+                          className="fa fa-clock "
+                          style={{ marginLeft: "4px", fontWeight:"bold" }}
+                        >
+                          {item?.course?.duration} hrs
+                        </i>
                       </div>
                     </div>
 
-
-
-
-                       <div className="stm_lms_courses__single--info_meta" style={{position:"absolute",bottom:"30px"}}>
-                      <div className="stm_lms_course__meta"> 
-                         
-                    <a style={{ background:"rgba(8,23,200)", color:"#fff"}}  href="#detailView"  onClick={()=>{
-                        window.location.href= process.env.PUBLIC_URL + "/courses/"+ item?.id
-                       }} className="button-c button-rounded-right seedetail">Detail</a>
-                       
+                    <div
+                      className="stm_lms_courses__single--info_meta"
+                      style={{ position: "absolute", bottom: "30px" }}
+                    >
+                      <div className="stm_lms_course__meta">
+                        <a
+                          style={{
+                            background: "rgba(8,23,200)",
+                            color: "#fff",
+                          }}
+                          href="#detailView"
+                          onClick={() => {
+                            window.location.href =
+                              process.env.PUBLIC_URL + "/courses/" + item?.id;
+                          }}
+                          className="button-c button-rounded-right seedetail"
+                        >
+                          Detail
+                        </a>
                       </div>
-                      <div className="stm_lms_course__meta" style={{marginLeft:"30px"}}> 
-                       {isAuthenticated ? (
-                          
-                          <a href="#addTowishBox" style={{ color:"#fff",   background:"red"}} 
-                          
-                           className=" button-c button-rounded-top" 
-                           onClick={(e)=>{ handleWishList(e,item)}}
-
-                           >Wishlist</a>
-
-                          ) : (
-                            
-                            <a href="#loginRequired" style={{ color:"#fff", background:"red"}} 
-                          
-                           className="button-c button-rounded-right modal-link" 
-                           
-
-                           >Wishlist</a>
-
-                          )} 
+                      <div
+                        className="stm_lms_course__meta"
+                        style={{ marginLeft: "30px" }}
+                      >
+                        {isAuthenticated ? (
+                          <a
+                            href="#addTowishBox"
+                            style={{ color: "#fff", background: "red" }}
+                            className=" button-c button-rounded-top"
+                            onClick={(e) => {
+                              handleWishList(e, item);
+                            }}
+                          >
+                            Wishlist
+                          </a>
+                        ) : (
+                          <a
+                            href="#loginRequired"
+                            style={{ color: "#fff", background: "red" }}
+                            className="button-c button-rounded-right modal-link"
+                          >
+                            Wishlist
+                          </a>
+                        )}
                       </div>
-                      <div className="stm_lms_course__meta" style={{marginLeft:"30px"}}> 
-                        
-
-
-
-                          {
-                            isAuthenticated ? (
-
-
-                            <a href="#addTocart" className="button-c button-rounded-left" style={{ backgroundColor:"rgba(8,23,200)", color:"#fff"}}
-
-                       onClick={(e)=>{
-                                     handleAddToCart(e,item)
-                                    }}
-                                     >Buy</a>
-
-                            ) : (
-
-
-
-                      <a href="#addTocart" className="button-c button-rounded-left  modal-link" style={{ backgroundColor:"rgba(8,23,200)", color:"#fff"}}>Buy</a>
-
-
-                            )
-                          }
+                      <div
+                        className="stm_lms_course__meta"
+                        style={{ marginLeft: "30px" }}
+                      >
+                        {isAuthenticated ? (
+                          <a
+                            href="#addTocart"
+                            className="button-c button-rounded-left"
+                            style={{
+                              backgroundColor: "rgba(8,23,200)",
+                              color: "#fff",
+                            }}
+                            onClick={(e) => {
+                              handleAddToCart(e, item);
+                            }}
+                          >
+                            Buy
+                          </a>
+                        ) : (
+                          <a
+                            href="#addTocart"
+                            className="button-c button-rounded-left  modal-link"
+                            style={{
+                              backgroundColor: "rgba(8,23,200)",
+                              color: "#fff",
+                            }}
+                          >
+                            Buy
+                          </a>
+                        )}
                       </div>
                     </div>
 
-                          
-                  
-                          
-
-                      
-
-                       <div
+                    <div
                       className="bottom-sect"
                       style={{
                         display: "table",
@@ -333,31 +422,46 @@ function CourseItemGrid({
                         height: "30px",
                       }}
                     >
-                      
-                    <p style={{borderTop:"1px solid #000",color:"#000", 
-                               display:"table",position:"absolute",
-                               bottom:"0px",width:"90%",padding:"10px",fontSize: "10px",
+                      <p
+                        style={{
+                          borderTop: "1px solid #000",
+                          color: "#000",
+                          display: "table",
+                          position: "absolute",
+                          bottom: "0px",
+                          width: "86%",
+                          padding: "10px",
+                          fontSize: "10px",
+                        }}
+                      >
+                        Reviews
+                      </p>
 
-                             }}>Reviews</p>
-
-                    <div style={{
-                               color:"#000", 
-                               position:"absolute",
-                               bottom:"0px",padding:"10px", float:"right",right:"0px"}}>
-
-                               NGN{item?.price}
-
-                        </div>
+                      <div
+                        style={{
+                          color: "#000",
+                          position: "absolute",
+                          bottom: "0px",
+                          padding: "10px",
+                          float: "right",
+                          right: "0px",
+                        }}
+                      >
+                        NGN{item?.price}
+                      </div>
                     </div>
-
-
-
-                   </div>
-
+                  </div>
 
                   <div className="">
-                    <div  style={{padding:"1px", marginLeft:"3px"}}>
-                      <p style={{   width:"100%",fontWeight:"bold",lineHeight:"0px",marginBottom:"7px"}}>
+                    <div style={{ padding: "1px", marginLeft: "3px" }}>
+                      <p
+                        style={{
+                          width: "100%",
+                          fontWeight: "bold",
+                          lineHeight: "0px",
+                          marginBottom: "7px",
+                        }}
+                      >
                         <Link
                           to={
                             process.env.PUBLIC_URL +
@@ -366,14 +470,29 @@ function CourseItemGrid({
                             "/" +
                             item.slug
                           }
-                          style={{ fontSize: "10px",width:"100%",color: "gray",lineHeight:"10px" }}
-                          
+                          style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                fontSize: "12px",
+                                width: "100%",
+                                color: "#000",
+                                lineHeight: "20px",
+                              }}
                         >
                           {item?.category?.name} >
                         </Link>
                       </p>
 
-                       <p style={{   width:"100%",fontWeight:"bold",marginTop:"3px",marginBottom:"7px"}}>
+                      <p
+                        style={{
+                              fontWeight: "700",
+                              width: "100%",
+                              fontFamily: "Open Sans",
+                              fontSize: "12px",
+                              color: "#000",
+                              lineHeight: "20px",
+                            }}
+                      >
                         <Link
                           to={
                             process.env.PUBLIC_URL +
@@ -382,15 +501,27 @@ function CourseItemGrid({
                             "/" +
                             item.slug
                           }
-                          style={{ fontSize: "13px",width:"100%",color: "#000" }}
-                          className="text-dark"
+                          style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                lineHeight: "20px",
+                              }}
+                         
                         >
-                          {item?.course_code}  
+                          {item?.course_code}
                         </Link>
                       </p>
 
-
-                      <p style={{   width:"100%",fontWeight:"bold",marginTop:"3px"}}>
+                      <p
+                       style={{
+                              width: "100%",
+                              fontWeight: "bold",
+                              marginTop: "3px",
+                              color: "#000",
+                            }}
+                      >
                         <Link
                           to={
                             process.env.PUBLIC_URL +
@@ -399,60 +530,94 @@ function CourseItemGrid({
                             "/" +
                             item.slug
                           }
-                          style={{ fontSize: "13px",width:"100%",color: "#000" ,marginTop:"2px"}}
-                          className="text-dark"
+                          style={{
+                                width: "100%",
+                                marginTop: "2px",
+                                color: "#000",
+                                fontWeight: "bold",
+                              }}
+                              className=" style-8a"
                         >
-                           {item.course_name.substring(0,80)+ "..."}
+                          {item.course_name.substring(0, 80) + "..."}
                         </Link>
                       </p>
-                      <p style={{ width:"100%",marginTop:"4px", position: "absolute", bottom:"60px"}}>
-                        {item?.instructor?.instructor_profile?.current_employer_designation} 
-                        
+                      <p
+                        className="style-8a"
+                        style={{
+                          color: "#000",
+                          width: "100%",
+                          marginTop: "4px",
+                          position: "absolute",
+                          bottom: "60px",
+                        }}
+                      >
+                        {
+                          item?.instructor?.instructor_profile
+                            ?.current_employer_designation
+                        }
                       </p>
 
-                      <p style={{ width:"100%", position: "absolute", bottom:"40px"}}>
-                        { item?.instructor?.first_name !== null &&
+                      <p
+                        className="style-8a"
+                        style={{
+                          color: "#000",
+                          width: "100%",
+                          position: "absolute",
+                          bottom: "40px",
+                        }}
+                      >
+                        {item?.instructor?.first_name !== null &&
                           item?.instructor?.first_name +
                             " " +
                             item?.instructor?.last_name}
                       </p>
-
                     </div>
-                    
-
-                    
-
                   </div>
                   <div>
-                  
-                    <p style={{borderTop:"1px solid #000",color:"#000", 
-                               display:"table",position:"absolute",
-                               bottom:"0px",width:"100%",padding:"10px",fontSize: "10px",
+                    <p
+                      style={{
+                        borderTop: "1px solid #000",
+                        color: "#000",
+                        display: "table",
+                        position: "absolute",
+                        bottom: "0px",
+                        width: "100%",
+                        padding: "10px",
+                        fontSize: "10px",
+                      }}
+                    >
+                      Course
+                    </p>
 
-                             }}>Course</p>
+                    <div
+                      style={{
+                        color: "#000",
+                        position: "absolute",
+                        bottom: "0px",
+                        padding: "10px",
+                        float: "right",
+                        right: "0px",
+                      }}
+                    >
+                      <Link
+                        to={
+                          process.env.PUBLIC_URL +
+                          "/courses/" +
+                          item.id +
+                          "/" +
+                          item.slug
+                        }
+                        style={{
+                          fontSize: "10px",
+                          width: "100%",
+                          color: "gray",
+                        }}
+                      >
+                        Details
+                      </Link>
+                    </div>
 
-                    <div style={{
-                               color:"#000", 
-                               position:"absolute",
-                               bottom:"0px",padding:"10px", float:"right",right:"0px"}}>
-
-                                <Link
-                          to={
-                            process.env.PUBLIC_URL +
-                            "/courses/" +
-                            item.id +
-                            "/" +
-                            item.slug
-                          }
-                          style={{ fontSize: "10px",width:"100%",color: "gray" }}
-                          
-                        >
-                          Details
-                        </Link>
-
-                        </div>
-
-                       {/*  <div style={{position:"absolute",
+                    {/*  <div style={{position:"absolute",
                                bottom:"-18px",width:"100%",padding:"10px",right:"0px"}}><form className="rating-form" action="#" method="post" name="rating-movie">
                               <fieldset className="form-group">
                                 
@@ -513,12 +678,8 @@ function CourseItemGrid({
                                 
                               </fieldset>
                             </form>*/}
-
-                    </div>
-
+                  </div>
                 </div>
-
-                
               </div>
             </Fragment>
           );
@@ -544,5 +705,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   addToCart,
   addToWishList,
-  fetchCourses
+  fetchCourses,
 })(CourseItemGrid);

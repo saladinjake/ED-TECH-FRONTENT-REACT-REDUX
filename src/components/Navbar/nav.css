@@ -1,45 +1,25 @@
-ul.makeText li, ul.makeText li a, ul.makeText a, .zoomText{
-    font-family: "Montserrat";
-    font-weight: normal;
-    font-style: normal;
-    color: #777777;
-    font-size: 16px;
-
+ul.makeText li,
+ul.makeText li a,
+ul.makeText a,
+.zoomText {
+  font-family: "Open Sans";
+  font-weight: normal;
+  font-style: normal;
+  color: #777777;
+  font-size: 12px;
 }
+ul,
+li,
+a {
+  font-weight: normal;
+  font-style: normal;
+}
+
+/*
 
 
 input[type="text"].serach::-moz-placeholder {
   font-family: "Montserrat";
-    font-weight: normal;
-    font-style: normal;
-    color: #777777;
-    font-size: 16px;
-}
-
-
-input[type="text"].serach::-webkit-input-placeholder { /* Chrome/Opera/Safari */
- font-family: "Montserrat";
-    font-weight: normal;
-    font-style: normal;
-    color: #777777;
-    font-size: 16px;
-}
-input[type="text"].serach::-moz-placeholder { /* Firefox 19+ */
-   font-family:Source Sans Pro,Arial,sans-serif;
-    font-weight: normal;
-    font-style: normal;
-    color: #777777;
-    font-size: 16px;
-}
-input[type="text"].serach:-ms-input-placeholder { /* IE 10+ */
-   font-family:Source Sans Pro,Arial,sans-serif;
-    font-weight: normal;
-    font-style: normal;
-    color: #777777;
-    font-size: 16px;
-}
-input[type="text"].serach:-moz-placeholder { /* Firefox 18- */
- font-family: "Montserrat";
     font-weight: normal;
     font-style: normal;
     color: #777777;
@@ -66,35 +46,61 @@ li, li a, a{
 
 
 
+input[type="text"].serach::-webkit-input-placeholder { 
+ font-family: "Montserrat";
+    font-weight: normal;
+    font-style: normal;
+    color: #777777;
+    font-size: 16px;
+}
+input[type="text"].serach::-moz-placeholder { 
+   font-family:Source Sans Pro,Arial,sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    color: #777777;
+    font-size: 16px;
+}
+input[type="text"].serach:-ms-input-placeholder { 
+   font-family:Source Sans Pro,Arial,sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    color: #777777;
+    font-size: 16px;
+}
+input[type="text"].serach:-moz-placeholder { 
+ font-family: "Montserrat";
+    font-weight: normal;
+    font-style: normal;
+    color: #777777;
+    font-size: 16px;
+}
 
 
 
 
-
-
-
+*/
 
 /*3 columns modal*/
 
-.extends-3-cols{width: 700px}
-
-.extends-3-cols a:nth-child(n){
-  float: left;
-  width: 325px;
-  margin-right: 5px;
-  margin-left: 6px;
-  
+.extends-3-cols {
+  width: 600px;
 }
 
-.extends-3-cols a:nth-child(2n){
+.extends-3-cols a:nth-child(n) {
   float: left;
-  width: 345px;
-   margin-right: 5px;
-   margin-top: 5px;
-   margin-left: 6px;
+  width: 265px;
+  margin-right: 5px;
+  margin-left: 6px;
+}
 
-   
-   /*padding: 5px;*/
+.extends-3-cols a:nth-child(2n) {
+  float: left;
+  width: 265px;
+  margin-right: 5px;
+  margin-top: 5px;
+  margin-left: 6px;
+
+  /*padding: 5px;*/
 }
 
 /*.extends-3-cols a:nth-child(3n){
@@ -102,15 +108,6 @@ li, li a, a{
    margin: 10px;
   margin-right: 320px;
 }*/
-
-
-
-
-
-
-
-
-
 
 .dropdown-cols-2 .dropdown-menu {
   min-width: 400px;
@@ -128,17 +125,21 @@ li, li a, a{
 .dropdown-cols-2 .dropdown-menu li {
   list-style: none;
 }
+
+.extension {
+  height: 25px;
+  line-height: 10px;
+  margin: 0px;
+}
 @media screen and (max-width: 767px) {
   .dropdown-cols-2 .dropdown-menu {
     min-width: 140px;
   }
 }
 
-
-.dropdown-cols-2:hover  .dropdown-menu{
-   display: block;
+.dropdown-cols-2:hover .dropdown-menu {
+  display: block;
 }
-
 
 .dropdown-cols-2 .dropdown-menu h5 {
   /*font-family: "Montserrat", sans-serif;*/
@@ -148,9 +149,6 @@ li, li a, a{
 .dropdown-cols-2 a {
   color: #666;
 }
-
-
-
 
 .dropdown-menu a:nth-child(odd) {
   /*background-color: #cccccc;*/
@@ -165,10 +163,11 @@ li, li a, a{
   width: 150px;
 }
 
-
-
-
-
-.me-checked:hover .userdropdown{
+.me-checked:hover .userdropdown {
   display: block;
+}
+
+a,
+.fm {
+  font-family: "0pen Sans";
 }

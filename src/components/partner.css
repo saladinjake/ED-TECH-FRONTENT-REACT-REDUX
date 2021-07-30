@@ -25,15 +25,12 @@ a.set-invert:hover {
   height: 150px;
 }
 
-
-
-
 .details-window-animated-small {
   height: 160px;
   width: 100%;
   opacity: 0;
-  background:rgb(2, 83, 200);
+  background: rgb(2, 83, 200);
   position: absolute;
-  marginLeft: -20px;
-  marginRight: -10px;
+  marginleft: -20px;
+  marginright: -10px;
 }

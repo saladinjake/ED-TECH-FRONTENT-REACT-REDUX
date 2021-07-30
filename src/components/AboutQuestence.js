@@ -20,7 +20,8 @@ class AboutUs extends Component {
     return (
       <Styles>
         {/* About Us */}
-        <section className="about-us">
+        <br/><br/>
+        <section className="about-us" style={{background:"#fff"}}>
           <Container>
             <Row>
               <Col md="6">
@@ -34,16 +35,17 @@ class AboutUs extends Component {
               </Col>
               <Col md="6">
                 <div className="about-content">
-                  <h2 className="about-title">
-                    Building new skill with ease and earn recognized credential
+                  <h2 className="about-title" style={{ fontFamily:"Open Sans"}}>
+                   Digital Online Learning 
                   </h2>
-                  <p className="about-para">
-                    Learn anytime, anywhere, at your own pace and in your own
-                    space with an interactive, multimedia content provided by
-                    world-class institutions and trainers, while receiving
-                    instant feedback through online exercises and grading. And
-                    you have the option to earn a verified certificate upon
-                    successful completion of a course.
+                  <p className="about-para" style={{ fontFamily:"Open Sans", fontSize:"16px"}}>
+                    At Questence, the whole world is your classroom.
+
+We are dedicated to empowering you with  education and skills training from the best tutors, thereby being a positive force social change, while creating opportunities, prosperity, and equality for all.
+
+For institutions, we are a platform through which you can educate the world. For companies, we provide secure white-label platforms where employees can be trained and upskilled.
+
+We are your partner-of-choice for online learning.
                   </p>
                   <Link
                     className="readmore-btn"

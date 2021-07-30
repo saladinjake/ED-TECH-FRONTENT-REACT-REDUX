@@ -4,6 +4,7 @@ import Header from "./header";
 import OldNavBar from "components/Navbar";
 // import Topnav from "./topnav";
 import Hero from "./hero";
+import HeroImage from "components/HeroImage";
 import Infosection from "./infosection";
 import Sideicons from "./gallerysection";
 import Gallery from "./sideicons";
@@ -24,46 +25,54 @@ import "./reboot.css";
 import "./hero.css";
 import "./sideicons.css";
 
+import Loader from "components/Loader/Loader";
 
 // import Hambugger from "./megamenu2"
 
 const Section = () => {
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
+    // setTimeout(()=>{
+    //   setLoading(false);
     document.getElementsByTagName("body")[0].style.background = "#fff";
+    // },10000)
   });
   return (
     <div>
-    <div className="section-home">
-      <OldNavBar />
-      <br />
-      <br />
-      <Hero />
-      <div className="vc_clearfix"></div>
-      <br />
-    {/*<Sideicons />*/}
-    <Gallery />
-      <div className="container">
-        <Featured />
-      </div>
-      
-      <AboutUs />
-      <br />
-      <InstitutionsIcons />
-      <br />
-      <Joinup />
-      <br />
-      <Guide />
+      {loading ? (
+        <Loader width="70" />
+      ) : !loading ? (
+        <div>
+          <div className="section-home">
+            <OldNavBar />
+            <br />
+            <br />
+            <Hero />
+            <div className="vc_clearfix"></div>
+            <br />
 
-      {/*<Infosection />  <Testimonial />*/}
+            <Gallery />
+            <div className="container">
+              <Featured />
+            </div>
 
-      <br />
-      <Testimonial />
+            <AboutUs />
+            <br />
+            <InstitutionsIcons />
+            <br />
+            <Joinup />
+            <br />
+            <Guide />
 
-      
-       <Footer />
+            <br />
+            <HeroImage />
 
-    </div>
-      
+            <Footer />
+          </div>
+        </div>
+      ) : (
+        <div class="container">Network error</div>
+      )}
     </div>
   );
 };

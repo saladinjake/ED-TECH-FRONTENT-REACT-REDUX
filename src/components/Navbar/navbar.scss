@@ -18,7 +18,6 @@ nav.desktop {
   padding: 30px;
   z-index: 30;
 
-
   @include respond(tab-land) {
     justify-content: space-between;
   }
@@ -41,7 +40,7 @@ nav.desktop {
       justify-content: center;
       outline: none;
       border: none;
-      background-color: transparent;
+      /* background-color: transparent;*/
       width: 2rem;
       pointer-events: auto;
       transform: rotate(0deg);
@@ -88,7 +87,6 @@ nav.desktop {
     justify-content: space-between;
     width: 100%;
     align-items: center;
-    
 
     @include respond(tab-land) {
       display: none;

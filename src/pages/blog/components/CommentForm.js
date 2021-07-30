@@ -94,7 +94,9 @@ function CommentForm() {
               </p>
             </Col>
             <Col md="12">
-              <button>Post Comment</button>
+              <button style={{ background: "rgba(8,23,200)" }}>
+                Post Comment
+              </button>
             </Col>
           </Row>
         </form>

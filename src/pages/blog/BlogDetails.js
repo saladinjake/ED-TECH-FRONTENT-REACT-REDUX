@@ -7,18 +7,26 @@ import BlogSidebar from "./components/BlogSidebar";
 import CommentForm from "./components/CommentForm";
 import FooterTwo from "../../components/FooterTwo";
 import { Styles } from "./styles/blogDetails.js";
+import $ from "jquery";
+import NavBar from "components/Navbar";
 
+import Footer from "../../components/Footer";
 class BlogDetails extends Component {
+  componentDidMount() {
+    $("body").css({ "background-color": "#fff" });
+    $(".footer p,.footer span, footer p, footer span").each(function () {
+      $(this).css({ color: "#fff", fontFamily: "Open Sans" });
+    });
+  }
   render() {
     return (
       <Styles>
         {/* Main Wrapper */}
         <div className="main-wrapper blog-details-page">
           {/* Header 2 */}
-          <HeaderTwo />
+          <NavBar />
 
           {/* Breadcroumb */}
-          <BreadcrumbBox title="Blog Details" />
 
           {/* Blog Details */}
           <section className="blog-details-area">
@@ -26,7 +34,13 @@ class BlogDetails extends Component {
               <Row>
                 <Col lg="9" md="8" sm="7">
                   <div className="blog-details-box">
-                    <div className="blog-details-banner">
+                    <div className="heading">
+                      <h4 className="style-3" style={{ color: "#000" }}>
+                        International students coming in Uk from Asian
+                        subcontinant for better education.
+                      </h4>
+                    </div>
+                    <div className="blog-details-banner card-box">
                       <img
                         src={
                           process.env.PUBLIC_URL +
@@ -36,12 +50,7 @@ class BlogDetails extends Component {
                         className="img-fluid"
                       />
                     </div>
-                    <div className="heading">
-                      <h4>
-                        International students coming in Uk from Asian
-                        subcontinant for better education.
-                      </h4>
-                    </div>
+
                     <div className="blog-auth_date d-flex">
                       <div className="author-img d-flex">
                         <Link to={process.env.PUBLIC_URL + "/"}>
@@ -162,34 +171,7 @@ class BlogDetails extends Component {
                         </ul>
                       </div>
                       <div className="blog-share">
-                        <ul className="social list-unstyled list-inline">
-                          <li className="list-inline-item">Share:</li>
-                          <li className="list-inline-item">
-                            <a href={process.env.PUBLIC_URL + "/"}>
-                              <i className="fab fa-facebook-f"></i>
-                            </a>
-                          </li>
-                          <li className="list-inline-item">
-                            <a href={process.env.PUBLIC_URL + "/"}>
-                              <i className="fab fa-twitter"></i>
-                            </a>
-                          </li>
-                          <li className="list-inline-item">
-                            <a href={process.env.PUBLIC_URL + "/"}>
-                              <i className="fab fa-linkedin-in"></i>
-                            </a>
-                          </li>
-                          <li className="list-inline-item">
-                            <a href={process.env.PUBLIC_URL + "/"}>
-                              <i className="fab fa-youtube"></i>
-                            </a>
-                          </li>
-                          <li className="list-inline-item">
-                            <a href={process.env.PUBLIC_URL + "/"}>
-                              <i className="fab fa-dribbble"></i>
-                            </a>
-                          </li>
-                        </ul>
+                        <ul className="social list-unstyled list-inline"></ul>
                       </div>
                     </div>
                     <div className="blog-comments">
@@ -309,7 +291,7 @@ class BlogDetails extends Component {
           </section>
 
           {/* Footer 2 */}
-          <FooterTwo />
+          <Footer />
         </div>
       </Styles>
     );

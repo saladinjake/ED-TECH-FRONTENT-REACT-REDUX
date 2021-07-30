@@ -5,6 +5,8 @@ import PageTitle2 from "../../components/common/PageTitle2";
 import CourseSidebar from "./components/CourseSidebar";
 import CourseItemGrid from "./components/CourseItemsGrid";
 import CourseItemsList from "./components/CourseGridList";
+
+import ResponsiveGrid from "./components/ResponsiveGrid"
 import Footer from "../../components/Footer";
 import { Styles } from "./styles/course.js";
 
@@ -32,7 +34,7 @@ const CourseGrid = ({
 
   const [querySearchVal, setVal] = useState(query.get("search"));
   const [querySearchMethod, setMethod] = useState(query.get("method"));
-  const [viewGrid,setViewGrid] = useState(true)
+  const [viewGrid, setViewGrid] = useState(true);
 
   useEffect(() => {
     (async function loadContent() {
@@ -152,8 +154,9 @@ const CourseGrid = ({
   return (
     <div className="main-wrapper course-page">
       <NavBar />
-      <br/>
-      <br/><br/>
+      <br />
+      <br />
+      <br />
       <PageTitle2 />
 
       <Styles>
@@ -172,45 +175,51 @@ const CourseGrid = ({
               </Col>
 
               <Col lg="9" md="8" sm="7">
-                <div className="row   shown" >
+                <div className="row   shown">
                   <div className="">
-
-
-
-                  <div className="container  col-merge-12" id="container-actions" >
+                    <div
+                      className="container  col-merge-12 "
+                      id="container-actions"
+                    >
                       <div className="buttons">
-                      
-                     
                         <button
-                        id="grid"
-                       
-                      onClick={(e) => {
-                        e.preventDefault()
-                        // history.push("/course-grid/list");
-                        setViewGrid(false)
-                        document.getElementById("grid").style.backgroundColor ="#ddd"
-                        document.getElementById("list").style.backgroundColor="#fff"
-                        // document.getElementById("listv").style.backgroundColor="#fff"
-
-                      }}
-
-                         className="list square-btn"><i id="listv" className="fa fa-bars fa-3x"></i></button>
-                            <button id="list"
-                             style={{background:"#ddd"}}
-                     
-                      onClick={(e) => {
-                        // history.push("/courses");
-                          setViewGrid(true)
-                           document.getElementById("list").style.backgroundColor ="#ddd"
-                        document.getElementById("grid").style.backgroundColor="#fff"
-                         // document.getElementById("gridv").style.backgroundColor="#fff"
-                      }} 
-                      className="grid square-btn"><i id="gridv" className="fa fa-th-large fa-3x"></i></button>
+                          id="grid"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            // history.push("/course-grid/list");
+                            setViewGrid(false);
+                            document.getElementById(
+                              "grid"
+                            ).style.backgroundColor = "#ddd";
+                            document.getElementById(
+                              "list"
+                            ).style.backgroundColor = "#fff";
+                            // document.getElementById("listv").style.backgroundColor="#fff"
+                          }}
+                          className="list square-btn article-dummy"
+                        >
+                          <i id="listv" className="fa fa-bars fa-3x"></i>
+                        </button>
+                        <button
+                          id="list"
+                          style={{ background: "#ddd" }}
+                          onClick={(e) => {
+                            // history.push("/courses");
+                            setViewGrid(true);
+                            document.getElementById(
+                              "list"
+                            ).style.backgroundColor = "#ddd";
+                            document.getElementById(
+                              "grid"
+                            ).style.backgroundColor = "#fff";
+                            // document.getElementById("gridv").style.backgroundColor="#fff"
+                          }}
+                          className="grid square-btn article-dummy"
+                        >
+                          <i id="gridv" className="fa fa-th-large fa-3x"></i>
+                        </button>
                       </div>
                     </div>
-
-
-                   
                   </div>
                 </div>
                 <br />
@@ -220,37 +229,57 @@ const CourseGrid = ({
                   style={{ marginTop: "-20px" }}
                 >
                   <Row>
-                    {courseLoading ? (
+
+                  
+
+                  {courseLoading ? (
                       <Loader width="70" />
                     ) : courses.length > 0 ? (
                       <Fragment>
-                        
-                        {viewGrid ===true ? (
+                        {viewGrid === true ? (
+                         
+
+
+
+                          <Fragment>
+
+                          {/* <CourseItemsList
+                            courses={courses}
+                            allCourses={filterAllCourses}
+                          />*/}
+
+                          <ResponsiveGrid  courses={courses}
+                            allCourses={filterAllCourses} />
+                              <div style={{clear:"both"}}></div>
+                         </Fragment>
+
+                        ) : (
 
                           
 
+                          <Fragment>
 
-                        <CourseItemsList
-                          courses={courses}
-                          allCourses={filterAllCourses}
-                        />
-                            
+                          <CourseItemGrid
+                            courses={courses}
+                            allCourses={filterAllCourses}
+                          />
 
-                         ) : (
+                          
+                              <div style={{clear:"both"}}></div>
+                         </Fragment>
 
-                         <CourseItemGrid
-                          courses={courses}
-                          allCourses={filterAllCourses}
-                        />
 
-                         
-                        ) }
+                        )}
                       </Fragment>
                     ) : (
                       <Row>
                         <h1>No Search Found</h1>
                       </Row>
                     )}
+
+
+
+                    
                   </Row>
                 </div>
               </Col>

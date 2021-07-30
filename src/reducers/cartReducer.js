@@ -26,7 +26,7 @@ export default (state = initialState, action) => {
         (item) => item.id === action.payload
       );
 
-      console.log(state.courses)
+      console.log(state.courses);
 
       let existingItem = state.cart.find((item) => action.payload === item.id);
       if (existingItem) {

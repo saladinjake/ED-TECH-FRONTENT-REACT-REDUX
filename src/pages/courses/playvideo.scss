@@ -6,7 +6,7 @@ section.videoset {
   background: #111;
   resize: both;
   overflow: auto;
-  z-index:-90000;
+  z-index: -90000;
 }
 
 // all fluid
@@ -35,7 +35,6 @@ section.videoset {
     padding-left: 35%;
     overflow: hidden;
     resize: none;
-
 
     &:after {
       content: "";

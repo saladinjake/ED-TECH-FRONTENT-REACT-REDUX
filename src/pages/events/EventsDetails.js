@@ -10,17 +10,26 @@ import CourseTag from "./../courses/components/CourseTag";
 import FooterTwo from "../../components/FooterTwo";
 import { Styles } from "./styles/eventDetails.js";
 
+import NavBar from "components/Navbar";
+import $ from "jquery";
+import Footer from "../../components/Footer";
+
 class EventDetails extends Component {
+  componentDidMount() {
+    $("body").css({ "background-color": "#fff" });
+    $(".footer p,.footer span, footer p, footer span").each(function () {
+      $(this).css({ color: "#fff", fontFamily: "Open Sans" });
+    });
+  }
   render() {
     return (
       <Styles>
         {/* Main Wrapper */}
         <div className="main-wrapper event-details-page">
           {/* Header 2 */}
-          <HeaderTwo />
+          <NavBar />
 
           {/* Breadcroumb */}
-          <BreadcrumbBox title="Event Details" />
 
           {/* Event Details Area */}
           <section className="event-details-area">
@@ -51,7 +60,7 @@ class EventDetails extends Component {
                         </li>
                       </ul>
                     </div>
-                    <div className="event-details-banner">
+                    <div className="event-details-banner card-box">
                       <img
                         src={
                           process.env.PUBLIC_URL +
@@ -240,15 +249,15 @@ class EventDetails extends Component {
                               initialTime={1040 * 970 * 980}
                               direction="backward"
                             >
-                              <p>
+                              <p style={{ background: "rgba(8,23,200)" }}>
                                 <Timer.Days />
                                 <span>Days</span>
                               </p>
-                              <p>
+                              <p style={{ background: "rgba(8,23,200)" }}>
                                 <Timer.Hours />
                                 <span>Hours</span>
                               </p>
-                              <p>
+                              <p style={{ background: "rgba(8,23,200)" }}>
                                 <Timer.Minutes />
                                 <span>Minutes</span>
                               </p>
@@ -259,36 +268,39 @@ class EventDetails extends Component {
                               Start Date: <span>Aug 21, 2020</span>
                             </li>
                             <li>
-                              Time: <span>08:30am</span>
+                              Time: <span>07:30am</span>
                             </li>
                             <li>
                               Seat: <span>220</span>
                             </li>
                             <li>
-                              Place: <span>Ontario,CA</span>
+                              Place: <span>Ikoyi Lagos</span>
                             </li>
                             <li>
-                              Organizer: <span>David Young</span>
+                              Organizer: <span>Victor Jake</span>
                             </li>
                             <li>
-                              Phone: <span>+1 (396) 486 4709</span>
+                              Phone: <span>+234</span>
                             </li>
                             <li>
                               Email: <span>email@me.com</span>
                             </li>
                             <li>
-                              Website: <span>www.mydomain.com</span>
+                              Website: <span>www.questence.org</span>
                             </li>
                           </ul>
-                          <button type="button" className="buy-btn">
+                          <button
+                            type="button"
+                            className="buy-btn"
+                            style={{ background: "rgba(8,23,200)" }}
+                          >
                             Buy Ticket
                           </button>
                         </div>
                       </Col>
+
                       <Col md="12">
-                        <PopularCourse />
-                      </Col>
-                      <Col md="12">
+                        <br />
                         <CourseTag />
                       </Col>
                     </Row>
@@ -299,7 +311,7 @@ class EventDetails extends Component {
           </section>
 
           {/* Footer 2 */}
-          <FooterTwo />
+          <Footer />
         </div>
       </Styles>
     );

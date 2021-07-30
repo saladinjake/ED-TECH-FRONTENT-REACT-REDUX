@@ -50,7 +50,7 @@ export const Styles = styled.div`
                 .slider-title {
                   p {
                     font-size: 18px;
-                    color: ${colors.border3};
+                    color: #fff;
                     text-transform: uppercase;
                     margin-bottom: 8px;
                   }

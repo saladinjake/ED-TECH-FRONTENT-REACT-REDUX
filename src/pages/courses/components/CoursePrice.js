@@ -48,15 +48,25 @@ const CoursePrice = ({ course: { courses }, setFilterAllCourses }) => {
     //   //unchecked
     //   setFilterAllCourses([...courses]);
     // }
-
-    
   };
 
   return (
     <Styles>
       {/* Course Price */}
-      <div className="course-category" style={{ background: "#fff" }}>
-        <h5>Filter By Price</h5>
+      <div className="course-category " style={{ background: "#fff" }}>
+        <h5
+          style={{
+            fontWeight: "300px",
+            color: "#000",
+            fontSize: "24px",
+            fontFamily: "Open Sans",
+            lineHight: "34px",
+            letterSpacing: "-1px",
+            fontWeight: "normal",
+          }}
+        >
+          Filter By Price
+        </h5>
         <div className="form__group">
           {/*<select name="category" onChange={filterPrice} required>
             <option value="">-- Filter By Price --</option>

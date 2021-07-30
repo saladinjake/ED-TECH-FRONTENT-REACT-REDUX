@@ -161,7 +161,7 @@ export const Styles = styled.div`
             .duration,
             .student {
               p {
-                font-family: Sequel Sans;
+                font-family: Open Sans;
                 font-style: normal;
                 font-weight: normal;
                 font-size: 13px;

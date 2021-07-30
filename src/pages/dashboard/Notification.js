@@ -193,8 +193,44 @@ const Notifications = () => {
                   >
                     <thead>
                       <tr>
-                        <th scope="col">Recent Notification</th>
-                        <th scope="col">Time</th>
+                        <th
+                          scope="col"
+                          style={{
+                            fontWeight: "700",
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontSize: "12px",
+                            lineHeight: "20px",
+                          }}
+                        >
+                          Notification Type
+                        </th>
+                        <th
+                          scope="col"
+                          style={{
+                            fontWeight: "700",
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontSize: "12px",
+                            lineHeight: "20px",
+                          }}
+                        >
+                          Message
+                        </th>
+
+                        <th
+                          scope="col"
+                          style={{
+                            fontWeight: "700",
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontSize: "12px",
+                            float: "right",
+                            lineHeight: "20px",
+                          }}
+                        >
+                          Time
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -216,12 +252,34 @@ const Notifications = () => {
                             id={i + "titanic-" + new Date().toString()}
                             key={i + "titanic-" + new Date().toString()}
                           >
-                            <td>
+                            <td
+                              style={{
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
+                            >
                               <i class={notifier}></i>
                             </td>
-                            <td>{item.data.message}</td>
+                            <td
+                              style={{
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
+                            >
+                              {item.data.message}
+                            </td>
 
-                            <td>{LongTimeAgo(new Date(item.created_at))}</td>
+                            <td
+                              style={{
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "14px",
+                              }}
+                            >
+                              {LongTimeAgo(new Date(item.created_at))}
+                            </td>
                           </tr>
                         );
                       })}
@@ -245,7 +303,16 @@ const Notifications = () => {
 
               <div className="col-lg-4">
                 <div className="card-box">
-                  <h4 className="text-dark header-title m-t-0 m-b-30">
+                  <h4
+                    className="text-dark-x header-title-x m-t-0 m-b-30"
+                    style={{
+                      fontWeight: "700",
+                      fontFamily: "Open Sans",
+                      color: "#000",
+                      fontSize: "12px",
+                      lineHeight: "20px",
+                    }}
+                  >
                     User profile
                   </h4>
 
@@ -269,7 +336,16 @@ const Notifications = () => {
                         <a
                           href={process.env.PUBLIC_URL + "/learner/profile"}
                           className="text-dark m-t-0 m-b-30"
-                          style={{ marginTop: "14px", marginRight: "7px" }}
+                          style={{
+                            fontWeight: "700",
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontSize: "12px",
+                            lineHeight: "20px",
+
+                            marginTop: "14px",
+                            marginRight: "7px",
+                          }}
                         >
                           {" "}
                           complete your profile
@@ -279,7 +355,16 @@ const Notifications = () => {
                         <a
                           href={process.env.PUBLIC_URL + "/learner/profile"}
                           className="text-dark m-t-0 m-b-30"
-                          style={{ marginTop: "14px", marginRight: "7px" }}
+                          style={{
+                            fontWeight: "700",
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontSize: "12px",
+                            lineHeight: "20px",
+
+                            marginTop: "14px",
+                            marginRight: "7px",
+                          }}
                         >
                           {" "}
                           Edit your profile

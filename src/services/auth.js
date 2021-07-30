@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import axios from "services/axiosConfig";
+import lmsAxios from "services/axiosLMS";
 
 export const loginUser = async (details) => {
   let request = axios.post("auth/login", details);
@@ -48,6 +49,43 @@ export const registerLearner = async (details) => {
 
 export const registerInstructor = async (details) => {
   let request = axios.post("instructors/register", details);
+  return request.then((response) => {
+    if (response.status === 200) {
+      return response && response;
+    }
+  });
+};
+
+/*{
+  email:"juwavictor@gmail.com",
+  password:"password123!@#"
+}
+*
+*/
+
+// X-CSRFToken:"somegibber"
+export const loginUserToLMS = async (details) => {
+  let request = lmsAxios.post("/user/v1/account/login_session", details);
+  return request.then((response) => {
+    if (response.status === 200) {
+      return response && response;
+    }
+  });
+};
+
+/*
+*{
+    "name": "Victor Saladin Jake",
+    "username": "jake",
+    "email": "juwavictor@gmail.com",
+    "confirm_email": "juwavictor@gmail.com",
+    "password": "password123!@#",
+    "country": "NG",
+    "honor_code":true
+}
+*/
+export const registerLearnerToLMS = async (details) => {
+  let request = axios.post("/user/v1/account/registration/", details);
   return request.then((response) => {
     if (response.status === 200) {
       return response && response;

@@ -69,12 +69,37 @@ function FreeCourse() {
           <Row>
             <Col md="6">
               <div className="course-text">
-                <h4>Create your business profile today</h4>
-                <p>
+                <h4
+                  style={{
+                    width: "100%",
+                    fontWeight: "300px",
+                    color: "#000",
+                    fontSize: "24px",
+                    fontFamily: "Open Sans",
+                    lineHight: "34px",
+                    letterSpacing: "-1px",
+                    fontWeight: "normal",
+                  }}
+                >
+                  Create your business profile today
+                </h4>
+                <p
+                  style={{
+                    fontFamily: "Open Sans",
+                    color: "#000",
+                    fontSize: "14px",
+                  }}
+                >
                   If you're interested in training your team or employees using
                   Questence, please apply on this form.{" "}
                 </p>
-                <p>
+                <p
+                  style={{
+                    fontFamily: "Open Sans",
+                    color: "#000",
+                    fontSize: "14px",
+                  }}
+                >
                   After you submit the form, we will reach out to you to gain
                   better knowledge of how we can help you achieve your goals.
                   Please note that it might take between 24 - 72 hours to
@@ -82,8 +107,15 @@ function FreeCourse() {
                 </p>
                 <Button
                   className="mt-4"
-                  variant="success"
+                  variant="primary"
                   onClick={() => history.push("/register/business")}
+                  style={{
+                    textTransform: "capitalize",
+                    fontFamily: "Open Sans",
+                    fontSize: "12px",
+                    fontWeight: "bold",
+                    background: "rgba(8,23,200)",
+                  }}
                 >
                   Register your Business
                 </Button>

@@ -35,6 +35,11 @@ const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
       const res = await loginUserForgotPassword(values);
       console.log(res.data);
       toast.success("An email has been sent");
+      document.getElementById("msg-box").style.display = "block";
+      document.getElementById("msg-box").style.color = "green";
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
       // login(res.data);
 
       // if (res) {
@@ -46,6 +51,7 @@ const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
       setSubmitting(false);
     } catch (err) {
       toast.error(err?.response?.data?.message);
+
       logOut();
       setSubmitting(false);
     }
@@ -55,98 +61,102 @@ const Login = ({ auth: { prevPath }, login, logOut, setPrevPath }) => {
   return (
     <Styles>
       {/* Main Wrapper */}
-      <div className="overlay3" style={{display:"none"}}>
-      <div className="main-wrapper login-page overlay__modal3" style={{marginTop:"20px"}}>
-        {/* Header 2 */}
-   
+      <div className="overlay3" style={{ display: "none" }}>
+        <div
+          className="main-wrapper login-page overlay__modal3"
+          style={{ marginTop: "20px" }}
+        >
+          {/* Header 2 */}
 
-<figure className="logo" style={{float:"left"}}>
-              <Link to="/">
-                <img src={questence} alt="" width="171px" />
-              </Link>
-            </figure>
-       <a className="overlay__close3 fa fa-close fa-2x" style={{float:"right",color:"darkblue"}}></a>
-        {/* Login Area */}
-        <br/>
-        <section className="login-area" style={{marginTop:"20px"}}>
-          <Container>
-            <Row>
-              <Col md="12">
-                <Formik
-                  initialValues={initialValues}
-                  validationSchema={LoginSchema}
-                  onSubmit={handleSubmit}
-                >
-                  {({
-                    values,
-                    errors,
-                    touched,
-                    handleChange,
-                    handleBlur,
-                    handleSubmit,
-                    isSubmitting,
-                  }) => (
-                    <div className="login-box">
-                      <div className="login-title text-center">
-                        <h3>Forgot Password
-        </h3>
-                        <p>Enter your email to rese your password</p>
-                      </div>
-                      <form
-                        id="form_login"
-                        className="form"
-                        onSubmit={handleSubmit}
-                      >
-                        <p className="form-control">
-                          <label htmlFor="email">Email</label>
-                          <input
-                            type="email"
-                            placeholder="Email here"
-                            id="email"
-                            name="email"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.email}
-                          />
-                          <span className="login_input-msg">
-                            {errors.email && touched.email && errors.email}
-                          </span>
-                        </p>
-
-                        <button type="submit" disabled={isSubmitting}>
-                          {loading ? (
-                            <div className="spinner-border" role="status">
-                              <span className="sr-only">Loading...</span>
-                            </div>
-                          ) : (
-                            "Send Password Reset Request"
-                          )}
-                        </button>
-                        <div className="not_account-btn text-center">
-                         
-
-                          <p>Remember My Password ?
-                            <a
-                              className="modal-link"
-                              href="#forgotpass"
-                              style={{color:"darkblue"}}
-                            >
-                              {" "}
-                              Login
-                            </a>
-                          </p>
+          <figure className="logo" style={{ float: "left" }}>
+            <Link to="/">
+              <img src={questence} alt="" width="171px" />
+            </Link>
+          </figure>
+          <a
+            className="overlay__close3 fa fa-close fa-2x"
+            style={{ float: "right", color: "darkblue" }}
+          ></a>
+          {/* Login Area */}
+          <br />
+          <section className="login-area" style={{ marginTop: "40px" }}>
+            <Container>
+              <Row>
+                <Col md="12">
+                  <Formik
+                    initialValues={initialValues}
+                    validationSchema={LoginSchema}
+                    onSubmit={handleSubmit}
+                  >
+                    {({
+                      values,
+                      errors,
+                      touched,
+                      handleChange,
+                      handleBlur,
+                      handleSubmit,
+                      isSubmitting,
+                    }) => (
+                      <div className="login-box">
+                        <div className="login-title text-center">
+                          <h3>Forgot Password</h3>
+                          <p>Enter your email to rese your password</p>
                         </div>
-                      </form>
-                    </div>
-                  )}
-                </Formik>
-              </Col>
-            </Row>
-          </Container>
-        </section>
+                        <div id="msg-box" style={{ display: "none" }}>
+                          An Email has been Sent
+                        </div>
+                        <form
+                          id="form_login"
+                          className="form"
+                          onSubmit={handleSubmit}
+                        >
+                          <p className="form-control">
+                            <label htmlFor="email">Email</label>
+                            <input
+                              type="email"
+                              placeholder="Email here"
+                              id="email"
+                              name="email"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.email}
+                            />
+                            <span className="login_input-msg">
+                              {errors.email && touched.email && errors.email}
+                            </span>
+                          </p>
 
-     
-      </div>
+                          <button type="submit" disabled={isSubmitting}>
+                            {loading ? (
+                              <div className="spinner-border" role="status">
+                                <span className="sr-only">Loading...</span>
+                              </div>
+                            ) : (
+                              "Send Password Reset Request"
+                            )}
+                          </button>
+                          <div className="not_account-btn text-center">
+                            <p>
+                              Remember My Password ?
+                              <a
+                                className="modal-link"
+                                href="#forgotpass"
+                                style={{ color: "darkblue" }}
+                              >
+                                {" "}
+                                Login
+                              </a>
+                            </p>
+                          </div>
+                        </form>
+                      </div>
+                    )}
+                  </Formik>
+                </Col>
+              </Row>
+            </Container>
+          </section>
+        </div>
       </div>
     </Styles>
   );

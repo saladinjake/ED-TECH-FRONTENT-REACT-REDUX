@@ -1,20 +1,20 @@
 [
   {
     "id": "1",
-    "backgroundImage": "qslider-1.jpg",
+    "backgroundImage": "yemi3.png",
     "uniqClass": "slider-box slider-box1",
-    "title": "",
-    "desc": "Learn new skills. Become better.",
-    "btnOneLink": "course-grid",
-    "btnTwoLink": "contact"
-  },
-  {
-    "id": "2",
-    "backgroundImage": "qslider-2.jpg",
-    "uniqClass": "slider-box slider-box2 text-right",
-    "title": "",
-    "desc": "Questence helps you succeed",
-    "btnOneLink": "course-grid",
-    "btnTwoLink": "contact"
+    "title": "Oluyemi Adeosun-SPHRi-GPHR-MCIPM-MBA-MSC",
+    "desc": "Join me on Questence for exciting adventure as we master the basics or playing the guitar.",
+    "role1": "Elected Member",
+    "role2": "Governing Council",
+    "tutor":"Chartered Institute of Personnel Management (CIPM)"
+
+
+
+
+
+
   }
+  
+ 
 ]

@@ -1,15 +1,11 @@
-import React, {useState} from "react"
-import CourseGridList from "./CourseGridList"
-import CourseItemsGrid from "./CourseItemsGrid"
+import React, { useState } from "react";
+import CourseGridList from "./CourseGridList";
+import CourseItemsGrid from "./CourseItemsGrid";
 
 const ViewSwitcher = () => {
-	const [viewGrid,setViewGrid] = useState(true)
+  const [viewGrid, setViewGrid] = useState(true);
 
-	return (
-
-      <div>
-	   {viewGrid ===true ? (<CourseGridList />) : (<CourseItemsList/>)}
-     </div>
-
-	)
-}
+  return (
+    <div>{viewGrid === true ? <CourseGridList /> : <CourseItemsList />}</div>
+  );
+};

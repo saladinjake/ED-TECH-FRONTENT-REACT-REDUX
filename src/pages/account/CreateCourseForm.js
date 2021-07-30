@@ -494,39 +494,68 @@ const CreateCourse = (props) => {
 
   return (
     <div>
+      <InstructorNavBar />
       {/* Main Wrapper */}
       <div className="course">
-      <InstructorNavBar />
         <section>
           <Container>
             <Col lg="12">
-              <section className="container">
+              <section className="container ">
                 <br />
                 <br /> <br /> <br />
                 <div>
-                  <h3 style={{ fontSize: "22px", marginLeft: "10px",float:"left" }}>
-                    Create Course{" "}
-                  </h3>
-<br/><br/><br/>
-
-                  <a
-                    href="#"
+                  <h3
+                    className="card-box"
+                    style={{
+                      fontWeight: "300px",
+                      color: "#333",
+                      fontSize: "45px",
+                      fontFamily: "Open Sans",
+                      lineHight: "34px",
+                      letterSpacing: "-1px",
+                      fontWeight: "normal",
+                      width: "100%",
+                      height: "100px",
+                      marginLeft: "10px",
+                      float: "left",
+                    }}
+                  >
+                    Create A New Course{" "}
+                    <a
+                      href="#"
                       id="submitter"
                       onClick={(e) => {
                         handleSubmit(e);
                       }}
                       className="btn btn-success"
-                      style={{float:"right"}}
+                      style={{
+                        textAlign: "center",
+                        background: "#0253c8",
+                        borderRadius: "43px",
+                        height: "35px",
+                        float: "right",
+                        fontFamily: "Open Sans",
+
+                        color: "#fff",
+                        fontSize: "14px",
+                        fontWeight: "normal",
+                        marginLeft: "10px",
+
+                        transition: "0.5s ease-in-out",
+                      }}
                     >
                       Create Course
                     </a>
-                    <br/><br/><br/><br/>
+                    <br />
+                  </h3>
+                  <br />
+                  <br />
+                  <br />
 
+                  <br />
+                  <br />
+                  <br />
                 </div>
-
-
-
-
                 {/*<a href="#content-1" className="accordion-toggle">Show more 1</a>
                       <div className="accordion-content" id="content-1">
                         Content goes here...
@@ -535,10 +564,6 @@ const CreateCourse = (props) => {
                       <div className="accordion-content" id="content-2">
                         Content goes here...
                       </div>*/}
-
-
-
-
                 <form
                   id="form_registration"
                   name="simpleRTE"
@@ -549,14 +574,28 @@ const CreateCourse = (props) => {
                   <a
                     onClick={handleToggleAccordion}
                     href="#content-1"
-                    className="accordion-toggle accordion"
+                    className="accordion-toggle accordion card-box"
                   >
                     {" "}
                     Section #1 (Course Basic Information )
                   </a>
                   <div className="accordion-content " id="content-1">
-                    <p>
-                      <p style={{ fontSize: "12px", marginLeft: "10px" }}>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    >
+                      <p
+                        style={{
+                          fontWeight: "700",
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "12px",
+                          lineHeight: "20px",
+
+                          marginTop: "14px",
+                          marginRight: "7px",
+                        }}
+                      >
                         Course Code
                       </p>
                       <input
@@ -572,8 +611,22 @@ const CreateCourse = (props) => {
                       />
                     </p>
 
-                    <p>
-                      <p style={{ fontSize: "12px", marginLeft: "10px" }}>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    >
+                      <p
+                        style={{
+                          fontWeight: "700",
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "12px",
+                          lineHeight: "20px",
+
+                          marginTop: "14px",
+                          marginRight: "7px",
+                        }}
+                      >
                         Course Name
                       </p>
                       <input
@@ -589,8 +642,22 @@ const CreateCourse = (props) => {
                       />
                     </p>
 
-                    <p>
-                      <p style={{ fontSize: "12px", marginLeft: "10px" }}>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    >
+                      <p
+                        style={{
+                          fontWeight: "700",
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "12px",
+                          lineHeight: "20px",
+
+                          marginTop: "14px",
+                          marginRight: "7px",
+                        }}
+                      >
                         Course Price NGN:
                       </p>
                       <input
@@ -610,13 +677,27 @@ const CreateCourse = (props) => {
                   <a
                     onClick={handleToggleAccordion}
                     href="#content-2"
-                    className="accordion-toggle accordion"
+                    className="accordion-toggle accordion card-box"
                   >
                     Section #2 (Lead Instructors and collaborators)
                   </a>
                   <div className="accordion-content " id="content-2">
-                    <p>
-                      <p style={{ fontSize: "12px", marginLeft: "10px" }}>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    >
+                      <p
+                        style={{
+                          fontWeight: "700",
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "12px",
+                          lineHeight: "20px",
+
+                          marginTop: "14px",
+                          marginRight: "7px",
+                        }}
+                      >
                         Lead Instructor
                       </p>
 
@@ -628,8 +709,22 @@ const CreateCourse = (props) => {
                       />
                     </p>
 
-                    <p>
-                      <p style={{ fontSize: "12px", marginLeft: "10px" }}>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    >
+                      <p
+                        style={{
+                          fontWeight: "700",
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "12px",
+                          lineHeight: "20px",
+
+                          marginTop: "14px",
+                          marginRight: "7px",
+                        }}
+                      >
                         Collaborators
                       </p>
                       <CollaboratorsGeneratedPills
@@ -640,8 +735,22 @@ const CreateCourse = (props) => {
                       />
                     </p>
 
-                    <p>
-                      <p style={{ fontSize: "12px", marginLeft: "10px" }}>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    >
+                      <p
+                        style={{
+                          fontWeight: "700",
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "12px",
+                          lineHeight: "20px",
+
+                          marginTop: "14px",
+                          marginRight: "7px",
+                        }}
+                      >
                         Learning Style
                       </p>
                       <select
@@ -665,8 +774,22 @@ const CreateCourse = (props) => {
                       </select>
                     </p>
 
-                    <p>
-                      <p style={{ fontSize: "12px", marginLeft: "10px" }}>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    >
+                      <p
+                        style={{
+                          fontWeight: "700",
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "12px",
+                          lineHeight: "20px",
+
+                          marginTop: "14px",
+                          marginRight: "7px",
+                        }}
+                      >
                         Duration in (hours)
                       </p>
                       <input
@@ -702,7 +825,10 @@ const CreateCourse = (props) => {
                             ref={dropRef}
                           >
                             <input {...getInputProps()} />
-                            <p>
+                            <p
+                              className="card-box"
+                              style={{ width: "96%", marginLeft: "20px" }}
+                            >
                               Drag and drop a file OR click here to select a
                               file
                             </p>
@@ -734,7 +860,10 @@ const CreateCourse = (props) => {
                         )
                       ) : (
                         <div className="preview-message">
-                          <p>
+                          <p
+                            className="card-box"
+                            style={{ width: "96%", marginLeft: "20px" }}
+                          >
                             Image preview will be shown here after selection
                           </p>
                         </div>
@@ -745,13 +874,27 @@ const CreateCourse = (props) => {
                   <a
                     onClick={handleToggleAccordion}
                     href="#content-3"
-                    className="accordion-toggle accordion"
+                    className="accordion-toggle accordion card-box"
                   >
                     Section #3 ( Course Overview Details)
                   </a>
                   <div className="accordion-content " id="content-3">
-                    <p>
-                      <p style={{ fontSize: "12px", marginLeft: "10px" }}>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    >
+                      <p
+                        style={{
+                          fontWeight: "700",
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "12px",
+                          lineHeight: "20px",
+
+                          marginTop: "14px",
+                          marginRight: "7px",
+                        }}
+                      >
                         {" "}
                         Language
                       </p>
@@ -778,8 +921,22 @@ const CreateCourse = (props) => {
                           })}
                       </select>
                     </p>
-                    <p>
-                      <p style={{ fontSize: "12px", marginLeft: "10px" }}>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    >
+                      <p
+                        style={{
+                          fontWeight: "700",
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "12px",
+                          lineHeight: "20px",
+
+                          marginTop: "14px",
+                          marginRight: "7px",
+                        }}
+                      >
                         Certificate
                       </p>
                       <select
@@ -805,8 +962,22 @@ const CreateCourse = (props) => {
                           })}
                       </select>
                     </p>
-                    <p>
-                      <p style={{ fontSize: "12px", marginLeft: "10px" }}>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    >
+                      <p
+                        style={{
+                          fontWeight: "700",
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "12px",
+                          lineHeight: "20px",
+
+                          marginTop: "14px",
+                          marginRight: "7px",
+                        }}
+                      >
                         {" "}
                         Category
                       </p>
@@ -835,7 +1006,10 @@ const CreateCourse = (props) => {
                     </p>
 
                     {/*<p data-fullscreen className="fullScreen-2">*/}
-                    <p>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    >
                       <HTMLForm
                         title="course_description"
                         placeholder={"course_description"}
@@ -850,13 +1024,27 @@ const CreateCourse = (props) => {
                   <a
                     onClick={handleToggleAccordion}
                     href="#content-4"
-                    className="accordion-toggle accordion"
+                    className="accordion-toggle accordion card-box"
                   >
                     Section #4 ( Course Enrollments Information)
                   </a>
                   <div className="accordion-content " id="content-4">
-                    <p>
-                      <p style={{ fontSize: "12px", marginLeft: "10px" }}>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    >
+                      <p
+                        style={{
+                          fontWeight: "700",
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "12px",
+                          lineHeight: "20px",
+
+                          marginTop: "14px",
+                          marginRight: "7px",
+                        }}
+                      >
                         {" "}
                         -- Institution --
                       </p>
@@ -883,8 +1071,22 @@ const CreateCourse = (props) => {
                           })}
                       </select>
                     </p>
-                    <p>
-                      <p style={{ fontSize: "12px", marginLeft: "10px" }}>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    >
+                      <p
+                        style={{
+                          fontWeight: "700",
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "12px",
+                          lineHeight: "20px",
+
+                          marginTop: "14px",
+                          marginRight: "7px",
+                        }}
+                      >
                         Introductory Video Url
                       </p>
                       <input
@@ -897,8 +1099,22 @@ const CreateCourse = (props) => {
                         id="registration_email"
                       />
                     </p>
-                    <p>
-                      <p style={{ fontSize: "12px", marginLeft: "10px" }}>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    >
+                      <p
+                        style={{
+                          fontWeight: "700",
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "12px",
+                          lineHeight: "20px",
+
+                          marginTop: "14px",
+                          marginRight: "7px",
+                        }}
+                      >
                         Enrollment Start
                       </p>
                       <input
@@ -913,8 +1129,22 @@ const CreateCourse = (props) => {
                         onChange={handleChange}
                       />
                     </p>
-                    <p>
-                      <p style={{ fontSize: "12px", marginLeft: "10px" }}>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    >
+                      <p
+                        style={{
+                          fontWeight: "700",
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "12px",
+                          lineHeight: "20px",
+
+                          marginTop: "14px",
+                          marginRight: "7px",
+                        }}
+                      >
                         Enrollment End
                       </p>
                       <input
@@ -930,8 +1160,22 @@ const CreateCourse = (props) => {
                       />
                     </p>
 
-                    <p>
-                      <p style={{ fontSize: "12px", marginLeft: "10px" }}>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    >
+                      <p
+                        style={{
+                          fontWeight: "700",
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "12px",
+                          lineHeight: "20px",
+
+                          marginTop: "14px",
+                          marginRight: "7px",
+                        }}
+                      >
                         {" "}
                         Start Date
                       </p>
@@ -947,8 +1191,22 @@ const CreateCourse = (props) => {
                         onChange={handleChange}
                       />
                     </p>
-                    <p>
-                      <p style={{ fontSize: "12px", marginLeft: "10px" }}>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    >
+                      <p
+                        style={{
+                          fontWeight: "700",
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "12px",
+                          lineHeight: "20px",
+
+                          marginTop: "14px",
+                          marginRight: "7px",
+                        }}
+                      >
                         {" "}
                         End Date
                       </p>
@@ -984,7 +1242,10 @@ const CreateCourse = (props) => {
                     Section #5 (Pre requisiites and curriculum section)
                   </a>
                   <div className="accordion-content " id="content-5">
-                    <p></p>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    ></p>
                     {/*<p data-fullscreen className="fullScreen-2">*/}
 
                     <HTMLForm
@@ -996,10 +1257,27 @@ const CreateCourse = (props) => {
                       stateAction={handleChangeTextEditor}
                     />
 
-                    <p></p>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    ></p>
 
-                    <p>
-                      <p style={{ fontSize: "12px", marginLeft: "10px" }}>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    >
+                      <p
+                        style={{
+                          fontWeight: "700",
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "12px",
+                          lineHeight: "20px",
+
+                          marginTop: "14px",
+                          marginRight: "7px",
+                        }}
+                      >
                         {" "}
                         Entrance Exam
                       </p>
@@ -1020,8 +1298,22 @@ const CreateCourse = (props) => {
                         <option value="1">Yes</option>
                       </select>
                     </p>
-                    <p>
-                      <p style={{ fontSize: "12px", marginLeft: "10px" }}>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    >
+                      <p
+                        style={{
+                          fontWeight: "700",
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "12px",
+                          lineHeight: "20px",
+
+                          marginTop: "14px",
+                          marginRight: "7px",
+                        }}
+                      >
                         Licesnse
                       </p>
                       <input
@@ -1036,8 +1328,22 @@ const CreateCourse = (props) => {
                         id="registration_fname"
                       />
                     </p>
-                    <p>
-                      <p style={{ fontSize: "12px", marginLeft: "10px" }}>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    >
+                      <p
+                        style={{
+                          fontWeight: "700",
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "12px",
+                          lineHeight: "20px",
+
+                          marginTop: "14px",
+                          marginRight: "7px",
+                        }}
+                      >
                         Overall grade range (Minimum course cut off score point)
                       </p>
                       <select
@@ -1061,8 +1367,22 @@ const CreateCourse = (props) => {
                         <option value={100}>100</option>
                       </select>
                     </p>
-                    <p>
-                      <p style={{ fontSize: "12px", marginLeft: "10px" }}>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    >
+                      <p
+                        style={{
+                          fontWeight: "700",
+                          fontFamily: "Open Sans",
+                          color: "#000",
+                          fontSize: "12px",
+                          lineHeight: "20px",
+
+                          marginTop: "14px",
+                          marginRight: "7px",
+                        }}
+                      >
                         Grace period on deadline
                       </p>
                       <input
@@ -1103,7 +1423,10 @@ const CreateCourse = (props) => {
                               />
                           )*/}
 
-                    <p></p>
+                    <p
+                      className="card-box"
+                      style={{ width: "96%", marginLeft: "20px" }}
+                    ></p>
                     <br />
                     <br />
 
@@ -1126,7 +1449,10 @@ const CreateCourse = (props) => {
                             ref={dropRef2}
                           >
                             <input {...getInputProps()} />
-                            <p>
+                            <p
+                              className="card-box"
+                              style={{ width: "96%", marginLeft: "20px" }}
+                            >
                               Drag and drop a file OR click here to select a
                               file
                             </p>
@@ -1158,30 +1484,24 @@ const CreateCourse = (props) => {
                         )
                       ) : (
                         <div className="preview-message">
-                          <p>
+                          <p
+                            className="card-box"
+                            style={{ width: "96%", marginLeft: "20px" }}
+                          >
                             Image preview will be shown here after selection
                           </p>
                         </div>
                       )}
                     </div>
-                    
                   </div>
-
-
-        
                 </form>
               </section>
-
-             
-
             </Col>
           </Container>
         </section>
 
-
-
         {/* Footer 2 */}
-        <Footer/>
+        <Footer />
       </div>
     </div>
   );

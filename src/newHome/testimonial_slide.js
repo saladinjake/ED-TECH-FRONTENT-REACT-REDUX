@@ -113,41 +113,53 @@ const Section = () => {
   return (
     <Fragment>
       <main className="testimony_time">
-        <section
-          id="testim"
-          className="testim"
-          
-        >
-          <div className="wrap container-fluid ">
-           
+        <section id="testim" className="testim">
+          <div className="wrap container">
             <span
-              style={{color:"#000", display:"none"}}
+              style={{ color: "#000", display: "none" }}
               id="left-arrow"
               className="arrow left fa fa-chevron-left "
             ></span>
-             <span
-            style={{color:"#000", display:"none"}}
+            <span
+              style={{ color: "#000", display: "none" }}
               id="right-arrow"
               className="arrow right fa fa-chevron-right"
             ></span>
-            <ul id="testim-dots" className="dots" >
+            <ul id="testim-dots" className="dots">
               <li className="dot active"></li>
-            
             </ul>
-            <div id="testim-content" className="cont" >
-           
-              <div className="row" style={{
-            backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/testimony2a.png)`,
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-            width: "100%",
-          }}>
+            <div
+              id="testim-content"
+              className="cont"
+              style={{
+                backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/testimony2a.png)`,
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+                width: "100%",
+                marginTop: "-40px",
+              }}
+            >
+              <div className="row">
                 <div className="col-md-12 ">
                   <div
-                    className="card-box col-md-6"
-                    style={{ padding: "10px" ,marginTop:"20px"}}
+                    className="card-box col-md-6 given-height-testimonial"
+                    style={{
+                      padding: "10px",
+                      marginTop: "20px",
+                      height: "500px",
+                    }}
                   >
-                    <p className=""  style={{color:"#000",marginLeft:"10px", lineHeight:"35px"}}>
+                    <p
+                      className="readable-content-testimony mobile-centry entry-center"
+                      style={{
+                        color: "#000",
+                        fontFamily: "Open Sans",
+                        fontSize: "14px",
+                        marginLeft: "10px",
+                        marginTop: "-50px",
+                        lineHeight: "35px",
+                      }}
+                    >
                       Come for all It is no exaggeration to say this MasterStudy
                       experience was transformative–both professionally and
                       personally. This workshop will long remain a high point of
@@ -156,14 +168,20 @@ const Section = () => {
                       all of my new teaching tools. I will absolutely recommend
                       this workshop to other educators!
                     </p>
-                    <h2  >Linda Green</h2>
-                    <h5  >Product Manager, Apple Inc</h5>
+                    <h2 className="shown mobile-centry entry-center">
+                      Linda Green
+                    </h2>
+                    <h5 className="shown mobile-centry entry-center">
+                      Product Manager, Apple Inc
+                    </h5>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
+        <br />
+        <br />
       </main>
     </Fragment>
   );

@@ -8,15 +8,16 @@ function StickyMenu({ cart, isAuthenticated, user, logOut }) {
   let history = useHistory();
 
   useEffect(() => {
-    window.addEventListener("scroll", () => {
-      const stickyMenu = document.querySelector(".sticky-menu");
-
-      if (window.scrollY > 160) {
-        stickyMenu.classList.add("sticky");
-      } else {
-        stickyMenu.classList.remove("sticky");
-      }
-    });
+    // window.addEventListener("scroll", () => {
+    //   if( document.querySelector(".sticky-menu")){
+    //     const stickyMenu = document.querySelector(".sticky-menu");
+    //   if (window.scrollY > 160) {
+    //     stickyMenu.classList.add("sticky");
+    //   } else {
+    //     stickyMenu.classList.remove("sticky");
+    //   }
+    //   }
+    // });
   });
 
   const handleLogout = async () => {

@@ -5,7 +5,7 @@
   left: 0;
   right: 0;
   width: 100%;
- 
+
   height: auto;
   z-index: 2000;
   visibility: hidden;
@@ -467,15 +467,14 @@ iframe#youtube {
   -webkit-transform: translate(0%, 0%);
 }
 
-
-.nav-item, .nav-link{
- 
- background: #fff;
- color: #000;
- padding: 1px;
- margin: 3px;
+.nav-item,
+.nav-link {
+  background: #fff;
+  color: #000;
+  padding: 1px;
+  margin: 3px;
 }
 
-.nav-link.active{
+.nav-link.active {
   background: #fff;
 }

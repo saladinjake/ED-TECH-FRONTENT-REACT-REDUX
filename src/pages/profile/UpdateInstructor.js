@@ -28,7 +28,7 @@ import "./instructor.css";
 import $ from "jquery";
 
 const UpdateInstructor = ({ auth: { user } }) => {
-  console.log(user)
+  console.log(user);
   let history = useHistory();
   const [loading, setLoading] = useState(true);
   const [countries, setCountries] = useState([]);
@@ -38,29 +38,28 @@ const UpdateInstructor = ({ auth: { user } }) => {
   const [profile, setProfile] = useState({});
   let preInst = null;
   let courseNiche = null;
-  let dummyAvatar = "https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png"
+  let dummyAvatar = "https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png";
   const [image_url, setImageProfile] = useState("");
 
   // alert(user?.image_url,profile?.user?.image_url, "hello Nija" )
 
   // const realImg =
 
-  const [userId, setUserId] = useState(user.id)
+  const [userId, setUserId] = useState(user.id);
 
   const [lang_id, setLangId] = useState(1);
 
   let initialValues = useMemo(() => {
-    console.log(profile)
+    console.log(profile);
     setImageProfile(profile?.user?.image_url);
     return Object.entries(profile).length !== 0
       ? {
-          
           username: profile?.user?.username || "",
           first_name: profile?.user?.first_name || "",
           middle_name: profile?.user?.middle_name || "",
           last_name: profile?.user?.last_name || "",
           phone_number: profile?.user?.phone_number || "",
-          
+
           gender: profile?.user?.instructor_profile?.gender || "",
           date_of_birth: profile?.user?.instructor_profile?.date_of_birth || "",
           country_id: profile?.user?.instructor_profile?.country_id || "",
@@ -106,8 +105,6 @@ const UpdateInstructor = ({ auth: { user } }) => {
         }
       : {};
   }, [profile]);
-
-  
 
   // if (!initialValues.image_url) {
   //   initialValues.image_url ="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png";
@@ -207,19 +204,18 @@ const UpdateInstructor = ({ auth: { user } }) => {
   };
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    try{
-
-
+    try {
       setLoading(true);
       values.email = user.email;
-      let langObject = languages.find((lang) => lang.english == values.language);
-      console.log(langObject)
-      if(langObject){
-         values.language = langObject.id;
-      }else{
-         values.language = "38";
+      let langObject = languages.find(
+        (lang) => lang.english == values.language
+      );
+      console.log(langObject);
+      if (langObject) {
+        values.language = langObject.id;
+      } else {
+        values.language = "38";
       }
-     
 
       // values.niche_courses = values.niche_courses.split(',');
       // values.previous_institutions = values.previous_institutions.split(',') ;
@@ -257,7 +253,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
       // console.log(values)
       try {
         await updateInstructorProfile(userId, langIn);
-        history.push("/")
+        history.push("/");
         toast.success("Your Profile has been updated.");
 
         // setTimeout(()=>{window.location.href= process.env.PUBLIC_URL+ "/"},2000)
@@ -267,12 +263,9 @@ const UpdateInstructor = ({ auth: { user } }) => {
       }
       setSubmitting(false);
       setLoading(false);
-
-
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
-
   };
 
   let niche = [];
@@ -299,7 +292,24 @@ const UpdateInstructor = ({ auth: { user } }) => {
               <Fragment>
                 <Row>
                   <Col lg="12">
-                    <div className="form_container card-box">
+                    <div className="form_container ">
+                      <br /> <br />
+                      <div className="col-sm-12">
+                        <h4
+                          className="page-title"
+                          style={{
+                            fontWeight: "300px",
+                            color: "#333",
+                            fontSize: "45px",
+                            fontFamily: "Open Sans",
+                            lineHight: "34px",
+                            letterSpacing: "-1px",
+                            fontWeight: "normal",
+                          }}
+                        >
+                          Edit My Profile
+                        </h4>
+                      </div>
                       <Formik
                         initialValues={initialValues}
                         onSubmit={handleSubmit}
@@ -315,8 +325,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
                         }) => (
                           <form
                             id="form_registration"
-                            className="form"
-                          
+                            className="form card-box"
                             style={{ padding: "20px" }}
                           >
                             <div className="container">
@@ -325,16 +334,16 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   <h6>Click the image to upload</h6>
 
                                   <div>
-                                    
-                                      <img
-                                        alt="User Pic"
-                                        src={initialValues?.image_url}
-                                        id="profile-image11"
-                                        height="200"
-                                        className="linkprofile"
-                                        onClick={startUpload}
-                                      />
-                                     
+                                    <img
+                                      alt="User Pic"
+                                      src={initialValues?.image_url}
+                                      id="profile-image11"
+                                      height="100"
+                                      className="linkprofile"
+                                      onClick={startUpload}
+                                      style={{ border: "none" }}
+                                    />
+
                                     <input
                                       id="profile-image-upload"
                                       className="hidden"
@@ -350,14 +359,25 @@ const UpdateInstructor = ({ auth: { user } }) => {
                             <br />
                             <br />
                             <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
 
                             <Row>
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_fname">
+                              <p
+                                className="input_field  col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_fname"
+                                >
                                   First Name
                                 </label>
                                 <input
@@ -376,8 +396,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                     errors.first_name}
                                 </span>
                               </p>
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_lname">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_lname"
+                                >
                                   Last Name
                                 </label>
                                 <input
@@ -396,8 +431,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_email">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_email"
+                                >
                                   Middle Name
                                 </label>
                                 <input
@@ -417,8 +467,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                 ) : null}
                               </p>
 
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_user">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_user"
+                                >
                                   Phone Number
                                 </label>
                                 <input
@@ -436,8 +501,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_email">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_email"
+                                >
                                   Brief Introduction
                                 </label>
                                 <textarea
@@ -458,8 +538,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                 ) : null}
                               </p>
 
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_email">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_email"
+                                >
                                   Detailed Introduction
                                 </label>
                                 <textarea
@@ -480,8 +575,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                 ) : null}
                               </p>
 
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_email">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_email"
+                                >
                                   current employer name
                                 </label>
                                 <input
@@ -503,8 +613,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                               </p>
                               <br />
 
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_email">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_email"
+                                >
                                   current employer designation
                                 </label>
                                 <input
@@ -526,8 +651,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                               </p>
                               <br />
 
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_email">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_email"
+                                >
                                   previous employer name
                                 </label>
                                 <input
@@ -549,8 +689,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                               </p>
                               <br />
 
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_email">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_email"
+                                >
                                   previous employer designation
                                 </label>
                                 <input
@@ -572,8 +727,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                               </p>
                               <br />
 
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_user">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_user"
+                                >
                                   Industry ID
                                 </label>
                                 <select
@@ -602,8 +772,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                 ) : null}
                               </p>
 
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_email">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_email"
+                                >
                                   Previous Institution seperated by comma
                                 </label>
                                 <input
@@ -625,8 +810,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                               </p>
                               <br />
 
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_email">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_email"
+                                >
                                   Niche courses seperated by comma
                                 </label>
                                 <input
@@ -648,8 +848,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                               </p>
                               <br />
 
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_email">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_email"
+                                >
                                   Other Info
                                 </label>
                                 <textarea
@@ -667,8 +882,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_user">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_user"
+                                >
                                   Date Of Birth
                                 </label>
                                 <input
@@ -687,8 +917,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_user">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_user"
+                                >
                                   Gender
                                 </label>
                                 <select
@@ -709,8 +954,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                 ) : null}
                               </p>
 
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_user">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_user"
+                                >
                                   Country
                                 </label>
                                 <select
@@ -736,8 +996,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                 ) : null}
                               </p>
 
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_email">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_email"
+                                >
                                   Username
                                 </label>
                                 <input
@@ -756,8 +1031,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_user">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_user"
+                                >
                                   Language{" "}
                                   {profile?.user?.instructor_profile.language}
                                 </label>
@@ -787,8 +1077,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                 ) : null}
                               </p>
 
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_user">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_user"
+                                >
                                   Educational Level
                                 </label>
                                 <select
@@ -813,8 +1118,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_user">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_user"
+                                >
                                   Degree Obtained
                                 </label>
                                 <select
@@ -839,8 +1159,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_user">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_user"
+                                >
                                   Employment Status
                                 </label>
                                 <select
@@ -865,8 +1200,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_user">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_user"
+                                >
                                   Experience Level
                                 </label>
                                 <select
@@ -891,8 +1241,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_user">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_user"
+                                >
                                   Marital Status
                                 </label>
                                 <select
@@ -917,8 +1282,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_email">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_email"
+                                >
                                   Facebook Url
                                 </label>
                                 <input
@@ -936,8 +1316,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_email">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_email"
+                                >
                                   Twitter Url
                                 </label>
                                 <input
@@ -955,8 +1350,23 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                   </span>
                                 ) : null}
                               </p>
-                              <p className="input_field col_half">
-                                <label htmlFor="registration_email">
+                              <p
+                                className="input_field col_half card-box"
+                                style={{ width: "45%", margin: "20px" }}
+                              >
+                                <label
+                                  style={{
+                                    fontWeight: "700",
+                                    fontFamily: "Open Sans",
+                                    color: "#000",
+                                    fontSize: "12px",
+                                    lineHeight: "20px",
+
+                                    marginTop: "14px",
+                                    marginRight: "7px",
+                                  }}
+                                  htmlFor="registration_email"
+                                >
                                   Linkedin Url
                                 </label>
                                 <input
@@ -975,7 +1385,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
                                 ) : null}
                               </p>
                             </Row>
-                            <button  onClick={handleSubmit}>
+                            <button onClick={handleSubmit}>
                               {loading ? (
                                 <div className="spinner-border" role="status">
                                   <span className="sr-only">Loading...</span>

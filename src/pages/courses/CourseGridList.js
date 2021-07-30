@@ -147,7 +147,9 @@ const CourseGrid = ({
     <div className="main-wrapper course-page">
       <NavBar />
 
-<br/><br/><br/>
+      <br />
+      <br />
+      <br />
       <PageTitle2 />
 
       <Styles>
@@ -166,38 +168,38 @@ const CourseGrid = ({
               </Col>
 
               <Col lg="9" md="8" sm="7">
-                <div className="row hidden-sm-down  shown" >
+                <div className="row hidden-sm-down  shown">
                   <div className="">
-
-
-
-                  <div className="container" id="container-actions" style={{marginRight:"40px"}}>
+                    <div
+                      className="container"
+                      id="container-actions"
+                      style={{ marginRight: "40px" }}
+                    >
                       <div className="buttons">
-                      
-                         <button
-                        id="grid"
-                    
-                      onClick={() => {
-                        history.push("/course-grid/list");
-                      }}
-
-                         className="list square-btn"><i className="fa fa-bars fa-3x"></i></button>
-                          <button id="list"
-                     
-                      onClick={() => {
-                        history.push("/courses");
-                      }} 
-                      className="grid square-btn active" style={{background:"#fafafa"}}><i className="fa fa-th-large fa-3x"></i></button>
-                      
+                        <button
+                          id="grid"
+                          onClick={() => {
+                            history.push("/course-grid/list");
+                          }}
+                          className="list square-btn"
+                        >
+                          <i className="fa fa-bars fa-3x"></i>
+                        </button>
+                        <button
+                          id="list"
+                          onClick={() => {
+                            history.push("/courses");
+                          }}
+                          className="grid square-btn active"
+                          style={{ background: "#fafafa" }}
+                        >
+                          <i className="fa fa-th-large fa-3x"></i>
+                        </button>
                       </div>
                     </div>
-
-
-                   
                   </div>
                 </div>
                 <br />
-
 
                 <div className="course-items ">
                   <Row>
@@ -217,17 +219,15 @@ const CourseGrid = ({
                     )}
                   </Row>
 
-                  <br/><br/>
+                  <br />
+                  <br />
                   <Row>
-                     
-                     <Col md="12">
-                        {query?.get("search")?.toLowerCase()?.length > 0 
-                          && filterAllCourses?.length <= 0  && ( <h1>No Search Found</h1>)
-
-
-                         }
-                     
-                     </Col>
+                    <Col md="12">
+                      {query?.get("search")?.toLowerCase()?.length > 0 &&
+                        filterAllCourses?.length <= 0 && (
+                          <h1>No Search Found</h1>
+                        )}
+                    </Col>
                   </Row>
                 </div>
               </Col>

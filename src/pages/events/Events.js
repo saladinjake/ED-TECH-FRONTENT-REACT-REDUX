@@ -5,29 +5,36 @@ import { Container, Row, Col } from "react-bootstrap";
 import HeaderTwo from "../../components/HeaderTwo";
 import { BreadcrumbBox } from "../../components/common/Breadcrumb";
 import Pagination from "../../components/Pagination";
-import CourseSidebar from "../courses/components/CourseSidebar";
+import NavBar from "components/Navbar";
+import $ from "jquery";
+import Footer from "../../components/Footer";
 import FooterTwo from "../../components/FooterTwo";
 import { Styles } from "./styles/event.js";
 
 class Events extends Component {
+  componentDidMount() {
+    $("body").css({ "background-color": "#fff" });
+    $(".footer p,.footer span, footer p, footer span").each(function () {
+      $(this).css({ color: "#fff", fontFamily: "Open Sans" });
+    });
+  }
   render() {
     return (
       <Styles>
         {/* Main Wrapper */}
         <div className="main-wrapper event-page">
           {/* Header 2 */}
-          <HeaderTwo />
-
-          {/* Breadcroumb */}
-          <BreadcrumbBox title="Events" />
+          <NavBar />
 
           {/* Events Area */}
           <section className="event-page-area">
             <Container>
               <Row>
                 <Col lg="9" md="12">
+                  <br />
+                  <br />
                   {Datas.map((data, i) => (
-                    <div className="event-box" key={i}>
+                    <div className="event-box card" key={i}>
                       <Row>
                         <Col xl="3" lg="4" md="0">
                           <div className="event-img">
@@ -98,20 +105,18 @@ class Events extends Component {
                     </div>
                   ))}
 
-                  <Col md="12" className="text-center">
+                  {/*                  <Col md="12" className="text-center">
                     <Pagination />
-                  </Col>
+                  </Col>*/}
                 </Col>
 
-                <Col lg="3" md="0">
-                  <CourseSidebar />
-                </Col>
+                <Col lg="3" md="0"></Col>
               </Row>
             </Container>
           </section>
 
           {/* Footer 2 */}
-          <FooterTwo />
+          <Footer />
         </div>
       </Styles>
     );

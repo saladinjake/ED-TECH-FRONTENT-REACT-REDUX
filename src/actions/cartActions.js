@@ -46,7 +46,7 @@ export const addToCart = (id) => async (dispatch) => {
   });
 
   setTimeout(() => {
-    window.location.reload()
+    window.location.reload();
   }, 3000);
 };
 

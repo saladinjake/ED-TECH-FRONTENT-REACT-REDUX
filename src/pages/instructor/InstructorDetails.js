@@ -7,6 +7,7 @@ import NavBar from "components/Navbar";
 import { BreadcrumbBox } from "../../components/common/Breadcrumb";
 import Footer from "components/Footer";
 import { Styles } from "./styles/instructor.js";
+import $ from "jquery";
 
 import Loader from "components/Loader/Loader";
 import { getInstructor, getActiveInstructors } from "services/instructor";
@@ -49,8 +50,8 @@ const InstructorDetails = ({ match }) => {
   const [currentInstructorViewed, setActiveInstructor] = useState({});
   const [allInst, setAllInst] = useState([]);
 
-   const [co_authored_course, setCoAuthoredCourses] = useState([])
-  const [my_courses, setAuthoredCourses] = useState([])
+  const [co_authored_course, setCoAuthoredCourses] = useState([]);
+  const [my_courses, setAuthoredCourses] = useState([]);
 
   const init = async () => {
     let instructorId = parseInt(match.params.id);
@@ -58,8 +59,8 @@ const InstructorDetails = ({ match }) => {
       let response = await getInstructor(instructorId);
       let resWithCourses = await getActiveInstructors();
       setDetails({ ...response.data.data.profile });
-      setAuthoredCourses([...response.data.data?.profile?.courses])
-      setCoAuthoredCourses([...response.data.data?.co_authored_courses])
+      setAuthoredCourses([...response.data.data?.profile?.courses]);
+      setCoAuthoredCourses([...response.data.data?.co_authored_courses]);
       console.log([...response.data.data?.co_authored_courses]);
 
       setAllInst([...resWithCourses.data.data.data]);
@@ -79,6 +80,12 @@ const InstructorDetails = ({ match }) => {
     init();
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    $(".footer p,.footer span, footer p, footer span").each(function () {
+      $(this).css({ color: "#fff", fontFamily: "Open Sans" });
+    });
+  });
 
   console.log(allInst);
   let targetProfile = allInst.find((instructor) => {
@@ -209,7 +216,7 @@ const InstructorDetails = ({ match }) => {
                       </ul>*/}
                     </div>
                   </Col>
-                 <Col md="8">
+                  <Col md="8">
                     <div className="instructor-content  card-box">
                       <h4>
                         <i
@@ -223,7 +230,7 @@ const InstructorDetails = ({ match }) => {
                         {`${details.instructor_profile.experience_level}`}
                       </span>*/}
                       <h5>About Me</h5>
-                      <br/>
+                      <br />
                       <p>
                         <i
                           className="fa fa-work"
@@ -315,9 +322,7 @@ const InstructorDetails = ({ match }) => {
                     </div>
                   </Col>
 
-
-
-                     <Col md="12">
+                  <Col md="12">
                     <div className="instructor-course-title ">
                       <h5>
                         <i

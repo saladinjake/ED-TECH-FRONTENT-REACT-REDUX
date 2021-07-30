@@ -28,7 +28,7 @@ export const colors = {
 };
 
 export const fonts = {
-  roboto: "'Roboto', sans-serif",
-  poppins: "'Poppins', sans-serif",
-  sequel: "'Sequel Sans', sans-serif",
+  roboto: "'Open Sans', sans-serif",
+  poppins: "'Open Sans', sans-serif",
+  sequel: "'Open Sans', sans-serif",
 };

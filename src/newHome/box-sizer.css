@@ -1,93 +1,83 @@
 .box-sizer {
   height: 100px;
-  min-width: 100px;
-  max-width: 120px;
+  /*min-width: 100px;
+  max-width: 120px;*/
 }
 
-.two-third{
+.two-third {
   height: 190px;
 }
 
-
-
-
-.two-third:hover h1{
- color: #fff;
+.two-third:hover h1 {
+  color: #fff;
 }
 
-
 .carded-1box {
- /* background: #fff;*/
+  /* background: #fff;*/
   border-radius: 2px;
   display: inline-block;
   height: 370px;
   margin: 1rem;
   position: relative;
-  width: 250px;
+  /*width: 150px;*/
   float: left;
   overflow: hidden;
   transition: 1s ease;
   color: #000;
   background: #fff;
-  text-align:center;
-   justify-content:center;
-   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  transition: all 1s cubic-bezier(.25,.8,.25,1);
-
+  text-align: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 1s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .card-1box {
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  transition: all 1s cubic-bezier(.25,.8,.25,1);
-   transition:all 0.3s ease;
+  /*height:360px;*/
+  width: 250px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 1s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.3s ease;
 
-    transition:all 0.3s ease;
-
-  
+  transition: all 0.3s ease;
 }
 
-
-.midnight{
+.midnight {
   color: violet;
   padding: 20px;
 }
 
-.sky{
-
-  color:   indigo;
+.sky {
+  color: indigo;
   padding: 20px;
 }
 
-.maroon{
-    color:   blue;
+.maroon {
+  color: blue;
   padding: 20px;
 }
 
-
-.beige{
-     color:  green;
+.beige {
+  color: green;
   padding: 20px;
 }
 
-.antiquewhite{
-   color:  indigo;
+.antiquewhite {
+  color: indigo;
   padding: 20px;
 }
 
-
-.azure{
-     color: red;
+.azure {
+  color: red;
   padding: 20px;
 }
 
-
-.mediumvioletred{
-   color:  orange;
+.mediumvioletred {
+  color: orange;
   padding: 20px;
 }
 
-.deeppink{
-  color:  deeppink;
+.deeppink {
+  color: deeppink;
   padding: 20px;
 }
 
@@ -99,36 +89,56 @@
   transform: translateY(-50%);
 }
 
-
-.icon-boxs h1{
+.icon-boxs h1 {
   display: inline-block;
   margin-right: -0.25em;
   text-align: center;
   line-height: -40px;
 }
 
-
-.icon-boxs{
+.icon-boxs {
   padding: 10px;
   margin: 0px auto;
 }
 
-
-.head-title{
+.head-title {
   /*margin-top:30px;*/
   line-height: 0px;
 }
-.carded-1box h1{
-  font-size: 18px;
+
+.head-title h1 {
+  line-height: 26px;
+  font-weight: 500;
+  font-size: 16px;
+  font-family: "Open Sans";
+}
+
+.infomation {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  color: #273044;
+  font-family: "Open Sans";
+  color: #273044;
+  font-size: 14px;
+}
+
+.carded-1box h1 {
   display: inline-block;
   margin: 0px;
   text-align: center;
   line-height: 18px;
 
+  line-height: 26px;
+  font-weight: 500;
+  font-size: 16px;
+  font-family: "Open Sans";
+
   /*
   vertical-align: middle;*/
 }
-
 
 .detail-sections {
   padding: 5px;
@@ -136,33 +146,27 @@
   /*text-align: left;
   justify-content: left;*/
 
-        vertical-align: middle;
+  vertical-align: middle;
 }
 
- .detail-sections p{
+.detail-sections p {
   list-style-type: none;
   font-size: 12px;
   color: #000;
-
 }
-
-
-
 
 .details-window-animated {
   height: 480px;
   width: 100%;
   opacity: 0;
-  background:rgb(2, 83, 200);
+  background: rgb(2, 83, 200);
   position: absolute;
-  marginLeft: -20px;
-  marginRight: -10px;
-
+  marginleft: -20px;
+  marginright: -10px;
 
   /*background: linear-gradient(-45deg, #c0d0d4, #e73c7e, #23a6d5, #23d5ab);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;*/
-
 
   -webkit-animation-duration: 1s;
   animation-duration: 1s;
@@ -173,8 +177,6 @@
   animation-iteration-count: infinite;
   -webkit-animation-iteration-count: infinite;
 }
-
-
 
 @keyframes gradient {
   0% {
@@ -188,34 +190,24 @@
   }
 }
 
-
-
-
-
-
-
-
-.one, .two {
- /* background: #fff;*/
+.one,
+.two {
+  /* background: #fff;*/
   color: #000;
 }
 
-
-
-
-
-
-.up , .upper{
+.up,
+.upper {
   bottom: -12.5%;
 }
-.down{
+.down {
   top: -72.5%;
 }
 .center {
   bottom: 0;
   z-index: 2;
 }
-.left{
+.left {
   bottom: 0%;
   left: -100%;
 }
@@ -226,88 +218,65 @@
 
 /* here we will start to add our animations and transitions */
 
-
 /* we target .image box and specify what element we want to change*/
-.one:hover .up  {
+.one:hover .up {
   transform: translateY(35%);
- background: rgba(8,23,200);
+  background: rgba(8, 23, 200);
   opacity: 0.99;
   transition: 1s ease;
   color: #fff;
   padding: 5px;
 
   -webkit-animation: swing 1s ease;
-    animation: swing 1s ease;
-    -webkit-animation-iteration-count: 1;
-    animation-iteration-count: 1;
-
-
-
+  animation: swing 1s ease;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
 }
-.main-center{
+.main-center {
   display: flex;
   justify-content: center;
 }
 
-.child-center{
+.child-center {
   margin: 0px auto;
 }
-.one:hover   {
-  
-  background: rgba(8,23,200);
+.one:hover {
+  background: rgba(8, 23, 200);
   opacity: 0.7;
   transition: 1s ease;
   color: #fff;
   padding: 5px;
-
-
 }
 
-.one:hover .head-title, 
-.one:hover h1{
+.one:hover .head-title,
+.one:hover h1 {
   margin-top: -20px;
   color: #fff;
-     vertical-align: middle;
-     
+  vertical-align: middle;
 }
 
-.one:hover p{
+.one:hover p {
   color: #fff;
 }
 
-
- .one:hover .icon-boxs  {
+.one:hover .icon-boxs {
   transform: translateY(-95%);
-  background: rgba(8,23,200);
+  background: rgba(8, 23, 200);
   opacity: 0.7;
   transition: 1s ease;
   color: #fff;
   padding: 5px;
-
 }
 
-
-
-.carded-1box:hover p{
-  color:  #fff;
+.carded-1box:hover p {
+  color: #fff;
   opacity: 1;
- 
 }
 
-
-
-
-
-
-
-.carded-1box a{
+.carded-1box a {
   padding: 10px;
   height: 40px;
-
 }
-
-
-
 
 /*.one:hover a, .carded-1box:hover a{
   background-color: #fff;
@@ -315,16 +284,17 @@
 }
 */
 
-
-
-
-
-
 /* For this animation we need to set up a keyframe animation to define how our element fades in. We then just call it onto the element we want to use it on */
 @keyframes fade-in {
-  0% {opacity: 0}
-  50% {opacity: 0.3}
-  100% {opacity: 0.7}
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.7;
+  }
 }
 .three:hover .center {
   animation: fade-in 1s ease;
@@ -341,149 +311,116 @@
   transition: 1s ease;
 }
 
-
-
-
-
-
-
-
 @-webkit-keyframes swing {
-    5%{
-       -webkit-transform: translateY(15px);
-        transform: translateY(25px);
-    }
-    15% {
-        -webkit-transform: translateY(5px);
-        transform: translateY(5px);
-    }
-    30% {
-        -webkit-transform: translateY(-5px);
-        transform: translateY(-5px);
-    }
-    50% {
-        -webkit-transform: translateY(3px);
-        transform: translateY(3px);
-    }
-    65% {
-        -webkit-transform: translateY(-3px);
-        transform: translateY(-3px);
-    }
-    80% {
-        -webkit-transform: translateY(2px);
-        transform: translateY(2px);
-    }
-    100% {
-        -webkit-transform: translateY(0);
-        transform: translateY(0);
-    }
+  5% {
+    -webkit-transform: translateY(15px);
+    transform: translateY(25px);
+  }
+  15% {
+    -webkit-transform: translateY(5px);
+    transform: translateY(5px);
+  }
+  30% {
+    -webkit-transform: translateY(-5px);
+    transform: translateY(-5px);
+  }
+  50% {
+    -webkit-transform: translateY(3px);
+    transform: translateY(3px);
+  }
+  65% {
+    -webkit-transform: translateY(-3px);
+    transform: translateY(-3px);
+  }
+  80% {
+    -webkit-transform: translateY(2px);
+    transform: translateY(2px);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
 }
 @keyframes swing {
-    15% {
-        -webkit-transform: translateY(5px);
-        transform: translateY(5px);
-    }
-    30% {
-        -webkit-transform: translateY(-5px);
-        transform: translateY(-5px);
-    }
-    50% {
-        -webkit-transform: translateY(3px);
-        transform: translateY(3px);
-    }
-    65% {
-        -webkit-transform: translateY(-3px);
-        transform: translateY(-3px);
-    }
-    80% {
-        -webkit-transform: translateY(2px);
-        transform: translateY(2px);
-    }
-    100% {
-        -webkit-transform: translateY(0);
-        transform: translateY(0);
-    }
+  15% {
+    -webkit-transform: translateY(5px);
+    transform: translateY(5px);
+  }
+  30% {
+    -webkit-transform: translateY(-5px);
+    transform: translateY(-5px);
+  }
+  50% {
+    -webkit-transform: translateY(3px);
+    transform: translateY(3px);
+  }
+  65% {
+    -webkit-transform: translateY(-3px);
+    transform: translateY(-3px);
+  }
+  80% {
+    -webkit-transform: translateY(2px);
+    transform: translateY(2px);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
 }
-.swing:hover
-{
-    -webkit-animation: swing 1s ease;
-    animation: swing 1s ease;
-    -webkit-animation-iteration-count: 1;
-    animation-iteration-count: 1;
+.swing:hover {
+  -webkit-animation: swing 1s ease;
+  animation: swing 1s ease;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
 }
-
-
-
-
-
 
 @keyframes bounce {
-  0%, 100%, 20%, 50%, 80% {
+  0%,
+  100%,
+  20%,
+  50%,
+  80% {
     -webkit-transform: translateY(0);
-    -ms-transform:     translateY(0);
-    transform:         translateY(0)
+    -ms-transform: translateY(0);
+    transform: translateY(0);
   }
   40% {
     -webkit-transform: translateY(-30px);
-    -ms-transform:     translateY(-30px);
-    transform:         translateY(-30px)
+    -ms-transform: translateY(-30px);
+    transform: translateY(-30px);
   }
   60% {
     -webkit-transform: translateY(-15px);
-    -ms-transform:     translateY(-15px);
-    transform:         translateY(-15px)
+    -ms-transform: translateY(-15px);
+    transform: translateY(-15px);
   }
 }
 
-
-
-
-.one:hover .details-window-animated{
+.one:hover .details-window-animated {
   opacity: 0.01;
   cursor: pointer;
   animation-name: bounce;
   -moz-animation-name: bounce;
 }
 
-
 .card-1box:hover {
   /*box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);*/
-   -webkit-animation: swing 1s ease;
-    animation: swing 1s ease;
-    -webkit-animation-iteration-count: 1;
-    animation-iteration-count: 1;
-
-
-
+  -webkit-animation: swing 1s ease;
+  animation: swing 1s ease;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-.two:hover .left  {
+.two:hover .left {
   transform: translateY(135%);
-  background: rgba(8,23,200);
+  background: rgba(8, 23, 200);
   opacity: 0.99;
   transition: 1s ease;
   color: #fff;
   padding: 5px;
 
   -webkit-animation: swing 1s ease;
-    animation: swing 1s ease;
-    -webkit-animation-iteration-count: 1;
-    animation-iteration-count: 1;
-
-
-
+  animation: swing 1s ease;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
 }
-
-

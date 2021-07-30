@@ -145,7 +145,7 @@ export const Styles = styled.div`
         line-height: 35px;
         font-weight: 600;
         margin-bottom: 15px;
-        font-family: Sequel Sans;
+        font-family: Open Sans;
         font-style: normal;
         font-weight: normal;
         font-size: 50px;
