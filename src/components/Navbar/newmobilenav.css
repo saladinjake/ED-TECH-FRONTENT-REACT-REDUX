@@ -2923,3 +2923,19 @@ Media queries for responsive design
 .list-unstyled {
   display: none;
 }
+
+
+
+
+
+
+ .no-ripper:hover .show-me {    
+    display: inline-table;
+    position: relative;
+    width: 100%;
+    font-family:"Open Sans"; 
+}
+
+.list-unstyled{
+     font-family:"Open Sans"; 
+}

@@ -8,9 +8,9 @@ import { connect } from "react-redux";
 import { logOut } from "actions/authActions";
 import { Link } from "react-router-dom";
 import Sidebar from "./sidebar"
+import $ from "jquery"
 
-
-const HeaderBox = ({ actionLink, linkTitle }) =>{
+export const HeaderBox = ({ actionLink, linkTitle }) =>{
   return (
         <div className="" style={{ height: "100px",background:"#fff",padding:"10px",marginBottom:"20px" }}>
               <div
@@ -32,7 +32,19 @@ const HeaderBox = ({ actionLink, linkTitle }) =>{
                       Dashboard
                     </h4>
 
-                    {actionLink?.length > 0 ?  (<a style={{background:"#fff",borderRadius:"20px", color:"#000"}} className="btn btn-primary pull-right" href={process.env.PUBLIC_URL+ actionLink} >{linkTitle}</a>) : (<Fragment />)}
+                    {actionLink?.length > 0 ?  (<a style={{
+                                                  background:"#fff",
+                                                  borderRadius:"20px",
+                                                  color:"#000",
+                                                  padding:"5px",
+                                                  width:"150px",
+                                                  justifyContent:"right",
+                                                  fontSize:"14px",
+                                                  marginRight:"20px",
+                                                  marginTop:"20px"
+
+
+                                               }} className="btn btn-primary pull-right" href={process.env.PUBLIC_URL+ actionLink} >{linkTitle}</a>) : (<Fragment />)}
                     
                   </div>
                   
@@ -44,7 +56,54 @@ const HeaderBox = ({ actionLink, linkTitle }) =>{
   )
 }
 
-const AdminRevenue = () => {
+const FilterForm = () => {
+
+  useEffect(() => {
+
+
+// Events
+$('.dropdown-container')
+  .on('click', '.dropdown-button', function() {
+        $(this).siblings('.dropdown-list').toggle();
+  })
+  .on('input', '.dropdown-search pull-right', function() {
+      var target = $(this);
+        var dropdownList = target.closest('.dropdown-list');
+      var search = target.val().toLowerCase();
+    
+      if (!search) {
+            dropdownList.find('li').show();
+            return false;
+        }
+    
+      dropdownList.find('li').each(function() {
+          var text = $(this).text().toLowerCase();
+            var match = text.indexOf(search) > -1;
+            $(this).toggle(match);
+        });
+  })
+  .on('change', '[type="checkbox"]', function() {
+        var container = $(this).closest('.dropdown-container');
+        var numChecked = container. find('[type="checkbox"]:checked').length;
+      container.find('.quantity').text(numChecked || 'Any');
+  });
+
+// JSON of States for demo purposes
+var usStates = [
+    
+];
+let stateTemplate =""
+// Populate list with states
+usStates.forEach(function(s) {
+    s.name = s.name;
+    stateTemplate+="<li>"
+    stateTemplate+=`<input name=\" \"  type=\"checkbox\" />`
+     stateTemplate+=`<label for=\" \"   />${s.name}</label>`
+    stateTemplate+="</li>"
+    $('ul.zap').append( stateTemplate);
+});
+
+})
    return (
   <div className="" style={{ height: "400px",background:"#fff",padding:"10px",marginBottom:"20px" }}>
               <div
@@ -62,16 +121,70 @@ const AdminRevenue = () => {
                         
                       }}
                     >
-                      Admin Revenues
+                     Course Lists
                     </h4>
 
+                    <br/><br/><br/>
 
 
-                  <div class="graph-container">
-                    <svg></svg>
-                    <div class="tooltip"></div>
-                  </div>
+                 <div className="padded-down">
+                  <Container>
+                  <Row className="row">
+                   
+                     <Col md="3">
+                     <p> Categories</p>
+                       <div class="dropdown-container">
+                          <div class="dropdown-button noselect">
+                              <div class="dropdown-label">All</div>
+                              <div class="dropdown-quantity"></div>
+                              <i class="fa fa-search fa "></i>
+                          </div>
+                          <div class="dropdown-list" style={{display:"none"}}>
+                              <input type="search" placeholder="search categories" class="dropdown-search pull-right"/>
+                              <ul className="zap"></ul>
+                          </div>
+                      </div>
+                     </Col>
 
+                    <Col md="3">
+                     <p> Status</p>
+                       <div class="dropdown-container">
+                          <div class="dropdown-button noselect">
+                              <div class="dropdown-label">All</div>
+                              <div class="dropdown-quantity"></div>
+                              <i class="fa fa-search fa-search "></i>
+                          </div>
+                          <div class="dropdown-list" style={{display:"none"}}>
+                              <input type="search" placeholder="search categories" class="dropdown-search pull-right"/>
+                              <ul className="zap"></ul>
+                          </div>
+                      </div>
+                     </Col>
+
+                     <Col md="3">
+                      <p> Price</p>
+                       <div class="dropdown-container">
+                          <div class="dropdown-button noselect">
+                              <div class="dropdown-label">All</div>
+                              <div class="dropdown-quantity"></div>
+                              <i class="fa fa-search fa-search "></i>
+                          </div>
+                          <div class="dropdown-list" style={{display:"none"}}>
+                              <input type="search" placeholder="search categories" class="dropdown-search pull-right"/>
+                              <ul className="zap"></ul>
+                          </div>
+                      </div>
+                     </Col>
+
+                     <Col md="3">
+                     <div class="padded">
+                        <button type="submit" className="btn btn-primary" value="Filter" style={{padding:"10px", width:"200px",color:"#fff",fontSize:"14px",marginTop:"30px"}} >Filter</button>
+                        </div>
+                     </Col>
+                    
+                    </Row>
+                  </Container>
+                </div>
                     
                   </div>
 
@@ -140,37 +253,9 @@ const EventBoxes = () => {
               </Link>
             </div>
           </Col>
-
-          <Col lg="3" sm="6">
-            <div className="widget-panel widget-style-2 bg-white" style={{width:"200px"}}>
-              <Link to={process.env.PUBLIC_URL + `/learner/wishlists`}>
-                <i className="fa fa-video " style={{textAlign:"center", fontSize:"15px",justifyContent:"center"}}></i>
-                <h2
-                  className="m-0 text-dark-x counter font-600-x"
-                  style={{
-                    fontFamily: "Open Sans",
-                    color: "#000",
-                    fontSize: "14px",
-                  }}
-                >
-                  (0)
-                </h2>
-                <div
-                  className="text-muted-x m-t-5-x"
-                  style={{
-                    fontFamily: "Open Sans",
-                    color: "#000",
-                    fontSize: "14px",
-                  }}
-                >
-                  Number of lessons
-                </div>
-              </Link>
-            </div>
-          </Col>
           <Col lg="3" sm="6">
             <Link to={process.env.PUBLIC_URL + `/cart`}>
-              <div className="widget-panel widget-style-2 bg-white" style={{margin:"0px"}}>
+              <div className="widget-panel widget-style-2 bg-white">
                 <i className="fa fa-menu" style={{textAlign:"center", fontSize:"15px",justifyContent:"center"}}></i>
                 <h2
                   className="m-0 text-dark-x counter font-600-x"
@@ -241,9 +326,10 @@ const WelcomeBanner = ({
   })
   return (
     <Fragment>
-       <HeaderBox actionLink={"authoring/add-course"} linkTitle="Create Course" />
+       <HeaderBox actionLink={"authoring/add-course"} linkTitle="+ Add new course" />
 
        <EventBoxes />
+       <FilterForm />
        
 
 

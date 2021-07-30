@@ -11,7 +11,7 @@ export const Styles =styled.div`
      overflow: hidden;
 	 transition: all .3s ease-in;
 	
-	 height:1000px;
+	 height:800px;
 
 	   
 	
@@ -131,98 +131,6 @@ i.iconMenu {
 
 
 
-/*-------- RESPONSIVO ---------*/
-/*medium screen*/
-	@media (max-width: 992px) {
-		  div#menu-lateral {
-		    position: absolute;
-		    left: 0px;
-		    margin-bottom: 15px;
-		    bottom: 0;
-		    top: 0;
-        margin-top: 8.5em;
-		  }
-
-		  ul#menu-menu-lateral li.menu-item a {
-		    font-size: 0.9em;
-        line-height: 22px;
-		  }
-
-
-		  ul#menu-menu-lateral li >.sub-menu li > a {
-		    padding-left: 10px;
-		  }
-
-		 
-      ul#menu-menu-lateral li >.sub-menu li {
-        padding: 5px;        
-        width: 245px;        
-      }
-      
-      #menu-lateral ul.menu li:hover > .sub-menu, #menu-lateral ul.menu li:focus-within > .sub-menu {
-    display: inline-table;
-    position: absolute;
-    left: 14.5em;
-    width: 100%;
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 
-    0 3px 1px -2px rgba(0,0,0,0.12), 
-    0 1px 5px 0 rgba(0,0,0,0.2);
-}
-
-	}
-
-  @media (max-width: 600px) {
-    
-    ul#menu-menu-lateral li {
-        height: 55px;
-        width: 55px;
-		  }
-    
-    li.menu-item {
-    background-color: grey;
-}
-    
-    li.menu-item i.iconMenu {
-    color: #fff;
-}
-    li.menu-item:hover i.iconMenu, li.menu-item:focus-within i.iconMenu {
-    color: grey;
-}
-    
-    ul#menu-menu-lateral li.menu-item a{
-		    visibility: hidden;
-        font-size: 1.2em;
-        display: flex;
-		  }
-    i.left.iconMenu {
-        font-size: 2.2em;
-        left: 2px;
-        visibility: visible;
-    }
-    
-    i.right.iconMenu{
-      display: none;
-    }
-   
-
-		ul#menu-menu-lateral li:hover, ul#menu-menu-lateral li:focus-within {
-		    background-color: #fff;
-    width: 225px;
-		}
-    
-    ul#menu-menu-lateral li:hover>a, ul#menu-menu-lateral li:focus-within>a {
-        visibility: visible;
-        line-height: 45px;
-    }
-            
-      #menu-lateral ul.menu li:hover > .sub-menu, #menu-lateral ul.menu li:focus-within > .sub-menu {
-        display:none;
-    }    
- }
-	
-
-
-
 
 
 
@@ -303,8 +211,75 @@ i.iconMenu {
 		}
 
 
+		.padded{
+      padding:10px;
+		}
+
+		.padded-down{
+			margin:30px;
+		}
 
 
+
+
+
+
+
+
+		/*search box filter inputs*/
+
+.dropdown-container, .instructions {
+  width: 200px;
+  margin: 20px auto 0;
+  font-size: 14px;
+  font-family: sans-serif;
+  overflow: auto;
+}
+
+.instructions {
+  width: 100%;
+  text-align: center;
+}
+
+.dropdown-button {
+  float: left;
+  width: 100%;
+  
+  padding: 10px 12px;
+  cursor: pointer;
+  border: 1px solid lightgray;
+  box-sizing: border-box;
+}
+.dropdown-button .dropdown-label, .dropdown-button .dropdown-quantity {
+  float: left;
+}
+.dropdown-button .dropdown-quantity {
+  margin-left: 4px;
+}
+.dropdown-button .fa-search {
+  float: right;
+}
+
+.dropdown-list {
+  float: left;
+  width: 100%;
+  border: 1px solid lightgray;
+  border-top: none;
+  box-sizing: border-box;
+  padding: 10px 12px;
+}
+.dropdown-list input[type=search] {
+  padding: 5px 0;
+}
+.dropdown-list ul {
+  margin: 10px 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.dropdown-list ul input[type=checkbox] {
+  position: relative;
+  top: 2px;
+}
 
 
 

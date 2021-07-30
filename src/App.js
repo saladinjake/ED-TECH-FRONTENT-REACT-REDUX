@@ -92,6 +92,7 @@ import "./pre-style.css";
 import Notification from "./Toaster";
 
 import AuthoringDashboard from "./pages/AuthoringTool/dashboard"
+import CourseFormWizard from "./pages/AuthoringTool/CourseFormWizard"
 
 import $ from "jquery";
 
@@ -480,6 +481,12 @@ function App(props) {
           exact
           path={`${process.env.PUBLIC_URL + "/authoring-dashboard"}`}
           component={AuthoringDashboard}
+        />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/authoring/course-new"}`}
+          component={CourseFormWizard}
         />
 
         <Route component={PageNotFound} />
