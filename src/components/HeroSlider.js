@@ -82,6 +82,14 @@ class HeroSlider extends Component {
                             <div className="slider-title "  >
                               <p className="style-set-2" style={{color: "#000", fontSize: "14px",letterSpacing:"-1",fontWeight:"normal", fontFamily: "Open Sans"}}>{data.role2}</p>
                             </div>
+
+                            <div className="slider-title "  >
+                              <p className="style-set-2" style={{color: "#000", fontSize: "14px",letterSpacing:"-1",fontWeight:"normal", fontFamily: "Open Sans"}}>{data.tutor}</p>
+                            </div>
+
+                            <div className="slider-title "  >
+                              <p className="style-set-2" style={{color: "#000", fontSize: "14px",letterSpacing:"-1",fontWeight:"normal", fontFamily: "Open Sans"}}>{data.ranks}</p>
+                            </div>
                             
                             
                           </div>
