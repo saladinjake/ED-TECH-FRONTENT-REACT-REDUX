@@ -7,19 +7,159 @@ import Footer from "components/Footer"
 import { Link } from "react-router-dom";
 import Sidebar from "./sidebar"
 import $ from "jquery"
+import { Styles } from "./styles/main.js"
 
 
-const MainFormLayout = () => {
 
-    return(
+
+
+export default class MasterForm extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      currentStep: 1,
+      email:  '',
+      username: '',
+      password: '',
+      comment: '',
+      passwordConfirmation:'',
+      formErrors: {
+        email: '',
+        username:'', 
+        password: '', 
+        passwordConfirmation: '',
+      },
+      formValidity: {
+        email: false,
+        username: false, 
+        password: false, 
+        passwordConfirmation: false,
+      },
+      canSubmit: false,
+    }
+    this.handleChange = this.handleChange.bind(this)
+    this._next = this._next.bind(this)
+    this._prev = this._prev.bind(this)
+  }
+
+  goToStep(e,step){
+    e.preventDefault();
+    this.setState({
+      currentStep: step
+    })
+
+  }
+
+  _next() {
+    let currentStep = this.state.currentStep
+    currentStep = currentStep >= 6? 7: currentStep + 1
+    this.setState({
+      currentStep: currentStep
+    })
+  }
+   
+  _prev() {
+    let currentStep = this.state.currentStep
+    currentStep = currentStep <= 1? 1: currentStep - 1
+    this.setState({
+      currentStep: currentStep
+    })
+  }
+
+  handleChange(event) {
+    const {name, value} = event.target
+    this.setState({
+      [name]: value
+    }, function(){ this.validateField(name, value)})
+    
+  }
+
+  validateField(name, value) {
+    if(Object.keys(this.state.formErrors).includes(name)){
+      const fieldValidationErrors = this.state.formErrors
+      const validity = this.state.formValidity
+      const isEmail = name === "email"
+      const isPassword = name === "password"
+      const isPasswordConfirmation = name === "passwordConfirmation"
+      const label = name === "passwordConfirmation"? 'password confirmation' : name
+      const emailTest = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i
+  
+      validity[name] = value.length >0
+      fieldValidationErrors[name] = validity[name] ? '': `${label} is required and cannot be empty`
+  
+      if(validity[name]) {
+        if(isPassword){
+          validity[name] = value.length >= 5
+          fieldValidationErrors[name] = validity[name] ? '': `${label} should be 5 characters or more`
+        }
+        if(isEmail){
+          validity[name] = emailTest.test(value)
+          fieldValidationErrors[name] = validity[name] ? '' : `${label} should be a valid email address`
+        }
+        if(isPasswordConfirmation){
+          validity[name] = value === this.state.password
+          fieldValidationErrors[name] = validity[name] ? '' : `${label} should match password`
+        }
+      }
+    
+      this.setState({
+        formErrors: fieldValidationErrors,
+        formValidity: validity,
+      }, () => this.canSubmit())
+    }
+  }
+
+  canSubmit() {
+    this.setState({canSubmit: this.state.formValidity.email && this.state.formValidity.username && this.state.formValidity.password && this.state.formValidity.passwordConfirmation})
+  }
+
+  errorClass(error) {
+    return(error.length === 0 ? '' : 'is-invalid')
+  }
+   
+  handleSubmit = (event) => {
+    event.preventDefault()
+    const { email, username, password } = this.state
+    alert(`Your registration detail: \n 
+           Email: ${email} \n 
+           Username: ${username} \n
+           Password: ${password}`)
+  }
+
+  get previousButton(){
+    let currentStep = this.state.currentStep
+    if(currentStep !==1){
+      return (
+        <button style={{background:"rgba(8,23,200)",borderRadius:"30px",padding:"10px", color:"#fff",width:"200px"}} className="btn  btn-small" type="button" onClick={this._prev}>Previous</button>
+      )
+    }
+    return null
+  }
+
+  get nextButton(){
+    let currentStep = this.state.currentStep
+    if(currentStep <7){
+      return (
+        <button style={{background:"rgba(8,23,200)",width:"200px",borderRadius:"30px",padding:"10px", color:"#fff",marginTop:"-30px"}} className="btn  btn-small float-right" type="button" onClick={this._next}>Next</button>        
+      )
+    }
+    return null
+  }
+
+  
+  render() {    
+    return (
+
+
+
       <Fragment>
-      <NavBar />
+    <NavBar/><br/><br/><br/><br/>
+    
+     <Styles>
+      <div className="s-layout">
+            
+             <Fragment>
       <br />
-
-          <br />
-          <br />
-          <br />
-
     
      
       <div className="container-fluid">
@@ -37,9 +177,105 @@ const MainFormLayout = () => {
     
            </div>
            </Col>
+           <br />
+          <br />
 
           <Col lg="9" md="9" sm="12">
-            <CourseFormWizard />
+             
+      <React.Fragment>
+       <div  style={{margin:"20px auto"}}>
+
+      
+          
+
+       
+
+      
+       
+      <form className="wizard-form" onSubmit={this.handleSubmit}>
+               <HeaderBox actionLink={"#authoring/course-new"} linkTitle="Add new course" />
+
+
+      <div className="col-md-12 col-sm-12" style={{background:"#fff",marginTop:"10px"}}>
+      <p>Step {this.state.currentStep} </p> 
+         <h5>Course Adding Form</h5>
+         <br/><br/><br/>
+         <ul className="tabs-of-form">
+            <li onClick={(e) => { this.goToStep(e,1)}}><i className="fa fa-user" style={{marginRight:"10px"}}></i>Basic</li>
+            <li onClick={(e) => { this.goToStep(e,2)}}><i className="fa fa-user" style={{marginRight:"10px"}}></i>Requirements</li>
+            <li onClick={(e) => { this.goToStep(e,3)}}><i className="fa fa-user" style={{marginRight:"10px"}}></i>Outcomes</li>
+            <li onClick={(e) => { this.goToStep(e,4)}}><i className="fa fa-user" style={{marginRight:"10px"}}></i>Pricing</li>
+            <li onClick={(e) => { this.goToStep(e,5)}}><i className="fa fa-user" style={{marginRight:"10px"}}></i>Media</li>
+            <li onClick={(e) => { this.goToStep(e,6)}}><i className="fa fa-user" style={{marginRight:"10px"}}></i>Seo</li>
+            <li onClick={(e) => { this.goToStep(e,7)}}><i className="fa fa-user" style={{marginRight:"10px"}}></i>Finish</li>
+
+         </ul>
+         <br/>
+         <br/>
+
+      </div>
+
+
+        <Step1 
+          currentStep={this.state.currentStep} 
+          handleChange={this.handleChange}
+          errorEmailClass={this.errorClass(this.state.formErrors.email)}
+          email={this.state.email}
+          errorEmail={this.state.formErrors.email}
+          errorUsernameClass={this.errorClass(this.state.formErrors.username)}
+          username={this.state.username}
+          errorUsername={this.state.formErrors.username}
+        />
+        <Step2 
+        currentStep={this.state.currentStep} 
+        handleChange={this.handleChange}
+        errorPasswordClass={this.errorClass(this.state.formErrors.password)}
+        password={this.state.password}
+        errorPassword={this.state.formErrors.password}
+        errorPasswordConfirmationClass={this.errorClass(this.state.formErrors.passwordConfirmation)}
+        passwordConfirmation={this.state.passwordConfirmation}
+        errorPasswordConfirmation={this.state.formErrors.passwordConfirmation}
+        />
+        <Step3 
+          currentStep={this.state.currentStep} 
+          handleChange={this.handleChange}
+          comment={this.state.comment}
+          canSubmit={this.state.canSubmit}
+        />
+        <Step4 
+          currentStep={this.state.currentStep} 
+          handleChange={this.handleChange}
+          comment={this.state.comment}
+          canSubmit={this.state.canSubmit}
+        />
+        <Step5
+          currentStep={this.state.currentStep} 
+          handleChange={this.handleChange}
+          comment={this.state.comment}
+          canSubmit={this.state.canSubmit}
+        />
+        <Step6 
+          currentStep={this.state.currentStep} 
+          handleChange={this.handleChange}
+          comment={this.state.comment}
+          canSubmit={this.state.canSubmit}
+        />
+        <Step7 
+          currentStep={this.state.currentStep} 
+          handleChange={this.handleChange}
+          comment={this.state.comment}
+          canSubmit={this.state.canSubmit}
+        />
+        <br/><br/>
+        {this.previousButton}
+        {this.nextButton}
+        
+
+      </form>
+
+      <br/><br/><br/><br/>
+
+     </div></React.Fragment>
           </Col>
           
         </Row>
@@ -48,253 +284,375 @@ const MainFormLayout = () => {
       </div>
       <Footer />
     </Fragment>
+        </div>
+      </Styles>
+
+    
+
+    </Fragment>
     )
+  }
 }
 
+class Step1 extends React.Component {
+  render() {
+    if (this.props.currentStep !== 1) {
+      return null
+    } 
+    return(
+      <React.Fragment><div className="card-box" >
+      <div className="form-group">
+        <label htmlFor="email">Title</label>
+        <input
+          className={`form-control ${this.props.errorEmailClass}`}
+          id="email"
+          name="email"
+          type="text"
+          placeholder="Title"
+          value={this.props.email}
+          onChange={this.props.handleChange}
+        />
+        <div className="invalid-feedback">{this.props.errorEmail}</div>
+      </div>
+      <div className="form-group">
+      <label htmlFor="username">Short Description</label>
+      <input
+        className={`form-control ${this.props.errorUsernameClass}`}
+        id="username"
+        name="username"
+        type="text"
+        placeholder=""
+        value={this.props.username}
+        onChange={this.props.handleChange}
+      />
+       <div className="invalid-feedback">{this.props.errorUsername}</div>
+    </div>
 
-class CourseFormWizard extends React.Component  {
-    constructor(props){
-        super(props)
-    }
 
-  scroll_to_class(element_class, removed_height) {
-    var scroll_to = $(element_class).offset().top - removed_height;
-    if($(window).scrollTop() != scroll_to) {
-        $('html, body').stop().animate({scrollTop: scroll_to}, 0);
-    }
-  }
-
-  bar_progress(progress_line_object, direction) {
-    var number_of_steps = progress_line_object.data('number-of-steps');
-    var now_value = progress_line_object.data('now-value');
-    var new_value = 0;
-    if(direction == 'right') {
-        new_value = now_value + ( 100 / number_of_steps );
-    }
-    else if(direction == 'left') {
-        new_value = now_value - ( 100 / number_of_steps );
-    }
-    progress_line_object.attr('style', 'width: ' + new_value + '%;').data('now-value', new_value);
-  }
-
-
-  componentDidMount(){
-    $(document).ready(function() {
-    
-        
-        
-        /*
-            Form
-        */
-        $('.f1 fieldset:first').fadeIn('slow');
-        
-        $('.f1 input[type="text"], .f1 input[type="password"], .f1 textarea').on('focus', function() {
-            $(this).removeClass('input-error');
-        });
-        
-        // next step
-        $('.f1 .btn-next').on('click', function() {
-            var parent_fieldset = $(this).parents('fieldset');
-            var next_step = true;
-            // navigation steps / progress steps
-            var current_active_step = $(this).parents('.f1').find('.f1-step.active');
-            var progress_line = $(this).parents('.f1').find('.f1-progress-line');
-            
-            // fields validation
-            parent_fieldset.find('input[type="text"], input[type="password"], textarea').each(function() {
-                if( $(this).val() == "" ) {
-                    $(this).addClass('input-error');
-                    next_step = false;
-                }
-                else {
-                    $(this).removeClass('input-error');
-                }
-            });
-            // fields validation
-            
-            if( next_step ) {
-                parent_fieldset.fadeOut(400, function() {
-                    // change icons
-                    current_active_step.removeClass('active').addClass('activated').next().addClass('active');
-                    // progress bar
-                    this.bar_progress(progress_line, 'right');
-                    // show next step
-                    $(this).next().fadeIn();
-                    // scroll window to beginning of the form
-                    this.scroll_to_class( $('.f1'), 20 );
-                });
-            }
-            
-        });
-        
-        // previous step
-        $('.f1 .btn-previous').on('click', function() {
-            // navigation steps / progress steps
-            var current_active_step = $(this).parents('.f1').find('.f1-step.active');
-            var progress_line = $(this).parents('.f1').find('.f1-progress-line');
-            
-            $(this).parents('fieldset').fadeOut(400, function() {
-                // change icons
-                current_active_step.removeClass('active').prev().removeClass('activated').addClass('active');
-                // progress bar
-                this.bar_progress(progress_line, 'left');
-                // show previous step
-                $(this).prev().fadeIn();
-                // scroll window to beginning of the form
-                this.scroll_to_class( $('.f1'), 20 );
-            });
-        });
-        
-        // submit
-        $('.f1').on('submit', function(e) {
-            
-            // fields validation
-            $(this).find('input[type="text"], input[type="password"], textarea').each(function() {
-                if( $(this).val() == "" ) {
-                    e.preventDefault();
-                    $(this).addClass('input-error');
-                }
-                else {
-                    $(this).removeClass('input-error');
-                }
-            });
-            // fields validation
-            
-        });
-        
-        
-    });
-
-  }
+      <div className="form-group">
+      <label htmlFor="username">Description</label>
+      <textarea
+      col="260"
+        className={`form-control ${this.props.errorUsernameClass}`}
+        id="username"
+        name="username"
+        type="text"
+        placeholder=""
+        value={this.props.username}
+        onChange={this.props.handleChange}
+      ></textarea>
 
 
 
-    render() {
-	return (
-	  <Fragment>
-  
-      <br/><br/><br/>
-          <HeaderBox actionLink={"#authoring/add-course"} linkTitle="Add a course" />
+
+      <div className="invalid-feedback">{this.props.errorUsername}</div>
+    </div>
 
 
-          <Container>
-            <Row>
-               <Col md="12" lg="12">
 
 
-               <div className="top-content" >
-            <div className="container">
-                
-                <div className="row">
-                    <div className="col-sm-8 col-sm-offset-2 text">
-                        <h1>Add <strong>Course</strong> </h1>
-                        <div className="description">
-                       	    
-                        </div>
-                    </div>
-                </div>
-                
-                <div className="row">
-                    <div className="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 form-box">
-                    	<form role="form" action="" method="post" className="f1">
-                    		<div className="f1-steps">
-                    			<div className="f1-progress">
-                    			    <div className="f1-progress-line" data-now-value="16.66" data-number-of-steps="3" style={{width: "16.66%"}}></div>
-                    			</div>
-                    			<div className="f1-step active">
-                    				<div className="f1-step-icon"><i className="fa fa-user"></i></div>
-                    				<p>about</p>
-                    			</div>
-                    			<div className="f1-step">
-                    				<div className="f1-step-icon"><i className="fa fa-key"></i></div>
-                    				<p>account</p>
-                    			</div>
-                    		    <div className="f1-step">
-                    				<div className="f1-step-icon"><i className="fa fa-twitter"></i></div>
-                    				<p>social</p>
-                    			</div>
-                    		</div>
-                    		
-                    		<fieldset>
-                    		    <h4>Tell us who you are:</h4>
-                    			<div className="form-group">
-                    			    <label className="sr-only" for="f1-first-name">First name</label>
-                                    <input type="text" name="f1-first-name" placeholder="First name..." className="f1-first-name form-control" id="f1-first-name" />
-                                </div>
-                                <div className="form-group">
-                                    <label className="sr-only" for="f1-last-name">Last name</label>
-                                    <input type="text" name="f1-last-name" placeholder="Last name..." className="f1-last-name form-control" id="f1-last-name" />
-                                </div>
-                                <div className="form-group">
-                                    <label className="sr-only" for="f1-about-yourself">About yourself</label>
-                                    <textarea name="f1-about-yourself" placeholder="About yourself..." 
-                                    	                 className="f1-about-yourself form-control" id="f1-about-yourself"></textarea>
-                                </div>
-                                <div className="f1-buttons">
-                                    <button type="button" className="btn btn-next">Next</button>
-                                </div>
-                            </fieldset>
 
-                            <fieldset>
-                                <h4>Set up your account:</h4>
-                                <div className="form-group">
-                                    <label className="sr-only" for="f1-email">Email</label>
-                                    <input type="text" name="f1-email" placeholder="Email..." className="f1-email form-control" id="f1-email" />
-                                </div>
-                                <div className="form-group">
-                                    <label className="sr-only" for="f1-password">Password</label>
-                                    <input type="password" name="f1-password" placeholder="Password..." className="f1-password form-control" id="f1-password" />
-                                </div>
-                                <div className="form-group">
-                                    <label className="sr-only" for="f1-repeat-password">Repeat password</label>
-                                    <input type="password" name="f1-repeat-password" placeholder="Repeat password..." 
-                                                        className="f1-repeat-password form-control" id="f1-repeat-password" />
-                                </div>
-                                <div className="f1-buttons">
-                                    <button type="button" className="btn btn-previous">Previous</button>
-                                    <button type="button" className="btn btn-next">Next</button>
-                                </div>
-                            </fieldset>
+        <div className="form-group">
+                     <label> Categories</label>
+                       <div class=" dropdown-container-x">
+                          <div class="dropdown-button noselect">
+                              <div class="dropdown-label">All</div>
+                              <div class="dropdown-quantity"></div>
+                              <i class="fa fa-search fa "></i>
+                          </div>
+                          <div class="dropdown-list" style={{display:"none"}}>
+                              <input type="search" placeholder="search categories" class="dropdown-search pull-right"/>
+                              <ul className="zap"></ul>
+                          </div>
+                      </div>
+        </div>
 
-                            <fieldset>
-                                <h4>Social media profiles:</h4>
-                                <div className="form-group">
-                                    <label className="sr-only" for="f1-facebook">Facebook</label>
-                                    <input type="text" name="f1-facebook" placeholder="Facebook..." className="f1-facebook form-control" id="f1-facebook" />
-                                </div>
-                                <div className="form-group">
-                                    <label className="sr-only" for="f1-twitter">Twitter</label>
-                                    <input type="text" name="f1-twitter" placeholder="Twitter..." className="f1-twitter form-control" id="f1-twitter" />
-                                </div>
-                                <div className="form-group">
-                                    <label className="sr-only" for="f1-google-plus">Google plus</label>
-                                    <input type="text" name="f1-google-plus" placeholder="Google plus..." className="f1-google-plus form-control" id="f1-google-plus" />
-                                </div>
-                                <div className="f1-buttons">
-                                    <button type="button" className="btn btn-previous">Previous</button>
-                                    <button type="submit" className="btn btn-submit">Submit</button>
-                                </div>
-                            </fieldset>
-                    	
-                    	</form>
-                    </div>
-                </div>
-                    
-            </div>
+         <div className="form-group">
+                     <label>Level</label>
+                       <div class="dropdown-container-x">
+                          <div class="dropdown-button noselect">
+                              <div class="dropdown-label">All</div>
+                              <div class="dropdown-quantity"></div>
+                              <i class="fa fa-search fa "></i>
+                          </div>
+                          <div class="dropdown-list" style={{display:"none"}}>
+                              <input type="search" placeholder="search categories" class="dropdown-search pull-right"/>
+                              <ul className="zap"></ul>
+                          </div>
+                      </div>
+        </div>
+
+
+        <div className="form-group">
+                     <label>Language Made in</label>
+                       <div class=" dropdown-container-x">
+                          <div class="dropdown-button noselect">
+                              <div class="dropdown-label">All</div>
+                              <div class="dropdown-quantity"></div>
+                              <i class="fa fa-search fa "></i>
+                          </div>
+                          <div class="dropdown-list" style={{display:"none"}}>
+                              <input type="search" placeholder="search categories" class="dropdown-search pull-right"/>
+                              <ul className="zap"></ul>
+                          </div>
+                      </div>
+        </div>
+     <br/>
+
+        <div className="form-group">
+         <br/> <br/>
+                     <input className=" pull-left" type="checkbox" style={{marginRight:"20px"}}/>
+                     <label className="">Check if course is top course</label>
         </div>
 
 
 
-               </Col>
-            </Row>
-          </Container>
-
-
-	  </Fragment>
-
-	)
-
-}
+          </div></React.Fragment>
+   )
+ }
 }
 
-export default MainFormLayout
+
+class DynamicForm extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      shareholders: [{ name: '' }],
+    };
+  }
+  
+  handleShareholderNameChange = (idx) => (evt) => {
+    const newShareholders = this.state.shareholders.map((shareholder, sidx) => {
+      if (idx !== sidx) return shareholder;
+      return { ...shareholder, name: evt.target.value };
+    });
+    
+    this.setState({ shareholders: newShareholders });
+  }
+  
+  
+  handleAddShareholder = () => {
+    this.setState({ shareholders: this.state.shareholders.concat([{ name: '' }]) });
+  }
+  
+  handleRemoveShareholder = (idx) => () => {
+    this.setState({ shareholders: this.state.shareholders.filter((s, sidx) => idx !== sidx) });
+  }
+  
+  render() {    
+    return (
+      <div>
+        <h6>{this.props.title}</h6>
+      
+        {this.state.shareholders.map((shareholder, idx) => (
+          <div className="shareholder">
+            <input
+              type="text"
+              placeholder={` #${idx + 1} name`}
+              value={shareholder.name}
+              onChange={this.handleShareholderNameChange(idx)}
+            />
+            <button type="button" onClick={this.handleRemoveShareholder(idx)} className="small">-</button>
+          </div>
+        ))}
+        <button type="button" onClick={this.handleAddShareholder} className="small">Add More</button>
+        
+      </div>
+    )
+  }
+}
+
+
+class Step2 extends React.Component {
+  render() {
+    if (this.props.currentStep !== 2) {
+      return null
+    } 
+    return(
+    <React.Fragment><div className="card-box">
+    <DynamicForm title={"Requirements"} />
+   </div></React.Fragment>
+  )
+ }
+}
+
+class Step3 extends React.Component {
+  render() {
+    if (this.props.currentStep !== 3) {
+      return null
+    } 
+    return(
+    <React.Fragment><div className="card-box">
+      <DynamicForm title={"Outcomes"} />      
+    </div></React.Fragment>
+  )
+ }
+}
+
+
+
+class Step4 extends React.Component {
+  render() {
+    if (this.props.currentStep !== 4) {
+      return null
+    } 
+    return(
+    <React.Fragment><div className="card-box">
+
+
+        <div className="form-group">
+         <br/> <br/>
+                     <input className=" pull-left" type="checkbox" style={{marginRight:"20px"}}/>
+                     <label className="">Check if course is free course</label>
+        </div>
+      
+      <div className="form-group">
+      <label htmlFor="username">Course Price</label>
+      <input
+        className={`form-control ${this.props.errorUsernameClass}`}
+        id="username"
+        name="username"
+        type="number"
+        placeholder=""
+        value={this.props.username}
+        onChange={this.props.handleChange}
+      />
+       <div className="invalid-feedback">{this.props.errorUsername}</div>
+    </div>
+        
+
+
+        <div className="form-group">
+         <br/> <br/>
+                     <input className=" pull-left" type="checkbox" style={{marginRight:"20px"}}/>
+                     <label className="">Check if course has discount</label>
+        </div>
+      
+      <div className="form-group">
+      <label htmlFor="username">Discount</label>
+      <input
+        className={`form-control ${this.props.errorUsernameClass}`}
+        id="username"
+        name="username"
+        type="text"
+        placeholder=""
+        value={this.props.username}
+        onChange={this.props.handleChange}
+      />
+       <div className="invalid-feedback">{this.props.errorUsername}</div>
+    </div>
+
+
+     </div></React.Fragment>
+  )
+ }
+}
+
+
+class Step5 extends React.Component {
+  render() {
+    if (this.props.currentStep !== 5) {
+      return null
+    } 
+    return(
+    <React.Fragment><div className="card-box">
+        
+      <div className="form-group">
+      <label htmlFor="username">course overview provider</label>
+      <input
+        className={`form-control ${this.props.errorUsernameClass}`}
+        id="username"
+        name="username"
+        type="text"
+        placeholder=""
+        value={this.props.username}
+        onChange={this.props.handleChange}
+      />
+       <div className="invalid-feedback">{this.props.errorUsername}</div>
+    </div>
+
+
+
+      <div className="form-group">
+      <label htmlFor="username">Course overview url</label>
+      <input
+        className={`form-control ${this.props.errorUsernameClass}`}
+        id="username"
+        name="username"
+        type="text"
+        placeholder=""
+        value={this.props.username}
+        onChange={this.props.handleChange}
+      />
+       <div className="invalid-feedback">{this.props.errorUsername}</div>
+    </div>
+
+
+
+    <div >
+                
+                <div >
+                 
+                        <img alt="User Pic" src="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png" id="profile-image1" height="200" />
+                        <input id="profile-image-upload" class="hidden" type="file" onchange="previewFile()" />
+                        <div style={{color:"#999"}} >  </div>
+                        
+                </div>
+
+              </div>
+
+    </div></React.Fragment>
+  )
+ }
+}
+
+
+class Step6 extends React.Component {
+  render() {
+    if (this.props.currentStep !== 6) {
+      return null
+    } 
+    return(
+    <React.Fragment><div className="card-box">
+      <div className="form-group">
+        <label htmlFor="comment"> Meta Keyword:</label>
+          <textarea 
+          className="form-control"
+          id="comment"
+          name="comment" 
+          value={this.props.comment} 
+          onChange={this.props.handleChange} />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="comment"> Meta description:</label>
+          <textarea 
+          className="form-control"
+          id="comment"
+          name="comment" 
+          value={this.props.comment} 
+          onChange={this.props.handleChange} />
+      </div>
+
+     </div></React.Fragment>
+  )
+ }
+}
+
+
+class Step7 extends React.Component {
+  render() {
+    if (this.props.currentStep !== 7) {
+      return null
+    } 
+    return(
+    <React.Fragment><div className="card-box">
+      <div className="form-group" style={{justifyContent:"center",textAlign:"center"}}>
+        <h3 style={{justifyContent:"center",textAlign:"center"}}>Thank you</h3>
+        <p style={{justifyContent:"center",textAlign:"center"}}>You are just one click away</p>
+      </div>       
+      <button className="btn btn-success btn-block" style={{background:"green",color:"#fff"}} disabled={!this.props.canSubmit}>submit</button>
+   </div></React.Fragment>
+  )
+ }
+}
