@@ -326,7 +326,7 @@ const WelcomeBanner = ({
   })
   return (
     <Fragment>
-       <HeaderBox actionLink={"authoring/add-course"} linkTitle="+ Add new course" />
+       <HeaderBox actionLink={"authoring/course-new"} linkTitle="+ Add new course" />
 
        <EventBoxes />
        <FilterForm />
