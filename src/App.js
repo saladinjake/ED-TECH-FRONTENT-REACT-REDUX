@@ -93,7 +93,7 @@ import Notification from "./Toaster";
 
 import AuthoringDashboard from "./pages/AuthoringTool/dashboard"
 import AuthoringCourseList from "./pages/AuthoringTool/courselist"
-import AuthoringFormWizard from "./pages/AuthoringTool/formwizard"
+import AuthorForm from "./pages/AuthoringTool/createcourse"
 
 import $ from "jquery";
 
@@ -488,6 +488,12 @@ function App(props) {
           exact
           path={`${process.env.PUBLIC_URL + "/authoring-courselist"}`}
           component={AuthoringCourseList}
+        />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/authoring/create/new"}`}
+          component={AuthorForm}
         />
 
        

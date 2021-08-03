@@ -5,7 +5,7 @@ import NavBar from "components/Navbar"
 import Footer from "components/Footer"
 
 import { Link } from "react-router-dom";
-import Sidebar from "./sidebar"
+import { AddHead } from "./sidebar"
 import $ from "jquery"
 import { Styles } from "./styles/main.js"
 
@@ -130,8 +130,11 @@ export default class MasterForm extends React.Component {
     let currentStep = this.state.currentStep
     if(currentStep !==1){
       return (
-        <button style={{background:"rgba(8,23,200)",borderRadius:"30px",padding:"10px", color:"#fff",width:"200px"}} className="btn  btn-small" type="button" onClick={this._prev}>Previous</button>
-      )
+
+         <li className="previous list-inline-item disabled"  onClick={this._prev}>
+                                        <a href="javascript::" className="btn btn-info"> <i className="fa fa-arrow-left" ></i> </a>
+                                    </li>
+              )
     }
     return null
   }
@@ -140,7 +143,10 @@ export default class MasterForm extends React.Component {
     let currentStep = this.state.currentStep
     if(currentStep <7){
       return (
-        <button style={{background:"rgba(8,23,200)",width:"200px",borderRadius:"30px",padding:"10px", color:"#fff",marginTop:"-30px"}} className="btn  btn-small float-right" type="button" onClick={this._next}>Next</button>        
+      <li className="next list-inline-item" onClick={this._next}>
+                                        <a href="javascript::" className="btn btn-info"> <i className="fa fa-arrow-right"></i> </a>
+                                    </li>
+       
       )
     }
     return null
@@ -153,67 +159,72 @@ export default class MasterForm extends React.Component {
 
 
       <Fragment>
-    <NavBar/><br/><br/><br/><br/>
+
+      <AddHead />
     
-     <Styles>
-      <div className="s-layout">
-            
-             <Fragment>
-      <br />
-    
-     
-      <div className="container-fluid">
-        <Row>
-          <br />
-          <br />
-          <br />
-          <Col lg="3" md="3" sm="12">
+      <div className="row">
+    <div className="col-md-12">
+        <div className="card">
+            <div className="card-body">
 
-          <div className="authoring-sidebar">
-   
-        
-            <Sidebar/>
-        
-    
-           </div>
-           </Col>
-           <br />
-          <br />
+                <h4 className="header-title mb-3">Course adding form                    <a href="#/user/courses" className="alignToTitle btn btn-outline-secondary btn-rounded btn-sm"> <i className=" mdi mdi-keyboard-backspace"></i> Back to course list</a>
+                </h4>
 
-          <Col lg="9" md="9" sm="12">
-             
-      <React.Fragment>
-       <div  style={{margin:"20px auto"}}>
-
-      
-          
-
-       
-
-      
-       
-      <form className="wizard-form" onSubmit={this.handleSubmit}>
-               <HeaderBox actionLink={"#authoring/course-new"} linkTitle="Add new course" />
+                <div className="row">
+                    <div className="col-md-12">
 
 
-      <div className="col-md-12 col-sm-12" style={{background:"#fff",marginTop:"10px"}}>
-      <p>Step {this.state.currentStep} </p> 
-         <h5>Course Adding Form</h5>
-         <br/><br/><br/>
-         <ul className="tabs-of-form">
-            <li onClick={(e) => { this.goToStep(e,1)}}><i className="fa fa-user" style={{marginRight:"10px"}}></i>Basic</li>
-            <li onClick={(e) => { this.goToStep(e,2)}}><i className="fa fa-user" style={{marginRight:"10px"}}></i>Requirements</li>
-            <li onClick={(e) => { this.goToStep(e,3)}}><i className="fa fa-user" style={{marginRight:"10px"}}></i>Outcomes</li>
-            <li onClick={(e) => { this.goToStep(e,4)}}><i className="fa fa-user" style={{marginRight:"10px"}}></i>Pricing</li>
-            <li onClick={(e) => { this.goToStep(e,5)}}><i className="fa fa-user" style={{marginRight:"10px"}}></i>Media</li>
-            <li onClick={(e) => { this.goToStep(e,6)}}><i className="fa fa-user" style={{marginRight:"10px"}}></i>Seo</li>
-            <li onClick={(e) => { this.goToStep(e,7)}}><i className="fa fa-user" style={{marginRight:"10px"}}></i>Finish</li>
 
-         </ul>
-         <br/>
-         <br/>
+                    <form className="required-form"  method="post" enctype="multipart/form-data">
+                        
 
-      </div>
+
+
+                               <ul className="nav nav-pills nav-justified form-wizard-header mb-3">
+                                    <li className="nav-item" onClick={(e) => { this.goToStep(e,1)}}>
+                                        <a href="#basic" data-toggle="tab" className="nav-link rounded-0 pt-2 pb-2 active">
+                                            <i className="mdi mdi-fountain-pen-tip mr-1"></i>
+                                            <span className="d-none d-sm-inline">Basic</span>
+                                        </a>
+                                    </li>
+                                    <li className="nav-item" onClick={(e) => { this.goToStep(e,2)}}>
+                                        <a href="#requirements" data-toggle="tab" className="nav-link rounded-0 pt-2 pb-2">
+                                            <i className="mdi mdi-bell-alert mr-1"></i>
+                                            <span className="d-none d-sm-inline">Requirements</span>
+                                        </a>
+                                    </li>
+                                    <li className="nav-item" onClick={(e) => { this.goToStep(e,3)}}>
+                                        <a href="#outcomes" data-toggle="tab" className="nav-link rounded-0 pt-2 pb-2">
+                                            <i className="mdi mdi-camera-control mr-1"></i>
+                                            <span className="d-none d-sm-inline">Outcomes</span>
+                                        </a>
+                                    </li>
+                                    <li className="nav-item" onClick={(e) => { this.goToStep(e,4)}}>
+                                        <a href="#pricing" data-toggle="tab" className="nav-link rounded-0 pt-2 pb-2">
+                                            <i className="mdi mdi-currency-cny mr-1"></i>
+                                            <span className="d-none d-sm-inline">Pricing</span>
+                                        </a>
+                                    </li>
+                                    <li className="nav-item" onClick={(e) => { this.goToStep(e,5)}}>
+                                        <a href="#media" data-toggle="tab" className="nav-link rounded-0 pt-2 pb-2">
+                                            <i className="mdi mdi-library-video mr-1"></i>
+                                            <span className="d-none d-sm-inline">Media</span>
+                                        </a>
+                                    </li>
+                                    <li className="nav-item" onClick={(e) => { this.goToStep(e,6)}}>
+                                        <a href="#seo" data-toggle="tab" className="nav-link rounded-0 pt-2 pb-2">
+                                            <i className="mdi mdi-tag-multiple mr-1"></i>
+                                            <span className="d-none d-sm-inline">Seo</span>
+                                        </a>
+                                    </li>
+                                    <li className="nav-item"  onClick={(e) => { this.goToStep(e,7)}}>
+                                        <a href="#finish" data-toggle="tab" className="nav-link rounded-0 pt-2 pb-2">
+                                            <i className="mdi mdi-checkbox-marked-circle-outline mr-1"></i>
+                                            <span className="d-none d-sm-inline">Finish</span>
+                                        </a>
+                                    </li>
+                                </ul>
+
 
 
         <Step1 
@@ -226,6 +237,16 @@ export default class MasterForm extends React.Component {
           username={this.state.username}
           errorUsername={this.state.formErrors.username}
         />
+
+
+
+        <Step3 
+          currentStep={this.state.currentStep} 
+          handleChange={this.handleChange}
+          comment={this.state.comment}
+          canSubmit={this.state.canSubmit}
+        />
+
         <Step2 
         currentStep={this.state.currentStep} 
         handleChange={this.handleChange}
@@ -235,12 +256,6 @@ export default class MasterForm extends React.Component {
         errorPasswordConfirmationClass={this.errorClass(this.state.formErrors.passwordConfirmation)}
         passwordConfirmation={this.state.passwordConfirmation}
         errorPasswordConfirmation={this.state.formErrors.passwordConfirmation}
-        />
-        <Step3 
-          currentStep={this.state.currentStep} 
-          handleChange={this.handleChange}
-          comment={this.state.comment}
-          canSubmit={this.state.canSubmit}
         />
         <Step4 
           currentStep={this.state.currentStep} 
@@ -267,25 +282,32 @@ export default class MasterForm extends React.Component {
           canSubmit={this.state.canSubmit}
         />
         <br/><br/>
-        {this.previousButton}
-        {this.nextButton}
+      
+
+
+
+
+
+                                <ul className="list-inline mb-0 wizard text-center">
+                                   
+
+                                     {this.previousButton}
+                                    
+                                     {this.nextButton}
+                                </ul>
         
 
       </form>
 
-      <br/><br/><br/><br/>
+     
 
-     </div></React.Fragment>
-          </Col>
-          
-        </Row>
 
         
       </div>
-      <Footer />
-    </Fragment>
-        </div>
-      </Styles>
+    </div></div></div></div></div>
+
+
+    
 
     
 
@@ -300,114 +322,106 @@ class Step1 extends React.Component {
       return null
     } 
     return(
-      <React.Fragment><div className="card-box" >
-      <div className="form-group">
-        <label htmlFor="email">Title</label>
-        <input
-          className={`form-control ${this.props.errorEmailClass}`}
-          id="email"
-          name="email"
-          type="text"
-          placeholder="Title"
-          value={this.props.email}
-          onChange={this.props.handleChange}
-        />
-        <div className="invalid-feedback">{this.props.errorEmail}</div>
-      </div>
-      <div className="form-group">
-      <label htmlFor="username">Short Description</label>
-      <input
-        className={`form-control ${this.props.errorUsernameClass}`}
-        id="username"
-        name="username"
-        type="text"
-        placeholder=""
-        value={this.props.username}
-        onChange={this.props.handleChange}
-      />
-       <div className="invalid-feedback">{this.props.errorUsername}</div>
-    </div>
+      <React.Fragment>
+       <div className="tab-content b-0 mb-0">
+                                    <div className="tab-pane active" id="basic">
+                                        <div className="row justify-content-center">
+
+       <div className="col-md-8">
+                                                <div className="form-group row mb-3">
+                                                    <label className="col-md-2 col-form-label" for="course_title">Course title <span className="required">*</span> </label>
+                                                    <div className="col-md-10">
+                                                        <input type="text" className="form-control" id="course_title" name="title" placeholder="Enter course title" required="" />
+                                                    </div>
+                                                </div>
+                                                <div className="form-group row mb-3">
+                                                    <label className="col-md-2 col-form-label" for="short_description">Short description</label>
+                                                    <div className="col-md-10">
+                                                        <textarea name="short_description" id="short_description" className="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div className="form-group row mb-3">
+                                                    <label className="col-md-2 col-form-label" for="description">Description</label>
+                                                    <div className="col-md-10">
+                                                        <textarea name="description" id="description" className="form-control" ></textarea><div className="note-editor note-frame card"><div className="note-dropzone">  <div className="note-dropzone-message"></div></div>
+                                                     </div>
+                                                </div>
 
 
-      <div className="form-group">
-      <label htmlFor="username">Description</label>
-      <textarea
-      col="260"
-        className={`form-control ${this.props.errorUsernameClass}`}
-        id="username"
-        name="username"
-        type="text"
-        placeholder=""
-        value={this.props.username}
-        onChange={this.props.handleChange}
-      ></textarea>
-
-
-
-
-      <div className="invalid-feedback">{this.props.errorUsername}</div>
-    </div>
-
-
-
-
-
-        <div className="form-group">
-                     <label> Categories</label>
-                       <div class=" dropdown-container-x">
-                          <div class="dropdown-button noselect">
+                                                <div className="padded-down">
+                  <Container>
+                  <Row className="row">
+                   
+                     <Col md="12">
+                     <p> Categories</p>
+                       <div class="dropdown-container">
+                          <div class="dropdown-button noselect form-control">
                               <div class="dropdown-label">All</div>
                               <div class="dropdown-quantity"></div>
                               <i class="fa fa-search fa "></i>
+                          </div>
+                          <div class="dropdown-list" style={{display:"none"}}>
+                              <input type="search" placeholder="search categories" class=" dropdown-search pull-right"/>
+                              <ul className="zap">
+                                                        
+                              </ul>
+                          </div>
+                      </div>
+                     </Col>
+
+                    <Col md="12">
+                     <p> Status</p>
+                       <div class="dropdown-container">
+                          <div class="dropdown-button noselect form-control">
+                              <div class="dropdown-label">All</div>
+                              <div class="dropdown-quantity"></div>
+                              <i class="fa fa-search fa-search "></i>
+                          </div>
+                          <div class="dropdown-list" style={{display:"none"}}>
+                              <input type="search" placeholder="search categories" class=" dropdown-search pull-right"/>
+                              <ul className="zap"></ul>
+                          </div>
+                      </div>
+                     </Col>
+
+                     <Col md="12">
+                      <p> Price</p>
+                       <div class="dropdown-container">
+                          <div class="dropdown-button noselect form-control">
+                              <div class="dropdown-label">All</div>
+                              <div class="dropdown-quantity"></div>
+                              <i class="fa fa-search fa-search "></i>
                           </div>
                           <div class="dropdown-list" style={{display:"none"}}>
                               <input type="search" placeholder="search categories" class="dropdown-search pull-right"/>
                               <ul className="zap"></ul>
                           </div>
                       </div>
-        </div>
+                     </Col>
 
-         <div className="form-group">
-                     <label>Level</label>
-                       <div class="dropdown-container-x">
-                          <div class="dropdown-button noselect">
-                              <div class="dropdown-label">All</div>
-                              <div class="dropdown-quantity"></div>
-                              <i class="fa fa-search fa "></i>
-                          </div>
-                          <div class="dropdown-list" style={{display:"none"}}>
-                              <input type="search" placeholder="search categories" class="dropdown-search pull-right"/>
-                              <ul className="zap"></ul>
-                          </div>
-                      </div>
-        </div>
+                     
+                    
+                    </Row>
+                  </Container>
+                </div>
+                <br/>
+                 
+                                               
+                                               
+                                            <div className="form-group row ">
+                                                <div className="offset-md-2 col-md-10">
+                                                    <div className="custom-control custom-checkbox">
+                                                        <input type="checkbox" className="custom-control-input" name="is_top_course" id="is_top_course" value="1" />
+                                                        <label className="custom-control-label" for="is_top_course">Check if this course is top course</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> 
 
-
-        <div className="form-group">
-                     <label>Language Made in</label>
-                       <div class=" dropdown-container-x">
-                          <div class="dropdown-button noselect">
-                              <div class="dropdown-label">All</div>
-                              <div class="dropdown-quantity"></div>
-                              <i class="fa fa-search fa "></i>
-                          </div>
-                          <div class="dropdown-list" style={{display:"none"}}>
-                              <input type="search" placeholder="search categories" class="dropdown-search pull-right"/>
-                              <ul className="zap"></ul>
-                          </div>
-                      </div>
-        </div>
-     <br/>
-
-        <div className="form-group">
-         <br/> <br/>
-                     <input className=" pull-left" type="checkbox" style={{marginRight:"20px"}}/>
-                     <label className="">Check if course is top course</label>
-        </div>
+                                        </div> 
 
 
-
-          </div></React.Fragment>
+          </div> </div> </div></React.Fragment>
    )
  }
 }
@@ -469,9 +483,42 @@ class Step2 extends React.Component {
       return null
     } 
     return(
-    <React.Fragment><div className="card-box">
-    <DynamicForm title={"Requirements"} />
-   </div></React.Fragment>
+    <React.Fragment><div className="tab-pane" id="outcomes">
+                                    <div className="row justify-content-center">
+                                        <div className="col-md-8">
+                                            <div className="form-group row mb-3">
+                                                <label className="col-md-2 col-form-label" for="outcomes">Outcomes</label>
+                                                <div className="col-md-10">
+                                                    <div id="outcomes_area">
+                                                        <div className="d-flex mt-2">
+                                                            <div className="flex-grow-1 px-3">
+                                                                <div className="form-group">
+                                                                    <input type="text" className="form-control" name="outcomes[]" id="outcomes" placeholder="Provide outcomes" />
+                                                                </div>
+                                                            </div>
+                                                            <div className="">
+                                                                <button type="button" className="btn btn-success btn-sm" name="button" onclick="appendOutcome()"> <i className="fa fa-plus"></i> </button>
+                                                            </div>
+                                                        </div>
+                                                        <div id="blank_outcome_field" style={{display: "none"}}>
+                                                            <div className="d-flex mt-2">
+                                                                <div className="flex-grow-1 px-3">
+                                                                    <div className="form-group">
+                                                                        <input type="text" className="form-control" name="outcomes[]" id="outcomes" placeholder="Provide outcomes" />
+                                                                    </div>
+                                                                </div>
+                                                                <div className="">
+                                                                    <button type="button" className="btn btn-danger btn-sm" style={{marginTop: "0px"}} name="button" onclick="removeOutcome(this)"> <i className="fa fa-minus"></i> </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+</React.Fragment>
   )
  }
 }
@@ -482,9 +529,47 @@ class Step3 extends React.Component {
       return null
     } 
     return(
-    <React.Fragment><div className="card-box">
-      <DynamicForm title={"Outcomes"} />      
-    </div></React.Fragment>
+    <React.Fragment>
+
+    <div className="tab-pane" id="requirements">
+                                    <div className="row justify-content-center">
+                                        <div className="col-md-8">
+                                            <div className="form-group row mb-3">
+                                                <label className="col-md-2 col-form-label" for="requirements">Requirements</label>
+                                                <div className="col-md-10">
+                                                    <div id="requirement_area">
+                                                        <div className="d-flex mt-2">
+                                                            <div className="flex-grow-1 px-3">
+                                                                <div className="form-group">
+                                                                    <input type="text" className="form-control" name="requirements[]" id="requirements" placeholder="Provide requirements" />
+                                                                </div>
+                                                            </div>
+                                                            <div className="">
+                                                                <button type="button" className="btn btn-success btn-sm"  name="button" > <i className="fa fa-plus"></i> </button>
+                                                            </div>
+                                                        </div>
+                                                        <div id="blank_requirement_field" style={{display: "none"}}>
+                                                            <div className="d-flex mt-2">
+                                                                <div className="flex-grow-1 px-3">
+                                                                    <div className="form-group">
+                                                                        <input type="text" className="form-control" name="requirements[]" id="requirements" placeholder="Provide requirements" />
+                                                                    </div>
+                                                                </div>
+                                                                <div className="">
+                                                                    <button type="button" className="btn btn-danger btn-sm" style={{marginTop: "0px"}} name="button" onclick="removeRequirement(this)"> <i className="fa fa-minus"></i> </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+    </React.Fragment>
   )
  }
 }
@@ -497,53 +582,47 @@ class Step4 extends React.Component {
       return null
     } 
     return(
-    <React.Fragment><div className="card-box">
+    <React.Fragment> <div className="tab-pane" id="pricing">
+                                    <div className="row justify-content-center">
+                                        <div className="col-md-8">
+                                            <div className="form-group row mb-3">
+                                                <div className="offset-md-2 col-md-10">
+                                                    <div className="custom-control custom-checkbox">
+                                                        <input type="checkbox" className="custom-control-input" name="is_free_course" id="is_free_course" value="1" />
+                                                        <label className="custom-control-label" for="is_free_course">Check if this is a free course</label>
+                                                    </div>
+                                                </div>
+                                            </div>
 
+                                            <div className="paid-course-stuffs">
+                                                <div className="form-group row mb-3">
+                                                    <label className="col-md-2 col-form-label" for="price">Course price (₦)</label>
+                                                    <div className="col-md-10">
+                                                        <input type="number" className="form-control" id="price" name="price" placeholder="Enter course course price" min="0" />
+                                                    </div>
+                                                </div>
 
-        <div className="form-group">
-         <br/> <br/>
-                     <input className=" pull-left" type="checkbox" style={{marginRight:"20px"}}/>
-                     <label className="">Check if course is free course</label>
-        </div>
-      
-      <div className="form-group">
-      <label htmlFor="username">Course Price</label>
-      <input
-        className={`form-control ${this.props.errorUsernameClass}`}
-        id="username"
-        name="username"
-        type="number"
-        placeholder=""
-        value={this.props.username}
-        onChange={this.props.handleChange}
-      />
-       <div className="invalid-feedback">{this.props.errorUsername}</div>
-    </div>
-        
+                                                <div className="form-group row mb-3">
+                                                    <div className="offset-md-2 col-md-10">
+                                                        <div className="custom-control custom-checkbox">
+                                                            <input type="checkbox" className="custom-control-input" name="discount_flag" id="discount_flag" value="1" />
+                                                            <label className="custom-control-label" for="discount_flag">Check if this course has discount</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-
-        <div className="form-group">
-         <br/> <br/>
-                     <input className=" pull-left" type="checkbox" style={{marginRight:"20px"}}/>
-                     <label className="">Check if course has discount</label>
-        </div>
-      
-      <div className="form-group">
-      <label htmlFor="username">Discount</label>
-      <input
-        className={`form-control ${this.props.errorUsernameClass}`}
-        id="username"
-        name="username"
-        type="text"
-        placeholder=""
-        value={this.props.username}
-        onChange={this.props.handleChange}
-      />
-       <div className="invalid-feedback">{this.props.errorUsername}</div>
-    </div>
-
-
-     </div></React.Fragment>
+                                                <div className="form-group row mb-3">
+                                                    <label className="col-md-2 col-form-label" for="discounted_price">Discounted price (₦)</label>
+                                                    <div className="col-md-10">
+                                                        <input type="number" className="form-control" name="discounted_price" id="discounted_price"  min="0" />
+                                                        <small className="text-muted">This course has <span id="discounted_percentage" className="text-danger">0%</span> Discount</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div> 
+                                </div> 
+                               </React.Fragment>
   )
  }
 }
@@ -555,53 +634,50 @@ class Step5 extends React.Component {
       return null
     } 
     return(
-    <React.Fragment><div className="card-box">
-        
-      <div className="form-group">
-      <label htmlFor="username">course overview provider</label>
-      <input
-        className={`form-control ${this.props.errorUsernameClass}`}
-        id="username"
-        name="username"
-        type="text"
-        placeholder=""
-        value={this.props.username}
-        onChange={this.props.handleChange}
-      />
-       <div className="invalid-feedback">{this.props.errorUsername}</div>
+    <React.Fragment><div className="tab-pane" id="media">
+                                    <div className="row justify-content-center">
+
+                                        <div className="col-md-8">
+                                            <div className="form-group row mb-3">
+                                                <label className="col-md-2 col-form-label" for="course_overview_provider">Course overview provider</label>
+                                                <div className="col-md-10">
+                                                    <select className="form-control select2 select2-hidden-accessible" data-toggle="select2" name="course_overview_provider" id="course_overview_provider" data-select2-id="course_overview_provider" tabindex="-1" aria-hidden="true">
+                                                        <option value="youtube" data-select2-id="8">Youtube</option>
+                                                        <option value="vimeo">Vimeo</option>
+                                                        <option value="html5">Html5</option>
+                                                    </select><span className="" dir="ltr" data-select2-id="7" style={{width: "auto"}}><span className="selection"><span className="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-course_overview_provider-container"><span className="select2-selection__rendered" id="select2-course_overview_provider-container" role="textbox" aria-readonly="true" title="Youtube">Youtube</span><span className="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span className="dropdown-wrapper" aria-hidden="true"></span></span>
+                                                </div>
+                                            </div>
+                                        </div> 
+
+                                        <div className="col-md-8">
+                                            <div className="form-group row mb-3">
+                                                <label className="col-md-2 col-form-label" for="course_overview_url">Course overview url</label>
+                                                <div className="col-md-10">
+                                                    <input type="text" className="form-control" name="course_overview_url" id="course_overview_url" placeholder="E.g: https://www.youtube.com/watch?v=oBtf8Yglw2w" />
+                                                </div>
+                                            </div>
+                                        </div> 
+                                          <div className="col-md-8">
+    <div className="form-group row mb-3">
+      <label className="col-md-2 col-form-label" for="course_thumbnail_label">Course thumbnail</label>
+      <div className="col-md-10">
+        <div className="wrapper-image-preview" style={{marginLeft: "-6px"}}>
+          <div className="box" style={{width: "250px"}}>
+            <div className="js--image-preview" style={{backgroundImage: "ourse_thumbnail_placeholder.jpg",
+              backgroundColor: "#F5F5F5"}}></div>
+            <div className="upload-options">
+              <label for="course_thumbnail" className="btn"> <i className="mdi mdi-camera"></i> Course thumbnail <br /> <small>(600 X 600)</small> </label>
+              <input id="course_thumbnail" style={{visibility:"hidden"}} type="file" className="image-upload" name="course_thumbnail" accept="image/*" />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-
-
-      <div className="form-group">
-      <label htmlFor="username">Course overview url</label>
-      <input
-        className={`form-control ${this.props.errorUsernameClass}`}
-        id="username"
-        name="username"
-        type="text"
-        placeholder=""
-        value={this.props.username}
-        onChange={this.props.handleChange}
-      />
-       <div className="invalid-feedback">{this.props.errorUsername}</div>
-    </div>
-
-
-
-    <div >
-                
-                <div >
-                 
-                        <img alt="User Pic" src="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png" id="profile-image1" height="200" />
-                        <input id="profile-image-upload" class="hidden" type="file" onchange="previewFile()" />
-                        <div style={{color:"#999"}} >  </div>
-                        
-                </div>
-
-              </div>
-
-    </div></React.Fragment>
+  </div>
+                                       
+                                    </div> 
+                                </div></React.Fragment>
   )
  }
 }
@@ -613,28 +689,29 @@ class Step6 extends React.Component {
       return null
     } 
     return(
-    <React.Fragment><div className="card-box">
-      <div className="form-group">
-        <label htmlFor="comment"> Meta Keyword:</label>
-          <textarea 
-          className="form-control"
-          id="comment"
-          name="comment" 
-          value={this.props.comment} 
-          onChange={this.props.handleChange} />
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="comment"> Meta description:</label>
-          <textarea 
-          className="form-control"
-          id="comment"
-          name="comment" 
-          value={this.props.comment} 
-          onChange={this.props.handleChange} />
-      </div>
-
-     </div></React.Fragment>
+    <React.Fragment> <div className="tab-pane" id="seo">
+                                    <div className="row justify-content-center">
+                                        <div className="col-md-8">
+                                            <div className="form-group row mb-3">
+                                                <label className="col-md-2 col-form-label" for="website_keywords">Meta keywords</label>
+                                                <div className="col-md-10">
+                                                    <input type="text" className="form-control bootstrap-tag-input" id="meta_keywords" 
+                                                    name="meta_keywords" data-role="tagsinput" style={{width: "100%", display: "none"}} placeholder="Write a keyword and then press enter button"  /><div className="bootstrap-tagsinput">
+                                                    <input size="43" type="text" placeholder="Write a keyword and then press enter button" /></div>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                        <div className="col-md-8">
+                                            <div className="form-group row mb-3">
+                                                <label className="col-md-2 col-form-label" for="meta_description">Meta description</label>
+                                                <div className="col-md-10">
+                                                    <textarea name="meta_description" className="form-control"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                               </React.Fragment>
   )
  }
 }
@@ -646,13 +723,23 @@ class Step7 extends React.Component {
       return null
     } 
     return(
-    <React.Fragment><div className="card-box">
-      <div className="form-group" style={{justifyContent:"center",textAlign:"center"}}>
-        <h3 style={{justifyContent:"center",textAlign:"center"}}>Thank you</h3>
-        <p style={{justifyContent:"center",textAlign:"center"}}>You are just one click away</p>
-      </div>       
-      <button className="btn btn-success btn-block" style={{background:"green",color:"#fff"}} disabled={!this.props.canSubmit}>submit</button>
-   </div></React.Fragment>
+    <React.Fragment><div className="tab-pane" id="finish">
+                                    <div className="row">
+                                        <div className="col-12">
+                                            <div className="text-center">
+                                                <h2 className="mt-0"><i className="mdi mdi-check-all"></i></h2>
+                                                <h3 className="mt-0">Thank you !</h3>
+
+                                                <p className="w-75 mb-2 mx-auto">You are just one click away</p>
+
+                                                <div className="mb-3 mt-3">
+                                                    <button type="button" className="btn btn-primary text-center" onclick="checkRequiredFields()">Submit</button>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div> 
+                                </div>
+</React.Fragment>
   )
  }
 }
