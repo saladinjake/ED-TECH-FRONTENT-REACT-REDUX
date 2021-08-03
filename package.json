@@ -46,6 +46,7 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.1.1",
+    "summernote-nodejs": "^1.0.4",
     "swiper": "^5.4.5",
     "yup": "^0.32.9"
   },
