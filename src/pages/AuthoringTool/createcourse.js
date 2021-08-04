@@ -12,7 +12,7 @@ const Dashboard = () => {
 	<NavBar/><br/><br/><br/><br/>
 
 
-    <div className="container-fluid">
+    <div className="container">
         <div className="wrapper">
            <SideBar />
 

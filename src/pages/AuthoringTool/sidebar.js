@@ -597,7 +597,7 @@ export const AddHead = () => {
 					    <div className="col-md-12">
 					        <div className="card">
 					            <div className="card-body">
-					                <h4 className="page-title"> <i className="mdi mdi-apple-keyboard-command title_icon"></i> Courses                    <a href="/user/course_form/add_course" className="btn btn-outline-primary btn-rounded alignToTitle"><i className="mdi mdi-plus"></i>Add new course</a>
+					                <h4 className="page-title"> <i className="mdi mdi-apple-keyboard-command title_icon"></i> Courses                    <a href={process.env.PUBLIC_URL+"/authoring/create/new"} className="btn btn-outline-primary btn-rounded alignToTitle"><i className="mdi mdi-plus"></i>Add new course</a>
 					                </h4>
 					            </div>
 					        </div> 
@@ -840,7 +840,7 @@ export const SideBar = () =>{
 
     
 
-      <div className="left-side-menu left-side-menu-detached " style={{float:"left"}}>
+      <div className="left-side-menu left-side-menu-detached " style={{float:"left", height:"100vh"}}>
 	<div className="leftbar-user">
 		<a href="javascript: void(0);">
 			<img src="#/uploads/user_image/placeholder.png" alt="user-image" height="42" className="rounded-circle shadow-sm" />

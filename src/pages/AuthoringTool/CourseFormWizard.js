@@ -167,8 +167,9 @@ export default class MasterForm extends React.Component {
         <div className="card">
             <div className="card-body">
 
-                <h4 className="header-title mb-3">Course adding form                    <a href="#/user/courses" className="alignToTitle btn btn-outline-secondary btn-rounded btn-sm"> <i className=" mdi mdi-keyboard-backspace"></i> Back to course list</a>
+                <h4 className="header-title mb-3">Course adding form                    <a href="#/user/courses" className="alignToTitle btn btn-outline-secondary btn-rounded btn-sm"> <i className=" mdi mdi-keyboard-backspace"></i> Back to course list</a><br/>
                 </h4>
+                <br/>
 
                 <div className="row">
                     <div className="col-md-12">
