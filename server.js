@@ -1,6 +1,14 @@
+/*
+*@author: Juwa Victor
+*@date : 8/3/2021
+*@company : QUESTENCE DIGITAL LEARNING
+*@description: Server code for front end build
+*
+*
+*
+*/
 const express = require("express");
 const path = require("path");
-
 const port = process.env.PORT || 8080;
 const app = express();
 
@@ -15,21 +23,17 @@ const forceSSL = function () {
 };
 
 // app.use(forceSSL())
-
 app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, "build")));
-
 app.get("/ping", function (req, res) {
   return res.send("pong");
 });
 app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
-
 // const root = require('path').join(__dirname, 'build')
 // app.use(express.static(root));
 // app.get("/*", (req, res) => {
 //     res.sendFile('index.html', { root });
 // })
-
 app.listen(port);

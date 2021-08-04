@@ -92,7 +92,11 @@ import "./pre-style.css";
 import Notification from "./Toaster";
 
 import AuthoringDashboard from "./pages/AuthoringTool/dashboard"
-import CourseFormWizard from "./pages/AuthoringTool/CourseFormWizard"
+import AuthoringCourseList from "./pages/AuthoringTool/courselist"
+import AuthorForm from "./pages/AuthoringTool/createcourse"
+import AuthorSales from "./pages/AuthoringTool/Sales"
+import AuthorPayments from "./pages/AuthoringTool/Payments"
+import AuthorPaymentSetting from  "./pages/AuthoringTool/Paymentsettings"
 
 import $ from "jquery";
 
@@ -479,15 +483,41 @@ function App(props) {
 
         <Route
           exact
-          path={`${process.env.PUBLIC_URL + "/authoring-dashboard"}`}
+          path={`${process.env.PUBLIC_URL + "/authoring/dashboard"}`}
           component={AuthoringDashboard}
         />
 
         <Route
           exact
-          path={`${process.env.PUBLIC_URL + "/authoring/course-new"}`}
-          component={CourseFormWizard}
+          path={`${process.env.PUBLIC_URL + "/authoring/course/history"}`}
+          component={AuthoringCourseList}
         />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/authoring/course/new"}`}
+          component={AuthorForm}
+        />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/authoring/sales/history"}`}
+          component={AuthorSales}
+        />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/authoring/payment/history"}`}
+          component={AuthorPayments}
+        />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/authoring/payment/settings"}`}
+          component={AuthorPaymentSetting}
+        />
+
+       
 
         <Route component={PageNotFound} />
       </Switch>
