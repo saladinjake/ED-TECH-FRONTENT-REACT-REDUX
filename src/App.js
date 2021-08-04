@@ -97,6 +97,7 @@ import AuthorForm from "./pages/AuthoringTool/createcourse"
 import AuthorSales from "./pages/AuthoringTool/Sales"
 import AuthorPayments from "./pages/AuthoringTool/Payments"
 import AuthorPaymentSetting from  "./pages/AuthoringTool/Paymentsettings"
+import AuthorProfileSetting from "./pages/AuthoringTool/ProfilePage"
 
 import $ from "jquery";
 
@@ -495,7 +496,7 @@ function App(props) {
 
         <Route
           exact
-          path={`${process.env.PUBLIC_URL + "/authoring/course/new"}`}
+          path={`${process.env.PUBLIC_URL + "/authoring/create/new"}`}
           component={AuthorForm}
         />
 
@@ -515,6 +516,13 @@ function App(props) {
           exact
           path={`${process.env.PUBLIC_URL + "/authoring/payment/settings"}`}
           component={AuthorPaymentSetting}
+        />
+
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/authoring/profile/settings"}`}
+          component={AuthorProfileSetting}
         />
 
        
