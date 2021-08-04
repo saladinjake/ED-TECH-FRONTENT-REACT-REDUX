@@ -13,7 +13,7 @@ const PaymentSettings = () =>  {
 	<Fragment>	
 <div className="row ">
   <div className="col-md-12">
-    <div className="card">
+    <div className="card" style={{height:"140px"}}>
       <div className="card-body">
         <h4 className="page-title"> <i className="mdi mdi-apple-keyboard-command title_icon"></i> Setup payment informations</h4>
       </div> 

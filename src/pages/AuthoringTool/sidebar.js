@@ -463,7 +463,7 @@ export const OverviewDash = () => {
                     
 <div className="row">
     <div className="col-md-12">
-        <div className="card">
+        <div className="card" style={{height:"140px"}}>
             <div className="card-body">
                 <h4 className="page-title"> <i className="mdi mdi-apple-keyboard-command title_icon"></i> Dashboard</h4>
             </div> 
@@ -595,7 +595,7 @@ export const AddHead = () => {
 	return (
       <div className="row ">
 					    <div className="col-md-12">
-					        <div className="card">
+					        <div className="card" style={{height:"140px"}}>
 					            <div className="card-body">
 					                <h4 className="page-title"> <i className="mdi mdi-apple-keyboard-command title_icon"></i> Courses                    <a href={process.env.PUBLIC_URL+"/authoring/create/new"} className="btn btn-outline-primary btn-rounded alignToTitle"><i className="mdi mdi-plus"></i>Add new course</a>
 					                </h4>
@@ -615,9 +615,9 @@ export const AddBoxes =() => {
         <div className="card widget-inline">
             <div className="card-body p-0">
                 <div className="row no-gutters">
-                    <div className="col">
-                        <a href="/user/courses" className="text-secondary">
-                            <div className="card shadow-none m-0">
+                    <div className="col" >
+                        <a href="#" className="text-secondary">
+                            <div className="card shadow-none m-0"  style={{height:"120px"}}>
                                 <div className="card-body text-center">
                                     <i className="dripicons-link text-muted" style={{fontSize: "24px"}}></i>
                                     <h3><span>
@@ -628,9 +628,9 @@ export const AddBoxes =() => {
                         </a>
                     </div>
 
-                    <div className="col">
-                        <a href="/user/courses" className="text-secondary">
-                            <div className="card shadow-none m-0 border-left">
+                    <div className="col"  >
+                        <a href="#" className="text-secondary">
+                            <div className="card shadow-none m-0 border-left" style={{height:"120px"}}>
                                 <div className="card-body text-center">
                                     <i className="dripicons-link-broken text-muted" style={{fontSize: "24px"}}></i>
                                     <h3><span>
@@ -641,9 +641,9 @@ export const AddBoxes =() => {
                         </a>
                     </div>
 
-                    <div className="col">
-                        <a href="/user/courses" className="text-secondary">
-                            <div className="card shadow-none m-0 border-left">
+                    <div className="col" >
+                        <a href="#" className="text-secondary">
+                            <div className="card shadow-none m-0 border-left" style={{height:"120px"}}>
                                 <div className="card-body text-center">
                                     <i className="dripicons-bookmark text-muted" style={{fontSize: "24px"}}></i>
                                     <h3><span>
@@ -654,9 +654,9 @@ export const AddBoxes =() => {
                         </a>
                     </div>
 
-                    <div className="col">
-                        <a href="/user/courses" className="text-secondary">
-                            <div className="card shadow-none m-0 border-left">
+                    <div className="col" >
+                        <a href="#" className="text-secondary">
+                            <div className="card shadow-none m-0 border-left" style={{height:"120px"}}>
                                 <div className="card-body text-center">
                                     <i className="dripicons-star text-muted" style={{fontSize: "24px"}}></i>
                                     <h3><span>0</span></h3>
@@ -666,9 +666,9 @@ export const AddBoxes =() => {
                         </a>
                     </div>
 
-                    <div className="col">
-                        <a href="/user/courses" className="text-secondary">
-                            <div className="card shadow-none m-0 border-left">
+                    <div className="col" >
+                        <a href="#" className="text-secondary">
+                            <div className="card shadow-none m-0 border-left" style={{height:"120px"}}>
                                 <div className="card-body text-center">
                                     <i className="dripicons-tags text-muted" style={{fontSize: "24px"}}></i>
                                     <h3><span>0</span></h3>
@@ -843,7 +843,7 @@ export const SideBar = () =>{
       <div className="left-side-menu left-side-menu-detached " style={{float:"left", height:"100vh"}}>
 	<div className="leftbar-user">
 		<a href="javascript: void(0);">
-			<img src="#/uploads/user_image/placeholder.png" alt="user-image" height="42" className="rounded-circle shadow-sm" />
+			<img src="http://demo4a.questence.org/uploads/user_image/placeholder.png" alt="user-image" height="42" className="rounded-circle shadow-sm" />
 						<span className="leftbar-user-name">Instructor-02 Questence</span>
 		</a>
 	</div>
@@ -852,48 +852,50 @@ export const SideBar = () =>{
 
 		<li className="side-nav-title side-nav-item">Navigation</li>
 					<li className="side-nav-item">
-				<a href="#/user/dashboard" className="side-nav-link ">
-					<i className="dripicons-view-apps"></i>
+				<a href={ process.env.PUBLIC_URL + "/authoring/dashboard" } className="side-nav-link ">
+					<i className="fa fa-home"></i>
 					<span>Dashboard</span>
 				</a>
 			</li>
 			<li className="side-nav-item">
-				<a href="#/user/courses" className="side-nav-link ">
-					<i className="dripicons-archive"></i>
+				<a href={ process.env.PUBLIC_URL + "/authoring/course/history" } className="side-nav-link ">
+					<i className="fa fa-archive"></i>
 					<span>Course manager</span>
 				</a>
 			</li>
 			<li className="side-nav-item">
-				<a href="#/user/sales_report" className="side-nav-link ">
-					<i className="dripicons-to-do"></i>
+				<a href={ process.env.PUBLIC_URL +  "/authoring/sales/history" } className="side-nav-link ">
+					<i className="fa fa-file"></i>
 					<span>Sales report</span>
 				</a>
 			</li>
 			<li className="side-nav-item">
-				<a href="#/user/payout_report" className="side-nav-link ">
-					<i className="dripicons-shopping-bag"></i>
+				<a href= { process.env.PUBLIC_URL +  "/authoring/payment/history" } className="side-nav-link ">
+					<i className="fa fa-shopping-bag"></i>
 					<span>Payout report</span>
 				</a>
 			</li>
 			<li className="side-nav-item">
-				<a href="#/user/payout_settings" className="side-nav-link ">
-					<i className="dripicons-gear"></i>
+				<a href={ process.env.PUBLIC_URL +  "/authoring/payment/settings" } className="side-nav-link ">
+					<i className="fa fa-gear"></i>
 					<span>Payout settings</span>
 				</a>
 			</li>
 				<li className="side-nav-item">
 			<a href="#/home/my_messages" className="side-nav-link">
-				<i className="dripicons-mail"></i>
+				<i className="fa fa-inbox"></i>
 				<span>Message</span>
 			</a>
 		</li>
 		<li className="side-nav-item">
-			<a href="#/user/manage_profile" className="side-nav-link">
-				<i className="dripicons-user"></i>
+			<a href={ process.env.PUBLIC_URL +  "/authoring/profile/settings" } className="side-nav-link">
+				<i className="fa fa-user"></i>
 				<span>Manage profile</span>
 			</a>
 		</li>
 	</ul>
+
+
 
 </div>
 
