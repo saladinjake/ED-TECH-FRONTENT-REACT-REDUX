@@ -597,7 +597,7 @@ export const AddHead = () => {
 					    <div className="col-md-12">
 					        <div className="card" style={{height:"140px"}}>
 					            <div className="card-body">
-					                <h4 className="page-title"> <i className="mdi mdi-apple-keyboard-command title_icon"></i> Courses                    <a href={process.env.PUBLIC_URL+"/authoring/create/new"} className="btn btn-outline-primary btn-rounded alignToTitle"><i className="mdi mdi-plus"></i>Add new course</a>
+					                <h4 className="page-title"> <i className="fa fa-home title_icon"></i> Courses                    <a href={process.env.PUBLIC_URL+"/authoring/create/new"} className="btn btn-outline-primary btn-rounded alignToTitle"><i className="mdi mdi-plus"></i>Add new course</a>
 					                </h4>
 					            </div>
 					        </div> 

@@ -10,7 +10,7 @@ const SalesReport = () => {
     <div className="col-md-12">
         <div className="card" style={{height:"140px"}}>
             <div className="card-body">
-                <h4 className="page-title"> <i className="mdi mdi-apple-keyboard-command title_icon"></i> Sales report</h4>
+                <h4 className="page-title"> <i className="fa fa-home title_icon"></i> Sales report</h4>
             </div> 
         </div> 
     </div>

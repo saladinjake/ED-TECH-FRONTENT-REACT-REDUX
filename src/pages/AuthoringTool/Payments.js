@@ -12,7 +12,7 @@ const PayOuts = () => {
         <div className="card" style={{height:"140px"}}>
             <div className="card-body">
                 <h4 className="page-title"> 
-                <i className="mdi mdi-apple-keyboard-command title_icon"></i> Payout report                   
+                <i className="fa fa-home title_icon"></i> Payout report                   
                  <a href="#" className="btn btn-outline-primary btn-rounded alignToTitle" ><i className="mdi mdi-plus"></i>Request a new withdrawal</a>
                 </h4>
             </div>
@@ -25,11 +25,11 @@ const PayOuts = () => {
         <div className="card text-white bg-danger">
             <div className="card-body">
                 <div className="float-right bg-white">
-                    <i className="mdi mdi-currency-usd widget-icon text-danger"></i>
+                    <i className="fa fa-currency-usd widget-icon text-danger"></i>
                 </div>
-                <h5 className="text-white font-weight-normal mt-0" title="Pending amount">Pending amount</h5>
+                <p className="text-white font-weight-normal mt-0" title="Pending amount">Pending amount</p>
                 <h3 className="mt-3 mb-3">
-                    <span className="text-white"><i className="mdi mdi-arrow-down-bold"></i></span>
+                    <span className="text-white" style={{color:"#fff"}}><i className="fa fa-arrow-down"></i></span>
                     ₦0                </h3>
             </div>
         </div> 
@@ -39,11 +39,11 @@ const PayOuts = () => {
         <div className="card text-white bg-success">
             <div className="card-body">
                 <div className="float-right bg-white">
-                    <i className="mdi mdi-currency-usd widget-icon text-success"></i>
+                    <i className="fa fa-currency-usd widget-icon text-success"></i>
                 </div>
-                <h5 className="text-white font-weight-normal mt-0" title="Total payout amount">Total payout amount</h5>
+                <p className="text-white font-weight-normal mt-0" title="Total payout amount">Total payout amount</p>
                 <h3 className="mt-3 mb-3">
-                    <span className="text-white"><i className="mdi mdi-arrow-down-bold"></i></span>
+                    <span className="text-white" style={{color:"#fff"}}><i className="fa fa-arrow-down"></i></span>
                     ₦0                </h3>
             </div> 
         </div> 
@@ -53,10 +53,12 @@ const PayOuts = () => {
         <div className="card text-white bg-info">
             <div className="card-body">
                 <div className="float-right bg-white">
-                    <i className="mdi mdi-currency-usd widget-icon text-primary"></i>
+                    <i className="fa fa-currency-usd widget-icon text-primary"></i>
                 </div>
-                <h5 className="text-white font-weight-normal mt-0" title="Requested withdrawal amount">Requested withdrawal amount</h5>
-                                            <h3 className="mt-3 mb-3"><span className="text-white"><i className="mdi mdi-arrow-down-bold"></i></span> ₦0</h3>
+                <p className="text-white font-weight-normal mt-0" title="Requested withdrawal amount">Requested withdrawal </p>
+                                            <h3 className="mt-3 mb-3">
+                                            <span className="text-white" style={{color:"#fff"}}>
+                                            <i className="fa fa-arrow-down"></i></span> ₦0</h3>
                                 </div> 
         </div> 
     </div> 
