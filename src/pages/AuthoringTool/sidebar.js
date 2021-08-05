@@ -512,7 +512,7 @@ export const OverviewDash = () => {
                     <div className="col-sm-6 col-md-3">
                         <div className="card shadow-none m-0 border-left">
                             <div className="card-body text-center">
-                                <i className="dripicons-user-group text-muted" style={{fontSize:"24px"}}></i>
+                                <i className="fa fa-user-group text-muted" style={{fontSize:"24px"}}></i>
                                 <h3><span>0</span></h3>
                                 <p className="text-muted font-15 mb-0">Number of enrolment</p>
                             </div>
@@ -523,7 +523,7 @@ export const OverviewDash = () => {
                         <a href="/user/payout_report" className="text-secondary">
                             <div className="card shadow-none m-0 border-left">
                                 <div className="card-body text-center">
-                                    <i className="dripicons-inbox text-muted" style={{fontSize:"24px"}}></i>
+                                    <i className="fa fa-inbox text-muted" style={{fontSize:"24px"}}></i>
                                     <h3><span>₦0</span></h3>
                                     <p className="text-muted font-15 mb-0">Pending balance</p>
                                 </div>
@@ -535,7 +535,7 @@ export const OverviewDash = () => {
                         <a href="/user/payout_report" className="text-secondary">
                             <div className="card shadow-none m-0 border-left">
                                 <div className="card-body text-center">
-                                    <i className="dripicons-pin text-muted" style={{fontSize:"24px"}}></i>
+                                    <i className="fa fa-pin text-muted" style={{fontSize:"24px"}}></i>
                                     <h3><span>₦0</span></h3>
                                     <p className="text-muted font-15 mb-0">Requested withdrawal amount</p>
                                 </div>
@@ -565,14 +565,14 @@ export const OverviewDash = () => {
                 </div>
                 <div className="row text-center mt-2 py-2">
                     <div className="col-6">
-                        <i className="mdi mdi-trending-up text-success mt-3 h3"></i>
+                        <i className="fa fa-trending-up text-success mt-3 h3"></i>
                         <h3 className="font-weight-normal">
                             <span>0</span>
                         </h3>
                         <p className="text-muted mb-0">Active courses</p>
                     </div>
                     <div className="col-6">
-                        <i className="mdi mdi-trending-down text-warning mt-3 h3"></i>
+                        <i className="fa fa-trending-down text-warning mt-3 h3"></i>
                         <h3 className="font-weight-normal">
                             <span>0</span>
                         </h3>
@@ -619,7 +619,7 @@ export const AddBoxes =() => {
                         <a href="#" className="text-secondary">
                             <div className="card shadow-none m-0"  style={{height:"120px"}}>
                                 <div className="card-body text-center">
-                                    <i className="dripicons-link text-muted" style={{fontSize: "24px"}}></i>
+                                    <i className="fa fa-link text-muted" style={{fontSize: "24px"}}></i>
                                     <h3><span>
                                         0                                    </span></h3>
                                     <p className="text-muted font-15 mb-0">Active courses</p>
@@ -632,7 +632,7 @@ export const AddBoxes =() => {
                         <a href="#" className="text-secondary">
                             <div className="card shadow-none m-0 border-left" style={{height:"120px"}}>
                                 <div className="card-body text-center">
-                                    <i className="dripicons-link-broken text-muted" style={{fontSize: "24px"}}></i>
+                                    <i className="fa fa-link-broken text-muted" style={{fontSize: "24px"}}></i>
                                     <h3><span>
                                         0                                    </span></h3>
                                     <p className="text-muted font-15 mb-0">Pending courses</p>
@@ -645,7 +645,7 @@ export const AddBoxes =() => {
                         <a href="#" className="text-secondary">
                             <div className="card shadow-none m-0 border-left" style={{height:"120px"}}>
                                 <div className="card-body text-center">
-                                    <i className="dripicons-bookmark text-muted" style={{fontSize: "24px"}}></i>
+                                    <i className="fa fa-bookmark text-muted" style={{fontSize: "24px"}}></i>
                                     <h3><span>
                                         0                                    </span></h3>
                                     <p className="text-muted font-15 mb-0">Draft courses</p>
@@ -658,7 +658,7 @@ export const AddBoxes =() => {
                         <a href="#" className="text-secondary">
                             <div className="card shadow-none m-0 border-left" style={{height:"120px"}}>
                                 <div className="card-body text-center">
-                                    <i className="dripicons-star text-muted" style={{fontSize: "24px"}}></i>
+                                    <i className="fa fa-star text-muted" style={{fontSize: "24px"}}></i>
                                     <h3><span>0</span></h3>
                                     <p className="text-muted font-15 mb-0">Free courses</p>
                                 </div>
@@ -670,7 +670,7 @@ export const AddBoxes =() => {
                         <a href="#" className="text-secondary">
                             <div className="card shadow-none m-0 border-left" style={{height:"120px"}}>
                                 <div className="card-body text-center">
-                                    <i className="dripicons-tags text-muted" style={{fontSize: "24px"}}></i>
+                                    <i className="fa fa-tags text-muted" style={{fontSize: "24px"}}></i>
                                     <h3><span>0</span></h3>
                                     <p className="text-muted font-15 mb-0">Paid courses</p>
                                 </div>
@@ -800,7 +800,7 @@ export const AddFormBox = () => {
 
             <div className="table-responsive-sm mt-4">
                                                     <div className="img-fluid w-100 text-center">
-                      <img style={{opacity: "1", width: "100px"}} src="/assets/backend/images/file-search.svg" /><br/>
+                      <img style={{opacity: "1", width: "100px"}} src="http://demo4a.questence.org/assets/backend/images/file-search.svg" /><br/>
                       No data found                    </div>
                             </div>
         </div>

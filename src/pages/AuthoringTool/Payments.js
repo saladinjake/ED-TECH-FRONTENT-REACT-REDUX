@@ -80,8 +80,22 @@ const PayOuts = () => {
                             <tr role="row"><th className="sorting_asc" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="#: activate to sort column descending" style={{ width: "58.6562px"}}>#</th><th className="sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" aria-label="Payout amount: activate to sort column ascending" style={{ width: "232.812px" }}>Payout amount</th><th className="sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" aria-label="Payment type: activate to sort column ascending" style={{ width: "215.375px" }}>Payment type</th><th className="sorting" tabindex="0" aria-controls="basic-datatable" rowspan="1" colspan="1" aria-label="Date processed: activate to sort column ascending" style={{ width: "235.953px" }}>Date processed</th></tr>
                         </thead>
                         <tbody>
-                                                    <tr className="odd"><td valign="top" colspan="4" className="dataTables_empty">No data available in table</td></tr></tbody>
-                    </table></div></div><div className="row"><div className="col-sm-12 col-md-5"><div className="dataTables_info" id="basic-datatable_info" role="status" aria-live="polite">Showing 0 to 0 of 0 entries</div></div><div className="col-sm-12 col-md-7"><div className="dataTables_paginate paging_simple_numbers" id="basic-datatable_paginate"><ul className="pagination pagination-rounded"><li className="paginate_button page-item previous disabled" id="basic-datatable_previous"><a href="#" aria-controls="basic-datatable" data-dt-idx="0" tabindex="0" className="page-link"><i className="mdi mdi-chevron-left"></i></a></li><li className="paginate_button page-item next disabled" id="basic-datatable_next"><a href="#" aria-controls="basic-datatable" data-dt-idx="1" tabindex="0" className="page-link"><i className="mdi mdi-chevron-right"></i></a></li></ul></div></div></div></div>
+                                                    <tr className="odd">
+                                                    <td valign="top" colspan="4" className="dataTables_empty">No data available in table</td></tr></tbody>
+                    </table></div></div><div className="row">
+                    <div className="col-sm-12 col-md-5">
+                    <div className="dataTables_info" 
+                       id="basic-datatable_info" role="status"
+                     aria-live="polite">Showing 0 to 0 of 0 entries</div></div>
+                     <div className="col-sm-12 col-md-7">
+                     <div className="dataTables_paginate paging_simple_numbers" id="basic-datatable_paginate">
+                     <ul className="pagination pagination-rounded">
+                     <li className="paginate_button page-item previous disabled" id="basic-datatable_previous">
+                     <a href="#" aria-controls="basic-datatable" data-dt-idx="0" tabindex="0" className="page-link">
+                     <i className="fa fa-chevron-left"></i></a></li>
+                     <li className="paginate_button page-item next disabled" id="basic-datatable_next">
+                     <a href="#" aria-controls="basic-datatable" data-dt-idx="1" tabindex="0" className="page-link">
+                     <i className="fa fa-chevron-right"></i></a></li></ul></div></div></div></div>
                 </div>
             </div>
         </div>

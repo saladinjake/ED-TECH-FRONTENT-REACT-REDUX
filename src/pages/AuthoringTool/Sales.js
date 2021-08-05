@@ -27,14 +27,14 @@ const SalesReport = () => {
                             <div className="col-md-10">
                                 <div className="form-group">
                                     <div id="reportrange" className="form-control" data-toggle="date-picker-range" data-target-display="#selectedValue" data-cancel-className="btn-light" style={{width: "100%"}}>
-                                        <i className="mdi mdi-calendar"></i>&nbsp;
-                                        <span id="selectedValue">August 04, 2021 - August 31, 2021</span> <i className="mdi mdi-menu-down"></i>
+                                        <i className="fa fa-calendar"></i>&nbsp;
+                                        <span id="selectedValue">August 04, 2021 - August 31, 2021</span> <i className="fa fa-menu-down"></i>
                                     </div>
                                     <input id="date_range" type="hidden" name="date_range" value="01 August, 2021 - 31 August, 2021" />
                                 </div>
                             </div>
                             <div className="col-md-2">
-                                <button type="submit" className="btn btn-info" id="submit-button" > Filter</button>
+                                <button type="submit" className="btn btn-info" id="submit-button" style={{width:"100px"}} > Filter</button>
                             </div>
                         </form>
                     </div>
@@ -47,7 +47,7 @@ const SalesReport = () => {
                     <label>Show 
                     <select name="sales-report-datatable_length" aria-controls="sales-report-datatable" className="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option>
                     <option value="50">50</option><option value="100">100</option></select> entries</label>
-                    </div></div><div className="col-sm-12 col-md-6">
+                    </div></div><div className="col-sm-12 col-md-6" style={{float:"right"}}>
                     <div id="sales-report-datatable_filter" className="dataTables_filter">
                     <label>Search:
                     <input type="search" className="form-control form-control-sm" placeholder="" aria-controls="sales-report-datatable" /></label></div>
@@ -62,14 +62,17 @@ const SalesReport = () => {
                         </thead>
                         <tbody>
                                                     <tr className="odd"><td valign="top" colspan="2" className="dataTables_empty">No data available in table</td></tr></tbody>
-                    </table></div></div><div className="row"><div className="col-sm-12 col-md-5"><div className="dataTables_info" id="sales-report-datatable_info" role="status" aria-live="polite">Showing 0 to 0 of 0 entries</div>
+                    </table></div></div><div className="row">
+                    <div className="col-sm-12 col-md-5">
+                    <div className="dataTables_info" id="sales-report-datatable_info" role="status" aria-live="polite">Showing 0 to 0 of 0 entries</div>
                     </div><div className="col-sm-12 col-md-7">
-                    <div className="dataTables_paginate paging_simple_numbers" id="sales-report-datatable_paginate"><ul className="pagination pagination-rounded">
+                    <div className="dataTables_paginate paging_simple_numbers" id="sales-report-datatable_paginate">
+                    <ul className="pagination pagination-rounded">
                     <li className="paginate_button page-item previous disabled" id="sales-report-datatable_previous">
                     <a href="#" aria-controls="sales-report-datatable" data-dt-idx="0" tabindex="0" className="page-link">
-                    <i className="mdi mdi-chevron-left"></i></a></li>
+                    <i className="fa fa-chevron-left"></i></a></li>
                     <li className="paginate_button page-item next disabled" id="sales-report-datatable_next">
-                    <a href="#" aria-controls="sales-report-datatable" data-dt-idx="1" tabindex="0" className="page-link"><i className="mdi mdi-chevron-right"></i></a>
+                    <a href="#" aria-controls="sales-report-datatable" data-dt-idx="1" tabindex="0" className="page-link"><i className="fa fa-chevron-right"></i></a>
                     </li></ul></div></div></div></div>
                 </div>
             </div>
