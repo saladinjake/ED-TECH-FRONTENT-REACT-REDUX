@@ -1,15 +1,13 @@
-import React from 'react';
-import { Styles } from './styles/coursePrice.js';
+import React from "react";
+import { Styles } from "./styles/coursePrice.js";
 
-const CoursePrice =({title, filterType, filtername})=> {
-    return (
-        <Styles>
-             <div className="filter-type">
-             {filterType}
-             </div>
-            <div className="course-price">
-                {/* <h5>{title}</h5> */}
-                {/* <ul className="price-item list-unstyled">
+const CoursePrice = ({ title, filterType, filtername }) => {
+  return (
+    <Styles>
+      <div className="filter-type">{filterType}</div>
+      <div className="course-price">
+        {/* <h5>{title}</h5> */}
+        {/* <ul className="price-item list-unstyled">
                     <li className="check-btn">
                         <label htmlFor="price1"><input type="checkbox" id="price1" className="check-box" />All<span>(121)</span></label>
                     </li>
@@ -24,16 +22,14 @@ const CoursePrice =({title, filterType, filtername})=> {
                     </li>
                 </ul> */}
 
-                     <div className="form-group select-filter">                
-                         <select className="form-control">
-                         <option value=""  >{filtername}</option>   
-                         </select>
-                        </div>
+        <div className="form-group select-filter">
+          <select className="form-control">
+            <option value="">{filtername}</option>
+          </select>
+        </div>
+      </div>
+    </Styles>
+  );
+};
 
-            </div>
-        </Styles>
-    )
-    
-}
-
-export default CoursePrice
+export default CoursePrice;

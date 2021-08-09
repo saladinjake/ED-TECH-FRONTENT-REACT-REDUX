@@ -164,7 +164,6 @@ const CourseGrid = ({
       </Styles>
 
       {/* Footer 2 */}
-  
     </div>
   );
 };

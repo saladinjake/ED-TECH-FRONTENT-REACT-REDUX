@@ -30,7 +30,8 @@ export const Styles = styled.div`
         }
       }
 
-      input,textarea {
+      input,
+      textarea {
         width: 100%;
         height: 48px;
         background-color: #ffffff;

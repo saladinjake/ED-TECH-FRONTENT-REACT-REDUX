@@ -1,22 +1,13 @@
-import React, { Fragment , useEffect} from "react";
+import React, { Fragment, useEffect } from "react";
 
+import $ from "jquery";
 
-import $ from "jquery"
-
-import "./worksheet.css"
-
+import "./worksheet.css";
 
 const RightScreenMenu = () => {
-	let pageLeftContent = []
+  let pageLeftContent = [];
 
+  return <Fragment></Fragment>;
+};
 
-	
-	return (
-       <Fragment>
-          
-       </Fragment>
-
-    );
-}
-
-export default RightScreenMenu
+export default RightScreenMenu;

@@ -6,7 +6,7 @@ import CourseSidebar from "./components/CourseSidebar";
 import CourseItemGrid from "./components/CourseItemsGrid";
 import CourseItemsList from "./components/CourseGridList";
 
-import ResponsiveGrid from "./components/ResponsiveGrid"
+import ResponsiveGrid from "./components/ResponsiveGrid";
 import Footer from "../../components/Footer";
 import { Styles } from "./styles/course.js";
 
@@ -229,46 +229,32 @@ const CourseGrid = ({
                   style={{ marginTop: "-20px" }}
                 >
                   <Row>
-
-                  
-
-                  {courseLoading ? (
+                    {courseLoading ? (
                       <Loader width="70" />
                     ) : courses.length > 0 ? (
                       <Fragment>
                         {viewGrid === true ? (
-                         
-
-
-
                           <Fragment>
-
-                          {/* <CourseItemsList
+                            {/* <CourseItemsList
                             courses={courses}
                             allCourses={filterAllCourses}
                           />*/}
 
-                          <ResponsiveGrid  courses={courses}
-                            allCourses={filterAllCourses} />
-                              <div style={{clear:"both"}}></div>
-                         </Fragment>
-
+                            <ResponsiveGrid
+                              courses={courses}
+                              allCourses={filterAllCourses}
+                            />
+                            <div style={{ clear: "both" }}></div>
+                          </Fragment>
                         ) : (
-
-                          
-
                           <Fragment>
+                            <CourseItemGrid
+                              courses={courses}
+                              allCourses={filterAllCourses}
+                            />
 
-                          <CourseItemGrid
-                            courses={courses}
-                            allCourses={filterAllCourses}
-                          />
-
-                          
-                              <div style={{clear:"both"}}></div>
-                         </Fragment>
-
-
+                            <div style={{ clear: "both" }}></div>
+                          </Fragment>
                         )}
                       </Fragment>
                     ) : (
@@ -276,10 +262,6 @@ const CourseGrid = ({
                         <h1>No Search Found</h1>
                       </Row>
                     )}
-
-
-
-                    
                   </Row>
                 </div>
               </Col>

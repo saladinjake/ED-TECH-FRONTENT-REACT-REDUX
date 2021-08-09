@@ -13,11 +13,17 @@ class QuestOne extends Component {
             <Row>
               <Col md="6">
                 <div className="about-content">
-                  <h4 className="about-title" style={{color:"#000", fontFamily:"Open Sans"}}>
+                  <h4
+                    className="about-title"
+                    style={{ color: "#000", fontFamily: "Open Sans" }}
+                  >
                     Questence learning tools allow you to create and manage your
                     entire learning portfolio from one powerful dashboard
                   </h4>
-                  <p className="about-para" style={{color:"#000", fontFamily:"Open Sans"}}>
+                  <p
+                    className="about-para"
+                    style={{ color: "#000", fontFamily: "Open Sans" }}
+                  >
                     Seamlessly see the tasks that need your attention, check
                     when your next class is coming up, and keep up with your
                     progress.{" "}
@@ -29,8 +35,12 @@ class QuestOne extends Component {
                         <i className="las la-thumbs-up"></i>
                       </div>
                       <div className="cta-content">
-                        <h6 style={{color:"#000", fontFamily:"Open Sans"}}>{data.iconTitle}</h6>
-                        <p style={{color:"#000", fontFamily:"Open Sans"}}>{data.iconSubtitle}</p>
+                        <h6 style={{ color: "#000", fontFamily: "Open Sans" }}>
+                          {data.iconTitle}
+                        </h6>
+                        <p style={{ color: "#000", fontFamily: "Open Sans" }}>
+                          {data.iconSubtitle}
+                        </p>
                       </div>
                     </div>
                   ))}

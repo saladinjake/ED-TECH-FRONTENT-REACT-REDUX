@@ -39,7 +39,7 @@ class TeamSlider extends Component {
     return (
       <Styles>
         {/* Team Slider */}
-        <section className="team-member-area" style={{background:"#fff"}}>
+        <section className="team-member-area" style={{ background: "#fff" }}>
           <Container>
             <Row>
               <Col md="12">

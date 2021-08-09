@@ -11,7 +11,7 @@
 //         this.setState({
 //             data: response.data.data.courses
 //         })
-          
+
 //        } catch (err) {
 //          toast.error("Error occured fetching notifications");
 //        }
@@ -22,17 +22,17 @@
 //           console.log(data)
 
 //             return (
-//               data.length == 0 
+//               data.length == 0
 //                 ?( <p>Loading Data...</p> )
 //                 : (
-                      
+
 //                         <div className="row">
 //                            <div className="m-b-15">
 //                         {data.length > 0 &&  data.map((item, i) => {
-//                                        return ( 
+//                                        return (
 //                                            <NotificationListItem key={uuid()} item={item} />
 //                                        );
-                                     
+
 //                         })}
 
 //                              </div>

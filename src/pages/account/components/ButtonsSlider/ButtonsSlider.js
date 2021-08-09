@@ -27,10 +27,10 @@ const app = () => {
       onBeforeChange={(previousSlide, nextSlide) =>
         console.log("onBeforeChange", previousSlide, nextSlide)
       }
-      onChange={nextSlide => console.log("onChange", nextSlide)}
-      onAfterChange={nextSlide => console.log("onAfterChange", nextSlide)}
+      onChange={(nextSlide) => console.log("onChange", nextSlide)}
+      onAfterChange={(nextSlide) => console.log("onAfterChange", nextSlide)}
       style={{
-        backgroundColor: "#000"
+        backgroundColor: "#000",
       }}
       settings={{
         slidingDuration: 500,
@@ -38,7 +38,7 @@ const app = () => {
         shouldAutoplay: true,
         shouldDisplayButtons: false,
         autoplayDuration: 8000,
-        height: "100vh"
+        height: "100vh",
       }}
     >
       <OverlayContainer>
@@ -52,7 +52,7 @@ const app = () => {
             <Button
               style={{
                 width: 100,
-                margin: "12px 8px"
+                margin: "12px 8px",
               }}
               button="danger"
               onClick={() => previousSlideHandler.current()}
@@ -62,7 +62,7 @@ const app = () => {
             <Button
               style={{
                 width: 100,
-                margin: "12px 8px"
+                margin: "12px 8px",
               }}
               button="success"
               onClick={() => nextSlideHandler.current()}
@@ -79,7 +79,7 @@ const app = () => {
           backgroundColor: "#8A8A8A",
           maskBackgroundBlendMode: "luminosity",
           backgroundImage: bogliasco,
-          backgroundAnimation: "fade"
+          backgroundAnimation: "fade",
         }}
       />
 
@@ -89,7 +89,7 @@ const app = () => {
           backgroundColor: "#8A8A8A",
           maskBackgroundBlendMode: "luminosity",
           backgroundImage: countyClare,
-          backgroundAnimation: "fade"
+          backgroundAnimation: "fade",
         }}
       />
 
@@ -99,7 +99,7 @@ const app = () => {
           backgroundColor: "#8A8A8A",
           maskBackgroundBlendMode: "luminosity",
           backgroundImage: craterRock,
-          backgroundAnimation: "fade"
+          backgroundAnimation: "fade",
         }}
       />
 
@@ -109,7 +109,7 @@ const app = () => {
           backgroundColor: "#8A8A8A",
           maskBackgroundBlendMode: "luminosity",
           backgroundImage: giauPass,
-          backgroundAnimation: "fade"
+          backgroundAnimation: "fade",
         }}
       />
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Fragment } from "react";
 import { Link } from "react-router-dom";
-import { Container, Row, Col} from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 // import { useHistory } from "react-router-dom";
 import InstructorNavBar from "components/Navbar/AdminNavbar";
 import Footer from "../../components/Footer";
@@ -11,7 +11,6 @@ import { getInstructorCourses } from "services/instructor.js";
 import Loader from "components/Loader/Loader";
 import toast from "react-hot-toast";
 import InstructorBtns from "./InsructorBtns";
-
 
 const InstructorPendingCourses = () => {
   const [activeCourses, setActiveCourses] = useState([]);
@@ -24,13 +23,13 @@ const InstructorPendingCourses = () => {
 
   const fetchAuthProfile = async () => {
     try {
-     let allCourses = await getInstructorCourses();
-     setActiveCourses(
-       allCourses.data.data.data.length > 0 &&
-         allCourses.data.data.data.filter((course) => {
-           return parseInt(course.status) === 0;
-         })
-     );
+      let allCourses = await getInstructorCourses();
+      setActiveCourses(
+        allCourses.data.data.data.length > 0 &&
+          allCourses.data.data.data.filter((course) => {
+            return parseInt(course.status) === 0;
+          })
+      );
     } catch (err) {
       toast.error(
         err?.response?.data?.message || `Error occured fetching active courses`

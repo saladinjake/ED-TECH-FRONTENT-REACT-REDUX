@@ -17,7 +17,7 @@ class About extends Component {
         <div className="main-wrapper about-page">
           <NavBar />
           <AboutHeader />
-          
+
           <AboutSec />
           <Newsletter />
           <Footer />

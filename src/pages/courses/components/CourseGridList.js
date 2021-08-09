@@ -166,23 +166,13 @@ function CourseItemGrid({
     <Fragment>
       {currentCourses.length > 0 &&
         currentCourses.map((item, i) => {
-
-
           return (
-            
-
-
-                <Fragment className="container-fluid found-item" key={item.id}>
+            <Fragment className="container-fluid found-item" key={item.id}>
               <div
                 className="product-view col-merge-12 col-md-3 col-sm-12 col-merge-s-4 col-merge-d3 bookset"
                 style={{ marginRight: "-15px" }}
               >
-                <div
-                  className="product product-set left_adjust"
-                 
-                >
-                  
-                     
+                <div className="product product-set left_adjust">
                   <figure>
                     <Link
                       to={
@@ -235,25 +225,25 @@ function CourseItemGrid({
                         <div>
                           <h5
                             style={{
-                                  width: "100%",
-                                  fontSize: "14px",
-                                  fontWeight: "small",
-                                  color: "#000",
-                                  marginLeft: "20px",
-                                  fontFamily: "Open Sans",
-                                }}
+                              width: "100%",
+                              fontSize: "14px",
+                              fontWeight: "small",
+                              color: "#000",
+                              marginLeft: "20px",
+                              fontFamily: "Open Sans",
+                            }}
                           >
                             {item?.instructor?.first_name}{" "}
                             {item?.instructor?.last_name}
                           </h5>
                           <p
                             style={{
-                                  width: "100%",
-                                  marginTop: "4px",
-                                  textTransform: "capitalize",
-                                  fontWeight: "bold",
-                                  color: "#000",
-                                }}
+                              width: "100%",
+                              marginTop: "4px",
+                              textTransform: "capitalize",
+                              fontWeight: "bold",
+                              color: "#000",
+                            }}
                           >
                             {
                               item?.instructor?.instructor_profile
@@ -267,13 +257,13 @@ function CourseItemGrid({
                       <h4
                         className="stori-line"
                         style={{
-                              fontSize: "25px",
-                              lineHeight: "32px",
-                              fontWeight: "600",
-                              width: "100%",
-                              color: "#000",
-                              margin: "0 0 15px",
-                            }}
+                          fontSize: "25px",
+                          lineHeight: "32px",
+                          fontWeight: "600",
+                          width: "100%",
+                          color: "#000",
+                          margin: "0 0 15px",
+                        }}
                       >
                         {" "}
                         {item?.course_name}
@@ -314,14 +304,14 @@ function CourseItemGrid({
                       <div className="stm_lms_course__meta style-8a">
                         <i
                           className="fa fa-signal "
-                          style={{ marginRight: "4px", fontWeight:"bold"  }}
+                          style={{ marginRight: "4px", fontWeight: "bold" }}
                         ></i>{" "}
                         Beginner
                       </div>
                       <div className="stm_lms_course__meta style-8a">
                         <i
                           className="fa fa-bars "
-                          style={{ marginLeft: "4px", fontWeight:"bold"  }}
+                          style={{ marginLeft: "4px", fontWeight: "bold" }}
                         >
                           {item?.course?.learning_style}
                         </i>
@@ -329,7 +319,7 @@ function CourseItemGrid({
                       <div className="stm_lms_course__meta style-8a">
                         <i
                           className="fa fa-clock "
-                          style={{ marginLeft: "4px", fontWeight:"bold" }}
+                          style={{ marginLeft: "4px", fontWeight: "bold" }}
                         >
                           {item?.course?.duration} hrs
                         </i>
@@ -471,13 +461,13 @@ function CourseItemGrid({
                             item.slug
                           }
                           style={{
-                                fontWeight: "700",
-                                fontFamily: "Open Sans",
-                                fontSize: "12px",
-                                width: "100%",
-                                color: "#000",
-                                lineHeight: "20px",
-                              }}
+                            fontWeight: "700",
+                            fontFamily: "Open Sans",
+                            fontSize: "12px",
+                            width: "100%",
+                            color: "#000",
+                            lineHeight: "20px",
+                          }}
                         >
                           {item?.category?.name} >
                         </Link>
@@ -485,13 +475,13 @@ function CourseItemGrid({
 
                       <p
                         style={{
-                              fontWeight: "700",
-                              width: "100%",
-                              fontFamily: "Open Sans",
-                              fontSize: "12px",
-                              color: "#000",
-                              lineHeight: "20px",
-                            }}
+                          fontWeight: "700",
+                          width: "100%",
+                          fontFamily: "Open Sans",
+                          fontSize: "12px",
+                          color: "#000",
+                          lineHeight: "20px",
+                        }}
                       >
                         <Link
                           to={
@@ -502,25 +492,24 @@ function CourseItemGrid({
                             item.slug
                           }
                           style={{
-                                fontWeight: "700",
-                                fontFamily: "Open Sans",
-                                color: "#000",
-                                fontSize: "12px",
-                                lineHeight: "20px",
-                              }}
-                         
+                            fontWeight: "700",
+                            fontFamily: "Open Sans",
+                            color: "#000",
+                            fontSize: "12px",
+                            lineHeight: "20px",
+                          }}
                         >
                           {item?.course_code}
                         </Link>
                       </p>
 
                       <p
-                       style={{
-                              width: "100%",
-                              fontWeight: "bold",
-                              marginTop: "3px",
-                              color: "#000",
-                            }}
+                        style={{
+                          width: "100%",
+                          fontWeight: "bold",
+                          marginTop: "3px",
+                          color: "#000",
+                        }}
                       >
                         <Link
                           to={
@@ -531,12 +520,12 @@ function CourseItemGrid({
                             item.slug
                           }
                           style={{
-                                width: "100%",
-                                marginTop: "2px",
-                                color: "#000",
-                                fontWeight: "bold",
-                              }}
-                              className=" style-8a"
+                            width: "100%",
+                            marginTop: "2px",
+                            color: "#000",
+                            fontWeight: "bold",
+                          }}
+                          className=" style-8a"
                         >
                           {item.course_name.substring(0, 80) + "..."}
                         </Link>

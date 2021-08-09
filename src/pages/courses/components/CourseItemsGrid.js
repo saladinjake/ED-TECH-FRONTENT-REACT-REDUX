@@ -138,7 +138,7 @@ function CoursedataGrid({
                               color: "#000",
                               lineHeight: "20px",
                               width: "100%",
-                              fontFamily: "Open Sans"
+                              fontFamily: "Open Sans",
                             }}
                           >
                             {data.course_name}

@@ -33,8 +33,6 @@
   font-family: "0pen Sans";
 }
 
-
-
 .center_div {
   margin: 20px auto;
   font-family: "0pen Sans";
@@ -708,10 +706,6 @@
   font-family: "0pen Sans";
 }
 
-
-
-
-
 .parent-div-centering {
   position: relative;
 }
@@ -720,7 +714,6 @@
   top: 50%;
   transform: translateY(-50%);
 }
-
 
 .parent-div-flexed {
   display: flex;

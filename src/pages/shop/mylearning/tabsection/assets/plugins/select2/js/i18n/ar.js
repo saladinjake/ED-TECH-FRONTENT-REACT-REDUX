@@ -1,36 +1,36 @@
 /*! Select2 4.0.3 | https://github.com/select2/select2/blob/master/LICENSE.md */
 
-(function() {
+(function () {
   if (jQuery && jQuery.fn && jQuery.fn.select2 && jQuery.fn.select2.amd)
     var e = jQuery.fn.select2.amd;
   return (
-    e.define('select2/i18n/ar', [], function() {
+    e.define("select2/i18n/ar", [], function () {
       return {
-        errorLoading: function() {
-          return 'لا يمكن تحميل النتائج';
+        errorLoading: function () {
+          return "لا يمكن تحميل النتائج";
         },
-        inputTooLong: function(e) {
+        inputTooLong: function (e) {
           var t = e.input.length - e.maximum,
-            n = 'الرجاء حذف ' + t + ' عناصر';
+            n = "الرجاء حذف " + t + " عناصر";
           return n;
         },
-        inputTooShort: function(e) {
+        inputTooShort: function (e) {
           var t = e.minimum - e.input.length,
-            n = 'الرجاء إضافة ' + t + ' عناصر';
+            n = "الرجاء إضافة " + t + " عناصر";
           return n;
         },
-        loadingMore: function() {
-          return 'جاري تحميل نتائج إضافية...';
+        loadingMore: function () {
+          return "جاري تحميل نتائج إضافية...";
         },
-        maximumSelected: function(e) {
-          var t = 'تستطيع إختيار ' + e.maximum + ' بنود فقط';
+        maximumSelected: function (e) {
+          var t = "تستطيع إختيار " + e.maximum + " بنود فقط";
           return t;
         },
-        noResults: function() {
-          return 'لم يتم العثور على أي نتائج';
+        noResults: function () {
+          return "لم يتم العثور على أي نتائج";
         },
-        searching: function() {
-          return 'جاري البحث…';
+        searching: function () {
+          return "جاري البحث…";
         },
       };
     }),

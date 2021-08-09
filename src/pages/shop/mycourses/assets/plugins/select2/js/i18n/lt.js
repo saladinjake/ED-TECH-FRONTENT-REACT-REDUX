@@ -1,10 +1,10 @@
 /*! Select2 4.0.3 | https://github.com/select2/select2/blob/master/LICENSE.md */
 
-(function() {
+(function () {
   if (jQuery && jQuery.fn && jQuery.fn.select2 && jQuery.fn.select2.amd)
     var e = jQuery.fn.select2.amd;
   return (
-    e.define('select2/i18n/lt', [], function() {
+    e.define("select2/i18n/lt", [], function () {
       function e(e, t, n, r) {
         return e % 10 === 1 && (e % 100 < 11 || e % 100 > 19)
           ? t
@@ -13,28 +13,28 @@
           : r;
       }
       return {
-        inputTooLong: function(t) {
+        inputTooLong: function (t) {
           var n = t.input.length - t.maximum,
-            r = 'Pašalinkite ' + n + ' simbol';
-          return (r += e(n, 'į', 'ius', 'ių')), r;
+            r = "Pašalinkite " + n + " simbol";
+          return (r += e(n, "į", "ius", "ių")), r;
         },
-        inputTooShort: function(t) {
+        inputTooShort: function (t) {
           var n = t.minimum - t.input.length,
-            r = 'Įrašykite dar ' + n + ' simbol';
-          return (r += e(n, 'į', 'ius', 'ių')), r;
+            r = "Įrašykite dar " + n + " simbol";
+          return (r += e(n, "į", "ius", "ių")), r;
         },
-        loadingMore: function() {
-          return 'Kraunama daugiau rezultatų…';
+        loadingMore: function () {
+          return "Kraunama daugiau rezultatų…";
         },
-        maximumSelected: function(t) {
-          var n = 'Jūs galite pasirinkti tik ' + t.maximum + ' element';
-          return (n += e(t.maximum, 'ą', 'us', 'ų')), n;
+        maximumSelected: function (t) {
+          var n = "Jūs galite pasirinkti tik " + t.maximum + " element";
+          return (n += e(t.maximum, "ą", "us", "ų")), n;
         },
-        noResults: function() {
-          return 'Atitikmenų nerasta';
+        noResults: function () {
+          return "Atitikmenų nerasta";
         },
-        searching: function() {
-          return 'Ieškoma…';
+        searching: function () {
+          return "Ieškoma…";
         },
       };
     }),

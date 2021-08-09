@@ -1,15 +1,11 @@
-.dashboard-wrapper{
-    background: #F6F9FF;
-    padding: 3.5rem 2rem;
-    min-height: 100vh;
+.dashboard-wrapper {
+  background: #f6f9ff;
+  padding: 3.5rem 2rem;
+  min-height: 100vh;
 }
 
-
-@media (max-width:768px){
-    .dashboard-wrapper{
-        
-        padding: 3.5rem 1rem;
-       
-    }
-
+@media (max-width: 768px) {
+  .dashboard-wrapper {
+    padding: 3.5rem 1rem;
+  }
 }

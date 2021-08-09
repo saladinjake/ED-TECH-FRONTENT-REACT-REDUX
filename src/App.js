@@ -4,7 +4,7 @@ import ScrollToTop from "helper/ScrollToTop";
 import { GlobalStyle } from "components/common/styles/global.js";
 import HomeOne from "HomeOne";
 import About from "pages/about/About";
-import NewAbout from "pages/about/NewAbout"
+import NewAbout from "pages/about/NewAbout";
 import ForInstructor from "pages/instructors/ForInstructor";
 import ForBusiness from "pages/instructors/ForBusiness";
 import ForGovernment from "pages/instructors/ForGovernment";
@@ -91,13 +91,14 @@ import "./app.css";
 import "./pre-style.css";
 import Notification from "./Toaster";
 
-import AuthoringDashboard from "./pages/AuthoringTool/dashboard"
-import AuthoringCourseList from "./pages/AuthoringTool/courselist"
-import AuthorForm from "./pages/AuthoringTool/createcourse"
-import AuthorSales from "./pages/AuthoringTool/Sales"
-import AuthorPayments from "./pages/AuthoringTool/Payments"
-import AuthorPaymentSetting from  "./pages/AuthoringTool/Paymentsettings"
-import AuthorProfileSetting from "./pages/AuthoringTool/ProfilePage"
+import AuthoringDashboard from "./pages/AuthoringTool/dashboard";
+import AuthoringCourseList from "./pages/AuthoringTool/courselist";
+import AuthorForm from "./pages/AuthoringTool/createcourse";
+import AuthorFormCont from "./pages/AuthoringTool/createcourse_cont";
+import AuthorSales from "./pages/AuthoringTool/Sales";
+import AuthorPayments from "./pages/AuthoringTool/Payments";
+import AuthorPaymentSetting from "./pages/AuthoringTool/Paymentsettings";
+import AuthorProfileSetting from "./pages/AuthoringTool/ProfilePage";
 
 import $ from "jquery";
 
@@ -106,7 +107,6 @@ function App(props) {
     $(".footer p , .footer span").each(function () {
       $(this).css({ color: "#fff" });
     });
-
   });
 
   return (
@@ -476,12 +476,6 @@ function App(props) {
           component={ResponsiveGrid}
         />
 
-
-
-
-
-
-
         <Route
           exact
           path={`${process.env.PUBLIC_URL + "/authoring/dashboard"}`}
@@ -502,6 +496,14 @@ function App(props) {
 
         <Route
           exact
+          path={`${process.env.PUBLIC_URL + "/authoring/create/new/step2"}`}
+          component={AuthorFormCont}
+        />
+
+        
+
+        <Route
+          exact
           path={`${process.env.PUBLIC_URL + "/authoring/sales/history"}`}
           component={AuthorSales}
         />
@@ -518,14 +520,11 @@ function App(props) {
           component={AuthorPaymentSetting}
         />
 
-
         <Route
           exact
           path={`${process.env.PUBLIC_URL + "/authoring/profile/settings"}`}
           component={AuthorProfileSetting}
         />
-
-       
 
         <Route component={PageNotFound} />
       </Switch>

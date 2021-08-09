@@ -1,16 +1,16 @@
-export const CourseDataList = [{
-  coursecode: "47748883",
-  coursename: " Financial Accounting",
-  instructorname: "Lanre",
-  Learningpartner: " ICAN",
-  ownership: " Owner",
-  startdate: "30/3/2021",
-  progresslevel: " 60",
-  price: "5,000",
-  status: "Active"
-
-},
-{
+export const CourseDataList = [
+  {
+    coursecode: "47748883",
+    coursename: " Financial Accounting",
+    instructorname: "Lanre",
+    Learningpartner: " ICAN",
+    ownership: " Owner",
+    startdate: "30/3/2021",
+    progresslevel: " 60",
+    price: "5,000",
+    status: "Active",
+  },
+  {
     coursecode: "6755883",
     coursename: " Introduction to technology",
     instructorname: "Gabriel",
@@ -19,8 +19,7 @@ export const CourseDataList = [{
     startdate: "30/3/2021",
     progresslevel: " 45",
     price: "5,000",
-    status: "Active"
-  
+    status: "Active",
   },
   {
     coursecode: "67740883",
@@ -31,8 +30,7 @@ export const CourseDataList = [{
     startdate: "30/3/2021",
     progresslevel: " 70",
     price: "7,000",
-    status: " Active"
-  
+    status: " Active",
   },
   {
     coursecode: "67740883",
@@ -43,8 +41,7 @@ export const CourseDataList = [{
     startdate: "30/3/2021",
     progresslevel: " 70",
     price: "7,000",
-    status: " Active"
-  
+    status: " Active",
   },
 
   {
@@ -56,15 +53,12 @@ export const CourseDataList = [{
     startdate: "30/3/2021",
     progresslevel: " 25",
     price: "5,000",
-    status: " Active"
-  
-  }
+    status: " Active",
+  },
+];
 
-
-]
-
-export const CourseDataLists = [{
- 
+export const CourseDataLists = [
+  {
     coursecode: "67740883",
     coursename: " Financial Accounting",
     instructorname: "Lanre",
@@ -73,22 +67,20 @@ export const CourseDataLists = [{
     startdate: "30/3/2021",
     progresslevel: " 70",
     price: "7,000",
-    status: " Upcoming"
-  
-  }
-]
+    status: " Upcoming",
+  },
+];
 
-export const CourseData = [{
- 
-  coursecode: "67740883",
-  coursename: " Financial Accounting",
-  instructorname: "Lanre",
-  Learningpartner: " ICAN",
-  ownership: " Owner",
-  startdate: "30/3/2021",
-  progresslevel: " 70",
-  price: "7,000",
-  status: " Completed"
-
-}
-]
+export const CourseData = [
+  {
+    coursecode: "67740883",
+    coursename: " Financial Accounting",
+    instructorname: "Lanre",
+    Learningpartner: " ICAN",
+    ownership: " Owner",
+    startdate: "30/3/2021",
+    progresslevel: " 70",
+    price: "7,000",
+    status: " Completed",
+  },
+];

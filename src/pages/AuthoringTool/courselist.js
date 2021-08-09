@@ -1,48 +1,36 @@
-import React, { Fragment } from "react"
-import { Container , Row, Col } from "react-bootstrap"
+import React, { Fragment } from "react";
+import { Container, Row, Col } from "react-bootstrap";
 
-import { SideBar, TopNav, AddHead, AddBoxes, AddFormBox }  from "./sidebar"
-import NavBar from "components/Navbar";
-import { Styles } from "./styles/main.js"
+import { SideBar, TopNav, AddHead, AddBoxes, AddFormBox } from "./sidebar";
+import NavBar from "components/Navbar/AuthoringNav";
+import { Styles } from "./styles/main.js";
 
 const Dashboard = () => {
-	return (
-	<Fragment>
-	<NavBar/><br/><br/><br/><br/>
+  return (
+    <Fragment>
+      <NavBar />
+      <br />
+      <br />
+      <br />
+      <br />
 
-
-    <div className="container">
+      <div className="container-fluid">
         <div className="wrapper">
-           <SideBar />
+          <SideBar />
 
+          <div class="content-page-x col-md-9" style={{ float: "right" }}>
+            <div class="content-x">
+              <AddHead />
 
+              <AddBoxes />
 
-          <div class="content-page-x col-md-9" style={{float:"right"}}>
-           <div class="content-x">
-                    <AddHead />
-
-
-                    <AddBoxes />
-
-                    <AddFormBox />
-                 
-             </div>
+              <AddFormBox />
+            </div>
           </div>
+        </div>
+      </div>
+    </Fragment>
+  );
+};
 
-
-     </div>
-    </div>
-	
-  
-     
-     
-       
-     
-
-	
-
-	</Fragment>
-	)
-}
-
-export default Dashboard
+export default Dashboard;

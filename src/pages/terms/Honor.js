@@ -5,20 +5,17 @@ import "./tabber.css";
 import NavBar from "components/Navbar";
 import Footer from "../../components/Footer";
 
-
-
 const TermsAndConditions = () => {
   useEffect(() => {
     $(".footer p , .footer span").each(function () {
       $(this).css({ color: "#fff" });
     });
 
-    
-    $("body").css({ background: "#fff", display:"none" });
+    $("body").css({ background: "#fff", display: "none" });
 
-    setTimeout(()=>{
-     $("body").css({ background: "#fff", display:"block" });
-    },3000)
+    setTimeout(() => {
+      $("body").css({ background: "#fff", display: "block" });
+    }, 3000);
 
     // $(".tab-menu a").click(function (e) {
     //   e.preventDefault();
@@ -57,34 +54,37 @@ const TermsAndConditions = () => {
                 className="authorText active visited-now"
                 data-toggle="tab"
               >
-                <a href="./terms" style={{textDecoration:"none"}}
-                onClick={()=>{
-                    window.location.href=process.env.PUBLIC_URL+ "/terms"
+                <a
+                  href="./terms"
+                  style={{ textDecoration: "none" }}
+                  onClick={() => {
+                    window.location.href = process.env.PUBLIC_URL + "/terms";
                   }}
-
-
-                >Terms Of Use</a>
+                >
+                  Terms Of Use
+                </a>
               </li>
               <li style={{ margin: "20px" }} className="authorText">
-                <a className="authorText" href="./honor"
-
-                 data-toggle="tab" style={{textDecoration:"none"}}
-                 onClick={()=>{
-                    window.location.href=process.env.PUBLIC_URL+ "/honor"
+                <a
+                  className="authorText"
+                  href="./honor"
+                  data-toggle="tab"
+                  style={{ textDecoration: "none" }}
+                  onClick={() => {
+                    window.location.href = process.env.PUBLIC_URL + "/honor";
                   }}
-
-                 >
+                >
                   Honour Code
                 </a>
               </li>
               <li style={{ margin: "20px" }} className="authorText">
                 <a
-                style={{textDecoration:"none"}}
+                  style={{ textDecoration: "none" }}
                   className="authorText"
                   href="./privacy"
                   data-toggle="tab"
-                  onClick={()=>{
-                    window.location.href=process.env.PUBLIC_URL+ "/privacy"
+                  onClick={() => {
+                    window.location.href = process.env.PUBLIC_URL + "/privacy";
                   }}
                 >
                   Privacy Policy
@@ -107,10 +107,10 @@ const TermsAndConditions = () => {
                 className="tab-pane well active in active tab-content-below"
                 id="honour-code"
               >
-
-               <iframe style={{width:"100%",height:"3000px",border:"none"}} src={process.env.PUBLIC_URL+ "/honor.html"}/>
-
-                
+                <iframe
+                  style={{ width: "100%", height: "3000px", border: "none" }}
+                  src={process.env.PUBLIC_URL + "/honor.html"}
+                />
               </div>
             </div>
           </div>

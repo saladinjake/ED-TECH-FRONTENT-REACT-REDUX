@@ -1,11 +1,10 @@
-import React, { Fragment,useState,useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Row, Col, Table, Button } from "react-bootstrap";
 import Loader from "components/Loader/Loader";
 
 import { getLearners } from "services/admin.js";
 import toast from "react-hot-toast";
-
 
 const Active = () => {
   let history = useHistory();
@@ -16,7 +15,6 @@ const Active = () => {
     fetchLearners();
   }, []);
 
-
   const fetchLearners = async () => {
     try {
       let allLearners = await getLearners();
@@ -25,7 +23,7 @@ const Active = () => {
         if (item.learner_profile !== null) {
           transformed.push(item);
         }
-      })
+      });
       setLearners([...transformed]);
     } catch (err) {
       toast.error(

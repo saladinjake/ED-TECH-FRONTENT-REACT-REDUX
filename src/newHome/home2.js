@@ -25,20 +25,19 @@ import "./hero.css";
 import "./sideicons.css";
 import HeroImage from "components/HeroSlider";
 
-import CourseSlider from "components/CourseSlider"
+import CourseSlider from "components/CourseSlider";
 
 // import Hambugger from "./megamenu2"
 
 const Section = () => {
   useEffect(() => {
     document.getElementsByTagName("body")[0].style.background = "#fff";
-     
-    if( document.getElementById("homescreen")){
-       setTimeout(() => {
-      document.getElementById("homescreen").style.display = "block";
-    }, 5000);
+
+    if (document.getElementById("homescreen")) {
+      setTimeout(() => {
+        document.getElementById("homescreen").style.display = "block";
+      }, 5000);
     }
-   
 
     $(".footer p , .footer span").each(function () {
       $(this).css({ color: "#fff" });
@@ -54,7 +53,7 @@ const Section = () => {
         <div className="vc_clearfix"></div>
         <br />
         {/*<Sideicons />*/}
-      
+
         <Gallery />
         <div className="container">
           <Featured />

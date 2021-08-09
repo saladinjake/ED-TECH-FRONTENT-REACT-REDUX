@@ -5,10 +5,10 @@ export const Styles = styled.div`
   /* Pagination */
   ul.pagination-box {
     margin-top: 20px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     li {
       margin-right: 15px;
       font-size: 16px;

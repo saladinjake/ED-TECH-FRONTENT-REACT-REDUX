@@ -21,10 +21,10 @@ const app = () => {
       onBeforeChange={(previousSlide, nextSlide) =>
         console.log("onBeforeChange", previousSlide, nextSlide)
       }
-      onChange={nextSlide => console.log("onChange", nextSlide)}
-      onAfterChange={nextSlide => console.log("onAfterChange", nextSlide)}
+      onChange={(nextSlide) => console.log("onChange", nextSlide)}
+      onAfterChange={(nextSlide) => console.log("onAfterChange", nextSlide)}
       style={{
-        backgroundColor: "#000"
+        backgroundColor: "#000",
       }}
       settings={{
         slidingDuration: 400,
@@ -32,7 +32,7 @@ const app = () => {
         shouldAutoplay: true,
         shouldDisplayButtons: false,
         autoplayDuration: 8000,
-        height: "100vh"
+        height: "100vh",
       }}
     >
       <Navbar />
@@ -48,7 +48,7 @@ const app = () => {
         navDescription="Kyoto - Japan"
         background={{
           backgroundColor: "#6D9B98",
-          backgroundImage: kyoto
+          backgroundImage: kyoto,
         }}
       />
 
@@ -57,7 +57,7 @@ const app = () => {
         navDescription="Tenryu-ji Temple - KyÅto-shi - Japan"
         background={{
           backgroundColor: "#8A8A8A",
-          backgroundImage: tenryuJiTemple
+          backgroundImage: tenryuJiTemple,
         }}
       />
 
@@ -66,7 +66,7 @@ const app = () => {
         navDescription="Hakone - Japan"
         background={{
           backgroundColor: "#EA2329",
-          backgroundImage: hakone
+          backgroundImage: hakone,
         }}
       />
 
@@ -75,7 +75,7 @@ const app = () => {
         navDescription="Byodo-In Temple - Kaneohe - United States"
         background={{
           backgroundColor: "#2D7791",
-          backgroundImage: byodoInTemple
+          backgroundImage: byodoInTemple,
         }}
       />
 
