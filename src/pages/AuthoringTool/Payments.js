@@ -290,7 +290,7 @@ const PayBench = () => {
       <br />
       <br />
 
-      <div className="container">
+      <div className="container-fluid">
         <div className="wrapper">
           <SideBar />
 

@@ -13,7 +13,7 @@ const ProfileEditor = () => {
       <br />
       <br />
 
-      <div className="container">
+      <div className="container-fluid">
         <div className="wrapper">
           <div
             className="content-page-x col-md-12"

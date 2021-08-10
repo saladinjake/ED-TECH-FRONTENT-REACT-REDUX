@@ -12,7 +12,7 @@ import { Styles } from "./styles/main.js";
 
 import ReactQuill, { Mixin, Toolbar, Quill } from "react-quill";
 import Dropzone, { ImageFile } from "react-dropzone";
-
+//import PropTypes from "prop-types"
 
 
 
@@ -45,19 +45,13 @@ class Editor extends React.Component {
           bounds={'.app'}
           placeholder={this.props.placeholder}
          />
-        <div className="themeSwitcher">
-          <label>Theme </label>
-          <select onChange={(e) => 
-              this.handleThemeChange(e.target.value)}>
-            <option value="snow">Snow</option>
-            <option value="bubble">Bubble</option>
-            <option value="core">Core</option>
-          </select>
-        </div>
+
        </div>
      )
   }
 }
+
+
 
 /* 
  * Quill modules to attach to editor
@@ -92,9 +86,9 @@ Editor.formats = [
 /* 
  * PropType validation
  */
-Editor.propTypes = {
-  placeholder: PropTypes.string,
-}
+//Editor.propTypes = {
+//  placeholder: PropTypes.string,
+//}
 
 
 export default class MasterForm extends React.Component {
@@ -547,7 +541,7 @@ class Step1 extends React.Component {
         <div className="tab-content b-0 mb-0">
           <div className="tab-pane active" id="basic">
             <div className="row">
-              <div className="col-md-12" >
+              <div className="col-md-12 card-box" >
                 <div className="form-group col-md-6 fl-left">
                   <label className="col-md-12 col-form-label" for="course_title">
                     Course Code <span className="required">*</span>{" "}
@@ -663,7 +657,7 @@ class Step1 extends React.Component {
     </div>
 </div>
 
-                <div className="form-group row col-md-6 fl-left">
+                <div className="col-md-12 ">
                   <label
                     className="col-md-12 col-form-label"
                     for="short_description"
@@ -678,7 +672,7 @@ class Step1 extends React.Component {
 
 
 
-                <div className="form-group row col-md-6 fl-left">
+                <div className=" col-md-12 ">
                   <label
                     className="col-md-12 col-form-label"
                     for="short_description"
@@ -691,7 +685,7 @@ class Step1 extends React.Component {
                 </div>
 
 
-                <div className="form-group col-md-12 fl-left">
+                <div className=" col-md-12">
                   <label className="col-md-12 col-form-label" for="description">
                    What You Will Learn
                   </label>
@@ -834,7 +828,10 @@ class Step1 extends React.Component {
             </div>{" "}
           </div>{" "}
         </div>
-         <br/><br/><br/><br/>
+         <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+
       </React.Fragment>
     );
   }
@@ -886,7 +883,7 @@ class DynamicForm extends React.Component {
               className="form-control fl-left"
             />
           </div>
-          <div class="col-md-2">
+         { /*<div class="col-md-2">
             <button
               type="button"
               onClick={this.handleRemoveShareholder(idx)}
@@ -894,13 +891,15 @@ class DynamicForm extends React.Component {
             >
               -
             </button>
-            </div>
+            </div>*/}
           </div>
         ))}
+        <br/><br/>
         <button
           type="button"
           onClick={this.handleAddShareholder}
-          className="small text-white"
+          className="btn btn-primary text-white"
+          style={{width:"300px",margin:"10px"}}
 
         >
           Add A Team
@@ -949,7 +948,7 @@ class Step5 extends React.Component {
     }
     return (
       <React.Fragment>
-        <div className="tab-pane" id="outcomes">
+        <div className="tab-pane card-box" id="outcomes">
           <div className="row justify-content-center">
             <div className="col-md-12">
 
@@ -1084,7 +1083,7 @@ class Step3 extends React.Component {
     return (
       <React.Fragment>
         <div className="tab-pane" id="requirements">
-          <div className="row ">
+          <div className="row card-box">
             <div className="col-md-12">
 
 
@@ -1238,7 +1237,7 @@ class Step4 extends React.Component {
       <React.Fragment>
         {" "}
         <div className="tab-pane" id="pricing">
-          <div className="row">
+          <div className="row card-box">
             <div className="col-md-12">
               <DynamicForm />
 
@@ -1260,11 +1259,11 @@ class Step2 extends React.Component {
     return (
       <React.Fragment>
         <div className="tab-pane" id="media">
-          <div className="row ">
+          <div className="row card-box">
             <div className="col-md-12">
               
 
-            <div className=" form-group row col-md-6 fl-left">
+            <div className=" form-group row col-md-12 ">
               <div className="">
                 <label
                   className="col-md-12 col-form-label"
@@ -1272,7 +1271,7 @@ class Step2 extends React.Component {
                 >
                   Course overview url
                 </label>
-                <div className="form-group row col-md-12 fl-left">
+                <div className="form-group row col-md-12 ">
                   <input
                     type="text"
                     className="form-control"
@@ -1283,7 +1282,7 @@ class Step2 extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="form-group row col-md-6 fl-left">
+            <div className="form-group row col-md-12 ">
               <div className="f">
                 <label
                   className="col-md-12 col-form-label"
@@ -1296,7 +1295,7 @@ class Step2 extends React.Component {
                     className="wrapper-image-preview"
                     style={{ marginLeft: "-6px" }}
                   >
-                    <div className="box" style={{ width: "250px" }}>
+                    <div className="box" >
                       <div
                         className="js--image-preview"
                         style={{
@@ -1307,7 +1306,7 @@ class Step2 extends React.Component {
                       <div className="upload-options">
                         <label for="course_thumbnail" className="btn">
                           {" "}
-                          <i className="mdi mdi-camera"></i> Course thumbnail{" "}
+                          <i className="fa fa-camera"></i> Course thumbnail{" "}
                           <br /> <small>(600 X 600)</small>{" "}
                         </label>
                         <input
@@ -1419,7 +1418,7 @@ class Step7 extends React.Component {
                     className="btn btn-primary text-center"
                     onClick={(e) =>{
                       e.preventDefault()
-                      // window.location.href=process.env.PUBLIC_URL+ "/authoring/create/new/step2"
+                      window.location.href=process.env.PUBLIC_URL+ "/authoring/create/new/step2"
                     }}
                   >
                     Submit
