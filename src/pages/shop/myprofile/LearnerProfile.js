@@ -13,9 +13,8 @@ import Loader from "components/Loader/Loader";
 import { getLearnerProfile } from "services/profile";
 import toast from "react-hot-toast";
 
-import "./tabnotifications.css"
+import "./tabnotifications.css";
 import Sidebar from "../newdashboard/Sidebar";
-
 
 import "../newdashboard/assets/css/bootstrap.min.css";
 import "../newdashboard/assets/css/core.css";
@@ -23,7 +22,7 @@ import "../newdashboard/assets/css/components.css";
 import "../newdashboard/assets/css/icons.css";
 import "../newdashboard/assets/css/pages.css";
 import "../newdashboard/assets/css/responsive.css";
-import "./tabnotifications.css"
+import "./tabnotifications.css";
 
 const LearnerProfiler = ({ auth: { user, user_roles } }) => {
   const [profile, setProfile] = useState({});
@@ -41,235 +40,219 @@ const LearnerProfiler = ({ auth: { user, user_roles } }) => {
     })();
     // eslint-disable-next-line
   }, []);
-console.log(profile)
+  console.log(profile);
   return (
- 
-   
-      <div className="main-wrapper product-details-page " >
-     
-        <NavBar />
-
-    
-
-        <br/><br/> <br/><br/>
-        <section className="product-details-area ">
-          <Container>
-            {loading ? (
-              <Loader width="70" />
-            ) : Object.entries(profile).length !== 0 ? (
-              <Fragment>
-                <Row>
-                  <Col md="5">
-                    <div className="product-slider">
-                      <div className="slider-item">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            `/assets/images/product-01.jpg`
-                          }
-                          alt=""
-                          className="img-fluid avatar card-box"
-                        />
-                      </div>
+    <div className="main-wrapper product-details-page ">
+      <NavBar />
+      <br />
+      <br /> <br />
+      <br />
+      <section className="product-details-area ">
+        <Container>
+          {loading ? (
+            <Loader width="70" />
+          ) : Object.entries(profile).length !== 0 ? (
+            <Fragment>
+              <Row>
+                <Col md="5">
+                  <div className="product-slider">
+                    <div className="slider-item">
+                      <img
+                        src={
+                          process.env.PUBLIC_URL +
+                          `/assets/images/product-01.jpg`
+                        }
+                        alt=""
+                        className="img-fluid avatar card-box"
+                      />
                     </div>
-                  </Col>
+                  </div>
+                </Col>
 
-                  <Col md="7">
-                    <div className="product-information card-box">
-                      <div className="product-title">
-                        <h4>{`${profile.user?.first_name}  ${profile.user?.last_name}`}</h4>
-                      </div>
-                      <div className="product-rating d-flex">
-                        <div className="review-num">
-                          
+                <Col md="7">
+                  <div className="product-information card-box">
+                    <div className="product-title">
+                      <h4>{`${profile.user?.first_name}  ${profile.user?.last_name}`}</h4>
+                    </div>
+                    <div className="product-rating d-flex">
+                      <div className="review-num"></div>
+                    </div>
+                    <div className="product-desc">
+                      <p>{profile.email}</p>
+                    </div>
+                    <div className="product-stock">
+                      <p>
+                        User type :{" "}
+                        <span className="stock">{user_roles[0].name}</span>
+                      </p>
+                    </div>
+
+                    <div className="product-cart-wh-com-btn">
+                      <Link
+                        to="/learner/profile/update"
+                        className="btn btn-primary"
+                      >
+                        Update Profile
+                      </Link>
+                    </div>
+                  </div>
+                </Col>
+
+                <Col md="12">
+                  <div className="product-tab ">
+                    <div class="col-lg-4">
+                      <div class="panel panel-border panel-success">
+                        <div class="panel-heading">
+                          <h3 class="panel-title">username</h3>
+                        </div>
+                        <div class="panel-body">
+                          <p>
+                            Username
+                            {`${profile.user?.username}`}
+                          </p>
+
+                          <p></p>
                         </div>
                       </div>
-                      <div className="product-desc">
-                        <p>{profile.email}</p>
-                      </div>
-                      <div className="product-stock">
-                        <p>
-                          User type :{" "}
-                          <span className="stock">{user_roles[0].name}</span>
-                        </p>
-                      </div>
-
-                      <div className="product-cart-wh-com-btn">
-                        <Link to="/learner/profile/update" className="btn btn-primary">
-                          Update Profile
-                        </Link>
-                      </div>
                     </div>
-                  </Col>
-
-                  <Col md="12">
-                    <div className="product-tab ">
 
                     <div class="col-lg-4">
-                <div class="panel panel-border panel-success">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">username</h3>
-                  </div>
-                  <div class="panel-body">
-                    <p>Username 
-                    {`${profile.user?.username}`}
-                    </p>
-
-                    <p>
-                    
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-4">
-                <div class="panel panel-border panel-success">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">Firstname</h3>
-                  </div>
-                  <div class="panel-body">
-                    <p>{`${profile.user?.first_name}`}
-                        </p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-4">
-                <div class="panel panel-border panel-success">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">Lastname</h3>
-                  </div>
-                  <div class="panel-body">
-                    <p>
-                      {`${profile.user?.last_name}`}     </p>
-                  </div>
-                </div>
-              </div>
-                      <Table className="table table-borderless table-reveal ">
-                        <tbody>
-                          
-                          <tr>
-                            <td>Email</td>
-                            <td>{`${profile.user?.email}`}</td>
-                          </tr>
-                          <tr>
-                            <td>Gender</td>
-                            <td>{`${profile.user.learner_profile?.gender}`}</td>
-                          </tr>
-                          <tr>
-                            <td>Phone</td>
-                            <td>{`${profile.user?.phone_number}`}</td>
-                          </tr>
-                          <tr>
-                            <td>Country</td>
-                             <td>{`${profile.user.learner_profile?.country_id}`}</td>
-                          </tr>
-                          
-                        </tbody>
-                      </Table>
-
-
-
-                                          <div class="col-lg-4">
-                <div class="panel panel-border panel-success">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">Date of birth</h3>
-                  </div>
-                  <div class="panel-body">
-                    <p>Username 
-                    {`${profile.user.learner_profile?.date_of_birth}`}
-                    </p>
-
-                    <p>
-                    
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-4">
-                <div class="panel panel-border panel-success">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">Marital Status</h3>
-                  </div>
-                  <div class="panel-body">
-                    <p>{`${profile.user.learner_profile?.marital_status}`}
-                        </p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-4">
-                <div class="panel panel-border panel-success">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">Linkedin Url</h3>
-                  </div>
-                  <div class="panel-body">
-                    <p>{`${profile.user.learner_profile?.linkedin_url}`}
-                         </p>
-                  </div>
-                </div>
-              </div>
-
-
-
-                          <div class="col-lg-4">
-                <div class="panel panel-border panel-success">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">Educational Level</h3>
-                  </div>
-                  <div class="panel-body">
-                    <p>Username 
-                    {`${profile.user.learner_profile?.education_level}`}
-                    </p>
-
-                    <p>
-                    
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-4">
-                <div class="panel panel-border panel-success">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">Degree Obtained</h3>
-                  </div>
-                  <div class="panel-body">
-                    <p>{`${profile.user.learner_profile?.degree_obtained}`}
-                        </p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-lg-4">
-                <div class="panel panel-border panel-success">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">Employment Status</h3>
-                  </div>
-                  <div class="panel-body">
-                    <p>
-                      {`${profile.user.learner_profile?.employment_status}`}    </p>
-                  </div>
-                </div>
-              </div>
-
+                      <div class="panel panel-border panel-success">
+                        <div class="panel-heading">
+                          <h3 class="panel-title">Firstname</h3>
+                        </div>
+                        <div class="panel-body">
+                          <p>{`${profile.user?.first_name}`}</p>
+                        </div>
+                      </div>
                     </div>
-                  </Col>
-                </Row>
-              </Fragment>
-            ) : (
-              <p>No Details for this user yet</p>
-            )}
-          </Container>
-        </section>
 
-   
-  <Sidebar />
+                    <div class="col-lg-4">
+                      <div class="panel panel-border panel-success">
+                        <div class="panel-heading">
+                          <h3 class="panel-title">Lastname</h3>
+                        </div>
+                        <div class="panel-body">
+                          <p>{`${profile.user?.last_name}`} </p>
+                        </div>
+                      </div>
+                    </div>
+                    <Table className="table table-borderless table-reveal ">
+                      <tbody>
+                        <tr>
+                          <td>Email</td>
+                          <td>{`${profile.user?.email}`}</td>
+                        </tr>
+                        <tr>
+                          <td>Gender</td>
+                          <td>{`${profile.user.learner_profile?.gender}`}</td>
+                        </tr>
+                        <tr>
+                          <td>Phone</td>
+                          <td>{`${profile.user?.phone_number}`}</td>
+                        </tr>
+                        <tr>
+                          <td>Country</td>
+                          <td>{`${profile.user.learner_profile?.country_id}`}</td>
+                        </tr>
+                      </tbody>
+                    </Table>
 
-  <Footer />
-      </div>
+                    <div class="col-lg-4">
+                      <div class="panel panel-border panel-success">
+                        <div class="panel-heading">
+                          <h3 class="panel-title">Date of birth</h3>
+                        </div>
+                        <div class="panel-body">
+                          <p>
+                            Username
+                            {`${profile.user.learner_profile?.date_of_birth}`}
+                          </p>
 
+                          <p></p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <div class="panel panel-border panel-success">
+                        <div class="panel-heading">
+                          <h3 class="panel-title">Marital Status</h3>
+                        </div>
+                        <div class="panel-body">
+                          <p>
+                            {`${profile.user.learner_profile?.marital_status}`}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <div class="panel panel-border panel-success">
+                        <div class="panel-heading">
+                          <h3 class="panel-title">Linkedin Url</h3>
+                        </div>
+                        <div class="panel-body">
+                          <p>
+                            {`${profile.user.learner_profile?.linkedin_url}`}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <div class="panel panel-border panel-success">
+                        <div class="panel-heading">
+                          <h3 class="panel-title">Educational Level</h3>
+                        </div>
+                        <div class="panel-body">
+                          <p>
+                            Username
+                            {`${profile.user.learner_profile?.education_level}`}
+                          </p>
+
+                          <p></p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <div class="panel panel-border panel-success">
+                        <div class="panel-heading">
+                          <h3 class="panel-title">Degree Obtained</h3>
+                        </div>
+                        <div class="panel-body">
+                          <p>
+                            {`${profile.user.learner_profile?.degree_obtained}`}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                      <div class="panel panel-border panel-success">
+                        <div class="panel-heading">
+                          <h3 class="panel-title">Employment Status</h3>
+                        </div>
+                        <div class="panel-body">
+                          <p>
+                            {`${profile.user.learner_profile?.employment_status}`}{" "}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+            </Fragment>
+          ) : (
+            <p>No Details for this user yet</p>
+          )}
+        </Container>
+      </section>
+      <Sidebar />
+      <Footer />
+    </div>
   );
 };
 

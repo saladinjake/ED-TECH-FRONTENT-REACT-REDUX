@@ -1,33 +1,33 @@
 /*! Select2 4.0.3 | https://github.com/select2/select2/blob/master/LICENSE.md */
 
-(function() {
+(function () {
   if (jQuery && jQuery.fn && jQuery.fn.select2 && jQuery.fn.select2.amd)
     var e = jQuery.fn.select2.amd;
   return (
-    e.define('select2/i18n/tr', [], function() {
+    e.define("select2/i18n/tr", [], function () {
       return {
-        inputTooLong: function(e) {
+        inputTooLong: function (e) {
           var t = e.input.length - e.maximum,
-            n = t + ' karakter daha girmelisiniz';
+            n = t + " karakter daha girmelisiniz";
           return n;
         },
-        inputTooShort: function(e) {
+        inputTooShort: function (e) {
           var t = e.minimum - e.input.length,
-            n = 'En az ' + t + ' karakter daha girmelisiniz';
+            n = "En az " + t + " karakter daha girmelisiniz";
           return n;
         },
-        loadingMore: function() {
-          return 'Daha fazla…';
+        loadingMore: function () {
+          return "Daha fazla…";
         },
-        maximumSelected: function(e) {
-          var t = 'Sadece ' + e.maximum + ' seçim yapabilirsiniz';
+        maximumSelected: function (e) {
+          var t = "Sadece " + e.maximum + " seçim yapabilirsiniz";
           return t;
         },
-        noResults: function() {
-          return 'Sonuç bulunamadı';
+        noResults: function () {
+          return "Sonuç bulunamadı";
         },
-        searching: function() {
-          return 'Aranıyor…';
+        searching: function () {
+          return "Aranıyor…";
         },
       };
     }),

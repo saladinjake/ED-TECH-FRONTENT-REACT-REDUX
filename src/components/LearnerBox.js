@@ -12,38 +12,39 @@ const LearnerBox = ({ auth: { user }, info }) => {
       {/* Service Box */}
       <section className="service-area">
         <Container>
-          
           <Row>
             {/* all_enrollments: 2 ​​​ all_subscriptions */}
             <Col md="3">
               <div className="service-box d-flex">
-              <a href="#" className="modal-link">
-                <div className="box-title">
-                  {/* <h6>ALL COURSES</h6> */}
-                  <h6>Login</h6>
-                  <p style={{color:"#000"}}>Resume your learning</p>
-                </div>
+                <a href="#" className="modal-link">
+                  <div className="box-title">
+                    {/* <h6>ALL COURSES</h6> */}
+                    <h6>Login</h6>
+                    <p style={{ color: "#000" }}>Resume your learning</p>
+                  </div>
                 </a>
               </div>
             </Col>
             <Col md="3">
               <div className="service-box d-flex">
-              <a href="#" className="modal-link2">
-                <div className="box-title">
-                  {/* <h6>ACTIVE COURSES</h6> */}
-                  <h6>Signup</h6>
-                  <p style={{color:"#000"}}>Sign up to enroll for our courses</p>
-                </div>
+                <a href="#" className="modal-link2">
+                  <div className="box-title">
+                    {/* <h6>ACTIVE COURSES</h6> */}
+                    <h6>Signup</h6>
+                    <p style={{ color: "#000" }}>
+                      Sign up to enroll for our courses
+                    </p>
+                  </div>
                 </a>
               </div>
             </Col>
             <Col md="3">
               <div className="service-box d-flex">
-              <a href="./help">
-                <div className="box-title">
-                  <h6>Support</h6>
-                  <p style={{color:"#000"}}>Visit our support page</p>
-                </div>
+                <a href="./help">
+                  <div className="box-title">
+                    <h6>Support</h6>
+                    <p style={{ color: "#000" }}>Visit our support page</p>
+                  </div>
                 </a>
               </div>
             </Col>
@@ -51,7 +52,7 @@ const LearnerBox = ({ auth: { user }, info }) => {
               <div className="service-box d-flex">
                 <div className="box-title">
                   <h6>Courses</h6>
-                  <p style={{color:"#000"}}>Browse our courses</p>
+                  <p style={{ color: "#000" }}>Browse our courses</p>
                 </div>
               </div>
             </Col>

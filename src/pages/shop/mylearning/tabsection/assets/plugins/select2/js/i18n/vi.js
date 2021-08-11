@@ -1,33 +1,33 @@
 /*! Select2 4.0.3 | https://github.com/select2/select2/blob/master/LICENSE.md */
 
-(function() {
+(function () {
   if (jQuery && jQuery.fn && jQuery.fn.select2 && jQuery.fn.select2.amd)
     var e = jQuery.fn.select2.amd;
   return (
-    e.define('select2/i18n/vi', [], function() {
+    e.define("select2/i18n/vi", [], function () {
       return {
-        inputTooLong: function(e) {
+        inputTooLong: function (e) {
           var t = e.input.length - e.maximum,
-            n = 'Vui lòng nhập ít hơn ' + t + ' ký tự';
-          return t != 1 && (n += 's'), n;
+            n = "Vui lòng nhập ít hơn " + t + " ký tự";
+          return t != 1 && (n += "s"), n;
         },
-        inputTooShort: function(e) {
+        inputTooShort: function (e) {
           var t = e.minimum - e.input.length,
-            n = 'Vui lòng nhập nhiều hơn ' + t + ' ký tự"';
+            n = "Vui lòng nhập nhiều hơn " + t + ' ký tự"';
           return n;
         },
-        loadingMore: function() {
-          return 'Đang lấy thêm kết quả…';
+        loadingMore: function () {
+          return "Đang lấy thêm kết quả…";
         },
-        maximumSelected: function(e) {
-          var t = 'Chỉ có thể chọn được ' + e.maximum + ' lựa chọn';
+        maximumSelected: function (e) {
+          var t = "Chỉ có thể chọn được " + e.maximum + " lựa chọn";
           return t;
         },
-        noResults: function() {
-          return 'Không tìm thấy kết quả';
+        noResults: function () {
+          return "Không tìm thấy kết quả";
         },
-        searching: function() {
-          return 'Đang tìm…';
+        searching: function () {
+          return "Đang tìm…";
         },
       };
     }),

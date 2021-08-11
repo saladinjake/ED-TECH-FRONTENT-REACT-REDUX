@@ -6,7 +6,6 @@ Default settings
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-
 }
 
 .navik-header:before,
@@ -29,7 +28,7 @@ Default settings
   -ms-text-size-adjust: 100%;
   text-size-adjust: 100%;
   margin-bottom: -78px;
- /* width: 100%;
+  /* width: 100%;
   min-width: 100%;*/
 }
 
@@ -206,13 +205,9 @@ Default settings
   transform: rotate(90deg);
 }
 
-
-
-
-
 .caret {
   /*position: relative;*/
-   width: 49px;
+  width: 49px;
   height: 49px;
   line-height: 49px;
   position: absolute;
@@ -222,7 +217,7 @@ Default settings
 }
 
 .caret:before {
-  content: '';
+  content: "";
   position: absolute;
   top: 24px;
   left: 0;
@@ -240,11 +235,11 @@ Default settings
 }
 
 .caret:after {
-  content: '';
+  content: "";
   position: absolute;
   left: 1px;
   top: 25px;
-   border-top: 5px solid #000;
+  border-top: 5px solid #000;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
 }
@@ -2924,18 +2919,13 @@ Media queries for responsive design
   display: none;
 }
 
-
-
-
-
-
- .no-ripper:hover .show-me {    
-    display: inline-table;
-    position: relative;
-    width: 100%;
-    font-family:"Open Sans"; 
+.no-ripper:hover .show-me {
+  display: inline-table;
+  position: relative;
+  width: 100%;
+  font-family: "Open Sans";
 }
 
-.list-unstyled{
-     font-family:"Open Sans"; 
+.list-unstyled {
+  font-family: "Open Sans";
 }

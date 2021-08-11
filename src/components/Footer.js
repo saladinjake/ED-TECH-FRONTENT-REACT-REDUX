@@ -101,7 +101,7 @@ const Footer = () => {
               <Link to={process.env.PUBLIC_URL + "/contact"}>Contact</Link>
             </li>
 
-             {/*<li style={{ fontFamily: "Open Sans" }}>
+            {/*<li style={{ fontFamily: "Open Sans" }}>
               <Link to={process.env.PUBLIC_URL + "/blog"}>Blog</Link>
             </li>
            <li style={{fontFamily:"Open Sans"}}>

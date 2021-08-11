@@ -4,15 +4,15 @@ import Footer from "../../components/Footer";
 import $ from "jquery";
 
 import NavBar from "components/Navbar";
-import AboutQuestence from "components/AboutQuestence"
-import TabBox from "components/TabBox"
-import TeamSlider from "components/TeamSlider"
-import TestimonialSlider from "components/TestimonialSlider"
+import AboutQuestence from "components/AboutQuestence";
+import TabBox from "components/TabBox";
+import TeamSlider from "components/TeamSlider";
+import TestimonialSlider from "components/TestimonialSlider";
 
-import QuestOne from "components/QuestOne"
-import NumberCounter from "components/NumberCounter"
-import LearnerBox from "components/LearnerBox"
-import ImageGallery from "components/ImageGallery"
+import QuestOne from "components/QuestOne";
+import NumberCounter from "components/NumberCounter";
+import LearnerBox from "components/LearnerBox";
+import ImageGallery from "components/ImageGallery";
 const JobSection = () => {
   useEffect(() => {
     $("body").css({ "background-color": "#fff" });
@@ -22,13 +22,11 @@ const JobSection = () => {
       <NavBar />
       <AboutQuestence />
       <TabBox />
-       {/*<TestimonialSlider />
+      {/*<TestimonialSlider />
       <TeamSlider />*/}
       <QuestOne />
       <NumberCounter />
       <LearnerBox />
-
-
 
       <Footer />
     </Fragment>

@@ -43,10 +43,7 @@ class TopCourses extends React.Component {
       </Fragment>
     ) : (
       <Fragment>
-
-
-
-      <div  style={{marginTop:"-50px", clear:"both"}}>
+        <div style={{ marginTop: "-50px", clear: "both" }}>
           <h1
             className="shown"
             style={{
@@ -57,35 +54,33 @@ class TopCourses extends React.Component {
               lineHight: "34px",
               letterSpacing: "-1px",
               fontWeight: "normal",
-              marginTop:"80px"
-
+              marginTop: "80px",
             }}
           >
             Featured Courses
           </h1>
 
-        <div className="mobile-centry hide">
-        
-           <br/> <br/> <br/> 
-           <h1
-            className="mobile-centry hide"
-            style={{
-              fontWeight: "300px",
-              color: "#000",
-              fontSize: "45px",
-              fontFamily: "Montserrat",
-              lineHight: "34px",
-              letterSpacing: "-1px",
-              fontWeight: "normal",
-              marginTop:"30px"
-            }}
-          >
-            Featured Courses
-          </h1>
+          <div className="mobile-centry hide">
+            <br /> <br /> <br />
+            <h1
+              className="mobile-centry hide"
+              style={{
+                fontWeight: "300px",
+                color: "#000",
+                fontSize: "45px",
+                fontFamily: "Montserrat",
+                lineHight: "34px",
+                letterSpacing: "-1px",
+                fontWeight: "normal",
+                marginTop: "30px",
+              }}
+            >
+              Featured Courses
+            </h1>
+          </div>
         </div>
-
-        </div>
-        <br/><br/>
+        <br />
+        <br />
         <div className="row">
           <div className="col-md-12">
             <Carousel show={2} children={data} />

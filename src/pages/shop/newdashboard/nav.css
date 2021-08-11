@@ -13,7 +13,7 @@ a {
   /*   align-items:center; */
   /*   justify-content: space-between; */
   width: 100%;
-  height:60px;
+  height: 60px;
 }
 
 .nav-header {
@@ -129,7 +129,7 @@ a {
     height: 100%;
     align-items: center;
     border: none;
-    padding:1em;
+    padding: 1em;
   }
 
   .social-icons li {

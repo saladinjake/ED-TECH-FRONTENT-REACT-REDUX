@@ -4,82 +4,87 @@ body {
   padding: 4em;
  
   line-height: 1.15;*/
-   font-family: "Open Sans";
+  font-family: "Open Sans";
 }
 
-hr.dummy, .dummy, h1.dummy, h2.dummy, h3.dummy, h4.dummy, p.dummy, h5.dummy, h6.dummy { /*dummy content*/
+hr.dummy,
+.dummy,
+h1.dummy,
+h2.dummy,
+h3.dummy,
+h4.dummy,
+p.dummy,
+h5.dummy,
+h6.dummy {
+  /*dummy content*/
   height: 30px;
   border: none;
-  
-} 
+}
 
 /*hr.dummy:first-child {  
   margin: 10px;
   height: 10px;
 }*/
 
-hr.dummy.image , .dummy-image { /*dummy content*/
+hr.dummy.image,
+.dummy-image {
+  /*dummy content*/
   padding-bottom: 50%;
-   font-family: "Open Sans";
-} 
+  font-family: "Open Sans";
+}
 
 .page-dummy {
   /*padding: 2em;*/
   background: #fff;
   /*max-width: 1100px;*/
-   font-family: "Open Sans";
+  font-family: "Open Sans";
 }
 
 .archive-dummy {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   grid-gap: 1em;
-   font-family: "Open Sans";
+  font-family: "Open Sans";
 }
-
 
 .archive-dummy2 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-gap: 1em;
-   font-family: "Open Sans";
+  font-family: "Open Sans";
 }
 
 .article-dummy {
   padding: 1em;
   background: #fff;
-  box-shadow:
-    0 5px 10px rgba(0, 0, 0, 0.1),
-    0 20px 20px rgba(0, 0, 0, 0.05);
-     font-family: "Open Sans";
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1), 0 20px 20px rgba(0, 0, 0, 0.05);
+  font-family: "Open Sans";
 }
 
-
-.article-dummy-product{
+.article-dummy-product {
   height: 360px;
-   font-family: "Open Sans";
+  font-family: "Open Sans";
 }
 
-.full-width-mark{
- display: none;
- position: absolute;
- /*top: 30px;*/
- width: 43.33%;
- height: 400px;
-/* left: -30px;*/
-margin-top: -150px;
-margin-left: -50px;
+.full-width-mark {
+  display: none;
+  position: absolute;
+  /*top: 30px;*/
+  width: 43.33%;
+  height: 400px;
+  /* left: -30px;*/
+  margin-top: -150px;
+  margin-left: -50px;
 }
 
-.article-dummy-product:hover .full-width-mark:nth-child(4n +4){
+.article-dummy-product:hover .full-width-mark:nth-child(4n + 4) {
   margin-left: -350px;
 }
 
-
-.article-dummy-product2{
+.article-dummy-product2 {
   width: 25.55%;
 }
 
-.article-dummy-product:hover .full-width-mark{
+.article-dummy-product:hover .full-width-mark {
   display: block;
 }

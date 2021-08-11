@@ -1,7 +1,7 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from "react";
+import PropTypes from "prop-types";
 // CSS
-import classes from './Navbar.module.css'
+import classes from "./Navbar.module.css";
 
 const navbar = (props) => {
   return (
@@ -14,14 +14,11 @@ const navbar = (props) => {
       </div>
       {props.children}
     </nav>
-  )
-}
+  );
+};
 
 navbar.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.object
-  ])
-}
+  children: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+};
 
-export default navbar
+export default navbar;

@@ -1,59 +1,57 @@
-import React, { Component } from 'react';
-import HeaderTwo from './components/HeaderTwo';
-import HeroImage from './components/HeroImage';
-import ServiceBox from './components/ServiceBox';
-import AboutUsTwo from './components/AboutUsTwo';
-import CourseSlider from './components/CourseSlider';
-import NumberCounter from './components/NumberCounter';
-import FreeCourse from './components/FreeCourse';
-import TeamSlider from './components/TeamSlider';
-import TestimonialSlider from './components/TestimonialSlider';
-import HomeBlog from './components/HomeBlog';
-import ImageGallery from './components/ImageGallery';
-import FooterTwo from './components/FooterTwo';
+import React, { Component } from "react";
+import HeaderTwo from "./components/HeaderTwo";
+import HeroImage from "./components/HeroImage";
+import ServiceBox from "./components/ServiceBox";
+import AboutUsTwo from "./components/AboutUsTwo";
+import CourseSlider from "./components/CourseSlider";
+import NumberCounter from "./components/NumberCounter";
+import FreeCourse from "./components/FreeCourse";
+import TeamSlider from "./components/TeamSlider";
+import TestimonialSlider from "./components/TestimonialSlider";
+import HomeBlog from "./components/HomeBlog";
+import ImageGallery from "./components/ImageGallery";
+import FooterTwo from "./components/FooterTwo";
 
 export default class HomeTwo extends Component {
-    render() {
-        return (
-            <div className="main-wrapper">
+  render() {
+    return (
+      <div className="main-wrapper">
+        {/* Header 2 */}
+        <HeaderTwo />
 
-                {/* Header 2 */}
-                <HeaderTwo />
+        {/* Hero Image */}
+        <HeroImage />
 
-                {/* Hero Image */}
-                <HeroImage />
+        {/* Service Box */}
+        <ServiceBox />
 
-                {/* Service Box */}
-                <ServiceBox />
+        {/* About Us 2 */}
+        <AboutUsTwo />
 
-                {/* About Us 2 */}
-                <AboutUsTwo />
+        {/* Course Slider */}
+        <CourseSlider />
 
-                {/* Course Slider */}
-                <CourseSlider />
+        {/* Counter Area */}
+        <NumberCounter />
 
-                {/* Counter Area */}
-                <NumberCounter />
+        {/* Free Course Area */}
+        <FreeCourse />
 
-                {/* Free Course Area */}
-                <FreeCourse />
+        {/* Team Slider */}
+        <TeamSlider />
 
-                {/* Team Slider */}
-                <TeamSlider />
+        {/* Testimonial Slider */}
+        <TestimonialSlider />
 
-                {/* Testimonial Slider */}
-                <TestimonialSlider />
+        {/* Blog Area */}
+        <HomeBlog />
 
-                {/* Blog Area */}
-                <HomeBlog />
+        {/* Image Gallery Area */}
+        <ImageGallery />
 
-                {/* Image Gallery Area */}
-                <ImageGallery />
-
-                {/* Footer 2 */}
-                <FooterTwo />
-
-            </div>
-        )
-    }
+        {/* Footer 2 */}
+        <FooterTwo />
+      </div>
+    );
+  }
 }

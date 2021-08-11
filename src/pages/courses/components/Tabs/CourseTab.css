@@ -1,28 +1,27 @@
-.mylearning{
-display: flex; 
-flex-direction: column;   
-width: 100%;    
-height: 100vh;
-padding: 3.5rem 2rem;
-background: #F6F9FF;
+.mylearning {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  padding: 3.5rem 2rem;
+  background: #f6f9ff;
 }
-.mylearning-title{
-    margin-bottom: 3rem;
+.mylearning-title {
+  margin-bottom: 3rem;
 }
-.mylearning-content{
-    display: flex;
-    justify-content: space-between;
-   
+.mylearning-content {
+  display: flex;
+  justify-content: space-between;
 }
 .table-responsive {
-    display: block;
-    width: 100%;
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch;
+  display: block;
+  width: 100%;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
 }
 
-@media (max-width: 1000px){
-    .mylearning-content{
-        flex-direction: column;
-    }
+@media (max-width: 1000px) {
+  .mylearning-content {
+    flex-direction: column;
+  }
 }

@@ -17,11 +17,9 @@ import moment from "moment";
 
 import { enrollCourses } from "services/enrollment.js";
 
-
 import { Container, Row, Col } from "react-bootstrap";
 import Swiper from "react-id-swiper";
 import { Styles } from "components/styles/courseSlider.js";
-
 
 function isElementOutViewport(el) {
   // var parent = el.parentNode.parentElement,
@@ -252,38 +250,36 @@ const Carousel = (props) => {
     }
   };
 
-
-
   //swipper for mobile device
   const settings = {
-      slidesPerView: 3,
-      loop: true,
-      speed: 1000,
-      // autoplay: {
-      //   delay: 3000,
-      //   disableOnInteraction: false,
-      // },
-      spaceBetween: 30,
-      watchSlidesVisibility: true,
-      pagination: {
-        el: ".slider-dot.text-center",
-        clickable: true,
+    slidesPerView: 3,
+    loop: true,
+    speed: 1000,
+    // autoplay: {
+    //   delay: 3000,
+    //   disableOnInteraction: false,
+    // },
+    spaceBetween: 30,
+    watchSlidesVisibility: true,
+    pagination: {
+      el: ".slider-dot.text-center",
+      clickable: true,
+    },
+    breakpoints: {
+      0: {
+        slidesPerView: 1,
       },
-      breakpoints: {
-        0: {
-          slidesPerView: 1,
-        },
-        576: {
-          slidesPerView: 1,
-        },
-        768: {
-          slidesPerView: 2,
-        },
-        992: {
-          slidesPerView: 3,
-        },
+      576: {
+        slidesPerView: 1,
       },
-    };
+      768: {
+        slidesPerView: 2,
+      },
+      992: {
+        slidesPerView: 3,
+      },
+    },
+  };
 
   return (
     <div className="carousel-container">
@@ -856,250 +852,235 @@ const Carousel = (props) => {
         </button>
       </div>
 
-
-
-
-
-
-
-
-
-     
-<Styles>
-      <div className="hide ">
-        <section class=" hide course-slider-area">
-
-
-          
-          <Col md="12" className="course-slider">
-                <Swiper {...settings}>
-            {children.map((item, i) => {
-              return (
-                <div
-                  data-link={
-                    process.env.PUBLIC_URL +
-                    "/courses/" +
-                    item.id +
-                    "/" +
-                    item?.course?.slug
-                  }
-                  key={"ramlink" + item?.id}
-                  className="card-box  course-item  "
-                  style={{ marginRight: "10px" }}
-                >
-                  <figure
-                    style={{
-                      border: "1px solid #f5f5f5",
-                      borderBottom: "2px solid #000",
-                    }}
-                  >
-                    <Link
-                      to={
+      <Styles>
+        <div className="hide ">
+          <section class=" hide course-slider-area">
+            <Col md="12" className="course-slider">
+              <Swiper {...settings}>
+                {children.map((item, i) => {
+                  return (
+                    <div
+                      data-link={
                         process.env.PUBLIC_URL +
                         "/courses/" +
-                        item?.id +
+                        item.id +
                         "/" +
                         item?.course?.slug
                       }
-                      className="image-popup"
-                      title="Screenshot-1"
+                      key={"ramlink" + item?.id}
+                      className="card-box  course-item  "
+                      style={{ marginRight: "10px" }}
                     >
-                      {item?.course?.course_cover_image !== null ? (
-                        <img
-                          src={item?.course?.course_cover_image}
-                          className="thumb-img imagemix course-image"
-                          alt="work-thumbnail"
-                          style={{ width: "100%", height: "140px" }}
-                        />
-                      ) : (
-                        <Fragment />
-                      )}{" "}
-                      <div className="middle-overlay"></div>
-                    </Link>
-                  </figure>
-
-                  <div
-                    className=""
-                    style={{
-                      textAlign: "left",
-                      height: "200px",
-                      marginLeft: "10px",
-                      width: "100%",
-                    }}
-                  >
-                    <div className="course-content">
-                      <p className="style-9b">
+                      <figure
+                        style={{
+                          border: "1px solid #f5f5f5",
+                          borderBottom: "2px solid #000",
+                        }}
+                      >
                         <Link
-                          className="style-9b"
                           to={
                             process.env.PUBLIC_URL +
                             "/courses/" +
-                            item.id +
-                            "/" +
-                            item.slug
-                          }
-                          style={{
-                            fontWeight: "700",
-                            fontFamily: "Open Sans",
-                            fontSize: "12px",
-                            color: "#000",
-                            textAlign: "left",
-                            lineHeight: "20px",
-                          }}
-                        >
-                          {item?.category?.name}
-                        </Link>
-                      </p>
-
-                      <p className="style-9b">
-                        <Link
-                          className="style-9b"
-                          style={{
-                            fontWeight: "700",
-                            fontFamily: "Open Sans",
-                            color: "#000",
-                            fontSize: "12px",
-                            textAlign: "left",
-                            lineHeight: "20px",
-                          }}
-                          to={
-                            process.env.PUBLIC_URL +
-                            "/courses/" +
-                            item.id +
+                            item?.id +
                             "/" +
                             item?.course?.slug
                           }
+                          className="image-popup"
+                          title="Screenshot-1"
                         >
-                          {item?.course?.course_code}
+                          {item?.course?.course_cover_image !== null ? (
+                            <img
+                              src={item?.course?.course_cover_image}
+                              className="thumb-img imagemix course-image"
+                              alt="work-thumbnail"
+                              style={{ width: "100%", height: "140px" }}
+                            />
+                          ) : (
+                            <Fragment />
+                          )}{" "}
+                          <div className="middle-overlay"></div>
                         </Link>
-                      </p>
-
-                      <p
-                        style={{
-                          textAlign: "left",
-                          width: "100%",
-                          fontWeight: "bold",
-                          marginTop: "3px",
-                        }}
-                      >
-                        <Link
-                          to={
-                            process.env.PUBLIC_URL +
-                            "/courses/" +
-                            item.id +
-                            "/" +
-                            item?.course?.slug
-                          }
-                          style={{
-                            fontWeight: "700",
-                            fontFamily: "Open Sans",
-                            fontSize: "12px",
-                            textAlign: "left",
-                            width: "100%",
-                            marginTop: "2px",
-                            color: "#000",
-                            margin: "0 0 15px",
-                            lineHeight: "20px",
-                          }}
-                          className="style-8a"
-                        >
-                          {item?.course?.course_name?.substring(0, 30) + "..."}
-                        </Link>
-                      </p>
-                      <p
-                        style={{
-                          textAlign: "left",
-                          width: "100%",
-                          marginTop: "4px",
-                          color: "#000",
-                        }}
-                        className="style-8a"
-                      >
-                        {
-                          item?.course?.instructor?.instructor_profile
-                            ?.current_employer_designation
-                        }
-                      </p>
-
-                      <p
-                        style={{ width: "100%", color: "#000" }}
-                        className="style-8a"
-                      >
-                        {item?.course?.instructor?.first_name !== null &&
-                          item?.course?.instructor?.first_name +
-                            " " +
-                            item?.course?.instructor?.last_name}
-                      </p>
-                    </div>
-                    <div
-                      className="bottom-sect"
-                      style={{
-                        display: "table",
-                        clear: "both",
-                        height: "30px",
-                        textAlign: "left",
-                      }}
-                    >
-                      <p
-                        style={{
-                          borderTop: "1px solid #000",
-                          color: "#000",
-                          display: "table",
-                          position: "absolute",
-                          marginLeft: "10px",
-                          textAlign: "left",
-                          marginLeft: "-10px",
-                          bottom: "0px",
-                          width: "82%",
-                          padding: "10px",
-                          fontSize: "10px",
-                        }}
-                      >
-                        Course
-                      </p>
+                      </figure>
 
                       <div
+                        className=""
                         style={{
-                          color: "#000",
-                          position: "absolute",
                           textAlign: "left",
-                          bottom: "0px",
-                          padding: "10px",
-                          float: "right",
-                          right: "0px",
+                          height: "200px",
+                          marginLeft: "10px",
+                          width: "100%",
                         }}
                       >
-                        <Link
-                          to={
-                            process.env.PUBLIC_URL +
-                            "/courses/" +
-                            item.id +
-                            "/" +
-                            item?.course?.slug
-                          }
+                        <div className="course-content">
+                          <p className="style-9b">
+                            <Link
+                              className="style-9b"
+                              to={
+                                process.env.PUBLIC_URL +
+                                "/courses/" +
+                                item.id +
+                                "/" +
+                                item.slug
+                              }
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                fontSize: "12px",
+                                color: "#000",
+                                textAlign: "left",
+                                lineHeight: "20px",
+                              }}
+                            >
+                              {item?.category?.name}
+                            </Link>
+                          </p>
+
+                          <p className="style-9b">
+                            <Link
+                              className="style-9b"
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                color: "#000",
+                                fontSize: "12px",
+                                textAlign: "left",
+                                lineHeight: "20px",
+                              }}
+                              to={
+                                process.env.PUBLIC_URL +
+                                "/courses/" +
+                                item.id +
+                                "/" +
+                                item?.course?.slug
+                              }
+                            >
+                              {item?.course?.course_code}
+                            </Link>
+                          </p>
+
+                          <p
+                            style={{
+                              textAlign: "left",
+                              width: "100%",
+                              fontWeight: "bold",
+                              marginTop: "3px",
+                            }}
+                          >
+                            <Link
+                              to={
+                                process.env.PUBLIC_URL +
+                                "/courses/" +
+                                item.id +
+                                "/" +
+                                item?.course?.slug
+                              }
+                              style={{
+                                fontWeight: "700",
+                                fontFamily: "Open Sans",
+                                fontSize: "12px",
+                                textAlign: "left",
+                                width: "100%",
+                                marginTop: "2px",
+                                color: "#000",
+                                margin: "0 0 15px",
+                                lineHeight: "20px",
+                              }}
+                              className="style-8a"
+                            >
+                              {item?.course?.course_name?.substring(0, 30) +
+                                "..."}
+                            </Link>
+                          </p>
+                          <p
+                            style={{
+                              textAlign: "left",
+                              width: "100%",
+                              marginTop: "4px",
+                              color: "#000",
+                            }}
+                            className="style-8a"
+                          >
+                            {
+                              item?.course?.instructor?.instructor_profile
+                                ?.current_employer_designation
+                            }
+                          </p>
+
+                          <p
+                            style={{ width: "100%", color: "#000" }}
+                            className="style-8a"
+                          >
+                            {item?.course?.instructor?.first_name !== null &&
+                              item?.course?.instructor?.first_name +
+                                " " +
+                                item?.course?.instructor?.last_name}
+                          </p>
+                        </div>
+                        <div
+                          className="bottom-sect"
                           style={{
+                            display: "table",
+                            clear: "both",
+                            height: "30px",
                             textAlign: "left",
-                            fontSize: "10px",
-                            width: "100%",
-                            color: "gray",
                           }}
                         >
-                          Details
-                        </Link>
+                          <p
+                            style={{
+                              borderTop: "1px solid #000",
+                              color: "#000",
+                              display: "table",
+                              position: "absolute",
+                              marginLeft: "10px",
+                              textAlign: "left",
+                              marginLeft: "-10px",
+                              bottom: "0px",
+                              width: "82%",
+                              padding: "10px",
+                              fontSize: "10px",
+                            }}
+                          >
+                            Course
+                          </p>
+
+                          <div
+                            style={{
+                              color: "#000",
+                              position: "absolute",
+                              textAlign: "left",
+                              bottom: "0px",
+                              padding: "10px",
+                              float: "right",
+                              right: "0px",
+                            }}
+                          >
+                            <Link
+                              to={
+                                process.env.PUBLIC_URL +
+                                "/courses/" +
+                                item.id +
+                                "/" +
+                                item?.course?.slug
+                              }
+                              style={{
+                                textAlign: "left",
+                                fontSize: "10px",
+                                width: "100%",
+                                color: "gray",
+                              }}
+                            >
+                              Details
+                            </Link>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              );
-            })}
-
-            </Swiper>
-          </Col>
-
-
-        </section>
-      </div>
-
+                  );
+                })}
+              </Swiper>
+            </Col>
+          </section>
+        </div>
       </Styles>
     </div>
   );

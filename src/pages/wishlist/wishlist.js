@@ -6,7 +6,6 @@ import { BreadcrumbBox } from "../../components/common/Breadcrumb";
 import { Styles } from "./learners/styles/product.js";
 import Active from "./partials/active";
 
-
 const Wishlists = () => {
   return (
     <Styles>
@@ -23,7 +22,7 @@ const Wishlists = () => {
           <Row>
             <Col lg="12">
               <div className="course-tab-list">
-                 <Active />
+                <Active />
               </div>
             </Col>
           </Row>
@@ -37,4 +36,3 @@ const Wishlists = () => {
 };
 
 export default Wishlists;
-

@@ -1,10 +1,10 @@
 /*! Select2 4.0.3 | https://github.com/select2/select2/blob/master/LICENSE.md */
 
-(function() {
+(function () {
   if (jQuery && jQuery.fn && jQuery.fn.select2 && jQuery.fn.select2.amd)
     var e = jQuery.fn.select2.amd;
   return (
-    e.define('select2/i18n/sr', [], function() {
+    e.define("select2/i18n/sr", [], function () {
       function e(e, t, n, r) {
         return e % 10 == 1 && e % 100 != 11
           ? t
@@ -13,31 +13,31 @@
           : r;
       }
       return {
-        errorLoading: function() {
-          return 'Preuzimanje nije uspelo.';
+        errorLoading: function () {
+          return "Preuzimanje nije uspelo.";
         },
-        inputTooLong: function(t) {
+        inputTooLong: function (t) {
           var n = t.input.length - t.maximum,
-            r = 'Obrišite ' + n + ' simbol';
-          return (r += e(n, '', 'a', 'a')), r;
+            r = "Obrišite " + n + " simbol";
+          return (r += e(n, "", "a", "a")), r;
         },
-        inputTooShort: function(t) {
+        inputTooShort: function (t) {
           var n = t.minimum - t.input.length,
-            r = 'Ukucajte bar još ' + n + ' simbol';
-          return (r += e(n, '', 'a', 'a')), r;
+            r = "Ukucajte bar još " + n + " simbol";
+          return (r += e(n, "", "a", "a")), r;
         },
-        loadingMore: function() {
-          return 'Preuzimanje još rezultata…';
+        loadingMore: function () {
+          return "Preuzimanje još rezultata…";
         },
-        maximumSelected: function(t) {
-          var n = 'Možete izabrati samo ' + t.maximum + ' stavk';
-          return (n += e(t.maximum, 'u', 'e', 'i')), n;
+        maximumSelected: function (t) {
+          var n = "Možete izabrati samo " + t.maximum + " stavk";
+          return (n += e(t.maximum, "u", "e", "i")), n;
         },
-        noResults: function() {
-          return 'Ništa nije pronađeno';
+        noResults: function () {
+          return "Ništa nije pronađeno";
         },
-        searching: function() {
-          return 'Pretraga…';
+        searching: function () {
+          return "Pretraga…";
         },
       };
     }),

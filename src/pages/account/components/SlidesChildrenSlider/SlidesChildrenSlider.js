@@ -19,10 +19,10 @@ const app = () => {
       onBeforeChange={(previousSlide, nextSlide) =>
         console.log("onBeforeChange", previousSlide, nextSlide)
       }
-      onChange={nextSlide => console.log("onChange", nextSlide)}
-      onAfterChange={nextSlide => console.log("onAfterChange", nextSlide)}
+      onChange={(nextSlide) => console.log("onChange", nextSlide)}
+      onAfterChange={(nextSlide) => console.log("onAfterChange", nextSlide)}
       style={{
-        backgroundColor: "#000"
+        backgroundColor: "#000",
       }}
       settings={{
         slidingDuration: 600,
@@ -30,12 +30,12 @@ const app = () => {
         shouldAutoplay: true,
         shouldDisplayButtons: true,
         autoplayDuration: 8000,
-        height: "100vh"
+        height: "100vh",
       }}
     >
       <Slide
         background={{
-          backgroundImage: salta
+          backgroundImage: salta,
         }}
       >
         <Wrapper>
@@ -45,7 +45,7 @@ const app = () => {
 
       <Slide
         background={{
-          backgroundImage: scharbeutz
+          backgroundImage: scharbeutz,
         }}
       >
         <Wrapper>
@@ -55,7 +55,7 @@ const app = () => {
 
       <Slide
         background={{
-          backgroundImage: selvaDiValGardena
+          backgroundImage: selvaDiValGardena,
         }}
       >
         <Wrapper>
@@ -65,7 +65,7 @@ const app = () => {
 
       <Slide
         background={{
-          backgroundImage: seoraksanMountains
+          backgroundImage: seoraksanMountains,
         }}
       >
         <Wrapper>
@@ -76,7 +76,7 @@ const app = () => {
       <SideNav
         position={{
           top: 0,
-          right: 0
+          right: 0,
         }}
       />
     </HeroSlider>

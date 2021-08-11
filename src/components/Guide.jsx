@@ -15,31 +15,6 @@ const Guide = () => {
     });
   });
   return (
-
-
- 
-
-
-
-
- 
-
- 
-
-
-
-
- 
-
- 
-
-
-
-
- 
-
- 
-
     <section className="guide" style={{ background: "#fff" }}>
       <Container>
         <Row>
@@ -55,9 +30,8 @@ const Guide = () => {
                   lineHight: "80px",
                 }}
               >
-                The Questence platform allows you plan and learn at your 
-                own pace and in your own style.
-
+                The Questence platform allows you plan and learn at your own
+                pace and in your own style.
               </h4>
               <div className="guide__box">
                 <div className="guide__box__item">
@@ -75,7 +49,7 @@ const Guide = () => {
                         lineHight: "80px",
                       }}
                     >
-                     Easy to Use
+                      Easy to Use
                     </h6>
                     <p
                       style={{
@@ -88,7 +62,6 @@ const Guide = () => {
                     </p>
                   </div>
                 </div>
-
 
                 <div className="guide__box__item">
                   <figure>
@@ -105,7 +78,7 @@ const Guide = () => {
                         lineHight: "80px",
                       }}
                     >
-                     Certification Pathways
+                      Certification Pathways
                     </h6>
                     <p
                       style={{
@@ -114,18 +87,11 @@ const Guide = () => {
                         fontSize: "14px",
                       }}
                     >
-                      Ease your path to professional certifications by choosing 
+                      Ease your path to professional certifications by choosing
                       standalone courses or multiple programmes.
-
-
                     </p>
                   </div>
                 </div>
-
-
-                
-
-
 
                 <div className="guide__box__item">
                   <figure>
@@ -151,10 +117,10 @@ const Guide = () => {
                         fontSize: "14px",
                       }}
                     >
-                      Form tutorial groups with fellow learners and review lessons 
-                      together with or without your instuctor present. Post questions
-                       either to the instructor, or to your classmates.
-
+                      Form tutorial groups with fellow learners and review
+                      lessons together with or without your instuctor present.
+                      Post questions either to the instructor, or to your
+                      classmates.
                     </p>
                   </div>
                 </div>
@@ -183,8 +149,8 @@ const Guide = () => {
                         fontSize: "14px",
                       }}
                     >
-                      Attend your class live or watch the recording at your convenience.
-
+                      Attend your class live or watch the recording at your
+                      convenience.
                     </p>
                   </div>
                 </div>

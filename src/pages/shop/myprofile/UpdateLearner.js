@@ -21,9 +21,6 @@ import {
   MaritalStatus,
 } from "helper/data";
 
-
-
-
 import Sidebar from "../newdashboard/Sidebar";
 
 import "../newdashboard/assets/css/bootstrap.min.css";
@@ -32,7 +29,7 @@ import "../newdashboard/assets/css/components.css";
 import "../newdashboard/assets/css/icons.css";
 import "../newdashboard/assets/css/pages.css";
 import "../newdashboard/assets/css/responsive.css";
-import "./tabnotifications.css"
+import "./tabnotifications.css";
 
 import Loader from "components/Loader/Loader";
 import { connect } from "react-redux";
@@ -57,9 +54,11 @@ const UpdateLearner = ({ auth: { user } }) => {
           date_of_birth: profile?.user?.learner_profile.date_of_birth || "",
           country_id: profile?.user?.learner_profile.country_id || "",
           biography: profile?.user?.learner_profile.biography || "",
-          employment_status: profile?.user?.learner_profile.employment_status || "",
+          employment_status:
+            profile?.user?.learner_profile.employment_status || "",
           marital_status: profile?.user?.learner_profile.marital_status || "",
-          experience_level: profile?.user?.learner_profile.experience_level || "",
+          experience_level:
+            profile?.user?.learner_profile.experience_level || "",
           education_level: profile?.user?.learner_profile.education_level || "",
           degree_obtained: profile?.user?.learner_profile.degree_obtained || "",
           language: profile?.user?.learner_profile.language || "",
@@ -114,7 +113,6 @@ const UpdateLearner = ({ auth: { user } }) => {
       <div className="main-wrapper registration-page">
         {/* Header 2 */}
         <NavBar />
-
 
         {/* Registration Area */}
         <section className="registration-area">
@@ -366,7 +364,8 @@ const UpdateLearner = ({ auth: { user } }) => {
                             <Row>
                               <p className="form-control">
                                 <label htmlFor="registration_user">
-                                  Language {profile?.user?.learner_profile.language}
+                                  Language{" "}
+                                  {profile?.user?.learner_profile.language}
                                 </label>
                                 <select
                                   name="language"
@@ -609,7 +608,6 @@ const UpdateLearner = ({ auth: { user } }) => {
         </section>
 
         {/* Footer 2 */}
-        
       </div>
 
       <Sidebar />

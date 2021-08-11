@@ -435,7 +435,6 @@ const CourseDetails = ({
                                                                   {/*data?.skills_acquired?.length && ( <p style={{color:"#000", fontSize:"14px"}}>Skills you would achieve
                                                      </p>)*/}
 
-
                                                                   {/*
                                             data?.skills_acquired?.map(skillPills =>{
                                                 return (
@@ -469,9 +468,6 @@ const CourseDetails = ({
                                             );
                                           }
                                         )}
-
-                                        
-
                                     </div>
                                   </Tab.Pane>
                                   <Tab.Pane

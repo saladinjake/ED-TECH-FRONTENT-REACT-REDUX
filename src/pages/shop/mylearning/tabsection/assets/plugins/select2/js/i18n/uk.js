@@ -1,10 +1,10 @@
 /*! Select2 4.0.3 | https://github.com/select2/select2/blob/master/LICENSE.md */
 
-(function() {
+(function () {
   if (jQuery && jQuery.fn && jQuery.fn.select2 && jQuery.fn.select2.amd)
     var e = jQuery.fn.select2.amd;
   return (
-    e.define('select2/i18n/uk', [], function() {
+    e.define("select2/i18n/uk", [], function () {
       function e(e, t, n, r) {
         return e % 100 > 10 && e % 100 < 15
           ? r
@@ -15,30 +15,38 @@
           : r;
       }
       return {
-        errorLoading: function() {
-          return 'Неможливо завантажити результати';
+        errorLoading: function () {
+          return "Неможливо завантажити результати";
         },
-        inputTooLong: function(t) {
+        inputTooLong: function (t) {
           var n = t.input.length - t.maximum;
-          return 'Будь ласка, видаліть ' + n + ' ' + e(t.maximum, 'літеру', 'літери', 'літер');
-        },
-        inputTooShort: function(e) {
-          var t = e.minimum - e.input.length;
-          return 'Будь ласка, введіть ' + t + ' або більше літер';
-        },
-        loadingMore: function() {
-          return 'Завантаження інших результатів…';
-        },
-        maximumSelected: function(t) {
           return (
-            'Ви можете вибрати лише ' + t.maximum + ' ' + e(t.maximum, 'пункт', 'пункти', 'пунктів')
+            "Будь ласка, видаліть " +
+            n +
+            " " +
+            e(t.maximum, "літеру", "літери", "літер")
           );
         },
-        noResults: function() {
-          return 'Нічого не знайдено';
+        inputTooShort: function (e) {
+          var t = e.minimum - e.input.length;
+          return "Будь ласка, введіть " + t + " або більше літер";
         },
-        searching: function() {
-          return 'Пошук…';
+        loadingMore: function () {
+          return "Завантаження інших результатів…";
+        },
+        maximumSelected: function (t) {
+          return (
+            "Ви можете вибрати лише " +
+            t.maximum +
+            " " +
+            e(t.maximum, "пункт", "пункти", "пунктів")
+          );
+        },
+        noResults: function () {
+          return "Нічого не знайдено";
+        },
+        searching: function () {
+          return "Пошук…";
         },
       };
     }),

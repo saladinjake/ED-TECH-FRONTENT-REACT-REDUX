@@ -4,7 +4,10 @@ const Section = () => {
   return (
     <div className="container" style={{ background: "#fafafa" }}>
       <div className="vc_row wpb_row row vc_row-fluid vc_custom_1533037364435 vc_row-o-equal-height vc_row-flex">
-        <div className="wpb_column vc_column_container vc_col-sm-12 vc_col-lg-6 vc_col-md-6 col-md-6 " style={{padding:"10px",marginTop:"40px"}}>
+        <div
+          className="wpb_column vc_column_container vc_col-sm-12 vc_col-lg-6 vc_col-md-6 col-md-6 "
+          style={{ padding: "10px", marginTop: "40px" }}
+        >
           <div className="vc_column-inner">
             <div
               className="wpb_wrapper"
@@ -98,7 +101,7 @@ const Section = () => {
         </div>
         <div
           className="joinit wpb_column vc_column_container vc_col-sm-12 vc_col-lg-6 col-md-6 vc_col-md-6"
-           style={{padding:"10px",marginTop:"40px"}}
+          style={{ padding: "10px", marginTop: "40px" }}
         >
           <div className="vc_column-inner">
             <div

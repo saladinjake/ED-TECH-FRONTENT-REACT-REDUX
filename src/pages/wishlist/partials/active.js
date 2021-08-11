@@ -32,7 +32,7 @@ const Active = () => {
     setLoading(true);
     try {
       await deleteWishlist(wId);
-        toast.success(`Course removed from wishlist`);
+      toast.success(`Course removed from wishlist`);
 
       let res = await getWishlist();
       if (res?.data?.data?.data?.length > 0) {

@@ -128,7 +128,7 @@ const MobileMenu = ({
     $(document).ready(function () {
       //
 
-       var navikHeader = $(".navik-header"),
+      var navikHeader = $(".navik-header"),
         navikHeaderHeight = navikHeader.height(),
         logo = navikHeader.find(".logo"),
         logoImg = logo.find("img"),
@@ -221,13 +221,6 @@ const MobileMenu = ({
       var listMenuHover4 = $(".navik-menu.menu-hover-4 > ul > li > a");
       listMenuHover4.append('<div class="hover-transition"></div>');
 
-
-
-
-
-
-
-
       //login signup forget pass
 
       $(".modal-link3").click(function (e) {
@@ -304,7 +297,6 @@ const MobileMenu = ({
       });
     });
   }
-
 
   return (
     <div className="navik-header header-shadow">

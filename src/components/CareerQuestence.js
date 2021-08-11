@@ -20,8 +20,9 @@ class AboutUs extends Component {
     return (
       <Styles>
         {/* About Us */}
-        <br/><br/>
-        <section className="about-us" style={{background:"#fff"}}>
+        <br />
+        <br />
+        <section className="about-us" style={{ background: "#fff" }}>
           <Container>
             <Row>
               <Col md="6">
@@ -35,19 +36,22 @@ class AboutUs extends Component {
               </Col>
               <Col md="6">
                 <div className="about-content">
-                  <h2 className="about-title" style={{ fontFamily:"Open Sans"}}>
-                   Digital Online Learning 
+                  <h2
+                    className="about-title"
+                    style={{ fontFamily: "Open Sans" }}
+                  >
+                    Digital Online Learning
                   </h2>
-                  <p className="about-para" style={{ fontFamily:"Open Sans", fontSize:"16px"}}>
-                    Looking forward to excellence!!!. 
-                    Browse through our job opportunities
-                    to find your match to grow with excellence.
-                    We provide flexible working experience and help you build a successful career path.
+                  <p
+                    className="about-para"
+                    style={{ fontFamily: "Open Sans", fontSize: "16px" }}
+                  >
+                    Looking forward to excellence!!!. Browse through our job
+                    opportunities to find your match to grow with excellence. We
+                    provide flexible working experience and help you build a
+                    successful career path.
                   </p>
-                  
                 </div>
-
-                
               </Col>
             </Row>
           </Container>

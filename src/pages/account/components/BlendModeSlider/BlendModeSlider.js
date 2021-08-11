@@ -4,7 +4,7 @@ import HeroSlider, {
   Slide,
   SideNav,
   ButtonsNav,
-  OverlayContainer
+  OverlayContainer,
 } from "hero-slider";
 import Wrapper from "../UI/Wrapper/Wrapper";
 import Title from "../UI/Title/Title";
@@ -25,10 +25,10 @@ const app = () => {
       onBeforeChange={(previousSlide, nextSlide) =>
         console.log("onBeforeChange", previousSlide, nextSlide)
       }
-      onChange={nextSlide => console.log("onChange", nextSlide)}
-      onAfterChange={nextSlide => console.log("onAfterChange", nextSlide)}
+      onChange={(nextSlide) => console.log("onChange", nextSlide)}
+      onAfterChange={(nextSlide) => console.log("onAfterChange", nextSlide)}
       style={{
-        backgroundColor: "#000"
+        backgroundColor: "#000",
       }}
       settings={{
         slidingDuration: 400,
@@ -36,7 +36,7 @@ const app = () => {
         shouldAutoplay: true,
         shouldDisplayButtons: true,
         autoplayDuration: 8000,
-        height: "100vh"
+        height: "100vh",
       }}
     >
       <OverlayContainer>
@@ -56,7 +56,7 @@ const app = () => {
           backgroundColor: "#2D7791",
           backgroundBlendMode: "luminosity",
           maskBackgroundBlendMode: "luminosity",
-          backgroundImage: rockyWaterfall
+          backgroundImage: rockyWaterfall,
         }}
       />
 
@@ -67,7 +67,7 @@ const app = () => {
           backgroundColor: "#8A8A8A",
           backgroundBlendMode: "luminosity",
           maskBackgroundBlendMode: "luminosity",
-          backgroundImage: palauPacificOcean
+          backgroundImage: palauPacificOcean,
         }}
       />
 
@@ -78,7 +78,7 @@ const app = () => {
           backgroundColor: "#EA2329",
           backgroundBlendMode: "luminosity",
           maskBackgroundBlendMode: "luminosity",
-          backgroundImage: queposCostaRica
+          backgroundImage: queposCostaRica,
         }}
       />
 
@@ -89,7 +89,7 @@ const app = () => {
           backgroundColor: "#6D9B98",
           backgroundBlendMode: "luminosity",
           maskBackgroundBlendMode: "luminosity",
-          backgroundImage: mountainView
+          backgroundImage: mountainView,
         }}
       />
 
@@ -97,7 +97,7 @@ const app = () => {
       <SideNav
         position={{
           top: "0",
-          right: "0"
+          right: "0",
         }}
       />
     </HeroSlider>

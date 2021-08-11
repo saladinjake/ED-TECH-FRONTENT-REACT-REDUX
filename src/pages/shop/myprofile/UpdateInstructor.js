@@ -81,7 +81,7 @@ const UpdateInstructor = ({ auth: { user } }) => {
         setCountries([...res[0].data.data]);
         setLanguages([...res[1].data.data]);
         setProfile({ ...res[2].data.data });
-        setIndustries([ ...res[3].data.data ]);
+        setIndustries([...res[3].data.data]);
         console.log("profile", res[2].data.data);
         console.log("industries", res[3].data.data);
 

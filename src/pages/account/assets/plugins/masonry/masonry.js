@@ -6,31 +6,43 @@
  * by David DeSandro
  */
 
-(function(window, factory) {
-  'use strict';
+(function (window, factory) {
+  "use strict";
   // universal module definition
-  if (typeof define === 'function' && define.amd) {
+  if (typeof define === "function" && define.amd) {
     // AMD
-    define(['outlayer/outlayer', 'get-size/get-size', 'fizzy-ui-utils/utils'], factory);
-  } else if (typeof exports === 'object') {
+    define([
+      "outlayer/outlayer",
+      "get-size/get-size",
+      "fizzy-ui-utils/utils",
+    ], factory);
+  } else if (typeof exports === "object") {
     // CommonJS
-    module.exports = factory(require('outlayer'), require('get-size'), require('fizzy-ui-utils'));
+    module.exports = factory(
+      require("outlayer"),
+      require("get-size"),
+      require("fizzy-ui-utils")
+    );
   } else {
     // browser global
-    window.Masonry = factory(window.Outlayer, window.getSize, window.fizzyUIUtils);
+    window.Masonry = factory(
+      window.Outlayer,
+      window.getSize,
+      window.fizzyUIUtils
+    );
   }
 })(window, function factory(Outlayer, getSize, utils) {
-  'use strict';
+  "use strict";
 
   // -------------------------- masonryDefinition -------------------------- //
 
   // create an Outlayer layout class
-  var Masonry = Outlayer.create('masonry');
+  var Masonry = Outlayer.create("masonry");
 
-  Masonry.prototype._resetLayout = function() {
+  Masonry.prototype._resetLayout = function () {
     this.getSize();
-    this._getMeasurement('columnWidth', 'outerWidth');
-    this._getMeasurement('gutter', 'outerWidth');
+    this._getMeasurement("columnWidth", "outerWidth");
+    this._getMeasurement("gutter", "outerWidth");
     this.measureColumns();
 
     // reset column Y
@@ -43,7 +55,7 @@
     this.maxY = 0;
   };
 
-  Masonry.prototype.measureColumns = function() {
+  Masonry.prototype.measureColumns = function () {
     this.getContainerWidth();
     // if columnWidth is 0, default to outerWidth of first item
     if (!this.columnWidth) {
@@ -64,25 +76,27 @@
     // fix rounding errors, typically with gutters
     var excess = columnWidth - (containerWidth % columnWidth);
     // if overshoot is less than a pixel, round up, otherwise floor it
-    var mathMethod = excess && excess < 1 ? 'round' : 'floor';
+    var mathMethod = excess && excess < 1 ? "round" : "floor";
     cols = Math[mathMethod](cols);
     this.cols = Math.max(cols, 1);
   };
 
-  Masonry.prototype.getContainerWidth = function() {
+  Masonry.prototype.getContainerWidth = function () {
     // container is parent if fit width
-    var container = this.options.isFitWidth ? this.element.parentNode : this.element;
+    var container = this.options.isFitWidth
+      ? this.element.parentNode
+      : this.element;
     // check that this.size and size are there
     // IE8 triggers resize on body size change, so they might not be
     var size = getSize(container);
     this.containerWidth = size && size.innerWidth;
   };
 
-  Masonry.prototype._getItemLayoutPosition = function(item) {
+  Masonry.prototype._getItemLayoutPosition = function (item) {
     item.getSize();
     // how many columns does this brick span
     var remainder = item.size.outerWidth % this.columnWidth;
-    var mathMethod = remainder && remainder < 1 ? 'round' : 'ceil';
+    var mathMethod = remainder && remainder < 1 ? "round" : "ceil";
     // round if off by 1 pixel, otherwise use ceil
     var colSpan = Math[mathMethod](item.size.outerWidth / this.columnWidth);
     colSpan = Math.min(colSpan, this.cols);
@@ -112,7 +126,7 @@
    * @param {Number} colSpan - number of columns the element spans
    * @returns {Array} colGroup
    */
-  Masonry.prototype._getColGroup = function(colSpan) {
+  Masonry.prototype._getColGroup = function (colSpan) {
     if (colSpan < 2) {
       // if brick spans only one column, use all the column Ys
       return this.colYs;
@@ -131,7 +145,7 @@
     return colGroup;
   };
 
-  Masonry.prototype._manageStamp = function(stamp) {
+  Masonry.prototype._manageStamp = function (stamp) {
     var stampSize = getSize(stamp);
     var offset = this._getElementOffset(stamp);
     // get the columns that this stamp affects
@@ -144,13 +158,15 @@
     lastCol -= lastX % this.columnWidth ? 0 : 1;
     lastCol = Math.min(this.cols - 1, lastCol);
     // set colYs to bottom of the stamp
-    var stampMaxY = (this.options.isOriginTop ? offset.top : offset.bottom) + stampSize.outerHeight;
+    var stampMaxY =
+      (this.options.isOriginTop ? offset.top : offset.bottom) +
+      stampSize.outerHeight;
     for (var i = firstCol; i <= lastCol; i++) {
       this.colYs[i] = Math.max(stampMaxY, this.colYs[i]);
     }
   };
 
-  Masonry.prototype._getContainerSize = function() {
+  Masonry.prototype._getContainerSize = function () {
     this.maxY = Math.max.apply(Math, this.colYs);
     var size = {
       height: this.maxY,
@@ -163,7 +179,7 @@
     return size;
   };
 
-  Masonry.prototype._getContainerFitWidth = function() {
+  Masonry.prototype._getContainerFitWidth = function () {
     var unusedCols = 0;
     // count unused columns
     var i = this.cols;
@@ -177,7 +193,7 @@
     return (this.cols - unusedCols) * this.columnWidth - this.gutter;
   };
 
-  Masonry.prototype.needsResizeLayout = function() {
+  Masonry.prototype.needsResizeLayout = function () {
     var previousWidth = this.containerWidth;
     this.getContainerWidth();
     return previousWidth !== this.containerWidth;

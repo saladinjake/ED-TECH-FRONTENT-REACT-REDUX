@@ -1,4 +1,3 @@
-
 /* =============
   == Components List==
 
@@ -417,7 +416,7 @@
 }
 .checkbox input[type="checkbox"]:checked + label::after {
   content: "\f00c";
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
 }
 .checkbox input[type="checkbox"]:disabled + label::before {
   background-color: #eeeeee;
@@ -711,7 +710,7 @@
 }
 .panel-border .panel-heading {
   background-color: #ffffff;
-  border-top: 3px solid #DADFE2 !important;
+  border-top: 3px solid #dadfe2 !important;
   padding: 10px 20px 0px;
 }
 .panel-border .panel-body {
@@ -753,20 +752,20 @@
   border-color: #4c5667 !important;
   color: #4c5667 !important;
 }
-.panel-group .panel .panel-heading a[data-toggle=collapse].collapsed:before {
-  content: '\f0d7';
+.panel-group .panel .panel-heading a[data-toggle="collapse"].collapsed:before {
+  content: "\f0d7";
 }
 .panel-group .panel .panel-heading .accordion-toggle.collapsed:before {
-  content: '\f0d7';
+  content: "\f0d7";
 }
-.panel-group .panel .panel-heading a[data-toggle=collapse] {
+.panel-group .panel .panel-heading a[data-toggle="collapse"] {
   display: block;
 }
-.panel-group .panel .panel-heading a[data-toggle=collapse]:before {
-  content: '\f0d8';
+.panel-group .panel .panel-heading a[data-toggle="collapse"]:before {
+  content: "\f0d8";
   display: block;
   float: right;
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
   font-size: 14px;
   text-align: right;
   width: 25px;
@@ -775,10 +774,10 @@
   display: block;
 }
 .panel-group .panel .panel-heading .accordion-toggle:before {
-  content: '\f0d8';
+  content: "\f0d8";
   display: block;
   float: right;
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
   font-size: 14px;
   text-align: right;
   width: 25px;
@@ -904,7 +903,7 @@
   animation: loaderAnimate2 1000ms ease-in-out infinite;
   border-radius: 50%;
   clip: rect(0, 30px, 30px, 15px);
-  content: '';
+  content: "";
   height: 30px;
   position: absolute;
   width: 30px;
@@ -1157,9 +1156,12 @@ table.focus-on tbody tr.focused td {
 }
 .table-rep-plugin .checkbox-row input[type="checkbox"]:checked + label::after {
   content: "\f00c";
-  font-family: 'FontAwesome';
+  font-family: "FontAwesome";
 }
-.table-rep-plugin .checkbox-row input[type="checkbox"]:disabled + label::before {
+.table-rep-plugin
+  .checkbox-row
+  input[type="checkbox"]:disabled
+  + label::before {
   background-color: #eeeeee;
   cursor: not-allowed;
 }
@@ -1171,7 +1173,7 @@ table.focus-on tbody tr.focused td {
   color: #ffffff;
 }
 .fixed-table-container tbody .selected td {
-  background-color: #F4F8FB;
+  background-color: #f4f8fb;
 }
 .modal-block {
   background: transparent;
@@ -1258,7 +1260,7 @@ table.dataTable thead th.sorting_desc:after {
   background-color: #ebeff2;
 }
 .footable-row-detail {
-  background-color: #F0F4F7;
+  background-color: #f0f4f7;
 }
 /* Bootstrap Table */
 table[data-toggle="table"] {
@@ -1315,15 +1317,23 @@ table[data-toggle="table"] {
 .tablesaw tbody tr {
   border-bottom: none;
 }
-.tablesaw-sortable .tablesaw-sortable-head.tablesaw-sortable-ascending button:after,
-.tablesaw-sortable .tablesaw-sortable-head.tablesaw-sortable-descending button:after {
+.tablesaw-sortable
+  .tablesaw-sortable-head.tablesaw-sortable-ascending
+  button:after,
+.tablesaw-sortable
+  .tablesaw-sortable-head.tablesaw-sortable-descending
+  button:after {
   font-family: FontAwesome;
   font-size: 10px;
 }
-.tablesaw-sortable .tablesaw-sortable-head.tablesaw-sortable-ascending button:after {
+.tablesaw-sortable
+  .tablesaw-sortable-head.tablesaw-sortable-ascending
+  button:after {
   content: "\f176";
 }
-.tablesaw-sortable .tablesaw-sortable-head.tablesaw-sortable-descending button:after {
+.tablesaw-sortable
+  .tablesaw-sortable-head.tablesaw-sortable-descending
+  button:after {
   content: "\f175";
 }
 .tablesaw-bar .btn-select.btn-small:after,
@@ -1399,7 +1409,7 @@ ul.ColVis_collection li {
 }
 /* JsGrid table */
 .jsgrid-cell {
-  padding: .8em;
+  padding: 0.8em;
 }
 .jsgrid-selected-row > .jsgrid-cell {
   background: #f2f2f2;
@@ -1420,7 +1430,7 @@ ul.ColVis_collection li {
 .jsgrid select,
 .jsgrid textarea {
   border: 1px solid #e1e1e1;
-  padding: .4em .6em;
+  padding: 0.4em 0.6em;
 }
 .jsgrid-pager-container {
   margin-top: 10px;
@@ -1930,9 +1940,9 @@ ul.ColVis_collection li {
   border-top-right-radius: 4px !important;
 }
 .blog-box-one .cover-wrapper img {
-  transition: all .3s ease;
-  -webkit-transition: all .3s ease;
-  -moz-transition: all .3s ease;
+  transition: all 0.3s ease;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
   border-top-left-radius: 4px !important;
   border-top-right-radius: 4px !important;
 }
@@ -1949,7 +1959,7 @@ ul.ColVis_collection li {
 }
 .blog-box-one .post-info .date {
   float: left;
-  border-bottom: 3px solid #71b6f9 ;
+  border-bottom: 3px solid #71b6f9;
 }
 .post-info .date .day {
   font-size: 22px;
@@ -2067,7 +2077,7 @@ ul.ColVis_collection li {
   border-color: #5d9cec;
 }
 .daterangepicker .input-mini.active {
-  border: 1px solid #AAAAAA;
+  border: 1px solid #aaaaaa;
 }
 .daterangepicker .ranges li {
   -webkit-border-radius: 2px;
@@ -2167,7 +2177,7 @@ ul.ColVis_collection li {
   position: relative;
 }
 .wizard > .content > .body input {
-  border: 1px solid #E3E3E3;
+  border: 1px solid #e3e3e3;
 }
 .wizard > .content > .body ul > li {
   display: block;
@@ -2359,24 +2369,22 @@ a.editable-click:hover {
   max-width: 100%;
 }
 
-
-
-
-
-
-
 .circliful {
-    position: relative; 
+  position: relative;
 }
 
-.circle-text, .circle-info, .circle-text-half, .circle-info-half {
-    width: 100%;
-    position: absolute;
-    text-align: center;
-    display: inline-block;
+.circle-text,
+.circle-info,
+.circle-text-half,
+.circle-info-half {
+  width: 100%;
+  position: absolute;
+  text-align: center;
+  display: inline-block;
 }
 
-.circle-info, .circle-info-half {
+.circle-info,
+.circle-info-half {
   color: #999;
 }
 
@@ -2386,18 +2394,40 @@ a.editable-click:hover {
   bottom: 4px;
 }
 
-
-
-
 /*for cicle chart*/
 
-.morris-hover{position:absolute;z-index:1000}.morris-hover.morris-default-style{border-radius:10px;padding:6px;color:#666;background:rgba(255,255,255,0.8);border:solid 2px rgba(230,230,230,0.8);font-family:sans-serif;font-size:12px;text-align:center}.morris-hover.morris-default-style .morris-hover-row-label{font-weight:bold;margin:0.25em 0}
-.morris-hover.morris-default-style .morris-hover-point{white-space:nowrap;margin:0.1em 0}
+.morris-hover {
+  position: absolute;
+  z-index: 1000;
+}
+.morris-hover.morris-default-style {
+  border-radius: 10px;
+  padding: 6px;
+  color: #666;
+  background: rgba(255, 255, 255, 0.8);
+  border: solid 2px rgba(230, 230, 230, 0.8);
+  font-family: sans-serif;
+  font-size: 12px;
+  text-align: center;
+}
+.morris-hover.morris-default-style .morris-hover-row-label {
+  font-weight: bold;
+  margin: 0.25em 0;
+}
+.morris-hover.morris-default-style .morris-hover-point {
+  white-space: nowrap;
+  margin: 0.1em 0;
+}
 
-
-
-.scrollInsector{
-	width: 5px; height: 100%; position: absolute; 
-	top: 0px; display: none; border-radius: 7px; 
-	background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;
+.scrollInsector {
+  width: 5px;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  display: none;
+  border-radius: 7px;
+  background: rgb(51, 51, 51);
+  opacity: 0.2;
+  z-index: 90;
+  right: 1px;
 }

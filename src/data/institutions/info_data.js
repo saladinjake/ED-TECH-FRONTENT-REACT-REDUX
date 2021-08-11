@@ -2643,7 +2643,8 @@ Group and early-bird registration discounts are available. Contact Questence for
       institution: `Chartered Institute of Bankers of Nigeria`,
       intro: `
 Your journey to a successful banking career can begin with Questence `,
-      hero_image: process.env.PUBLIC_URL + "/assets/images/institutions/cibn.jpg",
+      hero_image:
+        process.env.PUBLIC_URL + "/assets/images/institutions/cibn.jpg",
       outcomes: [],
       enroll_plan: [
         `You can enrol for this course as a standalone or as part of your certification pathway.
@@ -2681,21 +2682,17 @@ Group and early-bird registration discounts are available. Contact Questence for
       ],
       skills_acquired: [],
       about_program: [
-
-
-
-`
+        `
 
 Questence brings the CIBN syllabus to life with vibrant educative lessons designed
- to make preparing for and passing your certification examinations a whole lot easier.` ],
+ to make preparing for and passing your certification examinations a whole lot easier.`,
+      ],
       courses: [
-
-      {
+        {
           title: "Diploma Level",
           body: [
             {
-              title:
-                "Economics of Banking & Finance ",
+              title: "Economics of Banking & Finance ",
               image:
                 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTm_MO3cTsD7kACjg0obWc4LHFz36KtjK8ywFu-GuR_Fdu13hcnpsIuTVN4StLvBWJ3Xig&usqp=CAU",
               info: ``,
@@ -2714,10 +2711,6 @@ Questence brings the CIBN syllabus to life with vibrant educative lessons design
               ],
             },
             {
-
-  
-
-
               title: "Customer Service & Relationship Mgt",
               image:
                 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTm_MO3cTsD7kACjg0obWc4LHFz36KtjK8ywFu-GuR_Fdu13hcnpsIuTVN4StLvBWJ3Xig&usqp=CAU",
@@ -2775,16 +2768,11 @@ Questence brings the CIBN syllabus to life with vibrant educative lessons design
                 "Principles of Accounting",
               ],
             },
-
-            
           ],
         },
-
-
-
       ],
 
-      "preformat":`
+      preformat: `
 
 
 <div style="height:80px" className="box-title profile-description">
@@ -3025,7 +3013,7 @@ Questence brings the CIBN syllabus to life with vibrant educative lessons design
 <div style="height:80px" className="box-title profile-description">
     <h6 style="line-height:30px;font-size:20px;color:#000">
 
-      `
+      `,
     },
 
     {
