@@ -1,9 +1,4 @@
-@charset "UTF-8"; /*!
- * Bootstrap v4.3.1 (https://getbootstrap.com/)
- * Copyright 2011-2019 The Bootstrap Authors
- * Copyright 2011-2019 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- */
+
 :root {
   --blue: #2c8ef8;
   --indigo: #727cf5;
@@ -14249,3 +14244,535 @@ div.dt-button-info h2 {
   font-weight: 700 !important;
 }
 /*# sourceMappingURL=app.min.css.map */
+
+
+
+
+
+
+
+
+
+
+/*this is the dynamic table creating course and section*/
+.pcs,
+.cur,
+.per {
+  white-space: nowrap;
+}
+
+.pcs:after {
+ /* content: " pcs";*/
+}
+
+.cur:before {
+ /* content: "$";*/
+}
+
+.per:after {
+  /*content: "%";*/
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  position: relative;
+  padding: 0.2em 2em;
+  color: #555;
+}
+
+table {
+  position: relative;
+  width: 100%;
+}
+table th {
+  text-align: left;
+  vertical-align: bottom;
+  border-bottom: 1px solid #ccc;
+  text-transform: uppercase;
+  font: 0.8em "Oswald", sans-serif;
+}
+table th, table td {
+  padding: 0.4em;
+  height: 20px;
+
+}
+
+table.fold-table {
+  background: white;
+  color: #555;
+}
+table.fold-table > tbody > tr.view {
+  font-family: "Droid Serif", serif;
+  transition: all 0.3s ease;
+}
+table.fold-table > tbody > tr.view td, table.fold-table > tbody > tr.view th {
+  cursor: pointer;
+}
+table.fold-table > tbody > tr.view td:first-child,
+table.fold-table > tbody > tr.view th:first-child {
+  position: relative;
+  padding-left: 20px;
+}
+table.fold-table > tbody > tr.view td:first-child:before,
+table.fold-table > tbody > tr.view th:first-child:before {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  width: 9px;
+  height: 16px;
+  margin-top: -8px;
+  font: 16px fontawesome;
+  content: "";
+  transition: all 0.3s ease;
+}
+table.fold-table > tbody > tr.view:nth-child(4n-1) {
+  background: #eee;
+}
+table.fold-table > tbody > tr.view:hover {
+  background: #ddd;
+}
+table.fold-table > tbody > tr.view.open {
+  /*background: #f5f5f5;
+  color: white;*/
+}
+table.fold-table > tbody > tr.view.open td:first-child:before, table.fold-table > tbody > tr.view.open th:first-child:before {
+  transform: rotate(-180deg);
+  color: white;
+}
+table.fold-table > tbody > tr.fold {
+  display: none;
+}
+table.fold-table > tbody > tr.fold.open {
+  display: table-row;
+}
+
+.fold-content {
+  padding: 0.5em;
+}
+.fold-content h3 {
+  margin-top: 0;
+}
+.fold-content > table {
+  background: white;
+  color: #555;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+}
+.fold-content > table > tbody > tr {
+  font-family: "Droid Serif", serif;
+  cursor: pointer;
+}
+.fold-content > table > tbody > tr:nth-child(even) {
+  background: #eee;
+}
+.fold-content > table > tbody > tr:hover {
+  background: #ddd;
+}
+
+.visible-small {
+  display: none;
+}
+
+.visible-big {
+  display: block;
+}
+
+@media (max-width: 700px) {
+  body {
+    font-size: 0.8em;
+    padding: 0 10px;
+  }
+
+  table th, table td {
+    padding: 1em 0.2em;
+  }
+  table th {
+    vertical-align: bottom;
+    padding-bottom: 0;
+  }
+
+  table.small-friendly > thead {
+    display: none;
+  }
+  table.small-friendly > tbody > tr > td,
+table.small-friendly > tbody > tr > th {
+    position: relative;
+    padding: 0;
+    padding-left: 50%;
+    display: block;
+    vertical-align: top;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  table.small-friendly > tbody > tr > td:before,
+table.small-friendly > tbody > tr > th:before {
+    position: absolute;
+    top: 0;
+    left: 0.5em;
+    max-width: 50%;
+    content: attr(data-th) ": ";
+    display: block;
+    font-weight: bold;
+  }
+  table.small-friendly > tbody > tr > td:first-child,
+table.small-friendly > tbody > tr > th:first-child {
+    margin-top: 1em;
+  }
+  table.small-friendly > tbody > tr > td:last-child,
+table.small-friendly > tbody > tr > th:last-child {
+    margin-bottom: 1em;
+    border: 0;
+  }
+
+  .visible-small {
+    display: block;
+  }
+
+  .visible-big {
+    display: none;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.modal-full {
+    /*min-width: 100%;
+    margin-left: 80;
+    margin-top: 100px;
+    height: 500px;
+    overflow-y: scroll;*/
+
+
+}
+
+.modal-full .modal-content {
+    min-height: 100vh;
+}
+
+.divided{
+    border-right:1px solid #eee;
+}
+
+
+
+
+
+
+
+/*form styles*/
+#msform {
+    text-align: center;
+    position: relative;
+    margin-top: 30px;
+    width:100%;
+}
+
+#msform fieldset {
+    /*background: white;*/
+    /*border: 0 none;*/
+    /*border-radius: 0px;*/
+    /*box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);*/
+    /*padding: 20px 30px;*/
+    box-sizing: border-box;
+    /*width: 80%;*/
+    margin: 0 10%;
+
+    /*stacking fieldsets above each other*/
+    position: relative;
+}
+
+/*Hide all except first fieldset*/
+#msform fieldset:not(:first-of-type) {
+    display: none;
+}
+
+/*inputs*/
+#msform input, #msform textarea {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 0px;
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: montserrat;
+    color: #2C3E50;
+    font-size: 13px;
+}
+
+#msform input:focus, #msform textarea:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border: 1px solid #ee0979;
+    outline-width: 0;
+    transition: All 0.5s ease-in;
+    -webkit-transition: All 0.5s ease-in;
+    -moz-transition: All 0.5s ease-in;
+    -o-transition: All 0.5s ease-in;
+}
+
+/*buttons*/
+#msform .action-button {
+    width: 100px;
+    background: #ee0979;
+    font-weight: bold;
+    color: white;
+    border: 0 none;
+    border-radius: 25px;
+    cursor: pointer;
+    padding: 10px 5px;
+    margin: 10px 5px;
+}
+
+#msform .action-button:hover, #msform .action-button:focus {
+    box-shadow: 0 0 0 2px white, 0 0 0 3px #ee0979;
+}
+
+#msform .action-button-previous {
+    width: 100px;
+    background: #C5C5F1;
+    font-weight: bold;
+    color: white;
+    border: 0 none;
+    border-radius: 25px;
+    cursor: pointer;
+    padding: 10px 5px;
+    margin: 10px 5px;
+}
+
+#msform .action-button-previous:hover, #msform .action-button-previous:focus {
+    box-shadow: 0 0 0 2px white, 0 0 0 3px #C5C5F1;
+}
+
+/*headings*/
+.fs-title {
+    font-size: 18px;
+    text-transform: uppercase;
+    color: #2C3E50;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.fs-subtitle {
+    font-weight: normal;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/*progressbar*/
+#progressbar {
+    margin-bottom: 30px;
+    overflow: hidden;
+    /*CSS counters to number the steps*/
+    counter-reset: step;
+}
+
+#progressbar li {
+    list-style-type: none;
+    color: white;
+    text-transform: uppercase;
+    font-size: 9px;
+    width: 33.33%;
+    float: left;
+    position: relative;
+    letter-spacing: 1px;
+}
+
+#progressbar li:before {
+    content: counter(step);
+    counter-increment: step;
+    width: 24px;
+    height: 24px;
+    line-height: 26px;
+    display: block;
+    font-size: 12px;
+    color: #fff;
+    background: #000;
+    border-radius: 25px;
+    margin: 0 auto 10px auto;
+}
+
+/*progressbar connectors*/
+#progressbar li:after {
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: rgba(8,23,200);
+    position: absolute;
+    left: -50%;
+    top: 9px;
+    z-index: -1; /*put it behind the numbers*/
+}
+
+#progressbar li:first-child:after {
+    /*connector not needed before the first step*/
+    content: none;
+}
+
+/*marking active/completed steps green*/
+/*The number of the step and the connector before it = green*/
+#progressbar li.active:before, #progressbar li.active:after {
+    background: rgba(8,23,200);
+    color: white;
+}
+
+
+/* Not relevant to this form */
+.dme_link {
+    margin-top: 30px;
+    text-align: center;
+}
+.dme_link a {
+    background: #FFF;
+    font-weight: bold;
+    color: #ccc;
+    border: 0 none;
+    border-radius: 25px;
+    cursor: pointer;
+    padding: 5px 25px;
+    font-size: 12px;
+}
+
+.dme_link a:hover, .dme_link a:focus {
+    background: #000;
+    text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.parent-table {
+  
+}
+.parent-table .child-table {
+  /*padding: 0.5rem;
+  border: 1px solid #78909C;
+  border-bottom: 0;
+  color: #fff;*/
+  -webkit-animation: slideDown 0.2s ease-in forwards;
+          animation: slideDown 0.2s ease-in forwards;
+  transform-origin: top center;
+}
+.parent-table .child-table.removed {
+  -webkit-animation: slideUp 0.2s ease-in forwards;
+          animation: slideUp 0.2s ease-in forwards;
+}
+.parent-table .child-table:nth-child(even) {
+/*  background: #78909C;*/
+}
+.parent-table .child-table:nth-child(odd) {
+  /*background: #546E7A;*/
+}
+.parent-table .child-table:last-child {
+  border-bottom: 1px solid #78909C;
+}
+@-webkit-keyframes slideDown {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+@keyframes slideDown {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+@-webkit-keyframes slideUp {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0);
+  }
+}
+@keyframes slideUp {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.table-editable {
+  position: relative;
+}
+
+.table-editable .glyphicon {
+  font-size: 20px;
+}
+
+.table-remove {
+  color: #700;
+  cursor: pointer;
+}
+
+.table-remove:hover {
+  color: #f00;
+}
+
+.table-up,
+.table-down {
+  color: #007;
+  cursor: pointer;
+}
+
+.table-up:hover,
+.table-down:hover {
+  color: #00f;
+}
+
+.table-add {
+  color: #070;
+  cursor: pointer;
+  position: absolute;
+  top: 8px;
+  right: 0;
+}
+
+.table-add:hover {
+  color: #0b0;
+}

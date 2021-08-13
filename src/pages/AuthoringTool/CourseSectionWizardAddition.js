@@ -235,7 +235,7 @@ export default class MasterForm extends React.Component {
 
       return (
         <li className="previous list-inline-item" onClick={this._prev}>
-          <a href="javascript::" className="">
+          <a href="#" className="">
             {" "}
             <i className="fa fa-arrow-left" style={{color:"#fff"}}></i>{" "}
           </a>
@@ -253,7 +253,7 @@ export default class MasterForm extends React.Component {
     // if (currentStep < 7) {
       return (
         <li className="next list-inline-item" onClick={this._next}>
-          <a href="javascript::" className="">
+          <a href="#" className="">
             {" "}
             <i className="fa fa-arrow-right" style={{color:"#fff"}}></i>{" "}
           </a>
@@ -342,12 +342,12 @@ export default class MasterForm extends React.Component {
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
                         handleChange={this.handleChange}
-                        errorEmailClass={this.errorClass(
+                        errorEmailclassName={this.errorClass(
                           this.state.formErrors.email
                         )}
                         email={this.state.email}
                         errorEmail={this.state.formErrors.email}
-                        errorUsernameClass={this.errorClass(
+                        errorUsernameclassName={this.errorClass(
                           this.state.formErrors.username
                         )}
                         username={this.state.username}
@@ -389,49 +389,49 @@ class Step1 extends React.Component {
     return (
       <React.Fragment>
         <div className="tab-content b-0 mb-0">
-          <div class="tab-pane active" id="basic">
-                                        <div class="row justify-content-center">
-    <div class="col-md-12 mb-4 text-center mt-3">
-        <a href="javascript::void(0)" class="btn btn-outline-primary btn-rounded btn-sm ml-1"
+          <div className="tab-pane active" id="basic">
+                                        <div className="row justify-content-center">
+    <div className="col-md-12 mb-4 text-center mt-3">
+        <a href="javascript::void(0)" className="btn btn-outline-primary btn-rounded btn-sm ml-1"
         onclick="showAjaxModal('http://demo4a.questence.org/modal/popup/section_add/29', 'Add new section')">
-        <i class="mdi mdi-plus"></i> Add section</a>
-        <a href="javascript::void(0)" class="btn btn-outline-primary btn-rounded btn-sm ml-1"
+        <i className="mdi mdi-plus"></i> Add section</a>
+        <a href="javascript::void(0)" className="btn btn-outline-primary btn-rounded btn-sm ml-1"
         onclick="showAjaxModal('http://demo4a.questence.org/modal/popup/lesson_types/29', 'Add new lesson')">
-        <i class="mdi mdi-plus"></i> Add lesson</a>
-                    <a href="javascript::void(0)" class="btn btn-outline-primary btn-rounded btn-sm ml-1"
+        <i className="mdi mdi-plus"></i> Add lesson</a>
+                    <a href="javascript::void(0)" className="btn btn-outline-primary btn-rounded btn-sm ml-1"
             onclick="showAjaxModal('http://demo4a.questence.org/modal/popup/quiz_add/29', 'Add new quiz')">
-            <i class="mdi mdi-plus"></i> Add quiz</a>
-            <a href="javascript::void(0)" class="btn btn-outline-primary btn-rounded btn-sm ml-1"
+            <i className="mdi mdi-plus"></i> Add quiz</a>
+            <a href="javascript::void(0)" className="btn btn-outline-primary btn-rounded btn-sm ml-1"
              onclick="showLargeModal('http://demo4a.questence.org/modal/popup/sort_section/29', 'Sort sections')">
-             <i class="mdi mdi-sort-variant"></i> Sort sections</a>
+             <i className="mdi mdi-sort-variant"></i> Sort sections</a>
             </div>
             <br/><br/>
 
-    <div class="col-md-8">
-        <div class="row">
+    <div className="col-md-8">
+        <div className="row">
          <br/><br/> <br/><br/>
-                        <div class="col-md-12">
-                <div class="card bg-light text-seconday  mb-5" id="section-137">
-                    <div class="card-body">
-                        <h5 class="card-title" style={{minHeight: "45px"}}><span class="font-weight-light">Section 1</span>: Getting Started                            <div class="row justify-content-center alignToTitle float-right display-none" id="widgets-of-section-137" style={{display: "none"}}>
-                                <button type="button" class="btn btn-outline-secondary btn-rounded btn-sm" name="button" onclick="showLargeModal('http://demo4a.questence.org/modal/popup/sort_lesson/137', 'Sort lessons')"><i class="mdi mdi-sort-variant"></i> Sort lesson</button>
-                                <button type="button" class="btn btn-outline-secondary btn-rounded btn-sm ml-1" name="button" onclick="showAjaxModal('http://demo4a.questence.org/modal/popup/section_edit/137/29', 'Update section')"><i class="mdi mdi-pencil-outline"></i> Edit section</button>
-                                <button type="button" class="btn btn-outline-secondary btn-rounded btn-sm ml-1" name="button" onclick="confirm_modal('http://demo4a.questence.org/user/sections/29/delete/137');"><i class="mdi mdi-window-close"></i> Delete section</button>
+                        <div className="col-md-12">
+                <div className="card bg-light text-seconday  mb-5" id="section-137">
+                    <div className="card-body">
+                        <h5 className="card-title" style={{minHeight: "45px"}}><span className="font-weight-light">Section 1</span>: Getting Started                            <div className="row justify-content-center alignToTitle float-right display-none" id="widgets-of-section-137" style={{display: "none"}}>
+                                <button type="button" className="btn btn-outline-secondary btn-rounded btn-sm" name="button" onclick="showLargeModal('http://demo4a.questence.org/modal/popup/sort_lesson/137', 'Sort lessons')"><i className="mdi mdi-sort-variant"></i> Sort lesson</button>
+                                <button type="button" className="btn btn-outline-secondary btn-rounded btn-sm ml-1" name="button" onclick="showAjaxModal('http://demo4a.questence.org/modal/popup/section_edit/137/29', 'Update section')"><i className="mdi mdi-pencil-outline"></i> Edit section</button>
+                                <button type="button" className="btn btn-outline-secondary btn-rounded btn-sm ml-1" name="button" onclick="confirm_modal('http://demo4a.questence.org/user/sections/29/delete/137');"><i className="mdi mdi-window-close"></i> Delete section</button>
                             </div>
                         </h5>
-                        <div class="clearfix"></div>
-                                                <div class="col-md-12">
+                        <div className="clearfix"></div>
+                                                <div className="col-md-12">
 
-                            <div class="card text-secondary on-hover-action mb-2 sect-toow" id="lesson-256">
-                                <div class="card-body thinner-card-body">
-                                    <div class="card-widgets" style={{display:"block"}} id="widgets-of-lesson-256" >
+                            <div className="card text-secondary on-hover-action mb-2 sect-toow" id="lesson-256">
+                                <div className="card-body thinner-card-body">
+                                    <div className="card-widgets" style={{display:"block"}} id="widgets-of-lesson-256" >
                                       <a href="javascript::" onclick="showAjaxModal('/29', 'Update lesson')">
-                                      <i class="mdi mdi-pencil-outline"></i></a>
+                                      <i className="mdi mdi-pencil-outline"></i></a>
                                                                                 <a href="javascript::" onclick="confirm_modal('256');">
-                                                                                <i class="mdi mdi-window-close"></i></a>
+                                                                                <i className="mdi mdi-window-close"></i></a>
                                     </div>
-                                    <h5 class="card-title mb-0">
-                                        <span class="font-weight-light">
+                                    <h5 className="card-title mb-0">
+                                        <span className="font-weight-light">
                                   <img src="./1_files/video.png" alt="" height="16" />
                                             Lesson 1 </span>: Welcome!
                                         </h5>
@@ -501,7 +501,7 @@ class DynamicForm extends React.Component {
               className="form-control fl-left"
             />
           </div>
-         { /*<div class="col-md-2">
+         { /*<div className="col-md-2">
             <button
               type="button"
               onClick={this.handleRemoveShareholder(idx)}
@@ -589,10 +589,10 @@ class Step5 extends React.Component {
 
 
 
-<div class="form-group  col-md-6 fl-left">
-    <label class="col-md-12 col-form-label" for="level">Grade</label>
-    <div class="" data-select2-id="94">
-        <select  class="form-control select2 select2-hidden-accessible" data-toggle="select2" name="level" id="level" data-select2-id="level" tabindex="-1" aria-hidden="true">
+<div className="form-group  col-md-6 fl-left">
+    <label className="col-md-12 col-form-label" for="level">Grade</label>
+    <div className="" data-select2-id="94">
+        <select  className="form-control select2 select2-hidden-accessible" data-toggle="select2" name="level" id="level" data-select2-id="level" tabindex="-1" aria-hidden="true">
             <option value="beginner" data-select2-id="4">20-50%</option>
             <option value="advanced" data-select2-id="95">50-70%</option>
             <option value="intermediate" data-select2-id="96">90%</option>
@@ -602,10 +602,10 @@ class Step5 extends React.Component {
 </div>
 
 
-<div class="form-group  col-md-6 fl-left">
-    <label class="col-md-12 col-form-label" for="level">Assignment/Exam Type</label>
-    <div class="" data-select2-id="94">
-        <select  class="form-control select2 select2-hidden-accessible" data-toggle="select2" name="level" id="level" data-select2-id="level" tabindex="-1" aria-hidden="true">
+<div className="form-group  col-md-6 fl-left">
+    <label className="col-md-12 col-form-label" for="level">Assignment/Exam Type</label>
+    <div className="" data-select2-id="94">
+        <select  className="form-control select2 select2-hidden-accessible" data-toggle="select2" name="level" id="level" data-select2-id="level" tabindex="-1" aria-hidden="true">
             <option value="beginner" data-select2-id="4">Professional</option>
             <option value="advanced" data-select2-id="95">Certificate issued</option>
 
@@ -824,10 +824,10 @@ class Step3 extends React.Component {
                   </div>
                </div>
 
-                <div class="form-group  mb-3 col-md-6 fl-left">
-    <label class="col-md-12 col-form-label" for="level">Course Pacing</label>
-    <div class="" data-select2-id="94">
-        <select  class="form-control select2 select2-hidden-accessible" data-toggle="select2" name="level" id="level" data-select2-id="level" tabindex="-1" aria-hidden="true">
+                <div className="form-group  mb-3 col-md-6 fl-left">
+    <label className="col-md-12 col-form-label" for="level">Course Pacing</label>
+    <div className="" data-select2-id="94">
+        <select  className="form-control select2 select2-hidden-accessible" data-toggle="select2" name="level" id="level" data-select2-id="level" tabindex="-1" aria-hidden="true">
             <option value="beginner" data-select2-id="4">Instructor Paced</option>
             <option value="advanced" data-select2-id="95">Self Paced</option>
 

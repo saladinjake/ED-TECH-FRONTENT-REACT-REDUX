@@ -768,13 +768,13 @@ export const FormWizard = () => {
 
                         <ul className="list-inline mb-0 wizard text-center">
                           <li className="previous list-inline-item disabled">
-                            <a href="javascript::" className="btn btn-info">
+                            <a href="#noclick" className="btn btn-info">
                               {" "}
                               <i className="mdi mdi-arrow-left-bold"></i>{" "}
                             </a>
                           </li>
                           <li className="next list-inline-item">
-                            <a href="javascript::" className="btn btn-info">
+                            <a href="#noclick" className="btn btn-info">
                               {" "}
                               <i className="mdi mdi-arrow-right-bold"></i>{" "}
                             </a>
@@ -1376,12 +1376,12 @@ export const AddFormBox = () => {
                 <li><a class="dropdown-item" href="#/course-detail" target="_blank">Create</a></li>
                 <li><a class="dropdown-item" href="#/course_edit/29">Edit this course</a></li>
                 <li><a class="dropdown-item" href="#/course_edit/29">Replicate</a></li>
-                <li><a class="dropdown-item" href="javascript::" >Import</a></li>
-                <li><a class="dropdown-item" href="javascript::" >Export</a></li>
-                <li><a class="dropdown-item" href="javascript::" >Publish</a></li>
-                <li><a class="dropdown-item" href="javascript::" >Mark As Draft</a></li>
-                <li><a class="dropdown-item" href="javascript::" >Release</a></li>
-                <li><a class="dropdown-item" href="javascript::" >Delete</a></li>
+                <li><a class="dropdown-item" href="#noclick" >Import</a></li>
+                <li><a class="dropdown-item" href="#noclick" >Export</a></li>
+                <li><a class="dropdown-item" href="#noclick" >Publish</a></li>
+                <li><a class="dropdown-item" href="#noclick" >Mark As Draft</a></li>
+                <li><a class="dropdown-item" href="#noclick" >Release</a></li>
+                <li><a class="dropdown-item" href="#noclick" >Delete</a></li>
                 </ul>
                 </div>
                 </td></tr>
@@ -1400,8 +1400,8 @@ export const AddFormBox = () => {
                 <li><a class="dropdown-item" href="#/course-detail" target="_blank">View course front</a></li>
                 <li><a class="dropdown-item" href="#/course_edit/29">Edit this course</a></li>
                 <li><a class="dropdown-item" href="#/course_edit/29">Section and lesson</a></li>
-                <li><a class="dropdown-item" href="javascript::" >Mark as drafted</a></li>
-                <li><a class="dropdown-item" href="javascript::" >Delete</a></li>
+                <li><a class="dropdown-item" href="#noclick" >Mark as drafted</a></li>
+                <li><a class="dropdown-item" href="#noclick" >Delete</a></li>
                 </ul>
                 </div>
                 </td></tr>
@@ -1468,7 +1468,7 @@ export const TopNav = () => {
   return (
     <div className="navbar-custom topnav-navbar topnav-navbar-dark">
       <div className="container-fluid">
-        <a className="button-menu-mobile disable-btn">
+        <a href="#no-click" className="button-menu-mobile disable-btn">
           <div className="lines">
             <span></span>
             <span></span>
@@ -1487,7 +1487,7 @@ export const SideBar = () => {
         style={{ float: "left", height: "100vh" }}
       >
         <div className="leftbar-user">
-          <a href="javascript: void(0);">
+          <a href="#no-click">
             <img
               src="http://demo4a.questence.org/uploads/user_image/placeholder.png"
               alt="user-image"

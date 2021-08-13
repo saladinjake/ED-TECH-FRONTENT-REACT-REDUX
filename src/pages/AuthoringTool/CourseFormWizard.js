@@ -42,7 +42,7 @@ class Editor extends React.Component {
           value={this.state.editorHtml}
           modules={Editor.modules}
           formats={Editor.formats}
-          bounds={'.app'}
+          // bounds={'.app'}
           placeholder={this.props.placeholder}
          />
 
@@ -123,6 +123,8 @@ export default class MasterForm extends React.Component {
 
   goToStep(e, step) {
     e.preventDefault();
+    e.target.parentElement.style.border="1px solid #eee";
+    e.target.parentElement.style.padding="2px"
     this.setState({
       currentStep: step,
     });
@@ -154,6 +156,46 @@ export default class MasterForm extends React.Component {
         this.validateField(name, value);
       }
     );
+  }
+
+
+  togglerFullscreen(e){
+    e.preventDefault()
+    // $('#toggle_fullscreen').on('click', function(){
+        // if already full screen; exit
+        // else go fullscreen
+        if (
+          document.fullscreenElement ||
+          document.webkitFullscreenElement ||
+          document.mozFullScreenElement ||
+          document.msFullscreenElement
+        ) {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+            $('#container-fullscreen').css({height:"auto","overflow-y":"none"})
+
+          } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+          } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+          } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+          }
+        } else {
+          let element = $('#container-fullscreen').get(0);
+          if (element.requestFullscreen) {
+            element.requestFullscreen();
+            $('#container-fullscreen').css({height:"600px","overflow-y":"scroll"})
+              // $(".tab-content").css({height:"400px","overflow-y":"none"})
+          } else if (element.mozRequestFullScreen) {
+            element.mozRequestFullScreen();
+          } else if (element.webkitRequestFullscreen) {
+            element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+          } else if (element.msRequestFullscreen) {
+            element.msRequestFullscreen();
+          }
+        }
+      // });
   }
 
   validateField(name, value) {
@@ -268,38 +310,49 @@ export default class MasterForm extends React.Component {
       <Fragment>
         <AddHead />
 
-        <div className="row">
+        <div className="row"  id="container-fullscreen">
           <div className="col-md-12">
             <div className="card">
               <div className="card-body"  >
+
+              <div id="make-fixed-on-fullscreen">
                 <h4 className="header-title mb-3">
                   Course adding form{" "}
                   <a
-                    href="#/user/courses"
+                    href={process.env.PUBLIC_URL+ "/authoring/courselist"}
                     className="alignToTitle btn btn-outline-secondary btn-rounded btn-sm"
                   >
                     {" "}
                     <i className=" mdi mdi-keyboard-backspace"></i> Back to
                     course list
                   </a>
+
+                   <a
+                   style={{marginRight:"10px"}}
+                   href="#no-grid"
+                   onClick={this.togglerFullscreen}  id="toggle_fullscreen" 
+                    className="alignToTitle btn btn-outline-secondary btn-rounded btn-sm"
+                  >
+                    {" "}
+                    <i className=" mdi mdi-keyboard-backspace"></i> Toggle
+                    Fullscreen
+                  </a>
                   <br />
                 </h4>
                 <br />
 
-                <div className="row">
-                  <div className="col-md-12">
 
-                  <ul className="nav nav-pills nav-justified form-wizard-header mb-3" style={{background:"#fff", padding:"1px"}}>
+                <div className="col-md-12">
+                   
+                  <ul className="nav nav-pills nav-justified form-wizard-header mb-3" style={{background:"#f6f6f6", height:"45px"}}>
                       
-                        <li
-                        id="list-nav-gate-1"
-                          className="nav-item"
-                          style={{border:"none"}}
+                        
+                        
+                          <a
                           onClick={(e) => {
                             this.goToStep(e, 1);
+
                           }}
-                        >
-                          <a
                             href="#basic"
                             data-toggle="tab"
                             className="nav-link rounded-0 pt-2 pb-2 active"
@@ -307,53 +360,27 @@ export default class MasterForm extends React.Component {
                             <i className="fa fa-pen mr-1"></i>
                             <span className="d-none d-sm-inline">Basic</span>
                           </a>
-                        </li>
+                      
 
-                        <li
-                        id="list-nav-gate-2"
-                        style={{border:"none"}}
-                          className="nav-item"
+                       
+                          <a
                           onClick={(e) => {
                             this.goToStep(e, 2);
                           }}
-                        >
-                          <a
-                            href="#media"
-                            data-toggle="tab"
-                            className="nav-link rounded-0 pt-2 pb-2"
-                          >
-                            <i className="fa fa-video mr-1"></i>
-                            <span className="d-none d-sm-inline">Media</span>
-                          </a>
-                        </li>
-
-                        <li
-                        id="list-nav-gate-3"
-                        style={{border:"none"}}
-                          className="nav-item"
-                          onClick={(e) => {
-                            this.goToStep(e, 3);
-                          }}
-                        >
-                          <a
                             href="#outcomes"
                             data-toggle="tab"
                             className="nav-link rounded-0 pt-2 pb-2"
                           >
                             <i className="fa fa-camera mr-1"></i>
-                            <span className="d-none d-sm-inline">Schedules/Details</span>
+                            <span className="d-none d-sm-inline">Schedules</span>
                           </a>
-                        </li>
+                      
 
-                        <li
-                        id="list-nav-gate-2"
-                        style={{border:"none"}}
-                          className="nav-item"
-                          onClick={(e) => {
-                            this.goToStep(e, 5);
-                          }}
-                        >
+                        
                           <a
+                           onClick={(e) => {
+                            this.goToStep(e, 3);
+                          }}
                             href="#requirements"
                             data-toggle="tab"
                             className="nav-link rounded-0 pt-2 pb-2"
@@ -363,60 +390,79 @@ export default class MasterForm extends React.Component {
                               Grading
                             </span>
                           </a>
-                        </li>
-                        <li
-                        id="list-nav-gate-5"
-                        style={{border:"none"}}
+                       
+
+
+                        
+                        {/*<li
+                        id="list-nav-gate-6"
+                       style={{border:"1px solid #eee",padding:"2px"}}
                           className="nav-item"
+                          
+                        >*/}
+                          <a
                           onClick={(e) => {
                             this.goToStep(e, 4);
                           }}
-                        >
-                          <a
-                            href="#pricing"
-                            data-toggle="tab"
-                            className="nav-link rounded-0 pt-2 pb-2"
-                          >
-                            <i className="fa fa-currency mr-1"></i>
-                            <span className="d-none d-sm-inline">Team</span>
-                          </a>
-                        </li>
-                        
-                        <li
-                        id="list-nav-gate-6"
-                        style={{border:"none"}}
-                          className="nav-item"
-                          onClick={(e) => {
-                            this.goToStep(e, 6);
-                          }}
-                        >
-                          <a
                             href="#seo"
                             data-toggle="tab"
                             className="nav-link rounded-0 pt-2 pb-2"
                           >
                             <i className="fa fa-tag mr-1"></i>
-                            <span className="d-none d-sm-inline">Group Configuration</span>
+                            <span className="d-none d-sm-inline">Learners Group</span>
                           </a>
-                        </li>
-                        <li
-                        id="list-nav-gate-7"
-                        style={{border:"none"}}
-                          className="nav-item"
+                        {/*</li>*/}
+
+
+                        
+                          <a
+                          onClick={(e) => {
+                            this.goToStep(e, 5);
+                          }}
+                            href="#pricing"
+                            data-toggle="tab"
+                            className="nav-link rounded-0 pt-2 pb-2"
+                          >
+                            <i className="fa fa-currency mr-1"></i>
+                            <span className="d-none d-sm-inline">Authoring Team</span>
+                          </a>
+                        
+
+                       
+                          <a
+                          onClick={(e) => {
+                            this.goToStep(e, 6);
+                          }}
+                            href="#media"
+                            data-toggle="tab"
+                            className="nav-link rounded-0 pt-2 pb-2"
+                          >
+                            <i className="fa fa-video mr-1"></i>
+                            <span className="d-none d-sm-inline">Content</span>
+                          </a>
+                        
+
+                          <a
                           onClick={(e) => {
                             this.goToStep(e, 7);
                           }}
-                        >
-                          <a
                             href="#finish"
                             data-toggle="tab"
                             className="nav-link rounded-0 pt-2 pb-2"
                           >
                             <i className="fa fa-checkbox mr-1"></i>
-                            <span className="d-none d-sm-inline">Finish</span>
+                            <span className="d-none d-sm-inline">Process</span>
                           </a>
-                        </li>
+                        
                       </ul>
+                </div>
+
+                </div>
+
+                <div className="row">
+                  <div className="col-md-12">
+                   
+                      
 
                     <form
                     
@@ -443,25 +489,7 @@ export default class MasterForm extends React.Component {
                       />
 
 
-                       <Step2
-                        currentStep={this.state.currentStep}
-                        finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
-                        errorPasswordClass={this.errorClass(
-                          this.state.formErrors.password
-                        )}
-                        password={this.state.password}
-                        errorPassword={this.state.formErrors.password}
-                        errorPasswordConfirmationClass={this.errorClass(
-                          this.state.formErrors.passwordConfirmation
-                        )}
-                        passwordConfirmation={this.state.passwordConfirmation}
-                        errorPasswordConfirmation={
-                          this.state.formErrors.passwordConfirmation
-                        }
-                      />
-
-
+                       
                       
                       <Step3
                         currentStep={this.state.currentStep}
@@ -481,6 +509,27 @@ export default class MasterForm extends React.Component {
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
                       />
+
+
+                      <Step2
+                        currentStep={this.state.currentStep}
+                        finishedClicked={this.state.finishedClicked}
+                        handleChange={this.handleChange}
+                        errorPasswordClass={this.errorClass(
+                          this.state.formErrors.password
+                        )}
+                        password={this.state.password}
+                        errorPassword={this.state.formErrors.password}
+                        errorPasswordConfirmationClass={this.errorClass(
+                          this.state.formErrors.passwordConfirmation
+                        )}
+                        passwordConfirmation={this.state.passwordConfirmation}
+                        errorPasswordConfirmation={
+                          this.state.formErrors.passwordConfirmation
+                        }
+                      />
+
+
 
                       <Step5
                         currentStep={this.state.currentStep}
@@ -541,19 +590,26 @@ class Step1 extends React.Component {
         <div className="tab-content b-0 mb-0">
           <div className="tab-pane active" id="basic">
             <div className="row">
+
+
+
               <div className="col-md-12 card-box" >
-                <div className="form-group col-md-6 fl-left">
+
+
+
+               <div className="form-group col-md-6 fl-left">
                   <label className="col-md-12 col-form-label" for="course_title">
                     Course Code <span className="required">*</span>{" "}
                   </label>
                   <div className="">
                     <input
+                     style={{position: "relative", zIndex: "1"}}
                       type="text"
                       className="form-control"
                       id="course_title"
                       name="title"
                       placeholder="Enter course title"
-                      required=""
+                  
                     />
                   </div>
                 </div>
@@ -565,12 +621,13 @@ class Step1 extends React.Component {
                   </label>
                   <div className="">
                     <input
+                    style={{position: "relative", zIndex: "1"}}
                       type="text"
                       className="form-control"
                       id="course_title2"
                       name="title"
                       placeholder="Enter course title"
-                      required=""
+                    
                     />
                   </div>
                 </div>
@@ -580,7 +637,7 @@ class Step1 extends React.Component {
 <div class="form-group  col-md-6 fl-left">
     <label class="col-md-12 col-form-label" for="level">Institution</label>
     <div class="" data-select2-id="94">
-        <select  class="form-control select2 select2-hidden-accessible" data-toggle="select2" name="level" id="level" data-select2-id="level" tabindex="-1" aria-hidden="true">
+        <select style={{position: "relative", zIndex: "1"}} class="form-control select2 select2-hidden-accessible" data-toggle="select2" name="level" id="level" data-select2-id="level" tabindex="-1" aria-hidden="true">
             <option value="beginner" data-select2-id="4">Questence</option>
             <option value="advanced" data-select2-id="95">ABU-Zaria</option>
             <option value="intermediate" data-select2-id="96">UNILAG</option>
@@ -591,25 +648,54 @@ class Step1 extends React.Component {
 
 
 
-<div class="form-group  mb-3 col-md-6 fl-left">
-    <label class="col-md-12 col-form-label" for="level">Status</label>
-    <div class="" data-select2-id="94">
-        <select  class="form-control select2 select2-hidden-accessible" data-toggle="select2" name="level" id="level" data-select2-id="level" tabindex="-1" aria-hidden="true">
-            <option value="beginner" data-select2-id="4">Draft</option>
-            <option value="advanced" data-select2-id="95">Published And Live</option>
-            <option value="intermediate" data-select2-id="96">Published</option>
-             <option value="intermediate" data-select2-id="96">Visible To Staff Only</option>
-        </select>
-        
+
+
+                <div className="form-group col-md-6 fl-left">
+                  <label
+                    className="col-md-12 col-form-label"
+                    for="short_description"
+                  >
+                    Course Short description
+                  </label>
+                  <div className="">
+                      <textarea style={{position: "relative", zIndex: "1"}} className="form-control" placeholder="Short description" ></textarea>
+                  </div>
+                </div>
+
+
+
+ <div className=" col-md-12 ">
+                  <label
+                    className="col-md-12 col-form-label"
+                    for="short_description"
+                  >
+                    Course Overview
+                  </label>
+                  <div className="">
+                      <Editor placeholder="course overview"/>
+                  </div>
     </div>
-</div>
+
+
+                <div className=" col-md-12">
+                  <label className="col-md-12 col-form-label" for="description">
+                   What You Will Learn
+                  </label>
+                  <div className="">
+                    <Editor placeholder="What you will learn"/>
+                  </div>
+                 
+
+
+
+                </div>
 
 
 
 <div class="form-group  mb-3 col-md-6 fl-left">
     <label class="col-md-12 col-form-label" for="level">Level</label>
     <div class="" data-select2-id="94">
-        <select class="form-control select2 select2-hidden-accessible" data-toggle="select2" name="level" id="level" data-select2-id="level" tabindex="-1" aria-hidden="true">
+        <select style={{position: "relative", zIndex: "1"}} class="form-control select2 select2-hidden-accessible" data-toggle="select2" name="level" id="level" data-select2-id="level" tabindex="-1" aria-hidden="true">
             <option value="beginner" data-select2-id="4">Introductory</option>
             <option value="advanced" data-select2-id="95">Intermediate</option>
             <option value="intermediate" data-select2-id="96">Advanced</option>
@@ -622,7 +708,7 @@ class Step1 extends React.Component {
 <div class="form-group  mb-3 col-md-6 fl-left">
     <label class="col-md-12 col-form-label" for="level">Enrollment Type</label>
     <div class="" data-select2-id="94">
-        <select  class="form-control select2 select2-hidden-accessible" data-toggle="select2" name="level" id="level" data-select2-id="level" tabindex="-1" aria-hidden="true">
+        <select style={{position: "relative", zIndex: "1"}}  class="form-control select2 select2-hidden-accessible" data-toggle="select2" name="level" id="level" data-select2-id="level" tabindex="-1" aria-hidden="true">
             <option value="beginner" data-select2-id="4">Open</option>
             <option value="advanced" data-select2-id="95">By Invitation</option>
             
@@ -633,9 +719,9 @@ class Step1 extends React.Component {
       
 
 <div class="form-group  mb-3 col-md-6 fl-left">
-    <label class="col-md-12 col-form-label" for="level">Exam Required</label>
+    <label class="col-md-12 col-form-label" for="level">Entrance Exam Required</label>
     <div class="" data-select2-id="94">
-        <select  class="form-control select2 select2-hidden-accessible" data-toggle="select2" name="level" id="level" data-select2-id="level" tabindex="-1" aria-hidden="true">
+        <select style={{position: "relative", zIndex: "1"}}  class="form-control select2 select2-hidden-accessible" data-toggle="select2" name="level" id="level" data-select2-id="level" tabindex="-1" aria-hidden="true">
             <option value="beginner" data-select2-id="4">False</option>
             <option value="advanced" data-select2-id="95">True</option>
             
@@ -648,7 +734,7 @@ class Step1 extends React.Component {
 <div class="form-group  mb-3 col-md-6 fl-left">
     <label class="col-md-12 col-form-label" for="level">Auditing</label>
     <div class="co" data-select2-id="94">
-        <select  class="form-control select2 select2-hidden-accessible" data-toggle="select2" name="level" id="level" data-select2-id="level" tabindex="-1" aria-hidden="true">
+        <select style={{position: "relative", zIndex: "1"}}  class="form-control select2 select2-hidden-accessible" data-toggle="select2" name="level" id="level" data-select2-id="level" tabindex="-1" aria-hidden="true">
             <option value="beginner" data-select2-id="4">YES</option>
             <option value="advanced" data-select2-id="95">NO</option>
             
@@ -657,42 +743,95 @@ class Step1 extends React.Component {
     </div>
 </div>
 
-                <div className="col-md-12 ">
-                  <label
-                    className="col-md-12 col-form-label"
-                    for="short_description"
-                  >
-                    Course Short description
+
+<div className="form-group col-md-6 fl-left">
+                  <label className="col-md-12 col-form-label" for="course_title">
+                    video url<span className="required">*</span>{" "}
                   </label>
                   <div className="">
-                      <Editor placeholder="Short description" />
+                    <input
+                    style={{position: "relative", zIndex: "1"}}
+                      type="text"
+                      className="form-control"
+                      id="course_title2"
+                      name="title"
+                      placeholder="You tube url"
+                    
+                    />
                   </div>
                 </div>
 
 
-
-
-                <div className=" col-md-12 ">
-                  <label
-                    className="col-md-12 col-form-label"
-                    for="short_description"
+            <div className="form-group row col-md-6 fl-left">
+              <div className="f">
+                <label
+                  className="col-md-12 col-form-label"
+                  for="course_thumbnail_label"
+                >
+                  Course thumbnail
+                </label>
+                <div className="">
+                  <div
+                    className="wrapper-image-preview"
+                    style={{ marginLeft: "-6px" }}
                   >
-                    Course Overview
-                  </label>
-                  <div className="">
-                      <Editor placeholder="course overview"/>
+                    <div className="box" >
+                      <div
+                        className="js--image-preview"
+                        style={{
+                          backgroundImage: "ourse_thumbnail_placeholder.jpg",
+                          backgroundColor: "#F5F5F5",
+                        }}
+                      ></div>
+                      <div className="upload-options">
+                        <label for="course_thumbnail" className="btn">
+                          {" "}
+                          <i className="fa fa-camera"></i> Course thumbnail{" "}
+                          <br /> <small>(600 X 600)</small>{" "}
+                        </label>
+                        <input
+                          id="course_thumbnail"
+                          style={{ visibility: "hidden" }}
+                          type="file"
+                          className="image-upload"
+                          name="course_thumbnail"
+                          accept="image/*"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
+              </div>
+            </div>
+
+
+
+
+
+
+
+
+
 
 
                 <div className=" col-md-12">
                   <label className="col-md-12 col-form-label" for="description">
-                   What You Will Learn
+                   Curriculum
                   </label>
                   <div className="">
-                    <Editor placeholder="What you will learn"/>
+                    <Editor placeholder="Curriculum"/>
                   </div>
+                 
 
+
+
+                </div>
+               
+
+
+
+               
+<br/><br/><br/><br/><br/>
                  
       {/*                  <div class="form-group col-md-6 fl-left mb-3" data-select2-id="11">
     <label class="col-md-12 col-form-label" for="sub_category_id">Category<span class="required">*</span></label>
@@ -768,6 +907,9 @@ class Step1 extends React.Component {
 </div>
 
 
+
+
+
 <div class="form-group  mb-3 col-md-6 fl-left">
     <label class="col-md-12 col-form-label" for="level">Level</label>
     <div class="" data-select2-id="94">
@@ -792,38 +934,7 @@ class Step1 extends React.Component {
 
 
 
-
-
-
-
-
-                      
-
-                  {/*<div className="form-group row fl-left">
-                    <div className="offset-md-2 col-md-10">
-                      <div className="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          className="custom-control-input"
-                          name="is_top_course"
-                          id="is_top_course"
-                          value="1"
-                        />
-                        <label
-                          className="custom-control-label"
-                          for="is_top_course"
-                        >
-                          Check if this course is top course
-                        </label>
-                      </div>
-                    </div>
-                  </div>*/}
-
-                  <br/><br/><br/><br/>
-
-
-
-                </div>
+                  
               </div>
             </div>{" "}
           </div>{" "}
@@ -877,7 +988,7 @@ class DynamicForm extends React.Component {
          <div className="col-md-10 fl-left">
             <input
               type="text"
-              placeholder={` #${idx + 1} name`}
+              placeholder={` #${idx + 1} Enter an instructors email`}
               value={shareholder.name}
               onChange={this.handleShareholderNameChange(idx)}
               className="form-control fl-left"
@@ -892,9 +1003,12 @@ class DynamicForm extends React.Component {
               -
             </button>
             </div>*/}
+
+             <br/><br/> 
           </div>
+
         ))}
-        <br/><br/>
+        <br/>
         <button
           type="button"
           onClick={this.handleAddShareholder}
@@ -905,6 +1019,8 @@ class DynamicForm extends React.Component {
           Add A Team
         </button>
       </div>
+
+       <br/><br/>
 
        </div>
     );
@@ -943,7 +1059,7 @@ class Step5 extends React.Component {
 
 
   render() {
-    if (this.props.currentStep !== 5) {
+    if (this.props.currentStep !== 3) {
       return null;
     }
     return (
@@ -996,7 +1112,15 @@ class Step5 extends React.Component {
     </div>
 </div>
 
-
+<div class="form-group  mb-3 col-md-6 fl-left">
+    <label class="col-md-12 col-form-label" for="language_made_in">Language made in</label>
+    <div class="">
+        <select  class="form-control select2 select2-hidden-accessible" data-toggle="select2" name="language_made_in" id="language_made_in" data-select2-id="language_made_in" tabindex="-1" aria-hidden="true">
+            <option value="english" data-select2-id="6">English</option>
+        </select>
+      
+    </div>
+</div>
               {/*<div className="form-group row mb-3">
                 <label className="col-md-2 col-form-label" for="outcomes">
                   Requirements
@@ -1077,7 +1201,7 @@ class Step3 extends React.Component {
 
 
   render() {
-    if (this.props.currentStep !== 3) {
+    if (this.props.currentStep !== 2) {
       return null;
     }
     return (
@@ -1230,7 +1354,7 @@ class Step3 extends React.Component {
 
 class Step4 extends React.Component {
   render() {
-    if (this.props.currentStep !== 4) {
+    if (this.props.currentStep !== 5) {
       return null;
     }
     return (
@@ -1251,91 +1375,382 @@ class Step4 extends React.Component {
   }
 }
 
-class Step2 extends React.Component {
-  render() {
-    if (this.props.currentStep !== 2) {
+const Step2 = (props) => {
+
+  useEffect(() => {
+
+
+
+  })
+
+if (props.currentStep !== 6) {
       return null;
     }
+
+
+    
     return (
       <React.Fragment>
-        <div className="tab-pane" id="media">
-          <div className="row card-box">
+        <div className="tab-pane" id="media" >
+          <div className="row">
             <div className="col-md-12">
-              
 
-            <div className=" form-group row col-md-12 ">
-              <div className="">
-                <label
-                  className="col-md-12 col-form-label"
-                  for="course_overview_url"
-                >
-                  Course overview url
-                </label>
-                <div className="form-group row col-md-12 ">
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="course_overview_url"
-                    id="course_overview_url"
-                    placeholder="E.g: https://www.youtube.com/watch?v=oBtf8Yglw2w"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="form-group row col-md-12 ">
-              <div className="f">
-                <label
-                  className="col-md-12 col-form-label"
-                  for="course_thumbnail_label"
-                >
-                  Course thumbnail
-                </label>
-                <div className="">
-                  <div
-                    className="wrapper-image-preview"
-                    style={{ marginLeft: "-6px" }}
+
+
+  <section class="col-md-12">
+    <header class="head-small" >
+      Total Section Count: <span id="js-count">0</span>
+    </header>
+    <div class="parent-table" id="js-parent">
+      
+    </div>
+  </section>
+
+
+
+
+
+
+<br/><br/>  <br/><br/><br/>
+
+ <a
+                   style={{marginRight:"10px"}}
+                   href="#myModal" role="button" data-toggle="modal"
+                    
+                    className="alignToTitle btn btn-outline-secondary btn-rounded btn-lg"
                   >
-                    <div className="box" >
-                      <div
-                        className="js--image-preview"
-                        style={{
-                          backgroundImage: "ourse_thumbnail_placeholder.jpg",
-                          backgroundColor: "#F5F5F5",
-                        }}
-                      ></div>
-                      <div className="upload-options">
-                        <label for="course_thumbnail" className="btn">
-                          {" "}
-                          <i className="fa fa-camera"></i> Course thumbnail{" "}
-                          <br /> <small>(600 X 600)</small>{" "}
-                        </label>
-                        <input
-                          id="course_thumbnail"
-                          style={{ visibility: "hidden" }}
-                          type="file"
-                          className="image-upload"
-                          name="course_thumbnail"
-                          accept="image/*"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                    
+                    <i className=" mdi mdi-keyboard-backspace"></i>Add A New Section
+                  </a>
+                  <br/><br/>
+             
             </div>
-          </div>
 
            </div>
+
+
+
+
+
+
+
+           <div style={{marginTop:"80px"}} class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title pull-left">Section Detail</h5>
+                <a href="#"  class="pull-right" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </a>
+            </div>
+            <div class="modal-body p-4 col-md-12" id="result" style={{height:"400px",overflowY:"scroll"}}>
+                <p>Add a title to the section</p>
+                <div class="row">
+                    <div class="divided col-md-12"> 
+                    
+                    
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" class="form-control" id="title"/>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Section ID</label>
+                        <input type="text" class="form-control" id="section_id"/>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Title</label>
+                        <Editor placeholder="overview"/>
+                    </div>
+                    
+                    
+                    
+                    
+                    
+                    </div>
+                   
+                   
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button onClick={addSectionContent} type="button" style={{background:"rgba(8,23,200)"}} class="btn btn-primary" data-dismiss="modal">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
 
         </div>
       </React.Fragment>
     );
-  }
+  
 }
+
+const cloneNew =() =>{
+   $(document).on('click', '.js-add-row', function() {  
+  $('table').append($('table').find('tr:last').clone());
+});
+
+$(document).on('click', '.js-del-row', function() {  
+  $('table').find('tr:last').remove();
+});
+}
+
+
+window.showSubsection = (el) =>{
+      // $(el).on("click", function(){
+         // alert("you clicked me")
+        if($(el).hasClass("open")) {
+          $(el).removeClass("open").next(".fold").removeClass("open");
+        } else {
+          $(".fold-table tr.view").removeClass("open").next(".fold").removeClass("open");
+          $(el).addClass("open").next(".fold").addClass("open");
+        }
+      // });
+
+}
+
+
+
+window.removeSection = (el) => {
+
+  alert(el.dataset.id)
+// $("#js-remove").on("click", function(){
+  var count = $(".js-child").length;
+  $("."+el.dataset.id).remove()   //addClass("removed"); // hide + remove last child
+  $("#js-count").text(count - 1); // update count
+//});
+
+}
+
+
+let counter = 0;
+const addSectionContent = () => {
+  let mycounter = counter++;
+
+  let templateData = `
+              <table class="fold-table" >
+            
+  <thead className="card-box ${'miller_'+ counter }"  style="display:none" id="${'miller_'+ mycounter }">
+    <tr >
+      <th>Section Name</th>
+      <th>Section ID</th>
+      <th>Last modified</th>
+      <th><span class="visible-small" title="Premiumns">Date Created</span><span class="visible-big">Date Created</span></th>
+      <th><span class="visible-small" title="Strategy A">Total Lessons</span><span class="visible-big">Total Quizes</span></th>
+      <th><span class="visible-small" title="Strategy B">Total Quizes</span><span class="visible-big">Total subsections</span></th>
+      <th><span class="visible-small" title="Strategy C">Action</span><span class="visible-big">Action </span></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr data-id="${'miller_'+ counter }" onclick="showSubsection(this)" class="view ${'miller_'+ counter }" style="height:120px,margin-top:10px">
+      <td>${document.getElementById("title").value || "Module #" + $(".js-child").length }</td>
+      <td class="pcs">${document.getElementById("section_id").value || "Section #" + $(".js-child").length }</td>
+      <td class="cur">12/12/2020 </td>
+      <td>Section-1.0</td>
+      <td class="per">0</td>
+      <td class="per">0</td>
+      <td class="per"><a style="margin-right:10px,background:#fff,color:#000"
+                   href="#myModal" role="button" data-toggle="modal"
+                  >
+                    <i class="fa fa-plus "></i>
+                  </a>
+                  <a
+                   style="margin-right:10px,background:#fff,color:#000"
+                   href="#myModalDelete" role="button" data-toggle="modal"
+                   onclick="removeSection(this)"
+                   data-id="${'miller_'+ counter }"
+                  >
+                    <i class="fa fa-trash "></i>
+                  </a>
+                  <a
+                   style="margin-right:10px,background:#fff,color:#000"
+                   href="#myModal" role="button" data-toggle="modal"
+                  >
+                    <i class="fa fa-edit "></i>
+                  </a>
+                  <a class="dropright dropright" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                 
+                <i class="fa fa-ellipsis-v" style="color:#000"></i>
+             
+                <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#/course-detail" target="_blank">Create</a></li>
+                <li><a class="dropdown-item" href="#/course_edit/29">Edit this course</a></li>
+                <li><a class="dropdown-item" href="#/course_edit/29">Replicate</a></li>
+                <li><a class="dropdown-item" href="#noclick" >Import</a></li>
+                <li><a class="dropdown-item" href="#noclick" >Export</a></li>
+                <li><a class="dropdown-item" href="#noclick" >Publish</a></li>
+                <li><a class="dropdown-item" href="#noclick" >Mark As Draft</a></li>
+                <li><a class="dropdown-item" href="#noclick" >Release</a></li>
+                <li><a class="dropdown-item" href="#noclick" >Delete</a></li>
+                </ul>
+                </a>
+                
+
+
+                  </td>
+    </tr>
+
+    <tr class="parent-subsection fold" style="height:60px,border-left:black,margin-top:10px">
+
+    </tr>
+    
+
+  </tbody>
+</table>`
+
+
+
+
+// $("#js-add").on("click", function(){
+  // mockup variables for some randomness
+  var heightValue = Math.random() * 10;
+  var count = $(".js-child").length;
+  var childrenHeight;
+  var newChild = $("<div class='child-table js-child'>").css({
+    "height":heightValue+"rem"
+  }).html(templateData );
+  
+  $("#js-count").text(count +1);  // set child text
+  $("#js-parent").append(newChild);  // spawn child to DOM
+// });
+
+
+}
+
+
+
+const addSubSectionContent = () => {
+  const template = `
+    
+      <td colspan="7">
+        <div class="fold-content">
+          <h3>Module 1: Subsections</h3>
+          <p>Section Description</p><br/>
+
+
+
+          <div class="container">
+
+  <div id="table" class="table-editable">
+    <span class="table-add glyphicon glyphicon-plus"></span>
+    <table class="table">
+      <tr>
+        <th>Index</th>
+        <th>Key</th>
+        <th>Value</th>
+        <th>Required</th>
+        <th>Unique</th>
+        <th data-attr-ignore>Remove</th>
+      </tr>
+      <tr>
+        <td>42</td>
+        <td contenteditable="true" data-attr-key="42">Cell Content 1</td>
+        <td contenteditable="true" data-attr-value="42">Cell Value 1</td>
+        <td><input type="checkbox" name="Required" value="42"></td>
+        <td><input type="checkbox" name="Unique" value="42"></td>
+        <td><span class="table-remove glyphicon glyphicon-remove"></span></td>
+      </tr>
+      <tr>
+        <td>63</td>
+        <td contenteditable="true" data-attr-key="63">Cell Content 2</td>
+        <td contenteditable="true" data-attr-value="63">Cell Value 2</td>
+        <td><input type="checkbox" name="Required" value="63"></td>
+        <td><input type="checkbox" name="Unique" value="63"></td>
+        <td><span class="table-remove glyphicon glyphicon-remove"></span></td>
+      </tr>
+      <!-- This is our clonable table line -->
+      <tr class="hide">
+        <td>-</td>
+        <td contenteditable="true">Untitled</td>
+        <td contenteditable="true">undefined</td>
+        <td><input type="checkbox" name="Required" value="0"></td>
+        <td><input type="checkbox" name="Unique" value="0"></td>
+        <td>
+          <span class="table-remove glyphicon glyphicon-remove"></span>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <button id="export-btn" class="btn btn-primary">Export Data</button>
+  <p id="export"></p>
+</div>
+          
+
+
+
+        </div>
+      </td>
+   
+`
+
+
+
+var $TABLE = $('#table');
+var $BTN = $('#export-btn');
+var $EXPORT = $('#export');
+
+// $('.table-add').click(function() {
+  //var $clone = $TABLE.find('tr.hide').clone(true).removeClass('hide table-line');
+  // $TABLE.find('table').html($clone);
+// });
+
+$('.table-remove').click(function() {
+  $(this).parents('tr').detach();
+});
+
+$('.table-up').click(function() {
+  var $row = $(this).parents('tr');
+  if ($row.index() === 1) return; // Don't go above the header
+  $row.prev().before($row.get(0));
+});
+
+$('.table-down').click(function() {
+  var $row = $(this).parents('tr');
+  $row.next().after($row.get(0));
+});
+
+// A few jQuery helpers for exporting only
+$.fn.pop = [].pop;
+$.fn.shift = [].shift;
+
+$BTN.click(function() {
+  var $rows = $TABLE.find('tr:not(:hidden)');
+  var headers = [];
+  var data = [];
+
+  // Get the headers (add special header logic here)
+  $($rows.shift()).find('th:not(:empty):not([data-attr-ignore])').each(function() {
+    headers.push($(this).text().toLowerCase());
+  });
+
+  // Turn all existing rows into a loopable array
+  $rows.each(function() {
+    var $td = $(this).find('td');
+    var h = {};
+
+    // Use the headers from earlier to name our hash keys
+    headers.forEach(function(header, i) {
+      h[header] = $td.eq(i).text(); // will adapt for inputs if text is empty
+    });
+
+    data.push(h);
+  });
+
+  // Output the result
+  $EXPORT.text(JSON.stringify(data));
+});
+}
+
 
 class Step6 extends React.Component {
   render() {
-    if (this.props.currentStep !== 6) {
+    if (this.props.currentStep !== 4) {
       return null;
     }
     return (
@@ -1349,7 +1764,7 @@ class Step6 extends React.Component {
                   className="col-md-2 col-form-label"
                   for="website_keywords"
                 >
-                  Meta keywords
+                  Add Field Name
                 </label>
                 <div className="col-md-10">
                   <input
@@ -1373,18 +1788,7 @@ class Step6 extends React.Component {
             </div>
             <div className="col-md-8">
               <div className="form-group row mb-3">
-                <label
-                  className="col-md-2 col-form-label"
-                  for="meta_description"
-                >
-                  Meta description
-                </label>
-                <div className="col-md-10">
-                  <textarea
-                    name="meta_description"
-                    className="form-control"
-                  ></textarea>
-                </div>
+               
               </div>
             </div>
           </div>
@@ -1408,6 +1812,23 @@ class Step7 extends React.Component {
                 <h2 className="mt-0">
                   <i className="fa fa-check-all"></i>
                 </h2>
+
+
+
+
+                <div class="form-group  mb-3 col-md-12 ">
+    <label class="col-md-12 col-form-label" for="level">Status</label>
+    <div class="" data-select2-id="94">
+        <select  class="form-control select2 select2-hidden-accessible" data-toggle="select2" name="level" id="level" data-select2-id="level" tabindex="-1" aria-hidden="true">
+            <option value="beginner" data-select2-id="4">Draft</option>
+            <option value="advanced" data-select2-id="95">Published And Live</option>
+            <option value="intermediate" data-select2-id="96">Published</option>
+             <option value="intermediate" data-select2-id="96">Visible To Staff Only</option>
+        </select>
+        
+    </div>
+</div>
+
                 <h3 className="mt-0">Thank you !</h3>
 
                 <p className="w-75 mb-2 mx-auto">You are just one click away</p>

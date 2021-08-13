@@ -20,7 +20,7 @@ const Dashboard = () => {
           <SideBar />
 
           <div class="content-page-x col-md-9" style={{ float: "right",height:"4500px" }}>
-            <div class="content-x">
+            <div class="content-x" style={{height:"auto",background:"#fff"}}>
               <FormWizard />
             </div>
           </div>
