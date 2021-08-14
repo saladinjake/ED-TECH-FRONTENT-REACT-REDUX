@@ -14343,7 +14343,8 @@ table.fold-table > tbody > tr.view.open td:first-child:before, table.fold-table 
   color: white;
 }
 table.fold-table > tbody > tr.fold {
-  display: none;
+  /*display: none;*/
+   display: table-row;
 }
 table.fold-table > tbody > tr.fold.open {
   display: table-row;

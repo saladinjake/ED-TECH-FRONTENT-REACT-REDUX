@@ -1375,6 +1375,23 @@ class Step4 extends React.Component {
   }
 }
 
+
+
+window.showSubsection = (el) =>{
+      // $(el).on("click", function(){
+         // alert("you clicked me")
+        if($(el).hasClass("open")) {
+          $(el).removeClass("open").next(".fold").removeClass("open");
+        } else {
+          $(".fold-table tr.view").removeClass("open").next(".fold").removeClass("open");
+          $(el).addClass("open").next(".fold").addClass("open");
+        }
+      // });
+
+}
+
+
+
 const Step2 = (props) => {
 
   useEffect(() => {
@@ -1397,14 +1414,27 @@ if (props.currentStep !== 6) {
 
 
 
-  <section class="col-md-12">
-    <header class="head-small" >
-      Total Section Count: <span id="js-count">0</span>
-    </header>
-    <div class="parent-table" id="js-parent">
-      
-    </div>
-  </section>
+ 
+              <table class="fold-table">
+            
+  <thead className="card-box">
+    <tr >
+      <th>Section Name</th>
+      <th>Date Created</th>
+      <th>Last modified</th>
+      <th><span class="visible-small" title="Premiumns">Section ID</span><span class="visible-big">Total Lessons</span></th>
+      <th><span class="visible-small" title="Strategy A">Total Lessons</span><span class="visible-big">Total Quizes</span></th>
+      <th><span class="visible-small" title="Strategy B">Total Quizes</span><span class="visible-big">Total subsections</span></th>
+      <th><span class="visible-small" title="Strategy C">Action</span><span class="visible-big">Action </span></th>
+    </tr>
+  </thead>
+
+  <tbody id="js-parent" class="widow-window">
+    
+
+  </tbody>
+</table>
+
 
 
 
@@ -1483,6 +1513,100 @@ if (props.currentStep !== 6) {
     </div>
 </div>
 
+
+
+
+
+
+
+
+           <div style={{marginTop:"80px"}} class="modal fade" id="myModalSubsection" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title pull-left">Sub Section Detail</h5>
+                <a href="#"  class="pull-right" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </a>
+            </div>
+            <div class="modal-body p-4 col-md-12" id="result" style={{height:"400px",overflowY:"scroll"}}>
+                <p>Add a title to the section</p>
+                <div class="row">
+                    <div class="divided col-md-12"> 
+                    
+                    
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" class="form-control" id="title"/>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Sub Section ID</label>
+                        <input type="text" class="form-control" id="section_id"/>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Title</label>
+                        <Editor placeholder="overview"/>
+                    </div>
+                    
+                    
+                    
+                    
+                    
+                    </div>
+                   
+                   
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button onClick={addSubSectionContent} type="button" style={{background:"rgba(8,23,200)"}} class="btn btn-primary" data-dismiss="modal">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+           <div style={{marginTop:"80px"}} class="modal fade" id="myModalDelete" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title pull-left">Delete this section</h5>
+                <a href="#"  class="pull-right" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </a>
+            </div>
+            <div class="modal-body p-4 col-md-12" id="result" style={{height:"400px",overflowY:"scroll"}}>
+                <p>Add a title to the section</p>
+                <div class="row">
+                    <div class="divided col-md-12"> 
+                    
+                    
+                    <p>Are you sure about this?</p>
+                    
+                    
+                    
+                    
+                    </div>
+                   
+                   
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button  type="button" style={{background:"rgba(8,23,200)"}} class="btn btn-primary" data-dismiss="modal">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
         </div>
       </React.Fragment>
     );
@@ -1500,28 +1624,14 @@ $(document).on('click', '.js-del-row', function() {
 }
 
 
-window.showSubsection = (el) =>{
-      // $(el).on("click", function(){
-         // alert("you clicked me")
-        if($(el).hasClass("open")) {
-          $(el).removeClass("open").next(".fold").removeClass("open");
-        } else {
-          $(".fold-table tr.view").removeClass("open").next(".fold").removeClass("open");
-          $(el).addClass("open").next(".fold").addClass("open");
-        }
-      // });
-
-}
-
-
 
 window.removeSection = (el) => {
 
-  alert(el.dataset.id)
+ // alert(el.dataset.id)
 // $("#js-remove").on("click", function(){
   var count = $(".js-child").length;
   $("."+el.dataset.id).remove()   //addClass("removed"); // hide + remove last child
-  $("#js-count").text(count - 1); // update count
+  //$("#js-count").text(count - 1); // update count
 //});
 
 }
@@ -1531,53 +1641,46 @@ let counter = 0;
 const addSectionContent = () => {
   let mycounter = counter++;
 
-  let templateData = `
-              <table class="fold-table" >
-            
-  <thead className="card-box ${'miller_'+ counter }"  style="display:none" id="${'miller_'+ mycounter }">
-    <tr >
-      <th>Section Name</th>
-      <th>Section ID</th>
-      <th>Last modified</th>
-      <th><span class="visible-small" title="Premiumns">Date Created</span><span class="visible-big">Date Created</span></th>
-      <th><span class="visible-small" title="Strategy A">Total Lessons</span><span class="visible-big">Total Quizes</span></th>
-      <th><span class="visible-small" title="Strategy B">Total Quizes</span><span class="visible-big">Total subsections</span></th>
-      <th><span class="visible-small" title="Strategy C">Action</span><span class="visible-big">Action </span></th>
-    </tr>
-  </thead>
 
-  <tbody>
-    <tr data-id="${'miller_'+ counter }" onclick="showSubsection(this)" class="view ${'miller_'+ counter }" style="height:120px,margin-top:10px">
-      <td>${document.getElementById("title").value || "Module #" + $(".js-child").length }</td>
+  let templateData = `<tr  data-id="${'miller_'+ mycounter }" id="dynamic_section_${mycounter}" onclick="showSubsection(this)" class="view" style="min-width:100%;width:100%;height:60px;border-left:3px solid black;margin-top:10px">
+     <td>${document.getElementById("title").value || "Module #" + $(".js-child").length }</td>
       <td class="pcs">${document.getElementById("section_id").value || "Section #" + $(".js-child").length }</td>
+      
       <td class="cur">12/12/2020 </td>
       <td>Section-1.0</td>
       <td class="per">0</td>
       <td class="per">0</td>
-      <td class="per"><a style="margin-right:10px,background:#fff,color:#000"
-                   href="#myModal" role="button" data-toggle="modal"
+      <td class="per">
+      <a style="margin-right:10px;background:#fff;color:#000"
+                   href="#myModalSubsection" role="button" data-toggle="modal"
+                   onclick="localStorage.setItem('given_id','dynamic_section_'+${mycounter});localStorage.setItem('tracker',${mycounter});"
                   >
+                
                     <i class="fa fa-plus "></i>
-                  </a>
-                  <a
-                   style="margin-right:10px,background:#fff,color:#000"
-                   href="#myModalDelete" role="button" data-toggle="modal"
-                   onclick="removeSection(this)"
-                   data-id="${'miller_'+ counter }"
-                  >
-                    <i class="fa fa-trash "></i>
-                  </a>
-                  <a
-                   style="margin-right:10px,background:#fff,color:#000"
+        </a>
+
+
+        <a style="margin-right:10px;background:#fff;color:#000"
+          href="#myModalDelete" role="button" data-toggle="modal" 
+          data-id="${'miller_'+ mycounter }"
+           onclick="removeSection(this)"        
+          >
+                
+          <i clas="fa fa-trash "></i>
+        </a>
+
+
+        <a style="margin-right:10px;background:#fff;color:#000"
                    href="#myModal" role="button" data-toggle="modal"
-                  >
+        >
+                
                     <i class="fa fa-edit "></i>
-                  </a>
-                  <a class="dropright dropright" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        </a>
+         <a class="dropright dropright" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                  
                 <i class="fa fa-ellipsis-v" style="color:#000"></i>
              
-                <ul class="dropdown-menu">
+        <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#/course-detail" target="_blank">Create</a></li>
                 <li><a class="dropdown-item" href="#/course_edit/29">Edit this course</a></li>
                 <li><a class="dropdown-item" href="#/course_edit/29">Replicate</a></li>
@@ -1587,36 +1690,21 @@ const addSectionContent = () => {
                 <li><a class="dropdown-item" href="#noclick" >Mark As Draft</a></li>
                 <li><a class="dropdown-item" href="#noclick" >Release</a></li>
                 <li><a class="dropdown-item" href="#noclick" >Delete</a></li>
-                </ul>
-                </a>
-                
-
-
-                  </td>
-    </tr>
-
-    <tr class="parent-subsection fold" style="height:60px,border-left:black,margin-top:10px">
-
-    </tr>
-    
-
-  </tbody>
-</table>`
-
-
-
+           </ul>
+         </a>
+              
+        </td>
+    `;
 
 // $("#js-add").on("click", function(){
   // mockup variables for some randomness
   var heightValue = Math.random() * 10;
-  var count = $(".js-child").length;
+  var count = $(".section-parent").length;
   var childrenHeight;
-  var newChild = $("<div class='child-table js-child'>").css({
-    "height":heightValue+"rem"
-  }).html(templateData );
+  // var newChild = $("<div class='child-table js-child'>").html(templateData );
   
-  $("#js-count").text(count +1);  // set child text
-  $("#js-parent").append(newChild);  // spawn child to DOM
+  // $("#js-count").text(count +1);  // set child text
+  $("#js-parent").append( templateData);  // spawn child to DOM
 // });
 
 
@@ -1624,127 +1712,73 @@ const addSectionContent = () => {
 
 
 
-const addSubSectionContent = () => {
+const addSubSectionContent = (el) => {
   const template = `
     
+  
+         <tr class="fold section-parent_${localStorage.getItem('tracker')} subsection-child_${localStorage.getItem('tracker')}" style="height:60px;border-left:3px solid black;margin-top:10px;">
       <td colspan="7">
         <div class="fold-content">
           <h3>Module 1: Subsections</h3>
           <p>Section Description</p><br/>
+          <table class="small-friendly">
+            <thead>
+              <tr>
+                <th><span class="visible-small" title="Premiumns">Title</span><span class="visible-big">Title</span></th>
+      <th><span class="visible-small" title="Strategy A">Section ID</span><span class="visible-big">Section ID</span></th>
+      <th><span class="visible-small" title="Strategy B">Total subsections</span><span class="visible-big">Total subsections</span></th>
+      <th><span class="visible-small" title="Strategy C">Total</span><span class="visible-big">Total</span></th>
+    <th>Start</th>
+                <th><span class="visible-small" title="Current">Cur.</span><span class="visible-big">Current</span></th>
+                <th>Diff</th>
+              </tr>
+            </thead>
+            <tbody>
 
+              <tr  style="height:60px;border-left:3px solid black;margin-top:10px">
+                <td data-th="Company name">dummy</td>
+                <td data-th="Customer no">dummy</td>
+                <td data-th="Customer name">0</td>
+                <td data-th="Insurance no">0</td>
+                <td data-th="Strategy">0</td>
+                <td data-th="Start"><span class="cur">0</span></td>
+                <td data-th="Current"><span class="cur">0</span></td>
+                <td data-th="Diff"><span class="cur">0</span></td>
+              </tr>
 
+            
+              
 
-          <div class="container">
-
-  <div id="table" class="table-editable">
-    <span class="table-add glyphicon glyphicon-plus"></span>
-    <table class="table">
-      <tr>
-        <th>Index</th>
-        <th>Key</th>
-        <th>Value</th>
-        <th>Required</th>
-        <th>Unique</th>
-        <th data-attr-ignore>Remove</th>
-      </tr>
-      <tr>
-        <td>42</td>
-        <td contenteditable="true" data-attr-key="42">Cell Content 1</td>
-        <td contenteditable="true" data-attr-value="42">Cell Value 1</td>
-        <td><input type="checkbox" name="Required" value="42"></td>
-        <td><input type="checkbox" name="Unique" value="42"></td>
-        <td><span class="table-remove glyphicon glyphicon-remove"></span></td>
-      </tr>
-      <tr>
-        <td>63</td>
-        <td contenteditable="true" data-attr-key="63">Cell Content 2</td>
-        <td contenteditable="true" data-attr-value="63">Cell Value 2</td>
-        <td><input type="checkbox" name="Required" value="63"></td>
-        <td><input type="checkbox" name="Unique" value="63"></td>
-        <td><span class="table-remove glyphicon glyphicon-remove"></span></td>
-      </tr>
-      <!-- This is our clonable table line -->
-      <tr class="hide">
-        <td>-</td>
-        <td contenteditable="true">Untitled</td>
-        <td contenteditable="true">undefined</td>
-        <td><input type="checkbox" name="Required" value="0"></td>
-        <td><input type="checkbox" name="Unique" value="0"></td>
-        <td>
-          <span class="table-remove glyphicon glyphicon-remove"></span>
-        </td>
-      </tr>
-    </table>
-  </div>
-
-  <button id="export-btn" class="btn btn-primary">Export Data</button>
-  <p id="export"></p>
-</div>
-          
-
-
-
+            </tbody>
+          </table>          
         </div>
       </td>
+    </tr>
+     
+       
+      
    
-`
+`;
+
+  var newChild = $("<div class='child-table js-child'>").html(template );
+  var subchildren = $(".section-parent_"+  localStorage.getItem("tracker")).length
 
 
+ let target = "dynamic_section_"+ localStorage.getItem("tracker")
+ if(subchildren<=0){
+  alert("here"+ $("#js-parent").find("#"+target).parent().attr("class"))
+  $("#js-parent").find("#"+target).parent().append(template)
 
-var $TABLE = $('#table');
-var $BTN = $('#export-btn');
-var $EXPORT = $('#export');
+ }else{
 
-// $('.table-add').click(function() {
-  //var $clone = $TABLE.find('tr.hide').clone(true).removeClass('hide table-line');
-  // $TABLE.find('table').html($clone);
-// });
+ alert($("#js-parent").find("#"+target).parent().find(`tr.section-parent_${localStorage.getItem("tracker")}` ).length)
+ $("#js-parent").find("#"+target).parent().find(`tr.section-parent_${localStorage.getItem("tracker")}:last` ).after(template)
 
-$('.table-remove').click(function() {
-  $(this).parents('tr').detach();
-});
+ }
 
-$('.table-up').click(function() {
-  var $row = $(this).parents('tr');
-  if ($row.index() === 1) return; // Don't go above the header
-  $row.prev().before($row.get(0));
-});
-
-$('.table-down').click(function() {
-  var $row = $(this).parents('tr');
-  $row.next().after($row.get(0));
-});
-
-// A few jQuery helpers for exporting only
-$.fn.pop = [].pop;
-$.fn.shift = [].shift;
-
-$BTN.click(function() {
-  var $rows = $TABLE.find('tr:not(:hidden)');
-  var headers = [];
-  var data = [];
-
-  // Get the headers (add special header logic here)
-  $($rows.shift()).find('th:not(:empty):not([data-attr-ignore])').each(function() {
-    headers.push($(this).text().toLowerCase());
-  });
-
-  // Turn all existing rows into a loopable array
-  $rows.each(function() {
-    var $td = $(this).find('td');
-    var h = {};
-
-    // Use the headers from earlier to name our hash keys
-    headers.forEach(function(header, i) {
-      h[header] = $td.eq(i).text(); // will adapt for inputs if text is empty
-    });
-
-    data.push(h);
-  });
-
-  // Output the result
-  $EXPORT.text(JSON.stringify(data));
-});
+  
+  
+ 
 }
 
 

@@ -1371,7 +1371,7 @@ export const AddFormBox = () => {
                 <div class="dropright dropright">
                 <button type="button" class="btn btn-sm btn-outline-primary btn-rounded btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-eye" style={{color:"#000"}}></i>
-                </button>
+                </button> 
                 <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#/course-detail" target="_blank">Create</a></li>
                 <li><a class="dropdown-item" href="#/course_edit/29">Edit this course</a></li>
