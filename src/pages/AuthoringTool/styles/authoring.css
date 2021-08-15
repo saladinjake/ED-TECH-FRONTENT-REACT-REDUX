@@ -14447,11 +14447,10 @@ table.small-friendly > tbody > tr > th:last-child {
 
 
 .modal-full {
-    /*min-width: 100%;
+    min-width: 100%;
     margin-left: 80;
     margin-top: 100px;
-    height: 500px;
-    overflow-y: scroll;*/
+    
 
 
 }
@@ -14462,6 +14461,7 @@ table.small-friendly > tbody > tr > th:last-child {
 
 .divided{
     border-right:1px solid #eee;
+      min-height: 500px;
 }
 
 
@@ -14476,6 +14476,8 @@ table.small-friendly > tbody > tr > th:last-child {
     position: relative;
     margin-top: 30px;
     width:100%;
+    min-width: 100%;
+
 }
 
 #msform fieldset {
@@ -14497,30 +14499,6 @@ table.small-friendly > tbody > tr > th:last-child {
     display: none;
 }
 
-/*inputs*/
-#msform input, #msform textarea {
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 0px;
-    margin-bottom: 10px;
-    width: 100%;
-    box-sizing: border-box;
-    font-family: montserrat;
-    color: #2C3E50;
-    font-size: 13px;
-}
-
-#msform input:focus, #msform textarea:focus {
-    -moz-box-shadow: none !important;
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
-    border: 1px solid #ee0979;
-    outline-width: 0;
-    transition: All 0.5s ease-in;
-    -webkit-transition: All 0.5s ease-in;
-    -moz-transition: All 0.5s ease-in;
-    -o-transition: All 0.5s ease-in;
-}
 
 /*buttons*/
 #msform .action-button {
@@ -14578,6 +14556,7 @@ table.small-friendly > tbody > tr > th:last-child {
     overflow: hidden;
     /*CSS counters to number the steps*/
     counter-reset: step;
+    width: 100%;
 }
 
 #progressbar li {
@@ -14585,7 +14564,7 @@ table.small-friendly > tbody > tr > th:last-child {
     color: white;
     text-transform: uppercase;
     font-size: 9px;
-    width: 33.33%;
+    width: 15.33%;
     float: left;
     position: relative;
     letter-spacing: 1px;
@@ -14602,7 +14581,9 @@ table.small-friendly > tbody > tr > th:last-child {
     color: #fff;
     background: #000;
     border-radius: 25px;
-    margin: 0 auto 10px auto;
+    margin: 2px auto 10px auto;
+    text-align: center;
+    z-index: 1;
 }
 
 /*progressbar connectors*/
@@ -14610,11 +14591,11 @@ table.small-friendly > tbody > tr > th:last-child {
     content: '';
     width: 100%;
     height: 2px;
-    background: rgba(8,23,200);
+    background: #000;
     position: absolute;
     left: -50%;
     top: 9px;
-    z-index: -1; /*put it behind the numbers*/
+    z-index: 0.9; /*put it behind the numbers*/
 }
 
 #progressbar li:first-child:after {
@@ -14655,6 +14636,72 @@ table.small-friendly > tbody > tr > th:last-child {
 
 
 
+
+/**/
+.pricing_lesson {
+  width: 720px;
+  height: 200px; 
+  display: flex;
+}
+
+.pricing_lesson__column {
+    position: relative;
+    overflow: hidden;
+    flex: 1 1  100%;
+    margin-left: 16px;
+    box-shadow: 0 0 0 1px #e5e5e5;
+    border-radius: 2px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.1s linear;
+    text-align: center;
+    display:flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+.pricing_lesson__column:first-child {
+      margin-left: 0;
+    }
+
+.pricing_lesson__column:hover {
+      box-shadow: 0 0 0 1px rgba(49, 122, 226, 0.64);
+    }
+
+.pricing_lesson__column:active {
+      box-shadow: 0 0 0 1px #317ae2;
+    }
+
+.pricing_lesson__column.selected{
+      box-shadow: 0 0 0 2px #317ae2; 
+    }
+
+.pricing_lesson__column .check{
+      transform: rotate(-45deg);
+      height: 48px;
+      width: 48px;
+      position: absolute;
+      right: -64px;
+      top: -64px;
+      background: #317ae2;
+      opacity: 0;
+      transition: all 0.1s 0.1s linear;
+    }
+
+.pricing_lesson__column .check.selected {
+        opacity: 1;
+        right: -24px;
+        top: -24px;
+      }
+
+.pricing_lesson .button {
+    border: 1px solid #b7b7b7;
+    height: 32px;
+    font: inherit;
+    border-radius: 2px;
+    position: absolute;
+    bottom: 16px;
+  }
 
 
 
