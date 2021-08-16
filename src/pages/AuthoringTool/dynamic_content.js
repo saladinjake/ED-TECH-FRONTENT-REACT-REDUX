@@ -78,7 +78,7 @@ class DynamicElements extends React.Component {
 	};
 
 handleRemoveClick(element) {
-  const container = element.parentElement.parentElement;
+  const container = element.target.parentElement.parentElement;
   this.removeBlock(container);
 }
 
@@ -89,7 +89,7 @@ removeBlock(container) {
 componentDidMount = () => {
 let that = this;
    	    this.Tabs = document.querySelectorAll(".modal-tab");
-		this.TabContents = document.querySelectorAll(".modal-content");
+		this.TabContents = document.querySelectorAll(".modal-build-content");
 		this.Widgets = document.querySelectorAll(".pb-widget");
 		this.AddButton = document.querySelector(".pb-add-row");
 		this.Block = document.querySelector("#template-container > .pb-row");
@@ -190,6 +190,36 @@ handleWidgetRemove = widget => {
 };
 
 
+plainTextTemplate(){
+
+}
+
+
+rawHtmlTemplate() {
+
+}
+
+textEditorTemplate(){
+
+}
+
+iframeTemplate() {
+
+}
+
+fileUploadTemplate(){
+
+}
+
+videoUrlTemplate() {
+
+}
+
+sliderTemplate() {}
+
+discussionTemplate(){}
+
+
 
  
 render(){
@@ -213,7 +243,7 @@ render(){
             <div class="builder-row-header">
               <span class="row-btn pb-handle fas fa-sort">handle</span>
               <div>SECTIONS</div>
-              <span onClick={() => { this.handleRemoveClick(this)}} class="row-btn row-btn-right pb-remove fa fa-trash">remove</span>
+              <span onClick={this.handleRemoveClick} class="row-btn row-btn-right pb-remove fa fa-trash">remove</span>
             </div>
             <div class="pb-container">
               <div class="builder-row-content">
@@ -231,7 +261,7 @@ render(){
             <div class="builder-row-header">
               <span class="row-btn pb-handle fas fa-sort">handle</span>
               <div>Block</div>
-              <span onClick={() => {this.handleRemoveClick(this)}} class="row-btn row-btn-right pb-remove fa fa-trash">remove</span>
+              <span onClick={this.handleRemoveClick} class="row-btn row-btn-right pb-remove fa fa-trash">remove</span>
             </div>
             <div class="pb-container">
               <div class="builder-row-content"></div>
@@ -243,7 +273,7 @@ render(){
           <div class="pb-widget-preview">
             <span class="row-btn btn-widget pb-handle-widget fa fa-sort">handle</span>
             <div></div>
-            <span class="row-btn btn-widget pb-remove fa fa-trash" onClick={() => { this.handleWidgetRemove(this)}}>delete</span>
+            <span class="row-btn btn-widget pb-remove fa fa-trash" onClick={this.handleWidgetRemove}>delete</span>
           </div>
 
 
@@ -266,8 +296,8 @@ render(){
           </div>
         </div>
         <div class="modal-build-content widgets-tab active-content">
-          <div class="pb-widget" data-template="[pb_text][/pb_text]" data-type="content-block"><i class="fas fa-heading"></i><span>TEXT</span></div>
-          <div class="pb-widget" data-template="[pb_link][/pb_link]" data-type="content-block"><i class="fas fa-link"></i><span>HTML</span></div>
+          <div class="pb-widget" data-template="[pb_text][/pb_text]" data-type="content-block"><i class="fas fa-heading"></i><span>Plain Text</span></div>
+          <div class="pb-widget" data-template="[pb_link][/pb_link]" data-type="content-block"><i class="fas fa-link"></i><span>Raw Html</span></div>
           <div class="pb-widget" data-template="[pb_button][/pb_button]" data-type="content-block"><i class="fas fa-square"></i><span>IFRAME</span></div>
           <div class="pb-widget" data-template="[pb_slider][/pb_slider]" data-type="content-block">
             <div>

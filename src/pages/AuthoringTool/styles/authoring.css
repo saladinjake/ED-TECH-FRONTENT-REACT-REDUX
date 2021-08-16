@@ -15099,7 +15099,7 @@ table.small-friendly > tbody > tr > th:last-child {
     position: relative;
     width: 100%;
     height: 50px;
-    background: #94c81b;
+    background: #f6f6f6;
     display: flex;
     justify-content: space-between;
     align-items: center;
