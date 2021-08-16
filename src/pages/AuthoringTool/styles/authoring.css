@@ -14990,9 +14990,10 @@ table.small-friendly > tbody > tr > th:last-child {
 }
 
 .builder-row-content {
-    background-color: #ebebeb;
+    background-color:#fff; /*#ebebeb;*/
     min-height: 60px;
     padding: 10px;
+    border: 1px solid #f5f5f5;
 }
 
 .row-btn {
@@ -15024,7 +15025,7 @@ table.small-friendly > tbody > tr > th:last-child {
 }
 
 .pb-row-order {
-    background-color: #94c81b;
+    background-color: #ebebeb;
     color: #fff;
     padding-left: 15px !important;
     padding-right: 15px !important;
@@ -15034,7 +15035,7 @@ table.small-friendly > tbody > tr > th:last-child {
 
 .pb-placeholder {
     position: relative;
-    background: #ffffff99;
+    background: #ddd;
     width: 100%;
     height: 60px;
     text-align: center;
@@ -15042,7 +15043,9 @@ table.small-friendly > tbody > tr > th:last-child {
     justify-content: center;
     align-items: center;
     transition: all 200ms ease-in-out;
-    border: 1px solid transparent;
+    border: 1px solid rgba(8,23,200);
+    color: #000;
+
 }
 
 .pb-placeholder:hover {
@@ -15057,6 +15060,7 @@ table.small-friendly > tbody > tr > th:last-child {
     font-size: 1.2rem;
     font-family: inherit;
     font-weight: 600;
+    color: #000;
 }
 
 #placeholder-icon {
@@ -15099,11 +15103,13 @@ table.small-friendly > tbody > tr > th:last-child {
     position: relative;
     width: 100%;
     height: 50px;
-    background: #f6f6f6;
+    background: rgba(8,23,200);
     display: flex;
     justify-content: space-between;
     align-items: center;
     color: #fff;
+    margin-left: 10px;
+    box-shadow: 0px 13px 21px -10px rgba(0, 0, 0, 0.2);
 }
 
 .modal-title {
@@ -15152,12 +15158,13 @@ table.small-friendly > tbody > tr > th:last-child {
 .modal-tab:hover {
     background: #fefefe;
     color: #000;
-    color: #333333
+    font-size: 20px;
 }
 
 .modal-tab.active-tab {
-    background: #fefefe;
-    color: #333333
+    background: rgba(8,23,200);
+    font-size: 20px;
+     color: #fff;
 }
 
 .modal-build-content {
@@ -15190,6 +15197,7 @@ table.small-friendly > tbody > tr > th:last-child {
     cursor: pointer;
     text-align: center;
     flex-direction: column !important;
+
 }
 
 .pb-widget:hover {
@@ -15259,16 +15267,17 @@ table.small-friendly > tbody > tr > th:last-child {
 
 .pb-widget-preview {
     width: 100%;
-    height: 60px;
-    text-align: center;
+    height: auto;
+   /* text-align: center;*/
     border-radius: 5px;
-    overflow: hidden;
+   /* overflow: hidden;*/
     transition: all 200ms ease-in-out;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    /*display: flex;
+    justify-content: space-between;*/
+    /*align-items: center;*/
     font-size: 1.8rem;
     margin: 1% 0;
+    border: 1px solid #eee;
 }
 
 .pb-widget-preview:hover {
@@ -15276,7 +15285,7 @@ table.small-friendly > tbody > tr > th:last-child {
 }
 
 .pb-widget-preview.content-block {
-    background: #f953c6;
+    background: #fff;
     color: #fff
 }
 
@@ -15324,3 +15333,167 @@ table.small-friendly > tbody > tr > th:last-child {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*Editoring css for template dynamic editor*/
+#editControls {
+  /*text-align:center;*/
+  padding:5px;
+  margin:5px;
+}
+
+#editor {
+resize:vertical;
+overflow:auto;
+border:1px solid #f6f6f6;
+border-radius:2px;
+min-height:500px;
+box-shadow: inset 0 0 10px silver;
+padding:1em;
+width: 100%;
+}
+
+#output {
+  width:99.7%;
+  height:100px;
+
+}
+
+#editControls a:link {text-decoration:none;}
+#editControls a:visited {text-decoration:none;}
+#editControls a:hover {text-decoration:none;}
+#editControls a:active {text-decoration:none;}
+#editControls a{
+  color:black;
+  padding:5px;
+  border:1px solid silver;
+  border-radius:5px;
+  width:1em;
+}
+
+
+
+
+
+
+
+
+
+
+/*raw html content*/
+#header-viewer {
+  
+  /*width:100%;*/
+  background-color: #EEEEEE;
+  padding:5px;
+  height: 60px;
+ /* max-width: 100%;*/
+  
+}
+
+#logo-viewer {
+  
+  float:left;
+  font-weight: bold;
+  font-size: 120%;
+  padding: 3px 5px;
+  
+}
+
+#buttonContainer {
+  
+ /* width:233px;*/
+  margin: 0 auto;
+  
+}
+
+.toggleButton {
+  
+  float:left;
+  border: 1px solid grey;
+  padding: 6px;
+  border-right: none;
+  font-size: 90%;
+  cursor: pointer;
+}
+
+#html-viewer {
+  
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  
+}
+
+#output-rviewer {
+  
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-right: 1px solid grey;
+  
+}
+
+.active-viewer {
+  
+  background-color: #E8F2FF;
+  
+}
+
+.highlightedButton {
+  
+  background-color: grey;
+  
+}
+
+.textarea-viewer {
+  margin-top: 20px;
+  resize: none;
+  border-top: none;
+  border-color: grey;
+
+/*resize:vertical;
+overflow:auto;*/
+border:1px solid #f6f6f6;
+border-radius:2px;
+min-height:500px;
+box-shadow: inset 0 0 10px silver;
+padding:1em;
+width: 100%;
+max-width: 100%;
+  
+}
+
+.panel-viewer {
+  
+  float:left;
+  width: 100%;
+  border-left: none;
+}
+
+.iframe-viewer {
+  
+  border:none;
+  
+}
+
+.hidden {
+  
+  display: none;
+  
+}

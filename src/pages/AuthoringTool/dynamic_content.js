@@ -3,10 +3,13 @@ import $ from "jquery"
 import 'jquery-ui-bundle';
 import 'jquery-ui-bundle/jquery-ui.css';
 
+import { SideBar, OverviewDash } from "./sidebar";
+import NavBar from "components/Navbar";
 
 window.openModal = () =>{
 
 }
+
 
 class DynamicElements extends React.Component {
    constructor(props){
@@ -131,6 +134,91 @@ let that = this;
   this.Tabs.forEach(tab => {
     tab.onclick = that.handleTabClick;
   });
+
+
+
+//editor tasks
+$('#mineer a').click(function(e) {
+  switch($(this).data('role')) {
+    case 'h1':
+    case 'h2':
+    case 'p':
+      document.execCommand('formatBlock', false, $(this).data('role'));
+      break;
+    default:
+      document.execCommand($(this).data('role'), false, null);
+      break;
+    }
+  update_output();
+})
+
+$('#editor').bind('blur keyup paste copy cut mouseup', function(e) {
+  update_output();
+})
+
+function update_output() {
+  $('#output').val($('#editor').html());
+}
+
+
+
+
+// raw html editor dynamic reation event handler
+ function updateOutput() {
+ 	
+ 	$(".-vieweriframe-viewer").contents().find("html").html("<html><head><style type='text/css'>" + $("#cssPanel").val() + "</style></head><body>" + $("#htmlPanel").val() + "</body></html>");
+ 	
+ 	// document.getElementById("outputPanel").contentWindow.eval($("#javascriptPanel").val());
+ 	
+ 	
+ 	
+ }
+ 
+ $(".toggleButton").hover(function() {
+ 	
+ 	$(this).addClass("highlightedButton");
+ 	
+ }, function() {
+ 	
+ 	$(this).removeClass("highlightedButton");
+ 	
+ });
+ 
+ $(".toggleButton").click(function() {
+ 	
+ 	$(this).toggleClass("active-viewer");
+ 	
+ 	$(this).removeClass("highlightedButton");
+ 	
+ 	var panelId = $(this).attr("id") + "Panel";
+ 	
+ 	$("#" + panelId).toggleClass("hidden");
+ 	
+ 	var numberOfActivePanels = 4 - $('.hidden').length;
+ 	
+ 	$(".panel-viewer").width(($(window).width() / numberOfActivePanels) - 10);
+ 	
+ })
+ 
+ $(".panel-viewer-viewer").height($(window).height() - $("#header").height() - 15);
+ 
+ $(".panel-viewer-viewer-viewer").width(($(window).width() / 2) - 10);
+ 
+ updateOutput();
+ 
+ $("textarea-viewer").on('change keyup paste', function() {
+ 	
+ 	updateOutput();
+ 	
+ 	
+ });
+
+
+
+
+
+
+
 };
 
 
@@ -168,21 +256,64 @@ closeModal = () => {
 // Methods
 
 handleWidgetClick = e => {
+  let that = this;
   const Widget = e.target;
   const Type = Widget.getAttribute("data-type");
+  const TemplateType = Widget.getAttribute("data-template")
+  let Clone = null;
+  alert(TemplateType)
+  switch( TemplateType ){
+  	case "[pb_text][/pb_text]":
+  	   Clone = that.plainTextTemplate();
+  	   break;
+  	case "[pb_link][/pb_html]":
+  	   Clone = that.rawHtmlTemplate();
+  	   break;
+  	case "[pb_iframe][/pb_iframe]":
+  	   Clone = that.iframeTemplate()
+  	   break;
+  	case "[pb_slider][/pb_slider]":
+  	   Clone = that.sliderImageTemplate();
+  	   break;
+  	case "[pb_image][/pb_image]":
+  	   Clone = that.imageTemplate();
+       break;
+    case "[pb_video][/pb_video]":
+       Clone = that.videoTemplate()
+    default:
+       Clone = that.plainTextTemplate()
+
+
+        
+        
+        
+        
+        
+  }
+
+
+  
   let Target = this.activeBlock;
   let Title = Widget.querySelector("span").innerHTML;
   let Preview = document.querySelector(
     "#template-container > .pb-widget-preview"
   );
-  let Clone = Preview.cloneNode(true);
-  Clone.classList.add(Type);
-  let that = this;
-  Clone.querySelector("div").innerHTML = Title;
-  Target.parentElement.appendChild(Clone);
+  let MainClone = Preview.cloneNode(true);
+  MainClone.classList.add(Type);
+
+  MainClone.querySelector("div h5").innerHTML = Title;
+  MainClone.querySelector("div").appendChild(Clone)
+  Target.parentElement.appendChild(MainClone);
   Target.parentElement.appendChild(that.PlaceholderTemplate());
   Target.remove(Target);
   this.closeModal();
+};
+
+
+stringToHTML = function (str) {
+	var parser = new DOMParser();
+	var doc = parser.parseFromString(str, 'text/html');
+	return doc.body;
 };
 
 handleWidgetRemove = widget => {
@@ -192,11 +323,93 @@ handleWidgetRemove = widget => {
 
 plainTextTemplate(){
 
+
+
+  let template = `<div class="container-fluid">
+  <div class="row">
+    <div id='editControls' class="col-md-12">
+      <h1>Text Editor</h1>
+      <div class="card-box mineer" id="mineer">
+        <a data-role='undo' href='#'><i class='fa fa-undo'></i></a>
+        <a data-role='redo' href='#' ><i class='fa fa-repeat'></i></a>
+        <a data-role='bold' href='#' ><i class='fa fa-bold'></i></a>
+        <a data-role='italic' href='#' ><i class='fa fa-italic'></i></a>
+        <a data-role='underline' href='#' ><i class='fa fa-underline'></i></a>
+        <a data-role='strikeThrough' href='#' ><i class='fa fa-strikethrough'></i></a>
+        <a data-role='justifyLeft' href='#' ><i class='fa fa-align-left'></i></a>
+        <a data-role='justifyCenter' href='#' ><i class='fa fa-align-center'></i></a>
+        <a data-role='justifyRight' href='#' ><i class='fa fa-align-right'></i></a>
+        <a data-role='justifyFull' href='#' ><i class='fa fa-align-justify'></i></a>
+        <a data-role='indent' href='#' ><i class='fa fa-indent'></i></a>
+        <a data-role='outdent' href='#' ><i class='fa fa-outdent'></i></a>
+        <a data-role='insertUnorderedList' href='#' ><i class='fa fa-list-ul'></i></a>
+        <a data-role='insertOrderedList' href='#' ><i class='fa fa-list-ol'></i></a>
+        <a data-role='h1' href='#' >h<sup>1</sup></a>
+        <a data-role='h2' href='#' >h<sup>2</sup></a>
+        <a data-role='h2' href='#' >h<sup>3</sup></a>
+        <a data-role='h2' href='#' >h<sup>4</sup></a>
+        <a data-role='h2' href='#' >h<sup>5</sup></a>
+        <a data-role='h2' href='#' >h<sup>6</sup></a>
+        <a data-role='p' href='#' >p</a>
+        <a data-role='subscript' href='#' ><i class='fa fa-subscript'></i></a>
+        <a data-role='superscript' href='#' ><i class='fa fa-superscript'></i></a>
+      </div>
+    </div>
+    <div id='editor' contenteditable class="container">
+      <h1>This is a title!</h1>
+      <p>This is just some example text to start us off</p>
+    </div>
+    <textarea id='output' class="col-md-12"></textarea>
+  </div>
+</div>`
+
+  return this.stringToHTML(template)
 }
 
 
 rawHtmlTemplate() {
+	let template =`
+	<div class="container-fluid">
+  <div class="row">
+    <div  class="col-md-12">
 
+
+	<div id="header-viewer" class="container-fluid">
+
+		<div id="logo-viewer">
+
+			Raw Html
+
+		</div>
+
+		<div id="buttonContainer">
+
+		<div class="toggleButton active" id="html-viewer" >HTML</div>
+
+		
+
+			<div class="toggleButton active" id="output-rviewer">Preview</div>
+
+		</div>
+
+	</div>
+
+	<div id="bodyContainer"  class="container">
+
+		<textarea id="htmlPanel" class="panel-viewer textarea-viewer" placeholder="Place your HTML code here.."></textarea>
+
+		<textarea id="cssPanel" class="panel-viewer hidden textarea-viewer" placeholder="Place your CSS code here.."></textarea>
+
+		<textarea id="javascriptPanel" class="panel-viewer hidden textarea-viewer" placeholder="Place your Javascript code here.."></textarea>
+
+		<iframe id="outputPanel" class="panel-viewer iframe-viewer"></iframe>
+
+
+	</div>
+	</div></div></div>
+
+`
+  return this.stringToHTML(template)
 }
 
 textEditorTemplate(){
@@ -211,11 +424,13 @@ fileUploadTemplate(){
 
 }
 
-videoUrlTemplate() {
+videoTemplate() {
 
 }
 
-sliderTemplate() {}
+imageTemplate(){}
+
+sliderImageTemplate(){}
 
 discussionTemplate(){}
 
@@ -228,6 +443,8 @@ render(){
  
 
 <Fragment>
+<NavBar />
+<br/><br/><br/>
   <div class="builder">
     <div class="builder-header">
       <div class="builder-content">
@@ -241,8 +458,8 @@ render(){
         <div class="pb-rows">
           <div class="pb-row" name="pb-row">
             <div class="builder-row-header">
-              <span class="row-btn pb-handle fas fa-sort">handle</span>
-              <div>SECTIONS</div>
+              <span class="row-btn pb-handle fa fa-sort">handle</span>
+              <div>Lessons</div>
               <span onClick={this.handleRemoveClick} class="row-btn row-btn-right pb-remove fa fa-trash">remove</span>
             </div>
             <div class="pb-container">
@@ -259,7 +476,7 @@ render(){
 
           <div class="pb-row" name="pb-row">
             <div class="builder-row-header">
-              <span class="row-btn pb-handle fas fa-sort">handle</span>
+              <span class="row-btn pb-handle fa fa-sort">handle</span>
               <div>Block</div>
               <span onClick={this.handleRemoveClick} class="row-btn row-btn-right pb-remove fa fa-trash">remove</span>
             </div>
@@ -271,10 +488,14 @@ render(){
 
           {/*	WIDGET SECTIONS */}
           <div class="pb-widget-preview">
-            <span class="row-btn btn-widget pb-handle-widget fa fa-sort">handle</span>
-            <div></div>
-            <span class="row-btn btn-widget pb-remove fa fa-trash" onClick={this.handleWidgetRemove}>delete</span>
-          </div>
+          <div style={{background:"#ebebeb"}}>
+            <span class="row-btn btn-widget pb-handle-widget fa fa-sort" style={{float:"left"}}>handle</span>
+            <span class="row-btn btn-widget pb-remove fa fa-trash" style={{float:"right"}} onClick={this.handleWidgetRemove}>delete</span>
+         </div>
+            <div style={{clear:"both"}}>
+                 <h5></h5>
+            </div>
+             </div>
 
 
         </div>
@@ -285,20 +506,21 @@ render(){
     <div id="myModal" class="modal-build">
       <div class="modal-build-inner">
         <div class="modal-toolbar">
-          <h2 class="modal-title">Wähle ein Widget 1</h2>
+          <h2 class="modal-title">Select A Lesson Components</h2>
           <i id="pb-modal-close" class="fa fa-times"></i>
         </div>
         <div class="modal-tabs">
           <div class="modal-tab widgets-tab active-tab"><i class="tab-icon fas fa-hammer"></i>Textual Content</div>
-          <div class="modal-tab background-tab"><i class="tab-icon fas fa-fill"></i> Media
+          <div class="modal-tab background-tab"><i class="tab-icon fas fa-fill"></i> Interactivity
           </div>
           <div class="modal-tab special-tab"><i class="tab-icon fas fa-star"></i> Specials
           </div>
         </div>
+
         <div class="modal-build-content widgets-tab active-content">
           <div class="pb-widget" data-template="[pb_text][/pb_text]" data-type="content-block"><i class="fas fa-heading"></i><span>Plain Text</span></div>
-          <div class="pb-widget" data-template="[pb_link][/pb_link]" data-type="content-block"><i class="fas fa-link"></i><span>Raw Html</span></div>
-          <div class="pb-widget" data-template="[pb_button][/pb_button]" data-type="content-block"><i class="fas fa-square"></i><span>IFRAME</span></div>
+          <div class="pb-widget" data-template="[pb_link][/pb_html]" data-type="content-block"><i class="fas fa-link"></i><span>Raw Html</span></div>
+          <div class="pb-widget" data-template="[pb_iframe][/pb_iframe]" data-type="content-block"><i class="fas fa-square"></i><span>Iframe</span></div>
           <div class="pb-widget" data-template="[pb_slider][/pb_slider]" data-type="content-block">
             <div>
               <i class="fa fa-chevron-left"></i>
