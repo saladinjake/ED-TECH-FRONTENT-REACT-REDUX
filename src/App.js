@@ -99,6 +99,7 @@ import AuthorSales from "./pages/AuthoringTool/Sales";
 import AuthorPayments from "./pages/AuthoringTool/Payments";
 import AuthorPaymentSetting from "./pages/AuthoringTool/Paymentsettings";
 import AuthorProfileSetting from "./pages/AuthoringTool/ProfilePage";
+import AuthoringSectionDynamicLessons from "pages/AuthoringTool/dynamic_content"
 
 import $ from "jquery";
 
@@ -525,6 +526,13 @@ function App(props) {
           path={`${process.env.PUBLIC_URL + "/authoring/profile/settings"}`}
           component={AuthorProfileSetting}
         />
+
+
+        <Route
+          exact 
+          path={`${process.env.PUBLIC_URL + "/test/lesson-content"}`}
+          component={AuthoringSectionDynamicLessons}
+          />
 
         <Route component={PageNotFound} />
       </Switch>

@@ -14,6 +14,9 @@ import ReactQuill, { Mixin, Toolbar, Quill } from "react-quill";
 import Dropzone, { ImageFile } from "react-dropzone";
 //import PropTypes from "prop-types"
 
+// Complete SortableJS (with all plugins)
+import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
+
 
 
 
@@ -1421,6 +1424,8 @@ const Step2 = (props) => {
 
 
 
+
+
   })
 
 if (props.currentStep !== 6) {
@@ -1436,6 +1441,15 @@ if (props.currentStep !== 6) {
             <div className="col-md-12">
 
 
+            <div id="nestable-menu">
+    <button type="button" class="btn btn-default btn-responsive" data-action="expand-all"><i class="fa fa-plus"></i> Expand All</button>
+    <button type="button" class="btn btn-default btn-responsive" data-action="collapse-all"><i class="fa fa-minus"></i> Collapse All</button>
+    <button type="button" class="btn btn-default btn-responsive" id="appendnestable"><i class="fa fa-magic"></i> Add Section</button>
+    <button type="button" class="btn btn-default btn-responsive" id="removeall"><i class="fa fa-bomb"></i>Clear</button>
+  </div>
+
+
+
 
  
               <table class="fold-table">
@@ -1445,7 +1459,7 @@ if (props.currentStep !== 6) {
       <th>Section Name</th>
       <th>Section ID</th>
       <th>Total Sub Components</th>
-      <th class="action"><span class="visible-small" title="Strategy C">Action</span><span class="visible-big">Action </span></th>
+      <th class="action" style={{float:"right"}}><span class="visible-small" title="Strategy C">Action</span><span class="visible-big">Action </span></th>
     </tr>
   </thead>
 
@@ -1812,7 +1826,7 @@ if (props.currentStep !== 6) {
                         <button class="button">discussion</button>
                       </div>
                       <div class="pricing_lesson__column selected">
-                      <i class="fa fa-edit fa-2x"></i>
+                      <i class="fa fa-edit "></i>
                         <div class="check selected"></div>
                         <button class="button">Text content</button>
                       </div>
@@ -2039,11 +2053,12 @@ const addSectionContent = () => {
   let mycounter = counter++;
 
 
-  let templateData = `<tr  data-id="${'miller_'+ mycounter }" id="dynamic_section_${mycounter}" onclick="showSubsection(this)" class="view ${'miller_'+ mycounter }" style="min-width:100%;width:100%;height:60px;border-left:3px solid black;margin-top:10px">
-     <td class="tits">${document.getElementById("title").value || "Module # " + mycounter   }</td>
+  let templateData = `<tr    data-id="${'miller_'+ mycounter }" id="dynamic_section_${mycounter}" onclick="showSubsection(this)" class="view ${'miller_'+ mycounter } section-list" style="min-width:100%;width:100%;height:60px;border-left:3px solid black;margin-top:10px">
+     
+     <td class="tits section__name"> ${document.getElementById("title").value || "Module # " + mycounter   }</td>
       <td class="pcs">${document.getElementById("section_id").value || "Section #" + mycounter }</td>
        <td class="we">0</td>
-      <td class="per action">
+      <td class="per action" style="float:right">
       <a style="margin-right:10px;background:#fff;color:#000"
                    href="#myModalSubsection" role="button" data-toggle="modal"
                    onclick="localStorage.setItem('given_id','dynamic_section_'+${mycounter});localStorage.setItem('tracker',${mycounter});"
@@ -2058,7 +2073,7 @@ const addSectionContent = () => {
             onclick="editSection(this);localStorage.setItem('given_id','dynamic_section_'+${mycounter});localStorage.setItem('tracker',${mycounter});"       
           >
                 
-          <i class="fa fa-edit"></i>
+          <i class="fa fa-edit "></i>
         </a>
 
 
@@ -2068,14 +2083,34 @@ const addSectionContent = () => {
            onclick="removeSection(this)"        
           >
                 
-          <i class="fa fa-trash"></i>
+          <i class="fa fa-trash "></i>
         </a>
 
+          <a style="margin-right:10px;background:#fff;color:#000"
+          
+          data-id="${'miller_'+ mycounter }"
+                   
+          >
+                
+          <i class="fa fa-bars "></i>
+        </a>
+
+
+         <a class="drag-handle" style="margin-right:10px;background:#fff;color:#000"
+          
+          data-id="${'miller_'+ mycounter }"
+                 
+          >
+
+         <i class="fa fa-arrows "></i>
+        </a>
+
+       
 
         
          <a class="dropright dropright "  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                  
-                <i class="fa fa-ellipsis-v" style="color:#000"></i>
+                <i class="fa fa-ellipsis-v " style="color:#000"></i>
              
         <ul class="dropdown-menu" style="margin-left:40px" >
                 <li><a class="dropdown-item" href="#myModalSubsection" role="button" data-toggle="modal"
@@ -2106,6 +2141,7 @@ const addSectionContent = () => {
            onclick="removeSection(this)" >Delete</a></li>
            </ul>
          </a>
+
               
         </td>
     `;
@@ -2122,6 +2158,38 @@ const addSectionContent = () => {
 // });
 
 
+
+//FOR DRAGABLE EFFECT
+   //FOR DRAGABLE EFFECT
+    
+    var children = $("#js-parent").children.length
+    if(children > 0){
+      if(document.getElementById('js-parent')){
+        var el = document.getElementById('js-parent');
+        var sortableSections = Sortable.create(el, {
+          group: 'sections',
+          handle: ".drag-handle"
+        });
+      }
+      
+      if(document.querySelectorAll('.column-list')){
+        var columnGroups = document.querySelectorAll('.column-list');
+        columnGroups.forEach(function (ele) {
+          Sortable.create(ele, {
+            group: 'columns',
+            handle: '.drag-handle'
+          });
+       });
+
+    }
+}
+
+
+
+
+
+
+
 }
 
 
@@ -2131,7 +2199,7 @@ const addSubSectionContent = (el) => {
   const template = `
     
   
-         <tr  id="dynamic_subsection_${muu_counter}"  data-id="${'muu_'+ muu_counter }" class="fold ${'muu_'+ muu_counter } section-parent_${localStorage.getItem('tracker')} subsection-child_${localStorage.getItem('s_tracker')}" style="min-width:100%;width:100%;height:60px;border-left:3px solid black;margin-top:10px">
+         <tr  id="dynamic_subsection_${muu_counter}"  data-id="${'muu_'+ muu_counter }" class="fold ${'muu_'+ muu_counter } section-parent_${localStorage.getItem('tracker')} subsection-child_${localStorage.getItem('s_tracker')} " style="min-width:100%;width:100%;height:60px;border-left:3px solid black;margin-top:10px">
       <td colspan="7">
         <div class="fold-content">
           <h3>Subsections</h3>
@@ -2144,16 +2212,16 @@ const addSubSectionContent = (el) => {
       <th><span class="visible-small" title="Strategy A">Total Elements</span><span class="visible-big">Elements</span></th>
      
      
-     <th class="action"><span class="visible-small" title="Strategy A">Action</span><span class="visible-big">Action</span></th>
+     <th class="action"  style="float:right"><span class="visible-small" title="Strategy A">Action</span><span class="visible-big">Action</span></th>
               </tr>
             </thead>
             <tbody>
 
-              <tr  style="height:60px;border-left:3px solid black;margin-top:10px">
-                <td class="title_sub" data-th="Company name">${$("#title_2").val() || "no content"}</td>
+              <tr class="column-list"  style="height:60px;border-left:3px solid black;margin-top:10px">
+               <td class="title_sub " data-th="Company name">${$("#title_2").val() || "no content"}</td>
                 <td class="subsect" data-th="Customer no">${$("#section_id_2").val() || "no content"}</td>
                 <td data-th="Customer name">0</td>
-                <td class="action" data-th="Customer nam">
+                <td class="action" data-th="Customer nam"  style="float:right">
 
 
 
@@ -2163,7 +2231,7 @@ const addSubSectionContent = (el) => {
             onclick="editSubSection(this);localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"       
           >
                 
-          <i class="fa fa-edit"></i>
+          <i class="fa fa-edit "></i>
         </a>
 
 
@@ -2173,15 +2241,24 @@ const addSubSectionContent = (el) => {
            onclick="removeSubSection(this)"        
           >
                 
-          <i class="fa fa-trash"></i>
+          <i class="fa fa-trash "></i>
         </a>
 
+
+         <a style="margin-right:10px;background:#fff;color:#000"
+          
+          data-id="${'muu_'+ muu_counter }"
+                 
+          >
+
+         <i class="fa fa-arrows "></i>
+        </a>
 
 
 
          <a class="dropright dropright "  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                  
-                <i class="fa fa-ellipsis-v" style="color:#000"></i>
+                <i class="fa fa-ellipsis-v " style="color:#000"></i>
              
         <ul class="dropdown-menu" style="margin-left:40px" >
                 
@@ -2204,6 +2281,7 @@ const addSubSectionContent = (el) => {
            onclick="removeSubSection(this)" >Delete</a></li>
            </ul>
          </a>
+         
 
 
 
@@ -2240,6 +2318,9 @@ const addSubSectionContent = (el) => {
  $("#js-parent").find("#"+target).parent().find(`tr.section-parent_${localStorage.getItem("tracker")}:last` ).after(template)
 
  }
+
+
+ 
 
   
   
