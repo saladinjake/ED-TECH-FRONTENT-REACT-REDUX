@@ -1074,7 +1074,7 @@ export const AddHead = () => {
   return (
     <div className="row ">
       <div className="col-md-12">
-        <div className="card" style={{ height: "140px" }}>
+        <div className="card" style={{ height: "80px" }}>
           <div className="card-body">
             <h4 className="page-title">
               {" "}

@@ -16,9 +16,15 @@ import Dropzone, { ImageFile } from "react-dropzone";
 
 // Complete SortableJS (with all plugins)
 import Sortable from 'sortablejs/modular/sortable.complete.esm.js';
+import Lessons from "./dynamic_content"
 
 
 
+const createLessonSection =(el) =>{
+  
+
+
+}
 
 class Editor extends React.Component {
   constructor (props) {
@@ -1441,12 +1447,12 @@ if (props.currentStep !== 6) {
             <div className="col-md-12">
 
 
-            <div id="nestable-menu">
+           {/* <div id="nestable-menu">
     <button type="button" class="btn btn-default btn-responsive" data-action="expand-all"><i class="fa fa-plus"></i> Expand All</button>
     <button type="button" class="btn btn-default btn-responsive" data-action="collapse-all"><i class="fa fa-minus"></i> Collapse All</button>
     <button type="button" class="btn btn-default btn-responsive" id="appendnestable"><i class="fa fa-magic"></i> Add Section</button>
     <button type="button" class="btn btn-default btn-responsive" id="removeall"><i class="fa fa-bomb"></i>Clear</button>
-  </div>
+  </div>*/}
 
 
 
@@ -1526,7 +1532,7 @@ if (props.currentStep !== 6) {
 
 
                     <div class="form-group">
-                        <label>Title</label>
+                       <label>Overview</label>
                         <Editor placeholder="overview"/>
                     </div>
                     
@@ -1581,7 +1587,7 @@ if (props.currentStep !== 6) {
 
 
                     <div class="form-group">
-                        <label>Title</label>
+                        <label>Overview</label>
                         <Editor placeholder="overview"/>
                     </div>
                     
@@ -1626,14 +1632,14 @@ if (props.currentStep !== 6) {
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group" >
                         <label>Section ID</label>
                         <input type="text" class="form-control" id="section_id_edit_2"/>
                     </div>
 
 
                     <div class="form-group">
-                        <label>Title</label>
+                       <label>Overview</label>
                         <Editor placeholder="overview"/>
                     </div>
                     
@@ -1684,7 +1690,7 @@ if (props.currentStep !== 6) {
 
 
                     <div class="form-group">
-                        <label>Title</label>
+                        <label>Overview</label>
                         <Editor placeholder="overview"/>
                     </div>
                     
@@ -1788,111 +1794,51 @@ if (props.currentStep !== 6) {
 
 
 
-<div style={{marginTop:"50px"}} class="modal " id="myModalLesson" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-full" role="document">
+<div style={{marginTop:"80px"}} class="modal " id="myModalLesson" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                
-
-                 <ul id="progressbar">
-                       <li>1</li>
-                       <li>2</li>
-                       <li>3</li>
-                       <li>4</li>
-                       <li>5</li>
-                    </ul>
-
+                <h5 class="modal-title pull-left" style={{color:"#000"}}>Add a lesson</h5>
                 <a href="#"  class="pull-right" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </a>
             </div>
-            <div class="modal-body p-4 col-md-12" id="result">
-                <p></p>
-                <div class="row " >
-                <div class="col-md-10 divided">
-
-                <div id="msform">
-                   
-                    <fieldset>
-
-
-                    <h1 class="fs-title">Select a component</h1>
-
-
-                    <div class="pricing_lesson">
-                      <div class="pricing_lesson__column">
-                      <i class="fa fa-comment fa-3x"></i>
-                        <div class="check"></div>
-                        <button class="button">discussion</button>
-                      </div>
-                      <div class="pricing_lesson__column selected">
-                      <i class="fa fa-edit "></i>
-                        <div class="check selected"></div>
-                        <button class="button">Text content</button>
-                      </div>
-                      <div class="pricing_lesson__column">
-                      <i class="fa fa-video fa-3x"></i>
-                        <div class="check"></div>
-                        <button class="button">Media</button>
-                      </div>
-
-
-                      <div class="pricing_lesson__column">
-                      <i class="fa fa-edit fa-3x"></i>
-                        <div class="check"></div>
-                        <button class="button">pdf</button>
-                      </div>
-
-
-                      
-
-
+            <div class="modal-body p-4 col-md-12" id="result" style={{height:"400px",overflowY:"scroll"}}>
+                <p>Add a title to the lesson</p>
+                <div class="row">
+                    <div class="divided col-md-12"> 
+                    
+                    
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" class="form-control" id="title_3"/>
                     </div>
 
 
-                    </fieldset>
+                    <div class="form-group">
+                        <label>Sub Section ID</label>
+                        <input type="text" class="form-control" id="section_id_3"/>
+                    </div>
 
 
-                   
-
-
+                    <div class="form-group">
+                        <label>Overview</label>
+                        <Editor placeholder="overview"/>
+                    </div>
                     
-                </div>
-
-                </div>
-
-                </div>
-
-                <div class="col-md-2">
-              <a
-                   style={{marginRight:"10px"}}
-                   href="#no-grid"
-                     className="alignToTitle btn btn-outline-secondary btn-rounded btn-sm pull-left"
-                  >
-                    {" "}
-                    <i className=" mdi mdi-keyboard-backspace"></i> Next
-                  
-                  </a>
-
-
-                   <a
-                   style={{marginRight:"10px"}}
-                   href="#no-grid"
-                  
-                    className="alignToTitle btn btn-outline-secondary btn-rounded btn-sm pull-right"
-                  >
-                    {" "}
-                    <i className=" mdi mdi-keyboard-backspace"></i> Previous
-                  
-                  </a>
-                  </div>
+                    
+                    
+                    
+                    
+                    </div>
                    
+                   
+                </div>
             </div>
 
+            
             <div class="modal-footer">
-                
-
-                
+                <button onClick={createLessonSection} type="button" style={{background:"rgba(8,23,200)"}} class="btn btn-primary" data-dismiss="modal">Add</button>
             </div>
         </div>
     </div>
@@ -1937,6 +1883,7 @@ window.removeSubSection = (el) => {
   
 
 }
+
 
 
 
@@ -2135,10 +2082,8 @@ const addSectionContent = () => {
                 href="#myModalExport" role="button" data-toggle="modal"
           data-id="${'miller_'+ mycounter }" onclick="exportSection();localStorage.setItem('given_id','dynamic_section_'+${mycounter});localStorage.setItem('tracker',${mycounter});" >Export </a></li>
                 <li><a class="dropdown-item" href="#noclick" onclick="alert('published to live course')" >Publish </a></li>
-                <li><a class="dropdown-item" href="#noclick" onclick="alert('saved as draft')" >Draft</a></li>
-  
-                <li><a class="dropdown-item" href="#noclick"  data-id="${'miller_'+ mycounter }"
-           onclick="removeSection(this)" >Delete</a></li>
+                
+             
            </ul>
          </a>
 
@@ -2264,7 +2209,7 @@ const addSubSectionContent = (el) => {
                 
 
                   <li><a class="dropdown-item" href="#myModalLesson" role="button" data-toggle="modal"
-                   onclick="localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"
+                   onclick="localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});
                   >Add Lesson</a></li>
 
                 <li><a class="dropdown-item"   href="#myModalEdit" role="button" data-toggle="modal"
@@ -2320,7 +2265,7 @@ const addSubSectionContent = (el) => {
  }
 
 
- 
+
 
   
   

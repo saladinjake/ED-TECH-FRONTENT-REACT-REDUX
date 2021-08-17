@@ -14925,7 +14925,7 @@ table.small-friendly > tbody > tr > th:last-child {
 .pbuilder-btn-grey,
 .insert-media {
     padding: 10px 10px 35px 10px !important;
-    background-color: rgba(75, 87, 101, 0.1) !important;
+    background-color: rgba(8,23,200); /*rgba(75, 87, 101, 0.1) !important;*/
     border-color: transparent !important;
     border: none !important;
     border-radius: 4px !important;
@@ -14967,12 +14967,13 @@ table.small-friendly > tbody > tr > th:last-child {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #ddd;
+    background-color: #fff;
     color: #333;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
     font-weight: 500;
     overflow: hidden;
+    margin-top: 20px;
     
 }
 
@@ -14982,7 +14983,9 @@ table.small-friendly > tbody > tr > th:last-child {
 }
 
 .row-btn.pb-handle {
-    transition: all 200ms ease-in-out
+    transition: all 200ms ease-in-out;
+    color: #fff;
+    background: rgba(8,23,200,.9);
 }
 
 .row-btn.pb-handle:hover {
@@ -14991,7 +14994,7 @@ table.small-friendly > tbody > tr > th:last-child {
 
 .builder-row-content {
     background-color:#fff; /*#ebebeb;*/
-    min-height: 60px;
+    min-height: 100px;
     padding: 10px;
     border: 1px solid #f5f5f5;
 }
@@ -15002,7 +15005,7 @@ table.small-friendly > tbody > tr > th:last-child {
 
 .pb-remove {
     transition: all 200ms ease-in-out;
-    background: #f9f9f9
+    background: #f6f6f6;
 }
 
 .pb-remove:hover {
@@ -15011,12 +15014,12 @@ table.small-friendly > tbody > tr > th:last-child {
 }
 
 .builder-btn {
-    background-color: #ddd;
+    background-color: rgba(8, 23, 200, 1.0);
     padding: 10px 15px;
-    color: #333;
+    color: #fff;
 }
 
-.pb-row {
+.pb-row,.pb-row-subblock {
     margin-bottom: 10px;
 }
 
@@ -15070,25 +15073,25 @@ table.small-friendly > tbody > tr > th:last-child {
 /* MODAL */
 .modal-build {
     display: none;
-    position: fixed;
+    /*position: fixed;*/
     z-index: 1;
-    left: 0;
-    top: 0;
+    /*left: 0;
+    top: 0;*/
     width: 100%;
-    height: 100%;
-    overflow: auto;
+   /* height: 100%;*/
+    /*overflow: auto;
     background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.4);
-    transition: all 500ms ease-in-out;
+    transition: all 500ms ease-in-out;*/
 
 }
 
 .modal-build-inner {
     position: relative;
     background-color: #fefefe;
-    margin: 10% auto;
-    overflow: hidden;
-    width: 60%;
+    /*margin: 10% auto;*/
+   /* overflow: hidden;*/
+   /* width: 60%;*/
     box-shadow: 0px 13px 21px -10px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
 }
@@ -15103,7 +15106,7 @@ table.small-friendly > tbody > tr > th:last-child {
     position: relative;
     width: 100%;
     height: 50px;
-    background: rgba(8,23,200);
+    background: #33333380;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -15164,7 +15167,7 @@ table.small-friendly > tbody > tr > th:last-child {
 .modal-tab.active-tab {
     background: rgba(8,23,200);
     font-size: 20px;
-     color: #fff;
+     color: #000;
 }
 
 .modal-build-content {
@@ -15185,6 +15188,8 @@ table.small-friendly > tbody > tr > th:last-child {
 .pb-widget {
     position: relative;
     background: #f9f9f9;
+    /*background: rgba(8,23,200);
+*/
     width: 30%;
     display: flex;
     align-items: center;
@@ -15207,23 +15212,23 @@ table.small-friendly > tbody > tr > th:last-child {
 }
 
 .pb-widget i {
-    color: #33333380;
+    color:  #33333380;
     font-size: 2rem;
     transition: all 200ms ease-in-out;
     padding: 5px 0;
 }
 
 .pb-widget:hover i {
-    color: #333;
+    color:  #000;
 }
 
 .pb-widget:hover span {
-    color: #333;
+     color:  #000;
 }
 
 .pb-widget span {
     font-size: 1rem;
-    color: #33333380;
+    color:  #000;
 }
 
 .pb-widget span,
@@ -15496,4 +15501,56 @@ max-width: 100%;
   
   display: none;
   
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*panel preview*/
+
+
+.panel {
+  border: 1px solod #ccc;
+  width:100%;
+  min-width:100%;
+}
+
+.panel-heading {
+  background-color: #ccc;
+  border-color: #fefefe;
+  color: #000;
+  width: 300px;
+  box-shadow: 0 0 0 0.2rem rgba(10, 207, 151, 0.25);
+}
+
+.panel-heading {
+  border-radius: 0;
+}
+/* Panel Controls */
+
+.panel .actions {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+}
+
+.panel .actions i {
+  font-size: 12px;
+  margin: 0 3px;
+  color: rgba(8,23,200);
+}
+
+.panel .actions i:hover {
+  cursor: pointer;
 }

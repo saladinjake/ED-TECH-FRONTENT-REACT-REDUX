@@ -292,9 +292,9 @@ const PayBench = () => {
 
       <div className="container-fluid">
         <div className="wrapper">
-          <SideBar />
+   
 
-          <div className="content-page-x col-md-9" style={{ float: "right" }}>
+          <div className="content-page-x col-md-12" >
             <div className="content-x">
               <PayOuts />
             </div>

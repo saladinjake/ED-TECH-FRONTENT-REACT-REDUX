@@ -25,11 +25,25 @@ class DynamicElements extends React.Component {
 
 		this.Modal = null;
 		this.activeBlock = null;
+		this.state ={
+			lessonCounter: 1
+		}
 
 		
 
 
    }
+
+
+  handleIncrement = () => {
+     this.setState({lessonCounter:
+     	(prevCount )=> prevCount + 1});
+  };
+
+  //Create handleDecrement event handler
+ handleDecrement = () => {
+     this.setState({lessonCounter: (prevCount) => prevCount - 1});
+  };
 
 
      
@@ -47,6 +61,7 @@ class DynamicElements extends React.Component {
 	  Clone.querySelector(".builder-row-content").appendChild(
 	    that.PlaceholderTemplate()
 	  );
+	  // Clone.querySelector(".me-o")[0].innerHTML= "Lesson "+ this.state.lessonCounter
 	  that.Blocks.appendChild(Clone);
 	}
 
@@ -63,7 +78,7 @@ class DynamicElements extends React.Component {
 	  Wrapper.addEventListener("click",function(e){
 	  	that.openModal(this)
 	  })
-	 let Content = this.pbCreateNode('div', null , 'add item');
+	 let Content = this.pbCreateNode('div', null , 'Add components');
 	  Wrapper.appendChild(Content);
 	  return Wrapper;
 	};
@@ -301,7 +316,7 @@ handleWidgetClick = e => {
   let MainClone = Preview.cloneNode(true);
   MainClone.classList.add(Type);
 
-  MainClone.querySelector("div h5").innerHTML = Title;
+  // MainClone.querySelector("div h5").innerHTML = Title;
   MainClone.querySelector("div").appendChild(Clone)
   Target.parentElement.appendChild(MainClone);
   Target.parentElement.appendChild(that.PlaceholderTemplate());
@@ -450,7 +465,7 @@ render(){
       <div class="builder-content">
        {/*		ACTION BUTTONS */}
         <div class="pb-actions">
-          <span class="pb-add-row builder-btn">add</span>
+          <span class="pb-add-row builder-btn">Add Lesson</span>
         </div>
         
 
@@ -458,9 +473,9 @@ render(){
         <div class="pb-rows">
           <div class="pb-row" name="pb-row">
             <div class="builder-row-header">
-              <span class="row-btn pb-handle fa fa-sort">handle</span>
-              <div>Lessons</div>
-              <span onClick={this.handleRemoveClick} class="row-btn row-btn-right pb-remove fa fa-trash">remove</span>
+              <span class="row-btn pb-handle fa fa-sort"></span>
+              <div class="me-o">Lesson</div>
+              <span onClick={this.handleRemoveClick} class="row-btn row-btn-right pb-remove fa fa-trash"></span>
             </div>
             <div class="pb-container">
               <div class="builder-row-content">
@@ -476,9 +491,9 @@ render(){
 
           <div class="pb-row" name="pb-row">
             <div class="builder-row-header">
-              <span class="row-btn pb-handle fa fa-sort">handle</span>
-              <div>Block</div>
-              <span onClick={this.handleRemoveClick} class="row-btn row-btn-right pb-remove fa fa-trash">remove</span>
+              <span class="row-btn pb-handle fa fa-sort"></span>
+              <div>Lesson 1.0</div>
+              <span onClick={this.handleRemoveClick} class="row-btn row-btn-right pb-remove fa fa-trash"></span>
             </div>
             <div class="pb-container">
               <div class="builder-row-content"></div>
@@ -489,8 +504,8 @@ render(){
           {/*	WIDGET SECTIONS */}
           <div class="pb-widget-preview">
           <div style={{background:"#ebebeb"}}>
-            <span class="row-btn btn-widget pb-handle-widget fa fa-sort" style={{float:"left"}}>handle</span>
-            <span class="row-btn btn-widget pb-remove fa fa-trash" style={{float:"right"}} onClick={this.handleWidgetRemove}>delete</span>
+            <span class="row-btn btn-widget pb-handle-widget fa fa-sort" style={{float:"left"}}></span>
+            <span class="row-btn btn-widget pb-remove fa fa-trash" style={{float:"right"}} onClick={this.handleWidgetRemove}></span>
          </div>
             <div style={{clear:"both"}}>
                  <h5></h5>
