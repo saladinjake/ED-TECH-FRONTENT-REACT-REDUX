@@ -13,7 +13,7 @@ window.openModal = () =>{
 
 
 function removeBlock(element) {
-  alert("triggered delete")
+  // alert("triggered delete")
    const container = element.target.parentElement.parentElement;
   if (container !== null) container.remove(container);
 }
@@ -37,7 +37,9 @@ class DynamicElements extends React.Component {
     this.ClonedModal = null;
     this.newElementCreated = null;
     this.state ={
-      lessonCounter: 1
+      lessonCounter: 1,
+      newElement:this.newElementCreated,
+      targetParent: null
     }
 
     
@@ -45,11 +47,94 @@ class DynamicElements extends React.Component {
 
    }
 
-   handleModalInputFromUser(){
-    if(this.newElementCreated!==null){
-      //get user input and set it on the cloned template
-      let titleName = this.newElementCreated.querySelector(".given-title_name")
-      let sectionName = this.newElementCreated.querySelector(".given-section_id")
+   handleModalInputFromUser(e){
+    e.preventDefault();
+    let titleName, sectionName;
+    let that = this;
+    // alert(that.state.newElement)
+     if(that.state.newElement!==null){
+      switch(this.newElementCreated.dataset.previledges){
+        /*since user has clicked submit then show the new created element*/
+        case "SECTION_CREATION":
+        
+          //get user input and set it on the cloned template
+          titleName = $(that.state.newElement).find(".given-title_name")[0]
+          sectionName= $(that.state.newElement).find(".given-section_id")[0]
+          if($("#title").val() =="" || $("#section_id").val() =="" ){
+             alert("You can not create an empty section title or id")
+             return false
+          }
+          titleName.innerHTML = $("#title").val()
+          sectionName.innerHTML=$("#section_id").val()
+          that.state.newElement.style.display="block"
+          //now display and append it
+          that.state.newElement.querySelector(".builder-row-content").appendChild(
+                that.PlaceholderTemplate()
+          );
+          that.Blocks.appendChild(that.state.newElement);
+
+
+          break;
+        case "SUB_SECTION_CREATION":
+          //get user input and set it on the cloned template
+          
+          //get user input and set it on the cloned template
+          titleName = $(that.state.newElement).find(".given-subtitle_name")[0]
+          sectionName= $(that.state.newElement).find(".given-subsection_id")[0]
+          
+
+          if($("#title").val() =="" || $("#section_id").val() =="" ){
+             alert("You can not create an empty section title or id")
+             return false
+          }
+
+          titleName.innerHTML = $("#title").val()
+          sectionName.innerHTML=$("#section_id").val()
+          that.state.newElement.style.display="block"
+          // that.state.newElement.style.position="relative"
+          let div = document.createElement("div")
+          div.style.display="table";
+          div.style.width="100%";
+          div.appendChild(that.state.newElement)
+          // alert(that.state.targetParent)
+          console.log(that.state.targetParent.innerHTML)
+          
+          that.state.targetParent.parentElement.parentElement.appendChild(div);
+          break;
+        case "LESSON_CREATION":
+          //get user input and set it on the cloned template
+          titleName = this.newElementCreated.querySelector(".given-subtitle_name")
+          sectionName= this.newElementCreated.querySelector(".given-subsection_id")
+           titleName.textContent = $("title").val()
+          sectionName.textContent =$("section_id").val()
+          break;
+        case "SECTION_EDIT":
+          //get user input and set it on the cloned template
+          titleName = this.newElementCreated.querySelector(".given-title_name")
+          sectionName= this.newElementCreated.querySelector(".given-section_id")
+           titleName.textContent = $("title").val()
+          sectionName.textContent =$("section_id").val()
+          break;
+        case "SUB_SECTION_EDIT":
+          //get user input and set it on the cloned template
+          titleName = this.newElementCreated.querySelector(".given-title_name")
+          sectionName= this.newElementCreated.querySelector(".given-section_id")
+           titleName.textContent = $("title").val()
+          sectionName.textContent =$("section_id").val()
+          break;
+        case "LESSON_EDIT":
+          //get user input and set it on the cloned template
+          titleName = this.newElementCreated.querySelector(".given-title_name")
+          sectionName= this.newElementCreated.querySelector(".given-section_id")
+           titleName.textContent = $("title").val()
+          sectionName.textContent =$("section_id").val()
+          break;
+        default:
+          return 0;
+
+      }
+   
+      
     }
    }
 
@@ -79,46 +164,62 @@ class DynamicElements extends React.Component {
     this.addSubBlock(e);
   };
 
-  addBlock() {
+  addBlock() { /*NEW SECTION CREATION*/
     // alert("make parent section")
     this.handleIncrement()
   let that = this;
     let Clone = this.Block.cloneNode(true);
     this.newElementCreated = Clone; // keeps track of new element created on the fly
+    this.newElementCreated.dataset.previledges= "SECTION_CREATION";
 
     this.newElementCreated.style.display="none" //hide it until user has hit save
                                                 //if user hits the cancel btn in the modal then delete it
     this.newElementCreated.style.border = "1px solid #000"
-    this.newElementCreated.querySelector(".builder-row-content").appendChild(
-      that.PlaceholderTemplate()
-    );
-    // Clone.querySelector(".me-o")[0].innerHTML= "Lesson "+ this.state.lessonCounter
-    that.Blocks.appendChild(that.newElementCreated);
+
+
+    //no need to show the newly created element until user click the add button from the modal
+
+    // this.newElementCreated.querySelector(".builder-row-content").appendChild(
+    //   that.PlaceholderTemplate()
+    // );
+    // // Clone.querySelector(".me-o")[0].innerHTML= "Lesson "+ this.state.lessonCounter
+    // that.Blocks.appendChild(that.newElementCreated);
+
+    this.setState({newElement: that.newElementCreated})
 
   }
 
 
   addSubBlock(e) {
-    alert("clicked to make sub section")
+    // alert("clicked to make sub section")
     this.handleIncrement()
-  let that = this;
+    let that = this;
     let Clone = this.SubBlock.cloneNode(true);
     Clone.appendChild(
       that.PlaceholderTemplate()
     );
+
+    this.activeBlock = e.target;
+
+
+    this.newElementCreated = Clone; // keeps track of new element created on the fly
+    this.newElementCreated.dataset.previledges= "SUB_SECTION_CREATION";
+
+    this.newElementCreated.style.display="none" //hide it until user has hit save
+                                                //if user hits the cancel btn in the modal then delete it
+    this.newElementCreated.style.border = "2px solid #f6f6f6"
+    let targetParent =  this.activeBlock.parentNode; //parentNode .parentElement.parentElement
+
+
+  
+    this.setState({
+      newElement: that.newElementCreated,
+      targetParent: targetParent
+    })
    
-    let targetParent = e.target.parentElement.parentElement; //parentNode
-     // let clonedAction = targetParent.querySelector(".sub-block-event");
-    // targetParent.querySelector(".pb-placeholder").remove()
-
-
-
-    // Clone.querySelector(".me-o")[0].innerHTML= "Lesson "+ this.state.lessonCounter
-    targetParent.appendChild(Clone);
-    // targetParent.appendChild(clonedAction)
-    // targetParent.insertBefore(Clone,targetParent.querySelector(".pb-placeholder"))
-    // this.insertAfter(targetParent, Clone)
-  }
+  
+    
+   }
 
   insertAfter(parent, newNode) {
     parent.insertBefore(newNode, parent.nextSibling);
@@ -142,6 +243,11 @@ class DynamicElements extends React.Component {
       { class: "pb-placeholder sub-block-event col-md-6" },
       // { onclick:  () => { "openModal(this)" }
     ]);
+
+    SubSectionWrapper.setAttribute("href", "#myModalDynamicCreation")
+    SubSectionWrapper.setAttribute("role", "button")
+    SubSectionWrapper.setAttribute("data-toggle", "modal")
+  
 
     let that = this;
     SubSectionWrapper.addEventListener("click",function(e){
@@ -401,7 +507,7 @@ handleWindowClick = e => {
 openModal = block => {
   let that = this;
   this.activeBlock = block;
-  alert(block)
+  // alert(block)
   that.ClonedModal = this.Modal.cloneNode(true)
   that.ClonedModal.style.display = "block";
   that.activeBlock.parentNode.parentNode.appendChild(that.ClonedModal)
@@ -413,7 +519,7 @@ openModal = block => {
 closeModal = (e) => {
 
   
-    alert("try to clike me")
+    // alert("try to clike me")
     this.activeBlock = undefined;
     // this.Modal.style.display = "none";
      this.ClonedModal.remove()
@@ -441,7 +547,7 @@ handleWidgetClick = e => {
   const Type = Widget.getAttribute("data-type");
   const TemplateType = Widget.getAttribute("data-template")
 
-
+  //widget
   
   let Target = this.activeBlock;
   let Title = Widget.querySelector("span").innerHTML;
@@ -609,7 +715,8 @@ render(){
           <div class="pb-row" name="pb-row" style={{border:"1px solid #000"}}>
             <div class="builder-row-header">
               <span class="row-btn pb-handle fa fa-sort"></span>
-              <div class="me-o">Default Section</div>
+              <div class="given-title_name me-o">Create sections</div>
+               <span class="given-section_id"></span>
               <span onClick={this.handleRemoveClick} class="row-btn row-btn-right pb-remove fa fa-trash"></span>
             </div>
             <div class="pb-container">
@@ -637,7 +744,8 @@ render(){
             <div class="builder-row-header">
               <span class="row-btn pb-handle fa fa-sort"></span>
               <div class="given-title_name">Section 1 </div>
-              <span class="given-section_id"></span>
+                <span class="given-section_id">Empty</span>
+              
               <span onClick={this.handleRemoveClick} class="row-btn row-btn-right pb-remove fa fa-trash"></span>
             </div>
 
@@ -647,11 +755,12 @@ render(){
 
 
 
+
                    <div class="pb-row-subblock" name="pb-row-subblock">
                       <div class="builder-row-header">
                         <span class="row-btn pb-handle fa fa-sort"></span>
-                        <div class="given-subtitle_name">Sub section 1</div>
-                        <span class="given-subsection_id"></span>
+                        {/*<div class="given-subtitle_name"></div>
+                        <span class="given-subsection_id"></span>*/}
                         <span onClick={this.handleRemoveClick} class="row-btn row-btn-right pb-remove fa fa-trash"></span>
                       </div>
 
@@ -679,7 +788,8 @@ render(){
          <div class="pb-row-subblock" name="pb-row-subblock">
             <div class="builder-row-header">
               <span class="row-btn pb-handle fa fa-sort"></span>
-              <div>Sub Sections</div>
+               <div class="given-subtitle_name"></div>
+                        <span class="given-subsection_id"></span>
               <span onClick={this.handleRemoveClick} class="row-btn row-btn-right pb-remove fa fa-trash"></span>
             </div>
 
@@ -756,9 +866,71 @@ render(){
         </div>
 
         <div class="modal-build-content widgets-tab active-content container-fluid">
-          <div class="pb-widget col-md-3" data-title="html" data-template="[pb_link][/pb_html]" data-type="content-block"><i class="fas fa-link"></i><span>Raw Html</span></div>
-          <div class="pb-widget col-md-3" data-title="iframe" data-template="[pb_iframe][/pb_iframe]" data-type="content-block"><i class="fas fa-square"></i><span>Iframe</span></div>
+
+
+           
+
+           <div class="box-inset col-md-3">
+                <h1 style={{marginTop:"100px"}}>html</h1>
+              <div class="wrapper-box">
+                <input  type="checkbox" />
+                <div class="fab"></div>
+                <div class="fac">
+                  <a href="#" data-title="html" data-template="[pb_link][/pb_html]" data-type="content-block" ><i class="fa fa-link"></i>HTML</a>
+                  <a href="#" data-title="iframe" data-template="[pb_iframe][/pb_iframe]" data-type="content-block"><i class="fa fa-link"></i> IFRAME</a>
+                  <a href="#" data-template="[pb_video][/pb_video]" data-type="content-block">ANOTHER</a>
+                </div>
+              </div>
+              </div>
+
+
+
+           <div class="box-inset col-md-3">
+                <h1 style={{marginTop:"100px"}}>Problems</h1>
+              <div class="wrapper-box">
+                <input  type="checkbox" />
+                <div class="fab"></div>
+                <div class="fac">
+                  <a href="#" data-title="html" data-template="[pb_link][/pb_html]" data-type="content-block" ><i class="fa fa-link"></i>HTML</a>
+                  <a href="#" data-title="iframe" data-template="[pb_iframe][/pb_iframe]" data-type="content-block"><i class="fa fa-link"></i> IFRAME</a>
+                  <a href="#" data-template="[pb_video][/pb_video]" data-type="content-block">ANOTHER</a>
+                </div>
+              </div>
+              </div>
+
+
+           <div class="box-inset col-md-3">
+                <h1 style={{marginTop:"100px"}}>html</h1>
+              <div class="wrapper-box">
+                <input  type="checkbox" />
+                <div class="fab"></div>
+                <div class="fac">
+                  <a href="#" data-title="html" data-template="[pb_link][/pb_html]" data-type="content-block" ><i class="fa fa-link"></i>HTML</a>
+                  <a href="#" data-title="iframe" data-template="[pb_iframe][/pb_iframe]" data-type="content-block"><i class="fa fa-link"></i> IFRAME</a>
+                  <a href="#" data-template="[pb_video][/pb_video]" data-type="content-block">ANOTHER</a>
+                </div>
+              </div>
+              </div>
+
+
+           <div class="box-inset col-md-3">
+                <h1 style={{marginTop:"100px"}}>html</h1>
+              <div class="wrapper-box">
+                <input  type="checkbox" />
+                <div class="fab "></div>
+                <div class="fac">
+                  <a href="#" data-title="html" data-template="[pb_link][/pb_html]" data-type="content-block" ><i class="fa fa-link"></i>HTML</a>
+                  <a href="#" data-title="iframe" data-template="[pb_iframe][/pb_iframe]" data-type="content-block"><i class="fa fa-link"></i> IFRAME</a>
+                  <a href="#" data-template="[pb_video][/pb_video]" data-type="content-block">ANOTHER</a>
+                </div>
+              </div>
+              </div>
+
+
+         {/* <div class="pb-widget col-md-3" data-title="html" data-template="[pb_link][/pb_html]" data-type="content-block"><i class="fas fa-link"></i><span>Raw Html</span></div>
+          <div class="pb-widget col-md-3" data-title="iframe" data-template="[pb_iframe][/pb_iframe]" data-type="content-block"><i class="fa fa-square"></i><span>Iframe</span></div>
           <div class="pb-widget col-md-3" data-template="[pb_video][/pb_video]" data-type="content-block"><i class="fa fa-video-camera"></i><span>Video</span></div>
+        */}
         </div>
         <div class="modal-build-content background-tab">
         </div>
@@ -816,7 +988,7 @@ render(){
             </div>
 
             <div class="modal-footer">
-                <button type="button" style={{background:"rgba(8,23,200)"}} class="btn btn-primary" data-dismiss="modal">Add</button>
+                <button  onClick={(e) => {this.handleModalInputFromUser(e)}} type="button" style={{background:"rgba(8,23,200)"}} class="btn btn-primary" data-dismiss="modal">Add</button>
             </div>
         </div>
     </div>

@@ -20,10 +20,117 @@ import Lessons from "./dynamic_content"
 
 
 
+let lesson_counter = 1;
 const createLessonSection =(el) =>{
+  let muu_counter = lesson_counter++;
+   localStorage.setItem("l_tracker", muu_counter)
+  let panel_class = $(".muu_" +  localStorage.getItem("s_tracker") )
+  let lesson_components = document.getElementById("myModalLessonGroup");
+  lesson_components.style.display="block"
   
+  let template =` 
+      <tr border-spacing="20"   id="dynamic_subsection_${muu_counter}"  data-id="${'muu_'+ muu_counter }" class="fold ${'muu_'+ muu_counter } col-md-8   section-parent_${localStorage.getItem('tracker')} subsection-child_${localStorage.getItem('s_tracker')} " style="margin-left:15px;margin-right:20px;min-width:80%;width:80%;height:30px;border:1px solid black;border-bottom:none;border-top:none;">
+      <td colspan="7">
+        <div class="fold-content">
+  
+  <table  class="small-friendly course-window dynamo_${localStorage.getItem("l_tracker")}">
+            <thead>
+              <tr>
+                <th><span class="visible-small" title="Premiumns">Title</span><span class="visible-big">Lesson Title</span></th>
+      <th><span class="visible-small" title="Strategy A">Lesson ID</span><span class="visible-big">Lesson ID</span></th>
+      
+     
+     <th class="action"  style="float:right"><span class="visible-small" title="Strategy A">Action</span><span class="visible-big">Action</span></th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr class="column-list"  style="height:60px;border-left:3px solid black;margin-top:10px">
+               <td class="title_sub " data-th="Company name" style="font-size:15px">${$("#title_3").val() || "Lesson"}</td>
+                <td class="subsect" data-th="Customer no">${ muu_counter }</td>
+                <td class="action" data-th="Customer nam"  style="float:right">
 
 
+
+        <a style="margin-right:10px;background:#fff;color:#000"
+            href="#myModalSubSectionEdit" role="button" data-toggle="modal"
+          data-id="${'muu_'+ muu_counter }"
+            onclick="localStorage.setItem('given_lsid','dynamic_lsubsection_'+${muu_counter});localStorage.setItem('ls_tracker',${muu_counter});"       
+          >
+                
+          <i class="fa fa-edit "></i>
+        </a>
+
+
+        <a style="margin-right:10px;background:#fff;color:#000"
+          
+          data-id="${'lmuu_'+ muu_counter }"
+           onclick=""        
+          >
+                
+          <i class="fa fa-trash "></i>
+        </a>
+
+
+         <a style="margin-right:10px;background:#fff;color:#000"
+          
+          data-id="${'lmuu_'+ muu_counter }"
+                 
+          >
+
+         <i class="fa fa-arrows "></i>
+        </a>
+
+
+
+         <a class="dropright dropright "  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                 
+                <i class="fa fa-ellipsis-v " style="color:#000"></i>
+             
+        <ul class="dropdown-menu" style="margin-left:40px" >
+
+ 
+
+                
+
+                <li><a class="dropdown-item"   href="#myModalEdit" role="button" data-toggle="modal"
+          data-id="${'lmuu_'+ muu_counter }"
+            onclick="localStorage.setItem('given_lsid','dynamic_lsubsection_'+${muu_counter});localStorage.setItem('ls_tracker',${muu_counter});"       
+          >Edit </a></li>
+
+
+
+                <li><a class="dropdown-item"   href="#myModalLesson" role="button" data-toggle="modal"
+          data-id="${'lmuu_'+ muu_counter }"
+            onclick="editSection(this);localStorage.setItem('given_lsid','dynamic_lsubsection_'+${muu_counter});localStorage.setItem('ls_tracker',${muu_counter});"       
+          >Add Component</a></li>
+
+
+                <li><a class="dropdown-item" 
+                 data-id="${'lmuu_'+ muu_counter }"
+                onclick="localStorage.setItem('given_lsid','dynamic_lsubsection_'+${muu_counter});localStorage.setItem('ls_tracker',${muu_counter});"
+
+                >Replicate Section</a></li>
+                
+                <li><a class="dropdown-item" href="#noclick"  data-id="${'lmuu_'+ muu_counter }"
+           onclick="" >Delete</a></li>
+           </ul>
+         </a>
+         
+
+
+
+                </td>
+
+              </tr>
+
+            
+              
+
+            </tbody>
+          </table> </td></tr></div>`
+  
+  panel_class.parent().append(template)
 }
 
 class Editor extends React.Component {
@@ -105,6 +212,9 @@ export default class MasterForm extends React.Component {
     super(props);
     this.state = {
       currentStep: 1,
+      sectionStep:1,
+      subSectionStep:1,
+      lessonStep:1,
       finishedClicked: false,
       email: "",
       username: "",
@@ -141,7 +251,7 @@ export default class MasterForm extends React.Component {
 
   _next() {
     let currentStep = this.state.currentStep;
-    currentStep = currentStep >= 6 ? 7 : currentStep + 1;
+    currentStep = currentStep >= 7 ? 8 : currentStep + 1;
     this.setState({
       currentStep: currentStep,
     });
@@ -435,6 +545,20 @@ export default class MasterForm extends React.Component {
                             <i className="fa fa-currency mr-1"></i>
                             <span className="d-none d-sm-inline">Authoring Team</span>
                           </a>
+
+
+
+                          <a
+                          onClick={(e) => {
+                            this.goToStep(e, 8);
+                          }}
+                            href="#resource"
+                            data-toggle="tab"
+                            className="nav-link rounded-0 pt-2 pb-2"
+                          >
+                            <i className="fa fa-currency mr-1"></i>
+                            <span className="d-none d-sm-inline">Resource</span>
+                          </a>
                         
 
                        
@@ -564,8 +688,19 @@ export default class MasterForm extends React.Component {
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
                       />
+
+                      <Step8
+                        currentStep={this.state.currentStep}
+                        finishedClicked={this.state.finishedClicked}
+                        handleChange={this.handleChange}
+                        comment={this.state.comment}
+                        canSubmit={this.state.canSubmit}
+                      />
+
                       <br />
                       <br />
+
+
 
                     
                     </form>
@@ -1418,21 +1553,151 @@ const editSaveSubSection = (el) => {
 
 const Step2 = (props) => {
 
-  useEffect(() => {
 
 
-    $('.pricing_lesson__column').on('click', function() {
-  $('.pricing_lesson__column').removeClass('selected');
-  $(this).addClass('selected');
-  $('.check').removeClass('selected');
-  $('.check',this).addClass('selected');
-})
+  const handleTabClick = tab => {
+  const Tab = tab.target;
+  const Tabs = document.querySelectorAll(".modal-tab");
+  const TabContents = document.querySelectorAll(".modal-build-content");
+
+  Tabs.forEach(elem => {
+    elem.classList.remove("active-tab");
+  });
+  TabContents.forEach(content => {
+    content.classList.remove("active-content");
+    if (content.classList.contains(tab.target.classList[1])) {
+      content.classList.add("active-content");
+    }
+  });
+  Tab.classList.add("active-tab");
+};
+
+const closeModal = () => {
+  // let activeBlock;
+
+  const Modal = document.getElementById("myModalLessonGroup");
+  // activeBlock = undefined;
+  Modal.style.display = "none";
+  
+};
+
+const handleWindowClick = e => {
+ 
+  const Modal = document.getElementById("myModalLessonGroup");
+
+  if (e.target == Modal) {
+    closeModal();
+  }
+};
+
+// Methods
+
+// const handleWidgetClick = e => {
+//   const Widget = e.target;
+//   console.log(e.target.parentElement)
+  
+//   const Type = Widget.getAttribute("data-type");
+//   let Target = document.querySelector(".muu_"+ localStorage.getItem("s_tracker"));
+//   // console.log(Target)
+//   let Title = Widget.querySelector("span").innerHTML;
+//   let Preview = document.querySelector(
+//     "#template-container > .pb-widget-preview"
+//   );
+//   let Clone = Preview.cloneNode(true);
+//   Clone.classList.add(Type);
+//   Clone.querySelector("div").innerHTML = Title;
+//   Target.parentElement.appendChild(Clone);
+//   Target.parentElement.appendChild(PlaceholderTemplate());
+//   Target.remove(Target);
+//   closeModal();
+// };
+
+const handleWidgetRemove = widget => {
+  widget.parentElement.remove(widget.parentElement);
+};
 
 
+  useEffect(()=>{
+      const Tabs = document.querySelectorAll(".modal-tab");
+  const TabContents = document.querySelectorAll(".modal-build-content");
+const Widgets = document.querySelectorAll(".pb-widget");
 
-
-
+  Widgets.forEach(widget => {
+    widget.onclick = handleWidgetClick;
+  });
+  Tabs.forEach(tab => {
+    tab.onclick = handleTabClick;
+  });
   })
+
+let call =true
+ const  handleClonedEvents = (e) => {
+   e.preventDefault()
+   
+   //alert("calling component action")
+   if( call== true && e.target.matches(".pb-widget") && e.target.hasAttribute("data-template") && e.target.hasAttribute("data-type")){
+    call = false;
+    
+     handleWidgetClick(e)
+   }
+}
+
+// Methods
+
+const handleWidgetClick = e => {
+  let that = this;
+  const Widget = e.target;
+  const Type = Widget.getAttribute("data-type");
+  const TemplateType = Widget.getAttribute("data-template")
+
+  //widget
+  
+  let Target = $(".dynamo_"+ localStorage.getItem("l_tracker"));
+  // let Title = Widget.querySelector("a").innerHTML;
+  let Preview = document.querySelector(
+    "#template-container > .pb-widget-preview"
+  );
+
+
+  let MainClone = Preview.cloneNode(true);
+  MainClone.classList.add(Type);
+
+  MainClone = $(MainClone).css({
+    display:"block",
+    width:"100%",
+    "max-width":"100%",
+    "justify-content":"center",
+    "text-align":"center",
+    "margin": 0,
+  "position": "relative",
+  // "bottom": "10%",
+  // "left": "50%",
+  // "transform": "translate(-50%, 50%)",
+  })
+
+  // MainClone.querySelector("div h5").innerHTML = Title;
+  // MainClone.querySelector("div").appendChild(Clone)
+  Target.append(MainClone);
+  // Target.parentElement.appendChild(that.PlaceholderTemplate());
+  // Target.remove(Target);
+
+  closeModal()
+  
+  
+};
+
+
+ 
+
+  
+  document.body.addEventListener("click",(e)=>{
+    if(e.target.matches(".trigger-lesson-content") && e.target.hasAttribute("data-template") && e.target.hasAttribute("data-type")){
+     handleClonedEvents(e)
+   }
+  })
+
+
+
 
 if (props.currentStep !== 6) {
       return null;
@@ -1458,7 +1723,7 @@ if (props.currentStep !== 6) {
 
 
  
-              <table class="fold-table">
+              <table class="fold-table course-window">
             
   <thead className="card-box">
     <tr >
@@ -1470,7 +1735,7 @@ if (props.currentStep !== 6) {
   </thead>
 
   <tbody id="js-parent" class="widow-window">
-    
+      
 
   </tbody>
 </table>
@@ -1508,7 +1773,7 @@ if (props.currentStep !== 6) {
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title pull-left">Section Detail</h5>
+                <h5 class="modal-title pull-left" style={{color:"#000"}}>Section Detail</h5>
                 <a href="#"  class="pull-right" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </a>
@@ -1525,7 +1790,7 @@ if (props.currentStep !== 6) {
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group" style={{display:"none"}}>
                         <label>Section ID</label>
                         <input type="text" class="form-control" id="section_id"/>
                     </div>
@@ -1563,7 +1828,7 @@ if (props.currentStep !== 6) {
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title pull-left">Editing Section Detail</h5>
+                <h5 class="modal-title pull-left" style={{color:"#000"}}>Editing Section Detail</h5>
                 <a href="#"  class="pull-right" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </a>
@@ -1574,13 +1839,13 @@ if (props.currentStep !== 6) {
                     <div class="divided col-md-12"> 
                     
                     
-                    <div class="form-group">
+                    <div class="form-group" >
                         <label>Title</label>
                         <input type="text" class="form-control" id="title_edit"/>
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group" style={{display:"none"}}>
                         <label>Section ID</label>
                         <input type="text" class="form-control" id="section_id_edit"/>
                     </div>
@@ -1615,7 +1880,7 @@ if (props.currentStep !== 6) {
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title pull-left">Editing Section Detail</h5>
+                <h5 class="modal-title pull-left" style={{color:"#000"}}>Editing Section Detail</h5>
                 <a href="#"  class="pull-right" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </a>
@@ -1632,7 +1897,7 @@ if (props.currentStep !== 6) {
                     </div>
 
 
-                    <div class="form-group" >
+                    <div class="form-group" style={{display:"none"}}>
                         <label>Section ID</label>
                         <input type="text" class="form-control" id="section_id_edit_2"/>
                     </div>
@@ -1666,7 +1931,7 @@ if (props.currentStep !== 6) {
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title pull-left">Sub Section Detail</h5>
+                <h5 class="modal-title pull-left" style={{color:"#000"}}>Sub Section Detail</h5>
                 <a href="#"  class="pull-right" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </a>
@@ -1677,13 +1942,13 @@ if (props.currentStep !== 6) {
                     <div class="divided col-md-12"> 
                     
                     
-                    <div class="form-group">
+                    <div class="form-group" >
                         <label>Title</label>
                         <input type="text" class="form-control" id="title_2"/>
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group" style={{display:"none"}}>
                         <label>Sub Section ID</label>
                         <input type="text" class="form-control" id="section_id_2"/>
                     </div>
@@ -1720,7 +1985,7 @@ if (props.currentStep !== 6) {
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title pull-left">Delete this section</h5>
+                <h5 class="modal-title pull-left" style={{color:"#000"}}>Delete this section</h5>
                 <a href="#"  class="pull-right" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </a>
@@ -1758,7 +2023,7 @@ if (props.currentStep !== 6) {
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title pull-left">Delete this section</h5>
+                <h5 class="modal-title pull-left" style={{color:"#000"}}>Delete this section</h5>
                 <a href="#"  class="pull-right" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </a>
@@ -1815,7 +2080,7 @@ if (props.currentStep !== 6) {
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group"  style={{display:"none"}}>
                         <label>Sub Section ID</label>
                         <input type="text" class="form-control" id="section_id_3"/>
                     </div>
@@ -1846,6 +2111,84 @@ if (props.currentStep !== 6) {
 
 
 
+
+
+
+
+
+{/*lesson categories section goes here* myModalLessonGroup*/}
+<div id="myModalLessonGroup" class="modal-build">
+      <div class="modal-build-inner">
+        <div class="modal-toolbar">
+          <h2 class="modal-title">Wähle ein Widget 1</h2>
+          <i id="pb-modal-close" class="fa fa-times"></i>
+        </div>
+        <div class="modal-tabs">
+          <div class="modal-tab widgets-tab active-tab"><i class="tab-icon fas fa-hammer"></i>Textual Content</div>
+          <div class="modal-tab background-tab"><i class="tab-icon fas fa-fill"></i> Media
+          </div>
+          <div class="modal-tab special-tab"><i class="tab-icon fas fa-star"></i> Specials
+          </div>
+        </div>
+        <div class="modal-build-content widgets-tab active-content">
+          <div class="pb-widget" data-template="[pb_text][/pb_text]" data-type="content-block"><i class="fas fa-heading"></i><span>TEXT</span></div>
+          <div class="pb-widget" data-template="[pb_link][/pb_link]" data-type="content-block"><i class="fas fa-link"></i><span>HTML</span></div>
+          <div class="pb-widget" data-template="[pb_button][/pb_button]" data-type="content-block"><i class="fas fa-square"></i><span>IFRAME</span></div>
+          <div class="pb-widget" data-template="[pb_slider][/pb_slider]" data-type="content-block">
+            <div>
+              <i class="fa fa-chevron-left"></i>
+              <i class="fa fa-chevron-right"></i>
+            </div>
+            <span>Slider</span>
+          </div>
+          <div class="pb-widget" data-template="[pb_image][/pb_image]" data-type="content-block"><i class="fa fa-image"></i><span>Image</span></div>
+          <div class="pb-widget" data-template="[pb_video][/pb_video]" data-type="content-block"><i class="fa fa-video"></i><span>Video</span></div>
+        </div>
+        <div class="modal-build-content background-tab">
+          <div class="pb-widget" data-template="[pb_color_section][/pb_color_section]" data-type="background">
+            <i class="fa fa-tint"></i><span>DISCUSSION</span></div>
+          <div class="pb-widget" data-template="[pb_background_video][/pb_background_video]" data-type="background"><i class="fa fa-file-video"></i><span>NOTE</span></div>
+          <div class="pb-widget" data-template="[pb_fullscreen_background][/pb_fullscreen_background]" data-type="background"><i class="fa fa-compress"></i><span>Multiple Choice</span></div>
+        </div>
+        <div class="modal-build-content special-tab">
+          <div class="pb-widget" data-template="[pb_masonry][/pb_masonry]" data-type="special"><i class="fas fa-th-large"></i><span>Masonry</span></div>
+          <div class="pb-widget" data-template="[pb_blog][/pb_blog]" data-type="special"><i class="fas fa-blog"></i><span>Blog</span></div>
+        </div>
+      </div>
+    </div>
+   
+
+
+{/*Lesson categories section*/}
+
+<div id="template-container">
+
+
+{/* WIDGET SECTIONS */}
+<table class="pb-widget-preview fold">
+<tbody>
+         <tr >
+            <td class="row-btn btn-widget pb-handle-widget fa fa-sort">handle</td>
+            <td></td>
+             <td></td>
+            <td class="row-btn btn-widget pb-remove fa fa-trash" onclick="handleWidgetRemove(this)">delete</td>
+          </tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+        </div>
         </div>
       </React.Fragment>
     );
@@ -1995,16 +2338,21 @@ window.exportSection = () => {
 
 }
 
-let counter = 0;
+let counter = 1;
 const addSectionContent = () => {
   let mycounter = counter++;
+  localStorage.setItem("sec_counter",mycounter)
+  
 
 
-  let templateData = `<tr    data-id="${'miller_'+ mycounter }" id="dynamic_section_${mycounter}" onclick="showSubsection(this)" class="view ${'miller_'+ mycounter } section-list" style="min-width:100%;width:100%;height:60px;border-left:3px solid black;margin-top:10px">
+
+  let templateData = `
+ 
+  <tr onclick="showSubsection(this)" data-id="${'miller_'+ mycounter }" id="dynamic_section_${mycounter}"  class="view col-md-12 ${'miller_'+ mycounter } section-list" style="min-width:100%;width:100%;border:1px solid #000; border-bottom:none; border-top:none; margin-top:10px;">
      
-     <td class="tits section__name"> ${document.getElementById("title").value || "Module # " + mycounter   }</td>
-      <td class="pcs">${document.getElementById("section_id").value || "Section #" + mycounter }</td>
-       <td class="we">0</td>
+     <td class="tits section__name" style="font-size:20px"> ${document.getElementById("title").value || "Section " + mycounter   }</td>
+      <td class="pcs" style="font-size:20px">${ "Section " + mycounter }</td>
+       <td class="we">${$(".section-parent").length}</td>
       <td class="per action" style="float:right">
       <a style="margin-right:10px;background:#fff;color:#000"
                    href="#myModalSubsection" role="button" data-toggle="modal"
@@ -2064,9 +2412,7 @@ const addSectionContent = () => {
                    onclick="localStorage.setItem('given_id','dynamic_section_'+${mycounter});localStorage.setItem('tracker',${mycounter});"
                   >Add Sub Section</a></li>
 
-                  <li><a class="dropdown-item" href="#myModalLesson" role="button" data-toggle="modal"
-                   onclick="localStorage.setItem('given_id','dynamic_section_'+${mycounter});localStorage.setItem('tracker',${mycounter});"
-                  >Add Lesson</a></li>
+                  
 
                 <li><a class="dropdown-item"   href="#myModalEdit" role="button" data-toggle="modal"
           data-id="${'miller_'+ mycounter }"
@@ -2086,12 +2432,18 @@ const addSectionContent = () => {
              
            </ul>
          </a>
-
+          
+          
               
         </td>
+</tr>
+
     `;
 
-// $("#js-add").on("click", function(){
+// $("#js-add").on("click", function(){ 
+  //<li><a class="dropdown-item" href="#myModalLesson" role="button" data-toggle="modal"
+                 //  onclick="localStorage.setItem('given_id','dynamic_section_'+${mycounter});localStorage.setItem('tracker',${mycounter});"
+                 // >Add Lesson</a></li>
   // mockup variables for some randomness
   var heightValue = Math.random() * 10;
   var count = $(".section-parent").length;
@@ -2139,17 +2491,20 @@ const addSectionContent = () => {
 
 
 let muu_count = 0
+let section_counter =  0.1
 const addSubSectionContent = (el) => {
   let muu_counter = muu_count++
+  let gen_sec_id = parseInt(localStorage.getItem("sec_counter")) + section_counter
+  localStorage.setItem("sec_counter",gen_sec_id)
   const template = `
-    
+
   
-         <tr  id="dynamic_subsection_${muu_counter}"  data-id="${'muu_'+ muu_counter }" class="fold ${'muu_'+ muu_counter } section-parent_${localStorage.getItem('tracker')} subsection-child_${localStorage.getItem('s_tracker')} " style="min-width:100%;width:100%;height:60px;border-left:3px solid black;margin-top:10px">
+         <tr border-spacing="20"   id="dynamic_subsection_${muu_counter}"  data-id="${'muu_'+ muu_counter }" class="fold ${'muu_'+ muu_counter } col-md-10 section-parent_${localStorage.getItem('tracker')} subsection-child_${localStorage.getItem('s_tracker')} " style="min-width:100%;width:100%;height:60px;border:1px solid black;border-bottom:none;border-top:none;margin:10px">
       <td colspan="7">
         <div class="fold-content">
-          <h3>Subsections</h3>
+         
           
-          <table class="small-friendly">
+          <table class="small-friendly course-window">
             <thead>
               <tr>
                 <th><span class="visible-small" title="Premiumns">Title</span><span class="visible-big">Title</span></th>
@@ -2163,8 +2518,8 @@ const addSubSectionContent = (el) => {
             <tbody>
 
               <tr class="column-list"  style="height:60px;border-left:3px solid black;margin-top:10px">
-               <td class="title_sub " data-th="Company name">${$("#title_2").val() || "no content"}</td>
-                <td class="subsect" data-th="Customer no">${$("#section_id_2").val() || "no content"}</td>
+               <td class="title_sub " data-th="Company name" style="font-size:15px">${$("#title_2").val() || "Subsection"}</td>
+                <td class="subsect" data-th="Customer no">${ gen_sec_id }</td>
                 <td data-th="Customer name">0</td>
                 <td class="action" data-th="Customer nam"  style="float:right">
 
@@ -2206,16 +2561,24 @@ const addSubSectionContent = (el) => {
                 <i class="fa fa-ellipsis-v " style="color:#000"></i>
              
         <ul class="dropdown-menu" style="margin-left:40px" >
-                
 
-                  <li><a class="dropdown-item" href="#myModalLesson" role="button" data-toggle="modal"
-                   onclick="localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});
-                  >Add Lesson</a></li>
+ 
+
+                
 
                 <li><a class="dropdown-item"   href="#myModalEdit" role="button" data-toggle="modal"
           data-id="${'muu_'+ muu_counter }"
             onclick="editSection(this);localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"       
           >Edit </a></li>
+
+
+
+                <li><a class="dropdown-item"   href="#myModalLesson" role="button" data-toggle="modal"
+          data-id="${'muu_'+ muu_counter }"
+            onclick="editSection(this);localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"       
+          >Add Lesson</a></li>
+
+
                 <li><a class="dropdown-item" 
                  data-id="${'muu_'+ muu_counter }"
                 onclick="replicateSubSection(this);localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"
@@ -2242,7 +2605,7 @@ const addSubSectionContent = (el) => {
         </div>
       </td>
     </tr>
-     
+  
        
       
    
@@ -2370,6 +2733,72 @@ class Step7 extends React.Component {
                     Submit
                   </button>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </React.Fragment>
+    );
+  }
+}
+
+
+
+
+
+
+
+class Step8 extends React.Component {
+
+  updateList = function() {
+      var input = document.getElementById('file');
+      var output = document.getElementById('fileList');
+      var children = "";
+      for (var i = 0; i < input.files.length; ++i) {
+          children +=  '<tr><td>'+ input.files.item(i).name + '<span class="remove-list" onclick="return this.parentNode.remove()">X</span>' + '</td></tr>'
+      }
+      output.innerHTML = children;
+  }
+  render() {
+    if (this.props.currentStep !== 8) {
+      return null;
+    }
+    return (
+      <React.Fragment>
+        <div className="tab-pane" id="resource">
+          <div className="row">
+            <div className="col-12">
+              <div className="text-center">
+                <h2 className="mt-0">
+                  <i className="fa fa-check-all"></i>
+                </h2>
+
+
+
+                <div class="divbox">
+<div class="custom-file">
+    <input type="file" class="custom-file-input-style" id="file" multiple 
+    onChange={this.updateList} />
+    <label class="custom-file-label" for="file">
+      <img width="30" src="https://image.flaticon.com/icons/svg/54/54565.svg" /> Upload Files</label>
+</div>
+</div>
+
+<table>
+  <th>File Name</th>
+  <th>image url</th>
+  <th>preview</th>
+  <th>Action</th>
+  <tbody id="fileList" class="file-list">
+    
+  </tbody>
+</table>
+
+
+
+
+               
+
               </div>
             </div>
           </div>
