@@ -17,13 +17,22 @@ import Dropzone, { ImageFile } from "react-dropzone";
 import Sortable from "sortablejs/modular/sortable.complete.esm.js";
 import Lessons from "./dynamic_content";
 
+/*magicican victor jake dibs*/
+import  EditorBox from "./markdown_generator"
+
+window.showComponentModal = (e) => {
+  document.getElementById('myModalLessonGroup').style.display="block"
+}
+
 let lesson_counter = 1;
 const createLessonSection = (el) => {
   let muu_counter = lesson_counter++;
   localStorage.setItem("l_tracker", muu_counter);
   let panel_class = $(".muu_" + localStorage.getItem("s_tracker"));
-  let lesson_components = document.getElementById("myModalLessonGroup");
-  lesson_components.style.display = "block";
+  // let lesson_components = document.getElementById("myModalLessonGroup");
+  // lesson_components.style.display = "block"; //should not show up until you click add component
+
+
 
   let template = ` 
       <tr border-spacing="20"   id="dynamic_subsection_${muu_counter}"  data-id="${
@@ -109,9 +118,9 @@ const createLessonSection = (el) => {
 
 
 
-                <li><a class="dropdown-item"   href="#myModalLesson" role="button" data-toggle="modal"
+                <li><a class="dropdown-item"   
           data-id="${"lmuu_" + muu_counter}"
-            onclick="editSection(this);localStorage.setItem('given_lsid','dynamic_lsubsection_'+${muu_counter});localStorage.setItem('ls_tracker',${muu_counter});"       
+            onclick="showComponentModal(this);localStorage.setItem('given_lsid','dynamic_lsubsection_'+${muu_counter});localStorage.setItem('ls_tracker',${muu_counter});"       
           >Add Component</a></li>
 
 
@@ -142,6 +151,9 @@ const createLessonSection = (el) => {
           </table> </td></tr></div>`;
 
   panel_class.parent().append(template);
+
+
+
 };
 
 class Editor extends React.Component {
@@ -692,6 +704,8 @@ export default class MasterForm extends React.Component {
                       <br />
                       <br />
                     </form>
+
+
                     <br />
                     <br />
                     <div style={{ position: "absolute", bottom: "0px" }}>
@@ -707,6 +721,8 @@ export default class MasterForm extends React.Component {
             </div>
           </div>
         </div>
+
+        <EditorBox />
       </Fragment>
     );
   }
@@ -2392,13 +2408,19 @@ const Step2 = (props) => {
             </div>
             <div class="modal-tabs">
               <div class="modal-tab widgets-tab active-tab">
-                <i class="tab-icon fa fa-hammer"></i>HTML
+                <i class="tab-icon fa fa-code fa-2x"></i>Html
               </div>
               <div class="modal-tab background-tab">
-                <i class="tab-icon fas fa-fill"></i> Video
+                <i class="tab-icon fa  fa-question-circle-o fa-2x"></i> Problem
               </div>
-              <div class="modal-tab special-tab">
-                <i class="tab-icon fas fa-star"></i> Problem
+              <div class="modal-tab special-video">
+                <i class="tab-icon fa fa-video-camera fa-2x"></i> Video
+              </div>
+              <div class="modal-tab special-broadcast">
+                <i class="tab-icon fa fa-bullhorn fa-2x"></i> Broadcast
+              </div>
+              <div class="modal-tab special-conference">
+                <i class="tab-icon fa fa-video-camera fa-2x"></i> Teleconfrencing
               </div>
             </div>
             <div class="modal-build-content widgets-tab active-content">
@@ -2406,8 +2428,10 @@ const Step2 = (props) => {
                 class="pb-widget"
                 data-template="[pb_html][/pb_text]"
                 data-type="content-block"
+                 href="#myModalMarkdownEditor" 
+                 role="button" data-toggle="modal"
               >
-                <i class="fa fa-heading"></i>
+                <i class="fa fa-text-width fa-2x"></i>
                 <span>TEXT</span>
               </div>
               <div
@@ -2415,8 +2439,8 @@ const Step2 = (props) => {
                 data-template="[pb_html][/pb_iframe]"
                 data-type="content-block"
               >
-                <i class="fa fa-image"></i>
-                <span>IFRAME</span>
+                <i class="fa fa-link fa-2x"></i>
+                <span>Iframe</span>
               </div>
             </div>
             <div class="modal-build-content background-tab">
@@ -2425,7 +2449,7 @@ const Step2 = (props) => {
                 data-template="[pb_html][/pb_common_problems]"
                 data-type="background"
               >
-                <i class="fa fa-tint"></i>
+                <i class="fa fa-comment fa-2x"></i>
                 <span>Common Problems</span>
               </div>
               <div
@@ -2433,7 +2457,7 @@ const Step2 = (props) => {
                 data-template="[pb_html][/pb_checkboxes]"
                 data-type="background"
               >
-                <i class="fa fa-file-video"></i>
+                <i class="fa fa-check-square-o fa-2x"></i>
                 <span>Checkboxes</span>
               </div>
               <div
@@ -2441,7 +2465,7 @@ const Step2 = (props) => {
                 data-template="[pb_html][/pb_numeric_input]"
                 data-type="background"
               >
-                <i class="fa fa-compress"></i>
+                <i class="fa fa-keyboard-o fa-2x"></i>
                 <span>Numerical Input</span>
               </div>
               <div
@@ -2449,7 +2473,7 @@ const Step2 = (props) => {
                 data-template="[pb_html][/pb_text_input]"
                 data-type="background"
               >
-                <i class="fa fa-compress"></i>
+                <i class="fa fa-keyboard-o fa-2x"></i>
                 <span>Text Input</span>
               </div>
 
@@ -2458,7 +2482,7 @@ const Step2 = (props) => {
                 data-template="[pb_html][/pb_dropdown]"
                 data-type="background"
               >
-                <i class="fa fa-compress"></i>
+                <i class="fa fa-chevron-circle-down fa-2x"></i>
                 <span>Dropdown</span>
               </div>
               <div
@@ -2466,7 +2490,7 @@ const Step2 = (props) => {
                 data-template="[pb_html][/pb_dropdown_feed]"
                 data-type="background"
               >
-                <i class="fa fa-compress"></i>
+                <i class="fa fa-chevron-circle-down fa-2x"></i>
                 <span>Dropdown + hint and feedback</span>
               </div>
 
@@ -2475,7 +2499,7 @@ const Step2 = (props) => {
                 data-template="[pb_html][/pb_checkboxes_feed]"
                 data-type="background"
               >
-                <i class="fa fa-file-video"></i>
+                <i class="fa fa-check-square-o fa-2x"></i>
                 <span>Checkboxes + hint and feedback</span>
               </div>
               <div
@@ -2483,7 +2507,7 @@ const Step2 = (props) => {
                 data-template="[pb_html][/pb_multiple_choice_feed]"
                 data-type="background"
               >
-                <i class="fa fa-compress"></i>
+                <i class="fa fa-quora fa-2x"></i>
                 <span>Multiple Choice + hint and feed back</span>
               </div>
               <div
@@ -2491,7 +2515,7 @@ const Step2 = (props) => {
                 data-template="[pb_html][/pb_numeric_input_feed]"
                 data-type="background"
               >
-                <i class="fa fa-compress"></i>
+                <i class="fa fa-text fa-2x"></i>
                 <span>Numerical Input + hint and feed back</span>
               </div>
               <div
@@ -2499,28 +2523,82 @@ const Step2 = (props) => {
                 data-template="[pb_html][/pb_text_input_feed]"
                 data-type="background"
               >
-                <i class="fa fa-compress"></i>
+                <i class="fa fa-text fa-2x"></i>
                 <span>Text Input + hint and feed back</span>
               </div>
             </div>
-            <div class="modal-build-content special-tab">
+            <div class="modal-build-content special-conference">
               <div
                 class="pb-widget"
-                data-template="[pb_html][/pb_broadcasting]"
+                data-template="[pb_html][/pb_zoom_meeting]"
                 data-type="special"
               >
-                <i class="fas fa-th-large"></i>
-                <span>Masonry</span>
+                <i class="fa fa-video-camera fa-2x"></i>
+                <span>Zoom Meeting</span>
               </div>
               <div
                 class="pb-widget"
-                data-template="[pb_html][/pb_confrencing]"
+                data-template="[pb_html][/pb_google_meet]"
                 data-type="special"
               >
-                <i class="fas fa-blog"></i>
-                <span>Blog</span>
+                <i class="fa fa-video-camera fa-2x"></i>
+                <span>Google Meet</span>
               </div>
+
+
+
             </div>
+
+
+            <div class="modal-build-content special-broadcast">
+              <div
+                class="pb-widget"
+                data-template="[pb_html][/pb_live_stream_lecture]"
+                data-type="special"
+              >
+                <i class="fa fa-video-camera fa-2x"></i>
+                <span>Live Lecture</span>
+              </div>
+              <div
+                class="pb-widget"
+                data-template="[pb_html][/pb_live_stream_events]"
+                data-type="special"
+              >
+                <i class="fa fa-video-camera fa-2x"></i>
+                <span>Live Events</span>
+              </div>
+
+
+
+            </div>
+
+
+
+
+            <div class="modal-build-content special-video">
+              <div
+                class="pb-widget"
+                data-template="[pb_html][/pb_zoom_meeting]"
+                data-type="special"
+              >
+                <i class="fas fa-video-camera fa-2x"></i>
+                <span>Vimeo</span>
+              </div>
+              <div
+                class="pb-widget"
+                data-template="[pb_html][/pb_google_meet]"
+                data-type="special"
+              >
+                <i class="fas fa-video-camera fa-2x"></i>
+                <span>You tube</span>
+              </div>
+
+
+
+            </div>
+
+
+
           </div>
         </div>
 
@@ -2701,8 +2779,8 @@ const addSectionContent = () => {
      <td class="tits section__name" style="font-size:20px"> ${
        document.getElementById("title").value || "Section " + mycounter
      }</td>
-      <td class="pcs" style="font-size:20px">${"Section " + mycounter}</td>
-       <td class="we">${$(".section-parent").length}</td>
+      <td class="pcs" style="font-size:20px"></td>
+       <td class="we"></td>
       <td class="per action" style="float:right">
       <a style="margin-right:10px;background:#fff;color:#000"
                    href="#myModalSubsection" role="button" data-toggle="modal"

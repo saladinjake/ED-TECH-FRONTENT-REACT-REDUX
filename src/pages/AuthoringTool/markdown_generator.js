@@ -1,19 +1,8 @@
-
-
-
-      
-      
-
-      
-      
-      
-      
-
-
-const getTemplateType =  (templateType) => {
+import React from "react"
+export const getTemplateType =  (templateType) => {
   let template = ``;
   
-  switch( TemplateType ){
+  switch( templateType ){
     case "[pb_html][/pb_text]":
       template =``;
        break;
@@ -332,20 +321,20 @@ const getTemplateType =  (templateType) => {
 
         <!-- Button Primary -->
         <div class="form__group_authoring_component">
-          <button class="btn btn--primary">Button label</button>
-          <button class="btn btn--primary" disabled>Button label</button>
+          <button class="btn--primary">Button label</button>
+          <button class="btn--primary" disabled>Button label</button>
         </div>
         <!-- // Button Primary -->
         <!-- Button Secondary -->
         <div class="form__group_authoring_component">
-          <button class="btn btn--secondary">Button label</button>
-          <button class="btn btn--secondary" disabled>Button label</button>
+          <button class="btn--secondary">Button label</button>
+          <button class="btn--secondary" disabled>Button label</button>
         </div>        
         <!-- // Button Secondary -->
 
         <div class="form__group_authoring_component">
           <!-- Button Primary with icon right -->
-          <button class="btn btn--primary">
+          <button class="btn--primary">
             <span>Button label</span>
             <i class="icon icon-camera icon--lg"></i>
           </button>
@@ -353,7 +342,7 @@ const getTemplateType =  (templateType) => {
           
 
           <!-- Button Primary with icon left -->
-          <button class="btn btn--primary">
+          <button class="btn--primary">
             <i class="icon icon-camera icon--lg"></i>
             <span>Button label</span>
           </button>
@@ -364,7 +353,7 @@ const getTemplateType =  (templateType) => {
 
         <div class="form__group_authoring_component">
           <!-- Button Secondary with icon left -->
-          <button class="btn btn--secondary">
+          <button class="btn--secondary">
             <i class="icon icon-clock icon--lg"></i>
             <span>Button label</span>
           </button>
@@ -372,7 +361,7 @@ const getTemplateType =  (templateType) => {
 
 
           <!-- Button Secondary with icon right -->
-          <button class="btn btn--secondary">
+          <button class="btn--secondary">
             <span>Button label</span>
             <i class="icon icon-clock icon--lg"></i>
           </button>
@@ -433,6 +422,9 @@ const getTemplateType =  (templateType) => {
 }
 
 
+
+
+
 //this is the editor box when edit is cliked in the authoring course creation
 //for each component added on the fly
 //it will take in props for the markup_tag eg [pb_html][pb_text]
@@ -461,35 +453,37 @@ class EditorBox extends React.Component{
 	updateHTML() {
 		// initiate the mark down parser
 		let mkdownparser = new MarkdownParser()
-		mkdownparser.defaultCheck(); //called everytime update occurs on input change
+		// mkdownparser.defaultCheck(); //called everytime update occurs on input change
 
-		var md = document.querySelector('.editor-authoring').value; // the input board editor
-		var html = mkdownparser.parseMarkdown(md);  //the engine preprocessor
-		document.querySelector('.html').innerHTML = html; //output preview board
+		// var md = document.querySelector('.editor-authoring').value; // the input board editor
+		// var html = mkdownparser.parseMarkdown(md);  //the engine preprocessor
+		// document.querySelector('.html').innerHTML = html; //output preview board
 	}
 
 	componentDidMount(){
 		// define vars for the editing buttons and action
 		this.editor = document.getElementsByClassName('editor-authoring')[0];
-		this.toolbar = editor.getElementsByClassName('toolbar')[0];
-		this.buttons = toolbar.querySelectorAll('.btn:not(.has-submenu)');
-		this.contentArea = editor.getElementsByClassName('content-area')[0];
-		this.visuellView = contentArea.getElementsByClassName('visuell-view')[0];
-		this.htmlView = contentArea.getElementsByClassName('html-view')[0];
+		this.toolbar = this.editor.getElementsByClassName('authoring-edit-toolbar')[0];
+		this.buttons = this.toolbar.querySelectorAll('.btn-action-editor:not(.has-submenu)');
+		this.contentArea = this.editor.getElementsByClassName('content-area')[0];
+		this.visuellView = this.contentArea.getElementsByClassName('visuell-view')[0];
+		this.htmlView = this.contentArea.getElementsByClassName('html-view')[0];
 		this.modal = document.getElementsByClassName('modal')[0];
         let that = this;
 		// add active tag event
-		document.addEventListener('selectionchange', selectionChange);
+
+
+		// document.addEventListener('selectionchange', that.selectionChange);
 
 		// add toolbar button actions
-		for(let i = 0; i < buttons.length; i++) {
-		  let button = buttons[i];
+		for(let i = 0; i < that.buttons.length; i++) {
+		  let button = that.buttons[i];
 		  
 		  button.addEventListener('click', function(e) {
 		    let action = this.dataset.action;
 		    switch(action) {
 		      case 'code':
-		        that.execCodeAction(this, editor);
+		        that.execCodeAction(this, that.editor);
 		        break;
 		      case 'createLink':
 		        that.execLinkAction();
@@ -502,7 +496,7 @@ class EditorBox extends React.Component{
 		}
        
       /* this is for live update with  the markdown  parser changing dynamically*/
-		document.querySelector('.markdown').addEventListener('input', updateHTML);
+		document.querySelector('.editor-authoring').addEventListener('input', that.updateHTML);
         this.updateHTML();
 
 	}
@@ -513,13 +507,13 @@ class EditorBox extends React.Component{
 	execCodeAction(button, editor) {
       
 	  if(button.classList.contains('active')) { // show visuell view
-	    this.visuellView.innerHTML = htmlView.value;
+	    this.visuellView.innerHTML = this.htmlView.value;
 	    this.htmlView.style.display = 'none';
 	    this.visuellView.style.display = 'block';
 
 	    button.classList.remove('active');     
 	  } else {  // show html view
-	    this.htmlView.innerText = visuellView.innerHTML;
+	    this.htmlView.innerText = this.visuellView.innerHTML;
 	    this.visuellView.style.display = 'none';
 	    this.htmlView.style.display = 'block';
 
@@ -530,7 +524,7 @@ class EditorBox extends React.Component{
 	// add link action
 	execLinkAction() {  
 	  this.modal.style.display = 'block';
-	  let selection = saveSelection();
+	  let selection = this.saveSelection();
 
 	  let submit = this.modal.querySelectorAll('button.done')[0];
 	  let close = this.modal.querySelectorAll('.close')[0];
@@ -580,7 +574,7 @@ class EditorBox extends React.Component{
 	// saves the current selection
 	saveSelection() {
 	    if(window.getSelection) {
-	        sel = window.getSelection();
+	        let sel = window.getSelection();
 	        if(sel.getRangeAt && sel.rangeCount) {
 	            let ranges = [];
 	            for(var i = 0, len = sel.rangeCount; i < len; ++i) {
@@ -598,7 +592,7 @@ class EditorBox extends React.Component{
 	restoreSelection(savedSel) {
 	    if(savedSel) {
 	        if(window.getSelection) {
-	            sel = window.getSelection();
+	            let sel = window.getSelection();
 	            sel.removeAllRanges();
 	            for(var i = 0, len = savedSel.length; i < len; ++i) {
 	                sel.addRange(savedSel[i]);
@@ -611,9 +605,10 @@ class EditorBox extends React.Component{
 
 	// sets the current format buttons active/inactive
    selectionChange() {
+   	  let that = this;
 	  
-	  for(let i = 0; i < buttons.length; i++) {
-	    let button = buttons[i];
+	  for(let i = 0; i < that.buttons.length; i++) {
+	    let button = that.buttons[i];
 	    button.classList.remove('active');
 	  }
 	  
@@ -643,87 +638,126 @@ class EditorBox extends React.Component{
 	}
 
 	render(){
-		<div class="editor-authoring">
-				  <div class="toolbar">
+
+
+
+
+		return (
+
+			<div
+          style={{ marginTop: "80px" }}
+          class="modal fade"
+          id="myModalMarkdownEditor"
+          tabindex="-1"
+          role="dialog"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-full" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title pull-left" style={{ color: "#000" }}>
+                  Sub Section Detail
+                </h5>
+                <a
+                  href="#"
+                  class="pull-right"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">×</span>
+                </a>
+              </div>
+              <div
+                class="modal-body p-4 col-md-12"
+                id="result"
+                style={{ height: "400px", overflowY: "scroll" }}
+              >
+                <p>Add a title to the section</p>
+                <div class="row">
+                  <div class="divided col-md-10">
+                   
+                          {/*the editor*/}
+                          		<div class="editor-authoring">
+				  <div class="authoring-edit-toolbar">
 				    <div class="line">
 				      
-				      <div class="box">
-				        <span class="btn icon smaller" data-action="bold" data-tag-name="b" title="Bold">
-				          <img src="https://image.flaticon.com/icons/svg/25/25432.svg" />
+				      <div class="box-internal">
+				        <span class="btn-action-editor icon smaller" data-action="bold" data-tag-name="b" title="Bold">
+				          <img  src="https://image.flaticon.com/icons/svg/25/25432.svg" />
 				        </span>
-				        <span class="btn icon smaller" data-action="italic" data-tag-name="i" title="Italic">
-				          <img src="https://image.flaticon.com/icons/svg/25/25392.svg" />
+				        <span class="btn-action-editor icon smaller" data-action="italic" data-tag-name="i" title="Italic">
+				          <img  src="https://image.flaticon.com/icons/svg/25/25392.svg" />
 				        </span>
-				        <span class="btn icon smaller" data-action="underline" data-tag-name="u" title="Underline">
-				          <img src="https://image.flaticon.com/icons/svg/25/25433.svg" />
+				        <span class="btn-action-editor icon smaller" data-action="underline" data-tag-name="u" title="Underline">
+				          <img  src="https://image.flaticon.com/icons/svg/25/25433.svg" />
 				        </span>
-				        <span class="btn icon smaller" data-action="strikeThrough" data-tag-name="strike" title="Strike through">
-				          <img src="https://image.flaticon.com/icons/svg/25/25626.svg" />
+				        <span class="btn-action-editor icon smaller" data-action="strikeThrough" data-tag-name="strike" title="Strike through">
+				          <img  src="https://image.flaticon.com/icons/svg/25/25626.svg" />
 				        </span>
 				      </div>
 				      
-				      <div class="box">
-				        <span class="btn icon has-submenu">
-				          <img src="https://image.flaticon.com/icons/svg/25/25351.svg" />
+				      <div class="box-internal">
+				        <span class="btn-action-editor icon has-submenu">
+				          <img  src="https://image.flaticon.com/icons/svg/25/25351.svg" />
 				          <div class="submenu">
-				            <span class="btn icon" data-action="justifyLeft" data-style="textAlign:left" title="Justify left">
-				              <img src="https://image.flaticon.com/icons/svg/25/25351.svg" />  
+				            <span class="btn-action-editor icon" data-action="justifyLeft" data-style="textAlign:left" title="Justify left">
+				              <img  src="https://image.flaticon.com/icons/svg/25/25351.svg" />  
 				            </span>
-				            <span class="btn icon" data-action="justifyCenter" data-style="textAlign:center" title="Justify center">
-				              <img src="https://image.flaticon.com/icons/svg/25/25440.svg" />  
+				            <span class="btn-action-editor icon" data-action="justifyCenter" data-style="textAlign:center" title="Justify center">
+				              <img  src="https://image.flaticon.com/icons/svg/25/25440.svg" />  
 				            </span>
-				            <span class="btn icon" data-action="justifyRight" data-style="textAlign:right" title="Justify right">
-				              <img src="https://image.flaticon.com/icons/svg/25/25288.svg" />  
+				            <span class="btn-action-editor icon" data-action="justifyRight" data-style="textAlign:right" title="Justify right">
+				              <img  src="https://image.flaticon.com/icons/svg/25/25288.svg" />  
 				            </span>
-				            <span class="btn icon" data-action="formatBlock" data-style="textAlign:justify" title="Justify block">
-				              <img src="https://image.flaticon.com/icons/svg/25/25181.svg" />  
+				            <span class="btn-action-editor icon" data-action="formatBlock" data-style="textAlign:justify" title="Justify block">
+				              <img  src="https://image.flaticon.com/icons/svg/25/25181.svg" />  
 				            </span>
 				          </div>
 				        </span>
-				        <span class="btn icon" data-action="insertOrderedList" data-tag-name="ol" title="Insert ordered list">
-				          <img src="https://image.flaticon.com/icons/svg/25/25242.svg" />  
+				        <span class="btn-action-editor icon" data-action="insertOrderedList" data-tag-name="ol" title="Insert ordered list">
+				          <img  src="https://image.flaticon.com/icons/svg/25/25242.svg" />  
 				        </span>
-				        <span class="btn icon" data-action="insertUnorderedList" data-tag-name="ul" title="Insert unordered list">
-				          <img src="https://image.flaticon.com/icons/svg/25/25648.svg" />  
+				        <span class="btn-action-editor icon" data-action="insertUnorderedList" data-tag-name="ul" title="Insert unordered list">
+				          <img  src="https://image.flaticon.com/icons/svg/25/25648.svg" />  
 				        </span>
-				        <span class="btn icon" data-action="outdent" title="Outdent">
-				          <img src="https://image.flaticon.com/icons/svg/25/25410.svg" />  
+				        <span class="btn-action-editor icon" data-action="outdent" title="Outdent">
+				          <img  src="https://image.flaticon.com/icons/svg/25/25410.svg" />  
 				        </span>
-				        <span class="btn icon" data-action="indent" title="Indent">
-				          <img src="https://image.flaticon.com/icons/svg/25/25233.svg" />  
+				        <span class="btn-action-editor icon" data-action="indent" title="Indent">
+				          <img  src="https://image.flaticon.com/icons/svg/25/25233.svg" />  
 				        </span>
 				        
 				      </div>
-				      <div class="box">
-				        <span class="btn icon" data-action="insertHorizontalRule" title="Insert horizontal rule">
-				          <img src="https://image.flaticon.com/icons/svg/25/25232.svg" />  
+				      <div class="box-internal">
+				        <span class="btn-action-editor icon" data-action="insertHorizontalRule" title="Insert horizontal rule">
+				          <img  src="https://image.flaticon.com/icons/svg/25/25232.svg" />  
 				        </span>
 				      </div>
 				      
 				    </div>
 				    <div class="line">
 				      
-				      <div class="box">
-				        <span class="btn icon smaller" data-action="undo" title="Undo">
-				          <img src="https://image.flaticon.com/icons/svg/25/25249.svg" />
+				      <div class="box-internal">
+				        <span class="btn-action-editor icon smaller" data-action="undo" title="Undo">
+				          <img  src="https://image.flaticon.com/icons/svg/25/25249.svg" />
 				        </span>
-				        <span class="btn icon" data-action="removeFormat" title="Remove format">
-				          <img src="https://image.flaticon.com/icons/svg/25/25454.svg" />  
-				        </span>
-				      </div>
-				      
-				      <div class="box">
-				        <span class="btn icon smaller" data-action="createLink" title="Insert Link">
-				          <img src="https://image.flaticon.com/icons/svg/25/25385.svg" />
-				        </span>
-				        <span class="btn icon smaller" data-action="unlink" data-tag-name="a" title="Unlink">
-				          <img src="https://image.flaticon.com/icons/svg/25/25341.svg" />
+				        <span class="btn-action-editor icon" data-action="removeFormat" title="Remove format">
+				          <img  src="https://image.flaticon.com/icons/svg/25/25454.svg" />  
 				        </span>
 				      </div>
 				      
-				      <div class="box">
-				        <span class="btn icon" data-action="code" title="Show HTML-Code">
-				          <img src="https://image.flaticon.com/icons/svg/25/25185.svg" />
+				      <div class="box-internal">
+				        <span class="btn-action-editor icon smaller" data-action="createLink" title="Insert Link">
+				          <img  src="https://image.flaticon.com/icons/svg/25/25385.svg" />
+				        </span>
+				        <span class="btn-action-editor icon smaller" data-action="unlink" data-tag-name="a" title="Unlink">
+				          <img  src="https://image.flaticon.com/icons/svg/25/25341.svg" />
+				        </span>
+				      </div>
+				      
+				      <div class="box-internal">
+				        <span class="btn-action-editor icon" data-action="code" title="Show HTML-Code">
+				          <img  src="https://image.flaticon.com/icons/svg/25/25185.svg" />
 				        </span>
 				      </div>
 				      
@@ -731,7 +765,7 @@ class EditorBox extends React.Component{
 				  </div>
 				  <div class="content-area">
 				    <div class="visuell-view" contenteditable>
-				      <p style="text-align: center;">Edit  <b>this </b> content <i></i>!</p>
+				      <p style={{textAlign: "center"}}>Edit  <b>this </b> content <i></i>!</p>
 				     
 				    </div>
 				    <textarea class="html-view"></textarea>
@@ -744,17 +778,54 @@ class EditorBox extends React.Component{
 				    <div class="close">✖</div>
 				    <div class="modal-content" id="modalCreateLink">
 				      <h3>Insert Link</h3>
-				      <input type="text" id="linkValue" placeholder="Link (example: https://webdeasy.de/)">
+				      <input type="text" id="linkValue" placeholder="Link (example: http://)" />
 				      <div class="row">
-				        <input type="checkbox" id="new-tab">
+				        <input type="checkbox" id="new-tab" />
 				        <label for="new-tab">Open in new Tab?</label>
 				      </div>
 				      <button class="done">Done</button>
 				    </div>
 				  </div>
 				</div>
+                 {/*en editor*/}
 
 
+                  </div>
+
+                  {/*the mark up hint*/}
+                  <div class="col-md-2">
+                       <p> this is a place hodler to hold the mark up </p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button
+                 
+                  type="button"
+                  style={{ background: "rgba(8,23,200)" }}
+                  class="btn-primary"
+                  data-dismiss="modal"
+                >
+                  Save
+                </button>
+
+                 <button
+                 
+                  type="button"
+                  style={{ background: "rgba(8,23,200)" }}
+                  class="btn-primary"
+                  data-dismiss="modal"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+     )
 	}
 }
 
@@ -763,26 +834,15 @@ class EditorBox extends React.Component{
 
 
 
-
-
-
-
-
-
-
 /*Now create the parser that parses the mark down*/
 class MarkdownParser{
-	constructor(){
-		this.tagPusher = [];
-		//fill the parser on input change
 
+	constructor(){
+		this.tagMatchers = [];
+		//fill the parser on input change
 		//just like a well in which you keep filling up water
 		this.defaultCheck();
-
-
-
 	}
-
 
 	parseBlock(str) {
 		return this.tagMatchers.reduce(function(prev, matcher) {
@@ -801,12 +861,9 @@ class MarkdownParser{
 
 	defaultCheck(){
        //add mor markup chk
-
        //add more custom check for markup
-
-
 		// Paragraph
-		tagMatchers.push({
+		this.tagMatchers.push({
 			match: function() {
 				return true;
 			},
@@ -816,7 +873,7 @@ class MarkdownParser{
 		});
 
 		// Heading level 1
-		tagMatchers.push({
+		this.tagMatchers.push({
 			match: function(s) {
 				return s.charAt(0) === '#';
 			},
@@ -826,7 +883,7 @@ class MarkdownParser{
 		});
 
 		// Heading level 2
-		tagMatchers.push({
+		this.tagMatchers.push({
 			match: function(s) {
 				return s.substr(0, 2) === '##';
 			},
@@ -836,7 +893,7 @@ class MarkdownParser{
 		});
 
 		// Blockquote
-		tagMatchers.push({
+		this.tagMatchers.push({
 			match: function(s) {
 				return s.substr(0, 2) === '> ';
 			},
@@ -846,7 +903,7 @@ class MarkdownParser{
 		});
 
 		// Preformatted
-		tagMatchers.push({
+		this.tagMatchers.push({
 			match: function(s) {
 				return s.substr(0, 3) === '```';
 			},
@@ -858,3 +915,13 @@ class MarkdownParser{
 
 	}
 }
+
+
+export default EditorBox;
+
+
+
+
+
+
+
