@@ -1,3 +1,15 @@
+
+
+
+      
+      
+
+      
+      
+      
+      
+
+
 const getTemplateType =  (templateType) => {
   let template = ``;
   
@@ -12,14 +24,100 @@ const getTemplateType =  (templateType) => {
         template =``;
        break;
     case "[pb_html][/pb_checkboxes]":
-       template =``;
+       template =`<form class="form mainroot-authoring" autocomplete="off" >
+<fieldset>
+        <legend>Checkbox</legend>
+        <div class="form__group_authoring_component">
+            <!-- Checkbox selected -->
+            <div class="form__checkbox">
+              <input class="form__input" type="checkbox" id="checkbox-checked" checked>
+              <label class="form__label" for="checkbox-checked">Checkbox Selected</label>
+            </div>
+            <!-- // Checkbox selected -->
+
+            <!-- Checkbox unselected -->
+            <div class="form__checkbox">
+              <input class="form__input" type="checkbox" id="checkbox">
+              <label class="form__label" for="checkbox">Checkbox unselected</label>
+            </div>
+            <!-- // Checkbox unselected -->
+
+            <!-- Checkbox selected disabled -->
+            <div class="form__checkbox">
+              <input class="form__input" type="checkbox" id="checkbox-selected-disabled" checked disabled>
+              <label class="form__label" for="checkbox-selected-disabled">Checkbox Disabled Selected</label>
+            </div>
+            <!-- // Checkbox selected disabled -->
+
+            <!-- Checkbox unselected disabled -->
+            <div class="form__checkbox">
+              <input class="form__input" type="checkbox" id="checkbox-unselected-disabled" disabled>
+              <label class="form__label" for="checkbox-unselected-disabled">Checkbox Disabled Unselected</label>
+            </div>
+            <!-- // Checkbox unselected disabled -->
+        </div>
+      </fieldset>
+
+       </form>`;
        break;
     case "[pb_html][/pb_numeric_input]":
         template =``;
        break;
 
     case "[pb_html][/pb_text_input]":
-       template =``;
+       template =`    <form class="form mainroot-authoring" autocomplete="off" >
+
+      <fieldset>
+        <legend>Input</legend>
+
+
+        <!-- Default -->
+        <div class="form__group_authoring_component">
+          <label class="form__label" for="default">Default <sup>(optional)</sup></label>
+          <input
+            class="form__input"
+            id="default"
+            type="password"
+            placeholder="Placeholder"
+            aria-invalid="false"
+          />
+        </div>
+        <!-- // Default -->
+
+        <!-- Required -->
+        <div class="form__group_authoring_component">
+          <label class="form__label" for="required">Required</label>
+          <input
+            class="form__input"
+            id="required"
+            type="text"
+            value="Hello World"
+            placeholder="Placeholder"
+            aria-invalid="false"
+            required
+          />
+        </div>
+        <!-- // Default -->
+
+        <!-- Error -->
+        <div class="form__group_authoring_component form__group_authoring_component--error">
+          <label class="form__label" for="required">Error</label>
+          <input
+            class="form__input"
+            id="required"
+            type="text"
+            placeholder="Placeholder"
+            value="Hello World"
+            required
+            aria-invalid="true"
+            aria-describedBy="required-error"
+            />
+          <span class="form__error" id="required-error" class="">This is an error</span>
+        </div>
+        <!-- // Error -->
+
+      </fieldset>
+</form>`;
        break;
     case "[pb_html][/pb_multichoice]":
        template =``;
@@ -28,7 +126,90 @@ const getTemplateType =  (templateType) => {
         template =``;
        break;
     case "[pb_html][/pb_dropdown]":
-        template =``;
+        template =`<form class="form mainroot-authoring" autocomplete="off" >
+              <fieldset>
+        <legend>Dropdowns</legend>
+
+        <!-- Disabled -->
+        <div class="form__group_authoring_component form__group_authoring_component--disabled">
+          <label class="form__label" for="select-disabled">Disabled field</label>
+          <div class="form__select_authoring_component">
+            <select class="form__input" id="select-disabled" aria-invalid="false" disabled>
+              <option value="disabled selected">Select</option>
+              <option value="item1">Option 1</option>
+              <option value="item2">Option 2</option>
+              <option value="item3">Option 3</option>
+              <option value="item4">Option 4</option>
+              <option value="item5">Option 5</option>
+            </select>
+          </div>
+        </div>
+        <!-- // Disabled -->
+
+        <!-- Default -->
+        <div class="form__group_authoring_component">
+        <label class="form__label" for="select-default">Default field</label>
+        <div class="form__select_authoring_component">
+          <select
+            class="form__input"
+            id="select-default"
+            aria-invalid="false"
+            required
+          >
+            <option value="" disabled selected>Select</option>
+            <option value="item1">Value not selected</option>
+            <option value="item2">Umm.... nothing here</option>
+            <option value="item3">Not this one either</option>
+            <option value="item4">Yep this too</option>
+            <option value="item5">Sadly not this one either :(</option>
+          </select>
+        </div>
+      </div>
+      <!-- // Default -->
+
+      <!-- Selected -->
+      <div class="form__group_authoring_component">
+        <label class="form__label" for="select-value">Selected</label>
+        <div class="form__select_authoring_component">
+          <select class="form__input" id="select-value" aria-invalid="false">
+            <option value="item1">Value not selected</option>
+            <option value="item2" selected>Value selected</option>
+            <option value="item3">Not this one either</option>
+            <option value="item4">Yep this too</option>
+            <option value="item5">Sadly not this one either :(</option>
+          </select>
+        </div>
+      </div>
+      <!-- // Selected -->
+
+      <!-- Error -->
+      <div class="form__group_authoring_component form__group_authoring_component--error">
+        <label class="form__label" for="select-error">Error</label>
+
+        <div class="form__select_authoring_component">
+          <select
+            class="form__input"
+            id="select-default"
+            aria-invalid="true"
+            aria-describedBy="select-error"
+          >
+            <option value="disabled selected">Select</option>
+            <option value="item1">Value not selected</option>
+            <option value="item2" selected>Value selected</option>
+            <option value="item3">Not this one either</option>
+            <option value="item4">Yep this too</option>
+            <option value="item5">Sadly not this one either :(</option>
+          </select>
+        </div>
+        <span class="form__error" id="select-error">This is an error</span>
+      </div>
+      <!-- // Error -->
+
+      </fieldset>
+
+
+
+        </form>`;
        break;
     case "[pb_html][/pb_dropdown_feed]":
         template =``;
@@ -37,7 +218,46 @@ const getTemplateType =  (templateType) => {
         template =``;
        break;
     case "[pb_html][/pb_text_input_feed]":
-       template =``;
+       template =`<form class="form mainroot-authoring" autocomplete="off" >
+<fieldset>
+        <legend>Input with Hint</legend>
+
+        <!-- Default with Hint -->
+        <div class="form__group_authoring_component">
+          <label class="form__label" for="default-hint">Default with Hint</label>
+          <input
+            class="form__input"
+            id="default-hint"
+            type="text"
+            placeholder="Placeholder"
+            value="Hello World"
+            aria-invalid="false"
+            aria-describedBy="default-hint"
+          />
+          <span class="form__hint" id="default-hint">This is a hint</span>
+        </div>
+        <!-- // Default with Hint -->
+
+        <!-- Default with Hint -->
+        <div class="form__group_authoring_component form__group_authoring_component--error">
+          <label class="form__label" for="Error-hint">Error with Hint</label>
+          <input
+            class="form__input"
+            id="Error-hint"
+            type="text"
+            placeholder="Placeholder"
+            value="Hello World"
+            aria-invalid="true"
+            aria-describedBy="Error-hint-error Error-hint"
+          />
+          <span class="form__error" id="Error-hint-error" class="">This is an error</span>
+          <span class="form__hint" id="Error-hint">This is a hint</span>
+        </div>
+        <!-- // Default with Hint -->
+
+      </fieldset>
+
+       </form>`;
        break;
     case "[pb_html][/pb_multiple_choice_feed]":
         template =``;
@@ -51,6 +271,157 @@ const getTemplateType =  (templateType) => {
 
     case "[pb_html][/pb_video]":
        template =``;
+
+    case "[pb_html][/pb_text_area]":
+       template =`<form class="form mainroot-authoring" autocomplete="off" >
+
+<fieldset>
+        <legend>Textarea</legend>
+
+        <!-- Disabled -->
+        <div class="form__group_authoring_component form__group_authoring_component--disabled">
+          <label class="form__label" for="textarea-disabled">Disabled field</label>
+          <textarea
+            rows="7"
+            class="form__input"
+            id="textarea-disabled"
+            type="text"
+            placeholder="Placeholder"
+            aria-invalid="false"
+            disabled></textarea>
+        </div>
+        <!-- // Disabled -->
+
+        <!-- Default -->
+        <div class="form__group_authoring_component">
+          <label class="form__label" for="textarea-disabled"> Default field</label>
+          <textarea
+            rows="7"
+            class="form__input"
+            id="textarea-disabled"
+            type="text"
+            placeholder="Placeholder"
+            aria-invalid="false">Hello World</textarea>
+        </div>
+        <!-- // Disabled -->
+
+        <!-- Default -->
+        <div class="form__group_authoring_component form__group_authoring_component--error">
+          <label class="form__label" for="textarea-disabled">Error</label>
+          <textarea
+            rows="7"
+            class="form__input"
+            id="textarea-disabled"
+            type="text"
+            placeholder="Placeholder"
+            aria-invalid="true"
+            aria-describedBy="textarea-error">Hello World</textarea>
+          <span class="form__error" id="textarea-error" class="">This is an error</span>
+        </div>
+        <!-- // Disabled -->
+
+      </fieldset>
+
+       </form>`
+       break;
+       case "[pb_html][/pb_button]":
+       template = `<form class="form mainroot-authoring" autocomplete="off" >
+
+<fieldset>
+        <legend>Buttons</legend>
+
+        <!-- Button Primary -->
+        <div class="form__group_authoring_component">
+          <button class="btn btn--primary">Button label</button>
+          <button class="btn btn--primary" disabled>Button label</button>
+        </div>
+        <!-- // Button Primary -->
+        <!-- Button Secondary -->
+        <div class="form__group_authoring_component">
+          <button class="btn btn--secondary">Button label</button>
+          <button class="btn btn--secondary" disabled>Button label</button>
+        </div>        
+        <!-- // Button Secondary -->
+
+        <div class="form__group_authoring_component">
+          <!-- Button Primary with icon right -->
+          <button class="btn btn--primary">
+            <span>Button label</span>
+            <i class="icon icon-camera icon--lg"></i>
+          </button>
+          <!-- // Button with icon right -->
+          
+
+          <!-- Button Primary with icon left -->
+          <button class="btn btn--primary">
+            <i class="icon icon-camera icon--lg"></i>
+            <span>Button label</span>
+          </button>
+          <!-- // Button with icon left -->
+
+            
+        </div>
+
+        <div class="form__group_authoring_component">
+          <!-- Button Secondary with icon left -->
+          <button class="btn btn--secondary">
+            <i class="icon icon-clock icon--lg"></i>
+            <span>Button label</span>
+          </button>
+          <!-- // Button Secondary with icon left -->
+
+
+          <!-- Button Secondary with icon right -->
+          <button class="btn btn--secondary">
+            <span>Button label</span>
+            <i class="icon icon-clock icon--lg"></i>
+          </button>
+          <!-- // Button Secondary with icon right -->
+
+        </div>
+      </fieldset>
+
+
+       </form>`
+       break;
+      case "[pb_html][/pb_radio]":
+       template = `<form class="form mainroot-authoring" autocomplete="off" >
+<fieldset>
+        <legend>Radio Buttons</legend>
+
+          <div class="form__group_authoring_component">
+            
+            <!-- Radio button selected -->
+            <div class="form__radio">
+              <input class="form__input" type="radio" name="options" value="item 1" id="radio-selected" checked>
+              <label class="form__label" for="radio-selected">Radio button selected</label>
+            </div>
+            <!-- // Radio button selected -->
+
+            <!-- Radio button unselected -->
+            <div class="form__radio">
+              <input class="form__input" type="radio" name="options" value="item 2" id="radio-unselected">
+              <label class="form__label" for="radio-unselected">Radio button selected</label>
+            </div>
+            <!-- // Radio button unselected -->
+
+            <!-- Radio button selected -->
+            <div class="form__radio">
+              <input class="form__input" type="radio" name="options-2" value="item 1" id="radio-selected-disabled" disabled checked>
+              <label class="form__label" for="radio-selected-disabled">Radio button Selected Disabled</label>
+            </div>
+            <!-- // Radio button selected -->
+
+            <!-- Radio button unselected -->
+            <div class="form__radio">
+              <input class="form__input" type="radio" name="options-2" value="item 2" id="radio-unselected-disabled" disabled>
+              <label class="form__label" for="radio-unselected-disabled">Radio button Unselected Disabled</label>
+            </div>
+            <!-- // Radio button unselected -->
+          </div>
+      </fieldset>
+
+       </form>`
     default:
        
        return false;
