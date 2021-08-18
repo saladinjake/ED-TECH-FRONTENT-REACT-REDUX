@@ -19,21 +19,25 @@ table th {
   text-transform: uppercase;
   font: 0.8em "Oswald", sans-serif;
 }
-table th, table td {
+table th,
+table td {
   padding: 0.4em;
   height: 20px;
-
 }
 
-table.fold-table, div.fold-table {
+table.fold-table,
+div.fold-table {
   background: white;
   color: #555;
 }
-table.fold-table > tbody > tr.view , div.view{
+table.fold-table > tbody > tr.view,
+div.view {
   font-family: "Droid Serif", serif;
   transition: all 0.3s ease;
 }
-table.fold-table > tbody > tr.view td, table.fold-table > tbody > tr.view th, .fold-table .actions {
+table.fold-table > tbody > tr.view td,
+table.fold-table > tbody > tr.view th,
+.fold-table .actions {
   cursor: pointer;
 }
 table.fold-table > tbody > tr.view td:first-child,
@@ -63,13 +67,14 @@ table.fold-table > tbody > tr.view.open {
   /*background: #f5f5f5;
   color: white;*/
 }
-table.fold-table > tbody > tr.view.open td:first-child:before, table.fold-table > tbody > tr.view.open th:first-child:before {
+table.fold-table > tbody > tr.view.open td:first-child:before,
+table.fold-table > tbody > tr.view.open th:first-child:before {
   transform: rotate(-180deg);
   color: white;
 }
 table.fold-table > tbody > tr.fold {
   /*display: none;*/
-   display: table-row;
+  display: table-row;
 }
 table.fold-table > tbody > tr.fold.open {
   display: table-row;
@@ -111,7 +116,8 @@ table.fold-table > tbody > tr.fold.open {
     padding: 0 10px;
   }
 
-  table th, table td {
+  table th,
+  table td {
     padding: 1em 0.2em;
   }
   table th {
@@ -123,7 +129,7 @@ table.fold-table > tbody > tr.fold.open {
     display: none;
   }
   table.small-friendly > tbody > tr > td,
-table.small-friendly > tbody > tr > th {
+  table.small-friendly > tbody > tr > th {
     position: relative;
     padding: 0;
     padding-left: 50%;
@@ -132,7 +138,7 @@ table.small-friendly > tbody > tr > th {
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   }
   table.small-friendly > tbody > tr > td:before,
-table.small-friendly > tbody > tr > th:before {
+  table.small-friendly > tbody > tr > th:before {
     position: absolute;
     top: 0;
     left: 0.5em;
@@ -142,11 +148,11 @@ table.small-friendly > tbody > tr > th:before {
     font-weight: bold;
   }
   table.small-friendly > tbody > tr > td:first-child,
-table.small-friendly > tbody > tr > th:first-child {
+  table.small-friendly > tbody > tr > th:first-child {
     margin-top: 1em;
   }
   table.small-friendly > tbody > tr > td:last-child,
-table.small-friendly > tbody > tr > th:last-child {
+  table.small-friendly > tbody > tr > th:last-child {
     margin-bottom: 1em;
     border: 0;
   }
@@ -159,11 +165,3 @@ table.small-friendly > tbody > tr > th:last-child {
     display: none;
   }
 }
-
-
-
-
-
-
-
-

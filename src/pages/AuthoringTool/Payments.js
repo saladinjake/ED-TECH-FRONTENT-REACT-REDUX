@@ -292,9 +292,7 @@ const PayBench = () => {
 
       <div className="container-fluid">
         <div className="wrapper">
-   
-
-          <div className="content-page-x col-md-12" >
+          <div className="content-page-x col-md-12">
             <div className="content-x">
               <PayOuts />
             </div>

@@ -24,7 +24,6 @@
   color: black;
 }
 
-
 $base-color: cadetblue;
 $base-font: "Raleway", sans-serif;
 
@@ -270,12 +269,10 @@ body.show {
   padding-top: 100px;
 }
 
-
-.fl-left{
+.fl-left {
   float: left;
 }
 
-
-.sect-toow:hover .card-widgets{
- display: block;
+.sect-toow:hover .card-widgets {
+  display: block;
 }

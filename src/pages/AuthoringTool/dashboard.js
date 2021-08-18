@@ -16,8 +16,6 @@ const Dashboard = () => {
 
       <div className="container-fluid">
         <div className="wrapper">
-         
-
           <div className="content-page-x col-md-12" style={{ float: "right" }}>
             <div className="content-x">
               <OverviewDash />

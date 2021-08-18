@@ -36,8 +36,6 @@ import AuthWindow from "./PopUpWindow";
 
 // bridget( 'leanModal', leanModal );
 
-
-
 export const TopNav = () => {
   return (
     <div className="pull-left">
@@ -325,7 +323,7 @@ const NavBar = ({
       ) : (
         <Fragment>
           <div className="hide">
-          <TopNav />
+            <TopNav />
             <TMobileNavigator />
           </div>
           <div className="shown">
@@ -1015,4 +1013,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, { logOut })(NavBar);
-

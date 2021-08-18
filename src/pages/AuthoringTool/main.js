@@ -411,10 +411,7 @@ const Overview = ({ completeness }) => {
                 <div class="card-body p-0">
                   <div class="row no-gutters">
                     <div class="col">
-                      <a
-                        href="#"
-                        class="text-secondary"
-                      >
+                      <a href="#" class="text-secondary">
                         <div class="card shadow-none m-0">
                           <div class="card-body text-center">
                             <i
@@ -433,10 +430,7 @@ const Overview = ({ completeness }) => {
                     </div>
 
                     <div class="col">
-                      <a
-                        href="#"
-                        class="text-secondary"
-                      >
+                      <a href="#" class="text-secondary">
                         <div class="card shadow-none m-0 border-left">
                           <div class="card-body text-center">
                             <i
@@ -455,10 +449,7 @@ const Overview = ({ completeness }) => {
                     </div>
 
                     <div class="col">
-                      <a
-                        href="#/user/courses"
-                        class="text-secondary"
-                      >
+                      <a href="#/user/courses" class="text-secondary">
                         <div class="card shadow-none m-0 border-left">
                           <div class="card-body text-center">
                             <i
@@ -475,10 +466,7 @@ const Overview = ({ completeness }) => {
                     </div>
 
                     <div class="col">
-                      <a
-                        href="#/user/courses"
-                        class="text-secondary"
-                      >
+                      <a href="#/user/courses" class="text-secondary">
                         <div class="card shadow-none m-0 border-left">
                           <div class="card-body text-center">
                             <i
@@ -495,10 +483,7 @@ const Overview = ({ completeness }) => {
                     </div>
 
                     <div class="col">
-                      <a
-                        href="#/user/courses"
-                        class="text-secondary"
-                      >
+                      <a href="#/user/courses" class="text-secondary">
                         <div class="card shadow-none m-0 border-left">
                           <div class="card-body text-center">
                             <i
