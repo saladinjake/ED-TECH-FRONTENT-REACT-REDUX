@@ -15762,9 +15762,17 @@ tbody.file-list tr {
 }
 .editor-authoring .content-area .visuell-view {
   outline: none;
+  color: #000;
+
+}
+
+.visuell-view{
+  color: #000;
+    height: 600px;
 }
 .editor-authoring .content-area .visuell-view p {
-  margin: 12px 0;
+  color: #000;
+  font-size: 25px;
 }
 .editor-authoring .content-area .html-view {
   outline: none;
@@ -16362,3 +16370,34 @@ tbody.file-list tr {
 
 
 
+
+
+
+/*row spacing*/
+
+.table-implement-row {
+  /*border-collapse:separate;
+  border-spacing:0 55px;*/
+
+ 
+
+}
+.first-child-of-td {
+                border-right:hidden;
+            }
+
+.tr-of-root{
+
+}
+
+
+
+.centerSubsection
+{
+    
+}
+
+
+.centerLessonSection{
+  
+}

@@ -622,14 +622,14 @@ class EditorBox extends React.Component{
 	  
 	  // active by tag names
 	  let tagName = elem.tagName.toLowerCase();
-	  toolbarButton = document.querySelectorAll(`.toolbar .btn[data-tag-name="${tagName}"]`)[0];
+	  toolbarButton = document.querySelectorAll(`.authoring-edit-toolbar .btn-action-editor[data-tag-name="${tagName}"]`)[0];
 	  if(toolbarButton) {
 	    toolbarButton.classList.add('active');
 	  }
 	  
 	  // active by text-align
 	  let textAlign = elem.style.textAlign;
-	  toolbarButton = document.querySelectorAll(`.toolbar .btn[data-style="textAlign:${textAlign}"]`)[0];
+	  toolbarButton = document.querySelectorAll(`.authoring-edit-toolbar .btn-action-editor[data-style="textAlign:${textAlign}"]`)[0];
 	  if(toolbarButton) {
 	    toolbarButton.classList.add('active');
 	  }
@@ -656,7 +656,7 @@ class EditorBox extends React.Component{
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title pull-left" style={{ color: "#000" }}>
-                  Sub Section Detail
+                  Add component
                 </h5>
                 <a
                   href="#"
@@ -670,9 +670,9 @@ class EditorBox extends React.Component{
               <div
                 class="modal-body p-4 col-md-12"
                 id="result"
-                style={{ height: "400px", overflowY: "scroll" }}
+             
               >
-                <p>Add a title to the section</p>
+             
                 <div class="row">
                   <div class="divided col-md-10">
                    
@@ -726,6 +726,24 @@ class EditorBox extends React.Component{
 				        <span class="btn-action-editor icon" data-action="indent" title="Indent">
 				          <img  src="https://image.flaticon.com/icons/svg/25/25233.svg" />  
 				        </span>
+
+				        <span class="btn-action-editor icon smaller" data-action="undo" title="Undo">
+				          <img  src="https://image.flaticon.com/icons/svg/25/25249.svg" />
+				        </span>
+				        <span class="btn-action-editor icon" data-action="removeFormat" title="Remove format">
+				          <img  src="https://image.flaticon.com/icons/svg/25/25454.svg" />  
+				        </span>
+
+				        <span class="btn-action-editor icon smaller" data-action="createLink" title="Insert Link">
+				          <img  src="https://image.flaticon.com/icons/svg/25/25385.svg" />
+				        </span>
+				        <span class="btn-action-editor icon smaller" data-action="unlink" data-tag-name="a" title="Unlink">
+				          <img  src="https://image.flaticon.com/icons/svg/25/25341.svg" />
+				        </span>
+
+				        <span class="btn-action-editor icon" data-action="code" title="Show HTML-Code">
+				          <img  src="https://image.flaticon.com/icons/svg/25/25185.svg" />
+				        </span>
 				        
 				      </div>
 				      <div class="box-internal">
@@ -733,39 +751,34 @@ class EditorBox extends React.Component{
 				          <img  src="https://image.flaticon.com/icons/svg/25/25232.svg" />  
 				        </span>
 				      </div>
+
+
 				      
 				    </div>
 				    <div class="line">
 				      
 				      <div class="box-internal">
-				        <span class="btn-action-editor icon smaller" data-action="undo" title="Undo">
-				          <img  src="https://image.flaticon.com/icons/svg/25/25249.svg" />
-				        </span>
-				        <span class="btn-action-editor icon" data-action="removeFormat" title="Remove format">
-				          <img  src="https://image.flaticon.com/icons/svg/25/25454.svg" />  
-				        </span>
+				        
 				      </div>
 				      
 				      <div class="box-internal">
-				        <span class="btn-action-editor icon smaller" data-action="createLink" title="Insert Link">
-				          <img  src="https://image.flaticon.com/icons/svg/25/25385.svg" />
-				        </span>
-				        <span class="btn-action-editor icon smaller" data-action="unlink" data-tag-name="a" title="Unlink">
-				          <img  src="https://image.flaticon.com/icons/svg/25/25341.svg" />
-				        </span>
+				        
 				      </div>
 				      
 				      <div class="box-internal">
-				        <span class="btn-action-editor icon" data-action="code" title="Show HTML-Code">
-				          <img  src="https://image.flaticon.com/icons/svg/25/25185.svg" />
-				        </span>
+				        
 				      </div>
 				      
 				    </div>
 				  </div>
 				  <div class="content-area">
-				    <div class="visuell-view" contenteditable>
-				      <p style={{textAlign: "center"}}>Edit  <b>this </b> content <i></i>!</p>
+				    <div class="visuell-view"  contentEditable='true'>
+				          <p style={{textAlign: "center"}}>Edit <b>your content </b> Editor <i>
+				          (What you see is what you get)</i>!</p>
+      <p style={{textAlign: "center"}}>Add text content <u>(plain text)</u>, 
+          <i><u>markups</u> </i>and pure <u>html code</u>, <strike></strike>!</p>
+      <hr/>
+  
 				     
 				    </div>
 				    <textarea class="html-view"></textarea>
@@ -795,16 +808,15 @@ class EditorBox extends React.Component{
                   {/*the mark up hint*/}
                   <div class="col-md-2">
                        <p> this is a place hodler to hold the mark up </p>
-                  </div>
-                </div>
-              </div>
 
-              <div class="modal-footer">
+                       
+
+              <div class="modal-footer box-internal">
                 <button
                  
                   type="button"
                   style={{ background: "rgba(8,23,200)" }}
-                  class="btn-primary"
+                  class="btn-primary btn  btn-small pull-left"
                   data-dismiss="modal"
                 >
                   Save
@@ -814,11 +826,18 @@ class EditorBox extends React.Component{
                  
                   type="button"
                   style={{ background: "rgba(8,23,200)" }}
-                  class="btn-primary"
+                  class="btn-primary btn btn-small pull-right"
                   data-dismiss="modal"
                 >
                   Cancel
                 </button>
+                </div>
+                  </div>
+
+
+              </div>
+
+
               </div>
             </div>
           </div>

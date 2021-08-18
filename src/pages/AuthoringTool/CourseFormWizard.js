@@ -43,11 +43,11 @@ const createLessonSection = (el) => {
     "tracker"
   )} subsection-child_${localStorage.getItem(
     "s_tracker"
-  )} " style="margin-left:15px;margin-right:20px;min-width:80%;width:80%;height:30px;border:1px solid black;border-bottom:none;border-top:none;">
+  )} " style="margin-left:15px;margin-right:20px;min-width:80%;width:80%;height:30px;border-bottom:none;border-top:none;">
       <td colspan="7">
         <div class="fold-content">
   
-  <table  class="small-friendly course-window dynamo_${localStorage.getItem(
+  <table style="width:70%;margin:0px auto;"  class="small-friendly course-window dynamo_${localStorage.getItem(
     "l_tracker"
   )}">
             <thead>
@@ -1923,7 +1923,7 @@ const Step2 = (props) => {
     <button type="button" class="btn btn-default btn-responsive" id="appendnestable"><i class="fa fa-magic"></i> Add Section</button>
     <button type="button" class="btn btn-default btn-responsive" id="removeall"><i class="fa fa-bomb"></i>Clear</button>
   </div>*/}
-            <table class="fold-table course-window">
+            <table class="fold-table course-window table-implement-row">
               <thead className="card-box">
                 <tr>
                   <th>Section Name</th>
@@ -2772,11 +2772,12 @@ const addSectionContent = () => {
  
   <tr onclick="showSubsection(this)" data-id="${
     "miller_" + mycounter
-  }" id="dynamic_section_${mycounter}"  class="view col-md-12 ${
+  }" id="dynamic_section_${mycounter}"  class="view tr-of-root col-md-12 ${
     "miller_" + mycounter
-  } section-list" style="min-width:100%;width:100%;border:1px solid #000; border-bottom:none; border-top:none; margin-top:10px;">
+  } section-list" style="min-width:100%;width:100%;  margin-top:10px;">
      
-     <td class="tits section__name" style="font-size:20px"> ${
+    
+     <td class="tits section__name first-child-of-td" style="font-size:20px"> ${
        document.getElementById("title").value || "Section " + mycounter
      }</td>
       <td class="pcs" style="font-size:20px"></td>
@@ -2921,18 +2922,18 @@ const addSubSectionContent = (el) => {
   
          <tr border-spacing="20"   id="dynamic_subsection_${muu_counter}"  data-id="${
     "muu_" + muu_counter
-  }" class="fold ${
+  }" class="fold centerSubsection ${
     "muu_" + muu_counter
   } col-md-10 section-parent_${localStorage.getItem(
     "tracker"
   )} subsection-child_${localStorage.getItem(
     "s_tracker"
-  )} " style="min-width:100%;width:100%;height:60px;border:1px solid black;border-bottom:none;border-top:none;margin:10px">
+  )} " style="min-width:80%;width:80%;border-bottom:none;border-top:none;margin-left:20px">
       <td colspan="7">
         <div class="fold-content">
          
           
-          <table class="small-friendly course-window">
+          <table class="small-friendly course-window" style="width:90%;margin:0px auto;">
             <thead>
               <tr>
                 <th><span class="visible-small" title="Premiumns">Title</span><span class="visible-big">Title</span></th>
