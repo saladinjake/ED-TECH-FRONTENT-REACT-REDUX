@@ -65,7 +65,7 @@ const createLessonSection = (el) => {
                <td class="title_sub " data-th="Company name" style="font-size:15px">${
                  $("#title_3").val() || "Lesson"
                }</td>
-                <td class="subsect" data-th="Customer no">${muu_counter}</td>
+                <td class="subsect" data-th="Customer no"></td>
                 <td class="action" data-th="Customer nam"  style="float:right">
 
 
@@ -1994,7 +1994,7 @@ const Step2 = (props) => {
                       <input type="text" class="form-control" id="title" />
                     </div>
 
-                    <div class="form-group" style={{ display: "none" }}>
+                    <div class="form-group" >
                       <label>Section ID</label>
                       <input type="text" class="form-control" id="section_id" />
                     </div>
@@ -2198,7 +2198,7 @@ const Step2 = (props) => {
                       <input type="text" class="form-control" id="title_2" />
                     </div>
 
-                    <div class="form-group" style={{ display: "none" }}>
+                    <div class="form-group" >
                       <label>Sub Section ID</label>
                       <input
                         type="text"
@@ -2949,8 +2949,8 @@ const addSubSectionContent = (el) => {
                <td class="title_sub " data-th="Company name" style="font-size:15px">${
                  $("#title_2").val() || "Subsection"
                }</td>
-                <td class="subsect" data-th="Customer no">${gen_sec_id}</td>
-                <td data-th="Customer name">0</td>
+                <td class="subsect" data-th="Customer no"></td>
+                <td data-th="Customer name"></td>
                 <td class="action" data-th="Customer nam"  style="float:right">
 
 
