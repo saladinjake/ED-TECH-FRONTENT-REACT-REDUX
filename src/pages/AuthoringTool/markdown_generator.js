@@ -12,6 +12,10 @@ export const getTemplateType =  (templateType) => {
       template =`<div><p>Edit this text</p></div>`;
        break;
     case "[pb_html][/pb_iframe]":
+    case "[pb_html][/pb_video]":
+    case "[pb_html][/pb_you_tube]":
+    case "[pb_html][/pb_vimeo]":
+
         template =`<iframe src="" />`;
        break;
     case "[pb_html][/pb_common_problems]":  // this can take all other forms of mark down
@@ -262,9 +266,6 @@ export const getTemplateType =  (templateType) => {
     case "[pb_html][/pb_confrencing]":  //confrence template
        template =``;
        break;
-
-    case "[pb_html][/pb_video]":      //video template
-       template =``;
 
     case "[pb_html][/pb_text_area]":   //textarea template
        template =`<form class="form mainroot-authoring" autocomplete="off" >
@@ -837,7 +838,8 @@ class EditorBox extends React.Component{
 
               <div class="modal-footer box-internal">
                 <button
-                 
+                  id="save_new_insertion_component"
+                  data-notification="Be careful not to delete these action id"
                   type="button"
                   style={{ background: "rgba(8,23,200)" }}
                   class="btn-primary btn  btn-small pull-left"

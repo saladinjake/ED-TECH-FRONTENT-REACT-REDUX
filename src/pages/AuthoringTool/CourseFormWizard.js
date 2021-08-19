@@ -20,10 +20,20 @@ import Lessons from "./dynamic_content";
 /*magicican victor jake dibs*/
 import  EditorBox , { getTemplateType } from "./markdown_generator"
 
+import loading_image from "assets/gifs/loading-buffering.gif";
+
 window.showComponentModal = (e) => {
   document.getElementById('myModalLessonGroup').style.display="block"
 }
 
+function removeLoader(){
+  $( "#loadingDiv" ).fadeOut(500, function() {
+          // fadeOut complete. Remove the loading div
+      $( "#loadingDiv" ).remove(); //makes page more lightweight 
+  });  
+}
+
+       
 let lesson_counter = 1;
 
 window.addlessonSection = (e) => {
@@ -132,6 +142,10 @@ const createLessonSection = (el) => {
 
                 </span>
 </li></ul>`;
+
+   $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+      setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
 
   panel_class.append(template);
 
@@ -1686,8 +1700,11 @@ const Step2 = (props) => {
   // };
 
   const handleWidgetRemove = (widget) => {
-    widget.parentElement.remove(widget.parentElement);
+    widget.parentElement.parentElement.parentElement.remove();
   };
+
+
+
 
   useEffect(() => {
     const Tabs = document.querySelectorAll(".modal-tab");
@@ -1719,13 +1736,14 @@ const Step2 = (props) => {
     }
   };
 
-  // Methods
+  // powerful script handler for both creat and edit unit trigger
+  // 3 dead birds with one stone
 
   const handleWidgetClick = (e) => {
     let that = this;
     const Widget = e.target;
     const Type = Widget.getAttribute("data-type");
-    const TemplateType = Widget.getAttribute("data-template");
+    const TemplateType = Widget.getAttribute("data-template"); //
 
     //widget
     let Target = $(".dynamo_" + localStorage.getItem("l_tracker"));
@@ -1745,6 +1763,7 @@ const Step2 = (props) => {
       margin: 0,
       position: "relative",
     });
+    MainClone.attr("id",Math.random()*150 + "-inserted-questence-module-block-"+ Math.random()*10 + new Date().toString()  )
 
     
     closeModal(); //close the selected modal fot the lesson component
@@ -1764,8 +1783,8 @@ const Step2 = (props) => {
           Target,
           MainClone
         );
-        markdownTemplate = ``
-        htmlEquivalentTemplate =``
+        markdownTemplate = "[pb_html][/pb_text]"
+        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_text]")
         break;
       case "[pb_html][/pb_iframe]":
         Clone = launchFormBoxIntoModal(
@@ -1773,10 +1792,22 @@ const Step2 = (props) => {
           Target,
           MainClone
         );
+        markdownTemplate = "[pb_html][/pb_iframe]"
+        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_iframe]")
 
-        markdownTemplate = ``
-        htmlEquivalentTemplate =``
+        //change the field of the modal to match the widget module
+        $(".root-block").css({
+          display:"none"
+        })
+
+
+         //change the field of the modal to match the widget module
+        $(".change-title").html("Video Title")
+        $(".change-title2").html("Add a link to the resource page ( Website )")
+        $(".change-description").html("Iframe Component")
+        
         break;
+
       case "[pb_html][/pb_common_problems]":
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_common_problems]",
@@ -1784,8 +1815,8 @@ const Step2 = (props) => {
           MainClone
         );
 
-        markdownTemplate = ``
-        htmlEquivalentTemplate =``
+        markdownTemplate = "[pb_html][/pb_common_problems]"
+        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_common_problems]")
         break;
       case "[pb_html][/pb_checkboxes]":
         Clone = launchFormBoxIntoModal(
@@ -1794,8 +1825,8 @@ const Step2 = (props) => {
           MainClone
         );
 
-        markdownTemplate = ``
-        htmlEquivalentTemplate =``
+        markdownTemplate = "[pb_html][/pb_checkboxes]"
+        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_checkboxes]")
         break;
       case "[pb_html][/pb_numeric_input]":
         Clone = launchFormBoxIntoModal(
@@ -1804,8 +1835,8 @@ const Step2 = (props) => {
           MainClone
         );
 
-        markdownTemplate = ``
-        htmlEquivalentTemplate =``
+        markdownTemplate = "[pb_html][/pb_numeric_input]"
+        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_numeric_input]")
         break;
      case "[pb_html][/pb_numeric_input_feed]":
         Clone = launchFormBoxIntoModal(
@@ -1814,8 +1845,8 @@ const Step2 = (props) => {
           MainClone
         );
 
-        markdownTemplate = ``
-        htmlEquivalentTemplate =``
+        markdownTemplate = "[pb_html][/pb_numeric_input_feed]"
+        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_numeric_input_feed]")
         break;
 
       case "[pb_html][/pb_text_input]":
@@ -1825,8 +1856,8 @@ const Step2 = (props) => {
           MainClone
         );
 
-        markdownTemplate = ``
-        htmlEquivalentTemplate =``
+        markdownTemplate = "[pb_html][/pb_text_input]"
+        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_text_input]")
         break;
       case "[pb_html][/pb_multiple_choice]":
         Clone = launchFormBoxIntoModal(
@@ -1835,8 +1866,8 @@ const Step2 = (props) => {
           MainClone
         );
 
-        markdownTemplate = ``
-        htmlEquivalentTemplate =``
+        markdownTemplate = "[pb_html][/pb_multiple_choice]"
+        htmlEquivalentTemplate =getTemplateType("[pb_html][/pb_multiple_choice]")
         break;
       case "[pb_html][/pb_text_input_feed]":
         Clone = launchFormBoxIntoModal(
@@ -1845,8 +1876,8 @@ const Step2 = (props) => {
           MainClone
         );
 
-        markdownTemplate = ``
-        htmlEquivalentTemplate =``
+        markdownTemplate = "[pb_html][/pb_text_input_feed]"
+        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_text_input_feed]")
         break;
       case "[pb_html][/pb_dropdown]":
         Clone = launchFormBoxIntoModal(
@@ -1855,8 +1886,8 @@ const Step2 = (props) => {
           MainClone
         );
 
-        markdownTemplate = ``
-        htmlEquivalentTemplate =``
+        markdownTemplate = "[pb_html][/pb_dropdown]"
+        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_dropdown]")
         break;
       case "[pb_html][/pb_dropdown_feed]":
         Clone = launchFormBoxIntoModal(
@@ -1865,8 +1896,8 @@ const Step2 = (props) => {
           MainClone
         );
 
-        markdownTemplate = ``
-        htmlEquivalentTemplate =``
+        markdownTemplate =  "[pb_html][/pb_dropdown_feed]"
+        htmlEquivalentTemplate = getTemplateType( "[pb_html][/pb_dropdown_feed]")
         break;
       case "[pb_html][/pb_checkboxes_feed]":
         Clone = launchFormBoxIntoModal(
@@ -1881,8 +1912,8 @@ const Step2 = (props) => {
           Target,
           MainClone
         );
-          markdownTemplate = ``
-        htmlEquivalentTemplate =``
+          markdownTemplate = "[pb_html][/pb_button]"
+        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_button]")
         break;
       case "[pb_html][/pb_multiple_choice_feed]":
         Clone = launchFormBoxIntoModal(
@@ -1890,8 +1921,8 @@ const Step2 = (props) => {
           Target,
           MainClone
         );
-          markdownTemplate = ``
-        htmlEquivalentTemplate =``
+          markdownTemplate = "[pb_html][/pb_multiple_choice_feed]"
+        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_multiple_choice_feed]")
         break;
       case "[pb_html][/pb_broadcasting]":
         Clone = launchFormBoxIntoModal(
@@ -1899,8 +1930,17 @@ const Step2 = (props) => {
           Target,
           MainClone
         );
-          markdownTemplate = ``
-        htmlEquivalentTemplate =``
+          markdownTemplate =  "[pb_html][/pb_broadcasting]"
+        htmlEquivalentTemplate =  getTemplateType("[pb_html][/pb_broadcasting]")
+
+        //change the field of the modal to match the widget module
+        $(".change-title").html("Meeting Link")
+        $(".change-title2").html("Meeting ID")
+        $(".change-description").html("Add your meeting details")
+
+
+
+
         break;
       case "[pb_html][/pb_confrencing]":
         Clone = launchFormBoxIntoModal(
@@ -1908,19 +1948,48 @@ const Step2 = (props) => {
           Target,
           MainClone
         );
-          markdownTemplate = ``
-        htmlEquivalentTemplate =``
+          markdownTemplate = "[pb_html][/pb_confrencing]"
+        htmlEquivalentTemplate =  getTemplateType("[pb_html][/pb_confrencing]")
+
+         //change the field of the modal to match the widget module
+        $(".change-title").html("Meeting Link")
+        $(".change-title2").html("Meeting ID")
+        $(".change-description").html("Add your meeting details")
+
         break;
-      case "[pb_html][/pb_video]":
+      case "[pb_html][/pb_you_tube]":
         Clone = launchFormBoxIntoModal(
-          "[pb_html][/pb_video]",
+          "[pb_html][/pb_you_tube]",
           Target,
           MainClone
         );
-          markdownTemplate = ``
-        htmlEquivalentTemplate =``
+          markdownTemplate = "[pb_html][/pb_you_tube]"
+        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_you_tube]")
+
+
+         //change the field of the modal to match the widget module
+        $(".change-title").html("Video Title")
+        $(".change-title2").html("Video Link")
+        $(".change-description").html("Add a You Tube Link")
+
+        break;
+       case "[pb_html][/pb_vimeo]":
+        Clone = launchFormBoxIntoModal(
+          "[pb_html][/pb_vimeo]",
+          Target,
+          MainClone
+        );
+        markdownTemplate = "[pb_html][/pb_vimeo]"
+        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_vimeo]")
+
+         //change the field of the modal to match the widget module
+        $(".change-title").html("Video Title")
+        $(".change-title2").html("Video Link")
+        $(".change-description").html("Add a Vimeo Link")
+
+        break;
       default:
-        //Clone = launchFormBoxIntoModal("[pb_html][/pb_text]",Target,MainClone)
+        Clone = launchFormBoxIntoModal("[pb_html][/pb_text]",Target,MainClone)
         return false;
     }
   };
@@ -1929,20 +1998,59 @@ const Step2 = (props) => {
 
 
   const launchFormBoxIntoModal = (markdown,Target,cloneElement) =>{
+    //add code deception from data-fields
+   
+
+   /*if modal is text editor AKA myModalMarkdownEditor  modal for categories under html editor call to action handle the events*/
+
+    const unitAppendBtnHtmlEditorModal = document.getElementById("save_new_insertion_component")
+    unitAppendBtnHtmlEditorModal.addEventListener("click", () =>{
+      //here is where we append clone to target after much internal work is done
+       $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+      setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+     
+
+      //get the section title and placeholder content and replace with input data
+      //add validation for unit component
+      cloneElement.find(".unit_title_place_holder").html( "TITLE" )  //no title initially for this comonent
+      cloneElement.find(".unit_content_place_holder").html( $(".visuell-view").html() || "Edit this content")
+
+      Target.append(cloneElement);
+
+    })  
+
+
+
+
+
+    /*if modal IS myModalGenericForm for categories under iframes/meetings/videos etc then call to action handle the events*/
+
+    const unitAppendBtnFormBoxModal = document.getElementById("save_new_insertion_component_generic")
+     unitAppendBtnFormBoxModal .addEventListener("click", () =>{
+
+      
+
+
+      //here is where we append clone to target after much internal work is done
+      $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+      setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+      cloneElement.find(".unit_title_place_holder").html($("#title-unit").val() || "TITLE")  //add validation for unit component
+      cloneElement.find(".unit_content_place_holder").html($("#title-unit2").val() || "Edit this content") 
+      Target.append(cloneElement);
+
+      //get the section title and placeholder content and replace with input data
+    }) 
+
+
     
 
-    //here is where we append clone to target after much internal work is done
-    Target.append(cloneElement);
+
+    /*Do the same for the edit process*/
   }
 
 
   function handleModalInputFromUser(e) {
-    e.preventDefault();
-    let titleName, sectionName;
-    let that = this;
-    //remember our target lesson section
-    //here is where it triggers the usage to append its component
-   
+   //no use
    }
 
 
@@ -2466,8 +2574,10 @@ const Step2 = (props) => {
                 data-type="content-block"
                  href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
+                 data-fields="['','']"
                  onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
+
                 <i class="fa fa-text-width fa-2x"></i>
                 <span>TEXT</span>
               </div>
@@ -2477,7 +2587,7 @@ const Step2 = (props) => {
                 data-type="content-block"
                  href="#myModalGenericForm" 
                  role="button" data-toggle="modal"
-                 fields="['Link' '']"
+                  data-fields="['I-frame','Link']"
                  onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-link fa-2x"></i>
@@ -2491,6 +2601,7 @@ const Step2 = (props) => {
                 data-type="background"
                  href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
+                  data-fields="['','']"
                  onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-comment fa-2x"></i>
@@ -2502,17 +2613,20 @@ const Step2 = (props) => {
                 data-type="background"
                 href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
+                  data-fields="['','']"
                   onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-check-square-o fa-2x"></i>
                 <span>Checkboxes</span>
               </div>
+
               <div
                 class="pb-widget"
                 data-template="[pb_html][/pb_numeric_input]"
                 data-type="background"
                 href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
+                  data-fields="['','']"
                  onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_numeric_input]")}}
               >
                 <i class="fa fa-keyboard-o fa-2x"></i>
@@ -2524,6 +2638,7 @@ const Step2 = (props) => {
                 data-type="background"
                 href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
+                  data-fields="['','']"
                  onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-keyboard-o fa-2x"></i>
@@ -2536,6 +2651,7 @@ const Step2 = (props) => {
                 data-type="background"
                 href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
+                  data-fields="['','']"
                  onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_button]")}}
               >
                 <i class="fa fa-check-square-o fa-2x"></i>
@@ -2548,6 +2664,7 @@ const Step2 = (props) => {
                 data-type="background"
                 href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
+                  data-fields="['','']"
                  onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-quora fa-2x"></i>
@@ -2560,6 +2677,7 @@ const Step2 = (props) => {
                 data-type="background"
                 href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
+                  data-fields="['','']"
                  onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-chevron-circle-down fa-2x"></i>
@@ -2571,6 +2689,7 @@ const Step2 = (props) => {
                 data-type="background"
                 href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
+                  data-fields="['','']"
                  onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-chevron-circle-down fa-2x"></i>
@@ -2583,6 +2702,7 @@ const Step2 = (props) => {
                 data-type="background"
                 href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
+                  data-fields="['','']"
                  onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-check-square-o fa-2x"></i>
@@ -2594,6 +2714,7 @@ const Step2 = (props) => {
                 data-type="background"
                 href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
+                  data-fields="['','']"
                  onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-quora fa-2x"></i>
@@ -2605,6 +2726,7 @@ const Step2 = (props) => {
                 data-type="background"
                 href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
+                  data-fields="['','']"
                  onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-text fa-2x"></i>
@@ -2616,6 +2738,7 @@ const Step2 = (props) => {
                 data-type="background"
                 href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
+                  data-fields="['','']"
                  onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-text fa-2x"></i>
@@ -2629,7 +2752,7 @@ const Step2 = (props) => {
                 data-type="special"
                  href="#myModalGenericForm" 
                  role="button" data-toggle="modal"
-                 fields="['Meeting link','Meeting id']"
+                 data-fields="['Link','Meeting ID']"
                  onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
 
               >
@@ -2642,7 +2765,7 @@ const Step2 = (props) => {
                 data-type="special"
                  href="#myModalGenericForm" 
                  role="button" data-toggle="modal"
-                 fields="['Meeting link','Meeting id']"
+                data-fields="['Link','Meeting ID']"
                  onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-video-camera fa-2x"></i>
@@ -2661,7 +2784,7 @@ const Step2 = (props) => {
                 data-type="special"
                  href="#myModalGenericForm" 
                  role="button" data-toggle="modal"
-                 fields="['Meeting link','Meeting id']"
+                 data-fields="['Link','Meeting ID']"
                  onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-video-camera fa-2x"></i>
@@ -2673,7 +2796,7 @@ const Step2 = (props) => {
                 data-type="special"
                  href="#myModalGenericForm" 
                  role="button" data-toggle="modal"
-                 fields="['Meeting link','Meeting id']"
+                 data-fields="['Link','Meeting ID']"
                  onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-video-camera fa-2x"></i>
@@ -2690,11 +2813,11 @@ const Step2 = (props) => {
             <div class="modal-build-content special-video">
               <div
                 class="pb-widget"
-                data-template="[pb_html][/pb_zoom_meeting]"
+                data-template="[pb_html][/pb_vimeo]"
                 data-type="special"
                 href="#myModalGenericForm" 
                  role="button" data-toggle="modal"
-                 fields="['Meeting link','Meeting id']"
+                  data-fields="['Title','Link']"
                  onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
                  
               >
@@ -2703,11 +2826,11 @@ const Step2 = (props) => {
               </div>
               <div
                 class="pb-widget"
-                data-template="[pb_html][/pb_google_meet]"
+                data-template="[pb_html][/pb_you_tube]"
                 data-type="special"
                 href="#myModalGenericForm" 
                  role="button" data-toggle="modal"
-                 fields="['Meeting link','Meeting id']"
+                 data-fields="['Title','Link']"
                  onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fas fa-video-camera fa-2x"></i>
@@ -2745,7 +2868,7 @@ const Step2 = (props) => {
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title pull-left">Section Detail</h5>
+                  <h5 class="modal-title pull-left">Lesson Unit</h5>
                   <a
                     href="#"
                     class="pull-right"
@@ -2760,34 +2883,32 @@ const Step2 = (props) => {
                   id="result"
                   style={{ height: "400px", overflowY: "scroll" }}
                 >
-                  <p>Add a title to the section</p>
+                  <p class="change-description">Add a title to the unit</p>
                   <div class="row">
                     <div class="divided col-md-12">
-                      <div class="form-group">
-                        <label>Title</label>
-                        <input type="text" class="form-control" id="title" />
+                      <div class="form-group root-block">
+                        <label class="change-title">Title</label>
+                        <input type="text" class="form-control" id="title-unit" />
                       </div>
 
-                      <div class="form-group">
-                        <label>Section ID</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="section_id"
-                        />
+
+                      <div class="form-group root-block2" >
+                        <label class="change-title2">Title 2</label>
+                        <input type="text" class="form-control" id="title-unit2" />
                       </div>
+
+
                     </div>
                   </div>
                 </div>
 
                 <div class="modal-footer">
                   <button
-                    onClick={(e) => {
-                      handleModalInputFromUser(e);
-                    }}
+                    id="save_new_insertion_component_generic"
+                    data-notification="be careful not to delete this notification id"
                     type="button"
                     style={{ background: "rgba(8,23,200)" }}
-                    class="btn btn-primary"
+                    class="btn btn-primary unit-appender-for-modalgeneric-form-content"
                     data-dismiss="modal"
                   >
                     Add
@@ -2838,7 +2959,7 @@ const Step2 = (props) => {
                     
               <div class="panel-heading-xx">
                 <span
-                  class="panel-title"
+                  class="panel-title unit_title_place_holder"
                   style={{ float: "left",  marginLeft: "10px" }}
                 >
                   Title
@@ -2855,7 +2976,7 @@ const Step2 = (props) => {
             
                       <div class="panel-body-xx ">
                         
-                        <div class="content-section-from-input">
+                        <div class="content-section-from-input unit_content_place_holder">
                           Edit this section
                         </div>
 
@@ -2887,6 +3008,9 @@ const cloneNew = () => {
 
 window.removeSection = (el) => {
   // alert(el.dataset.id)
+   $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+      setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+     
   // $("#js-remove").on("click", function(){
   var count = $(".js-child").length;
   $("." + el.dataset.id).remove(); //addClass("removed"); // hide + remove last child
@@ -2895,11 +3019,17 @@ window.removeSection = (el) => {
 };
 
 window.removeSubSection = (el) => {
+   $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+      setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+     
   var count = $(".js-child").length;
   $("." + el.dataset.id).remove(); //addClass("removed"); // hide + remove last child
 };
 
 window.editSection = (el) => {
+   $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+      setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+     
   // alert($("."+el.dataset.id).find(".tits").text())
   $("#title_edit").val(
     $("." + el.dataset.id)
@@ -3122,6 +3252,8 @@ const addSectionContent = () => {
   // var count = $(".section-parent").length;
   var childrenHeight;
   // var newChild = $("<div class='child-table js-child'>").html(templateData );
+     $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" ></div></div>`);
+      setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
   // $("#js-count").text(count +1);  // set child text
   $("#js-parent").append(templateData); // spawn child to DOM
@@ -3269,10 +3401,16 @@ const addSubSectionContent = (el) => {
   let target = "dynamic_section_" + localStorage.getItem("tracker");
   if (subchildren <= 0) {
     // alert("here"+ $("#js-parent").find("#"+target).parent().attr("class"))
+       $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+      setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
     $("#js-parent")
       .find("#" + target)
       .append(template);
   } else {
+       $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+      setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
     // alert($("#js-parent").find("#"+target).parent().find(`tr.section-parent_${localStorage.getItem("tracker")}` ).length)
     $("#js-parent")
       .find("#" + target)
