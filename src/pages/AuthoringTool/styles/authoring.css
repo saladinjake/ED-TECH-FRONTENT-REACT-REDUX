@@ -15370,25 +15370,38 @@ overflow:auto;*/
 
 /*panel preview*/
 
-.panel {
-  border: 1px solod #ccc;
+.panel-xx {
+  border: 1px solid #ececec;
   width: 100%;
   min-width: 100%;
   margin: 20px;
   margin-bottom: 20px;
+  background-color: #fff;
 }
 
-.panel-heading {
-  background-color: #ccc;
+
+.panel-xx .actions-set{
+ /* position: absolute;*/
+    z-index: 2;
+   
+    opacity: 0;
+    
+}
+.panel-xx:hover .actions-set{ 
+ opacity: 1;
+}
+
+.panel-heading-xx {
+  background-color: #eaeaea;
   border-color: #fefefe;
   color: #000;
   width: 100%;
-  height: 40px;
+  height: 30px;
   box-shadow: 0 0 0 0.2rem rgba(10, 207, 151, 0.25);
-  padding: 70px;
+  padding: 10px;
 }
 
-.panel-heading {
+.panel-heading-xx {
   border-radius: 0;
 }
 /* Panel Controls */
@@ -15396,19 +15409,22 @@ overflow:auto;*/
 .actions-set {
   position: absolute;
   right: 10px;
-  top: 10px;
+  top: 20px;
 }
 
-.panel .actions i {
+.panel-xx .actions i {
   font-size: 12px;
   margin: 0 3px;
-  color: rgba(8, 23, 200);
+  
 }
 
-.panel .actions i:hover {
+.panel-xx .actions i:hover {
   cursor: pointer;
 }
 
+.panel-xx .panel-body-xx{
+  background: #fff;
+}
 /*box selection form select box*/
 
 :root {
@@ -16370,34 +16386,36 @@ tbody.file-list tr {
 
 
 
+/*root li section component*/
+
+.root-li, .root-sub-ul{
+  border: 1px solid rgba(8,23,200);
 
 
 
-/*row spacing*/
-
-.table-implement-row {
-  /*border-collapse:separate;
-  border-spacing:0 55px;*/
-
- 
-
-}
-.first-child-of-td {
-                border-right:hidden;
-            }
-
-.tr-of-root{
 
 }
 
+.root-li{
+  margin-bottom: 35px;
+    background: #fafafa;
+      padding: 10px;
+}
 
+.root-sub-ul{
+  border: none;
+  padding: 20px;
+  background: #fff;
+  margin-top: 20px;
+  border: 2px solid #eaeaea;
 
-.centerSubsection
-{
-    
 }
 
 
-.centerLessonSection{
-  
+.root-lesson-ul{
+  border: none;
+  padding: 20px;
+  background: #ccc;
+  margin-top: 20px;
+  border: 2px solid #fefefe;
 }

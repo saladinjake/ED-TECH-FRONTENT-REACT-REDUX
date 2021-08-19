@@ -1,16 +1,21 @@
-import React from "react"
+
+
+import React , { Fragment }from "react"
+import $ from "jquery"
 export const getTemplateType =  (templateType) => {
   let template = ``;
+
+  /*the mark down templates that are used in quickly creating reusable units*/
   
   switch( templateType ){
     case "[pb_html][/pb_text]":
-      template =``;
+      template =`<div><p>Edit this text</p></div>`;
        break;
     case "[pb_html][/pb_iframe]":
-        template =``;
+        template =`<iframe src="" />`;
        break;
-    case "[pb_html][/pb_common_problems]":
-        template =``;
+    case "[pb_html][/pb_common_problems]":  // this can take all other forms of mark down
+        template =`<div><p>Add all types of markdown here</p></div>`;
        break;
     case "[pb_html][/pb_checkboxes]":
        template =`<form class="form mainroot-authoring" autocomplete="off" >
@@ -249,19 +254,19 @@ export const getTemplateType =  (templateType) => {
        </form>`;
        break;
     case "[pb_html][/pb_multiple_choice_feed]":
-        template =``;
+        template =``;  //your multiple choice radio template
        break;
-    case "[pb_html][/pb_broadcasting]":
+    case "[pb_html][/pb_broadcasting]":  //broadcast template
        template =``;
        break;
-    case "[pb_html][/pb_confrencing]":
+    case "[pb_html][/pb_confrencing]":  //confrence template
        template =``;
        break;
 
-    case "[pb_html][/pb_video]":
+    case "[pb_html][/pb_video]":      //video template
        template =``;
 
-    case "[pb_html][/pb_text_area]":
+    case "[pb_html][/pb_text_area]":   //textarea template
        template =`<form class="form mainroot-authoring" autocomplete="off" >
 
 <fieldset>
@@ -313,7 +318,7 @@ export const getTemplateType =  (templateType) => {
 
        </form>`
        break;
-       case "[pb_html][/pb_button]":
+       case "[pb_html][/pb_button]": //button template
        template = `<form class="form mainroot-authoring" autocomplete="off" >
 
 <fieldset>
@@ -373,7 +378,7 @@ export const getTemplateType =  (templateType) => {
 
        </form>`
        break;
-      case "[pb_html][/pb_radio]":
+      case "[pb_html][/pb_radio]": // radio template
        template = `<form class="form mainroot-authoring" autocomplete="off" >
 <fieldset>
         <legend>Radio Buttons</legend>
@@ -444,6 +449,19 @@ class EditorBox extends React.Component{
 		this.visuellView = null;
 		this.htmlView = null;
 		this.modal = null;
+
+		this.handleSelectionChange.bind(this)
+
+
+	/*for component creation*/
+    this.activeBlock = null;
+    this.ClonedModal = null;
+    this.newElementCreated = null;
+    this.state = {
+      lessonCounter: 1,
+      newElement: this.newElementCreated,
+      targetParent: null,
+    };
 	}
 
 
@@ -453,11 +471,17 @@ class EditorBox extends React.Component{
 	updateHTML() {
 		// initiate the mark down parser
 		let mkdownparser = new MarkdownParser()
-		// mkdownparser.defaultCheck(); //called everytime update occurs on input change
+		mkdownparser.defaultCheck(); //called everytime update occurs on input change
 
-		// var md = document.querySelector('.editor-authoring').value; // the input board editor
+		// var md = document.querySelector('.visuell-view').innerHTML; // the input board editor
 		// var html = mkdownparser.parseMarkdown(md);  //the engine preprocessor
 		// document.querySelector('.html').innerHTML = html; //output preview board
+	}
+
+	handleSelectionChange(){
+		let that = this;
+		document.addEventListener('selectionchange', that.selectionChange);
+
 	}
 
 	componentDidMount(){
@@ -473,7 +497,6 @@ class EditorBox extends React.Component{
 		// add active tag event
 
 
-		// document.addEventListener('selectionchange', that.selectionChange);
 
 		// add toolbar button actions
 		for(let i = 0; i < that.buttons.length; i++) {
@@ -496,7 +519,7 @@ class EditorBox extends React.Component{
 		}
        
       /* this is for live update with  the markdown  parser changing dynamically*/
-		document.querySelector('.editor-authoring').addEventListener('input', that.updateHTML);
+		document.querySelector('.visuell-view').addEventListener('input', that.updateHTML);
         this.updateHTML();
 
 	}
@@ -643,6 +666,7 @@ class EditorBox extends React.Component{
 
 
 		return (
+			<Fragment>
 
 			<div
           style={{ marginTop: "80px" }}
@@ -809,7 +833,7 @@ class EditorBox extends React.Component{
                   <div class="col-md-2">
                        <p> this is a place hodler to hold the mark up </p>
 
-                       
+
 
               <div class="modal-footer box-internal">
                 <button
@@ -844,8 +868,18 @@ class EditorBox extends React.Component{
         </div>
 
 
+
+
+
+        </Fragment>
+
+
      )
 	}
+
+
+
+  
 }
 
 
@@ -934,6 +968,8 @@ class MarkdownParser{
 
 	}
 }
+
+
 
 
 export default EditorBox;

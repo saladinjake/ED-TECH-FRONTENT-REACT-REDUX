@@ -18,55 +18,45 @@ import Sortable from "sortablejs/modular/sortable.complete.esm.js";
 import Lessons from "./dynamic_content";
 
 /*magicican victor jake dibs*/
-import  EditorBox from "./markdown_generator"
+import  EditorBox , { getTemplateType } from "./markdown_generator"
 
 window.showComponentModal = (e) => {
   document.getElementById('myModalLessonGroup').style.display="block"
 }
 
 let lesson_counter = 1;
+
+window.addlessonSection = (e) => {
+  localStorage.setItem("lesson_component", e.dataset.id);
+}
 const createLessonSection = (el) => {
   let muu_counter = lesson_counter++;
   localStorage.setItem("l_tracker", muu_counter);
-  let panel_class = $(".muu_" + localStorage.getItem("s_tracker"));
+  // alert(localStorage.getItem("lesson_component"))
+  let panel_class =  $(".muu_" + localStorage.getItem("s_tracker"));  // $("." + localStorage.getItem("lesson_component")) //  $(".muu_" + localStorage.getItem("s_tracker"));
   // let lesson_components = document.getElementById("myModalLessonGroup");
   // lesson_components.style.display = "block"; //should not show up until you click add component
 
 
 
   let template = ` 
-      <tr border-spacing="20"   id="dynamic_subsection_${muu_counter}"  data-id="${
+      <ul    id="dynamic_subsection_${muu_counter} "  data-id="${
     "muu_" + muu_counter
-  }" class="fold ${
+  }" class="fold root-lesson-ul dynamo_${localStorage.getItem("l_tracker")} card-box ${
     "muu_" + muu_counter
   } col-md-8   section-parent_${localStorage.getItem(
     "tracker"
   )} subsection-child_${localStorage.getItem(
     "s_tracker"
-  )} " style="margin-left:15px;margin-right:20px;min-width:80%;width:80%;height:30px;border-bottom:none;border-top:none;">
-      <td colspan="7">
-        <div class="fold-content">
-  
-  <table style="width:70%;margin:0px auto;"  class="small-friendly course-window dynamo_${localStorage.getItem(
-    "l_tracker"
-  )}">
-            <thead>
-              <tr>
-                <th><span class="visible-small" title="Premiumns">Title</span><span class="visible-big">Lesson Title</span></th>
-      <th><span class="visible-small" title="Strategy A">Lesson ID</span><span class="visible-big">Lesson ID</span></th>
+  )} " style="margin-right:20px;min-width:98%;width:98%">
       
-     
-     <th class="action"  style="float:right"><span class="visible-small" title="Strategy A">Action</span><span class="visible-big">Action</span></th>
-              </tr>
-            </thead>
-            <tbody>
-
-              <tr class="column-list"  style="height:60px;border-left:3px solid black;margin-top:10px">
-               <td class="title_sub " data-th="Company name" style="font-size:15px">${
+        <li class="fold-content">
+  
+               <span class="title_sub " data-th="Company name" style="font-size:15px">${
                  $("#title_3").val() || "Lesson"
-               }</td>
-                <td class="subsect" data-th="Customer no"></td>
-                <td class="action" data-th="Customer nam"  style="float:right">
+               }</span>
+                <span class="subsect" data-th="Customer no"></span>
+                <span class="action" data-th="Customer nam"  style="float:right">
 
 
 
@@ -140,19 +130,12 @@ const createLessonSection = (el) => {
 
 
 
-                </td>
+                </span>
+</li></ul>`;
 
-              </tr>
+  panel_class.append(template);
 
-            
-              
-
-            </tbody>
-          </table> </td></tr></div>`;
-
-  panel_class.parent().append(template);
-
-
+// panel_class.append(template)
 
 };
 
@@ -1713,6 +1696,7 @@ const Step2 = (props) => {
 
     Widgets.forEach((widget) => {
       widget.onclick = handleWidgetClick;
+
     });
     Tabs.forEach((tab) => {
       tab.onclick = handleTabClick;
@@ -1747,9 +1731,10 @@ const Step2 = (props) => {
     let Target = $(".dynamo_" + localStorage.getItem("l_tracker"));
     // let Title = Widget.querySelector("a").innerHTML;
     let Preview = document.querySelector(
-      "#template-container > .pb-widget-preview"
+      "#template-container > .pb-widget-preview-panel"
     );
     let MainClone = Preview.cloneNode(true);
+    MainClone.querySelector(".fa-trash").addEventListener("click",(e)=>{ handleWidgetRemove(e.target)})
     MainClone.classList.add(Type);
     MainClone = $(MainClone).css({
       display: "block",
@@ -1760,14 +1745,17 @@ const Step2 = (props) => {
       margin: 0,
       position: "relative",
     });
+
     
     closeModal(); //close the selected modal fot the lesson component
 
     //now open another modal box that prompts user for the required data input
     //with the required template type form box
     //then append unto the desired location for the requested widget
-    
+ 
     let Clone = null;
+    let markdownTemplate = ``
+    let htmlEquivalentTemplate =``;
     // alert(TemplateType)
     switch (TemplateType) {
       case "[pb_html][/pb_text]":    // all these types are custom markdown that will be set with replacer function
@@ -1776,6 +1764,8 @@ const Step2 = (props) => {
           Target,
           MainClone
         );
+        markdownTemplate = ``
+        htmlEquivalentTemplate =``
         break;
       case "[pb_html][/pb_iframe]":
         Clone = launchFormBoxIntoModal(
@@ -1783,6 +1773,9 @@ const Step2 = (props) => {
           Target,
           MainClone
         );
+
+        markdownTemplate = ``
+        htmlEquivalentTemplate =``
         break;
       case "[pb_html][/pb_common_problems]":
         Clone = launchFormBoxIntoModal(
@@ -1790,6 +1783,9 @@ const Step2 = (props) => {
           Target,
           MainClone
         );
+
+        markdownTemplate = ``
+        htmlEquivalentTemplate =``
         break;
       case "[pb_html][/pb_checkboxes]":
         Clone = launchFormBoxIntoModal(
@@ -1797,6 +1793,9 @@ const Step2 = (props) => {
           Target,
           MainClone
         );
+
+        markdownTemplate = ``
+        htmlEquivalentTemplate =``
         break;
       case "[pb_html][/pb_numeric_input]":
         Clone = launchFormBoxIntoModal(
@@ -1804,28 +1803,50 @@ const Step2 = (props) => {
           Target,
           MainClone
         );
+
+        markdownTemplate = ``
+        htmlEquivalentTemplate =``
+        break;
+     case "[pb_html][/pb_numeric_input_feed]":
+        Clone = launchFormBoxIntoModal(
+          "[pb_html][/pb_numeric_input_feed]",
+          Target,
+          MainClone
+        );
+
+        markdownTemplate = ``
+        htmlEquivalentTemplate =``
         break;
 
-      case "[pb_html][/pb_text_input]":
-        Clone = launchFormBoxIntoModal(
-          "[pb_html][/pb_numeric_input]",
-          Target,
-          MainClone
-        );
-        break;
-      case "[pb_html][/pb_multichoice]":
-        Clone = launchFormBoxIntoModal(
-          "[pb_html][/pb_multichoice]",
-          Target,
-          MainClone
-        );
-        break;
       case "[pb_html][/pb_text_input]":
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_text_input]",
           Target,
           MainClone
         );
+
+        markdownTemplate = ``
+        htmlEquivalentTemplate =``
+        break;
+      case "[pb_html][/pb_multiple_choice]":
+        Clone = launchFormBoxIntoModal(
+          "[pb_html][/pb_multiple_choice]",
+          Target,
+          MainClone
+        );
+
+        markdownTemplate = ``
+        htmlEquivalentTemplate =``
+        break;
+      case "[pb_html][/pb_text_input_feed]":
+        Clone = launchFormBoxIntoModal(
+          "[pb_html][/pb_text_input_feed]",
+          Target,
+          MainClone
+        );
+
+        markdownTemplate = ``
+        htmlEquivalentTemplate =``
         break;
       case "[pb_html][/pb_dropdown]":
         Clone = launchFormBoxIntoModal(
@@ -1833,6 +1854,9 @@ const Step2 = (props) => {
           Target,
           MainClone
         );
+
+        markdownTemplate = ``
+        htmlEquivalentTemplate =``
         break;
       case "[pb_html][/pb_dropdown_feed]":
         Clone = launchFormBoxIntoModal(
@@ -1840,6 +1864,9 @@ const Step2 = (props) => {
           Target,
           MainClone
         );
+
+        markdownTemplate = ``
+        htmlEquivalentTemplate =``
         break;
       case "[pb_html][/pb_checkboxes_feed]":
         Clone = launchFormBoxIntoModal(
@@ -1848,12 +1875,14 @@ const Step2 = (props) => {
           MainClone
         );
         break;
-      case "[pb_html][/pb_text_input_feed]":
+      case "[pb_html][/pb_button]":
         Clone = launchFormBoxIntoModal(
-          "[pb_html][/pb_text_input_feed]",
+          "[pb_html][/pb_button]",
           Target,
           MainClone
         );
+          markdownTemplate = ``
+        htmlEquivalentTemplate =``
         break;
       case "[pb_html][/pb_multiple_choice_feed]":
         Clone = launchFormBoxIntoModal(
@@ -1861,6 +1890,8 @@ const Step2 = (props) => {
           Target,
           MainClone
         );
+          markdownTemplate = ``
+        htmlEquivalentTemplate =``
         break;
       case "[pb_html][/pb_broadcasting]":
         Clone = launchFormBoxIntoModal(
@@ -1868,6 +1899,8 @@ const Step2 = (props) => {
           Target,
           MainClone
         );
+          markdownTemplate = ``
+        htmlEquivalentTemplate =``
         break;
       case "[pb_html][/pb_confrencing]":
         Clone = launchFormBoxIntoModal(
@@ -1875,6 +1908,8 @@ const Step2 = (props) => {
           Target,
           MainClone
         );
+          markdownTemplate = ``
+        htmlEquivalentTemplate =``
         break;
       case "[pb_html][/pb_video]":
         Clone = launchFormBoxIntoModal(
@@ -1882,6 +1917,8 @@ const Step2 = (props) => {
           Target,
           MainClone
         );
+          markdownTemplate = ``
+        htmlEquivalentTemplate =``
       default:
         //Clone = launchFormBoxIntoModal("[pb_html][/pb_text]",Target,MainClone)
         return false;
@@ -1890,16 +1927,6 @@ const Step2 = (props) => {
 
 
 
-  document.body.addEventListener("click", (e) => {
-    if (
-      e.target.matches(".trigger-lesson-content") &&
-      e.target.hasAttribute("data-template") &&
-      e.target.hasAttribute("data-type")
-    ) {
-      handleClonedEvents(e);
-    }
-  });
-
 
   const launchFormBoxIntoModal = (markdown,Target,cloneElement) =>{
     
@@ -1907,6 +1934,17 @@ const Step2 = (props) => {
     //here is where we append clone to target after much internal work is done
     Target.append(cloneElement);
   }
+
+
+  function handleModalInputFromUser(e) {
+    e.preventDefault();
+    let titleName, sectionName;
+    let that = this;
+    //remember our target lesson section
+    //here is where it triggers the usage to append its component
+   
+   }
+
 
   if (props.currentStep !== 6) {
     return null;
@@ -1923,23 +1961,21 @@ const Step2 = (props) => {
     <button type="button" class="btn btn-default btn-responsive" id="appendnestable"><i class="fa fa-magic"></i> Add Section</button>
     <button type="button" class="btn btn-default btn-responsive" id="removeall"><i class="fa fa-bomb"></i>Clear</button>
   </div>*/}
-            <table class="fold-table course-window table-implement-row">
-              <thead className="card-box">
-                <tr>
-                  <th>Section Name</th>
-                  <th>Section ID</th>
-                  <th>Total Sub Components</th>
-                  <th class="action" style={{ float: "right" }}>
+            <ul class="fold-table course-window table-implement-row">
+              
+                <li>
+                  <span>Section Name</span>
+                  <span class="action" style={{ float: "right" }}>
                     <span class="visible-small" title="Strategy C">
                       Action
                     </span>
                     <span class="visible-big">Action </span>
-                  </th>
-                </tr>
-              </thead>
+                  </span>
+                </li>
+              </ul>
 
-              <tbody id="js-parent" class="widow-window"></tbody>
-            </table>
+              <ul id="js-parent" class="widow-window"></ul>
+            
             <br />
             <br /> <br />
             <br />
@@ -2430,6 +2466,7 @@ const Step2 = (props) => {
                 data-type="content-block"
                  href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
+                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-text-width fa-2x"></i>
                 <span>TEXT</span>
@@ -2438,6 +2475,10 @@ const Step2 = (props) => {
                 class="pb-widget"
                 data-template="[pb_html][/pb_iframe]"
                 data-type="content-block"
+                 href="#myModalGenericForm" 
+                 role="button" data-toggle="modal"
+                 fields="['Link' '']"
+                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-link fa-2x"></i>
                 <span>Iframe</span>
@@ -2448,6 +2489,9 @@ const Step2 = (props) => {
                 class="pb-widget"
                 data-template="[pb_html][/pb_common_problems]"
                 data-type="background"
+                 href="#myModalMarkdownEditor" 
+                 role="button" data-toggle="modal"
+                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-comment fa-2x"></i>
                 <span>Common Problems</span>
@@ -2456,6 +2500,9 @@ const Step2 = (props) => {
                 class="pb-widget"
                 data-template="[pb_html][/pb_checkboxes]"
                 data-type="background"
+                href="#myModalMarkdownEditor" 
+                 role="button" data-toggle="modal"
+                  onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-check-square-o fa-2x"></i>
                 <span>Checkboxes</span>
@@ -2464,6 +2511,9 @@ const Step2 = (props) => {
                 class="pb-widget"
                 data-template="[pb_html][/pb_numeric_input]"
                 data-type="background"
+                href="#myModalMarkdownEditor" 
+                 role="button" data-toggle="modal"
+                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_numeric_input]")}}
               >
                 <i class="fa fa-keyboard-o fa-2x"></i>
                 <span>Numerical Input</span>
@@ -2472,6 +2522,9 @@ const Step2 = (props) => {
                 class="pb-widget"
                 data-template="[pb_html][/pb_text_input]"
                 data-type="background"
+                href="#myModalMarkdownEditor" 
+                 role="button" data-toggle="modal"
+                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-keyboard-o fa-2x"></i>
                 <span>Text Input</span>
@@ -2479,8 +2532,35 @@ const Step2 = (props) => {
 
               <div
                 class="pb-widget"
+                data-template="[pb_html][/pb_button]"
+                data-type="background"
+                href="#myModalMarkdownEditor" 
+                 role="button" data-toggle="modal"
+                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_button]")}}
+              >
+                <i class="fa fa-check-square-o fa-2x"></i>
+                <span>Buttons</span>
+              </div>
+
+              <div
+                class="pb-widget"
+                data-template="[pb_html][/pb_multiple_choice]"
+                data-type="background"
+                href="#myModalMarkdownEditor" 
+                 role="button" data-toggle="modal"
+                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
+              >
+                <i class="fa fa-quora fa-2x"></i>
+                <span>Multiple Choice </span>
+              </div>
+
+              <div
+                class="pb-widget"
                 data-template="[pb_html][/pb_dropdown]"
                 data-type="background"
+                href="#myModalMarkdownEditor" 
+                 role="button" data-toggle="modal"
+                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-chevron-circle-down fa-2x"></i>
                 <span>Dropdown</span>
@@ -2489,6 +2569,9 @@ const Step2 = (props) => {
                 class="pb-widget"
                 data-template="[pb_html][/pb_dropdown_feed]"
                 data-type="background"
+                href="#myModalMarkdownEditor" 
+                 role="button" data-toggle="modal"
+                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-chevron-circle-down fa-2x"></i>
                 <span>Dropdown + hint and feedback</span>
@@ -2498,6 +2581,9 @@ const Step2 = (props) => {
                 class="pb-widget"
                 data-template="[pb_html][/pb_checkboxes_feed]"
                 data-type="background"
+                href="#myModalMarkdownEditor" 
+                 role="button" data-toggle="modal"
+                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-check-square-o fa-2x"></i>
                 <span>Checkboxes + hint and feedback</span>
@@ -2506,6 +2592,9 @@ const Step2 = (props) => {
                 class="pb-widget"
                 data-template="[pb_html][/pb_multiple_choice_feed]"
                 data-type="background"
+                href="#myModalMarkdownEditor" 
+                 role="button" data-toggle="modal"
+                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-quora fa-2x"></i>
                 <span>Multiple Choice + hint and feed back</span>
@@ -2514,6 +2603,9 @@ const Step2 = (props) => {
                 class="pb-widget"
                 data-template="[pb_html][/pb_numeric_input_feed]"
                 data-type="background"
+                href="#myModalMarkdownEditor" 
+                 role="button" data-toggle="modal"
+                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-text fa-2x"></i>
                 <span>Numerical Input + hint and feed back</span>
@@ -2522,6 +2614,9 @@ const Step2 = (props) => {
                 class="pb-widget"
                 data-template="[pb_html][/pb_text_input_feed]"
                 data-type="background"
+                href="#myModalMarkdownEditor" 
+                 role="button" data-toggle="modal"
+                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-text fa-2x"></i>
                 <span>Text Input + hint and feed back</span>
@@ -2532,6 +2627,11 @@ const Step2 = (props) => {
                 class="pb-widget"
                 data-template="[pb_html][/pb_zoom_meeting]"
                 data-type="special"
+                 href="#myModalGenericForm" 
+                 role="button" data-toggle="modal"
+                 fields="['Meeting link','Meeting id']"
+                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
+
               >
                 <i class="fa fa-video-camera fa-2x"></i>
                 <span>Zoom Meeting</span>
@@ -2540,6 +2640,10 @@ const Step2 = (props) => {
                 class="pb-widget"
                 data-template="[pb_html][/pb_google_meet]"
                 data-type="special"
+                 href="#myModalGenericForm" 
+                 role="button" data-toggle="modal"
+                 fields="['Meeting link','Meeting id']"
+                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-video-camera fa-2x"></i>
                 <span>Google Meet</span>
@@ -2555,6 +2659,10 @@ const Step2 = (props) => {
                 class="pb-widget"
                 data-template="[pb_html][/pb_live_stream_lecture]"
                 data-type="special"
+                 href="#myModalGenericForm" 
+                 role="button" data-toggle="modal"
+                 fields="['Meeting link','Meeting id']"
+                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-video-camera fa-2x"></i>
                 <span>Live Lecture</span>
@@ -2563,6 +2671,10 @@ const Step2 = (props) => {
                 class="pb-widget"
                 data-template="[pb_html][/pb_live_stream_events]"
                 data-type="special"
+                 href="#myModalGenericForm" 
+                 role="button" data-toggle="modal"
+                 fields="['Meeting link','Meeting id']"
+                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fa fa-video-camera fa-2x"></i>
                 <span>Live Events</span>
@@ -2580,6 +2692,11 @@ const Step2 = (props) => {
                 class="pb-widget"
                 data-template="[pb_html][/pb_zoom_meeting]"
                 data-type="special"
+                href="#myModalGenericForm" 
+                 role="button" data-toggle="modal"
+                 fields="['Meeting link','Meeting id']"
+                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
+                 
               >
                 <i class="fas fa-video-camera fa-2x"></i>
                 <span>Vimeo</span>
@@ -2588,6 +2705,10 @@ const Step2 = (props) => {
                 class="pb-widget"
                 data-template="[pb_html][/pb_google_meet]"
                 data-type="special"
+                href="#myModalGenericForm" 
+                 role="button" data-toggle="modal"
+                 fields="['Meeting link','Meeting id']"
+                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
               >
                 <i class="fas fa-video-camera fa-2x"></i>
                 <span>You tube</span>
@@ -2601,6 +2722,82 @@ const Step2 = (props) => {
 
           </div>
         </div>
+
+
+
+
+
+
+    {/*Generic modal*/}
+
+
+
+          {/*Add edit modal for sections/sub sections/ lessons dynamic content */}
+
+          <div
+            style={{ marginTop: "80px" }}
+            class="modal fade"
+            id="myModalGenericForm"
+            tabindex="-1"
+            role="dialog"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title pull-left">Section Detail</h5>
+                  <a
+                    href="#"
+                    class="pull-right"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">×</span>
+                  </a>
+                </div>
+                <div
+                  class="modal-body p-4 col-md-12"
+                  id="result"
+                  style={{ height: "400px", overflowY: "scroll" }}
+                >
+                  <p>Add a title to the section</p>
+                  <div class="row">
+                    <div class="divided col-md-12">
+                      <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" class="form-control" id="title" />
+                      </div>
+
+                      <div class="form-group">
+                        <label>Section ID</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="section_id"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button
+                    onClick={(e) => {
+                      handleModalInputFromUser(e);
+                    }}
+                    type="button"
+                    style={{ background: "rgba(8,23,200)" }}
+                    class="btn btn-primary"
+                    data-dismiss="modal"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+     
+
 
         {/*Lesson categories section*/}
 
@@ -2616,13 +2813,62 @@ const Step2 = (props) => {
                 <td></td>
                 <td
                   class="row-btn btn-widget pb-remove fa fa-trash"
-                  onclick="handleWidgetRemove(this)"
+                  onClick={()=>{handleWidgetRemove(this)}}
                 >
                   delete
                 </td>
               </tr>
             </tbody>
           </table>
+
+
+
+
+
+
+
+
+          <li class="pb-widget-preview-panel">
+            
+            
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-10">
+                    <div class="panel-xx panel-dark">
+                    
+              <div class="panel-heading-xx">
+                <span
+                  class="panel-title"
+                  style={{ float: "left",  marginLeft: "10px" }}
+                >
+                  Title
+                </span>
+                <div class="actions-set">
+                  <i class="pb-handle-widget fa fa-edit"></i>
+                  {/*<i class="fa fa-refresh" data-perform="panel-refresh"></i>
+                               <i class="fa fa-expand"></i> 
+                               <i class="fa fa-chevron-down"></i>
+                               <i class="fa fa-times"></i> */}
+                  <i class="pb-remove fa fa-trash" onclick="handleWidgetRemove(this)"></i>
+                </div>
+              </div>
+            
+                      <div class="panel-body-xx ">
+                        
+                        <div class="content-section-from-input">
+                          Edit this section
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          
+          </li>
+
+
+
         </div>
       </div>
     </React.Fragment>
@@ -2770,19 +3016,17 @@ const addSectionContent = () => {
 
   let templateData = `
  
-  <tr onclick="showSubsection(this)" data-id="${
+  <li   onclick="showSubsection(this)" data-id="${
     "miller_" + mycounter
-  }" id="dynamic_section_${mycounter}"  class="view tr-of-root col-md-12 ${
+  }" id="dynamic_section_${mycounter}"  class=" root-li view tr-of-root col-md-12 ${
     "miller_" + mycounter
-  } section-list" style="min-width:100%;width:100%;  margin-top:10px;">
+  } section-list" style=" margin-bottom:10px;">
      
     
-     <td class="tits section__name first-child-of-td" style="font-size:20px"> ${
+     <span class="tits section__name first-child-of-td" style="font-size:20px"> ${
        document.getElementById("title").value || "Section " + mycounter
-     }</td>
-      <td class="pcs" style="font-size:20px"></td>
-       <td class="we"></td>
-      <td class="per action" style="float:right">
+     }</span>
+      <span class="per action" style="float:right">
       <a style="margin-right:10px;background:#fff;color:#000"
                    href="#myModalSubsection" role="button" data-toggle="modal"
                    onclick="localStorage.setItem('given_id','dynamic_section_'+${mycounter});localStorage.setItem('tracker',${mycounter});"
@@ -2837,7 +3081,9 @@ const addSectionContent = () => {
                 <i class="fa fa-ellipsis-v " style="color:#000"></i>
              
         <ul class="dropdown-menu" style="margin-left:40px" >
-                <li><a class="dropdown-item" href="#myModalSubsection" role="button" data-toggle="modal"
+                <li><a class="dropdown-item" href="#myModalSubsection" role="button" 
+                data-toggle="modal"
+                data-id="${"miller_" + mycounter}"
                    onclick="localStorage.setItem('given_id','dynamic_section_'+${mycounter});localStorage.setItem('tracker',${mycounter});"
                   >Add Sub Section</a></li>
 
@@ -2866,18 +3112,14 @@ const addSectionContent = () => {
           
           
               
-        </td>
-</tr>
+        </span>
+</li>
 
     `;
 
-  // $("#js-add").on("click", function(){
-  //<li><a class="dropdown-item" href="#myModalLesson" role="button" data-toggle="modal"
-  //  onclick="localStorage.setItem('given_id','dynamic_section_'+${mycounter});localStorage.setItem('tracker',${mycounter});"
-  // >Add Lesson</a></li>
   // mockup variables for some randomness
   var heightValue = Math.random() * 10;
-  var count = $(".section-parent").length;
+  // var count = $(".section-parent").length;
   var childrenHeight;
   // var newChild = $("<div class='child-table js-child'>").html(templateData );
 
@@ -2920,39 +3162,23 @@ const addSubSectionContent = (el) => {
   const template = `
 
   
-         <tr border-spacing="20"   id="dynamic_subsection_${muu_counter}"  data-id="${
+         <ul    id="dynamic_subsection_${muu_counter}"  data-id="${
     "muu_" + muu_counter
-  }" class="fold centerSubsection ${
+  }" class="fold root-sub-ul centerSubsection ${
     "muu_" + muu_counter
   } col-md-10 section-parent_${localStorage.getItem(
     "tracker"
   )} subsection-child_${localStorage.getItem(
     "s_tracker"
-  )} " style="min-width:80%;width:80%;border-bottom:none;border-top:none;margin-left:20px">
-      <td colspan="7">
-        <div class="fold-content">
-         
-          
-          <table class="small-friendly course-window" style="width:90%;margin:0px auto;">
-            <thead>
-              <tr>
-                <th><span class="visible-small" title="Premiumns">Title</span><span class="visible-big">Title</span></th>
-      <th><span class="visible-small" title="Strategy A">Section ID</span><span class="visible-big">Section ID</span></th>
-      <th><span class="visible-small" title="Strategy A">Total Elements</span><span class="visible-big">Elements</span></th>
-     
-     
-     <th class="action"  style="float:right"><span class="visible-small" title="Strategy A">Action</span><span class="visible-big">Action</span></th>
-              </tr>
-            </thead>
-            <tbody>
-
-              <tr class="column-list"  style="height:60px;border-left:3px solid black;margin-top:10px">
-               <td class="title_sub " data-th="Company name" style="font-size:15px">${
+  )} " style="min-width:99%;width:99%;border-bottom:none;border-top:none;margin-left:10px">
+      
+              <span class="column-list"  style="height:60px;border-left:3px solid black;margin-top:10px">
+               <span class="title_sub " data-th="Company name" style="font-size:15px">${
                  $("#title_2").val() || "Subsection"
-               }</td>
-                <td class="subsect" data-th="Customer no"></td>
-                <td data-th="Customer name"></td>
-                <td class="action" data-th="Customer nam"  style="float:right">
+               }</span>
+                <span class="subsect" data-th="Customer no"></span>
+                <span data-th="Customer name"></span>
+                <span class="action" data-th="Customer nam"  style="float:right">
 
 
 
@@ -3006,7 +3232,7 @@ const addSubSectionContent = (el) => {
 
                 <li><a class="dropdown-item"   href="#myModalLesson" role="button" data-toggle="modal"
           data-id="${"muu_" + muu_counter}"
-            onclick="editSection(this);localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"       
+            onclick="addlessonSection(this);localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"       
           >Add Lesson</a></li>
 
 
@@ -3026,18 +3252,10 @@ const addSubSectionContent = (el) => {
 
 
 
-                </td>
+                </span>
 
-              </tr>
-
-            
-              
-
-            </tbody>
-          </table>          
-        </div>
-      </td>
-    </tr>
+      </li>
+    </ul>
   
        
       
@@ -3053,15 +3271,12 @@ const addSubSectionContent = (el) => {
     // alert("here"+ $("#js-parent").find("#"+target).parent().attr("class"))
     $("#js-parent")
       .find("#" + target)
-      .parent()
       .append(template);
   } else {
     // alert($("#js-parent").find("#"+target).parent().find(`tr.section-parent_${localStorage.getItem("tracker")}` ).length)
     $("#js-parent")
       .find("#" + target)
-      .parent()
-      .find(`tr.section-parent_${localStorage.getItem("tracker")}:last`)
-      .after(template);
+      .append(template);
   }
 };
 
