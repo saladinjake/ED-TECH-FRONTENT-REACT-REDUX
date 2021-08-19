@@ -974,6 +974,19 @@ class MarkdownParser{
 
 
 
+
+
+
+  const LaunchEditBox = () => {
+
+  }
+
+
+  const LaunchPreviewBox = () => {
+    
+  }
+
+
 export default EditorBox;
 
 

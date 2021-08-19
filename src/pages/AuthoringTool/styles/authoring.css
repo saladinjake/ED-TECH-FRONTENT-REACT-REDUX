@@ -14270,79 +14270,14 @@ div.dt-button-info h2 {
   box-sizing: border-box;
 }
 
-body {
-  position: relative;
-  padding: 0.2em 2em;
-  color: #555;
-}
 
-table {
-  position: relative;
-  width: 100%;
-}
-table th {
-  text-align: left;
-  vertical-align: bottom;
-  border-bottom: 1px solid #ccc;
-  text-transform: uppercase;
-  font: 0.8em "Oswald", sans-serif;
-}
-table th,
-table td {
-  padding: 0.4em;
-  height: 20px;
-}
-
-table.fold-table {
+.fold-table {
   background: white;
   color: #555;
 }
-table.fold-table > tbody > tr.view {
+.view {
   font-family: "Droid Serif", serif;
   transition: all 0.3s ease;
-}
-table.fold-table > tbody > tr.view td,
-table.fold-table > tbody > tr.view th {
-  cursor: pointer;
-}
-table.fold-table > tbody > tr.view td:first-child,
-table.fold-table > tbody > tr.view th:first-child {
-  position: relative;
-  padding-left: 20px;
-}
-table.fold-table > tbody > tr.view td:first-child:before,
-table.fold-table > tbody > tr.view th:first-child:before {
-  position: absolute;
-  top: 50%;
-  left: 5px;
-  width: 9px;
-  height: 16px;
-  margin-top: -8px;
-  font: 16px fontawesome;
-  content: "";
-  transition: all 0.3s ease;
-}
-table.fold-table > tbody > tr.view:nth-child(4n-1) {
-  background: #eee;
-}
-table.fold-table > tbody > tr.view:hover {
-  background: #ddd;
-}
-table.fold-table > tbody > tr.view.open {
-  /*background: #f5f5f5;
-  color: white;*/
-}
-table.fold-table > tbody > tr.view.open td:first-child:before,
-table.fold-table > tbody > tr.view.open th:first-child:before {
-  transform: rotate(-180deg);
-  color: white;
-}
-table.fold-table > tbody > tr.fold {
-  /*display: none;*/
-  display: table-row;
-}
-table.fold-table > tbody > tr.fold.open {
-  display: table-row;
 }
 
 .fold-content {

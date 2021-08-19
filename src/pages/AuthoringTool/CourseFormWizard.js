@@ -1739,6 +1739,9 @@ const Step2 = (props) => {
   // powerful script handler for both creat and edit unit trigger
   // 3 dead birds with one stone
 
+
+
+
   const handleWidgetClick = (e) => {
     let that = this;
     const Widget = e.target;
@@ -1753,6 +1756,25 @@ const Step2 = (props) => {
     );
     let MainClone = Preview.cloneNode(true);
     MainClone.querySelector(".fa-trash").addEventListener("click",(e)=>{ handleWidgetRemove(e.target)})
+    
+    MainClone.querySelector(".fa-edit").addEventListener("click",()=>{
+      alert("a modal to edit section here")
+      // document.getElementById("myModalMarkdownEditorEditMode").style.display="block"
+      
+    })
+
+    MainClone.querySelector(".fa-eye").addEventListener("click",()=>{
+      // LaunchPreviewBox()
+    })
+    // MainClone.querySelector(".fa-expand").addEventListener("click",(e)=>{
+    //   alert("a modal to expand section here")
+    // })
+    // MainClone.querySelector(".fa-chevron-down").addEventListener("click",()=>{
+    //   alert("a modal to collaps here")
+    // })
+
+   
+
     MainClone.classList.add(Type);
     MainClone = $(MainClone).css({
       display: "block",
@@ -2101,6 +2123,8 @@ const Step2 = (props) => {
             <br />
           </div>
         </div>
+
+
 
         <div
           style={{ marginTop: "80px" }}
@@ -2917,6 +2941,313 @@ const Step2 = (props) => {
               </div>
             </div>
           </div>
+
+
+
+        {/*this is the edit component modal myModalMarkdownEditorPreviewMode */}
+        <Fragment>
+      
+      <div
+          style={{ marginTop: "80px" }}
+          class="modal fade"
+          id="myModalMarkdownEditorEditMode"
+          tabindex="-1"
+          role="dialog"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-full" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title pull-left" style={{ color: "#000" }}>
+                 Editing
+                </h5>
+                <a
+                  href="#"
+                  class="pull-right"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">×</span>
+                </a>
+              </div>
+              <div
+                class="modal-body p-4 col-md-12"
+                id="result"
+             
+              >
+             
+                <div class="row">
+                  <div class="divided col-md-10">
+                   
+                          {/*the editor*/}
+                              <div class="editor-authoring">
+          <div class="authoring-edit-toolbar">
+            <div class="line">
+              
+              <div class="box-internal">
+                <span class="btn-action-editor icon smaller" data-action="bold" data-tag-name="b" title="Bold">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25432.svg" />
+                </span>
+                <span class="btn-action-editor icon smaller" data-action="italic" data-tag-name="i" title="Italic">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25392.svg" />
+                </span>
+                <span class="btn-action-editor icon smaller" data-action="underline" data-tag-name="u" title="Underline">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25433.svg" />
+                </span>
+                <span class="btn-action-editor icon smaller" data-action="strikeThrough" data-tag-name="strike" title="Strike through">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25626.svg" />
+                </span>
+              </div>
+              
+              <div class="box-internal">
+                <span class="btn-action-editor icon has-submenu">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25351.svg" />
+                  <div class="submenu">
+                    <span class="btn-action-editor icon" data-action="justifyLeft" data-style="textAlign:left" title="Justify left">
+                      <img  src="https://image.flaticon.com/icons/svg/25/25351.svg" />  
+                    </span>
+                    <span class="btn-action-editor icon" data-action="justifyCenter" data-style="textAlign:center" title="Justify center">
+                      <img  src="https://image.flaticon.com/icons/svg/25/25440.svg" />  
+                    </span>
+                    <span class="btn-action-editor icon" data-action="justifyRight" data-style="textAlign:right" title="Justify right">
+                      <img  src="https://image.flaticon.com/icons/svg/25/25288.svg" />  
+                    </span>
+                    <span class="btn-action-editor icon" data-action="formatBlock" data-style="textAlign:justify" title="Justify block">
+                      <img  src="https://image.flaticon.com/icons/svg/25/25181.svg" />  
+                    </span>
+                  </div>
+                </span>
+                <span class="btn-action-editor icon" data-action="insertOrderedList" data-tag-name="ol" title="Insert ordered list">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25242.svg" />  
+                </span>
+                <span class="btn-action-editor icon" data-action="insertUnorderedList" data-tag-name="ul" title="Insert unordered list">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25648.svg" />  
+                </span>
+                <span class="btn-action-editor icon" data-action="outdent" title="Outdent">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25410.svg" />  
+                </span>
+                <span class="btn-action-editor icon" data-action="indent" title="Indent">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25233.svg" />  
+                </span>
+
+                <span class="btn-action-editor icon smaller" data-action="undo" title="Undo">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25249.svg" />
+                </span>
+                <span class="btn-action-editor icon" data-action="removeFormat" title="Remove format">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25454.svg" />  
+                </span>
+
+                <span class="btn-action-editor icon smaller" data-action="createLink" title="Insert Link">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25385.svg" />
+                </span>
+                <span class="btn-action-editor icon smaller" data-action="unlink" data-tag-name="a" title="Unlink">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25341.svg" />
+                </span>
+
+                <span class="btn-action-editor icon" data-action="code" title="Show HTML-Code">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25185.svg" />
+                </span>
+                
+              </div>
+              <div class="box-internal">
+                <span class="btn-action-editor icon" data-action="insertHorizontalRule" title="Insert horizontal rule">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25232.svg" />  
+                </span>
+              </div>
+
+
+              
+            </div>
+            <div class="line">
+              
+              <div class="box-internal">
+                
+              </div>
+              
+              <div class="box-internal">
+                
+              </div>
+              
+              <div class="box-internal">
+                
+              </div>
+              
+            </div>
+          </div>
+          <div class="content-area">
+            <div class="visuell-view2"  contentEditable='true'>
+                  <p style={{textAlign: "center"}}>Edit <b>your content </b> Editor <i>
+                  (What you see is what you get)</i>!</p>
+      <p style={{textAlign: "center"}}>Add text content <u>(plain text)</u>, 
+          <i><u>markups</u> </i>and pure <u>html code</u>, <strike></strike>!</p>
+      <hr/>
+  
+             
+            </div>
+            <textarea class="html-view"></textarea>
+          </div>
+        </div>
+
+        <div class="modal-authoring">
+          <div class="modal-bg"></div>
+          <div class="modal-wrapper">
+            <div class="close">✖</div>
+            <div class="modal-content" id="modalCreateLink">
+              <h3>Insert Link</h3>
+              <input type="text" id="linkValue" placeholder="Link (example: http://)" />
+              <div class="row">
+                <input type="checkbox" id="new-tab" />
+                <label for="new-tab">Open in new Tab?</label>
+              </div>
+              <button class="done">Done</button>
+            </div>
+          </div>
+        </div>
+                 {/*en editor*/}
+
+
+                  </div>
+
+                  {/*the mark up hint*/}
+                  <div class="col-md-2">
+                       <p> this is a place hodler to hold the mark up </p>
+
+
+
+              <div class="modal-footer box-internal">
+                <button
+                  id="save_new_insertion_component2"
+                  data-notification="Be careful not to delete these action id"
+                  type="button"
+                  style={{ background: "rgba(8,23,200)" }}
+                  class="btn-primary btn  btn-small pull-left"
+                  data-dismiss="modal"
+                >
+                  Save
+                </button>
+
+                 <button
+                 
+                  type="button"
+                  style={{ background: "rgba(8,23,200)" }}
+                  class="btn-primary btn btn-small pull-right"
+                  data-dismiss="modal"
+                >
+                  Cancel
+                </button>
+                </div>
+                  </div>
+
+
+              </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+        </Fragment>
+
+
+
+
+
+
+
+
+
+
+
+
+        {/*this is the edit component modal myModalMarkdownEditorPreviewMode */}
+        <Fragment>
+      
+      <div
+          style={{ marginTop: "80px" }}
+          class="modal fade"
+          id="myModalMarkdownEditorPreviewMode"
+          tabindex="-1"
+          role="dialog"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-full" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title pull-left" style={{ color: "#000" }}>
+                 Preview
+                </h5>
+                <a
+                  href="#"
+                  class="pull-right"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">×</span>
+                </a>
+              </div>
+              <div
+                class="modal-body p-4 col-md-12"
+                id="result"
+             
+              >
+             
+                <div class="row">
+                  <div class="divided col-md-10">
+                   
+
+
+                  </div>
+
+                  {/*the mark up hint*/}
+                  <div class="col-md-2">
+                       <p> this is a place hodler to hold the mark up </p>
+
+
+
+              <div class="modal-footer box-internal">
+                <button
+                  id="save_new_insertion_component2"
+                  data-notification="Be careful not to delete these action id"
+                  type="button"
+                  style={{ background: "rgba(8,23,200)" }}
+                  class="btn-primary btn  btn-small pull-left"
+                  data-dismiss="modal"
+                >
+                  Save
+                </button>
+
+                 <button
+                 
+                  type="button"
+                  style={{ background: "rgba(8,23,200)" }}
+                  class="btn-primary btn btn-small pull-right"
+                  data-dismiss="modal"
+                >
+                  Cancel
+                </button>
+                </div>
+                  </div>
+
+
+              </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+        </Fragment>
+     
      
 
 
@@ -2965,12 +3296,14 @@ const Step2 = (props) => {
                   Title
                 </span>
                 <div class="actions-set">
-                  <i class="pb-handle-widget fa fa-edit"></i>
-                  {/*<i class="fa fa-refresh" data-perform="panel-refresh"></i>
-                               <i class="fa fa-expand"></i> 
-                               <i class="fa fa-chevron-down"></i>
-                               <i class="fa fa-times"></i> */}
-                  <i class="pb-remove fa fa-trash" onclick="handleWidgetRemove(this)"></i>
+                  <span><a href="#myModalMarkdownEditorEditMode"
+              role="button"
+              data-toggle="modal"><i class="pb-handle-widget fa fa-edit"></i></a></span>
+                  <span><a href="#myModalMarkdownEditorPreviewMode"
+              role="button"
+              data-toggle="modal"><i class="fa fa-eye"></i></a></span>
+                               
+                  <span><i class="pb-remove fa fa-trash" onclick="handleWidgetRemove(this)"></i></span>
                 </div>
               </div>
             
