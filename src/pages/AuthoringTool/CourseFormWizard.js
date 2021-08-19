@@ -1751,20 +1751,36 @@ const Step2 = (props) => {
     //widget
     let Target = $(".dynamo_" + localStorage.getItem("l_tracker"));
     // let Title = Widget.querySelector("a").innerHTML;
-    let Preview = document.querySelector(
+    let Preview = null
+
+    if(TemplateType =="[pb_html][/pb_iframe]" || TemplateType =="[pb_html][/pb_video]"
+     || TemplateType =="[pb_html][/pb_broadcasting]" || TemplateType == "[pb_html][/pb_google_meet]"
+     || TemplateType == "[pb_html][/pb_confrencing]" ||  TemplateType == "[pb_html][/pb_vimeo]"
+     ){
+          alert("its generic")
+          Preview = document.querySelector(
+          "#template-container > .pb-widget-preview-panel-generic-form"
+        );       
+
+    }else{
+       alert("its editorial")
+
+      Preview = document.querySelector(
       "#template-container > .pb-widget-preview-panel"
     );
+
+    }
     let MainClone = Preview.cloneNode(true);
     MainClone.querySelector(".fa-trash").addEventListener("click",(e)=>{ handleWidgetRemove(e.target)})
     
     MainClone.querySelector(".fa-edit").addEventListener("click",()=>{
-      alert("a modal to edit section here")
-      // document.getElementById("myModalMarkdownEditorEditMode").style.display="block"
+      // alert("a modal to edit section here")
+      LaunchEditBoxEvent(MainClone,TemplateType) // inturns get the tempRep of the TempType and append in the board 2nd col
       
     })
 
     MainClone.querySelector(".fa-eye").addEventListener("click",()=>{
-      // LaunchPreviewBox()
+      LaunchPreviewBoxEvent(MainClone,TemplateType)
     })
     // MainClone.querySelector(".fa-expand").addEventListener("click",(e)=>{
     //   alert("a modal to expand section here")
@@ -1789,6 +1805,9 @@ const Step2 = (props) => {
 
     
     closeModal(); //close the selected modal fot the lesson component
+
+
+    //the add action begins
 
     //now open another modal box that prompts user for the required data input
     //with the required template type form box
@@ -2054,8 +2073,8 @@ const Step2 = (props) => {
 
 
       //here is where we append clone to target after much internal work is done
-      $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-      setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+//      $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+  //    setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
       cloneElement.find(".unit_title_place_holder").html($("#title-unit").val() || "TITLE")  //add validation for unit component
       cloneElement.find(".unit_content_place_holder").html($("#title-unit2").val() || "Edit this content") 
       Target.append(cloneElement);
@@ -2067,7 +2086,43 @@ const Step2 = (props) => {
     
 
 
-    /*Do the same for the edit process*/
+    
+  }
+
+
+
+  function LaunchEditBoxEvent(MainClone,TemplateType){
+   /*this is based on categorized module widgets*/
+  
+    if(TemplateType =="[pb_html][/pb_iframe]" || TemplateType =="[pb_html][/pb_video]"
+     || TemplateType =="[pb_html][/pb_broadcasting]" || TemplateType == "[pb_html][/pb_google_meet]"
+     || TemplateType == "[pb_html][/pb_confrencing]" ||  TemplateType == "[pb_html][/pb_vimeo]"
+     ){
+          alert("working on it")
+          const title = MainClone.find(".unit_title_place_holder").html();
+          const body = MainClone.find(".unit_content_place_holder").html();
+          /*add the event listener*/
+      }else{
+
+         alert("not working as expecte")
+              /*just extracts and replace contents detail on edit*/
+              const extracts = MainClone.find(".unit_content_place_holder").html();
+              const editBoard = document.getElementById("myModalMarkdownEditorEditMode").querySelector(".visuell-view2");
+              editBoard.innerHTML = extracts;
+              const markupBoard = document.getElementById("markup-template-content")
+              markupBoard.innerHTML = TemplateType
+
+              /*now handles the save method on edit completed*/
+              $("#save_new_insertion_component2").on("click", () => {
+                 MainClone.find(".unit_content_place_holder").html(editBoard.innerHTML)  
+              })
+
+
+    }
+  }
+
+  function LaunchPreviewBoxEvent(Target,MainClone,TemplateType){
+    /*just previews the content in the modal section view*/
   }
 
 
@@ -2599,7 +2654,7 @@ const Step2 = (props) => {
                  href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
                  data-fields="['','']"
-                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
+                 
               >
 
                 <i class="fa fa-text-width fa-2x"></i>
@@ -2612,7 +2667,7 @@ const Step2 = (props) => {
                  href="#myModalGenericForm" 
                  role="button" data-toggle="modal"
                   data-fields="['I-frame','Link']"
-                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
+                 
               >
                 <i class="fa fa-link fa-2x"></i>
                 <span>Iframe</span>
@@ -2626,7 +2681,7 @@ const Step2 = (props) => {
                  href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
                   data-fields="['','']"
-                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
+                 
               >
                 <i class="fa fa-comment fa-2x"></i>
                 <span>Common Problems</span>
@@ -2638,7 +2693,7 @@ const Step2 = (props) => {
                 href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
                   data-fields="['','']"
-                  onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
+                  
               >
                 <i class="fa fa-check-square-o fa-2x"></i>
                 <span>Checkboxes</span>
@@ -2663,7 +2718,7 @@ const Step2 = (props) => {
                 href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
                   data-fields="['','']"
-                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
+                 
               >
                 <i class="fa fa-keyboard-o fa-2x"></i>
                 <span>Text Input</span>
@@ -2689,7 +2744,7 @@ const Step2 = (props) => {
                 href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
                   data-fields="['','']"
-                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
+                 
               >
                 <i class="fa fa-quora fa-2x"></i>
                 <span>Multiple Choice </span>
@@ -2702,7 +2757,7 @@ const Step2 = (props) => {
                 href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
                   data-fields="['','']"
-                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
+                 
               >
                 <i class="fa fa-chevron-circle-down fa-2x"></i>
                 <span>Dropdown</span>
@@ -2714,7 +2769,7 @@ const Step2 = (props) => {
                 href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
                   data-fields="['','']"
-                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
+                 
               >
                 <i class="fa fa-chevron-circle-down fa-2x"></i>
                 <span>Dropdown + hint and feedback</span>
@@ -2727,7 +2782,7 @@ const Step2 = (props) => {
                 href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
                   data-fields="['','']"
-                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
+                 
               >
                 <i class="fa fa-check-square-o fa-2x"></i>
                 <span>Checkboxes + hint and feedback</span>
@@ -2739,7 +2794,7 @@ const Step2 = (props) => {
                 href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
                   data-fields="['','']"
-                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
+                 
               >
                 <i class="fa fa-quora fa-2x"></i>
                 <span>Multiple Choice + hint and feed back</span>
@@ -2751,7 +2806,7 @@ const Step2 = (props) => {
                 href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
                   data-fields="['','']"
-                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
+                 
               >
                 <i class="fa fa-text fa-2x"></i>
                 <span>Numerical Input + hint and feed back</span>
@@ -2763,7 +2818,7 @@ const Step2 = (props) => {
                 href="#myModalMarkdownEditor" 
                  role="button" data-toggle="modal"
                   data-fields="['','']"
-                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
+                 
               >
                 <i class="fa fa-text fa-2x"></i>
                 <span>Text Input + hint and feed back</span>
@@ -2777,7 +2832,7 @@ const Step2 = (props) => {
                  href="#myModalGenericForm" 
                  role="button" data-toggle="modal"
                  data-fields="['Link','Meeting ID']"
-                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
+                 
 
               >
                 <i class="fa fa-video-camera fa-2x"></i>
@@ -2790,7 +2845,7 @@ const Step2 = (props) => {
                  href="#myModalGenericForm" 
                  role="button" data-toggle="modal"
                 data-fields="['Link','Meeting ID']"
-                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
+                 
               >
                 <i class="fa fa-video-camera fa-2x"></i>
                 <span>Google Meet</span>
@@ -2809,7 +2864,7 @@ const Step2 = (props) => {
                  href="#myModalGenericForm" 
                  role="button" data-toggle="modal"
                  data-fields="['Link','Meeting ID']"
-                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
+                 
               >
                 <i class="fa fa-video-camera fa-2x"></i>
                 <span>Live Lecture</span>
@@ -2821,7 +2876,7 @@ const Step2 = (props) => {
                  href="#myModalGenericForm" 
                  role="button" data-toggle="modal"
                  data-fields="['Link','Meeting ID']"
-                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
+                 
               >
                 <i class="fa fa-video-camera fa-2x"></i>
                 <span>Live Events</span>
@@ -2842,7 +2897,7 @@ const Step2 = (props) => {
                 href="#myModalGenericForm" 
                  role="button" data-toggle="modal"
                   data-fields="['Title','Link']"
-                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
+                 
                  
               >
                 <i class="fas fa-video-camera fa-2x"></i>
@@ -2855,7 +2910,7 @@ const Step2 = (props) => {
                 href="#myModalGenericForm" 
                  role="button" data-toggle="modal"
                  data-fields="['Title','Link']"
-                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_text]")}}
+                 
               >
                 <i class="fas fa-video-camera fa-2x"></i>
                 <span>You tube</span>
@@ -2944,7 +2999,7 @@ const Step2 = (props) => {
 
 
 
-        {/*this is the edit component modal myModalMarkdownEditorPreviewMode */}
+        {/*this is the edit component modal myModalGenericFormEditorEditMode */}
         <Fragment>
       
       <div
@@ -3075,10 +3130,10 @@ const Step2 = (props) => {
             </div>
           </div>
           <div class="content-area">
-            <div class="visuell-view2"  contentEditable='true'>
-                  <p style={{textAlign: "center"}}>Edit <b>your content </b> Editor <i>
+            <div style={{textAlign: "center",fontSize:"20px",color:"#000"}} class="visuell-view2"  contentEditable='true'>
+                  <p style={{textAlign: "center",fontSize:"20px",color:"#000"}}>Edit <b>your content </b> Editor <i>
                   (What you see is what you get)</i>!</p>
-      <p style={{textAlign: "center"}}>Add text content <u>(plain text)</u>, 
+      <p style={{textAlign: "center",fontSize:"20px",color:"#000"}} style={{textAlign: "center"}}>Add text content <u>(plain text)</u>, 
           <i><u>markups</u> </i>and pure <u>html code</u>, <strike></strike>!</p>
       <hr/>
   
@@ -3110,7 +3165,8 @@ const Step2 = (props) => {
 
                   {/*the mark up hint*/}
                   <div class="col-md-2">
-                       <p> this is a place hodler to hold the mark up </p>
+                       <p>Find the Mark up for this component below</p>
+                       <pre><code id="markup-template-content"></code></pre>
 
 
 
@@ -3320,6 +3376,53 @@ const Step2 = (props) => {
               </div>
           
           </li>
+
+
+
+
+
+
+          <li class="pb-widget-preview-panel-generic-form">
+            
+            
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-10">
+                    <div class="panel-xx panel-dark">
+                    
+              <div class="panel-heading-xx">
+                <span
+                  class="panel-title unit_title_place_holder"
+                  style={{ float: "left",  marginLeft: "10px" }}
+                >
+                  Title
+                </span>
+                <div class="actions-set">
+                  <span><a href="#myModalGenericForm"
+              role="button"
+              data-toggle="modal"><i class="pb-handle-widget fa fa-edit"></i></a></span>
+                  <span><a href="#myModalEditorPreviewMode"
+              role="button"
+              data-toggle="modal"><i class="fa fa-eye"></i></a></span>
+                               
+                  <span><i class="pb-remove fa fa-trash" onclick="handleWidgetRemove(this)"></i></span>
+                </div>
+              </div>
+            
+                      <div class="panel-body-xx ">
+                        
+                        <div class="content-section-from-input unit_content_place_holder">
+                          Edit this section
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          
+          </li>
+
 
 
 
