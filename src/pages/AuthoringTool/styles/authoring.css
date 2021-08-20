@@ -11062,7 +11062,7 @@ select.form-control-sm:not([size]):not([multiple]) {
   margin-top: 0;
 }
 .modal-full-width {
-  width: 95%;
+  width: 90%;
   max-width: none;
 }
 .modal-top {
@@ -14367,7 +14367,7 @@ div.dt-button-info h2 {
 }
 
 .modal-full {
-  min-width: 100%;
+  min-width: 90%;
   margin-left: 80;
   margin-top: 100px;
 }
@@ -14724,7 +14724,7 @@ div.dt-button-info h2 {
 
 /*sorting ordering and selection css*/
 
-.drag-handle {
+.drag-handle, .drag-handle-list {
   display: inline-block;
   width: 12px;
   cursor: move;
@@ -15119,8 +15119,8 @@ div.dt-button-info h2 {
 /* Preview Items */
 
 .pb-widget-preview {
-  width: 100%;
-  min-width: 100%;
+  width: 120%;
+  min-width: 120%;
   height: auto;
   /* text-align: center;*/
   border-radius: 5px;
@@ -15642,6 +15642,7 @@ tbody.file-list tr {
 }
 .editor-authoring .authoring-edit-toolbar {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+
 }
 .editor-authoring .authoring-edit-toolbar .line {
   display: flex;
@@ -16332,11 +16333,29 @@ tbody.file-list tr {
 }
 
 .root-li{
-  margin-bottom: 35px;
+  margin-bottom: 55px;
     background: #fafafa;
       padding: 10px;
+  margin-top: 40px;
+
 }
 
+.hint-message{
+
+  color:"#000";
+  font-size:"13px"
+}
+
+ .root-sub-ul:hover, .root-lesson-ul:hover{
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+
+
+.root-li:hover .hint-message, .root-sub-ul:hover .hint-message, .root-lesson-ul:hover .hint-message{ 
+ display: block;
+}
 .root-sub-ul{
   border: none;
   padding: 20px;
@@ -16345,6 +16364,8 @@ tbody.file-list tr {
   border: 2px solid #eaeaea;
 
 }
+
+
 
 
 .root-lesson-ul{

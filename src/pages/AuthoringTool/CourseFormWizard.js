@@ -6,7 +6,6 @@ import Footer from "components/Footer";
 
 import { Link } from "react-router-dom";
 import { AddHead } from "./sidebar";
-import $ from "jquery";
 import { Styles } from "./styles/main.js";
 
 import ReactQuill, { Mixin, Toolbar, Quill } from "react-quill";
@@ -14,17 +13,47 @@ import Dropzone, { ImageFile } from "react-dropzone";
 //import PropTypes from "prop-types"
 
 // Complete SortableJS (with all plugins)
-import Sortable from "sortablejs/modular/sortable.complete.esm.js";
+import Sortable from "sortablejs/modular/sortable.complete.esm.js"; 
 import Lessons from "./dynamic_content";
 
 /*magicican victor jake dibs*/
 import  EditorBox , { getTemplateType } from "./markdown_generator"
 
 import loading_image from "assets/gifs/loading-buffering.gif";
+import $ from "jquery";
+import 'jquery-ui-bundle';
+import 'jquery-ui-bundle/jquery-ui.css';
+// Change JQueryUI plugin names to fix name collision with Bootstrap.
+$.widget.bridge('uitooltip', $.ui.tooltip);
+$.widget.bridge('uibutton', $.ui.button);
+
+//import other jquery plugins
+//import bridget like this import jqueryBridget from "jquery-bridget"
+//hook other plugins to jquery using bridget like this in the future
+//jqueryBridget( 'plugin-designated-name', ImportedPlugin, $ );
+
+
 
 window.showComponentModal = (e) => {
   document.getElementById('myModalLessonGroup').style.display="block"
 }
+
+window.showSetSubsection = function(el) {
+
+  if ($(el).hasClass("opened")) {
+    $(el).removeClass("opened")
+    $(el).addClass("close-this-guy")
+    $("." + el.dataset.id).find("ul.fold").fadeOut("slow")
+  } else {
+     $(el).removeClass("close-this-guy")
+    $(el).addClass("opened")
+    $("." + el.dataset.id).find("ul.fold").fadeIn("slow")
+  }
+  
+ 
+  
+  
+};
 
 function removeLoader(){
   $( "#loadingDiv" ).fadeOut(500, function() {
@@ -506,7 +535,7 @@ export default class MasterForm extends React.Component {
                         }}
                         href="#basic"
                         data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2 active"
+                        className="nav-link rounded-0 pt-2 pb-2 "
                       >
                         <i className="fa fa-pen mr-1"></i>
                         <span className="d-none d-sm-inline">Basic</span>
@@ -1610,20 +1639,7 @@ class Step4 extends React.Component {
   }
 }
 
-window.showSubsection = (el) => {
-  // $(el).on("click", function(){
-  // alert("you clicked me")
-  if ($(el).hasClass("open")) {
-    $(el).removeClass("open").next(".fold").removeClass("open");
-  } else {
-    $(".fold-table tr.view")
-      .removeClass("open")
-      .next(".fold")
-      .removeClass("open");
-    $(el).addClass("open").next(".fold").addClass("open");
-  }
-  // });
-};
+
 
 const editSaveSection = (el) => {
   $(".miller_" + localStorage.getItem("tracker"))
@@ -1757,13 +1773,13 @@ const Step2 = (props) => {
      || TemplateType =="[pb_html][/pb_broadcasting]" || TemplateType == "[pb_html][/pb_google_meet]"
      || TemplateType == "[pb_html][/pb_confrencing]" ||  TemplateType == "[pb_html][/pb_vimeo]"
      ){
-          alert("its generic")
+          // alert("its generic")
           Preview = document.querySelector(
           "#template-container > .pb-widget-preview-panel-generic-form"
         );       
 
     }else{
-       alert("its editorial")
+       // alert("its editorial")
 
       Preview = document.querySelector(
       "#template-container > .pb-widget-preview-panel"
@@ -1816,22 +1832,28 @@ const Step2 = (props) => {
     let Clone = null;
     let markdownTemplate = ``
     let htmlEquivalentTemplate =``;
+    let _title =``;
     // alert(TemplateType)
     switch (TemplateType) {
-      case "[pb_html][/pb_text]":    // all these types are custom markdown that will be set with replacer function
+      case "[pb_html][/pb_text]": 
+       _title ="HTML: Text Component"   // all these types are custom markdown that will be set with replacer function
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_text]",
           Target,
-          MainClone
+          MainClone,
+          _title
         );
+       
         markdownTemplate = "[pb_html][/pb_text]"
         htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_text]")
         break;
       case "[pb_html][/pb_iframe]":
+         _title ="HTML: I-frame Component"
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_iframe]",
           Target,
-          MainClone
+          MainClone,
+          _title
         );
         markdownTemplate = "[pb_html][/pb_iframe]"
         htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_iframe]")
@@ -1850,40 +1872,48 @@ const Step2 = (props) => {
         break;
 
       case "[pb_html][/pb_common_problems]":
+         _title ="Problems : Common Problems"
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_common_problems]",
           Target,
-          MainClone
+          MainClone,
+          _title
         );
 
         markdownTemplate = "[pb_html][/pb_common_problems]"
         htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_common_problems]")
         break;
       case "[pb_html][/pb_checkboxes]":
+       _title ="Problems : Checkboxes"
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_checkboxes]",
           Target,
-          MainClone
+          MainClone,
+          _title
         );
 
         markdownTemplate = "[pb_html][/pb_checkboxes]"
         htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_checkboxes]")
         break;
       case "[pb_html][/pb_numeric_input]":
+       _title ="Problems : Numerical Inputs"
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_numeric_input]",
           Target,
-          MainClone
+          MainClone,
+          _title
         );
 
         markdownTemplate = "[pb_html][/pb_numeric_input]"
         htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_numeric_input]")
         break;
      case "[pb_html][/pb_numeric_input_feed]":
+         _title ="Problems : Numerical Input With Feed Back"
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_numeric_input_feed]",
           Target,
-          MainClone
+          MainClone,
+          _title
         );
 
         markdownTemplate = "[pb_html][/pb_numeric_input_feed]"
@@ -1891,85 +1921,103 @@ const Step2 = (props) => {
         break;
 
       case "[pb_html][/pb_text_input]":
+       _title ="Problems : Text Input"
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_text_input]",
           Target,
-          MainClone
+          MainClone,
+          _title
         );
 
         markdownTemplate = "[pb_html][/pb_text_input]"
         htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_text_input]")
         break;
       case "[pb_html][/pb_multiple_choice]":
+       _title ="Problems : Multi Choice"
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_multiple_choice]",
           Target,
-          MainClone
+          MainClone,
+          _title
         );
 
         markdownTemplate = "[pb_html][/pb_multiple_choice]"
         htmlEquivalentTemplate =getTemplateType("[pb_html][/pb_multiple_choice]")
         break;
       case "[pb_html][/pb_text_input_feed]":
+        _title ="Problems : Text Input With Feed Back"
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_text_input_feed]",
           Target,
-          MainClone
+          MainClone,
+          _title
         );
 
         markdownTemplate = "[pb_html][/pb_text_input_feed]"
         htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_text_input_feed]")
         break;
       case "[pb_html][/pb_dropdown]":
+       _title ="Problems : Drop Down"
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_dropdown]",
           Target,
-          MainClone
+          MainClone,
+           _title
         );
 
         markdownTemplate = "[pb_html][/pb_dropdown]"
         htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_dropdown]")
         break;
       case "[pb_html][/pb_dropdown_feed]":
+       _title ="Problems : Drop Down With Feed Back"
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_dropdown_feed]",
           Target,
-          MainClone
+          MainClone,
+          _title
         );
 
         markdownTemplate =  "[pb_html][/pb_dropdown_feed]"
         htmlEquivalentTemplate = getTemplateType( "[pb_html][/pb_dropdown_feed]")
         break;
       case "[pb_html][/pb_checkboxes_feed]":
+       _title ="Problems : Checkboxes With Feed Back"
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_checkboxes_feed]",
           Target,
-          MainClone
+          MainClone,
+          _title
         );
         break;
       case "[pb_html][/pb_button]":
+       _title ="Problems : Buttons"
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_button]",
           Target,
-          MainClone
+          MainClone,
+          _title
         );
           markdownTemplate = "[pb_html][/pb_button]"
         htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_button]")
         break;
       case "[pb_html][/pb_multiple_choice_feed]":
+         _title ="Problems : Multiple Choice"
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_multiple_choice_feed]",
           Target,
-          MainClone
+          MainClone,
+          _title
         );
           markdownTemplate = "[pb_html][/pb_multiple_choice_feed]"
         htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_multiple_choice_feed]")
         break;
       case "[pb_html][/pb_broadcasting]":
+        _title ="Html : Video Broadcast"
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_broadcasting]",
           Target,
-          MainClone
+          MainClone,
+          _title
         );
           markdownTemplate =  "[pb_html][/pb_broadcasting]"
         htmlEquivalentTemplate =  getTemplateType("[pb_html][/pb_broadcasting]")
@@ -1984,10 +2032,12 @@ const Step2 = (props) => {
 
         break;
       case "[pb_html][/pb_confrencing]":
+       _title ="Html : Video Conferencing"
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_confrencing]",
           Target,
-          MainClone
+          MainClone,
+          _title
         );
           markdownTemplate = "[pb_html][/pb_confrencing]"
         htmlEquivalentTemplate =  getTemplateType("[pb_html][/pb_confrencing]")
@@ -1999,10 +2049,12 @@ const Step2 = (props) => {
 
         break;
       case "[pb_html][/pb_you_tube]":
+       _title ="HTML : Video YouTube"
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_you_tube]",
           Target,
-          MainClone
+          MainClone,
+          _title
         );
           markdownTemplate = "[pb_html][/pb_you_tube]"
         htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_you_tube]")
@@ -2015,10 +2067,13 @@ const Step2 = (props) => {
 
         break;
        case "[pb_html][/pb_vimeo]":
+        _title ="HTML : Vimeo Video  "
+
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_vimeo]",
           Target,
-          MainClone
+          MainClone,
+          _title
         );
         markdownTemplate = "[pb_html][/pb_vimeo]"
         htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_vimeo]")
@@ -2030,7 +2085,7 @@ const Step2 = (props) => {
 
         break;
       default:
-        Clone = launchFormBoxIntoModal("[pb_html][/pb_text]",Target,MainClone)
+        Clone = launchFormBoxIntoModal("[pb_html][/pb_text]",Target,MainClone, "HTML: Text Editor")
         return false;
     }
   };
@@ -2038,7 +2093,7 @@ const Step2 = (props) => {
 
 
 
-  const launchFormBoxIntoModal = (markdown,Target,cloneElement) =>{
+  const launchFormBoxIntoModal = (markdown,Target,cloneElement, componentTitle) =>{
     //add code deception from data-fields
    
 
@@ -2047,13 +2102,13 @@ const Step2 = (props) => {
     const unitAppendBtnHtmlEditorModal = document.getElementById("save_new_insertion_component")
     unitAppendBtnHtmlEditorModal.addEventListener("click", () =>{
       //here is where we append clone to target after much internal work is done
-       $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-      setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+       // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+      // setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
      
 
       //get the section title and placeholder content and replace with input data
       //add validation for unit component
-      cloneElement.find(".unit_title_place_holder").html( "TITLE" )  //no title initially for this comonent
+      cloneElement.find(".unit_title_place_holder").html( componentTitle )  //no title initially for this comonent
       cloneElement.find(".unit_content_place_holder").html( $(".visuell-view").html() || "Edit this content")
 
       Target.append(cloneElement);
@@ -2075,7 +2130,7 @@ const Step2 = (props) => {
       //here is where we append clone to target after much internal work is done
 //      $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
   //    setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
-      cloneElement.find(".unit_title_place_holder").html($("#title-unit").val() || "TITLE")  //add validation for unit component
+      cloneElement.find(".unit_title_place_holder").html( componentTitle + " "+ $("#title-unit").val())  //add validation for unit component
       cloneElement.find(".unit_content_place_holder").html($("#title-unit2").val() || "Edit this content") 
       Target.append(cloneElement);
 
@@ -2098,13 +2153,13 @@ const Step2 = (props) => {
      || TemplateType =="[pb_html][/pb_broadcasting]" || TemplateType == "[pb_html][/pb_google_meet]"
      || TemplateType == "[pb_html][/pb_confrencing]" ||  TemplateType == "[pb_html][/pb_vimeo]"
      ){
-          alert("working on it")
+          // alert("working on it")
           const title = MainClone.find(".unit_title_place_holder").html();
           const body = MainClone.find(".unit_content_place_holder").html();
           /*add the event listener*/
       }else{
 
-         alert("not working as expecte")
+         // alert("not working as expecte")
               /*just extracts and replace contents detail on edit*/
               const extracts = MainClone.find(".unit_content_place_holder").html();
               const editBoard = document.getElementById("myModalMarkdownEditorEditMode").querySelector(".visuell-view2");
@@ -2146,6 +2201,8 @@ const Step2 = (props) => {
     <button type="button" class="btn btn-default btn-responsive" id="appendnestable"><i class="fa fa-magic"></i> Add Section</button>
     <button type="button" class="btn btn-default btn-responsive" id="removeall"><i class="fa fa-bomb"></i>Clear</button>
   </div>*/}
+  <span class="hint-message" style={{}}> Double click on each created section to reorder positioning of the section</span>
+                  
             <ul class="fold-table course-window table-implement-row">
               
                 <li>
@@ -3515,22 +3572,26 @@ window.replicateSection = () => {
   }
 };
 
-window.replicateSubSection = () => {
-  var subchildren = $(".subsection-child_" + localStorage.getItem("s_tracker"))
-    .length;
-  let target = "dynamic_subsection_" + localStorage.getItem("s_tracker");
-  if (subchildren <= 0) {
-    var $template = $("#js-parent")
-      .find("#" + target)
-      .clone(true);
-    $("#js-parent").append($template);
-  } else {
-    var $template = $("#js-parent")
-      .find("#" + target)
-      .clone(true);
-    // alert($("#js-parent").find("#"+target).parent().find(`tr.section-parent_${localStorage.getItem("tracker")}` ).length)
-    $("#js-parent").append($template);
-  }
+window.replicateSubSection = (el) => {
+  // var subchildren = $(".subsection-child_" + localStorage.getItem("s_tracker"))
+  //   .length;
+  // let target = $("."+ el.target.dataset.id)
+  // let target2 = ("."+ target).clone(true)
+
+  
+  // var subchildren = $(".section-parent_" + localStorage.getItem("tracker"))
+  //   .length;
+
+  // target = "muu_" + localStorage.getItem("s_tracker");
+
+
+  //      $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+  //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
+  //   // alert($("#js-parent").find("#"+target).parent().find(`tr.section-parent_${localStorage.getItem("tracker")}` ).length)
+  //   $("#" + target)
+  //     .append(target2);
+  
 };
 
 window.exportSection = () => {
@@ -3582,11 +3643,22 @@ const addSectionContent = () => {
 
   let templateData = `
  
-  <li   onclick="showSubsection(this)" data-id="${
+  <li data-restriction="${
     "miller_" + mycounter
-  }" id="dynamic_section_${mycounter}"  class=" root-li view tr-of-root col-md-12 ${
+  }"    data-id="${
+    "miller_" + mycounter
+  }" id="dynamic_section_${mycounter}"  class=" root-li view tr-of-root opened col-md-12 ${
     "miller_" + mycounter
   } section-list" style=" margin-bottom:10px;">
+   <a style="margin-right:10px;background:#fff;color:#000"
+         
+          data-id="${"miller_" + mycounter}"
+          onclick="showSetSubsection(this);localStorage.setItem('given_id','dynamic_section_'+${mycounter});localStorage.setItem('tracker',${mycounter});"
+                
+          >
+
+           <span ><i class="fa fa-chevron-down "></i></span>
+</a>
      
     
      <span class="tits section__name first-child-of-td" style="font-size:20px"> ${
@@ -3620,22 +3692,11 @@ const addSectionContent = () => {
           <i class="fa fa-trash "></i>
         </a>
 
-          <a style="margin-right:10px;background:#fff;color:#000"
-          
-          data-id="${"miller_" + mycounter}"
-                   
-          >
-                
-          <i class="fa fa-bars "></i>
-        </a>
-
+        
 
          <a class="drag-handle" style="margin-right:10px;background:#fff;color:#000"
-          
-          data-id="${"miller_" + mycounter}"
-                 
+          data-id="${"miller_" + mycounter}"                
           >
-
          <i class="fa fa-arrows "></i>
         </a>
 
@@ -3675,6 +3736,16 @@ const addSectionContent = () => {
              
            </ul>
          </a>
+
+          <a style="margin-right:10px;background:#fff;color:#000"
+        
+          data-id="${"miller_" + mycounter}"
+          onclick="showSetSubsection(this);localStorage.setItem('given_id','dynamic_section_'+${mycounter});localStorage.setItem('tracker',${mycounter});"
+                
+          >
+
+           <span ><i class="fa fa-chevron-down "></i></span>
+</a>
           
           
               
@@ -3698,7 +3769,102 @@ const addSectionContent = () => {
   //FOR DRAGABLE EFFECT
   //FOR DRAGABLE EFFECT
 
+  /*
+  *@description: subsection drag event handler
+  @rules0: move root section positions
+  *@rules1: cant move subsection to root section that did not create the subsection
+  *@rules2: cant move lessons to root subsections that did not create the lesson
+  *@rules3: cant move components to root lessons that do not create the component
+  */
+
   var children = $("#js-parent").children.length;
+
+  //  $("#js-parent").sortable({
+  //     connectWith: "li",
+  //     placeholder: "placeholder",
+  //     delay: 150
+  //   })
+  //   .disableSelection()
+  //   .dblclick( function(e){
+  //     var item = e.target;
+  //     /*No restrictions needed on root navigation*/
+  //     if (e.currentTarget.id === 'js-parent'){
+  //       //move from all to user
+  //       $(item).fadeOut('fast', function() {
+  //         // $(item).appendTo($('#some-other-staging')).fadeIn('slow');
+          
+  //         // $(item).appendTo( $("#js-parent") ).fadeIn('slow');
+  //         $(item).appendTo($(item).parent()).fadeIn('slow');
+          
+  //       });
+  //      }
+
+      
+  // })
+
+  // $("#js-parent").sortable({
+  //     connectWith: "ul",
+  //     placeholder: "placeholder",
+  //     delay: 150
+  //   })
+
+
+ 
+  //   .disableSelection()
+  //   // .dblclick( function(e){
+  //   //   var item = e.target;
+  //   //   if (e.currentTarget.id  && $(e.currentTarget).hasClass("root-li")) {
+  //   //     //move from all to user
+  //   //     $(item).fadeOut('fast', function() {
+  //   //       // $(item).appendTo($('#userFacets')).fadeIn('slow');
+          
+  //   //       // $(item).appendTo($('#allFacets')).fadeIn('slow');
+          
+  //   //       $(item).appendTo($(item).parent()).fadeIn('slow');
+          
+          
+          
+          
+  //   //     });
+  //   //   } else {
+  //   //     //move from user to all
+  //   //     $(item).fadeOut('fast', function() {
+  //   //       // $(item).appendTo($('#allFacets')).fadeIn('slow');
+          
+  //   //       // $(item).appendTo($('#userFacets')).fadeIn('slow');
+          
+  //   //       $(item).appendTo($(item).parent()).fadeIn('slow');
+          
+  //   //     });
+  //   //   }
+  //   // });
+
+
+   
+
+  //  // $(".root-li").sortable({
+  //  //    connectWith: "ul",
+  //  //    placeholder: "placeholder",
+  //  //    delay: 150
+  //  //  })
+  //  //  .disableSelection()
+  //  //  .dblclick( function(e){
+  //  //    var item = e.target;
+
+  //  //    // if (e.currentTarget.dataset.id === e.target.dataset.restriction && $(e.currentTarget).hasClass("root-li")) {
+  //  //    //   //move from all to user
+  //  //    //   $(item).fadeOut('fast', function() {
+  //  //    //     // $(item).appendTo($('#some-other-staging')).fadeIn('slow');
+  //  //    //     // .appendTo( $(item).parent("ul:not('#js-parent')"))
+  //  //    //     $(item).appendTo( $("li:not('#js-parent')")  ).fadeIn('slow');
+          
+  //  //    //   });
+  //  //    //  }
+      
+      
+  //  //  });
+
+
   if (children > 0) {
     if (document.getElementById("js-parent")) {
       var el = document.getElementById("js-parent");
@@ -3709,11 +3875,15 @@ const addSectionContent = () => {
     }
 
     if (document.querySelectorAll(".column-list")) {
-      var columnGroups = document.querySelectorAll(".column-list");
+
+  var children = $(".column-list").children.length;
+  // alert(children)
+
+      var columnGroups = document.querySelectorAll(".root-li");
       columnGroups.forEach(function (ele) {
         Sortable.create(ele, {
           group: "columns",
-          handle: ".drag-handle",
+          handle: ".drag-handle-list",
         });
       });
     }
@@ -3732,7 +3902,7 @@ const addSubSectionContent = (el) => {
   
          <ul    id="dynamic_subsection_${muu_counter}"  data-id="${
     "muu_" + muu_counter
-  }" class="fold root-sub-ul centerSubsection ${
+  }" class="fold root-sub-ul centerSubsection column-list-section-parade ${
     "muu_" + muu_counter
   } col-md-10 section-parent_${localStorage.getItem(
     "tracker"
@@ -3740,7 +3910,7 @@ const addSubSectionContent = (el) => {
     "s_tracker"
   )} " style="min-width:99%;width:99%;border-bottom:none;border-top:none;margin-left:10px">
       
-              <span class="column-list"  style="height:60px;border-left:3px solid black;margin-top:10px">
+              <span class=""  style="height:60px;border-left:3px solid black;margin-top:10px">
                <span class="title_sub " data-th="Company name" style="font-size:15px">${
                  $("#title_2").val() || "Subsection"
                }</span>
@@ -3770,7 +3940,7 @@ const addSubSectionContent = (el) => {
         </a>
 
 
-         <a style="margin-right:10px;background:#fff;color:#000"
+         <a  class="drag-handle-list" style="margin-right:10px;background:#fff;color:#000"
           
           data-id="${"muu_" + muu_counter}"
                  
@@ -3778,6 +3948,8 @@ const addSubSectionContent = (el) => {
 
          <i class="fa fa-arrows "></i>
         </a>
+
+
 
 
 
@@ -3791,9 +3963,9 @@ const addSubSectionContent = (el) => {
 
                 
 
-                <li><a class="dropdown-item"   href="#myModalEdit" role="button" data-toggle="modal"
+                <li><a class="dropdown-item"    href="#myModalSubSectionEdit" role="button" data-toggle="modal"
           data-id="${"muu_" + muu_counter}"
-            onclick="editSection(this);localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"       
+            onclick="editSubSection(this);localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"       
           >Edit </a></li>
 
 
