@@ -29,13 +29,13 @@ const WelcomeBanner = () => {
           <br />
           <br />
           <br />
-          <Col lg="3" md="3" sm="12">
+          {/*<Col lg="3" md="3" sm="12">
             <div className="authoring-sidebar-x">
               <Sidebar />
             </div>
-          </Col>
+          </Col>*/}
 
-          <Col lg="9" md="9" sm="12">
+          <Col lg="12" md="12" sm="12">
             <ActivityBox />
           </Col>
         </Row>

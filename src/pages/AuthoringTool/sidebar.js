@@ -55,8 +55,7 @@ export const FormWizard = () => {
             <div className="card-body">
               <h4 className="page-title">
                 {" "}
-                <i className="fa fa-apple title_icon"></i>{" "}
-                Add new course
+                <i className="fa fa-apple title_icon"></i> Add new course
               </h4>
             </div>
           </div>
@@ -768,13 +767,13 @@ export const FormWizard = () => {
 
                         <ul className="list-inline mb-0 wizard text-center">
                           <li className="previous list-inline-item disabled">
-                            <a href="javascript::" className="btn btn-info">
+                            <a href="#noclick" className="btn btn-info">
                               {" "}
                               <i className="mdi mdi-arrow-left-bold"></i>{" "}
                             </a>
                           </li>
                           <li className="next list-inline-item">
-                            <a href="javascript::" className="btn btn-info">
+                            <a href="#noclick" className="btn btn-info">
                               {" "}
                               <i className="mdi mdi-arrow-right-bold"></i>{" "}
                             </a>
@@ -802,8 +801,7 @@ export const OverviewDash = () => {
             <div className="card-body">
               <h4 className="page-title">
                 {" "}
-                <i className="fa fa-home title_icon"></i>{" "}
-                Dashboard
+                <i className="fa fa-home title_icon"></i> Dashboard
               </h4>
             </div>
           </div>
@@ -1074,7 +1072,7 @@ export const AddHead = () => {
   return (
     <div className="row ">
       <div className="col-md-12">
-        <div className="card" style={{ height: "140px" }}>
+        <div className="card" style={{ height: "80px" }}>
           <div className="card-body">
             <h4 className="page-title">
               {" "}
@@ -1355,65 +1353,281 @@ export const AddFormBox = () => {
               </div>
             </form>
 
-           <div className="table-responsive-sm mt-4">
+            <div className="table-responsive-sm mt-4">
+              <table
+                id="course-datatable-server-side"
+                class="table table-striped dt-responsive nowrap dataTable no-footer dtr-inline collapsed"
+                width="100%"
+                data-page-length="25"
+                role="grid"
+                aria-describedby="course-datatable-server-side_info"
+                style={{ width: "100%" }}
+              >
+                <thead>
+                  <tr role="row">
+                    <th
+                      class="sorting_asc"
+                      rowspan="1"
+                      colspan="1"
+                      style={{ width: "136.8px" }}
+                      aria-label="#"
+                    >
+                      #
+                    </th>
+                    <th
+                      class="sorting_disabled"
+                      rowspan="1"
+                      colspan="1"
+                      aria-label="Title"
+                    >
+                      Title
+                    </th>
+                    <th
+                      class="sorting_disabled"
+                      rowspan="1"
+                      colspan="1"
+                      aria-label="Category"
+                    >
+                      Category
+                    </th>
+                    <th
+                      class="sorting_disabled"
+                      rowspan="1"
+                      colspan="1"
+                      aria-label="Lesson and section"
+                    >
+                      Lesson and section
+                    </th>
+                    <th
+                      class="sorting_disabled"
+                      rowspan="1"
+                      colspan="1"
+                      aria-label="Enrolled student"
+                    >
+                      Enrolled student
+                    </th>
+                    <th
+                      class="sorting_disabled"
+                      rowspan="1"
+                      colspan="1"
+                      aria-label="Status"
+                    >
+                      Status
+                    </th>
+                    <th
+                      class="sorting_disabled"
+                      rowspan="1"
+                      colspan="1"
+                      aria-label="Price"
+                    >
+                      Price
+                    </th>
+                    <th
+                      class="sorting_disabled"
+                      rowspan="1"
+                      colspan="1"
+                      aria-label="Actions"
+                    >
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr role="row" class="even">
+                    <td class="sorting_1" tabindex="0">
+                      2
+                    </td>
+                    <td>
+                      <strong>
+                        <a href="#user/course_form/course_edit/29">
+                          Analytics for Decision Making
+                        </a>
+                      </strong>
+                      <br />
+                      <small class="text-muted">
+                        Instructor: <b>Instructor-02 Questence</b>
+                      </small>
+                    </td>
+                    <td>
+                      <span class="badge badge-dark-lighten">
+                        Human Resources
+                      </span>
+                    </td>
+                    <td>
+                      <small class="text-muted">
+                        <b>Total section</b>: 2
+                      </small>
+                      <br />
+                      <small class="text-muted">
+                        <b>Total lesson</b>: 2
+                      </small>
+                      <br />
+                    </td>
+                    <td>
+                      <small class="text-muted">
+                        <b>Total enrolment</b>: 0
+                      </small>
+                    </td>
+                    <td>
+                      <span class="badge badge-danger-lighten">Pending</span>
+                    </td>
+                    <td>
+                      <span class="badge badge-success-lighten">Free</span>
+                    </td>
+                    <td>
+                      <div class="dropright dropright">
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-outline-primary btn-rounded btn-icon"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          <i class="fa fa-eye" style={{ color: "#000" }}></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li>
+                            <a
+                              class="dropdown-item"
+                              href="#/course-detail"
+                              target="_blank"
+                            >
+                              Create
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#/course_edit/29">
+                              Edit this course
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#/course_edit/29">
+                              Replicate
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#noclick">
+                              Import
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#noclick">
+                              Export
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#noclick">
+                              Publish
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#noclick">
+                              Mark As Draft
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#noclick">
+                              Release
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#noclick">
+                              Delete
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
 
-
-
-
-                            <table id="course-datatable-server-side" class="table table-striped dt-responsive nowrap dataTable no-footer dtr-inline collapsed" width="100%" data-page-length="25" role="grid" aria-describedby="course-datatable-server-side_info" style={{width: "100%"}}>
-                        <thead>
-                            <tr role="row"><th class="sorting_asc" rowspan="1" colspan="1" style={{width: "136.8px"}} aria-label="#">#</th><th class="sorting_disabled" rowspan="1" colspan="1"  aria-label="Title">Title</th><th class="sorting_disabled" rowspan="1" colspan="1"  aria-label="Category">Category</th><th class="sorting_disabled" rowspan="1" colspan="1"  aria-label="Lesson and section">Lesson and section</th><th class="sorting_disabled" rowspan="1" colspan="1"  aria-label="Enrolled student">Enrolled student</th><th class="sorting_disabled" rowspan="1" colspan="1"  aria-label="Status">Status</th><th class="sorting_disabled" rowspan="1" colspan="1"  aria-label="Price">Price</th><th class="sorting_disabled" rowspan="1" colspan="1"  aria-label="Actions">Actions</th></tr>
-                        </thead>
-                    <tbody><tr role="row" class="even"><td class="sorting_1" tabindex="0">2</td><td ><strong><a href="#user/course_form/course_edit/29">Analytics for Decision Making</a></strong><br/>
-                <small class="text-muted">Instructor: <b>Instructor-02 Questence</b></small></td><td ><span class="badge badge-dark-lighten">Human Resources</span></td><td >
-                <small class="text-muted"><b>Total section</b>: 2</small><br/>
-                <small class="text-muted"><b>Total lesson</b>: 2</small><br/></td><td ><small class="text-muted"><b>Total enrolment</b>: 0</small></td><td ><span class="badge badge-danger-lighten">Pending</span></td><td ><span class="badge badge-success-lighten">Free</span></td><td >
-                <div class="dropright dropright">
-                <button type="button" class="btn btn-sm btn-outline-primary btn-rounded btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-eye" style={{color:"#000"}}></i>
-                </button>
-                <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#/course-detail" target="_blank">Create</a></li>
-                <li><a class="dropdown-item" href="#/course_edit/29">Edit this course</a></li>
-                <li><a class="dropdown-item" href="#/course_edit/29">Replicate</a></li>
-                <li><a class="dropdown-item" href="javascript::" >Import</a></li>
-                <li><a class="dropdown-item" href="javascript::" >Export</a></li>
-                <li><a class="dropdown-item" href="javascript::" >Publish</a></li>
-                <li><a class="dropdown-item" href="javascript::" >Mark As Draft</a></li>
-                <li><a class="dropdown-item" href="javascript::" >Release</a></li>
-                <li><a class="dropdown-item" href="javascript::" >Delete</a></li>
-                </ul>
-                </div>
-                </td></tr>
-
-
-
-                <tr role="row" class="odd"><td class="sorting_1" tabindex="0">2</td><td ><strong><a href="#user/course_form/course_edit/29">Analytics for Decision Making</a></strong><br/>
-                <small class="text-muted">Instructor: <b>Instructor-02 Questence</b></small></td><td ><span class="badge badge-dark-lighten">Human Resources</span></td><td >
-                <small class="text-muted"><b>Total section</b>: 2</small><br/>
-                <small class="text-muted"><b>Total lesson</b>: 2</small><br/></td><td ><small class="text-muted"><b>Total enrolment</b>: 0</small></td><td ><span class="badge badge-danger-lighten">Pending</span></td><td ><span class="badge badge-success-lighten">Free</span></td><td >
-                <div class="dropright dropright">
-                <button type="button" class="btn btn-sm btn-outline-primary btn-rounded btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-eye" style={{color:"#000"}}></i>
-                </button>
-                <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#/course-detail" target="_blank">View course front</a></li>
-                <li><a class="dropdown-item" href="#/course_edit/29">Edit this course</a></li>
-                <li><a class="dropdown-item" href="#/course_edit/29">Section and lesson</a></li>
-                <li><a class="dropdown-item" href="javascript::" >Mark as drafted</a></li>
-                <li><a class="dropdown-item" href="javascript::" >Delete</a></li>
-                </ul>
-                </div>
-                </td></tr>
-
-
-
-
-
-
+                  <tr role="row" class="odd">
+                    <td class="sorting_1" tabindex="0">
+                      2
+                    </td>
+                    <td>
+                      <strong>
+                        <a href="#user/course_form/course_edit/29">
+                          Analytics for Decision Making
+                        </a>
+                      </strong>
+                      <br />
+                      <small class="text-muted">
+                        Instructor: <b>Instructor-02 Questence</b>
+                      </small>
+                    </td>
+                    <td>
+                      <span class="badge badge-dark-lighten">
+                        Human Resources
+                      </span>
+                    </td>
+                    <td>
+                      <small class="text-muted">
+                        <b>Total section</b>: 2
+                      </small>
+                      <br />
+                      <small class="text-muted">
+                        <b>Total lesson</b>: 2
+                      </small>
+                      <br />
+                    </td>
+                    <td>
+                      <small class="text-muted">
+                        <b>Total enrolment</b>: 0
+                      </small>
+                    </td>
+                    <td>
+                      <span class="badge badge-danger-lighten">Pending</span>
+                    </td>
+                    <td>
+                      <span class="badge badge-success-lighten">Free</span>
+                    </td>
+                    <td>
+                      <div class="dropright dropright">
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-outline-primary btn-rounded btn-icon"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          <i class="fa fa-eye" style={{ color: "#000" }}></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li>
+                            <a
+                              class="dropdown-item"
+                              href="#/course-detail"
+                              target="_blank"
+                            >
+                              View course front
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#/course_edit/29">
+                              Edit this course
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#/course_edit/29">
+                              Section and lesson
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#noclick">
+                              Mark as drafted
+                            </a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#noclick">
+                              Delete
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
                 </tbody>
-
-                </table>
+              </table>
 
               {/*<div className="img-fluid w-100 text-center">
                 <img
@@ -1424,27 +1638,64 @@ export const AddFormBox = () => {
                 No data found
               </div>*/}
 
-
-
-
-              <div class="row"><div class="col-sm-12 col-md-5">
-              <div class="dataTables_info" id="course-datatable-server-side_info" role="status" aria-live="polite">Showing 1 to 2 of 2 entries</div>
-              </div><div class="col-sm-12 col-md-7">
-              <div class="dataTables_paginate paging_simple_numbers" id="course-datatable-server-side_paginate">
-              <ul class="pagination pull-right">
-              <li class=" " id="course-datatable-server-side_previous">
-              <a href="#" aria-controls="course-datatable-server-side" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
-              <li class="  active"><a href="#" aria-controls="course-datatable-server-side" data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
-              <li class="" id="course-datatable-server-side_next"><a href="#" aria-controls="course-datatable-server-side" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li></ul></div></div></div>
+              <div class="row">
+                <div class="col-sm-12 col-md-5">
+                  <div
+                    class="dataTables_info"
+                    id="course-datatable-server-side_info"
+                    role="status"
+                    aria-live="polite"
+                  >
+                    Showing 1 to 2 of 2 entries
+                  </div>
+                </div>
+                <div class="col-sm-12 col-md-7">
+                  <div
+                    class="dataTables_paginate paging_simple_numbers"
+                    id="course-datatable-server-side_paginate"
+                  >
+                    <ul class="pagination pull-right">
+                      <li class=" " id="course-datatable-server-side_previous">
+                        <a
+                          href="#"
+                          aria-controls="course-datatable-server-side"
+                          data-dt-idx="0"
+                          tabindex="0"
+                          class="page-link"
+                        >
+                          Previous
+                        </a>
+                      </li>
+                      <li class="  active">
+                        <a
+                          href="#"
+                          aria-controls="course-datatable-server-side"
+                          data-dt-idx="1"
+                          tabindex="0"
+                          class="page-link"
+                        >
+                          1
+                        </a>
+                      </li>
+                      <li class="" id="course-datatable-server-side_next">
+                        <a
+                          href="#"
+                          aria-controls="course-datatable-server-side"
+                          data-dt-idx="2"
+                          tabindex="0"
+                          class="page-link"
+                        >
+                          Next
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-
-
-
-
-
-         {/* <div class="table-responsive-sm mt-4">
+          {/* <div class="table-responsive-sm mt-4">
                                     <div id="course-datatable-server-side_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12 col-md-6"><div class="dataTables_length" id="course-datatable-server-side_length"><label>Show 
                                     <select name="course-datatable-server-side_length" aria-controls="course-datatable-server-side" class="custom-select custom-select-sm form-control form-control-sm"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select> entries</label></div></div><div class="col-sm-12 col-md-6"><div id="course-datatable-server-side_filter" class="dataTables_filter">
                                     <label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="course-datatable-server-side" /></label></div></div></div><div class="row"><div class="col-sm-12">
@@ -1455,9 +1706,6 @@ export const AddFormBox = () => {
 
                 </div></div></div></div>
                                             </div>*/}
-
-
-
         </div>
       </div>
     </div>
@@ -1468,7 +1716,7 @@ export const TopNav = () => {
   return (
     <div className="navbar-custom topnav-navbar topnav-navbar-dark">
       <div className="container-fluid">
-        <a className="button-menu-mobile disable-btn">
+        <a href="#no-click" className="button-menu-mobile disable-btn">
           <div className="lines">
             <span></span>
             <span></span>
@@ -1487,7 +1735,7 @@ export const SideBar = () => {
         style={{ float: "left", height: "100vh" }}
       >
         <div className="leftbar-user">
-          <a href="javascript: void(0);">
+          <a href="#no-click">
             <img
               src="http://demo4a.questence.org/uploads/user_image/placeholder.png"
               alt="user-image"

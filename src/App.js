@@ -99,6 +99,8 @@ import AuthorSales from "./pages/AuthoringTool/Sales";
 import AuthorPayments from "./pages/AuthoringTool/Payments";
 import AuthorPaymentSetting from "./pages/AuthoringTool/Paymentsettings";
 import AuthorProfileSetting from "./pages/AuthoringTool/ProfilePage";
+import AuthoringSectionDynamicLessons from "pages/AuthoringTool/dynamic_content";
+import AuthoringSectionDynamicLessons3 from "pages/AuthoringTool/dynamic_content_3layer";
 
 import $ from "jquery";
 
@@ -500,8 +502,6 @@ function App(props) {
           component={AuthorFormCont}
         />
 
-        
-
         <Route
           exact
           path={`${process.env.PUBLIC_URL + "/authoring/sales/history"}`}
@@ -524,6 +524,18 @@ function App(props) {
           exact
           path={`${process.env.PUBLIC_URL + "/authoring/profile/settings"}`}
           component={AuthorProfileSetting}
+        />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/test/lesson-content"}`}
+          component={AuthoringSectionDynamicLessons}
+        />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/test/lesson-content3"}`}
+          component={AuthoringSectionDynamicLessons3}
         />
 
         <Route component={PageNotFound} />

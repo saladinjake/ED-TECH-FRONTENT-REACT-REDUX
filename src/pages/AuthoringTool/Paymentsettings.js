@@ -135,11 +135,9 @@ const PaySettings = () => {
       <br />
       <br />
 
-      <div className="container">
+      <div className="container-fluid">
         <div className="wrapper">
-          <SideBar />
-
-          <div class="content-page-x col-md-9" style={{ float: "right" }}>
+          <div class="content-page-x col-md-12">
             <div class="content-x">
               <PaymentSettings />
             </div>

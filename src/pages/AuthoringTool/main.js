@@ -394,7 +394,7 @@ const Overview = ({ completeness }) => {
                     <i class="mdi mdi-apple-keyboard-command title_icon"></i>{" "}
                     Courses{" "}
                     <a
-                      href="http://demo4a.questence.org/user/course_form/add_course"
+                      href="#"
                       class="btn btn-outline-primary btn-rounded alignToTitle"
                     >
                       <i class="mdi mdi-plus"></i>Add new course
@@ -411,10 +411,7 @@ const Overview = ({ completeness }) => {
                 <div class="card-body p-0">
                   <div class="row no-gutters">
                     <div class="col">
-                      <a
-                        href="http://demo4a.questence.org/user/courses"
-                        class="text-secondary"
-                      >
+                      <a href="#" class="text-secondary">
                         <div class="card shadow-none m-0">
                           <div class="card-body text-center">
                             <i
@@ -433,10 +430,7 @@ const Overview = ({ completeness }) => {
                     </div>
 
                     <div class="col">
-                      <a
-                        href="http://demo4a.questence.org/user/courses"
-                        class="text-secondary"
-                      >
+                      <a href="#" class="text-secondary">
                         <div class="card shadow-none m-0 border-left">
                           <div class="card-body text-center">
                             <i
@@ -455,10 +449,7 @@ const Overview = ({ completeness }) => {
                     </div>
 
                     <div class="col">
-                      <a
-                        href="http://demo4a.questence.org/user/courses"
-                        class="text-secondary"
-                      >
+                      <a href="#/user/courses" class="text-secondary">
                         <div class="card shadow-none m-0 border-left">
                           <div class="card-body text-center">
                             <i
@@ -475,10 +466,7 @@ const Overview = ({ completeness }) => {
                     </div>
 
                     <div class="col">
-                      <a
-                        href="http://demo4a.questence.org/user/courses"
-                        class="text-secondary"
-                      >
+                      <a href="#/user/courses" class="text-secondary">
                         <div class="card shadow-none m-0 border-left">
                           <div class="card-body text-center">
                             <i
@@ -495,10 +483,7 @@ const Overview = ({ completeness }) => {
                     </div>
 
                     <div class="col">
-                      <a
-                        href="http://demo4a.questence.org/user/courses"
-                        class="text-secondary"
-                      >
+                      <a href="#/user/courses" class="text-secondary">
                         <div class="card shadow-none m-0 border-left">
                           <div class="card-body text-center">
                             <i
@@ -525,7 +510,7 @@ const Overview = ({ completeness }) => {
                   <h4 class="mb-3 header-title">Course list</h4>
                   <form
                     class="row justify-content-center"
-                    action="http://demo4a.questence.org/user/courses"
+                    action="#/user/courses"
                     method="get"
                   >
                     <div class="col-md-3">
@@ -670,7 +655,7 @@ const Overview = ({ completeness }) => {
                     <div class="img-fluid w-100 text-center">
                       <img
                         style="opacity: 1; width: 100px;"
-                        src="http://demo4a.questence.org/assets/backend/images/file-search.svg"
+                        src="#/assets/backend/images/file-search.svg"
                       />
                       <br />
                       No data found{" "}
