@@ -17,7 +17,7 @@ import Sortable from "sortablejs/modular/sortable.complete.esm.js";
 import Lessons from "./dynamic_content";
 
 /*magicican victor jake dibs*/
-import  EditorBox , { getTemplateType } from "./markdown_generator"
+import  { getTemplateType } from "./markdown_generator"
 
 import loading_image from "assets/gifs/loading-buffering.gif";
 import $ from "jquery";
@@ -34,6 +34,84 @@ $.widget.bridge('uibutton', $.ui.button);
 
 
 
+
+
+
+// if  prevent enter key when modal is shown
+      // $("body").keyup(function (e) {
+      //   // ESC key maps to keycode `27`
+      //   if (e.keyCode == 27) {
+     //        e.preventDefault()
+       //      return false;
+      //   }
+      // });
+
+  function formatYouTubeUrl(youtube) {
+    var url = youtube;
+    var idVideo = "";
+    var regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    var match = url.match(regExp);
+    if (match && match[2].length == 11) {
+      var id = match[2];
+      idVideo = id;
+      console.log(id);
+      var path = "https://img.youtube.com/vi/" + id + "/0.jpg";
+      console.log(
+        path,
+        "https://img.youtube.com/vi/" + id + "/1.jpg",
+        "http://img.youtube.com/vi/" + id + "/2.jpg"
+      );
+    }
+
+    return { idVideo, path };
+  }
+
+
+
+const uuid = () => {
+  var now = new Date();
+
+  var timestamp = now.getFullYear().toString();
+  timestamp += (now.getMonth < 9 ? "0" : "") + now.getMonth().toString(); // JS months are 0-based, so +1 and pad with 0's
+  timestamp += (now.getDate < 10 ? "0" : "") + now.getDate().toString(); // pad with a 0
+
+  return timestamp;
+};
+
+
+
+  function formatVimeoUrl(youtube) {
+    var url = youtube;
+    var idVideo = "";
+    var regExp = /^.*(vimeo)([^#\&\?]*).*/;
+    var match = url.match(regExp);
+    if (match) {
+      var id = match[2];
+      idVideo = id;
+      console.log(id);
+      var path = "https://img.youtube.com/vi/" + id + "/0.jpg";
+      console.log(
+        path,
+        "https://img.youtube.com/vi/" + id + "/1.jpg",
+        "http://img.youtube.com/vi/" + id + "/2.jpg"
+      );
+    }
+
+    return { idVideo, path };
+  }
+
+const pbCreateNode = (type, props, html) => {
+    let element = document.createElement(type);
+    props &&
+      props.forEach((prop) => {
+        let key = Object.keys(prop)[0];
+        let value = prop[key];
+        element.setAttribute(key, value);
+      });
+    html && (element.innerHTML = html);
+    return element;
+  };
+
 window.showComponentModal = (e) => {
   document.getElementById('myModalLessonGroup').style.display="block"
 }
@@ -49,18 +127,117 @@ window.showSetSubsection = function(el) {
     $(el).addClass("opened")
     $("." + el.dataset.id).find("ul.fold").fadeIn("slow")
   }
-  
- 
-  
-  
 };
 
+
+  // Methods
+
+
+  const handleWidgetRemove = (widget) => {
+    widget.parentElement.parentElement.parentElement.parentElement.remove();
+  };
+
+
+const LaunchEditBoxEvent = (e) =>{
+   /*this is based on categorized module widgets*/
+   alert("testingedit" + e.dataset.template)
+  
+
+  }
+
+window.LaunchPreviewBoxEvent =(Target,MainClone,TemplateType) =>{
+    /*just previews the content in the modal section view*/
+  }
 function removeLoader(){
   $( "#loadingDiv" ).fadeOut(500, function() {
           // fadeOut complete. Remove the loading div
       $( "#loadingDiv" ).remove(); //makes page more lightweight 
   });  
 }
+
+
+
+
+/*custom drag drop event handling for lessons and components to their respective subsections*/
+
+
+window.handleLessonDraggingEntered = function(ev, el) {
+  // alert("you are dragging the id: "+ ev.target.getAttribute('id'))
+  ev.dataTransfer.effectAllowed = 'move';
+  ev.dataTransfer.setData( 'text', $(el).attr("data-template") );
+  console.log("dragging id:"+  $(el).attr("data-id") + "  template clone :" + $(el).attr("data-template"))
+  // ev.target.classList.add( "draggable--active" );
+  localStorage.setItem("sendZone",$(el).attr("data-template"))
+}
+
+// these functions prevents default behavior of browser
+window.dragEnterIntoSection = (ev) => {
+  console.log("entering drop-zone:" + ev.target.id)
+  window.event.preventDefault();
+  return true;
+}
+window.dragOverSection = (ev) => {
+  window.event.preventDefault();
+  ev.dataTransfer.effectAllowed = 'move';
+  ev.target.closest( ".drop-zone-section" ).classList.add( "drop-zone--active" );
+}
+
+window.dragLeaveLessonIntoSubsection = ( event ) => {
+  // console.log( "DRAG LEAVE" );
+  event.target.classList.remove( "drop-zone--active" );
+}
+
+
+// function defined for when drop element on target
+window.dragDropLessonComponentToSubSection = ( event ) => {
+  // console.log( 'DROP' );
+  console.log(event.dataTransfer.getData( 'text' ), localStorage.getItem("ls_tracker"))
+  console.log(document.getElementById( "dynamic_subsection_" + localStorage.getItem("s_tracker") + "_lesson_component"  ) )
+
+  $(event.target).closest( ".drop-zone-section" )
+
+  console.log($( "#" + localStorage.getItem("sendZone") ).html())
+     .append( $( "#" + localStorage.getItem("sendZone") ).html()  )
+
+
+   if( document.getElementsByClassName( "draggable--active" )){
+    // document.getElementsByClassName( "draggable--active" )[0].classList.remove( "draggable--active" );
+   }
+  
+  if ( document.getElementsByClassName( "drop-zone--active" )[0] ) {
+    document.getElementsByClassName( "drop-zone--active" )[0].classList.remove("drop-zone--active" );
+  }
+
+  event.preventDefault();
+  event.stopPropagation()
+
+}
+
+
+window.dragEndedSoon = ( event ) => {
+  // event.preventDefault();
+  console.log( 'DRAG END' );
+  document.getElementsByClassName( "console" )[0].innerHTML = "<h4>CONSOLE: DRAG END</h4>";
+  timeDelay();
+  // remove applied active classes, regardless of where released.
+  if ( document.getElementsByClassName( "draggable--active" )[0] ) {
+    document.getElementsByClassName( "draggable--active" )[0].classList.remove( "draggable--active" );
+  }
+  if ( document.getElementsByClassName( "dropzone--active" )[0] ) {
+    document.getElementsByClassName( "dropzone--active" )[0].classList.remove( "dropzone--active" );
+  }
+}
+
+// UTILITY FUNCTIONS
+function timeDelay() {
+  let timeoutID = window.setTimeout(clearConsole, 2000);
+}
+
+function clearConsole() {
+  document.getElementsByClassName( "console" )[0].innerHTML = "<h4>CONSOLE:</h4>";
+}
+
+
 
        
 let lesson_counter = 1;
@@ -77,18 +254,25 @@ const createLessonSection = (el) => {
   // lesson_components.style.display = "block"; //should not show up until you click add component
 
 
-
+// onDragStart="dragStart(event)" onDragEnd="dragEnd( event )"
   let template = ` 
-      <ul    id="dynamic_subsection_${muu_counter} "  data-id="${
+      <ul    id="dynamic_subsection_${muu_counter}_lesson_component "  data-id="${
     "muu_" + muu_counter
-  }" class="fold root-lesson-ul dynamo_${localStorage.getItem("l_tracker")} card-box ${
+  }" class="reaper-${muu_counter} fold root-lesson-ul draggable dynamo_${localStorage.getItem("l_tracker")} card-box ${
     "muu_" + muu_counter
   } col-md-8   section-parent_${localStorage.getItem(
     "tracker"
   )} subsection-child_${localStorage.getItem(
     "s_tracker"
-  )} " style="margin-right:20px;min-width:98%;width:98%">
-      
+  )} " style="margin-right:20px;min-width:98%;width:98%" 
+   dragable="true"  
+  
+   >
+  
+   
+      <div class="console" style="display:none">
+    <h4>CONSOLE:</h4>
+  </div>
         <li class="fold-content">
   
                <span class="title_sub " data-th="Company name" style="font-size:15px">${
@@ -119,9 +303,12 @@ const createLessonSection = (el) => {
         </a>
 
 
-         <a style="margin-right:10px;background:#fff;color:#000"
-          
+         <a class="drag-handle-list-lessons" style="margin-right:10px;background:#fff;color:#000"
           data-id="${"lmuu_" + muu_counter}"
+          data-template="dynamic_subsection_${muu_counter}_lesson_component "
+           ondragstart="handleLessonDraggingEntered(event, this)"
+           ondragend="dragEndedSoon(event)"
+           onclick="localStorage.setItem('given_lsid','dynamic_lsubsection_'+${muu_counter});localStorage.setItem('ls_tracker',${muu_counter});"
                  
           >
 
@@ -180,7 +367,196 @@ const createLessonSection = (el) => {
 
 // panel_class.append(template)
 
+
+
+/*sort lessons sections */
+    /*can only move along lesson sections  and no where else*/
+    // if (document.querySelectorAll(".centerSubsection")) {
+      
+    //   var children = $(".centerSubsection").children.length; 
+
+    //   // alert(children)
+    //   var lessonsGroups = document.querySelectorAll(".root-lesson-ul");
+    //   lessonsGroups.forEach(function (ele) {
+    //     Sortable.create(ele, {
+    //       group: "columns-newset",
+    //       handle: ".drag-handle-list-lessons",
+    //     });
+    //   });
+    // }
+
+    //this is triky as it needs restrictions
+    // lessons can only be dropped on subsections with its entire components passed into it
+
+
+    // handle drag start
+
+    // handle drag stop
+
 };
+
+
+const  handleSaveComponentTextEditor =(e) => {
+    let randId = uuid()
+     let Target = $(".dynamo_" + localStorage.getItem("l_tracker"));
+    
+    let allowedHeaders =  document.getElementById("myModalMarkdownEditor")
+    let T = allowedHeaders.getAttribute('data-basestation')
+    let markdownTemplate =  allowedHeaders.getAttribute("data-markdown")
+    let _title =  allowedHeaders.getAttribute("data-title")
+
+        
+         // alert("its editorial") 
+
+        let Preview = document.querySelector(
+          "#template-container > .pb-widget-preview-panel"
+        );
+
+        let SClone = Preview.cloneNode(true)      
+        
+          let wrapWrapper = pbCreateNode("li", [
+                        { class: "pb-placeholder-main col-md-12" },
+                     // { onclick:  () => { "openModal(this)" }
+             ]);
+
+        wrapWrapper.appendChild(SClone)
+        wrapWrapper.setAttribute("id", randId )
+        let MainClone = wrapWrapper.cloneNode(true);
+        MainClone.id =randId
+      
+        MainClone.querySelector(".fa-edit").setAttribute("data-template",markdownTemplate)
+        MainClone.querySelector(".fa-edit").setAttribute("data-id",randId) //ref the curr main lesson box
+            
+        MainClone.querySelector(".fa-edit").addEventListener("click",(es) =>{
+             //alert(e.target)
+
+              // if(e.target.dataset.template=="[pb_html][/pb_text]"){
+
+                           // alert("not working as expecte")
+                                /*just extracts and replace contents detail on edit*/
+                                
+                  const extracts = $("#" + MainClone.getAttribute("id")).find(".unit_content_place_holder").html();
+                  const editBoard = document.getElementById("myModalMarkdownEditorEditMode").querySelector(".visuell-view2");
+                  editBoard.innerHTML = extracts;
+                  const markupBoard = document.getElementById("markup-template-content")
+                  markupBoard.innerHTML =markdownTemplate
+
+
+                  // document.getElementById("edit-title").setAttribute("data-parent", MainClone.id)
+
+
+                                
+
+
+              // }
+
+        })
+
+        MainClone.querySelector(".fa-trash").addEventListener("click", (e) => {
+             handleWidgetRemove(e.target)
+        })
+
+
+
+
+          MainClone.querySelector(".unit_title_place_holder").innerHTML= _title   //no title initially for this comonent
+          MainClone.querySelector(".unit_content_place_holder").innerHTML =   getTemplateType(markdownTemplate)           //$(".visuell-view").html() || "Edit this content"
+          const markupBoard = document.getElementById("markup-template-content")
+          markupBoard.innerHTML =markdownTemplate
+          $(".visuell-view").html(getTemplateType(markdownTemplate))
+
+          Target.append(MainClone);
+
+
+}
+
+
+
+
+
+const  handleSaveComponentGenericForm = () => {
+    let Target = $(".dynamo_" + localStorage.getItem("l_tracker"));
+    let allowedHeaders =  document.getElementById("myModalGenericForm")
+    let T = allowedHeaders.getAttribute('data-basestation')
+    let markdownTemplate =  allowedHeaders.getAttribute("data-markdown")
+
+
+    let randId = uuid()
+    let Preview = document.querySelector(
+                  "#template-container > .pb-widget-preview-panel-generic-form"
+    );
+
+    let SClone = Preview.cloneNode(true);
+    let   wrapWrapper = pbCreateNode("li", [
+                                { class: "pb-placeholder-main col-md-12" },
+                             // { onclick:  () => { "openModal(this)" }
+    ]);
+
+    wrapWrapper.appendChild(SClone)
+    wrapWrapper.setAttribute("id", randId )
+                    
+    let MainClone = wrapWrapper.cloneNode(true);
+                // MainClone.setAttribute("id", randId )
+    MainClone.id=randId
+                
+    MainClone.querySelector(".fa-edit").setAttribute("data-template", markdownTemplate)
+    MainClone.querySelector(".fa-edit").setAttribute("data-id",randId) //=randId //ref the curr main lesson box
+                
+                 //edit view when clicked not saved
+    MainClone.querySelector(".fa-edit").addEventListener("click",(evv) =>{
+            // if(evv.target.dataset.template && evv.target.dataset.template !=="[pb_html][/pb_text]"){
+                      // alert(evv.target.parentNode)
+                const title =  $("#"+ MainClone.getAttribute("id")).find(".unit_title_place_holder-generic").html();
+                const body = $("#"+ MainClone.getAttribute("id")).find(".unit_content_place_holder-generic").html();
+                      
+                      // alert(title,body)  
+                      //then place these content in the header and frames
+                      // eg: EDITING COMPONENT - HTML IFRAME
+                      // eg src will display the iframe content 
+                      $(".iframe-boxer2").attr("src",body)
+                      $(".iframe-box").css("display","block")
+                      $("main-videosection").css({display:"block"})
+                      $("#title-unit-b").val(title)
+                      $("#title-unit2-b").val(body)
+                      $("#edit-title").html("Editing Html component: "+ title)
+                      document.getElementById("edit-title").setAttribute("data-parent", MainClone.id)
+                      // $("#edit-title").attr("data-parent"+ MainClone.getAttribute("id")) //attach this to know where to save
+                      $("#projector-view").attr("src",body)
+
+                     
+                    // }
+                }) 
+    MainClone.querySelector(".fa-trash").addEventListener("click", (e) => {
+             handleWidgetRemove(e.target)
+        })
+    MainClone.querySelector(".unit_title_place_holder-generic").innerHTML =   $("#title-unit").val()  //add validation for unit component
+    MainClone.querySelector(".unit_content_place_holder-generic").innerHTML  = $("#title-unit2").val() || "Edit this content"
+    Target.append(MainClone);
+
+  }
+
+
+  const handleEditSaveGeneric = () =>{
+    // $("#save_new_insertion_component_generic-edit").on("click", () =>{
+        let targetBase =  document.getElementById("edit-title").getAttribute("data-parent")
+        //alert(targetBase)
+        $("#"+targetBase).find(".unit_title_place_holder-generic").html($("#title-unit-b").val())  //add validation for unit component
+        $("#"+targetBase).find(".unit_content_place_holder-generic").html($("#title-unit2-b").val()) 
+         $("#projector-view").attr("src",$("#title-unit2-b").val())        
+    // })
+  }
+
+
+
+   const handleEditSaveTextEditor = () =>{
+    // $("#save_new_insertion_component_generic-edit").on("click", () =>{
+        let targetBase =  document.getElementById("edit-title").getAttribute("data-parent")
+       // alert(targetBase)
+        $("#"+targetBase).find(".unit_title_place_holder-generic").html($("#title-unit-b").val())  //add validation for unit component
+        $("#"+targetBase).find(".unit_content_place_holder-generic").html($("#title-unit2-b").val()) 
+         $("#projector-view").attr("src",$("#title-unit2-b").val())        
+    // })
+  }
 
 class Editor extends React.Component {
   constructor(props) {
@@ -353,6 +729,11 @@ export default class MasterForm extends React.Component {
           height: "auto",
           "overflow-y": "none",
         });
+
+        $(".container-fullscreen").css({
+          height: "auto",
+          "overflow-y": "none",
+        });
       } else if (document.mozCancelFullScreen) {
         document.mozCancelFullScreen();
       } else if (document.webkitExitFullscreen) {
@@ -361,13 +742,25 @@ export default class MasterForm extends React.Component {
         document.msExitFullscreen();
       }
     } else {
-      let element = $("#container-fullscreen").get(0);
+      
+
+         let element = $(".container-fullscreen").get(0);
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+        $(".container-fullscreen").css({
+          height: "600px",
+          "overflow-y": "scroll",
+        });
+      }
+      element = $("#container-fullscreen").get(0);
       if (element.requestFullscreen) {
         element.requestFullscreen();
         $("#container-fullscreen").css({
           height: "600px",
           "overflow-y": "scroll",
         });
+
+
         // $(".tab-content").css({height:"400px","overflow-y":"none"})
       } else if (element.mozRequestFullScreen) {
         element.mozRequestFullScreen();
@@ -639,11 +1032,13 @@ export default class MasterForm extends React.Component {
                   </div>
                 </div>
 
+
+
                 <div className="row">
                   <div className="col-md-12">
                     <form
                       className="required-form"
-                      method="post"
+                      
                       enctype="multipart/form-data"
                     >
                       <Step1
@@ -748,7 +1143,7 @@ export default class MasterForm extends React.Component {
           </div>
         </div>
 
-        <EditorBox />
+        {/*<EditorBox />*/}
       </Fragment>
     );
   }
@@ -1693,31 +2088,6 @@ const Step2 = (props) => {
     }
   };
 
-  // Methods
-
-  // const handleWidgetClick = e => {
-  //   const Widget = e.target;
-  //   console.log(e.target.parentElement)
-
-  //   const Type = Widget.getAttribute("data-type");
-  //   let Target = document.querySelector(".muu_"+ localStorage.getItem("s_tracker"));
-  //   // console.log(Target)
-  //   let Title = Widget.querySelector("span").innerHTML;
-  //   let Preview = document.querySelector(
-  //     "#template-container > .pb-widget-preview"
-  //   );
-  //   let Clone = Preview.cloneNode(true);
-  //   Clone.classList.add(Type);
-  //   Clone.querySelector("div").innerHTML = Title;
-  //   Target.parentElement.appendChild(Clone);
-  //   Target.parentElement.appendChild(PlaceholderTemplate());
-  //   Target.remove(Target);
-  //   closeModal();
-  // };
-
-  const handleWidgetRemove = (widget) => {
-    widget.parentElement.parentElement.parentElement.remove();
-  };
 
 
 
@@ -1734,6 +2104,20 @@ const Step2 = (props) => {
     Tabs.forEach((tab) => {
       tab.onclick = handleTabClick;
     });
+
+
+
+
+
+    /*LETS DEFINE OUR ACTION EVENT FOR  THE MARDOWN EDITOR*/
+
+
+
+
+
+
+
+
   });
 
   let call = true;
@@ -1756,6 +2140,17 @@ const Step2 = (props) => {
   // 3 dead birds with one stone
 
 
+const saveGenericEditContent = () =>{
+
+}
+
+const addGenericContent = () =>{}
+
+const saveMarkdownEditContent = () => {
+
+}
+                    
+
 
 
   const handleWidgetClick = (e) => {
@@ -1763,68 +2158,20 @@ const Step2 = (props) => {
     const Widget = e.target;
     const Type = Widget.getAttribute("data-type");
     const TemplateType = Widget.getAttribute("data-template"); //
+    $("#title-unit").val("")
+    $("#title-unit2").val("")
+    $(".iframe-boxer").attr("src","")
+    $(".main-videosection2").attr("src","")
+    $("#projector-view").attr("src","")
+      // $(".iframe-boxer").attr("src","")
 
     //widget
     let Target = $(".dynamo_" + localStorage.getItem("l_tracker"));
     // let Title = Widget.querySelector("a").innerHTML;
-    let Preview = null
+    let MainClone = null
 
-    if(TemplateType =="[pb_html][/pb_iframe]" || TemplateType =="[pb_html][/pb_video]"
-     || TemplateType =="[pb_html][/pb_broadcasting]" || TemplateType == "[pb_html][/pb_google_meet]"
-     || TemplateType == "[pb_html][/pb_confrencing]" ||  TemplateType == "[pb_html][/pb_vimeo]"
-     ){
-          // alert("its generic")
-          Preview = document.querySelector(
-          "#template-container > .pb-widget-preview-panel-generic-form"
-        );       
-
-    }else{
-       // alert("its editorial")
-
-      Preview = document.querySelector(
-      "#template-container > .pb-widget-preview-panel"
-    );
-
-    }
-    let MainClone = Preview.cloneNode(true);
-    MainClone.querySelector(".fa-trash").addEventListener("click",(e)=>{ handleWidgetRemove(e.target)})
-    
-    MainClone.querySelector(".fa-edit").addEventListener("click",()=>{
-      // alert("a modal to edit section here")
-      LaunchEditBoxEvent(MainClone,TemplateType) // inturns get the tempRep of the TempType and append in the board 2nd col
-      
-    })
-
-    MainClone.querySelector(".fa-eye").addEventListener("click",()=>{
-      LaunchPreviewBoxEvent(MainClone,TemplateType)
-    })
-    // MainClone.querySelector(".fa-expand").addEventListener("click",(e)=>{
-    //   alert("a modal to expand section here")
-    // })
-    // MainClone.querySelector(".fa-chevron-down").addEventListener("click",()=>{
-    //   alert("a modal to collaps here")
-    // })
-
-   
-
-    MainClone.classList.add(Type);
-    MainClone = $(MainClone).css({
-      display: "block",
-      width: "100%",
-      "max-width": "100%",
-      "justify-content": "center",
-      "text-align": "center",
-      margin: 0,
-      position: "relative",
-    });
-    MainClone.attr("id",Math.random()*150 + "-inserted-questence-module-block-"+ Math.random()*10 + new Date().toString()  )
-
-    
     closeModal(); //close the selected modal fot the lesson component
-
-
     //the add action begins
-
     //now open another modal box that prompts user for the required data input
     //with the required template type form box
     //then append unto the desired location for the requested widget
@@ -1833,6 +2180,7 @@ const Step2 = (props) => {
     let markdownTemplate = ``
     let htmlEquivalentTemplate =``;
     let _title =``;
+    document.querySelector(".main-videosection2").style.display="none" //hide if not video
     // alert(TemplateType)
     switch (TemplateType) {
       case "[pb_html][/pb_text]": 
@@ -1841,6 +2189,7 @@ const Step2 = (props) => {
           "[pb_html][/pb_text]",
           Target,
           MainClone,
+
           _title
         );
        
@@ -1859,13 +2208,20 @@ const Step2 = (props) => {
         htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_iframe]")
 
         //change the field of the modal to match the widget module
-        $(".root-block").css({
-          display:"none"
+        // $(".root-block").css({
+        //   display:"none"
+        // })
+
+
+        $(".iframe-box").css({
+          display:"block"
         })
 
 
+
+
          //change the field of the modal to match the widget module
-        $(".change-title").html("Video Title")
+        $(".change-title").html("I frame Title")
         $(".change-title2").html("Add a link to the resource page ( Website )")
         $(".change-description").html("Iframe Component")
         
@@ -2049,6 +2405,8 @@ const Step2 = (props) => {
 
         break;
       case "[pb_html][/pb_you_tube]":
+         document.querySelector(".main-videosection2").style.display="block" //hide if not video
+   
        _title ="HTML : Video YouTube"
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_you_tube]",
@@ -2067,6 +2425,8 @@ const Step2 = (props) => {
 
         break;
        case "[pb_html][/pb_vimeo]":
+         document.querySelector(".main-videosection2").style.display="block" //hide if not video
+   
         _title ="HTML : Vimeo Video  "
 
         Clone = launchFormBoxIntoModal(
@@ -2088,97 +2448,65 @@ const Step2 = (props) => {
         Clone = launchFormBoxIntoModal("[pb_html][/pb_text]",Target,MainClone, "HTML: Text Editor")
         return false;
     }
+
+
+
+
+
+
+
+ 
+
+
+  // if(TemplateType =="[pb_html][/pb_iframe]" || TemplateType =="[pb_html][/pb_video]"
+  //    || TemplateType =="[pb_html][/pb_broadcasting]" || TemplateType == "[pb_html][/pb_google_meet]"
+  //    || TemplateType == "[pb_html][/pb_confrencing]" ||  TemplateType == "[pb_html][/pb_vimeo]"  ||  TemplateType == "[pb_html][/pb_you_tube]"
+  //    ){
+          // alert("its generic")   
+       // }
+
+     
+
+     
   };
 
 
 
 
-  const launchFormBoxIntoModal = (markdown,Target,cloneElement, componentTitle) =>{
+
+  const launchFormBoxIntoModal = (TemplateType,Target,cloneElement, componentTitle) =>{
     //add code deception from data-fields
-   
 
-   /*if modal is text editor AKA myModalMarkdownEditor  modal for categories under html editor call to action handle the events*/
-
-    const unitAppendBtnHtmlEditorModal = document.getElementById("save_new_insertion_component")
-    unitAppendBtnHtmlEditorModal.addEventListener("click", () =>{
-      //here is where we append clone to target after much internal work is done
-       // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-      // setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
-     
-
-      //get the section title and placeholder content and replace with input data
-      //add validation for unit component
-      cloneElement.find(".unit_title_place_holder").html( componentTitle )  //no title initially for this comonent
-      cloneElement.find(".unit_content_place_holder").html( $(".visuell-view").html() || "Edit this content")
-
-      Target.append(cloneElement);
-
-    })  
-
-
-
-
-
-    /*if modal IS myModalGenericForm for categories under iframes/meetings/videos etc then call to action handle the events*/
-
-    const unitAppendBtnFormBoxModal = document.getElementById("save_new_insertion_component_generic")
-     unitAppendBtnFormBoxModal .addEventListener("click", () =>{
-
-      
-
-
-      //here is where we append clone to target after much internal work is done
-//      $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-  //    setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
-      cloneElement.find(".unit_title_place_holder").html( componentTitle + " "+ $("#title-unit").val())  //add validation for unit component
-      cloneElement.find(".unit_content_place_holder").html($("#title-unit2").val() || "Edit this content") 
-      Target.append(cloneElement);
-
-      //get the section title and placeholder content and replace with input data
-    }) 
-
-
-    
-
-
-    
-  }
-
-
-
-  function LaunchEditBoxEvent(MainClone,TemplateType){
-   /*this is based on categorized module widgets*/
-  
+    //just get the modal that initiates the creation and add headers to it
+   let allowedHeaders = null
     if(TemplateType =="[pb_html][/pb_iframe]" || TemplateType =="[pb_html][/pb_video]"
      || TemplateType =="[pb_html][/pb_broadcasting]" || TemplateType == "[pb_html][/pb_google_meet]"
-     || TemplateType == "[pb_html][/pb_confrencing]" ||  TemplateType == "[pb_html][/pb_vimeo]"
+     || TemplateType == "[pb_html][/pb_confrencing]" ||  TemplateType == "[pb_html][/pb_vimeo]"  ||  TemplateType == "[pb_html][/pb_you_tube]"
      ){
-          // alert("working on it")
-          const title = MainClone.find(".unit_title_place_holder").html();
-          const body = MainClone.find(".unit_content_place_holder").html();
-          /*add the event listener*/
-      }else{
+      allowedHeaders =  document.getElementById("myModalGenericForm")
+      allowedHeaders.setAttribute('data-basestation', ".dynamo_" + localStorage.getItem("l_tracker"))
+      allowedHeaders.setAttribute("data-markdown", TemplateType)
 
-         // alert("not working as expecte")
-              /*just extracts and replace contents detail on edit*/
-              const extracts = MainClone.find(".unit_content_place_holder").html();
-              const editBoard = document.getElementById("myModalMarkdownEditorEditMode").querySelector(".visuell-view2");
-              editBoard.innerHTML = extracts;
-              const markupBoard = document.getElementById("markup-template-content")
-              markupBoard.innerHTML = TemplateType
+    }else{
 
-              /*now handles the save method on edit completed*/
-              $("#save_new_insertion_component2").on("click", () => {
-                 MainClone.find(".unit_content_place_holder").html(editBoard.innerHTML)  
-              })
+      //alert(TemplateType)
+      allowedHeaders =  document.getElementById("myModalMarkdownEditor")
+      allowedHeaders.setAttribute('data-basestation', ".dynamo_" + localStorage.getItem("l_tracker"))
+      allowedHeaders.setAttribute("data-markdown", TemplateType)
+      allowedHeaders.setAttribute("data-title",componentTitle)
 
 
     }
+
+   
+   
+    
   }
 
-  function LaunchPreviewBoxEvent(Target,MainClone,TemplateType){
-    /*just previews the content in the modal section view*/
-  }
+  
+
+
+
 
 
   function handleModalInputFromUser(e) {
@@ -2777,22 +3105,12 @@ const Step2 = (props) => {
                   data-fields="['','']"
                  
               >
+
                 <i class="fa fa-keyboard-o fa-2x"></i>
                 <span>Text Input</span>
               </div>
 
-              <div
-                class="pb-widget"
-                data-template="[pb_html][/pb_button]"
-                data-type="background"
-                href="#myModalMarkdownEditor" 
-                 role="button" data-toggle="modal"
-                  data-fields="['','']"
-                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_button]")}}
-              >
-                <i class="fa fa-check-square-o fa-2x"></i>
-                <span>Buttons</span>
-              </div>
+              
 
               <div
                 class="pb-widget"
@@ -2890,6 +3208,7 @@ const Step2 = (props) => {
                  role="button" data-toggle="modal"
                  data-fields="['Link','Meeting ID']"
                  
+
 
               >
                 <i class="fa fa-video-camera fa-2x"></i>
@@ -3004,7 +3323,28 @@ const Step2 = (props) => {
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title pull-left">Lesson Unit</h5>
+                  <h5 class="modal-title pull-left put-title" >Add Unit Component</h5>
+                  <a onClick={()=>{
+                    let board = document.querySelector("#projector-view")
+                            if(document.querySelector(".iframe-box").style.display=="block"){
+                              
+                              board.src = document.querySelector(".iframe-boxer").src
+                            }else if(document.querySelector(".main-videosection2").style.display=="block"){
+                              
+                              board.src = document.querySelector(".main-videosection-xx").src
+                            }
+                  }}
+                      style={{ marginRight: "10px" }}
+                      href="#modalFullScreenPreviewIframeAndVideos"
+                      role="button" data-toggle="modal"
+                      id="toggle_fullscreen"
+                      className="full-screen-preview alignToTitle btn btn-outline-secondary btn-rounded btn-sm"
+                    >
+                      {" "}
+                      <i className=" mdi mdi-keyboard-backspace"></i> Toggle
+                      Fullscreen to preview
+                    </a>
+                    
                   <a
                     href="#"
                     class="pull-right"
@@ -3030,8 +3370,40 @@ const Step2 = (props) => {
 
                       <div class="form-group root-block2" >
                         <label class="change-title2">Title 2</label>
-                        <input type="text" class="form-control" id="title-unit2" />
+                        <input onInput={(e) =>{
+                            //if its iframe component
+                            let board = document.querySelector("#projector-view")
+                            if(document.querySelector(".iframe-box").style.display=="block"){
+                              document.querySelector(".iframe-boxer").src= e.target.value
+                              board.src= e.target.value
+                            }else if(document.querySelector(".main-videosection2").style.display=="block"){
+                               document.querySelector(".main-videosection-xx").src= e.target.value
+                                board.src= e.target.value
+                            }
+
+
+                            //if its video component
+                        }} type="text" class="form-control" id="title-unit2" />
                       </div>
+
+
+                      <div class="iframe-box col-md-12"  >
+                       
+                        <iframe id="" src="" class="col-md-12 iframe-boxer" style={{width:"100%",border:"2px solid #000"}}/>
+                      </div>
+
+
+                      <div
+                                        className=" main-videosection2 col-md-12"
+                                        
+                                      >
+                                        <section
+                                        >
+                                          <div  class="embed-responsive embed-responsive-16by9">
+  <iframe  class="embed-responsive-item main-videosection-xx" src="" id="main-videosection-x"  allowscriptaccess="always" allow="autoplay"></iframe>
+</div>
+                                        </section>
+                                      </div>
 
 
                     </div>
@@ -3046,6 +3418,8 @@ const Step2 = (props) => {
                     style={{ background: "rgba(8,23,200)" }}
                     class="btn btn-primary unit-appender-for-modalgeneric-form-content"
                     data-dismiss="modal"
+                    onClick={handleSaveComponentGenericForm}
+                    
                   >
                     Add
                   </button>
@@ -3056,7 +3430,77 @@ const Step2 = (props) => {
 
 
 
-        {/*this is the edit component modal myModalGenericFormEditorEditMode */}
+
+
+
+        {/*Preview videos and iframes*/}
+
+        {/*modalFullScreenPreviewIframeAndVideos*/}
+      <Fragment>
+
+      <div
+          style={{ marginTop: "80px" }}
+          class="modal fade"
+          id="modalFullScreenPreviewIframeAndVideos"
+          tabindex="-1"
+          role="dialog"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-full" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title pull-left" style={{ color: "#000" }}>
+                  Add component
+                </h5>
+                <a
+                  href="#"
+                  class="pull-right"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">×</span>
+                </a>
+              </div>
+              <div
+                class="modal-body p-4 col-md-12"
+              
+             
+              >
+             
+                <div class="row">
+                  <div class="divided col-md-12">
+                   
+                          {/*the editor*/}
+          
+          
+          <iframe class="content-area" id="projector-view" />
+          
+      
+
+
+
+                  </div>
+
+
+
+              </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+        </Fragment>
+
+
+
+
+        {/*this is the edit component modal myModal for any html editing component */}
         <Fragment>
       
       <div
@@ -3222,8 +3666,11 @@ const Step2 = (props) => {
 
                   {/*the mark up hint*/}
                   <div class="col-md-2">
-                       <p>Find the Mark up for this component below</p>
-                       <pre><code id="markup-template-content"></code></pre>
+                       <p style={{color:"#000", fontSize:"15px", margin:"10px"}}>Use the Mark up to add this component</p>
+                       <pre style={{marginTop:"10px"}}>
+                        <code id="markup-template-content"></code>
+
+                        </pre>
 
 
 
@@ -3235,6 +3682,9 @@ const Step2 = (props) => {
                   style={{ background: "rgba(8,23,200)" }}
                   class="btn-primary btn  btn-small pull-left"
                   data-dismiss="modal"
+                  onClick={()=>{
+                      saveMarkdownEditContent()
+                    }}
                 >
                   Save
                 </button>
@@ -3265,6 +3715,339 @@ const Step2 = (props) => {
 
 
         </Fragment>
+
+
+
+
+
+        <Fragment>
+
+      <div
+          style={{ marginTop: "80px" }}
+          class="modal fade"
+          id="myModalMarkdownEditor"
+          tabindex="-1"
+          role="dialog"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-full" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title pull-left" style={{ color: "#000" }}>
+                  Add component
+                </h5>
+                <a
+                  href="#"
+                  class="pull-right"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">×</span>
+                </a>
+              </div>
+              <div
+                class="modal-body p-4 col-md-12"
+                id="result"
+             
+              >
+             
+                <div class="row">
+                  <div class="divided col-md-10">
+                   
+                          {/*the editor*/}
+                              <div class="editor-authoring">
+          <div class="authoring-edit-toolbar">
+            <div class="line">
+              
+              <div class="box-internal">
+                <span class="btn-action-editor icon smaller" data-action="bold" data-tag-name="b" title="Bold">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25432.svg" />
+                </span>
+                <span class="btn-action-editor icon smaller" data-action="italic" data-tag-name="i" title="Italic">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25392.svg" />
+                </span>
+                <span class="btn-action-editor icon smaller" data-action="underline" data-tag-name="u" title="Underline">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25433.svg" />
+                </span>
+                <span class="btn-action-editor icon smaller" data-action="strikeThrough" data-tag-name="strike" title="Strike through">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25626.svg" />
+                </span>
+              </div>
+              
+              <div class="box-internal">
+                <span class="btn-action-editor icon has-submenu">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25351.svg" />
+                  <div class="submenu">
+                    <span class="btn-action-editor icon" data-action="justifyLeft" data-style="textAlign:left" title="Justify left">
+                      <img  src="https://image.flaticon.com/icons/svg/25/25351.svg" />  
+                    </span>
+                    <span class="btn-action-editor icon" data-action="justifyCenter" data-style="textAlign:center" title="Justify center">
+                      <img  src="https://image.flaticon.com/icons/svg/25/25440.svg" />  
+                    </span>
+                    <span class="btn-action-editor icon" data-action="justifyRight" data-style="textAlign:right" title="Justify right">
+                      <img  src="https://image.flaticon.com/icons/svg/25/25288.svg" />  
+                    </span>
+                    <span class="btn-action-editor icon" data-action="formatBlock" data-style="textAlign:justify" title="Justify block">
+                      <img  src="https://image.flaticon.com/icons/svg/25/25181.svg" />  
+                    </span>
+                  </div>
+                </span>
+                <span class="btn-action-editor icon" data-action="insertOrderedList" data-tag-name="ol" title="Insert ordered list">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25242.svg" />  
+                </span>
+                <span class="btn-action-editor icon" data-action="insertUnorderedList" data-tag-name="ul" title="Insert unordered list">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25648.svg" />  
+                </span>
+                <span class="btn-action-editor icon" data-action="outdent" title="Outdent">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25410.svg" />  
+                </span>
+                <span class="btn-action-editor icon" data-action="indent" title="Indent">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25233.svg" />  
+                </span>
+
+                <span class="btn-action-editor icon smaller" data-action="undo" title="Undo">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25249.svg" />
+                </span>
+                <span class="btn-action-editor icon" data-action="removeFormat" title="Remove format">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25454.svg" />  
+                </span>
+
+                <span class="btn-action-editor icon smaller" data-action="createLink" title="Insert Link">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25385.svg" />
+                </span>
+                <span class="btn-action-editor icon smaller" data-action="unlink" data-tag-name="a" title="Unlink">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25341.svg" />
+                </span>
+
+                <span class="btn-action-editor icon" data-action="code" title="Show HTML-Code">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25185.svg" />
+                </span>
+                
+              </div>
+              <div class="box-internal">
+                <span class="btn-action-editor icon" data-action="insertHorizontalRule" title="Insert horizontal rule">
+                  <img  src="https://image.flaticon.com/icons/svg/25/25232.svg" />  
+                </span>
+              </div>
+
+
+              
+            </div>
+            <div class="line">
+              
+              <div class="box-internal">
+                
+              </div>
+              
+              <div class="box-internal">
+                
+              </div>
+              
+              <div class="box-internal">
+                
+              </div>
+              
+            </div>
+          </div>
+          <div class="content-area">
+            <div class="visuell-view"  contentEditable='true'>
+                  <p style={{textAlign: "center"}}>Edit <b>your content </b> Editor <i>
+                  (What you see is what you get)</i>!</p>
+      <p style={{textAlign: "center"}}>Add text content <u>(plain text)</u>, 
+          <i><u>markups</u> </i>and pure <u>html code</u>, <strike></strike>!</p>
+      <hr/>
+  
+             
+            </div>
+            <textarea class="html-view"></textarea>
+          </div>
+        </div>
+
+        <div class="modal-authoring">
+          <div class="modal-bg"></div>
+          <div class="modal-wrapper">
+            <div class="close">✖</div>
+            <div class="modal-content" id="modalCreateLink">
+              <h3>Insert Link</h3>
+              <input type="text" id="linkValue" placeholder="Link (example: http://)" />
+              <div class="row">
+                <input type="checkbox" id="new-tab" />
+                <label for="new-tab">Open in new Tab?</label>
+              </div>
+              <button class="done">Done</button>
+            </div>
+          </div>
+        </div>
+                 {/*en editor*/}
+
+
+                  </div>
+
+                  {/*the mark up hint*/}
+                  <div class="col-md-2">
+                       <p> this is a place hodler to hold the mark up </p>
+
+
+
+              <div class="modal-footer box-internal">
+                <button
+                  id="save_new_insertion_component"
+                  data-notification="Be careful not to delete these action id"
+                  type="button"
+                  style={{ background: "rgba(8,23,200)" }}
+                  class="btn-primary btn  btn-small pull-left"
+                  data-dismiss="modal"
+                  onClick={handleSaveComponentTextEditor}
+                >
+                  Save
+                </button>
+
+                 <button
+                 
+                  type="button"
+                  style={{ background: "rgba(8,23,200)" }}
+                  class="btn-primary btn btn-small pull-right"
+                  data-dismiss="modal"
+                >
+                  Cancel
+                </button>
+                </div>
+                  </div>
+
+
+              </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+        </Fragment>
+
+
+
+
+
+
+
+        <div
+            style={{ marginTop: "80px" }}
+            class="modal fade"
+            id="myModalGenericFormEditorEditMode"
+            tabindex="-1"
+            role="dialog"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title pull-left edit-title" id="edit-title">Editing</h5>
+                  <a onClick={()=>{
+                    let board = document.querySelector("#projector-view")
+                            if(document.querySelector(".iframe-box").style.display=="block"){
+                              
+                              board.src = document.querySelector(".iframe-boxer").src
+                            }else if(document.querySelector(".main-videosection2").style.display=="block"){
+                              
+                              board.src = document.querySelector(".main-videosection-xx").src
+                            }
+                  }}
+                      style={{ marginRight: "10px" }}
+                      href="#modalFullScreenPreviewIframeAndVideos"
+                      role="button" data-toggle="modal"
+                      id="toggle_fullscreen"
+                      className="full-screen-preview alignToTitle btn btn-outline-secondary btn-rounded btn-sm"
+                    >
+                      {" "}
+                      <i className=" mdi mdi-keyboard-backspace"></i> Toggle
+                      Fullscreen to preview
+                    </a>
+                    
+                  <a
+                    href="#"
+                    class="pull-right"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">×</span>
+                  </a>
+                </div>
+                <div
+                  class="modal-body p-4 col-md-12"
+                  id="result"
+                  style={{ height: "400px", overflowY: "scroll" }}
+                >
+                  <p class="change-description">Add a title to the unit</p>
+                  <div class="row">
+                    <div class="divided col-md-12">
+                      <div class="form-group root-block">
+                        <label class="change-title">Title</label>
+                        <input type="text" class="form-control" id="title-unit-b" />
+                      </div>
+
+
+                      <div class="form-group root-block2" >
+                        <label class="change-title2">Title 2</label>
+                        <input onInput={(e) =>{
+                            //if its iframe component
+                            if(document.querySelector(".iframe-box").style.display=="block"){
+                              document.querySelector(".iframe-boxer2").src= e.target.value
+                            }else if(document.querySelector(".main-videosection2").style.display=="block"){
+                                document.querySelector(".main-videosection-xx").src= e.target.value
+                            }
+
+
+                            //if its video component
+                        }} type="text" class="form-control" id="title-unit2-b" />
+                      </div>
+
+
+                      <div class="iframe-box2 col-md-12"  >
+                       
+                        <iframe id="" src="" class="col-md-12 iframe-boxer2" style={{width:"100%",border:"2px solid #000"}}/>
+                      </div>
+
+
+                      <div
+                                        className=" main-videosection22 col-md-12"
+                                        
+                                      >
+                                        <section
+                                        >
+                                          <div  class="embed-responsive embed-responsive-16by9">
+  <iframe  class="embed-responsive-item main-videosection-xx2" src="" id="main-videosection-x"  allowscriptaccess="always" allow="autoplay"></iframe>
+</div>
+                                        </section>
+                                      </div>
+
+
+                    </div>
+                  </div>
+                </div>
+
+                <div class="modal-footer">
+                  <button
+                    id="save_new_insertion_component_generic-edit"
+                    data-notification="be careful not to delete this notification id"
+                    type="button"
+                    style={{ background: "rgba(8,23,200)" }}
+                    class="btn btn-primary unit-appender-for-modalgeneric-form-content"
+                    data-dismiss="modal"
+                    onClick={handleEditSaveGeneric}
+                   
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
 
 
 
@@ -3360,6 +4143,17 @@ const Step2 = (props) => {
 
 
         </Fragment>
+
+
+
+
+
+
+
+
+
+
+
      
      
 
@@ -3393,7 +4187,7 @@ const Step2 = (props) => {
 
 
 
-          <li class="pb-widget-preview-panel">
+          <div class="pb-widget-preview-panel">
             
             
               <div class="container">
@@ -3406,17 +4200,17 @@ const Step2 = (props) => {
                   class="panel-title unit_title_place_holder"
                   style={{ float: "left",  marginLeft: "10px" }}
                 >
-                  Title
+                  
                 </span>
                 <div class="actions-set">
                   <span><a href="#myModalMarkdownEditorEditMode"
               role="button"
-              data-toggle="modal"><i class="pb-handle-widget fa fa-edit"></i></a></span>
-                  <span><a href="#myModalMarkdownEditorPreviewMode"
-              role="button"
-              data-toggle="modal"><i class="fa fa-eye"></i></a></span>
+              data-toggle="modal"><i
+               onclick="LaunchEditBoxEvent(this)"
+
+               class="pb-handle-widget fa fa-edit fa-2x"></i></a></span>
                                
-                  <span><i class="pb-remove fa fa-trash" onclick="handleWidgetRemove(this)"></i></span>
+                  <span><i class="pb-remove fa fa-trash fa-2x" onclick="handleWidgetRemove(this)"></i></span>
                 </div>
               </div>
             
@@ -3432,14 +4226,14 @@ const Step2 = (props) => {
                 </div>
               </div>
           
-          </li>
+          </div>
 
 
 
 
 
 
-          <li class="pb-widget-preview-panel-generic-form">
+          <div class="pb-widget-preview-panel-generic-form">
             
             
               <div class="container">
@@ -3449,26 +4243,29 @@ const Step2 = (props) => {
                     
               <div class="panel-heading-xx">
                 <span
-                  class="panel-title unit_title_place_holder"
+                  class="panel-title unit_title_place_holder-generic"
                   style={{ float: "left",  marginLeft: "10px" }}
                 >
                   Title
                 </span>
                 <div class="actions-set">
-                  <span><a href="#myModalGenericForm"
+
+
+                   <span><a href="#myModalGenericFormEditorEditMode"
               role="button"
-              data-toggle="modal"><i class="pb-handle-widget fa fa-edit"></i></a></span>
-                  <span><a href="#myModalEditorPreviewMode"
-              role="button"
-              data-toggle="modal"><i class="fa fa-eye"></i></a></span>
-                               
-                  <span><i class="pb-remove fa fa-trash" onclick="handleWidgetRemove(this)"></i></span>
+              data-toggle="modal"><i
+               onclick="LaunchEditBoxEvent(this)"
+
+               class="pb-handle-widget fa fa-edit fa-2x"></i></a></span>
+               
+                             
+                  <span><i class="pb-remove fa fa-trash fa-2x" onclick="handleWidgetRemove(this)"></i></span>
                 </div>
               </div>
             
                       <div class="panel-body-xx ">
                         
-                        <div class="content-section-from-input unit_content_place_holder">
+                        <div class="content-section-from-input unit_content_place_holder-generic">
                           Edit this section
                         </div>
 
@@ -3478,7 +4275,7 @@ const Step2 = (props) => {
                 </div>
               </div>
           
-          </li>
+          </div>
 
 
 
@@ -3695,7 +4492,7 @@ const addSectionContent = () => {
         
 
          <a class="drag-handle" style="margin-right:10px;background:#fff;color:#000"
-          data-id="${"miller_" + mycounter}"                
+                        
           >
          <i class="fa fa-arrows "></i>
         </a>
@@ -3866,6 +4663,8 @@ const addSectionContent = () => {
 
 
   if (children > 0) {
+    /*sort the main sections that holds all subsection*/
+    /*can only move along root section or can only be replaced along root sections*/
     if (document.getElementById("js-parent")) {
       var el = document.getElementById("js-parent");
       var sortableSections = Sortable.create(el, {
@@ -3873,20 +4672,28 @@ const addSectionContent = () => {
         handle: ".drag-handle",
       });
     }
-
-    if (document.querySelectorAll(".column-list")) {
-
-  var children = $(".column-list").children.length;
-  // alert(children)
-
-      var columnGroups = document.querySelectorAll(".root-li");
-      columnGroups.forEach(function (ele) {
+    
+    /*sort sections subheader components*/
+    /*can only move along sub section component and no where else*/
+    if (document.querySelectorAll(".root-li")) {
+      var children = $(".root-li").children.length;
+      // alert(children)
+      var subsectionGroups = document.querySelectorAll(".root-li");
+      subsectionGroups.forEach(function (ele) {
         Sortable.create(ele, {
           group: "columns",
           handle: ".drag-handle-list",
         });
       });
     }
+
+
+
+
+
+    
+
+
   }
 };
 
@@ -3897,19 +4704,29 @@ const addSubSectionContent = (el) => {
   let gen_sec_id =
     parseInt(localStorage.getItem("sec_counter")) + section_counter;
   localStorage.setItem("sec_counter", gen_sec_id);
-  const template = `
 
-  
-         <ul    id="dynamic_subsection_${muu_counter}"  data-id="${
+  // onDragEnter="dragEnter( event )" onDragOver="dragOver( event )" 
+  // onDragLeave="dragLeave( event )" onDrop="dragDrop( event )"
+   const template = `
+         <ul 
+         
+
+         id="dynamic_subsection_${muu_counter}"  data-id="${
     "muu_" + muu_counter
-  }" class="fold root-sub-ul centerSubsection column-list-section-parade ${
+  }" class="fold drop-zone-section root-sub-ul centerSubsection column-list-section-parade ${
     "muu_" + muu_counter
   } col-md-10 section-parent_${localStorage.getItem(
     "tracker"
   )} subsection-child_${localStorage.getItem(
     "s_tracker"
-  )} " style="min-width:99%;width:99%;border-bottom:none;border-top:none;margin-left:10px">
-      
+  )} " style="min-width:99%;width:99%;border-bottom:none;border-top:none;margin-left:10px"
+
+ondragenter="return dragEnterIntoSection(event)" 
+         ondrop="return dragDropLessonComponentToSubSection(event)" 
+         ondragover="return dragOverSection(event)"  
+         ondragleave="return dragLeaveLessonIntoSubsection(event)" 
+  >
+            
               <span class=""  style="height:60px;border-left:3px solid black;margin-top:10px">
                <span class="title_sub " data-th="Company name" style="font-size:15px">${
                  $("#title_2").val() || "Subsection"
@@ -3942,7 +4759,7 @@ const addSubSectionContent = (el) => {
 
          <a  class="drag-handle-list" style="margin-right:10px;background:#fff;color:#000"
           
-          data-id="${"muu_" + muu_counter}"
+         
                  
           >
 
@@ -4024,6 +4841,13 @@ const addSubSectionContent = (el) => {
       .find("#" + target)
       .append(template);
   }
+
+
+
+
+  
+
+
 };
 
 class Step6 extends React.Component {

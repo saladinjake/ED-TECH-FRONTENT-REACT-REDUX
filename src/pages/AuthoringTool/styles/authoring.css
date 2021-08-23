@@ -14724,7 +14724,7 @@ div.dt-button-info h2 {
 
 /*sorting ordering and selection css*/
 
-.drag-handle, .drag-handle-list {
+.drag-handle, .drag-handle-list,.drag-handle-list-lessons {
   display: inline-block;
   width: 12px;
   cursor: move;
@@ -15120,7 +15120,7 @@ div.dt-button-info h2 {
 
 .pb-widget-preview {
   width: 120%;
-  min-width: 120%;
+  min-width: 130%;
   height: auto;
   /* text-align: center;*/
   border-radius: 5px;
@@ -15307,19 +15307,23 @@ overflow:auto;*/
 
 .panel-xx {
   border: 1px solid #ececec;
-  width: 100%;
+  width: 110%;
   min-width: 100%;
   margin: 20px;
   margin-bottom: 20px;
   background-color: #fff;
+  padding: 20px;
 }
 
 
 .panel-xx .actions-set{
  /* position: absolute;*/
     z-index: 2;
+    right: -20px;
+    
+    top: 20px;
    
-    opacity: 0;
+   /* opacity: 0;*/
     
 }
 .panel-xx:hover .actions-set{ 
@@ -15327,13 +15331,14 @@ overflow:auto;*/
 }
 
 .panel-heading-xx {
-  background-color: #eaeaea;
+ /* background-color: #eaeaea;*/
   border-color: #fefefe;
   color: #000;
   width: 100%;
   height: 30px;
   box-shadow: 0 0 0 0.2rem rgba(10, 207, 151, 0.25);
   padding: 10px;
+  margin-top: 20px;
 }
 
 .panel-heading-xx {
@@ -15345,6 +15350,8 @@ overflow:auto;*/
   position: absolute;
   right: 10px;
   top: 20px;
+
+  margin-top: 10px;
 }
 
 .panel-xx .actions i {
@@ -16346,12 +16353,12 @@ tbody.file-list tr {
   font-size:"13px"
 }
 
- .root-sub-ul:hover, .root-lesson-ul:hover{
+/* .root-sub-ul:hover, .root-lesson-ul:hover{
   cursor: grabbing;
   cursor: -moz-grabbing;
   cursor: -webkit-grabbing;
 }
-
+*/
 
 .root-li:hover .hint-message, .root-sub-ul:hover .hint-message, .root-lesson-ul:hover .hint-message{ 
  display: block;
@@ -16371,7 +16378,7 @@ tbody.file-list tr {
 .root-lesson-ul{
   border: none;
   padding: 20px;
-  background: #ccc;
+  background: #eaeaea;
   margin-top: 20px;
   border: 2px solid #fefefe;
 }
@@ -16417,4 +16424,29 @@ tbody.file-list tr {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
+}
+
+
+
+
+
+
+.md-editor .dropdown-menu li {
+  cursor: pointer;
+}
+
+.hintcode{
+  background:#fefefe;
+  height:400px;
+  margin-top:20px;
+  font-size:15px;
+}
+
+
+
+#projector-view{
+  min-width: 100%;
+  width: 100%;
+  height: 600px;
+  overflow-y: scroll;
 }

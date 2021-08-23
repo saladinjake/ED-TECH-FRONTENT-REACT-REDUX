@@ -2,8 +2,34 @@
 
 import React , { Fragment }from "react"
 import $ from "jquery"
+
+const uuid = () => {
+  var now = new Date();
+
+  var timestamp = now.getFullYear().toString();
+  timestamp += (now.getMonth < 9 ? "0" : "") + now.getMonth().toString(); // JS months are 0-based, so +1 and pad with 0's
+  timestamp += (now.getDate < 10 ? "0" : "") + now.getDate().toString(); // pad with a 0
+
+  return timestamp;
+};
+
+
+const pbCreateNode = (type, props, html) => {
+    let element = document.createElement(type);
+    props &&
+      props.forEach((prop) => {
+        let key = Object.keys(prop)[0];
+        let value = prop[key];
+        element.setAttribute(key, value);
+      });
+    html && (element.innerHTML = html);
+    return element;
+  };
+
 export const getTemplateType =  (templateType) => {
   let template = ``;
+  let widgetModuleBlock = ``
+  let information = ``
 
   /*the mark down templates that are used in quickly creating reusable units*/
   
@@ -16,41 +42,53 @@ export const getTemplateType =  (templateType) => {
     case "[pb_html][/pb_you_tube]":
     case "[pb_html][/pb_vimeo]":
 
-        template =`<iframe src="" />`;
+        template =`Edit this text`;
        break;
     case "[pb_html][/pb_common_problems]":  // this can take all other forms of mark down
         template =`<div><p>Add all types of markdown here</p></div>`;
        break;
     case "[pb_html][/pb_checkboxes]":
+       information =`You can use this template as a guide to the simple editor markdown and OLX markup to use for checkboxes problems. Edit this component to replace this template with your own assessment.
+
+ 
+
+>>Add the question text, or prompt, here. This text is required.||You can add an optional tip or note related to the prompt like this. <<`
+       widgetModuleBlock = `[x] a correct answer
+
+                        [ ] an incorrect answer
+
+                        [ ] an incorrect answer
+
+                        [x] a correct answer`
        template =`<form class="form mainroot-authoring" autocomplete="off" >
 <fieldset>
-        <legend>Checkbox</legend>
+        <legend>${information}</legend>
         <div class="form__group_authoring_component">
             <!-- Checkbox selected -->
             <div class="form__checkbox">
               <input class="form__input" type="checkbox" id="checkbox-checked" checked>
-              <label class="form__label" for="checkbox-checked">Checkbox Selected</label>
+              <label class="form__label" for="checkbox-checked">[ ] an incorrect answer</label>
             </div>
             <!-- // Checkbox selected -->
 
             <!-- Checkbox unselected -->
             <div class="form__checkbox">
               <input class="form__input" type="checkbox" id="checkbox">
-              <label class="form__label" for="checkbox">Checkbox unselected</label>
+              <label class="form__label" for="checkbox">[ ] an incorrect answer</label>
             </div>
             <!-- // Checkbox unselected -->
 
             <!-- Checkbox selected disabled -->
             <div class="form__checkbox">
-              <input class="form__input" type="checkbox" id="checkbox-selected-disabled" checked disabled>
-              <label class="form__label" for="checkbox-selected-disabled">Checkbox Disabled Selected</label>
+              <input class="form__input" type="checkbox" id="checkbox-selected-disabled" >
+              <label class="form__label" for="checkbox-selected-disabled">[x] an incorrect answer</label>
             </div>
             <!-- // Checkbox selected disabled -->
 
             <!-- Checkbox unselected disabled -->
             <div class="form__checkbox">
-              <input class="form__input" type="checkbox" id="checkbox-unselected-disabled" disabled>
-              <label class="form__label" for="checkbox-unselected-disabled">Checkbox Disabled Unselected</label>
+              <input class="form__input" type="checkbox" id="checkbox-unselected-disabled" >
+              <label class="form__label" for="checkbox-unselected-disabled">an incorrect</label>
             </div>
             <!-- // Checkbox unselected disabled -->
         </div>
@@ -59,10 +97,30 @@ export const getTemplateType =  (templateType) => {
        </form>`;
        break;
     case "[pb_html][/pb_numeric_input]":
-        template =``;
+        information=`You can use this template as a guide to the simple editor markdown and OLX markup to use for numerical input problems. Edit this component to replace this template with your own assessment.
+        
+ 
+
+>>Add the question text, or prompt, here. This text is required.||You can add an optional tip or note related to the prompt like this. <<`
+        template =`<input type="number" />`;
+        widgetModuleBlock=`=A+B`
+
        break;
 
     case "[pb_html][/pb_text_input]":
+       information=`You can use this template as a guide to the simple editor markdown and OLX markup to use for text input problems. Edit this component to replace this template with your own assessment.
+
+ 
+
+>>Add the question text, or prompt, here. This text is required.||You can add an optional tip or note related to the prompt like this. <<
+
+ 
+
+= the correct answer
+
+or= optional acceptable variant of the correct answer
+
+ `
        template =`    <form class="form mainroot-authoring" autocomplete="off" >
 
       <fieldset>
@@ -119,11 +177,28 @@ export const getTemplateType =  (templateType) => {
        break;
     case "[pb_html][/pb_multichoice]":
        template =``;
+       widgetModuleBlock=`( ) an incorrect answer
+
+                          (x) the correct answer
+
+                          ( ) an incorrect answer`
        break;
     case "[pb_html][/pb_text_input]":
         template =``;
        break;
     case "[pb_html][/pb_dropdown]":
+        information = `You can use this template as a guide to the simple editor markdown and OLX markup to use for dropdown problems. Edit this component to replace this template with your own assessment.
+
+>>Add the question text, or prompt, here. This text is required.||You can add an optional tip or note related to the prompt like this. <<`
+        widgetModuleBlock=`[[
+
+              an incorrect answer
+
+              (the correct answer)
+
+              an incorrect answer
+
+        ]]`
         template =`<form class="form mainroot-authoring" autocomplete="off" >
               <fieldset>
         <legend>Dropdowns</legend>
@@ -211,11 +286,17 @@ export const getTemplateType =  (templateType) => {
        break;
     case "[pb_html][/pb_dropdown_feed]":
         template =``;
+        widgetModuleBlock =``
+        information=``
        break;
     case "[pb_html][/pb_checkboxes_feed]":
         template =``;
+        widgetModuleBlock=``
+        information=``
        break;
     case "[pb_html][/pb_text_input_feed]":
+       information=``
+       widgetModuleBlock=``
        template =`<form class="form mainroot-authoring" autocomplete="off" >
 <fieldset>
         <legend>Input with Hint</legend>
@@ -258,16 +339,30 @@ export const getTemplateType =  (templateType) => {
        </form>`;
        break;
     case "[pb_html][/pb_multiple_choice_feed]":
+        information =`You can use this template as a guide to the simple editor markdown and OLX markup to use for multiple choice problems. Edit this component to replace this template with your own assessment.
+
+ 
+
+>>Add the question text, or prompt, here. This text is required.||You can add an optional tip or note related to the prompt like this. <<`
         template =``;  //your multiple choice radio template
+        widgetModuleBlock =`( ) an incorrect answer
+
+                           (x) the correct answer
+
+                           ( ) an incorrect answer`
        break;
     case "[pb_html][/pb_broadcasting]":  //broadcast template
        template =``;
+       widgetModuleBlock=``
+       information=``
        break;
     case "[pb_html][/pb_confrencing]":  //confrence template
        template =``;
        break;
 
     case "[pb_html][/pb_text_area]":   //textarea template
+       widgetModuleBlock=``
+       information=``
        template =`<form class="form mainroot-authoring" autocomplete="off" >
 
 <fieldset>
@@ -661,220 +756,82 @@ class EditorBox extends React.Component{
 	  return this.parentTagActive(elem.parentNode);
 	}
 
+
+
+  handleSaveComponentTextEditor =(e) => {
+    let randId = uuid()
+     let Target = $(".dynamo_" + localStorage.getItem("l_tracker"));
+    
+    let allowedHeaders =  document.getElementById("myModalMarkdownEditor")
+    let T = allowedHeaders.getAttribute('data-basestation')
+    let markdownTemplate =  allowedHeaders.getAttribute("data-markdown")
+    let _title =  allowedHeaders.getAttribute("data-title")
+        
+         // alert("its editorial") 
+
+        let Preview = document.querySelector(
+          "#template-container > .pb-widget-preview-panel"
+        );
+
+        let SClone = Preview.cloneNode(true)      
+        
+          let wrapWrapper = pbCreateNode("li", [
+                        { class: "pb-placeholder-main col-md-12" },
+                     // { onclick:  () => { "openModal(this)" }
+             ]);
+
+        wrapWrapper.appendChild(SClone)
+        wrapWrapper.setAttribute("id", randId )
+        let MainClone = wrapWrapper.cloneNode(true);
+        MainClone.id =randId
+      
+        MainClone.querySelector(".fa-edit").setAttribute("data-template",markdownTemplate)
+        MainClone.querySelector(".fa-edit").setAttribute("data-id",randId) //ref the curr main lesson box
+            
+        MainClone.querySelector(".fa-edit").addEventListener("click",(es) =>{
+             //alert(e.target)
+
+              // if(e.target.dataset.template=="[pb_html][/pb_text]"){
+
+                           // alert("not working as expecte")
+                                /*just extracts and replace contents detail on edit*/
+                                
+                  const extracts = $("#" + MainClone.getAttribute("id")).find(".unit_content_place_holder").html();
+                  const editBoard = document.getElementById("myModalMarkdownEditorEditMode").querySelector(".visuell-view2");
+                  editBoard.innerHTML = extracts;
+                  const markupBoard = document.getElementById("markup-template-content")
+                  markupBoard.innerHTML =markdownTemplate
+
+                                
+
+
+              // }
+
+        })
+
+
+
+
+
+          MainClone.querySelector(".unit_title_place_holder").textContent= _title   //no title initially for this comonent
+          MainClone.querySelector(".unit_content_place_holder").innerHTML =   getTemplateType(markdownTemplate)           //$(".visuell-view").html() || "Edit this content"
+          const markupBoard = document.getElementById("markup-template-content")
+                                    markupBoard.innerHTML =markdownTemplate
+          $(".visuell-view").html(getTemplateType(markdownTemplate))
+
+          Target.append(MainClone);
+
+
+}
+
+
 	render(){
 
 
 
 
 		return (
-			<Fragment>
-
-			<div
-          style={{ marginTop: "80px" }}
-          class="modal fade"
-          id="myModalMarkdownEditor"
-          tabindex="-1"
-          role="dialog"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-full" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title pull-left" style={{ color: "#000" }}>
-                  Add component
-                </h5>
-                <a
-                  href="#"
-                  class="pull-right"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">×</span>
-                </a>
-              </div>
-              <div
-                class="modal-body p-4 col-md-12"
-                id="result"
-             
-              >
-             
-                <div class="row">
-                  <div class="divided col-md-10">
-                   
-                          {/*the editor*/}
-                          		<div class="editor-authoring">
-				  <div class="authoring-edit-toolbar">
-				    <div class="line">
-				      
-				      <div class="box-internal">
-				        <span class="btn-action-editor icon smaller" data-action="bold" data-tag-name="b" title="Bold">
-				          <img  src="https://image.flaticon.com/icons/svg/25/25432.svg" />
-				        </span>
-				        <span class="btn-action-editor icon smaller" data-action="italic" data-tag-name="i" title="Italic">
-				          <img  src="https://image.flaticon.com/icons/svg/25/25392.svg" />
-				        </span>
-				        <span class="btn-action-editor icon smaller" data-action="underline" data-tag-name="u" title="Underline">
-				          <img  src="https://image.flaticon.com/icons/svg/25/25433.svg" />
-				        </span>
-				        <span class="btn-action-editor icon smaller" data-action="strikeThrough" data-tag-name="strike" title="Strike through">
-				          <img  src="https://image.flaticon.com/icons/svg/25/25626.svg" />
-				        </span>
-				      </div>
-				      
-				      <div class="box-internal">
-				        <span class="btn-action-editor icon has-submenu">
-				          <img  src="https://image.flaticon.com/icons/svg/25/25351.svg" />
-				          <div class="submenu">
-				            <span class="btn-action-editor icon" data-action="justifyLeft" data-style="textAlign:left" title="Justify left">
-				              <img  src="https://image.flaticon.com/icons/svg/25/25351.svg" />  
-				            </span>
-				            <span class="btn-action-editor icon" data-action="justifyCenter" data-style="textAlign:center" title="Justify center">
-				              <img  src="https://image.flaticon.com/icons/svg/25/25440.svg" />  
-				            </span>
-				            <span class="btn-action-editor icon" data-action="justifyRight" data-style="textAlign:right" title="Justify right">
-				              <img  src="https://image.flaticon.com/icons/svg/25/25288.svg" />  
-				            </span>
-				            <span class="btn-action-editor icon" data-action="formatBlock" data-style="textAlign:justify" title="Justify block">
-				              <img  src="https://image.flaticon.com/icons/svg/25/25181.svg" />  
-				            </span>
-				          </div>
-				        </span>
-				        <span class="btn-action-editor icon" data-action="insertOrderedList" data-tag-name="ol" title="Insert ordered list">
-				          <img  src="https://image.flaticon.com/icons/svg/25/25242.svg" />  
-				        </span>
-				        <span class="btn-action-editor icon" data-action="insertUnorderedList" data-tag-name="ul" title="Insert unordered list">
-				          <img  src="https://image.flaticon.com/icons/svg/25/25648.svg" />  
-				        </span>
-				        <span class="btn-action-editor icon" data-action="outdent" title="Outdent">
-				          <img  src="https://image.flaticon.com/icons/svg/25/25410.svg" />  
-				        </span>
-				        <span class="btn-action-editor icon" data-action="indent" title="Indent">
-				          <img  src="https://image.flaticon.com/icons/svg/25/25233.svg" />  
-				        </span>
-
-				        <span class="btn-action-editor icon smaller" data-action="undo" title="Undo">
-				          <img  src="https://image.flaticon.com/icons/svg/25/25249.svg" />
-				        </span>
-				        <span class="btn-action-editor icon" data-action="removeFormat" title="Remove format">
-				          <img  src="https://image.flaticon.com/icons/svg/25/25454.svg" />  
-				        </span>
-
-				        <span class="btn-action-editor icon smaller" data-action="createLink" title="Insert Link">
-				          <img  src="https://image.flaticon.com/icons/svg/25/25385.svg" />
-				        </span>
-				        <span class="btn-action-editor icon smaller" data-action="unlink" data-tag-name="a" title="Unlink">
-				          <img  src="https://image.flaticon.com/icons/svg/25/25341.svg" />
-				        </span>
-
-				        <span class="btn-action-editor icon" data-action="code" title="Show HTML-Code">
-				          <img  src="https://image.flaticon.com/icons/svg/25/25185.svg" />
-				        </span>
-				        
-				      </div>
-				      <div class="box-internal">
-				        <span class="btn-action-editor icon" data-action="insertHorizontalRule" title="Insert horizontal rule">
-				          <img  src="https://image.flaticon.com/icons/svg/25/25232.svg" />  
-				        </span>
-				      </div>
-
-
-				      
-				    </div>
-				    <div class="line">
-				      
-				      <div class="box-internal">
-				        
-				      </div>
-				      
-				      <div class="box-internal">
-				        
-				      </div>
-				      
-				      <div class="box-internal">
-				        
-				      </div>
-				      
-				    </div>
-				  </div>
-				  <div class="content-area">
-				    <div class="visuell-view"  contentEditable='true'>
-				          <p style={{textAlign: "center"}}>Edit <b>your content </b> Editor <i>
-				          (What you see is what you get)</i>!</p>
-      <p style={{textAlign: "center"}}>Add text content <u>(plain text)</u>, 
-          <i><u>markups</u> </i>and pure <u>html code</u>, <strike></strike>!</p>
-      <hr/>
-  
-				     
-				    </div>
-				    <textarea class="html-view"></textarea>
-				  </div>
-				</div>
-
-				<div class="modal-authoring">
-				  <div class="modal-bg"></div>
-				  <div class="modal-wrapper">
-				    <div class="close">✖</div>
-				    <div class="modal-content" id="modalCreateLink">
-				      <h3>Insert Link</h3>
-				      <input type="text" id="linkValue" placeholder="Link (example: http://)" />
-				      <div class="row">
-				        <input type="checkbox" id="new-tab" />
-				        <label for="new-tab">Open in new Tab?</label>
-				      </div>
-				      <button class="done">Done</button>
-				    </div>
-				  </div>
-				</div>
-                 {/*en editor*/}
-
-
-                  </div>
-
-                  {/*the mark up hint*/}
-                  <div class="col-md-2">
-                       <p> this is a place hodler to hold the mark up </p>
-
-
-
-              <div class="modal-footer box-internal">
-                <button
-                  id="save_new_insertion_component"
-                  data-notification="Be careful not to delete these action id"
-                  type="button"
-                  style={{ background: "rgba(8,23,200)" }}
-                  class="btn-primary btn  btn-small pull-left"
-                  data-dismiss="modal"
-                >
-                  Save
-                </button>
-
-                 <button
-                 
-                  type="button"
-                  style={{ background: "rgba(8,23,200)" }}
-                  class="btn-primary btn btn-small pull-right"
-                  data-dismiss="modal"
-                >
-                  Cancel
-                </button>
-                </div>
-                  </div>
-
-
-              </div>
-
-
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-
-
-
-        </Fragment>
-
+			<Fragment/>
 
      )
 	}
