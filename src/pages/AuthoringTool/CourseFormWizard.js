@@ -2450,6 +2450,12 @@ const saveMarkdownEditContent = () => {
     $("#projector-view").attr("src","")
       // $(".iframe-boxer").attr("src","")
 
+
+    $("#input-area").val("")
+    $("#output-area").html("")
+    $("#input-area2").val("")
+    $("#output-area2").html("")
+    
     //widget
     let Target = $(".dynamo_" + localStorage.getItem("l_tracker"));
     // let Title = Widget.querySelector("a").innerHTML;
