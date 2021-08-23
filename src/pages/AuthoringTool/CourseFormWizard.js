@@ -430,20 +430,25 @@ const  handleSaveComponentTextEditor =(e) => {
         MainClone.querySelector(".fa-edit").addEventListener("click",(es) =>{
              //alert(e.target)
 
+             document.getElementById("myModalMarkdownEditor").setAttribute("data-parent",MainClone.id)
+
               // if(e.target.dataset.template=="[pb_html][/pb_text]"){
 
                            // alert("not working as expecte")
                                 /*just extracts and replace contents detail on edit*/
+
                                 
                   const extracts = $("#" + MainClone.getAttribute("id")).find(".unit_content_place_holder").html();
                   const editBoard = document.getElementById("myModalMarkdownEditorEditMode").querySelector(".visuell-view2");
-                  editBoard.innerHTML = extracts;
+                  editBoard.value = extracts;
+                  
+                  
                   const markupBoard = document.getElementById("markup-template-content")
                   markupBoard.innerHTML =markdownTemplate
 
 
-                  // document.getElementById("edit-title").setAttribute("data-parent", MainClone.id)
 
+                 
 
                                 
 
@@ -459,11 +464,11 @@ const  handleSaveComponentTextEditor =(e) => {
 
 
 
-          MainClone.querySelector(".unit_title_place_holder").innerHTML= _title   //no title initially for this comonent
-          MainClone.querySelector(".unit_content_place_holder").innerHTML =   getTemplateType(markdownTemplate)           //$(".visuell-view").html() || "Edit this content"
-          const markupBoard = document.getElementById("markup-template-content")
-          markupBoard.innerHTML =markdownTemplate
-          $(".visuell-view").html(getTemplateType(markdownTemplate))
+      MainClone.querySelector(".unit_title_place_holder").innerHTML= _title   //no title initially for this comonent
+      MainClone.querySelector(".unit_content_place_holder").innerHTML = $("#input-area").val()      //getTemplateType(markdownTemplate)           //$(".visuell-view").html() || "Edit this content"
+      const markupBoard = document.getElementById("markup-template-content")
+      markupBoard.innerHTML =markdownTemplate
+      // $(".visuell-view").html(getTemplateType(markdownTemplate))
 
           Target.append(MainClone);
 
@@ -550,11 +555,13 @@ const  handleSaveComponentGenericForm = () => {
 
    const handleEditSaveTextEditor = () =>{
     // $("#save_new_insertion_component_generic-edit").on("click", () =>{
-        let targetBase =  document.getElementById("edit-title").getAttribute("data-parent")
+        let targetBase =   document.getElementById("myModalMarkdownEditor").getAttribute("data-parent")
+
+
        // alert(targetBase)
-        $("#"+targetBase).find(".unit_title_place_holder-generic").html($("#title-unit-b").val())  //add validation for unit component
-        $("#"+targetBase).find(".unit_content_place_holder-generic").html($("#title-unit2-b").val()) 
-         $("#projector-view").attr("src",$("#title-unit2-b").val())        
+        // $("#"+targetBase).find(".unit_title_place_holder-generic").html()  //add validation for unit component
+        $("#"+targetBase).find(".unit_content_place_holder").html($("#input-area2").val()) 
+              
     // })
   }
 
@@ -2110,6 +2117,281 @@ const Step2 = (props) => {
 
 
     /*LETS DEFINE OUR ACTION EVENT FOR  THE MARDOWN EDITOR*/
+    const preview = document.querySelector( '#preview' );
+    const boldButton = document.querySelector( '#bold' );
+    const italicButton = document.querySelector( '#italic' );
+    const heading1Button = document.querySelector( '#heading1' );
+    const heading2Button = document.querySelector( '#heading2' );
+    const heading3Button = document.querySelector( '#heading3' );
+    const linkButton = document.querySelector( '#link' );
+    const tokenButton = document.querySelector( '#token' );
+    const ulButton = document.querySelector( '#list-ul' );
+    const olButton = document.querySelector( '#list-ol' );
+
+
+    // DEFAULT INPUT AND OUTPUT AREA mark down effect
+let textarea = document.querySelector( '#input-area' );
+let outputArea = document.querySelector( '#output-area' );
+let previewMessage = document.querySelector( '.preview-message' );
+
+
+
+  if(heading1Button && heading2Button){
+
+    preview.addEventListener( 'click', () => {
+        output( parse( textarea.value ) );
+
+      outputArea.classList.toggle( 'show' );
+      previewMessage.classList.toggle( 'show' );
+      preview.classList.toggle( 'active' );
+    } );
+
+    boldButton.addEventListener( 'click', () =>
+      insertText( textarea, '****', 'demo', 2, 6 )
+    );
+
+    italicButton.addEventListener( 'click', () =>
+      insertText( textarea, '**', 'demo',  1, 5 )
+    );
+
+    heading1Button.addEventListener( 'click', () =>
+      insertText( textarea, '#', 'heading1', 1, 9 )
+    );
+
+    heading2Button.addEventListener( 'click', () =>
+      insertText( textarea, '##', 'heading2', 2, 10 )
+    );
+
+    heading3Button.addEventListener( 'click', () =>
+      insertText( textarea, '###', 'heading3', 3, 11 )
+    );
+
+    linkButton.addEventListener( 'click', () =>
+      insertText( textarea, '[](http://...)', 'url text', 1, 9 )
+    );
+
+    tokenButton.addEventListener( 'click', () =>
+      insertText( textarea, '{{}}', 'tokenValue', 2, 12 )
+    );
+
+    ulButton.addEventListener( 'click', function() {
+      insertText( textarea, '* ', 'item', 2, 6 );
+    } );
+
+    olButton.addEventListener( 'click', () =>
+      insertText( textarea, '1. ', 'item', 3, 7 )
+    );
+
+  }
+    
+
+// -------------------------------------------
+
+function setInputArea( inputElement ) {
+  textarea = inputElement;
+}
+
+function setOutputArea( outputElement ) {
+  outputArea = outputElement;
+}
+
+function insertText( textarea, syntax, placeholder = 'demo', selectionStart = 0, selectionEnd = 0 ) {
+  // Current Selection
+  const currentSelectionStart = textarea.selectionStart;
+  const currentSelectionEnd = textarea.selectionEnd;
+  const currentText = textarea.value;
+
+  if( currentSelectionStart === currentSelectionEnd ) {
+    const textWithSyntax = textarea.value = currentText.substring( 0, currentSelectionStart ) + syntax + currentText.substring( currentSelectionEnd );
+    textarea.value = textWithSyntax.substring( 0, currentSelectionStart + selectionStart ) + placeholder + textWithSyntax.substring( currentSelectionStart + selectionStart )
+
+    textarea.focus();
+    textarea.selectionStart = currentSelectionStart + selectionStart;
+    textarea.selectionEnd = currentSelectionEnd + selectionEnd;
+  } else {
+    const selectedText = currentText.substring( currentSelectionStart, currentSelectionEnd );
+    const withoutSelection = currentText.substring( 0, currentSelectionStart ) + currentText.substring( currentSelectionEnd );
+    const textWithSyntax = withoutSelection.substring( 0, currentSelectionStart ) + syntax + withoutSelection.substring( currentSelectionStart );
+
+    // Surround selected text
+    textarea.value = textWithSyntax.substring( 0, currentSelectionStart + selectionStart ) + selectedText + textWithSyntax.substring( currentSelectionStart + selectionStart );
+
+    textarea.focus();
+    textarea.selectionEnd = currentSelectionEnd + selectionStart + selectedText.length;
+  }
+}
+
+function output( lines ) {
+  outputArea.innerHTML = lines;
+}
+
+// -------------------------------------------
+// PARSER
+// -------------------------------------------
+
+function parse( content ) {
+  // Regular Expressions
+  const h1 = /^#{1}[^#].*$/gm;
+  const h2 = /^#{2}[^#].*$/gm;
+  const h3 = /^#{3}[^#].*$/gm;
+  const bold = /\*\*[^\*\n]+\*\*/gm;
+  const italics = /[^\*]\*[^\*\n]+\*/gm;
+  const link = /\[[\w|\(|\)|\s|\*|\?|\-|\.|\,]*(\]\(){1}[^\)]*\)/gm;
+  const lists = /^((\s*((\*|\-)|\d(\.|\))) [^\n]+))+$/gm;
+  const unorderedList = /^[\*|\+|\-]\s.*$/;
+  const unorderedSubList = /^\s\s\s*[\*|\+|\-]\s.*$/;
+  const orderedList = /^\d\.\s.*$/;
+  const orderedSubList = /^\s\s+\d\.\s.*$/;
+
+  // Example: # Heading 1
+  if( h1.test( content ) ) {
+    const matches = content.match( h1 );
+
+    matches.forEach( element => {
+      const extractedText = element.slice( 1 );
+      content = content.replace( element, '<h1>' + extractedText + '</h1>' );
+    } );
+  }
+
+  // Example: # Heading 2
+  if( h2.test( content ) ) {
+    const matches = content.match( h2 );
+
+    matches.forEach( element => {
+      const extractedText = element.slice( 2 );
+      content = content.replace( element, '<h2>' + extractedText + '</h2>' );
+    } );
+  }
+
+  // Example: # Heading 3
+  if( h3.test( content ) ) {
+    const matches = content.match( h3 );
+
+    matches.forEach( element => {
+      const extractedText = element.slice( 3 );
+      content = content.replace( element, '<h3>' + extractedText + '</h3>' );
+    } );
+  }
+
+  // Example: **Bold**
+  if( bold.test( content ) ) {
+    const matches = content.match( bold );
+
+    matches.forEach( element => {
+      const extractedText = element.slice( 2, -2 );
+      content = content.replace( element, '<strong>' + extractedText + '</strong>' );
+    } );
+  }
+
+  // Example: *Italic*
+  if( italics.test( content ) ) {
+    const matches = content.match( italics );
+
+    matches.forEach( element => {
+      const extractedText = element.slice( 2, -1 );
+      content = content.replace( element, ' <em>' + extractedText + '</em>' );
+    } );
+  }
+
+  // Example: [I'm an inline-style link](https://www.google.com)
+  if( link.test( content ) ) {
+    const links = content.match( link );
+
+    links.forEach( element => {
+      const text = element.match( /^\[.*\]/ )[ 0 ].slice( 1, -1 );
+      const url = element.match( /\]\(.*\)/ )[ 0 ].slice( 2, -1 );
+
+      content = content.replace( element, '<a href="' + url + '">' + text + '</a>' );
+    } );
+  }
+
+  if( lists.test( content ) ) {
+    const matches = content.match( lists );
+
+    matches.forEach( list => {
+      const listArray = list.split( '\n' );
+
+      const formattedList = listArray.map( ( currentValue, index, array ) => {
+        if( unorderedList.test( currentValue ) ) {
+          currentValue = '<li>' + currentValue.slice( 2 ) + '</li>';
+
+          if( !  unorderedList.test( array[ index - 1 ] ) && ! unorderedSubList.test( array[ index - 1 ] ) ) {
+            currentValue = '<ul>' + currentValue;
+          }
+
+          if( !  unorderedList.test( array[ index + 1 ] )  &&  ! unorderedSubList.test( array[ index + 1 ] ) ) {
+            currentValue = currentValue + '</ul>';
+          }
+
+          if( unorderedSubList.test( array[ index + 1 ] ) || orderedSubList.test( array[ index + 1 ] ) ) {
+            currentValue = currentValue.replace( '</li>', '' );
+          }
+        }
+
+        if( unorderedSubList.test( currentValue ) ) {
+          currentValue = currentValue.trim();
+          currentValue = '<li>' + currentValue.slice( 2 ) + '</li>';
+
+          if( ! unorderedSubList.test( array[ index - 1 ] ) ) {
+            currentValue = '<ul>' + currentValue;
+          }
+
+          if( ! unorderedSubList.test( array[ index + 1 ] ) && unorderedList.test( array[ index + 1 ] ) ) {
+            currentValue = currentValue + '</ul></li>';
+          }
+
+          if( ! unorderedSubList.test( array[ index + 1 ] ) && ! unorderedList.test( array[ index + 1 ] ) ) {
+            currentValue = currentValue + '</ul></li></ul>';
+          }
+        }
+
+        if( orderedList.test( currentValue ) ) {
+          currentValue = '<li>' + currentValue.slice( 2 ) + '</li>';
+
+          if( ! orderedList.test( array[ index - 1 ] ) && ! orderedSubList.test( array[ index - 1 ] ) ) {
+            currentValue = '<ol>' + currentValue;
+          }
+
+          if( ! orderedList.test( array[ index + 1 ] ) && ! orderedSubList.test( array[ index + 1 ] ) && ! orderedList.test( array[ index + 1 ] ) ) {
+            currentValue = currentValue + '</ol>';
+          }
+
+          if( unorderedSubList.test( array[ index + 1 ] ) || orderedSubList.test( array[ index + 1 ] ) ) {
+            currentValue = currentValue.replace( '</li>', '' );
+          }
+        }
+
+        if( orderedSubList.test( currentValue ) ) {
+          currentValue = currentValue.trim();
+          currentValue = '<li>' + currentValue.slice( 2 ) + '</li>';
+
+          if( ! orderedSubList.test( array[ index - 1 ] ) ) {
+            currentValue = '<ol>' + currentValue;
+          }
+
+          if( orderedList.test( array[ index + 1 ] ) && ! orderedSubList.test( array[ index + 1 ] ) ) {
+            currentValue = currentValue + '</ol>';
+          }
+
+          if( ! orderedList.test( array[ index + 1 ] ) && ! orderedSubList.test( array[ index + 1 ] ) ) {
+            currentValue = currentValue + '</ol></li></ol>';
+          }
+        }
+
+        return currentValue;
+      } ).join( '' );
+
+      console.log( formattedList );
+      content = content.replace( list, formattedList );
+    } );
+  }
+
+  return content.split( '\n' ).map( line => {
+    if( ! h1.test( line ) && ! h2.test( line ) && ! h3.test( line ) && ! unorderedList.test( line ) && ! unorderedSubList.test( line ) && ! orderedList.test( line ) && ! orderedSubList.test( line ) ) {
+      return line.replace( line, '<p>' + line + '</p>' );
+    }
+  } ).join( '' );
+}
 
 
 
@@ -2147,6 +2429,9 @@ const saveGenericEditContent = () =>{
 const addGenericContent = () =>{}
 
 const saveMarkdownEditContent = () => {
+
+  let targetHead = document.getElementById("myModalMarkdownEditorEditMode").getAttribute("data-parent")
+  targetHead.querySelector("")
 
 }
                     
@@ -3536,8 +3821,8 @@ const saveMarkdownEditContent = () => {
                   <div class="divided col-md-10">
                    
                           {/*the editor*/}
-                              <div class="editor-authoring">
-          <div class="authoring-edit-toolbar">
+                              <div class="editor-authoring" id="markdown-editor2">
+          <div class="authoring-edit-toolbar toolbar" id="">
             <div class="line">
               
               <div class="box-internal">
@@ -3630,18 +3915,20 @@ const saveMarkdownEditContent = () => {
               
             </div>
           </div>
-          <div class="content-area">
-            <div style={{textAlign: "center",fontSize:"20px",color:"#000"}} class="visuell-view2"  contentEditable='true'>
-                  <p style={{textAlign: "center",fontSize:"20px",color:"#000"}}>Edit <b>your content </b> Editor <i>
-                  (What you see is what you get)</i>!</p>
-      <p style={{textAlign: "center",fontSize:"20px",color:"#000"}} style={{textAlign: "center"}}>Add text content <u>(plain text)</u>, 
-          <i><u>markups</u> </i>and pure <u>html code</u>, <strike></strike>!</p>
-      <hr/>
+          <div class="content-area" id="input-output2">
+            <textarea id="input-area2" class="visuell-view2"  rows="30" cols="50">
+                  Edit your content Editor 
+                  (What you see is what you get)
+      Add text content(plain text), 
+          markupsand pure html code
+      
   
              
-            </div>
-            <textarea class="html-view"></textarea>
+            </textarea>
+            <div id="output-area2" class="html-view"></div>
+            <p class="preview-message">Preview Mode</p>
           </div>
+
         </div>
 
         <div class="modal-authoring">
@@ -3683,7 +3970,7 @@ const saveMarkdownEditContent = () => {
                   class="btn-primary btn  btn-small pull-left"
                   data-dismiss="modal"
                   onClick={()=>{
-                      saveMarkdownEditContent()
+                      handleEditSaveTextEditor()
                     }}
                 >
                   Save
@@ -3755,47 +4042,53 @@ const saveMarkdownEditContent = () => {
                   <div class="divided col-md-10">
                    
                           {/*the editor*/}
-                              <div class="editor-authoring">
+                              <div class="editor-authoring" id="markdown-editor">
           <div class="authoring-edit-toolbar">
             <div class="line">
               
               <div class="box-internal">
-                <span class="btn-action-editor icon smaller" data-action="bold" data-tag-name="b" title="Bold">
+                <span id="bold" class="btn-action-editor icon smaller" data-action="bold" data-tag-name="b" title="Bold">
                   <img  src="https://image.flaticon.com/icons/svg/25/25432.svg" />
                 </span>
-                <span class="btn-action-editor icon smaller" data-action="italic" data-tag-name="i" title="Italic">
+                <span id="italic" class="btn-action-editor icon smaller" data-action="italic" data-tag-name="i" title="Italic">
                   <img  src="https://image.flaticon.com/icons/svg/25/25392.svg" />
                 </span>
-                <span class="btn-action-editor icon smaller" data-action="underline" data-tag-name="u" title="Underline">
+                <span id="underline" class="btn-action-editor icon smaller" data-action="underline" data-tag-name="u" title="Underline">
                   <img  src="https://image.flaticon.com/icons/svg/25/25433.svg" />
                 </span>
-                <span class="btn-action-editor icon smaller" data-action="strikeThrough" data-tag-name="strike" title="Strike through">
+                <span id="strikeThrough" class="btn-action-editor icon smaller" data-action="strikeThrough" data-tag-name="strike" title="Strike through">
                   <img  src="https://image.flaticon.com/icons/svg/25/25626.svg" />
                 </span>
               </div>
               
               <div class="box-internal">
-                <span class="btn-action-editor icon has-submenu">
+                <span class="btn-action-editor icon has-submenu" id="headings">
                   <img  src="https://image.flaticon.com/icons/svg/25/25351.svg" />
                   <div class="submenu">
-                    <span class="btn-action-editor icon" data-action="justifyLeft" data-style="textAlign:left" title="Justify left">
+                    <span id="heading1" class="btn-action-editor icon" data-action="h1" data-style="textAlign:left" title="HEADING 1">
                       <img  src="https://image.flaticon.com/icons/svg/25/25351.svg" />  
                     </span>
-                    <span class="btn-action-editor icon" data-action="justifyCenter" data-style="textAlign:center" title="Justify center">
+                    <span id="heading2" class="btn-action-editor icon" data-action="h2" data-style="textAlign:center" title="HEADING 2">
                       <img  src="https://image.flaticon.com/icons/svg/25/25440.svg" />  
                     </span>
-                    <span class="btn-action-editor icon" data-action="justifyRight" data-style="textAlign:right" title="Justify right">
+                    <span id="heading3" class="btn-action-editor icon" data-action="h3" data-style="textAlign:right" title="HEADING 3">
                       <img  src="https://image.flaticon.com/icons/svg/25/25288.svg" />  
                     </span>
-                    <span class="btn-action-editor icon" data-action="formatBlock" data-style="textAlign:justify" title="Justify block">
+                    <span id="heading4" class="btn-action-editor icon" data-action="h4" data-style="textAlign:justify" title="HEADING 4">
+                      <img  src="https://image.flaticon.com/icons/svg/25/25181.svg" />  
+                    </span>
+                      <span id="heading5" class="btn-action-editor icon" data-action="h5" data-style="textAlign:justify" title="HEADING 5">
+                      <img  src="https://image.flaticon.com/icons/svg/25/25181.svg" />  
+                    </span>
+                      <span id="heading6" class="btn-action-editor icon" data-action="h6" data-style="textAlign:justify" title="HEADING 6">
                       <img  src="https://image.flaticon.com/icons/svg/25/25181.svg" />  
                     </span>
                   </div>
                 </span>
-                <span class="btn-action-editor icon" data-action="insertOrderedList" data-tag-name="ol" title="Insert ordered list">
+                <span id="list-ol" class="btn-action-editor icon" data-action="insertOrderedList" data-tag-name="ol" title="Insert ordered list">
                   <img  src="https://image.flaticon.com/icons/svg/25/25242.svg" />  
                 </span>
-                <span class="btn-action-editor icon" data-action="insertUnorderedList" data-tag-name="ul" title="Insert unordered list">
+                <span id="list-ul" class="btn-action-editor icon" data-action="insertUnorderedList" data-tag-name="ul" title="Insert unordered list">
                   <img  src="https://image.flaticon.com/icons/svg/25/25648.svg" />  
                 </span>
                 <span class="btn-action-editor icon" data-action="outdent" title="Outdent">
@@ -3812,21 +4105,19 @@ const saveMarkdownEditContent = () => {
                   <img  src="https://image.flaticon.com/icons/svg/25/25454.svg" />  
                 </span>
 
-                <span class="btn-action-editor icon smaller" data-action="createLink" title="Insert Link">
+                <span id="link" class="btn-action-editor icon smaller" data-action="createLink" title="Insert Link">
                   <img  src="https://image.flaticon.com/icons/svg/25/25385.svg" />
                 </span>
-                <span class="btn-action-editor icon smaller" data-action="unlink" data-tag-name="a" title="Unlink">
+                <span id="token" class="btn-action-editor icon smaller" data-action="unlink" data-tag-name="a" title="Unlink">
                   <img  src="https://image.flaticon.com/icons/svg/25/25341.svg" />
                 </span>
 
-                <span class="btn-action-editor icon" data-action="code" title="Show HTML-Code">
-                  <img  src="https://image.flaticon.com/icons/svg/25/25185.svg" />
-                </span>
+                
                 
               </div>
               <div class="box-internal">
-                <span class="btn-action-editor icon" data-action="insertHorizontalRule" title="Insert horizontal rule">
-                  <img  src="https://image.flaticon.com/icons/svg/25/25232.svg" />  
+                <span id="preview" class="btn-action-editor icon btn btn-outline-secondary btn-rounded btn-sm" data-action="preview" title="preview">
+                Preview 
                 </span>
               </div>
 
@@ -3849,17 +4140,18 @@ const saveMarkdownEditContent = () => {
               
             </div>
           </div>
-          <div class="content-area">
-            <div class="visuell-view"  contentEditable='true'>
-                  <p style={{textAlign: "center"}}>Edit <b>your content </b> Editor <i>
-                  (What you see is what you get)</i>!</p>
-      <p style={{textAlign: "center"}}>Add text content <u>(plain text)</u>, 
-          <i><u>markups</u> </i>and pure <u>html code</u>, <strike></strike>!</p>
-      <hr/>
+          <div class="content-area" id="input-output">
+            <textarea id="input-area" class="visuell-view"  rows="30" cols="50">
+                  Edit your content Editor 
+                  (What you see is what you get)
+      Add text content(plain text), 
+          markupsand pure html code
+      
   
              
-            </div>
-            <textarea class="html-view"></textarea>
+            </textarea>
+            <div id="output-area" class="html-view"></div>
+            <p class="preview-message">Preview Mode</p>
           </div>
         </div>
 
@@ -3899,7 +4191,7 @@ const saveMarkdownEditContent = () => {
                   data-dismiss="modal"
                   onClick={handleSaveComponentTextEditor}
                 >
-                  Save
+                  Save Editing
                 </button>
 
                  <button

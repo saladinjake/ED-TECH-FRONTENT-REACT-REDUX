@@ -15716,30 +15716,30 @@ tbody.file-list tr {
   display: block;
 }
 .editor-authoring .content-area {
-  padding: 15px 12px;
-  line-height: 1.5;
+ /* padding: 15px 12px;
+  line-height: 1.5;*/
 }
 .editor-authoring .content-area .visuell-view {
-  outline: none;
-  color: #000;
+ /* outline: none;
+  color: #000;*/
 
 }
 
 .visuell-view{
-  color: #000;
-    height: 600px;
+  /*color: #000;
+    height: 600px;*/
 }
 .editor-authoring .content-area .visuell-view p {
-  color: #000;
-  font-size: 25px;
+  /*color: #000;
+  font-size: 25px;*/
 }
 .editor-authoring .content-area .html-view {
-  outline: none;
+  /*outline: none;
   display: none;
   width: 100%;
   height: 200px;
   border: none;
-  resize: none;
+  resize: none;*/
 }
 
 /* Modal */
@@ -15806,6 +15806,99 @@ tbody.file-list tr {
 
 
 
+
+
+
+
+#markdown-editor, #markdown-editor2 {
+  /*margin: 100px auto;
+  width: 50%;*/
+}
+#markdown-editor .toolbar, #markdown-editor2 .toolbar {
+  /*background: #4f4f4f;*/
+ /* border: 1px solid #4F4F4F;*/
+  border-radius: 10px 10px 0 0;
+  margin: 0;
+  overflow: hidden;
+  padding: 0.5rem 10px;
+  width: 95%;
+}
+#markdown-editor .toolbar .btn-action-editor, #markdown-editor2 .toolbar .btn-action-editor {
+  background: transparent;
+  border: none;
+  color: #a5a5a5;
+  font-family: sans-serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0.7rem;
+}
+#markdown-editor .toolbar .btn-action-editor:hover,#markdown-editor2 .toolbar .btn-action-editor:hover, #markdown-editor .toolbar .btn-action-editor.active ,  #markdown-editor2 .toolbar .btn-action-editor.active {
+  background: #424242;
+  border-radius: 5px;
+  box-shadow: 0 0 2px #5c5c5c inset;
+  outline: 0px;
+}
+#markdown-editor .toolbar .btn-action-editor:focus, #markdown-editor2 .toolbar .btn-action-editor:focus {
+  outline: none;
+}
+#markdown-editor .toolbar .group, #markdown-editor2 .toolbar .group {
+  border-right: 1px solid #a5a5a5;
+  margin-right: 4px;
+  display: inline;
+}
+#markdown-editor #input-output,#markdown-editor2 #input-output2 {
+  height: 400px;
+  width: 95%;
+  position: relative;
+}
+#markdown-editor #input-output #input-area, #markdown-editor2 #input-output2 #input-area2 {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid #aaaaaa;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 10px 10px #e0e0e0;
+  resize: none;
+}
+#markdown-editor #input-output #input-area:focus, #markdown-editor #input-output #input-area:active,
+#markdown-editor2 #input-output2 #input-area2:focus, #markdown-editor2 #input-output2 #input-area2:active
+
+ {
+  outline: 0px;
+}
+#markdown-editor #input-output #output-area,
+#markdown-editor2 #input-output2 #output-area2 {
+  background: #FFFFFF;
+  border-radius: 0 0 10px 10px;
+  display: none;
+  font-family: sans-serif;
+  padding: 10px;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  overflow-y: scroll;
+}
+#markdown-editor #input-output p.preview-message,
+#markdown-editor2 #input-output2 p.preview-message {
+  background: #d6d6d6;
+  border-radius: 10px 10px 0 0;
+  color: #686868;
+  font-family: sans-serif;
+  position: absolute;
+  top: 93%;
+  right: 0%;
+  padding: 0.5rem 1rem;
+  user-select: none;
+  display: none;
+  opacity: 0.5;
+}
+#markdown-editor #input-output .show,
+#markdown-editor2 #input-output2 .show {
+  display: block !important;
+}
 
 
 
