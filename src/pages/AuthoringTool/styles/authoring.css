@@ -14724,7 +14724,7 @@ div.dt-button-info h2 {
 
 /*sorting ordering and selection css*/
 
-.drag-handle, .drag-handle-list {
+.drag-handle, .drag-handle-list,.drag-handle-list-lessons {
   display: inline-block;
   width: 12px;
   cursor: move;
@@ -15120,7 +15120,7 @@ div.dt-button-info h2 {
 
 .pb-widget-preview {
   width: 120%;
-  min-width: 120%;
+  min-width: 130%;
   height: auto;
   /* text-align: center;*/
   border-radius: 5px;
@@ -15307,19 +15307,23 @@ overflow:auto;*/
 
 .panel-xx {
   border: 1px solid #ececec;
-  width: 100%;
+  width: 110%;
   min-width: 100%;
   margin: 20px;
   margin-bottom: 20px;
   background-color: #fff;
+  padding: 20px;
 }
 
 
 .panel-xx .actions-set{
  /* position: absolute;*/
     z-index: 2;
+    right: -20px;
+    
+    top: 20px;
    
-    opacity: 0;
+   /* opacity: 0;*/
     
 }
 .panel-xx:hover .actions-set{ 
@@ -15327,13 +15331,14 @@ overflow:auto;*/
 }
 
 .panel-heading-xx {
-  background-color: #eaeaea;
+ /* background-color: #eaeaea;*/
   border-color: #fefefe;
   color: #000;
   width: 100%;
   height: 30px;
   box-shadow: 0 0 0 0.2rem rgba(10, 207, 151, 0.25);
   padding: 10px;
+  margin-top: 20px;
 }
 
 .panel-heading-xx {
@@ -15345,6 +15350,8 @@ overflow:auto;*/
   position: absolute;
   right: 10px;
   top: 20px;
+
+  margin-top: 10px;
 }
 
 .panel-xx .actions i {
@@ -15709,30 +15716,30 @@ tbody.file-list tr {
   display: block;
 }
 .editor-authoring .content-area {
-  padding: 15px 12px;
-  line-height: 1.5;
+ /* padding: 15px 12px;
+  line-height: 1.5;*/
 }
 .editor-authoring .content-area .visuell-view {
-  outline: none;
-  color: #000;
+ /* outline: none;
+  color: #000;*/
 
 }
 
 .visuell-view{
-  color: #000;
-    height: 600px;
+  /*color: #000;
+    height: 600px;*/
 }
 .editor-authoring .content-area .visuell-view p {
-  color: #000;
-  font-size: 25px;
+  /*color: #000;
+  font-size: 25px;*/
 }
 .editor-authoring .content-area .html-view {
-  outline: none;
+  /*outline: none;
   display: none;
   width: 100%;
   height: 200px;
   border: none;
-  resize: none;
+  resize: none;*/
 }
 
 /* Modal */
@@ -15799,6 +15806,99 @@ tbody.file-list tr {
 
 
 
+
+
+
+
+#markdown-editor, #markdown-editor2 {
+  /*margin: 100px auto;
+  width: 50%;*/
+}
+#markdown-editor .toolbar, #markdown-editor2 .toolbar {
+  /*background: #4f4f4f;*/
+ /* border: 1px solid #4F4F4F;*/
+  border-radius: 10px 10px 0 0;
+  margin: 0;
+  overflow: hidden;
+  padding: 0.5rem 10px;
+  width: 95%;
+}
+#markdown-editor .toolbar .btn-action-editor, #markdown-editor2 .toolbar .btn-action-editor {
+  background: transparent;
+  border: none;
+  color: #a5a5a5;
+  font-family: sans-serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0.7rem;
+}
+#markdown-editor .toolbar .btn-action-editor:hover,#markdown-editor2 .toolbar .btn-action-editor:hover, #markdown-editor .toolbar .btn-action-editor.active ,  #markdown-editor2 .toolbar .btn-action-editor.active {
+  background: #424242;
+  border-radius: 5px;
+  box-shadow: 0 0 2px #5c5c5c inset;
+  outline: 0px;
+}
+#markdown-editor .toolbar .btn-action-editor:focus, #markdown-editor2 .toolbar .btn-action-editor:focus {
+  outline: none;
+}
+#markdown-editor .toolbar .group, #markdown-editor2 .toolbar .group {
+  border-right: 1px solid #a5a5a5;
+  margin-right: 4px;
+  display: inline;
+}
+#markdown-editor #input-output,#markdown-editor2 #input-output2 {
+  height: 400px;
+  width: 95%;
+  position: relative;
+}
+#markdown-editor #input-output #input-area, #markdown-editor2 #input-output2 #input-area2 {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid #aaaaaa;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 10px 10px #e0e0e0;
+  resize: none;
+}
+#markdown-editor #input-output #input-area:focus, #markdown-editor #input-output #input-area:active,
+#markdown-editor2 #input-output2 #input-area2:focus, #markdown-editor2 #input-output2 #input-area2:active
+
+ {
+  outline: 0px;
+}
+#markdown-editor #input-output #output-area,
+#markdown-editor2 #input-output2 #output-area2 {
+  background: #FFFFFF;
+  border-radius: 0 0 10px 10px;
+  display: none;
+  font-family: sans-serif;
+  padding: 10px;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  overflow-y: scroll;
+}
+#markdown-editor #input-output p.preview-message,
+#markdown-editor2 #input-output2 p.preview-message {
+  background: #d6d6d6;
+  border-radius: 10px 10px 0 0;
+  color: #686868;
+  font-family: sans-serif;
+  position: absolute;
+  top: 93%;
+  right: 0%;
+  padding: 0.5rem 1rem;
+  user-select: none;
+  display: none;
+  opacity: 0.5;
+}
+#markdown-editor #input-output .show,
+#markdown-editor2 #input-output2 .show {
+  display: block !important;
+}
 
 
 
@@ -16346,12 +16446,12 @@ tbody.file-list tr {
   font-size:"13px"
 }
 
- .root-sub-ul:hover, .root-lesson-ul:hover{
+/* .root-sub-ul:hover, .root-lesson-ul:hover{
   cursor: grabbing;
   cursor: -moz-grabbing;
   cursor: -webkit-grabbing;
 }
-
+*/
 
 .root-li:hover .hint-message, .root-sub-ul:hover .hint-message, .root-lesson-ul:hover .hint-message{ 
  display: block;
@@ -16371,7 +16471,7 @@ tbody.file-list tr {
 .root-lesson-ul{
   border: none;
   padding: 20px;
-  background: #ccc;
+  background: #eaeaea;
   margin-top: 20px;
   border: 2px solid #fefefe;
 }
@@ -16417,4 +16517,29 @@ tbody.file-list tr {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
+}
+
+
+
+
+
+
+.md-editor .dropdown-menu li {
+  cursor: pointer;
+}
+
+.hintcode{
+  background:#fefefe;
+  height:400px;
+  margin-top:20px;
+  font-size:15px;
+}
+
+
+
+#projector-view{
+  min-width: 100%;
+  width: 100%;
+  height: 600px;
+  overflow-y: scroll;
 }
