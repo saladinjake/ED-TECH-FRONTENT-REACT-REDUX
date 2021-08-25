@@ -23,13 +23,14 @@ import 'jquery-ui-bundle/jquery-ui.css';
 // Change JQueryUI plugin names to fix name collision with Bootstrap.
 $.widget.bridge('uitooltip', $.ui.tooltip);
 $.widget.bridge('uibutton', $.ui.button);
-
+// import { createCourse } from "services/authoring"
 
 
 //import other jquery plugins
 //import bridget like this import jqueryBridget from "jquery-bridget"
 //hook other plugins to jquery using bridget like this in the future
 //jqueryBridget( 'plugin-designated-name', ImportedPlugin, $ );
+
 
 
 function getCookie(name) {
