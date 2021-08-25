@@ -11,14 +11,11 @@ import { Styles } from "./styles/main.js";
 import ReactQuill, { Mixin, Toolbar, Quill } from "react-quill";
 import Dropzone, { ImageFile } from "react-dropzone";
 //import PropTypes from "prop-types"
-
 // Complete SortableJS (with all plugins)
 import Sortable from "sortablejs/modular/sortable.complete.esm.js"; 
 import Lessons from "./dynamic_content";
-
 /*magicican victor jake dibs*/
 import  { getTemplateType } from "./markdown_generator"
-
 import loading_image from "assets/gifs/loading-buffering.gif";
 import $ from "jquery";
 import 'jquery-ui-bundle';
@@ -27,24 +24,60 @@ import 'jquery-ui-bundle/jquery-ui.css';
 $.widget.bridge('uitooltip', $.ui.tooltip);
 $.widget.bridge('uibutton', $.ui.button);
 
+
+
 //import other jquery plugins
 //import bridget like this import jqueryBridget from "jquery-bridget"
 //hook other plugins to jquery using bridget like this in the future
 //jqueryBridget( 'plugin-designated-name', ImportedPlugin, $ );
 
 
+function getCookie(name) {
+  var cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    var cookies = document.cookie.split(";");
+    for (var i = 0; i < cookies.length; i++) {
+      // var cookie = $.trim(cookies[i]);
+      var cookie = cookies[i].toString().replace(/^([\s]*)|([\s]*)$/g, "");
+      //var cookie =  cookies[i].trim()
+      if (cookie.substring(0, name.length + 1) === name + "=") {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+
+/*django access will require x-csrf-token to be set on headers*/
+const CSRFToken = () => {
+    /*get csrf token from the authorization headers which can be found in the cookies section of the browser store*/
+    const csrftoken = getCookie("csrftoken")
+    return (
+        <input type="hidden" name="csrfmiddlewaretoken" value={csrftoken} />
+    );
+};
 
 
 
+// this is to  prevent enter key when modal is shown
+//enforce user to click the modal buton or close it
 
-// if  prevent enter key when modal is shown
       // $("body").keyup(function (e) {
       //   // ESC key maps to keycode `27`
-      //   if (e.keyCode == 27) {
+      //   if (e.keyCode ==   13) {
      //        e.preventDefault()
        //      return false;
       //   }
       // });
+
+
+      // $(document).keyup(function(objEvent) {
+    //   if (objEvent.keyCode ==  13) {
+    //     
+    //   }
+    // });
 
   function formatYouTubeUrl(youtube) {
     var url = youtube;
@@ -426,51 +459,26 @@ const  handleSaveComponentTextEditor =(e) => {
       
         MainClone.querySelector(".fa-edit").setAttribute("data-template",markdownTemplate)
         MainClone.querySelector(".fa-edit").setAttribute("data-id",randId) //ref the curr main lesson box
-            
         MainClone.querySelector(".fa-edit").addEventListener("click",(es) =>{
-             //alert(e.target)
-
-             document.getElementById("myModalMarkdownEditor").setAttribute("data-parent",MainClone.id)
-
-              // if(e.target.dataset.template=="[pb_html][/pb_text]"){
-
-                           // alert("not working as expecte")
-                                /*just extracts and replace contents detail on edit*/
-
-                                
+             document.getElementById(MainClone.id).setAttribute("data-parent",MainClone.id)
                   const extracts = $("#" + MainClone.getAttribute("id")).find(".unit_content_place_holder").html();
                   const editBoard = document.getElementById("myModalMarkdownEditorEditMode").querySelector(".visuell-view2");
                   editBoard.value = extracts;
-                  
-                  
                   const markupBoard = document.getElementById("markup-template-content")
                   markupBoard.innerHTML =markdownTemplate
-
-
-
-                 
-
-                                
-
-
-              // }
-
         })
 
         MainClone.querySelector(".fa-trash").addEventListener("click", (e) => {
              handleWidgetRemove(e.target)
         })
-
-
-
-
       MainClone.querySelector(".unit_title_place_holder").innerHTML= _title   //no title initially for this comonent
-      MainClone.querySelector(".unit_content_place_holder").innerHTML = $("#input-area").val()      //getTemplateType(markdownTemplate)           //$(".visuell-view").html() || "Edit this content"
+      MainClone.querySelector(".unit_content_place_holder").innerHTML =  getTemplateType(markdownTemplate)        //$("#input-area").val()      //getTemplateType(markdownTemplate)           //$(".visuell-view").html() || "Edit this content"
       const markupBoard = document.getElementById("markup-template-content")
-      markupBoard.innerHTML =markdownTemplate
-      // $(".visuell-view").html(getTemplateType(markdownTemplate))
 
-          Target.append(MainClone);
+      // document.getElementById("myModalMarkdownEditorEditMode").querySelector(".visuell-view2")
+      markupBoard.innerHTML =markdownTemplate
+      $(".visuell-view").html(getTemplateType(markdownTemplate))
+      Target.append(MainClone);
 
 
 }
@@ -889,6 +897,10 @@ export default class MasterForm extends React.Component {
     // return null;
   }
 
+  componentDidMount(){
+
+  }
+
   render() {
     return (
       <Fragment>
@@ -1048,6 +1060,7 @@ export default class MasterForm extends React.Component {
                       
                       enctype="multipart/form-data"
                     >
+                      <CSRFToken /> {/*Ready to django into the server*/}
                       <Step1
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
@@ -2449,12 +2462,13 @@ const saveMarkdownEditContent = () => {
     $(".main-videosection2").attr("src","")
     $("#projector-view").attr("src","")
       // $(".iframe-boxer").attr("src","")
+    $(".visuell-view").html(getTemplateType(TemplateType))
 
 
-    $("#input-area").val("")
-    $("#output-area").html("")
-    $("#input-area2").val("")
-    $("#output-area2").html("")
+    // $("#input-area").val("")
+    // $("#output-area").html("")
+    // $("#input-area2").val("")
+    // $("#output-area2").html("")
     
     //widget
     let Target = $(".dynamo_" + localStorage.getItem("l_tracker"));
@@ -2820,7 +2834,7 @@ const saveMarkdownEditContent = () => {
     <button type="button" class="btn btn-default btn-responsive" id="appendnestable"><i class="fa fa-magic"></i> Add Section</button>
     <button type="button" class="btn btn-default btn-responsive" id="removeall"><i class="fa fa-bomb"></i>Clear</button>
   </div>*/}
-  <span class="hint-message" style={{}}> Double click on each created section to reorder positioning of the section</span>
+  <span class="hint-message" style={{}}> </span>
                   
             <ul class="fold-table course-window table-implement-row">
               
