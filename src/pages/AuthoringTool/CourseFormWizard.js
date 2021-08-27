@@ -20,10 +20,37 @@ import loading_image from "assets/gifs/loading-buffering.gif";
 import $ from "jquery";
 import 'jquery-ui-bundle';
 import 'jquery-ui-bundle/jquery-ui.css';
+
+import { getLanguages } from "services/language";
+import axios from "axios"
+
+
+/*Course Arsenals*/
+import { 
+  createStudentProfile, 
+  createAuthorProfile, 
+  createGapsGroup,
+  createUserProfile,
+  createInstitution,
+  createLesson,
+  createSubsection,
+  createSection,
+  getInstructorProfile,
+  getInstructorProfiles,
+  getInstitutions,
+  updateCourse,
+  createCourse,
+  getCourse,
+  getInstitutionCourses,
+  getCourses
+ 
+} from "services/authoring"
+
+
+
 // Change JQueryUI plugin names to fix name collision with Bootstrap.
 $.widget.bridge('uitooltip', $.ui.tooltip);
 $.widget.bridge('uibutton', $.ui.button);
-// import { createCourse } from "services/authoring"
 
 
 //import other jquery plugins
@@ -667,16 +694,76 @@ export default class MasterForm extends React.Component {
       subSectionStep: 1,
       lessonStep: 1,
       finishedClicked: false,
-      email: "",
-      username: "",
-      password: "",
-      comment: "",
-      passwordConfirmation: "",
+      
+      //state fields
+      
+        name: "",
+        code: "",
+        run: "",
+        card_image: "",
+        intro_video: "",
+        description: "",
+        overview: "",
+        learning_expectation: "",
+        curriculum: "",
+        level: 1,  //int
+        enrolment_type: 1,
+        entrance_exam_required: true, 
+        cost: 100.0,  //float
+        auditing: true,
+        course_pacing: 1, //int
+        course_start_date_time: "",  //2021-08-26T17:13:00+01:00
+        course_end_date_time: "",
+        enrolment_start_date_time: "",
+        enrolment_end_date_time: "",
+        course_language: "english",
+        requirement_hours_per_week: 1, //int
+        requirement_no_of_week: 1,  //int
+        grace_period_after_deadline: 1, //int
+        publication_status: 2,  //int
+        institution: "",   //keypair preporpulated set of inst id
+        author: "",  //keypair preporpulated set of author id
+        prerequisite: [
+              //key pairs ids of courses
+        ],
+        authoring_team: [
+                              //key pair authors
+            
+        ],
+        
       formErrors: {
-        email: "",
-        username: "",
-        password: "",
-        passwordConfirmation: "",
+        name: "",
+        code: "",
+        run: "",
+        card_image: "",
+        intro_video: "",
+        description: "",
+        overview: "",
+        learning_expectation: "",
+        curriculum: "",
+        level: "",  //int
+        enrolment_type: "",
+        entrance_exam_required: "", 
+        cost: "",  //float
+        auditing: "",
+        course_pacing: "", //int
+        course_start_date_time: "",  //2021-08-26T17:13:00+01:00
+        course_end_date_time: "",
+        enrolment_start_date_time: "",
+        enrolment_end_date_time: "",
+        course_language: "",
+        requirement_hours_per_week: "", 
+        requirement_no_of_week: "", 
+        grace_period_after_deadline: "", 
+        publication_status: "",  
+        institution: "",   
+        author: "", 
+        prerequisite: "",
+        authoring_team: "",
+        languages:[],
+        instructors:[],
+        courses:[],
+        institutions:[],
       },
       formValidity: {
         email: false,
@@ -716,13 +803,26 @@ export default class MasterForm extends React.Component {
     });
   }
 
+  /*one single onchange handler all over the form element*/
+  /*with one single validation hook function for all form fields*/
   handleChange(event) {
-    const { name, value } = event.target;
+    let { name, value } = event.target;
+    console.log(event.target.value)
+    if(event.target.name == "entrance_exam_required"){
+      //(boolean) is for laravel or php
+      if(value=="false"){
+        value = false;
+      }else{
+        value = true
+      }
+    }
+
     this.setState(
       {
         [name]: value,
       },
       function () {
+        /*validation hooks*/
         this.validateField(name, value);
       }
     );
@@ -839,25 +939,55 @@ export default class MasterForm extends React.Component {
   canSubmit() {
     this.setState({
       canSubmit:
-        this.state.formValidity.email &&
-        this.state.formValidity.username &&
-        this.state.formValidity.password &&
-        this.state.formValidity.passwordConfirmation,
+
+        this.state.formValidity.name &&
+        this.state.formValidity.code &&
+        this.state.formValidity.run &&
+        this.state.formValidity.card_image &&
+        this.state.formValidity.intro_video &&
+        this.state.formValidity.description &&
+        this.state.formValidity.overview &&
+        this.state.formValidity.learning_expectation &&
+        this.state.formValidity.curriculum &&
+        this.state.formValidity.level &&  //int
+        this.state.formValidity.enrolment_type &&
+        this.state.formValidity.entrance_exam_required && 
+        this.state.formValidity.cost &&
+        this.state.formValidity.auditing &&
+        this.state.formValidity.course_pacing &&
+        this.state.formValidity.course_start_date_time &&  //2021-08-26T17:13:00+01:00
+        this.state.formValidity.course_end_date_time &&
+        this.state.formValidity.enrolment_start_date_time &&
+        this.state.formValidity.enrolment_end_date_time &&
+        this.state.formValidity.course_language &&
+        this.state.formValidity.requirement_hours_per_week && 
+        this.state.formValidity.requirement_no_of_week && 
+        this.state.formValidity.grace_period_after_deadline &&
+        this.state.formValidity.publication_status && 
+        this.state.formValidity.institution && 
+        this.state.formValidity.author && 
+        this.state.formValidity.prerequisite &&
+        this.state.formValidity.authoring_team
+      
+        // this.state.formValidity.email &&
+        // this.state.formValidity.username &&
+        // this.state.formValidity.password &&
+        // this.state.formValidity.passwordConfirmation,
     });
   }
 
   errorClass(error) {
-    return error.length === 0 ? "" : "is-invalid";
+    return error?.length === 0 ? "" : "is-invalid";
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
     const { email, username, password } = this.state;
-    alert(`Your registration detail: \n 
-           Email: ${email} \n 
-           Username: ${username} \n
-           Password: ${password}`);
+    alert(`Your data here: \n 
+           `);
   };
+
+
 
   get previousButton() {
     let currentStep = this.state.currentStep;
@@ -898,11 +1028,148 @@ export default class MasterForm extends React.Component {
     // return null;
   }
 
-  componentDidMount(){
+  
 
+   // async componentDidMount(){
+   //   await this.fetchContent()
+   // }
+
+
+  componentDidMount(){
+    (async () =>{
+       try{
+         
+         await this.fetchContent()
+       }catch(e){
+
+         console.log("some error occured")
+
+       }
+    })()
   }
 
+  /*{key:val}, ["id","name", "email"]*/
+  /*used only when necessary*/
+  pluck(givenObj){
+     let lists = []
+
+     Object.entries(givenObj).forEach( (arr,index) =>{
+        console.log(arr)
+       if( arr.includes("id") && arr.includes("name") || arr.includes("email") ){
+          var batchHash = {};
+          batchHash["id"] = arr[1] // or batchHash[arr[0]] = arr[1]
+          lists.push(batchHash)
+       }
+     })
+
+     return lists;
+  }
+
+  transformObject(obj){
+    return  Array.from(obj)
+  }
+
+ fetchContent = async () => {
+   //automated logic
+    Promise.all(
+      [
+        getLanguages(),
+        getCourses(),
+        getInstitutions(),
+        getInstructorProfiles(),
+      ].map((err) => err.catch(() => console.log( err)))
+    )
+      .then((res) => {
+        
+
+        console.log(res[2].results)
+        if(typeof (res[2].results) == "Array") {
+          // do nothing
+        }else{
+          // alert(typeof res[2].results )
+          console.log(Array.from(res[2].results))
+
+          this.setState({
+          languages: res[0].data.data, // from enrollments this is already an array
+          courses:  this.transformObject(res[1].results), //from lms  this needs to be reformed
+          institutions: this.transformObject(res[2].results), // reformation needed
+          instructors: this.transformObject(res[3].results)  // reformation needed
+        })
+        }
+        
+        // setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        // toast.error("Error Occured fetching data");
+        // setLoading(false);
+      });
+
+      
+
+  };
+
+   /*implements save and continue logic*/
+  saveAndContinue(e,currentStep){
+    // go to next steps automatically
+    let step = parseInt(currentStep)
+    step = step+ 1;
+    //switch on the step action
+    switch(step){
+       case 2:
+         //check for data saved from previous step and porpulate the fields
+         // hide or disable other steps+ 2 so user cannot just navigate to these steps
+         //moves to step next
+         this.goToStep(e, step);
+         break;
+       case 3:
+       //check for data saved from previous step and porpulate the fields
+       // hide or disable other steps+ 2 ... so user cannot just navigate to these steps
+        //moves to step next
+         this.goToStep(e, step); 
+         break;
+      case 4:
+      //check for data saved from previous step and porpulate the fields
+      // hide or disable other steps+ 2 ... so user cannot just navigate to these steps
+        //moves to step next
+         this.goToStep(e, step); 
+        break;
+       case 5:
+       //check for data saved from previous step and porpulate the fields
+       // hide or disable other steps+ 2 ... so user cannot just navigate to these steps
+         //moves to step next
+         this.goToStep(e, step);
+         break;
+       case 7:
+       //check for data saved from previous step and porpulate the fields
+       // hide or disable other steps+ 2 ... so user cannot just navigate to these steps
+         //moves to step next
+         this.goToStep(e, step);
+         break;
+       case 8:
+       //check for data saved from previous step and porpulate the fields
+       // hide or disable other steps+ 2 ... so user cannot just navigate to these steps
+         // perform final action to save all data 
+         // moves status from draft 1 to draft 3
+
+         //moves to step next
+         this.goToStep(e, step); // takes you back to step 1 so you can see everything in preview mode
+         break;
+       default :
+        //step 1
+       //check for data saved from previous step and porpulate the fields
+       // hide or disable other steps+ 1 ... so user cannot just navigate to these steps
+        //disable the save buttons every where
+          this.goToStep(e, 1);
+          break;
+    }
+    
+  }
+
+
   render() {
+    const {institutions, languages, instructors, courses } = this.state;
+    
     return (
       <Fragment>
         <AddHead />
@@ -1067,7 +1334,7 @@ export default class MasterForm extends React.Component {
                         finishedClicked={this.state.finishedClicked}
                         handleChange={this.handleChange}
                         errorEmailClass={this.errorClass(
-                          this.state.formErrors.email
+                          this.state.formErrors.course_language
                         )}
                         email={this.state.email}
                         errorEmail={this.state.formErrors.email}
@@ -1076,6 +1343,11 @@ export default class MasterForm extends React.Component {
                         )}
                         username={this.state.username}
                         errorUsername={this.state.formErrors.username}
+                        institutions={institutions} 
+                        languages={languages}
+                        instructors={instructors} 
+                        courses={courses}
+                        saveAndContinue={this.saveAndContinue}
                       />
 
                       <Step3
@@ -1084,6 +1356,11 @@ export default class MasterForm extends React.Component {
                         handleChange={this.handleChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
+                        institutions={institutions} 
+                        languages={languages}
+                        instructors={instructors} 
+                        courses={courses}
+                        saveAndContinue={this.saveAndContinue}
                       />
 
                       <Step4
@@ -1092,6 +1369,11 @@ export default class MasterForm extends React.Component {
                         handleChange={this.handleChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
+                        institutions={institutions} 
+                        languages={languages}
+                        instructors={instructors} 
+                        courses={courses}
+                        saveAndContinue={this.saveAndContinue}
                       />
 
                       <Step2
@@ -1110,6 +1392,11 @@ export default class MasterForm extends React.Component {
                         errorPasswordConfirmation={
                           this.state.formErrors.passwordConfirmation
                         }
+                        institutions={institutions} 
+                        languages={languages}
+                        instructors={instructors} 
+                        courses={courses}
+                        saveAndContinue={this.saveAndContinue}
                       />
 
                       <Step5
@@ -1118,6 +1405,11 @@ export default class MasterForm extends React.Component {
                         handleChange={this.handleChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
+                        institutions={institutions} 
+                        languages={languages}
+                        instructors={instructors} 
+                        courses={courses}
+                        saveAndContinue={this.saveAndContinue}
                       />
 
                       <Step6
@@ -1126,6 +1418,11 @@ export default class MasterForm extends React.Component {
                         handleChange={this.handleChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
+                        institutions={institutions} 
+                        languages={languages}
+                        instructors={instructors} 
+                        courses={courses}
+                        saveAndContinue={this.saveAndContinue}
                       />
                       <Step7
                         currentStep={this.state.currentStep}
@@ -1133,6 +1430,11 @@ export default class MasterForm extends React.Component {
                         handleChange={this.handleChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
+                        institutions={institutions} 
+                        languages={languages}
+                        instructors={instructors} 
+                        courses={courses}
+                        saveAndContinue={this.saveAndContinue}
                       />
 
                       <Step8
@@ -1141,6 +1443,11 @@ export default class MasterForm extends React.Component {
                         handleChange={this.handleChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
+                        institutions={institutions} 
+                        languages={languages}
+                        instructors={instructors} 
+                        courses={courses}
+                        saveAndContinue={this.saveAndContinue}
                       />
 
                       <br />
@@ -1171,10 +1478,18 @@ export default class MasterForm extends React.Component {
 }
 
 class Step1 extends React.Component {
+  constructor(props){
+    super(props)
+  }
+
+  
   render() {
     if (this.props.currentStep !== 1) {
       return null;
     }
+    const {institutions, languages, instructors, courses } = this.props
+    console.log(institutions)
+
     return (
       <React.Fragment>
         <div className="tab-content b-0 mb-0">
@@ -1193,9 +1508,11 @@ class Step1 extends React.Component {
                       style={{ position: "relative", zIndex: "1" }}
                       type="text"
                       className="form-control"
-                      id="course_title"
-                      name="title"
-                      placeholder="Enter course title"
+                      id="course_code"
+                      name="code"
+                      placeholder="Enter course code"
+                      value={this.props.code}
+                     onChange={this.props.handleChange}
                     />
                   </div>
                 </div>
@@ -1212,9 +1529,12 @@ class Step1 extends React.Component {
                       style={{ position: "relative", zIndex: "1" }}
                       type="text"
                       className="form-control"
-                      id="course_title2"
-                      name="title"
+                      id="course_name"
+                      name="name"
                       placeholder="Enter course title"
+
+                      value={this.props.course_name}
+                     onChange={this.props.handleChange}
                     />
                   </div>
                 </div>
@@ -1228,21 +1548,27 @@ class Step1 extends React.Component {
                       style={{ position: "relative", zIndex: "1" }}
                       class="form-control select2 select2-hidden-accessible"
                       data-toggle="select2"
-                      name="level"
-                      id="level"
+                      name="institution"
+                      
                       data-select2-id="level"
                       tabindex="-1"
                       aria-hidden="true"
+                       value={this.props.institution}
+                     onChange={this.props.handleChange}
                     >
-                      <option value="beginner" data-select2-id="4">
-                        Questence
-                      </option>
-                      <option value="advanced" data-select2-id="95">
-                        ABU-Zaria
-                      </option>
-                      <option value="intermediate" data-select2-id="96">
-                        UNILAG
-                      </option>
+                      
+
+                      <option>-- Institutions --</option>
+                        {institutions &&
+                          institutions.map((language, i) => {
+                            return (
+                              <option key={i} value={language.id}>
+                                {language.name}
+                              </option>
+                            );
+                          })}
+                        
+
                     </select>
                   </div>
                 </div>
@@ -1256,9 +1582,12 @@ class Step1 extends React.Component {
                   </label>
                   <div className="">
                     <textarea
+                      name="description"
                       style={{ position: "relative", zIndex: "1" }}
                       className="form-control"
                       placeholder="Short description"
+                       value={this.props.description}
+                     onChange={this.props.handleChange}
                     ></textarea>
                   </div>
                 </div>
@@ -1271,7 +1600,14 @@ class Step1 extends React.Component {
                     Course Overview
                   </label>
                   <div className="">
-                    <Editor placeholder="course overview" />
+                    <textarea
+                      name="overview"
+                      style={{ position: "relative", zIndex: "1" }}
+                      className="form-control"
+                      placeholder="Short description"
+                       value={this.props.overview}
+                     onChange={this.props.handleChange}
+                    ></textarea>
                   </div>
                 </div>
 
@@ -1280,7 +1616,14 @@ class Step1 extends React.Component {
                     What You Will Learn
                   </label>
                   <div className="">
-                    <Editor placeholder="What you will learn" />
+                    <textarea
+                      name="learning_expectation"
+                      style={{ position: "relative", zIndex: "1" }}
+                      className="form-control"
+                      placeholder="Short description"
+                       value={this.props.learning_expectation}
+                     onChange={this.props.handleChange}
+                    ></textarea>
                   </div>
                 </div>
 
@@ -1293,19 +1636,21 @@ class Step1 extends React.Component {
                       style={{ position: "relative", zIndex: "1" }}
                       class="form-control select2 select2-hidden-accessible"
                       data-toggle="select2"
-                      name="level"
+                      name="enrolment_type"
                       id="level"
                       data-select2-id="level"
                       tabindex="-1"
                       aria-hidden="true"
+                       value={this.props.enrolment_type}
+                     onChange={this.props.handleChange}
                     >
-                      <option value="beginner" data-select2-id="4">
+                      <option value="1" data-select2-id="4">
                         Introductory
                       </option>
-                      <option value="advanced" data-select2-id="95">
+                      <option value="2" data-select2-id="95">
                         Intermediate
                       </option>
-                      <option value="intermediate" data-select2-id="96">
+                      <option value="3" data-select2-id="96">
                         Advanced
                       </option>
                     </select>
@@ -1326,11 +1671,13 @@ class Step1 extends React.Component {
                       data-select2-id="level"
                       tabindex="-1"
                       aria-hidden="true"
+                       value={this.props.level}
+                     onChange={this.props.handleChange}
                     >
-                      <option value="beginner" data-select2-id="4">
+                      <option value="1" data-select2-id="4">
                         Open
                       </option>
-                      <option value="advanced" data-select2-id="95">
+                      <option value="2" data-select2-id="95">
                         By Invitation
                       </option>
                     </select>
@@ -1346,16 +1693,18 @@ class Step1 extends React.Component {
                       style={{ position: "relative", zIndex: "1" }}
                       class="form-control select2 select2-hidden-accessible"
                       data-toggle="select2"
-                      name="level"
+                      name="entrance_exam_required"
                       id="level"
                       data-select2-id="level"
                       tabindex="-1"
                       aria-hidden="true"
+                       value={this.props.entrance_exam_required}
+                     onChange={this.props.handleChange}
                     >
-                      <option value="beginner" data-select2-id="4">
+                      <option value="false" data-select2-id="0">
                         False
                       </option>
-                      <option value="advanced" data-select2-id="95">
+                      <option value="true" data-select2-id="1">
                         True
                       </option>
                     </select>
@@ -1371,11 +1720,13 @@ class Step1 extends React.Component {
                       style={{ position: "relative", zIndex: "1" }}
                       class="form-control select2 select2-hidden-accessible"
                       data-toggle="select2"
-                      name="level"
+                      name="auditing"
                       id="level"
                       data-select2-id="level"
                       tabindex="-1"
                       aria-hidden="true"
+                       value={this.props.auditing}
+                     onChange={this.props.handleChange}
                     >
                       <option value="beginner" data-select2-id="4">
                         YES
@@ -1400,8 +1751,10 @@ class Step1 extends React.Component {
                       type="text"
                       className="form-control"
                       id="course_title2"
-                      name="title"
+                      name="intro_video"
                       placeholder="You tube url"
+                       value={this.props.intro_video}
+                     onChange={this.props.handleChange}
                     />
                   </div>
                 </div>
@@ -1439,8 +1792,10 @@ class Step1 extends React.Component {
                               style={{ visibility: "hidden" }}
                               type="file"
                               className="image-upload"
-                              name="course_thumbnail"
+                              name="card_image"
                               accept="image/*"
+                               value={this.props.card_image}
+                               onChange={this.props.handleChange}
                             />
                           </div>
                         </div>
@@ -1454,8 +1809,30 @@ class Step1 extends React.Component {
                     Curriculum
                   </label>
                   <div className="">
-                    <Editor placeholder="Curriculum" />
+                    <textarea
+                      name="curriculum"
+                      style={{ position: "relative", zIndex: "1" }}
+                      className="form-control"
+                      placeholder="Short description"
+                       value={this.props.curriculum}
+                     onChange={this.props.handleChange}
+                    ></textarea>
                   </div>
+                </div>
+
+
+
+                <div className="mb-3 mt-3">
+                  <button
+                    type="button"
+                    className="btn btn-primary text-center"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      this.props.saveAndContinue(this.props.currentStep)
+                    }}
+                  >
+                    Save And Continue
+                  </button>
                 </div>
 
                 <br />
@@ -1464,104 +1841,7 @@ class Step1 extends React.Component {
                 <br />
                 <br />
 
-                {/*                  <div class="form-group col-md-6 fl-left mb-3" data-select2-id="11">
-    <label class="col-md-12 col-form-label" for="sub_category_id">Category<span class="required">*</span></label>
-    <div class="" data-select2-id="10">
-        <select style={{marginLeft:"90px"}} class="form-control select2 select2-hidden-accessible" data-toggle="select2" name="sub_category_id" id="sub_category_id" required="" data-select2-id="sub_category_id" tabindex="-1" aria-hidden="true">
-            <option value="" data-select2-id="2">Select a category</option>
-            <optgroup label="ARTS &amp; HUMANITIES " data-select2-id="28">
-                <option value="69" data-select2-id="29">Education</option>
-                <option value="70" data-select2-id="30">History</option>
-                <option value="71" data-select2-id="31">Political Science</option>
-                <option value="72" data-select2-id="32">Sociology</option>
-                <option value="73" data-select2-id="33">Geography</option>
-                <option value="76" data-select2-id="34">Media and Journalism</option>
-                <option value="77" data-select2-id="35">Architecture</option>
-            </optgroup>
-            <optgroup label="BUSINESS" data-select2-id="36">
-                <option value="86" data-select2-id="37">Business Process Management </option>
-                <option value="124" data-select2-id="38">Service Management</option>
-                <option value="125" data-select2-id="39">Supply Chain Management</option>
-                <option value="126" data-select2-id="40">Sales and Marketing Management</option>
-                <option value="127" data-select2-id="41">Risk Management</option>
-                <option value="128" data-select2-id="42">Customer Service</option>
-                <option value="129" data-select2-id="43">Business Leadership</option>
-                <option value="130" data-select2-id="44">Human Resources</option>
-                <option value="131" data-select2-id="45">Finance and Banking</option>
-                <option value="132" data-select2-id="46">Accounting</option>
-            </optgroup>
-            <optgroup label="HEALTH CARE" data-select2-id="47">
-                <option value="88" data-select2-id="48">Nursing </option>
-                <option value="89" data-select2-id="49">Disease and Disorders</option>
-                <option value="90" data-select2-id="50">Nutrition</option>
-                <option value="91" data-select2-id="51">Caregiving</option>
-                <option value="92" data-select2-id="52">Pharmacology</option>
-            </optgroup>
-            <optgroup label="LAW &amp; SOCIAL SCIENCES" data-select2-id="53">
-                <option value="95" data-select2-id="54">Law</option>
-                <option value="96" data-select2-id="55">Economics</option>
-                <option value="97" data-select2-id="56">Psychology</option>
-            </optgroup>
-            <optgroup label="INFORMATION TECHNOLOGY" data-select2-id="57">
-                <option value="100" data-select2-id="58">Network and security</option>
-                <option value="101" data-select2-id="59">IT Management</option>
-                <option value="102" data-select2-id="60">Digital Marketing</option>
-                <option value="103" data-select2-id="61">Web Site and Application Development</option>
-            </optgroup>
-            <optgroup label="MATHEMATICS " data-select2-id="62">
-                <option value="105" data-select2-id="63">SS1 Mathematics</option>
-                <option value="106" data-select2-id="64">SS2 Mathematics</option>
-                <option value="107" data-select2-id="65">SS3 Mathematics</option>
-            </optgroup>
-            <optgroup label="ENGINEERING AND PHYSICAL SCIENCES" data-select2-id="66">
-                <option value="110" data-select2-id="67">Computer Science and Engineering</option>
-                <option value="111" data-select2-id="68">Electrical Engineering </option>
-                <option value="112" data-select2-id="69">Mechanical Engineering</option>
-                <option value="113" data-select2-id="70">Chemical Engineering</option>
-                <option value="114" data-select2-id="71">Civil Engineering</option>
-                <option value="116" data-select2-id="72">Biology </option>
-                <option value="117" data-select2-id="73">Physics </option>
-                <option value="118" data-select2-id="74">Chemistry</option>
-                <option value="119" data-select2-id="75">Environmental Studies</option>
-                <option value="120" data-select2-id="76">Agricultural Science</option>
-            </optgroup>
-            <optgroup label="LANGUAGE " data-select2-id="77">
-                <option value="134" data-select2-id="78">English</option>
-                <option value="135" data-select2-id="79">Yoruba</option>
-                <option value="136" data-select2-id="80">Igbo</option>
-                <option value="137" data-select2-id="81">Hausa</option>
-                <option value="138" data-select2-id="82">Chinese</option>
-                <option value="139" data-select2-id="83">French</option>
-            </optgroup>
-        </select>
-            </div>
-</div>
-
-
-
-
-
-<div class="form-group  mb-3 col-md-6 fl-left">
-    <label class="col-md-12 col-form-label" for="level">Level</label>
-    <div class="" data-select2-id="94">
-        <select  class="form-control select2 select2-hidden-accessible" data-toggle="select2" name="level" id="level" data-select2-id="level" tabindex="-1" aria-hidden="true">
-            <option value="beginner" data-select2-id="4">Beginner</option>
-            <option value="advanced" data-select2-id="95">Advanced</option>
-            <option value="intermediate" data-select2-id="96">Intermediate</option>
-        </select>
-        
-    </div>
-</div>
-
-<div class="form-group  mb-3 col-md-6 fl-left">
-    <label class="col-md-12 col-form-label" for="language_made_in">Language made in</label>
-    <div class="">
-        <select  class="form-control select2 select2-hidden-accessible" data-toggle="select2" name="language_made_in" id="language_made_in" data-select2-id="language_made_in" tabindex="-1" aria-hidden="true">
-            <option value="english" data-select2-id="6">English</option>
-        </select>
-      
-    </div>
-</div>*/}
+                
               </div>
             </div>{" "}
           </div>{" "}
@@ -1688,8 +1968,8 @@ class DynamicForm extends React.Component {
 }
 
 class Step5 extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       shareholders: [{ name: "" }],
     };
@@ -1720,6 +2000,8 @@ class Step5 extends React.Component {
     if (this.props.currentStep !== 3) {
       return null;
     }
+    const {institutions, languages, instructors, courses } = this.props
+ 
     return (
       <React.Fragment>
         <div className="tab-pane card-box" id="outcomes">
@@ -1735,9 +2017,10 @@ class Step5 extends React.Component {
                     type="text"
                     className="form-control"
                     id="course_title2"
-                    name="title"
+                    name="grace_period_after_deadline"
                     placeholder="Enter course title"
                     required=""
+
                   />
                 </div>
               </div>
@@ -1801,15 +2084,21 @@ class Step5 extends React.Component {
                   <select
                     class="form-control select2 select2-hidden-accessible"
                     data-toggle="select2"
-                    name="language_made_in"
+                    name="course_language"
                     id="language_made_in"
                     data-select2-id="language_made_in"
                     tabindex="-1"
                     aria-hidden="true"
                   >
-                    <option value="english" data-select2-id="6">
-                      English
-                    </option>
+                    <option>-- Language --</option>
+                        {languages.length > 0 &&
+                          languages.map((language, i) => {
+                            return (
+                              <option key={i} value={language.id}>
+                                {language.english}
+                              </option>
+                            );
+                          })}
                   </select>
                 </div>
               </div>
@@ -1882,14 +2171,16 @@ class Step5 extends React.Component {
 }
 
 class Step3 extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       shareholders: [{ name: "" }],
     };
   }
 
   render() {
+    const {institutions, languages, instructors, courses } = this.props
+ 
     if (this.props.currentStep !== 2) {
       return null;
     }
@@ -1906,10 +2197,12 @@ class Step3 extends React.Component {
                   <input
                     type="date"
                     className="form-control"
-                    id="course_title"
-                    name="title"
+                   
+                    name="course_start_date_time"
                     placeholder="Enter course title"
                     required=""
+                     value={this.props.course_start_date_time}
+                     onChange={this.props.handleChange}
                   />
                 </div>
               </div>
@@ -1923,9 +2216,11 @@ class Step3 extends React.Component {
                     type="date"
                     className="form-control"
                     id="course_title2"
-                    name="title"
+                    name="course_end_date_time"
                     placeholder="Enter course title"
                     required=""
+                     value={this.props.course_end_date_time}
+                     onChange={this.props.handleChange}
                   />
                 </div>
               </div>
@@ -1939,9 +2234,11 @@ class Step3 extends React.Component {
                     type="date"
                     className="form-control"
                     id="course_title"
-                    name="title"
+                    name="enrolment_start_date_time"
                     placeholder="Enter course title"
                     required=""
+                    value={this.props.enrolment_start_date_time}
+                     onChange={this.props.handleChange}
                   />
                 </div>
               </div>
@@ -1955,9 +2252,11 @@ class Step3 extends React.Component {
                     type="date"
                     className="form-control"
                     id="course_title2"
-                    name="title"
+                    name="enrolment_end_date_time"
                     placeholder="Enter course title"
                     required=""
+                    value={this.props.enrolment_end_date_time}
+                     onChange={this.props.handleChange}
                   />
                 </div>
               </div>
@@ -1972,7 +2271,7 @@ class Step3 extends React.Component {
                     type="number"
                     className="form-control"
                     id="course_title"
-                    name="title"
+                    name="requirement_hours_per_week"
                     placeholder="Enter course title"
                     required=""
                   />
@@ -1988,7 +2287,7 @@ class Step3 extends React.Component {
                     type="number"
                     className="form-control"
                     id="course_title2"
-                    name="title"
+                    name="requirement_no_of_week"
                     placeholder="Enter course title"
                     required=""
                   />
@@ -2000,7 +2299,14 @@ class Step3 extends React.Component {
                   Prerequisites
                 </label>
                 <div className="">
-                  <Editor placeholder="Prerequisites" />
+                  <textarea
+                      name="prerequisite"
+                      style={{ position: "relative", zIndex: "1" }}
+                      className="form-control"
+                      placeholder="Short description"
+                       value={this.props.name}
+                     onChange={this.props.handleChange}
+                    ></textarea>
                 </div>
               </div>
 
@@ -2012,16 +2318,18 @@ class Step3 extends React.Component {
                   <select
                     class="form-control select2 select2-hidden-accessible"
                     data-toggle="select2"
-                    name="level"
+                    name="course_pacing"
                     id="level"
                     data-select2-id="level"
                     tabindex="-1"
                     aria-hidden="true"
+                     value={this.props.name}
+                     onChange={this.props.handleChange}
                   >
-                    <option value="beginner" data-select2-id="4">
+                    <option value="1" data-select2-id="4">
                       Instructor Paced
                     </option>
-                    <option value="advanced" data-select2-id="95">
+                    <option value="2" data-select2-id="95">
                       Self Paced
                     </option>
                   </select>
@@ -5228,8 +5536,9 @@ class Step7 extends React.Component {
 
                 <div class="form-group  mb-3 col-md-12 ">
                   <label class="col-md-12 col-form-label" for="level">
-                    Status
+                    Publication Status
                   </label>
+
                   <div class="" data-select2-id="94">
                     <select
                       class="form-control select2 select2-hidden-accessible"
@@ -5240,19 +5549,10 @@ class Step7 extends React.Component {
                       tabindex="-1"
                       aria-hidden="true"
                     >
-                      <option value="beginner" data-select2-id="4">
-                        Draft
-                      </option>
-                      <option value="advanced" data-select2-id="95">
-                        Published And Live
-                      </option>
-                      <option value="intermediate" data-select2-id="96">
-                        Published
-                      </option>
-                      <option value="intermediate" data-select2-id="96">
-                        Visible To Staff Only
-                      </option>
-                    </select>
+                       <option value="1" selected="">Draft (Never Published)</option>
+                      <option value="3">Draft Unpublished Changes</option>
+                      
+                      </select>
                   </div>
                 </div>
 
@@ -5266,8 +5566,7 @@ class Step7 extends React.Component {
                     className="btn btn-primary text-center"
                     onClick={(e) => {
                       e.preventDefault();
-                      window.location.href =
-                        process.env.PUBLIC_URL + "/authoring/create/new/step2";
+                      this.props.handleSubmit(e)
                     }}
                   >
                     Submit

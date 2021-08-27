@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import axios from "services/axiosConfig";
-import lmsAxios from "services/axiosLMS";
+import lmsAxios from "services/axiosAuthoring";
 
 export const loginUser = async (details) => {
   let request = axios.post("auth/login", details);
