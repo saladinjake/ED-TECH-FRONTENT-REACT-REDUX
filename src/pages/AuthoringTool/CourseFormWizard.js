@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, createRef } from "react";
 import { Container, Col, Row } from "react-bootstrap";
 import { HeaderBox } from "./activityboxes";
 import NavBar from "components/Navbar";
@@ -23,6 +23,10 @@ import 'jquery-ui-bundle/jquery-ui.css';
 
 import { getLanguages } from "services/language";
 import axios from "axios"
+
+
+import toast from "react-hot-toast";
+
 
 
 /*Course Arsenals*/
@@ -74,9 +78,20 @@ function getCookie(name) {
       }
     }
   }
-  return cookieValue;
+
+  if(cookieValue){
+   return cookieValue; 
+ }else{
+   return "csrftoken"
+ }
+  
 }
 
+
+
+function setCookie(name,val){
+  document.cookie[name] = val
+}
 
 /*django access will require x-csrf-token to be set on headers*/
 const CSRFToken = () => {
@@ -689,13 +704,19 @@ export default class MasterForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      /*multistep logic data*/
       currentStep: 1,
       sectionStep: 1,
       subSectionStep: 1,
       lessonStep: 1,
       finishedClicked: false,
+      modes:["CREATE_MODE","EDIT_MODE"],
+      editor:null,  //THE LOGGED IN USERS DETAILS [{token,...details}]
+      author: "", // THE LOGGED IN USER NAME {...details}.username
+      previledges:["CAN_EDIT","CAN_VIEW","CAN_DELETE","CAN_CREATE"], 
       
       //state fields
+      /*request form data*/
       
         name: "",
         code: "",
@@ -730,8 +751,18 @@ export default class MasterForm extends React.Component {
                               //key pair authors
             
         ],
+
+        /* request resource data*/
+        languages:[], //  getdata
+        instructors:[], //  getdata
+        courses:[], //  getdata
+        institutions:[],  //  getdata
+        currentCourseId:"", //for tracking saved course currently working on
         
       formErrors: {
+        /*request form errors data*/
+
+        /*do not change this part: its used in ai logic*/
         name: "",
         code: "",
         run: "",
@@ -758,12 +789,10 @@ export default class MasterForm extends React.Component {
         publication_status: "",  
         institution: "",   
         author: "", 
-        prerequisite: "",
-        authoring_team: "",
-        languages:[],
-        instructors:[],
-        courses:[],
-        institutions:[],
+        prerequisite: [],
+        authoring_team: [],
+
+        
       },
       formValidity: {
         email: false,
@@ -773,10 +802,13 @@ export default class MasterForm extends React.Component {
       },
       canSubmit: false,
     };
+    /*movement logic data*/
     this.handleChange = this.handleChange.bind(this);
     this._next = this._next.bind(this);
     this._prev = this._prev.bind(this);
   }
+
+   /*navigation skipper*/
 
   goToStep(e, step) {
     e.preventDefault();
@@ -787,6 +819,7 @@ export default class MasterForm extends React.Component {
     });
   }
 
+   /*next step*/
   _next() {
     let currentStep = this.state.currentStep;
     currentStep = currentStep >= 7 ? 8 : currentStep + 1;
@@ -794,7 +827,8 @@ export default class MasterForm extends React.Component {
       currentStep: currentStep,
     });
   }
-
+ 
+  /*go back one step*/
   _prev() {
     let currentStep = this.state.currentStep;
     currentStep = currentStep <= 1 ? 1 : currentStep - 1;
@@ -805,28 +839,130 @@ export default class MasterForm extends React.Component {
 
   /*one single onchange handler all over the form element*/
   /*with one single validation hook function for all form fields*/
-  handleChange(event) {
-    let { name, value } = event.target;
-    console.log(event.target.value)
-    if(event.target.name == "entrance_exam_required"){
-      //(boolean) is for laravel or php
-      if(value=="false"){
-        value = false;
-      }else{
-        value = true
-      }
-    }
+  handleChange =   (event) => {
+      let { name, value } = event.target;
+       let imageUrl = ""
+      console.log(event.target.value)
+      if(event.target.name == "entrance_exam_required"){
+        //(boolean) is for laravel or php
+        if(value=="false"){
+          value = false;
+        }else{
+          value = true
+        }
 
-    this.setState(
-      {
-        [name]: value,
-      },
-      function () {
-        /*validation hooks*/
-        this.validateField(name, value);
+
+         //logic 1 - automate state processing of form data
+        //dynamically hooks state fields to current value
+      this.setState(
+            {
+              [name]: value,
+            },
+            function () {
+              /*validation hooks*/
+              this.validateField(name, value);
+            }
+      );
+
+
+      }else if(event.target.name == "card_image"){
+        //handle image upload here
+
+        const fileUploader = document.getElementById('file-uploader');
+        const feedback = document.getElementById('feedback');
+        const progress = document.getElementById('progress');
+        const reader = new FileReader();
+
+      //fileUploader.addEventListener('change', (event) => {
+        const files = event.target.files;
+        const file = files[0];
+        console.log(file)
+        reader.readAsDataURL(file);
+        reader.addEventListener('progress', (ev) => {
+          if (ev.loaded && ev.total) {
+            const percent = (ev.loaded / ev.total) * 100;
+            progress.value = percent;
+            document.getElementById('progress-label').innerHTML = Math.round(percent) + '%';
+            if (percent === 100) {
+              let msg = `<span style="color:green;">File <u><b>${file.name}</b></u> has been uploaded successfully.</span>`;
+              feedback.innerHTML = msg;
+              // call upload action to cloudinary api
+              const formData = new FormData();
+              formData.append("file", file);
+              formData.append("upload_preset", "hpvklb3p");
+              // eslint-disable-next-line no-undef
+              fetch("https://api.cloudinary.com/v1_1/questence/image/upload", {
+                method: "POST",
+                body: formData,
+              })
+                .then((response) => response.json())
+                .then((data) => {
+
+                  if (typeof data.secure_url !== "undefined") { // ensure the api saving data of uploaded 3rdparty image has a return call to the iamge successfully uploaded
+                    imageUrl = data.secure_url; //get the generated image url
+                    // toast.success("upload successful");
+                     console.log("here made it thru", imageUrl)
+                    // var button = document.querySelector('.save-generic');
+                   var slideout = document.getElementById('notifier');
+                  let successSlide = slideout.querySelector(".success-notification")
+                  // let errorSlide = slideout.querySelector(".error-notification")
+                  slideout.classList.toggle('visible');
+
+
+                    value = imageUrl; 
+                    // return imageUrl
+
+
+                     //logic 1 - automate state processing of form data
+                      //dynamically hooks state fields to current value
+                    this.setState(
+                          {
+                            card_image: imageUrl,
+                          },
+                          function () {
+                            /*validation hooks*/
+                            this.validateField(name, value);
+                          }
+                    );
+
+
+                  } else {
+                     //toast.error("could not upload image");
+                    return false
+                  }
+                })
+                .catch((error) => {
+                   toast.error("API KEY ***** FOR CLOUDINARY NOT SET. EITHER API KEY HAS EXHAUSTED ITS TRIAL PLAN");
+                  throw error;
+                  return false;
+                });
+           
+            }
+          }
+        });
+      //});
+      }else{
+
+         //logic 1 - automate state processing of form data
+        //dynamically hooks state fields to current value
+      this.setState(
+            {
+              [name]: value,
+            },
+            function () {
+              /*validation hooks*/
+              this.validateField(name, value);
+            }
+      );
+
       }
-    );
-  }
+       
+
+
+      
+    }
+  
+
 
   togglerFullscreen(e) {
     e.preventDefault();
@@ -889,90 +1025,87 @@ export default class MasterForm extends React.Component {
     // });
   }
 
-  validateField(name, value) {
-    if (Object.keys(this.state.formErrors).includes(name)) {
-      const fieldValidationErrors = this.state.formErrors;
-      const validity = this.state.formValidity;
-      const isEmail = name === "email";
-      const isPassword = name === "password";
-      const isPasswordConfirmation = name === "passwordConfirmation";
-      const label =
-        name === "passwordConfirmation" ? "password confirmation" : name;
-      const emailTest = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+  //AI: logic 2 - trigger validation inputs
+  validateField(field_name, value) {
+    // if (Object.keys(this.state.formErrors).includes(field_name)) {
+    //   const fieldValidationErrors = this.state.formErrors;
+    //   const validity = this.state.formValidity;
+    //   const isCourseCode = field_name === "code";
+    //   const isDescription = field_name === "description";
+    
+    //   validity[field_name] = value.length > 0;
+    //   fieldValidationErrors[field_name] = validity[field_name]
+    //     ? ""
+    //     : ` is required and cannot be empty`;
 
-      validity[name] = value.length > 0;
-      fieldValidationErrors[name] = validity[name]
-        ? ""
-        : `${label} is required and cannot be empty`;
+    //   if (validity[field_name]) {
+    //     if (isCourseCode) {
+    //       validity[field_name] = value.length >= 5;
+    //       fieldValidationErrors[field_name] = validity[field_name]
+    //         ? ""
+    //         : `${label} should be at least 6-12 characters or more`;
+    //     }
+    //     if (isDescription) {
+    //       validity[field_name] = emailTest.test(value);
+    //       fieldValidationErrors[field_name] = validity[field_name]
+    //         ? ""
+    //         : `${label} should be at least 20 characters long`;
+    //     }
+    //     if (isPasswordConfirmation) {
+    //       validity[field_name] = value === this.state.password;
+    //       fieldValidationErrors[field_name] = validity[field_name]
+    //         ? ""
+    //         : `${label} should match password`;
+    //     }
+    //   }
 
-      if (validity[name]) {
-        if (isPassword) {
-          validity[name] = value.length >= 5;
-          fieldValidationErrors[name] = validity[name]
-            ? ""
-            : `${label} should be 5 characters or more`;
-        }
-        if (isEmail) {
-          validity[name] = emailTest.test(value);
-          fieldValidationErrors[name] = validity[name]
-            ? ""
-            : `${label} should be a valid email address`;
-        }
-        if (isPasswordConfirmation) {
-          validity[name] = value === this.state.password;
-          fieldValidationErrors[name] = validity[name]
-            ? ""
-            : `${label} should match password`;
-        }
-      }
-
-      this.setState(
-        {
-          formErrors: fieldValidationErrors,
-          formValidity: validity,
-        },
-        () => this.canSubmit()
-      );
-    }
+    //   this.setState(
+    //     {
+    //       formErrors: fieldValidationErrors,
+    //       formValidity: validity,
+    //     },
+    //     () => this.canSubmit()
+    //   );
+    // }
   }
 
   canSubmit() {
     this.setState({
       canSubmit:
+        //RELAX VALIDATION OF INPUT FOR FLEXIBILITY ON THE USER END NOT TO ENTER ALL DATA
+        //THIS FEATURE COULD CHANGE IN THE FUTURE
 
         this.state.formValidity.name &&
-        this.state.formValidity.code &&
-        this.state.formValidity.run &&
-        this.state.formValidity.card_image &&
-        this.state.formValidity.intro_video &&
-        this.state.formValidity.description &&
-        this.state.formValidity.overview &&
-        this.state.formValidity.learning_expectation &&
-        this.state.formValidity.curriculum &&
-        this.state.formValidity.level &&  //int
-        this.state.formValidity.enrolment_type &&
-        this.state.formValidity.entrance_exam_required && 
-        this.state.formValidity.cost &&
-        this.state.formValidity.auditing &&
-        this.state.formValidity.course_pacing &&
-        this.state.formValidity.course_start_date_time &&  //2021-08-26T17:13:00+01:00
-        this.state.formValidity.course_end_date_time &&
-        this.state.formValidity.enrolment_start_date_time &&
-        this.state.formValidity.enrolment_end_date_time &&
-        this.state.formValidity.course_language &&
-        this.state.formValidity.requirement_hours_per_week && 
-        this.state.formValidity.requirement_no_of_week && 
-        this.state.formValidity.grace_period_after_deadline &&
-        this.state.formValidity.publication_status && 
-        this.state.formValidity.institution && 
-        this.state.formValidity.author && 
-        this.state.formValidity.prerequisite &&
-        this.state.formValidity.authoring_team
+        this.state.formValidity.code   
+        //&&
+        // this.state.formValidity.run &&
+        // this.state.formValidity.card_image &&
+        // this.state.formValidity.intro_video &&
+        // this.state.formValidity.description &&
+        // this.state.formValidity.overview &&
+        // this.state.formValidity.learning_expectation &&
+        // this.state.formValidity.curriculum &&
+        // this.state.formValidity.level &&  //int
+        // this.state.formValidity.enrolment_type &&
+        // this.state.formValidity.entrance_exam_required && 
+        // this.state.formValidity.cost &&
+        // this.state.formValidity.auditing &&
+        // this.state.formValidity.course_pacing &&
+        // this.state.formValidity.course_start_date_time &&  //2021-08-26T17:13:00+01:00
+        // this.state.formValidity.course_end_date_time &&
+        // this.state.formValidity.enrolment_start_date_time &&
+        // this.state.formValidity.enrolment_end_date_time &&
+        // this.state.formValidity.course_language &&
+        // this.state.formValidity.requirement_hours_per_week && 
+        // this.state.formValidity.requirement_no_of_week && 
+        // this.state.formValidity.grace_period_after_deadline &&
+        // this.state.formValidity.publication_status && 
+        // this.state.formValidity.institution && 
+        // this.state.formValidity.author && 
+        // this.state.formValidity.prerequisite &&
+        // this.state.formValidity.authoring_team
       
-        // this.state.formValidity.email &&
-        // this.state.formValidity.username &&
-        // this.state.formValidity.password &&
-        // this.state.formValidity.passwordConfirmation,
+        
     });
   }
 
@@ -982,9 +1115,7 @@ export default class MasterForm extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const { email, username, password } = this.state;
-    alert(`Your data here: \n 
-           `);
+
   };
 
 
@@ -1029,30 +1160,24 @@ export default class MasterForm extends React.Component {
   }
 
   
-
-   // async componentDidMount(){
-   //   await this.fetchContent()
-   // }
-
-
   componentDidMount(){
-    (async () =>{
+    (async (trigger) =>{
        try{
-         
          await this.fetchContent()
        }catch(e){
-
          console.log("some error occured")
-
        }
-    })()
+    })("run-logic-sequence")
+
+    //handle generic events
+
+
   }
 
   /*{key:val}, ["id","name", "email"]*/
-  /*used only when necessary*/
-  pluck(givenObj){
+  /*used only when necessary in search for instructor by either email or name field*/
+  aidedSearchForInstructor(givenObj){
      let lists = []
-
      Object.entries(givenObj).forEach( (arr,index) =>{
         console.log(arr)
        if( arr.includes("id") && arr.includes("name") || arr.includes("email") ){
@@ -1061,7 +1186,6 @@ export default class MasterForm extends React.Component {
           lists.push(batchHash)
        }
      })
-
      return lists;
   }
 
@@ -1109,58 +1233,334 @@ export default class MasterForm extends React.Component {
 
   };
 
+
+  getThisCourseData = (id) => {
+    //when data is saved response should return the course id as well in the response
+    try{
+       (async () =>{
+         let course = await getCourses(id)
+         console.log(course)
+         //check for data saved from previous step and porpulate the fields  :
+       })()
+    }catch(err){
+       console.log(err)
+    }
+  }
+
+
+  porpulateAndHideFields = (step) => {
+     /*AI AUTOMATION SCRIPTING TRIGGERS ONLY WHEN SET CORRECTLY*/
+
+  }
+
+
+  saveOrUpdateData = async (type,mode="", data={}) => {
+    //after api call to update or create
+    switch(mode){
+      case "CREATE_MODE": // this is only done once when the app is launched to create new course
+        //call the create handler to api with form data
+        let newCourseRes = await  createCourse(data)
+        console.log("success creating new course")
+        break;
+      
+      case "EDIT_MODE": // called subsequently
+        //call the update handler to api
+        let updateCourseRes = await updateCourse(data)
+        break;
+      default:
+        throw new Error(`Wrongly accessed mode:- ${mode}`)
+        return false;
+    }
+    
+    //inform user
+      var button = document.querySelector('.save-generic');
+      var slideout = document.getElementById('notifier');
+      let successSlide = slideout.querySelector(".success-notification")
+      let errorSlide = slideout.querySelector(".error-notification")
+      if(type =="error"){
+         return errorSlide.classList.toggle("visible")
+      } else{
+        return  slideout.classList.toggle('visible');
+      }
+  }
+
+  persistData(key,value){
+    let localStore =  window.localStorage ? 
+      window.localStorage.setItem(key,value) : {
+      [key]:value
+    }
+  }
+
+
+  encodeRFC5987ValueChars (str) {
+    return encodeURIComponent(str).
+        // Note that although RFC3986 reserves "!", RFC5987 does not,
+        // so we do not need to escape it
+        replace(/['()]/g, escape). // i.e., %27 %28 %29
+        replace(/\*/g, '%2A').
+            // The following are not required for percent-encoding per RFC5987, 
+            // so we can allow for a little better readability over the wire: |`^
+            replace(/%(?:7C|60|5E)/g, unescape);
+}
+
+
+
+
+  
    /*implements save and continue logic*/
-  saveAndContinue(e,currentStep){
+  saveAndContinue = (e) =>{
+     const {currentCourseId } = this.state;
+     let curr = this.state.currentStep
+
+
+      let formData = new FormData();      
+
+          formData.append("name", "Anewcourse" )
+          formData.append("code", "giberish01")
+          formData.append("run", "")
+          formData.append("card_image", "")
+          formData.append("intro_video", "")
+          formData.append("description", "")
+          formData.append("overview","" )
+          formData.append("learning_expectation", "")
+          formData.append("curriculum", "")
+          formData.append("level", 1)
+          formData.append("enrolment_type", 1)
+          formData.append("entrance_exam_required", false)
+          formData.append("cost", "")
+          formData.append("auditing", false)
+          formData.append("course_pacing", 1)
+          formData.append("course_start_date_time", "")
+          formData.append("course_end_date_time", "")
+          formData.append("enrolment_start_date_time", "")
+          formData.append("enrolment_end_date_time", "")
+          formData.append("course_language", "")
+          formData.append("requirement_hours_per_week", "")
+          formData.append("requirement_no_of_week", "")
+          formData.append("grace_period_after_deadline", "")
+          formData.append("publication_status", 1)
+          formData.append("institution", "cb85e4ff-6636-4201-8e9f-5a9259c936bf")
+          formData.append("author", "097cd2bb-ae72-48e4-9a4d-1ebd2c05be03")
+          formData.append("prerequisite", [])
+          formData.append("authoring_team", [])
+          formData.append('filename', "hello.jpg");
+
+          for (var [key, value] of formData.entries()){
+             console.log(key,value);
+          }
+
+          
+
+
+
+          // add file/file_id if there is one
+          
+            
+
+    
+
+
+     /*AI AUTOMATION SCRIPTING TRIGGERS ONLY WHEN SET CORRECTLY*/
+    /*automate this script to run once using AI LOGIC*/
+    
+    /*2) this reduces downtime and payload for the switch case because this function is resource expensive*/
+    let courseData = currentCourseId !== "" ?  this.getThisCourseData(
+      currentCourseId
+    ) : null;
+    // the dynamic switcher for the AI SCRIPT WHICH KNOWS THE MODE ON THE FORM
+    //3) ENSURE STATE PERSISTENCE
+    courseData == null ? this.persistData("mode","CREATE_MODE") : this.persistData("mode","EDIT_MODE")
+
+    /*another expensive api call made easy with AI LOGIC DOM REFRESHER SALIENT UPDATE*/
+    //1) hide or disable other steps+ 2 so user cannot just navigate to these steps :
+    courseData !== null ? this.porpulateAndHideFields(curr): console.log("do nothing")
     // go to next steps automatically
-    let step = parseInt(currentStep)
-    step = step+ 1;
+    let step = parseInt(curr)
+    // alert(step)
     //switch on the step action
     switch(step){
+       case 1:
+          //call the save method only ones and keep track of the course id returned
+         // HERE IS WHERE THE TRIGGER LIES IN THIS AI LOGIC
+         let nextMoveAllowed = courseData !== null ? this.setState({currentCourseId: courseData.id}): null
+        // check the persistence
+         let persistedStateActionMode = localStorage.getItem("mode") ?  localStorage.getItem("mode") : null
+         if(nextMoveAllowed || ( persistedStateActionMode == "EDIT_MODE" ) ){
+          // CALL EDIT STEP ACTION TO API
+          const  {
+            level,code,name,institution,description,overview,
+            learning_expectation,enrolment_type,entrance_exam_required,
+            auditing,intro_video,curriculum,card_image
+          } = this.state
+          let data = {
+            level :level || courseData.level,
+            code: code || courseData.code,
+            name: name || courseData.name,
+            institution : institution || courseData.institution,
+            description: description || courseData.description,
+            overview : overview || courseData.overview,
+            learning_expectation: learning_expectation || courseData.learning_expectation,
+            enrolment_type : enrolment_type || courseData.enrolment_type,
+            entrance_exam_required: entrance_exam_required || courseData.entrance_exam_required,
+            auditing: auditing || courseData.auditing,
+            intro_video: intro_video || courseData.intro_video,
+            curriculum : curriculum || courseData.curriculum,
+            card_image: card_image || courseData.card_image
+          }
+         // let formData = new FormData() 
+         // Object.keys(data).forEach((key) =>{
+         //    formData.append(key, data[key])
+         //    console.log(key, data[key])
+         //  });
+
+          this.saveOrUpdateData("edit", persistedStateActionMode, data )
+
+
+
+
+          //MOVE
+          // step = step+ 1;
+          // this.goToStep(e,step)
+         } else{
+
+          const  {
+            level,code,name,institution,description,overview,
+            learning_expectation,enrolment_type,entrance_exam_required,
+            auditing,intro_video,curriculum,card_image
+          } = this.state
+          // console.log(formData)
+
+
+                     // let formData = new FormData() 
+
+           let data = {
+    
+              "name": "course2",
+              "code": "9888883918",
+              "run": "",
+              "card_image": "",
+              "intro_video": "",
+              "description": "demo description",
+              "overview": "",
+              "learning_expectation": "",
+              "curriculum": "",
+              "level": 1,
+              "enrolment_type": 1,
+              "entrance_exam_required": false,
+              "cost": "",
+              "auditing": false,
+              "course_pacing": 1,
+              "course_start_date_time": "",
+              "course_end_date_time": "",
+              "enrolment_start_date_time": "",
+              "enrolment_end_date_time": "",
+              "course_language": "",
+              "requirement_hours_per_week": "",
+              "requirement_no_of_week": "",
+              "grace_period_after_deadline": "",
+              "publication_status": 1,
+              "institution": "cb85e4ff-6636-4201-8e9f-5a9259c936bf",
+              "author": "097cd2bb-ae72-48e4-9a4d-1ebd2c05be03",
+              "prerequisite": [],
+              "authoring_team": [],
+              filename:"helloworld.jpg"
+          }
+
+
+
+
+         var fileName = 'my file(2).txt';
+          fetch("http://gapslmsservices.herokuapp.com/lms/api/create/course/", {
+           method: "POST",
+           // credentials: "same-origin",
+          headers: {
+            "X-CSRFToken": getCookie("csrftoken"),
+            Accept: "application/json",
+            "Content-Type": "application/json",
+
+          // "Content-Disposition": "attachment; filename*=UTF-8''" + this.encodeRFC5987ValueChars(fileName),
+          },
+          mode:"cors",
+          body: JSON.stringify(data)
+           // body: details,
+        }).then(res => res.json())
+        .then(data => { 
+          console.log(data) 
+        })
+
+         
+         
+
+
+           //this is a create action
+           // this.saveOrUpdateData("create", persistedStateActionMode, formData )
+           //MOVE 
+             // step = step+ 1;
+          // this.goToStep(e,step)
+         }
+
+      
+         break;
        case 2:
-         //check for data saved from previous step and porpulate the fields
-         // hide or disable other steps+ 2 so user cannot just navigate to these steps
+
+          // refresh state data
+          let editData2 = {}
+
+         this.saveOrUpdateData("edit", persistedStateActionMode, editData2 )
          //moves to step next
-         this.goToStep(e, step);
+         // step = step+ 1;
+         // this.goToStep(e, step);
+
+
          break;
        case 3:
-       //check for data saved from previous step and porpulate the fields
-       // hide or disable other steps+ 2 ... so user cannot just navigate to these steps
+       let editData3 = {}
+
+         this.saveOrUpdateData("edit", persistedStateActionMode, editData3 )
         //moves to step next
-         this.goToStep(e, step); 
+
+        // step = step+ 1;
+         // this.goToStep(e, step); 
          break;
       case 4:
-      //check for data saved from previous step and porpulate the fields
-      // hide or disable other steps+ 2 ... so user cannot just navigate to these steps
+      let editData4 = {}
+
+         this.saveOrUpdateData("edit", persistedStateActionMode, editData4 )
         //moves to step next
-         this.goToStep(e, step); 
+        // step = step+ 1;
+         // this.goToStep(e, step); 
         break;
        case 5:
-       //check for data saved from previous step and porpulate the fields
-       // hide or disable other steps+ 2 ... so user cannot just navigate to these steps
+       let editData5 = {}
+
+         this.saveOrUpdateData("edit", persistedStateActionMode, editData5 )
          //moves to step next
-         this.goToStep(e, step);
+         // step = step+ 1;
+         // this.goToStep(e, step);
+         break;
+       case 6:
+       let editData6 = {}
+
+         this.saveOrUpdateData("edit", persistedStateActionMode, editData6 )
+         //moves to step next
+         // step = step+ 1;
+         // this.goToStep(e, step);
          break;
        case 7:
-       //check for data saved from previous step and porpulate the fields
-       // hide or disable other steps+ 2 ... so user cannot just navigate to these steps
-         //moves to step next
-         this.goToStep(e, step);
-         break;
-       case 8:
-       //check for data saved from previous step and porpulate the fields
-       // hide or disable other steps+ 2 ... so user cannot just navigate to these steps
+       let editData7 = {} // update all fields here
+
+         this.saveOrUpdateData("edit", persistedStateActionMode, editData7 )
+        // step =  1;
+      
          // perform final action to save all data 
          // moves status from draft 1 to draft 3
 
          //moves to step next
-         this.goToStep(e, step); // takes you back to step 1 so you can see everything in preview mode
+         // this.goToStep(e, step); // takes you back to step 1 so you can see everything in preview mode
          break;
        default :
-        //step 1
-       //check for data saved from previous step and porpulate the fields
-       // hide or disable other steps+ 1 ... so user cannot just navigate to these steps
         //disable the save buttons every where
-          this.goToStep(e, 1);
+          // this.goToStep(e, 1);
           break;
     }
     
@@ -1325,10 +1725,13 @@ export default class MasterForm extends React.Component {
                   <div className="col-md-12">
                     <form
                       className="required-form"
-                      
+                      action="/lms/api/create/course/" 
+                      method="POST" 
+                       novalidate
                       enctype="multipart/form-data"
                     >
-                      <CSRFToken /> {/*Ready to django into the server*/}
+                      {/*<CSRFToken /> Ready to django into the server*/}
+                      <input type="hidden" name="csrfmiddlewaretoken" value={getCookie("csrfmiddlewaretoken")} />
                       <Step1
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
@@ -1455,6 +1858,20 @@ export default class MasterForm extends React.Component {
                     </form>
 
 
+
+                     <div class="notifier" id="notifier">
+                          <div class="success-notification">
+                             {/*success message*/}
+
+                          </div>
+
+                          <div class="error-notification">
+                              {/*error message*/}
+                              Could not perform operation
+                          </div>
+                     </div>
+
+
                     <br />
                     <br />
                     <div style={{ position: "absolute", bottom: "0px" }}>
@@ -1480,7 +1897,20 @@ export default class MasterForm extends React.Component {
 class Step1 extends React.Component {
   constructor(props){
     super(props)
+
+    this.state ={
+      
+    }
+
+    this.dropRef = createRef()
   }
+
+
+  
+
+
+
+
 
   
   render() {
@@ -1539,6 +1969,8 @@ class Step1 extends React.Component {
                   </div>
                 </div>
 
+
+
                 <div class="form-group  col-md-6 fl-left">
                   <label class="col-md-12 col-form-label" for="level">
                     Institution
@@ -1556,6 +1988,8 @@ class Step1 extends React.Component {
                        value={this.props.institution}
                      onChange={this.props.handleChange}
                     >
+
+
                       
 
                       <option>-- Institutions --</option>
@@ -1592,6 +2026,8 @@ class Step1 extends React.Component {
                   </div>
                 </div>
 
+
+
                 <div className=" col-md-12 ">
                   <label
                     className="col-md-12 col-form-label"
@@ -1611,6 +2047,7 @@ class Step1 extends React.Component {
                   </div>
                 </div>
 
+
                 <div className=" col-md-12">
                   <label className="col-md-12 col-form-label" for="description">
                     What You Will Learn
@@ -1626,6 +2063,9 @@ class Step1 extends React.Component {
                     ></textarea>
                   </div>
                 </div>
+
+
+
 
                 <div class="form-group  mb-3 col-md-6 fl-left">
                   <label class="col-md-12 col-form-label" for="level">
@@ -1657,6 +2097,9 @@ class Step1 extends React.Component {
                   </div>
                 </div>
 
+
+
+
                 <div class="form-group  mb-3 col-md-6 fl-left">
                   <label class="col-md-12 col-form-label" for="level">
                     Enrollment Type
@@ -1684,6 +2127,7 @@ class Step1 extends React.Component {
                   </div>
                 </div>
 
+
                 <div class="form-group  mb-3 col-md-6 fl-left">
                   <label class="col-md-12 col-form-label" for="level">
                     Entrance Exam Required
@@ -1710,6 +2154,9 @@ class Step1 extends React.Component {
                     </select>
                   </div>
                 </div>
+
+
+
 
                 <div class="form-group  mb-3 col-md-6 fl-left">
                   <label class="col-md-12 col-form-label" for="level">
@@ -1759,52 +2206,32 @@ class Step1 extends React.Component {
                   </div>
                 </div>
 
-                <div className="form-group row col-md-6 fl-left">
-                  <div className="f">
-                    <label
-                      className="col-md-12 col-form-label"
-                      for="course_thumbnail_label"
-                    >
-                      Course thumbnail
-                    </label>
-                    <div className="">
-                      <div
-                        className="wrapper-image-preview"
-                        style={{ marginLeft: "-6px" }}
-                      >
-                        <div className="box">
-                          <div
-                            className="js--image-preview"
-                            style={{
-                              backgroundImage:
-                                "ourse_thumbnail_placeholder.jpg",
-                              backgroundColor: "#F5F5F5",
-                            }}
-                          ></div>
-                          <div className="upload-options">
-                            <label for="course_thumbnail" className="btn">
-                              {" "}
-                              <i className="fa fa-camera"></i> Course thumbnail{" "}
-                              <br /> <small>(600 X 600)</small>{" "}
-                            </label>
-                            <input
-                              id="course_thumbnail"
-                              style={{ visibility: "hidden" }}
-                              type="file"
-                              className="image-upload"
-                              name="card_image"
-                              accept="image/*"
-                               value={this.props.card_image}
-                               onChange={this.props.handleChange}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
-                <div className=" col-md-12">
+
+
+
+
+
+                <h2>Card Image</h2>
+
+                    <div class="file-drop-area">
+                      <span class="fake-btn">Choose files</span>
+                      <span class="file-msg">or drag and drop files here</span>
+                      <input name="card_image" class="file-input" type="file" multiple   accept="image/*"
+                               value={this.props.card_image}
+                               onChange={this.props.handleChange} />
+
+                                 <div id="feedback">
+    
+  </div>
+  
+  <label id="progress-label" for="progress"></label>
+  <progress id="progress" value="0" max="100"> </progress>
+                    </div>
+
+                    
+
+                <div className=" col-md-6">
                   <label className="col-md-12 col-form-label" for="description">
                     Curriculum
                   </label>
@@ -1822,16 +2249,24 @@ class Step1 extends React.Component {
 
 
 
+
+                
+
+
+
+
+
+
                 <div className="mb-3 mt-3">
                   <button
                     type="button"
-                    className="btn btn-primary text-center"
+                    className="btn btn-primary text-center save-generic"
                     onClick={(e) => {
                       e.preventDefault();
-                      this.props.saveAndContinue(this.props.currentStep)
+                      this.props.saveAndContinue(e)
                     }}
                   >
-                    Save And Continue
+                    Save 
                   </button>
                 </div>
 
@@ -2334,6 +2769,23 @@ class Step3 extends React.Component {
                     </option>
                   </select>
                 </div>
+
+
+
+                <div className="mb-3 mt-3">
+                  <button
+                    type="button"
+                    className="btn btn-primary text-center"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      
+                    }}
+                  >
+                    Save 
+                  </button>
+                </div>
+
+
               </div>
             </div>
           </div>
@@ -2344,6 +2796,37 @@ class Step3 extends React.Component {
 }
 
 class Step4 extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      shareholders: [{ name: "" }],
+    };
+  }
+
+
+
+
+
+  handleShareholderNameChange = (idx) => (evt) => {
+    const newShareholders = this.state.shareholders.map((shareholder, sidx) => {
+      if (idx !== sidx) return shareholder;
+      return { ...shareholder, name: evt.target.value };
+    });
+
+    this.setState({ shareholders: newShareholders });
+  };
+
+  handleAddShareholder = () => {
+    this.setState({
+      shareholders: this.state.shareholders.concat([{ name: "" }]),
+    });
+  };
+
+  handleRemoveShareholder = (idx) => () => {
+    this.setState({
+      shareholders: this.state.shareholders.filter((s, sidx) => idx !== sidx),
+    });
+  };
   render() {
     if (this.props.currentStep !== 5) {
       return null;
@@ -2354,7 +2837,67 @@ class Step4 extends React.Component {
         <div className="tab-pane" id="pricing">
           <div className="row card-box">
             <div className="col-md-12">
-              <DynamicForm />
+              
+
+              <div className="row">
+        <div className="col-md-12">
+          <h6>{this.props.title}</h6>
+
+          {this.state.shareholders.map((shareholder, idx) => (
+            <div className="shareholder form-group ">
+              <div className="col-md-10 fl-left">
+                <input
+                  type="text"
+                  placeholder={` #${idx + 1} Enter an instructors email`}
+                  value={shareholder.name}
+                  onChange={this.handleShareholderNameChange(idx)}
+                  className="form-control fl-left"
+                />
+              </div>
+              {/*<div class="col-md-2">
+            <button
+              type="button"
+              onClick={this.handleRemoveShareholder(idx)}
+              className="small text-white"
+            >
+              -
+            </button>
+            </div>*/}
+
+              <br />
+              <br />
+            </div>
+          ))}
+          <br />
+          <button
+            type="button"
+            onClick={this.handleAddShareholder}
+            className="btn btn-primary text-white"
+            style={{ width: "300px", margin: "10px" }}
+          >
+            Add A Team
+          </button>
+        </div>
+
+        <br />
+        <br />
+      </div>
+
+
+
+              <div className="mb-3 mt-3">
+                  <button
+                    type="button"
+                    className="btn btn-primary text-center"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      this.props.saveAndContinue(e)
+                    }}
+                  >
+                    Save 
+                  </button>
+                </div>
+
             </div>
           </div>
         </div>

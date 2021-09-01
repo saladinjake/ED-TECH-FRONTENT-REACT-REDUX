@@ -287,10 +287,6 @@ const CourseDetails = ({
 
   console.log(coursedetails);
 
-
-
-  
-
   function formaturl(youtube) {
     var url = youtube;
     var idVideo = "";

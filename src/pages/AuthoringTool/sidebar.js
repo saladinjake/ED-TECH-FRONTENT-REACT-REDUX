@@ -4,9 +4,6 @@ import { Col, Container, Row } from "react-bootstrap";
 import "./styles/authoring.css";
 import "./styles/main.css";
 
-
-
-
 import $ from "jquery";
 
 export const FormWizard = () => {
@@ -1209,15 +1206,11 @@ export const AddBoxes = () => {
 };
 
 export const AddFormBox = () => {
-
-  useEffect(() =>{
-
-     //fetch all the categories
-     //fetch all the language
-     //fetch 
-
-  })
-
+  useEffect(() => {
+    //fetch all the categories
+    //fetch all the language
+    //fetch
+  });
 
   return (
     <div className="row">
