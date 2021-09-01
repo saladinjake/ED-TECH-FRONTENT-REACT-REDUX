@@ -213,11 +213,6 @@ class Tmobile extends React.Component {
     e.preventDefault();
     const searchVal = document.getElementById("search")?.value;
     if (searchVal.length > 0) {
-      alert(
-        searchVal,
-        `/courses?method=name&search=${searchVal}&filter=course`
-      );
-      // history.push(`/courses?method=name&search=${searchVal}&filter=course`);
       window.location.href =
         process.env.PUBLIC_URL +
         `/courses?method=name&search=${searchVal}&filter=course`;

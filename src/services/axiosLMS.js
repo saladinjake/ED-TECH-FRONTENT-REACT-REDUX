@@ -18,7 +18,7 @@ axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.withCredentials = true;
 
 //in settings.py
-//CSRF_COOKIE_NAME = "csrftoken"
+const CSRF_COOKIE_NAME = "csrftoken"
 
 function getCookie(name) {
   var cookieValue = null;
@@ -41,8 +41,7 @@ const instance = axios.create({
   baseURL,
 });
 
-var csrftoken = getCookie("csrftoken");
-
+var csrftoken = getCookie("csrftoken") ||  CSRF_COOKIE_NAME
 instance.interceptors.request.use(
   function (config) {
     token = localStorage.getItem("token");
@@ -88,7 +87,6 @@ instance.interceptors.request.use(
 // export default aForm;
 
 //in django
-
 //@ensure_csrf_cookie
 //def myview(request):
 

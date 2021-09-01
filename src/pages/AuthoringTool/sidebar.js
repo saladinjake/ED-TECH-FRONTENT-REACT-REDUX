@@ -1206,6 +1206,12 @@ export const AddBoxes = () => {
 };
 
 export const AddFormBox = () => {
+  useEffect(() => {
+    //fetch all the categories
+    //fetch all the language
+    //fetch
+  });
+
   return (
     <div className="row">
       <div className="col-md-12">

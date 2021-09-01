@@ -1391,7 +1391,7 @@ body.fixed-left .side-menu.left {
   border-left: 3px solid #ffffff;
 }
 #sidebar-menu > ul > li > a:hover {
-  color: #ffffff
+  color: #ffffff;
   text-decoration: none;
 }
 #sidebar-menu > ul > li > a > span {

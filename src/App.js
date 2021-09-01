@@ -102,6 +102,8 @@ import AuthorProfileSetting from "./pages/AuthoringTool/ProfilePage";
 import AuthoringSectionDynamicLessons from "pages/AuthoringTool/dynamic_content";
 import AuthoringSectionDynamicLessons3 from "pages/AuthoringTool/dynamic_content_3layer";
 
+
+import TestForm from  "pages/AuthoringTool/test-formcreate"
 import $ from "jquery";
 
 function App(props) {
@@ -537,6 +539,25 @@ function App(props) {
           path={`${process.env.PUBLIC_URL + "/test/lesson-content3"}`}
           component={AuthoringSectionDynamicLessons3}
         />
+
+
+
+
+
+
+
+
+
+
+
+      {/*test grounds*/}
+
+      <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/test"}`}
+          component={TestForm}
+        />
+
 
         <Route component={PageNotFound} />
       </Switch>
