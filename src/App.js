@@ -102,8 +102,7 @@ import AuthorProfileSetting from "./pages/AuthoringTool/ProfilePage";
 import AuthoringSectionDynamicLessons from "pages/AuthoringTool/dynamic_content";
 import AuthoringSectionDynamicLessons3 from "pages/AuthoringTool/dynamic_content_3layer";
 
-
-import TestForm from  "pages/AuthoringTool/test-formcreate"
+import TestForm from "pages/AuthoringTool/test-formcreate";
 import $ from "jquery";
 
 function App(props) {
@@ -500,7 +499,7 @@ function App(props) {
 
         <Route
           exact
-          path={`${process.env.PUBLIC_URL + "/authoring/create/new/step2"}`}
+          path={`${process.env.PUBLIC_URL + "/authoring/create/new/:id"}`}
           component={AuthorFormCont}
         />
 
@@ -540,24 +539,13 @@ function App(props) {
           component={AuthoringSectionDynamicLessons3}
         />
 
+        {/*test grounds*/}
 
-
-
-
-
-
-
-
-
-
-      {/*test grounds*/}
-
-      <Route
+        <Route
           exact
           path={`${process.env.PUBLIC_URL + "/test"}`}
           component={TestForm}
         />
-
 
         <Route component={PageNotFound} />
       </Switch>

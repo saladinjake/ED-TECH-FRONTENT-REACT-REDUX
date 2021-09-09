@@ -23,6 +23,7 @@ import 'jquery-ui-bundle/jquery-ui.css';
 
 import { getLanguages } from "services/language";
 import axios from "axios"
+import swal from "sweetalert"
 
 
 import toast from "react-hot-toast";
@@ -46,11 +47,16 @@ import {
   createCourse,
   getCourse,
   getInstitutionCourses,
-  getCourses
+  getCourses,
+  createAnyResource,
+ 
+
  
 } from "services/authoring"
 
 
+/*the base url link*/
+let base_url = "http://gapslmsservices.herokuapp.com"; //process.env.REACT_APP_API_URL2
 
 // Change JQueryUI plugin names to fix name collision with Bootstrap.
 $.widget.bridge('uitooltip', $.ui.tooltip);
@@ -118,7 +124,7 @@ const CSRFToken = () => {
 
       // $(document).keyup(function(objEvent) {
     //   if (objEvent.keyCode ==  13) {
-    //     
+    //       return false
     //   }
     // });
 
@@ -1254,19 +1260,15 @@ export default class MasterForm extends React.Component {
   }
 
 
-  saveOrUpdateData = async (type,mode="", data={}) => {
+  saveOrUpdateData =  ( type, mode="", url, data) => {
     //after api call to update or create
     switch(mode){
       case "CREATE_MODE": // this is only done once when the app is launched to create new course
         //call the create handler to api with form data
-        let newCourseRes = await  createCourse(data)
-        console.log("success creating new course")
+        let newCourseRes =  createAnyResource("POST",url, data)
+        console.log("success creating new course", newCourseRes.responseText)  
         break;
       
-      case "EDIT_MODE": // called subsequently
-        //call the update handler to api
-        let updateCourseRes = await updateCourse(data)
-        break;
       default:
         throw new Error(`Wrongly accessed mode:- ${mode}`)
         return false;
@@ -1300,7 +1302,7 @@ export default class MasterForm extends React.Component {
         replace(/\*/g, '%2A').
             // The following are not required for percent-encoding per RFC5987, 
             // so we can allow for a little better readability over the wire: |`^
-            replace(/%(?:7C|60|5E)/g, unescape);
+        replace(/%(?:7C|60|5E)/g, unescape);
 }
 
 
@@ -1309,260 +1311,12 @@ export default class MasterForm extends React.Component {
   
    /*implements save and continue logic*/
   saveAndContinue = (e) =>{
-     const {currentCourseId } = this.state;
-     let curr = this.state.currentStep
-
-
-      let formData = new FormData();      
-
-          formData.append("name", "Anewcourse" )
-          formData.append("code", "giberish01")
-          formData.append("run", "")
-          formData.append("card_image", "")
-          formData.append("intro_video", "")
-          formData.append("description", "")
-          formData.append("overview","" )
-          formData.append("learning_expectation", "")
-          formData.append("curriculum", "")
-          formData.append("level", 1)
-          formData.append("enrolment_type", 1)
-          formData.append("entrance_exam_required", false)
-          formData.append("cost", "")
-          formData.append("auditing", false)
-          formData.append("course_pacing", 1)
-          formData.append("course_start_date_time", "")
-          formData.append("course_end_date_time", "")
-          formData.append("enrolment_start_date_time", "")
-          formData.append("enrolment_end_date_time", "")
-          formData.append("course_language", "")
-          formData.append("requirement_hours_per_week", "")
-          formData.append("requirement_no_of_week", "")
-          formData.append("grace_period_after_deadline", "")
-          formData.append("publication_status", 1)
-          formData.append("institution", "cb85e4ff-6636-4201-8e9f-5a9259c936bf")
-          formData.append("author", "097cd2bb-ae72-48e4-9a4d-1ebd2c05be03")
-          formData.append("prerequisite", [])
-          formData.append("authoring_team", [])
-          formData.append('filename', "hello.jpg");
-
-          for (var [key, value] of formData.entries()){
-             console.log(key,value);
-          }
-
-          
-
-
-
-          // add file/file_id if there is one
-          
-            
-
-    
-
-
-     /*AI AUTOMATION SCRIPTING TRIGGERS ONLY WHEN SET CORRECTLY*/
-    /*automate this script to run once using AI LOGIC*/
-    
-    /*2) this reduces downtime and payload for the switch case because this function is resource expensive*/
-    let courseData = currentCourseId !== "" ?  this.getThisCourseData(
-      currentCourseId
-    ) : null;
-    // the dynamic switcher for the AI SCRIPT WHICH KNOWS THE MODE ON THE FORM
-    //3) ENSURE STATE PERSISTENCE
-    courseData == null ? this.persistData("mode","CREATE_MODE") : this.persistData("mode","EDIT_MODE")
-
-    /*another expensive api call made easy with AI LOGIC DOM REFRESHER SALIENT UPDATE*/
-    //1) hide or disable other steps+ 2 so user cannot just navigate to these steps :
-    courseData !== null ? this.porpulateAndHideFields(curr): console.log("do nothing")
-    // go to next steps automatically
-    let step = parseInt(curr)
-    // alert(step)
-    //switch on the step action
-    switch(step){
-       case 1:
-          //call the save method only ones and keep track of the course id returned
-         // HERE IS WHERE THE TRIGGER LIES IN THIS AI LOGIC
-         let nextMoveAllowed = courseData !== null ? this.setState({currentCourseId: courseData.id}): null
-        // check the persistence
-         let persistedStateActionMode = localStorage.getItem("mode") ?  localStorage.getItem("mode") : null
-         if(nextMoveAllowed || ( persistedStateActionMode == "EDIT_MODE" ) ){
-          // CALL EDIT STEP ACTION TO API
-          const  {
-            level,code,name,institution,description,overview,
-            learning_expectation,enrolment_type,entrance_exam_required,
-            auditing,intro_video,curriculum,card_image
-          } = this.state
-          let data = {
-            level :level || courseData.level,
-            code: code || courseData.code,
-            name: name || courseData.name,
-            institution : institution || courseData.institution,
-            description: description || courseData.description,
-            overview : overview || courseData.overview,
-            learning_expectation: learning_expectation || courseData.learning_expectation,
-            enrolment_type : enrolment_type || courseData.enrolment_type,
-            entrance_exam_required: entrance_exam_required || courseData.entrance_exam_required,
-            auditing: auditing || courseData.auditing,
-            intro_video: intro_video || courseData.intro_video,
-            curriculum : curriculum || courseData.curriculum,
-            card_image: card_image || courseData.card_image
-          }
-         // let formData = new FormData() 
-         // Object.keys(data).forEach((key) =>{
-         //    formData.append(key, data[key])
-         //    console.log(key, data[key])
-         //  });
-
-          this.saveOrUpdateData("edit", persistedStateActionMode, data )
-
-
-
-
-          //MOVE
-          // step = step+ 1;
-          // this.goToStep(e,step)
-         } else{
-
-          const  {
-            level,code,name,institution,description,overview,
-            learning_expectation,enrolment_type,entrance_exam_required,
-            auditing,intro_video,curriculum,card_image
-          } = this.state
-          // console.log(formData)
-
-
-                     // let formData = new FormData() 
-
-           let data = {
-    
-              "name": "course2",
-              "code": "9888883918",
-              "run": "",
-              "card_image": "",
-              "intro_video": "",
-              "description": "demo description",
-              "overview": "",
-              "learning_expectation": "",
-              "curriculum": "",
-              "level": 1,
-              "enrolment_type": 1,
-              "entrance_exam_required": false,
-              "cost": "",
-              "auditing": false,
-              "course_pacing": 1,
-              "course_start_date_time": "",
-              "course_end_date_time": "",
-              "enrolment_start_date_time": "",
-              "enrolment_end_date_time": "",
-              "course_language": "",
-              "requirement_hours_per_week": "",
-              "requirement_no_of_week": "",
-              "grace_period_after_deadline": "",
-              "publication_status": 1,
-              "institution": "cb85e4ff-6636-4201-8e9f-5a9259c936bf",
-              "author": "097cd2bb-ae72-48e4-9a4d-1ebd2c05be03",
-              "prerequisite": [],
-              "authoring_team": [],
-              filename:"helloworld.jpg"
-          }
-
-
-
-
-         var fileName = 'my file(2).txt';
-          fetch("http://gapslmsservices.herokuapp.com/lms/api/create/course/", {
-           method: "POST",
-           // credentials: "same-origin",
-          headers: {
-            "X-CSRFToken": getCookie("csrftoken"),
-            Accept: "application/json",
-            "Content-Type": "application/json",
-
-          // "Content-Disposition": "attachment; filename*=UTF-8''" + this.encodeRFC5987ValueChars(fileName),
-          },
-          mode:"cors",
-          body: JSON.stringify(data)
-           // body: details,
-        }).then(res => res.json())
-        .then(data => { 
-          console.log(data) 
-        })
-
-         
-         
-
-
+    const {currentCourseId } = this.state;
+    let curr = this.state.currentStep;
+    this.persistData("mode","CREATE_MODE")
+    let url=   "/lms/api/create/course/"
            //this is a create action
-           // this.saveOrUpdateData("create", persistedStateActionMode, formData )
-           //MOVE 
-             // step = step+ 1;
-          // this.goToStep(e,step)
-         }
-
-      
-         break;
-       case 2:
-
-          // refresh state data
-          let editData2 = {}
-
-         this.saveOrUpdateData("edit", persistedStateActionMode, editData2 )
-         //moves to step next
-         // step = step+ 1;
-         // this.goToStep(e, step);
-
-
-         break;
-       case 3:
-       let editData3 = {}
-
-         this.saveOrUpdateData("edit", persistedStateActionMode, editData3 )
-        //moves to step next
-
-        // step = step+ 1;
-         // this.goToStep(e, step); 
-         break;
-      case 4:
-      let editData4 = {}
-
-         this.saveOrUpdateData("edit", persistedStateActionMode, editData4 )
-        //moves to step next
-        // step = step+ 1;
-         // this.goToStep(e, step); 
-        break;
-       case 5:
-       let editData5 = {}
-
-         this.saveOrUpdateData("edit", persistedStateActionMode, editData5 )
-         //moves to step next
-         // step = step+ 1;
-         // this.goToStep(e, step);
-         break;
-       case 6:
-       let editData6 = {}
-
-         this.saveOrUpdateData("edit", persistedStateActionMode, editData6 )
-         //moves to step next
-         // step = step+ 1;
-         // this.goToStep(e, step);
-         break;
-       case 7:
-       let editData7 = {} // update all fields here
-
-         this.saveOrUpdateData("edit", persistedStateActionMode, editData7 )
-        // step =  1;
-      
-         // perform final action to save all data 
-         // moves status from draft 1 to draft 3
-
-         //moves to step next
-         // this.goToStep(e, step); // takes you back to step 1 so you can see everything in preview mode
-         break;
-       default :
-        //disable the save buttons every where
-          // this.goToStep(e, 1);
-          break;
-    }
+    this.saveOrUpdateData("create", 'CREATE_MODE', url, $("form#stepUpFormWithAI") )
     
   }
 
@@ -1623,11 +1377,14 @@ export default class MasterForm extends React.Component {
 
                       <a
                         onClick={(e) => {
-                          this.goToStep(e, 2);
+                          $(e.target.parentElement).css({background:"#fff"})
+                          swal("WOOPS!", "You need to fill out the required fields marked asterisk (*)", "error");
+                        
                         }}
                         href="#outcomes"
                         data-toggle="tab"
                         className="nav-link rounded-0 pt-2 pb-2"
+                         disabled={true}
                       >
                         <i className="fa fa-camera mr-1"></i>
                         <span className="d-none d-sm-inline">Schedules</span>
@@ -1635,8 +1392,11 @@ export default class MasterForm extends React.Component {
 
                       <a
                         onClick={(e) => {
-                          this.goToStep(e, 3);
+                          $(e.target.parentElement).css({background:"#fff"})
+                          swal("WOOPS!", "You need to fill out the required fields marked asterisk (*)", "error");
+                        
                         }}
+                         disabled
                         href="#requirements"
                         data-toggle="tab"
                         className="nav-link rounded-0 pt-2 pb-2"
@@ -1653,11 +1413,14 @@ export default class MasterForm extends React.Component {
                         >*/}
                       <a
                         onClick={(e) => {
-                          this.goToStep(e, 4);
+                          $(e.target.parentElement).css({background:"#fff"})
+                          swal("WOOPS!", "You need to fill out the required fields marked asterisk (*)", "error");
+                        
                         }}
                         href="#seo"
                         data-toggle="tab"
                         className="nav-link rounded-0 pt-2 pb-2"
+                         disabled
                       >
                         <i className="fa fa-tag mr-1"></i>
                         <span className="d-none d-sm-inline">
@@ -1668,11 +1431,14 @@ export default class MasterForm extends React.Component {
 
                       <a
                         onClick={(e) => {
-                          this.goToStep(e, 5);
+                          $(e.target.parentElement).css({background:"#fff"})
+                          swal("WOOPS!", "You need to fill out the required fields marked asterisk (*)", "error");
+                        
                         }}
                         href="#pricing"
                         data-toggle="tab"
                         className="nav-link rounded-0 pt-2 pb-2"
+                         disabled
                       >
                         <i className="fa fa-currency mr-1"></i>
                         <span className="d-none d-sm-inline">
@@ -1682,11 +1448,14 @@ export default class MasterForm extends React.Component {
 
                       <a
                         onClick={(e) => {
-                          this.goToStep(e, 8);
+                          $(e.target.parentElement).css({background:"#fff"})
+                          swal("WOOPS!", "You need to fill out the required fields marked asterisk (*)", "error");
+                        
                         }}
                         href="#resource"
                         data-toggle="tab"
                         className="nav-link rounded-0 pt-2 pb-2"
+                         disabled
                       >
                         <i className="fa fa-currency mr-1"></i>
                         <span className="d-none d-sm-inline">Resource</span>
@@ -1694,11 +1463,14 @@ export default class MasterForm extends React.Component {
 
                       <a
                         onClick={(e) => {
-                          this.goToStep(e, 6);
+                          $(e.target.parentElement).css({background:"#fff"})
+                          swal("WOOPS!", "You need to fill out the required fields marked asterisk (*)", "error");
+                        
                         }}
                         href="#media"
                         data-toggle="tab"
                         className="nav-link rounded-0 pt-2 pb-2"
+                         disabled
                       >
                         <i className="fa fa-video mr-1"></i>
                         <span className="d-none d-sm-inline">Content</span>
@@ -1706,11 +1478,15 @@ export default class MasterForm extends React.Component {
 
                       <a
                         onClick={(e) => {
-                          this.goToStep(e, 7);
+                          $(e.target.parentElement).css({background:"#fff"})
+                          $(e.target).css({color:"#333"})
+                          swal("WOOPS!", "You need to fill out the required fields marked asterisk (*)", "error");
+                        
                         }}
                         href="#finish"
                         data-toggle="tab"
                         className="nav-link rounded-0 pt-2 pb-2"
+                        disabled
                       >
                         <i className="fa fa-checkbox mr-1"></i>
                         <span className="d-none d-sm-inline">Process</span>
@@ -1724,11 +1500,14 @@ export default class MasterForm extends React.Component {
                 <div className="row">
                   <div className="col-md-12">
                     <form
+                      id="stepUpFormWithAI"
                       className="required-form"
                       action="/lms/api/create/course/" 
                       method="POST" 
                        novalidate
-                      enctype="multipart/form-data"
+                      // enctype="multipart/form-data"
+                      enctype="application/x-www-form-urlencoded"
+                      style={{height:"1850px"}}
                     >
                       {/*<CSRFToken /> Ready to django into the server*/}
                       <input type="hidden" name="csrfmiddlewaretoken" value={getCookie("csrfmiddlewaretoken")} />
@@ -1874,7 +1653,7 @@ export default class MasterForm extends React.Component {
 
                     <br />
                     <br />
-                    <div style={{ position: "absolute", bottom: "0px" }}>
+                    <div style={{ position: "absolute", bottom: "0px", marginLeft:"20px" }}>
                       <ul className="list-inline mb-0 wizard text-center">
                         {this.previousButton}
 
@@ -1922,17 +1701,98 @@ class Step1 extends React.Component {
 
     return (
       <React.Fragment>
-        <div className="tab-content b-0 mb-0">
+        <div className="tab-content b-0 mb-0" >
           <div className="tab-pane active" id="basic">
             <div className="row">
               <div className="col-md-12 card-box">
+
+
+              <Col md="12" sm="12" lg="12">
+        
+                 
+                  <br/> <br/> <br/>
+                  <div className="container-fluid" id="lead-guy" >  
+                        
+
+                         <div className="col-lg-3 col-md-3 col-sm-6" >
+          <a href="#">
+            <div className="widget-panel widget-style-2 bg-white"
+              onClick={() => {
+
+                
+                          swal({
+                            text: 'Search for an instructor by name/email/ phone number. e.g. "saladin jake ".',
+                            content: "input",
+                            button: {
+                            text: "Search!",
+                            closeModal: false,
+                            },
+                          })
+                          .then(name => {
+                            if (!name)  return swal("No instructor email/name was entered!");
+                              // check if user existed in our initial fetch 
+                              // do not make another api request 
+                              //this saves pull request
+     
+                            let targetInstructor = instructors.find(instructor => {
+                                console.log(instructor)
+                                return (instructor?.profile?.name === name) ||  (instructor?.profile?.email === name) || (instructor?.profile?.phone_number === name)
+                            })
+                           
+                              if(targetInstructor){
+                                 let leadGuy =  $("#lead-guy").css({display:"block", color:"#fff"}).html(targetInstructor?.profile?.name)
+                                $("#author").val(targetInstructor?.profile?.id)
+                                 return swal("Success!", "The Instructor was found", "Success");
+
+                             }else{
+
+                                
+                                  swal("WOOPS!", "We could not find instructor", "error");
+                        
+                                  swal.stopLoading();
+                                 return swal.close();
+                            
+
+                             }
+                          })
+                          
+                           
+                          
+
+                    }}
+
+            >
+              <i className="md md-add text-info"></i>
+              <h2
+                className="m-0 text-dark-x counter font-600-x"
+                style={{
+                  fontFamily: "Open Sans",
+                  color: "#000",
+                  fontSize: "14px",
+                }}
+
+                
+              >
+                Add/Change Team Lead
+              </h2>
+              <div
+                className="text-muted-x m-t-5-x"
+                style={{
+                  fontFamily: "Open Sans",
+                  color: "#000",
+                  fontSize: "14px",
+                }}
+              >
+                Add
+              </div>
+            </div>
+           
+             </a>
+          </div></div>
+                
+</Col>
                 <div className="form-group col-md-6 fl-left">
-                  <label
-                    className="col-md-12 col-form-label"
-                    for="course_title"
-                  >
-                    Course Code <span className="required">*</span>{" "}
-                  </label>
+                  
                   <div className="">
                     <input
                       style={{ position: "relative", zIndex: "1" }}
@@ -1944,19 +1804,37 @@ class Step1 extends React.Component {
                       value={this.props.code}
                      onChange={this.props.handleChange}
                     />
-                  </div>
-                </div>
-
-                <div className="form-group col-md-6 fl-left">
-                  <label
+                    <label
                     className="col-md-12 col-form-label"
                     for="course_title"
                   >
-                    Course Name <span className="required">*</span>{" "}
+                    Course Code <span className="required">*</span>{" "}
                   </label>
+                  </div>
+                </div>
+
+               {/*this will be the logged in instructor id hidden */}
+                <div className="form-group col-md-6 fl-left" >
+                 
                   <div className="">
                     <input
-                      style={{ position: "relative", zIndex: "1" }}
+                      style={{ position: "relative", zIndex: "1" , display:"none"}}
+                      type="text"
+                      className="form-control"
+                      id="author"
+                      name="author"
+                      placeholder="Enter course code"
+                      value="097cd2bb-ae72-48e4-9a4d-1ebd2c05be03"
+                     
+                    />
+                  </div>
+                   </div>
+
+                <div className="form-group col-md-6 fl-left">
+                 
+                  <div className="">
+                    <input
+                      style={{ position: "relative", zIndex: "1", marginTop:"-10px" }}
                       type="text"
                       className="form-control"
                       id="course_name"
@@ -1966,20 +1844,25 @@ class Step1 extends React.Component {
                       value={this.props.course_name}
                      onChange={this.props.handleChange}
                     />
+                     <label
+                    className="col-md-12 col-form-label"
+                    for="course_title"
+                  >
+                    Course Name <span className="required">*</span>{" "}
+                  </label>
                   </div>
                 </div>
 
 
 
                 <div class="form-group  col-md-6 fl-left">
-                  <label class="col-md-12 col-form-label" for="level">
-                    Institution
-                  </label>
+                 
                   <div class="" data-select2-id="94">
                     <select
                       style={{ position: "relative", zIndex: "1" }}
                       class="form-control select2 select2-hidden-accessible"
                       data-toggle="select2"
+                      id="institution"
                       name="institution"
                       
                       data-select2-id="level"
@@ -2004,16 +1887,15 @@ class Step1 extends React.Component {
                         
 
                     </select>
+
+                     <label class="col-md-12 col-form-label" for="level">
+                    Institution
+                  </label>
                   </div>
                 </div>
 
                 <div className="form-group col-md-6 fl-left">
-                  <label
-                    className="col-md-12 col-form-label"
-                    for="short_description"
-                  >
-                    Course Short description
-                  </label>
+                 
                   <div className="">
                     <textarea
                       name="description"
@@ -2023,18 +1905,20 @@ class Step1 extends React.Component {
                        value={this.props.description}
                      onChange={this.props.handleChange}
                     ></textarea>
+
+                     <label
+                    className="col-md-12 col-form-label"
+                    for="short_description"
+                  >
+                    Course Short description
+                  </label>
                   </div>
                 </div>
 
 
 
                 <div className=" col-md-12 ">
-                  <label
-                    className="col-md-12 col-form-label"
-                    for="short_description"
-                  >
-                    Course Overview
-                  </label>
+                 
                   <div className="">
                     <textarea
                       name="overview"
@@ -2044,6 +1928,13 @@ class Step1 extends React.Component {
                        value={this.props.overview}
                      onChange={this.props.handleChange}
                     ></textarea>
+
+                     <label
+                    className="col-md-12 col-form-label"
+                    for="short_description"
+                  >
+                    Course Overview
+                  </label>
                   </div>
                 </div>
 
@@ -2068,9 +1959,7 @@ class Step1 extends React.Component {
 
 
                 <div class="form-group  mb-3 col-md-6 fl-left">
-                  <label class="col-md-12 col-form-label" for="level">
-                    Level
-                  </label>
+                 
                   <div class="" data-select2-id="94">
                     <select
                       style={{ position: "relative", zIndex: "1" }}
@@ -2094,6 +1983,11 @@ class Step1 extends React.Component {
                         Advanced
                       </option>
                     </select>
+
+
+                     <label class="col-md-12 col-form-label" for="level">
+                    Level
+                  </label>
                   </div>
                 </div>
 
@@ -2101,9 +1995,7 @@ class Step1 extends React.Component {
 
 
                 <div class="form-group  mb-3 col-md-6 fl-left">
-                  <label class="col-md-12 col-form-label" for="level">
-                    Enrollment Type
-                  </label>
+                  
                   <div class="" data-select2-id="94">
                     <select
                       style={{ position: "relative", zIndex: "1" }}
@@ -2124,14 +2016,16 @@ class Step1 extends React.Component {
                         By Invitation
                       </option>
                     </select>
+
+                    <label class="col-md-12 col-form-label" for="level">
+                    Enrollment Type
+                  </label>
                   </div>
                 </div>
 
 
                 <div class="form-group  mb-3 col-md-6 fl-left">
-                  <label class="col-md-12 col-form-label" for="level">
-                    Entrance Exam Required
-                  </label>
+                 
                   <div class="" data-select2-id="94">
                     <select
                       style={{ position: "relative", zIndex: "1" }}
@@ -2152,6 +2046,10 @@ class Step1 extends React.Component {
                         True
                       </option>
                     </select>
+
+                     <label class="col-md-12 col-form-label" for="level">
+                    Entrance Exam Required
+                  </label>
                   </div>
                 </div>
 
@@ -2159,39 +2057,27 @@ class Step1 extends React.Component {
 
 
                 <div class="form-group  mb-3 col-md-6 fl-left">
-                  <label class="col-md-12 col-form-label" for="level">
+                 
+                  <div class="co" data-select2-id="94">
+                    <input
+                      style={{ position: "relative", zIndex: "1" }}
+                      type="checkbox"
+                      className="form-control"
+                      id="course_title2"
+                      name="auditing"
+                      
+                       value={this.props.intro_video}
+                     onChange={this.props.handleChange}
+                    />
+
+                     <label class="col-md-12 col-form-label" for="level">
                     Auditing
                   </label>
-                  <div class="co" data-select2-id="94">
-                    <select
-                      style={{ position: "relative", zIndex: "1" }}
-                      class="form-control select2 select2-hidden-accessible"
-                      data-toggle="select2"
-                      name="auditing"
-                      id="level"
-                      data-select2-id="level"
-                      tabindex="-1"
-                      aria-hidden="true"
-                       value={this.props.auditing}
-                     onChange={this.props.handleChange}
-                    >
-                      <option value="beginner" data-select2-id="4">
-                        YES
-                      </option>
-                      <option value="advanced" data-select2-id="95">
-                        NO
-                      </option>
-                    </select>
                   </div>
                 </div>
 
                 <div className="form-group col-md-6 fl-left">
-                  <label
-                    className="col-md-12 col-form-label"
-                    for="course_title"
-                  >
-                    video url<span className="required">*</span>{" "}
-                  </label>
+                  
                   <div className="">
                     <input
                       style={{ position: "relative", zIndex: "1" }}
@@ -2203,6 +2089,13 @@ class Step1 extends React.Component {
                        value={this.props.intro_video}
                      onChange={this.props.handleChange}
                     />
+
+                    <label
+                    className="col-md-12 col-form-label"
+                    for="course_title"
+                  >
+                    video url<span className="required">*</span>{" "}
+                  </label>
                   </div>
                 </div>
 
@@ -2212,21 +2105,29 @@ class Step1 extends React.Component {
 
 
 
+
+
+
+
+
+
+
                 <h2>Card Image</h2>
 
-                    <div class="file-drop-area">
+                    <div class="file-drop-area col-md-12" style={{background: "#f5f5f5",
+  padding: "40px 0 20px 0", margin:"20px"}}>
                       <span class="fake-btn">Choose files</span>
-                      <span class="file-msg">or drag and drop files here</span>
+                      <span class="file-msg"></span>
                       <input name="card_image" class="file-input" type="file" multiple   accept="image/*"
                                value={this.props.card_image}
                                onChange={this.props.handleChange} />
 
-                                 <div id="feedback">
+                                 <div id="feedback" style={{display:"none"}}>
     
   </div>
   
-  <label id="progress-label" for="progress"></label>
-  <progress id="progress" value="0" max="100"> </progress>
+  <label  id="progress-label" for="progress" style={{display:"none"}}></label>
+  <progress id="progress" value="0" max="100" style={{display:"none"}}> </progress>
                     </div>
 
                     
@@ -2271,6 +2172,28 @@ class Step1 extends React.Component {
                 </div>
 
                 <br />
+                <br />
+                <br />
+                <br />
+                <br />
+
+                 <br />
+                <br />
+                <br />
+                <br />
+                <br /> <br />
+                <br />
+                <br />
+                <br />
+                <br /> <br />
+                <br />
+                <br />
+                <br />
+                <br /> <br />
+                <br />
+                <br />
+                <br />
+                <br /> <br />
                 <br />
                 <br />
                 <br />
@@ -2324,83 +2247,6 @@ class Step1 extends React.Component {
   }
 }
 
-class DynamicForm extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      shareholders: [{ name: "" }],
-    };
-  }
-
-  handleShareholderNameChange = (idx) => (evt) => {
-    const newShareholders = this.state.shareholders.map((shareholder, sidx) => {
-      if (idx !== sidx) return shareholder;
-      return { ...shareholder, name: evt.target.value };
-    });
-
-    this.setState({ shareholders: newShareholders });
-  };
-
-  handleAddShareholder = () => {
-    this.setState({
-      shareholders: this.state.shareholders.concat([{ name: "" }]),
-    });
-  };
-
-  handleRemoveShareholder = (idx) => () => {
-    this.setState({
-      shareholders: this.state.shareholders.filter((s, sidx) => idx !== sidx),
-    });
-  };
-
-  render() {
-    return (
-      <div className="row">
-        <div className="col-md-12">
-          <h6>{this.props.title}</h6>
-
-          {this.state.shareholders.map((shareholder, idx) => (
-            <div className="shareholder form-group ">
-              <div className="col-md-10 fl-left">
-                <input
-                  type="text"
-                  placeholder={` #${idx + 1} Enter an instructors email`}
-                  value={shareholder.name}
-                  onChange={this.handleShareholderNameChange(idx)}
-                  className="form-control fl-left"
-                />
-              </div>
-              {/*<div class="col-md-2">
-            <button
-              type="button"
-              onClick={this.handleRemoveShareholder(idx)}
-              className="small text-white"
-            >
-              -
-            </button>
-            </div>*/}
-
-              <br />
-              <br />
-            </div>
-          ))}
-          <br />
-          <button
-            type="button"
-            onClick={this.handleAddShareholder}
-            className="btn btn-primary text-white"
-            style={{ width: "300px", margin: "10px" }}
-          >
-            Add A Team
-          </button>
-        </div>
-
-        <br />
-        <br />
-      </div>
-    );
-  }
-}
 
 class Step5 extends React.Component {
   constructor(props) {
@@ -2443,10 +2289,7 @@ class Step5 extends React.Component {
           <div className="row justify-content-center">
             <div className="col-md-12">
               <div className="form-group col-md-6 fl-left">
-                <label className="col-md-12 col-form-label" for="course_title">
-                  Grace period after deadline in weeks{" "}
-                  <span className="required">*</span>{" "}
-                </label>
+               
                 <div className="">
                   <input
                     type="text"
@@ -2457,13 +2300,15 @@ class Step5 extends React.Component {
                     required=""
 
                   />
+                   <label className="col-md-12 col-form-label" for="course_title">
+                  Grace period after deadline in weeks{" "}
+                  <span className="required">*</span>{" "}
+                </label>
                 </div>
               </div>
 
               <div class="form-group  col-md-6 fl-left">
-                <label class="col-md-12 col-form-label" for="level">
-                  Grade
-                </label>
+                
                 <div class="" data-select2-id="94">
                   <select
                     class="form-control select2 select2-hidden-accessible"
@@ -2484,13 +2329,15 @@ class Step5 extends React.Component {
                       90%
                     </option>
                   </select>
+
+                  <label class="col-md-12 col-form-label" for="level">
+                  Grade
+                </label>
                 </div>
               </div>
 
               <div class="form-group  col-md-6 fl-left">
-                <label class="col-md-12 col-form-label" for="level">
-                  Assignment/Exam Type
-                </label>
+                
                 <div class="" data-select2-id="94">
                   <select
                     class="form-control select2 select2-hidden-accessible"
@@ -2508,13 +2355,14 @@ class Step5 extends React.Component {
                       Certificate issued
                     </option>
                   </select>
+                  <label class="col-md-12 col-form-label" for="level">
+                  Assignment/Exam Type
+                </label>
                 </div>
               </div>
 
               <div class="form-group  mb-3 col-md-6 fl-left">
-                <label class="col-md-12 col-form-label" for="language_made_in">
-                  Language made in
-                </label>
+                
                 <div class="">
                   <select
                     class="form-control select2 select2-hidden-accessible"
@@ -2535,6 +2383,9 @@ class Step5 extends React.Component {
                             );
                           })}
                   </select>
+                  <label class="col-md-12 col-form-label" for="language_made_in">
+                  Language made in
+                </label>
                 </div>
               </div>
               {/*<div className="form-group row mb-3">
@@ -2625,9 +2476,7 @@ class Step3 extends React.Component {
           <div className="row card-box">
             <div className="col-md-12">
               <div className="form-group col-md-6 fl-left">
-                <label className="col-md-12 col-form-label" for="course_title">
-                  Course Start Date <span className="required">*</span>{" "}
-                </label>
+               
                 <div className="">
                   <input
                     type="date"
@@ -2639,13 +2488,15 @@ class Step3 extends React.Component {
                      value={this.props.course_start_date_time}
                      onChange={this.props.handleChange}
                   />
+
+                   <label className="col-md-12 col-form-label" for="course_title">
+                  Course Start Date <span className="required">*</span>{" "}
+                </label>
                 </div>
               </div>
 
               <div className="form-group col-md-6 fl-left">
-                <label className="col-md-12 col-form-label" for="course_title">
-                  Course End Date <span className="required">*</span>{" "}
-                </label>
+                
                 <div className="">
                   <input
                     type="date"
@@ -2657,13 +2508,14 @@ class Step3 extends React.Component {
                      value={this.props.course_end_date_time}
                      onChange={this.props.handleChange}
                   />
+                  <label className="col-md-12 col-form-label" for="course_title">
+                  Course End Date <span className="required">*</span>{" "}
+                </label>
                 </div>
               </div>
 
               <div className="form-group col-md-6 fl-left">
-                <label className="col-md-12 col-form-label" for="course_title">
-                  Enrollments Start Date <span className="required">*</span>{" "}
-                </label>
+               
                 <div className="">
                   <input
                     type="date"
@@ -2675,13 +2527,14 @@ class Step3 extends React.Component {
                     value={this.props.enrolment_start_date_time}
                      onChange={this.props.handleChange}
                   />
+                   <label className="col-md-12 col-form-label" for="course_title">
+                  Enrollments Start Date <span className="required">*</span>{" "}
+                </label>
                 </div>
               </div>
 
               <div className="form-group col-md-6 fl-left">
-                <label className="col-md-12 col-form-label" for="course_title">
-                  Enrollments End Date/Time <span className="required">*</span>{" "}
-                </label>
+                
                 <div className="">
                   <input
                     type="date"
@@ -2693,6 +2546,9 @@ class Step3 extends React.Component {
                     value={this.props.enrolment_end_date_time}
                      onChange={this.props.handleChange}
                   />
+                  <label className="col-md-12 col-form-label" for="course_title">
+                  Enrollments End Date/Time <span className="required">*</span>{" "}
+                </label>
                 </div>
               </div>
 
@@ -2799,7 +2655,8 @@ class Step4 extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      shareholders: [{ name: "" }],
+      collaborators: [],
+
     };
   }
 
@@ -2807,27 +2664,8 @@ class Step4 extends React.Component {
 
 
 
-  handleShareholderNameChange = (idx) => (evt) => {
-    const newShareholders = this.state.shareholders.map((shareholder, sidx) => {
-      if (idx !== sidx) return shareholder;
-      return { ...shareholder, name: evt.target.value };
-    });
-
-    this.setState({ shareholders: newShareholders });
-  };
-
-  handleAddShareholder = () => {
-    this.setState({
-      shareholders: this.state.shareholders.concat([{ name: "" }]),
-    });
-  };
-
-  handleRemoveShareholder = (idx) => () => {
-    this.setState({
-      shareholders: this.state.shareholders.filter((s, sidx) => idx !== sidx),
-    });
-  };
   render() {
+    const { instructors } = this.props
     if (this.props.currentStep !== 5) {
       return null;
     }
@@ -2841,42 +2679,158 @@ class Step4 extends React.Component {
 
               <div className="row">
         <div className="col-md-12">
-          <h6>{this.props.title}</h6>
+        
 
-          {this.state.shareholders.map((shareholder, idx) => (
-            <div className="shareholder form-group ">
-              <div className="col-md-10 fl-left">
-                <input
-                  type="text"
-                  placeholder={` #${idx + 1} Enter an instructors email`}
-                  value={shareholder.name}
-                  onChange={this.handleShareholderNameChange(idx)}
-                  className="form-control fl-left"
-                />
-              </div>
-              {/*<div class="col-md-2">
-            <button
-              type="button"
-              onClick={this.handleRemoveShareholder(idx)}
-              className="small text-white"
-            >
-              -
-            </button>
-            </div>*/}
 
-              <br />
-              <br />
-            </div>
-          ))}
+
+
+                <div id="collabo-guys" className="row">
+
+                    <div class="col-lg-3 col-md-3 col-sm-6">
+                      <a href="#">
+                        <div className="widget-panel widget-style-2 bg-white">
+                          <i className="fa fa-plus fa-2x text-pink"></i>
+                          <h2
+                            className="m-0 text-dark-x counter font-600-x"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+
+                                onClick={ () => {
+              let values = this.state.collaborators            
+
+              swal({
+                text: 'Search for an instructor by email/ phone number. e.g. "saladinjake@company.com ".',
+                content: "input",
+                button: {
+                text: "Search!",
+                closeModal: false,
+                },
+              })
+              .then(name => {
+                if (!name)  return swal("No instructor email or phone entered was entered!");
+                  // check if user existed in our initial fetch 
+                  // do not make another api request 
+                  //this saves pull request
+
+                     
+                  //TODO: if no collaborators selected 
+                  //LET THE LOGGED IN OR LEAD INSTRUCTOR BE APPENDED AS A COLLABORATOR
+
+                let targetInstructor = instructors.find(instructor => {
+                    console.log(instructor)
+                    return (instructor?.profile?.name === name) ||  (instructor?.profile?.email === name) || (instructor?.profile?.phone_number === name)
+                })
+               
+                  if(targetInstructor){
+                     let collaborators =  $("#collabo-guys")
+                      
+                     let newGuy = $(`
+                      <div class="col-lg-3 col-md-3 col-sm-6">
+                      <a href="#">
+                        <div className="widget-panel widget-style-2 bg-white">
+                          <i className="fa fa-trash fa-2x text-pink"></i>
+                          <h2
+                            className="m-0 text-dark-x counter font-600-x"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+
+                          >
+                            ${targetInstructor?.profile?.first_name} - ${targetInstructor?.profile?.email}
+                          </h2>
+                          <div
+                            className="text-muted-x m-t-5-x"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+                            onclick="alert('test delete operation')"
+
+                            data-id=${targetInstructor?.profile?.id}
+                          >
+                            Remove
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                     `)
+                     
+                    collaborators.append(newGuy.html())
+                  
+
+                     // now let js do the dynamic selection of the hidden authoring_team select form fields
+                    const { name, id, email, phone_number} = targetInstructor?.profile
+                     values.push({
+                      id,name, email, phone_number
+                     })
+
+                     this.setState({collaborators: values})
+
+                      $('select[name=authoring_team]').val(this.state.collaborators) // all collaborators as listArray
+      
+                     return swal("Success!", "The Instructor was found", "Success");
+
+                 }else{
+
+                    
+                      swal("Oh noes!", "We could not find instructor", "error");
+            
+                      swal.stopLoading();
+                     return swal.close();
+                
+
+                 }
+              })
+             
+                 
+                           
+                          
+
+      }}
+                          >
+                            Add collaborator
+                          </h2>
+                          <div
+                            className="text-muted-x m-t-5-x"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+                          >
+                            Add
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+
+
+
+
+
+                </div>
+
+               {/* hidden field that updates its array of data*/}
+               { /*fields will be selected as user finds the  exact email/ phone or name 
+                of the instructors to be added as collaborators*/}
+                <select name="authoring_team[]" multiple  style={{display:"none"}}>
+                      {instructors.length > 0  && instructors.map(instructor => {
+                          return (
+                             <option value={instructor.profile.id}>{instructor.profile.name}</option>
+                          )
+                      })}
+                </select>
+
+
+          
           <br />
-          <button
-            type="button"
-            onClick={this.handleAddShareholder}
-            className="btn btn-primary text-white"
-            style={{ width: "300px", margin: "10px" }}
-          >
-            Add A Team
-          </button>
+          
         </div>
 
         <br />
@@ -2975,6 +2929,14 @@ const Step2 = (props) => {
     });
     Tabs.forEach((tab) => {
       tab.onclick = handleTabClick;
+    });
+
+
+     //disable enter key in a modal section when creating section/lessons
+     $(document).keyup(function(objEvent) {
+      if (objEvent.keyCode ==  13) {
+          return false
+      }
     });
 
 
@@ -5391,6 +5353,40 @@ const saveMarkdownEditContent = () => {
               </div>
           
           </div>
+
+
+        {/*colla borator template container*/}
+         <div class="col-lg-3 col-md-3 col-sm-6">
+                      <a href="#">
+                        <div className="widget-panel widget-style-2 bg-white">
+                          <i className="fa fa-trash fa-2x text-pink"></i>
+                          <h2
+                            className="m-0 text-dark-x counter font-600-x text-holder"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+
+                          >
+                           
+                          </h2>
+                          <div
+                            className="text-muted-x m-t-5-x delete-holder"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+
+                            
+                          >{/*handle delete of collaborator*/}
+                            Remove
+                          }
+                          </div>
+                        </div>
+                      </a>
+                    </div>
 
 
 

@@ -1888,7 +1888,7 @@ pre code {
 }
 .table-responsive > .table-bordered {
   border: 0;
-}
+}/*
 .form-control {
   display: block;
   width: 100%;
@@ -3055,7 +3055,7 @@ input[type="button"].btn-block,
 input[type="reset"].btn-block,
 input[type="submit"].btn-block {
   width: 100%;
-}
+}*/
 .fade {
   -webkit-transition: opacity 0.15s linear;
   transition: opacity 0.15s linear;
@@ -16464,3 +16464,501 @@ a:focus {
   height: 600px;
   overflow-y: scroll;
 }
+
+/*alerts*/
+.alert {
+  --color: #2196f3;
+  font-family: "Roboto";
+  font-size: 13px;
+  width: 250px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  background: #fff;
+  color: #222;
+  border-radius: 4px;
+  position: relative;
+  margin-bottom: 10px;
+}
+.alert__icon {
+  position: absolute;
+  padding: 10px;
+  color: tomato;
+  display: none;
+}
+.alert__close {
+  position: absolute;
+  right: 0;
+  padding: 10px;
+  font-weight: bold;
+}
+.alert__close i {
+  pointer-events: none;
+}
+.alert__close:hover {
+  cursor: pointer;
+}
+.alert__title {
+  border-bottom: 1px solid #eee;
+  padding: 10px 25px 10px 10px;
+  font-weight: bold;
+  color: var(--color);
+}
+.alert__body {
+  padding: 10px;
+}
+.alert-success {
+  --color: green;
+}
+.alert-success .alert__title {
+  color: var(--color);
+  padding-left: 30px;
+}
+.alert-success .alert__icon {
+  position: absolute;
+  padding: 10px;
+  color: var(--color);
+  display: block;
+}
+.alert-error {
+  --color: tomato;
+}
+.alert-error .alert__title {
+  border-radius: 4px 4px 0 0;
+  color: var(--color);
+  padding-left: 30px;
+}
+.alert-error .alert__icon {
+  position: absolute;
+  padding: 10px;
+  color: var(--color);
+  display: block;
+}
+.alert-right-bottom {
+  right: 10px;
+  left: auto;
+  bottom: 10px;
+  top: auto;
+}
+.alert-left-top {
+  right: auto;
+  left: 10px;
+  bottom: auto;
+  top: 10px;
+}
+.alert-left-bottom {
+  right: auto;
+  left: 10px;
+  bottom: 10px;
+  top: auto;
+}
+.alert-center-top {
+  left: 50%;
+  right: auto;
+  top: 10px;
+  bottom: auto;
+  transform: translate(-50%, 0);
+}
+.alert-center-bottom {
+  left: 50%;
+  right: auto;
+  top: auto;
+  bottom: 10px;
+  transform: translate(-50%, 0);
+}
+.alert-container {
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 9999;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  overflow: hidden;
+}
+.alert-icon-custom .alert__title {
+  padding-left: 30px;
+}
+.alert-icon-custom .alert__icon {
+  position: absolute;
+  padding: 10px;
+  color: var(--color);
+  display: block;
+}
+
+
+
+
+/*custom form*/
+form#stepUpFormWithAI{
+
+}
+
+
+
+
+form#stepUpFormWithAI .row {
+ /* margin-bottom: 25px;
+  position: relative;
+  overflow: hidden;*/
+}
+form#stepUpFormWithAI input[type=text], form#stepUpFormWithAI select, form#stepUpFormWithAI input[type=date], form#stepUpFormWithAI input[type=number],  form#stepUpFormWithAI input[type=password], form#stepUpFormWithAI textarea {
+  width: 100%;
+  height: 40px;
+  padding: 10px 10px 10px 90px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  color: #333;
+  border-radius: 3px;
+  transition: all 0.3s cubic-bezier(1, 0.1, 0, 0.9);
+}
+form#stepUpFormWithAI textarea {
+  height: auto;
+  min-height: 200px;
+  padding: 50px 10px 10px 10px;
+  margin-bottom: 20px;
+}
+form#stepUpFormWithAI input[type=text] + label, form#stepUpFormWithAI input[type=password] + label,{
+  position: absolute;
+  top: 0px;
+  bottom: 0;
+  left: 0px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 12px;
+  font-weight: bold;
+  width: 80px;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: white;
+  background: #0288D1;
+  border-radius: 3px 0 0 3px;
+  transition: all 0.3s cubic-bezier(1, 0.1, 0, 0.9);
+  transform: translateZ(0) translateX(0);
+}
+form#stepUpFormWithAI textarea + label {
+  width: 100%;
+  border-radius: 3px 3px 0 0;
+}
+form#stepUpFormWithAI input[type=text]:focus, form#stepUpFormWithAI input[type=password]:focus {
+  padding-left: 10px;
+}
+form#stepUpFormWithAI textarea:focus {
+  padding-top: 10px;
+}
+form#stepUpFormWithAI input[type=text]:focus + label, form#stepUpFormWithAI input[type=password]:focus + label, form#stepUpFormWithAI textarea:focus + label {
+  transform: translateZ(0) translateY(-240%);
+  width: 100%;
+  background: rgba(8,20,200);
+  display: table;
+  color: #fff;
+}
+form#stepUpFormWithAI textarea:focus + label {
+ transform: translateZ(0) translateY(-820%);
+  width: 100%;
+  background: rgba(8,20,200);
+  display: table;
+  color: #fff;
+}
+form#stepUpFormWithAI input[type=checkbox], form#stepUpFormWithAI input[type=radio] {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0;
+}
+form#stepUpFormWithAI input[type=radio] + label {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  text-indent: -9999px;
+  background: #ccc;
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(1, 0.1, 0, 0.9);
+}
+form#stepUpFormWithAI input[type=radio] + label:before {
+  content: "";
+  position: absolute;
+  display: block;
+  height: 10px;
+  width: 10px;
+  top: 50%;
+  left: 50%;
+  background: white;
+  border-radius: 100%;
+  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(1, 0.1, 0, 0.9) 0.1s;
+  transform: translateZ(0) translate(-50%, -50%) scale(0);
+}
+form#stepUpFormWithAI input[type=radio]:checked + label {
+  background: #0288D1;
+}
+form#stepUpFormWithAI input[type=radio]:checked + label:before {
+  transform: translateZ(0) translate(-50%, -50%) scale(1);
+}
+form#stepUpFormWithAI input[type=checkbox] + label {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  text-indent: -9999px;
+  background: #ccc;
+  width: 60px;
+  height: 30px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(1, 0.1, 0, 0.9);
+}
+form#stepUpFormWithAI input[type=checkbox] + label:before {
+  content: "";
+  position: absolute;
+  display: block;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #0288D1;
+  border-radius: 100px;
+  transition: all 0.3s cubic-bezier(1, 0.1, 0, 0.9) 0.1s;
+  transform: translateZ(0) scale(0);
+}
+form#stepUpFormWithAI input[type=checkbox] + label:after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  display: block;
+  height: 26px;
+  width: 26px;
+  background: white;
+  border-radius: 100%;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(1, 0.1, 0, 0.9);
+  transform: translateZ(0) translateX(0);
+}
+form#stepUpFormWithAI input[type=checkbox]:checked + label {
+  background: #0288D1;
+}
+form#stepUpFormWithAI input[type=checkbox]:checked + label:after {
+  left: calc(100% - 28px);
+  transform: translateZ(0);
+}
+form#stepUpFormWithAI button {
+  position: relative;
+  overflow: hidden;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 20px;
+  font-size: 12px;
+  font-weight: bold;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: white;
+  border: none;
+  background: #0288D1;
+  border-radius: 3px;
+  transition: all 0.3s cubic-bezier(1, 0.1, 0, 0.9);
+  transform: translateZ(0) translateX(0);
+  z-index: 2;
+}
+form#stepUpFormWithAI button:before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: #01579B;
+  height: 100%;
+  width: 100%;
+  border-radius: 3px;
+  transition: all 0.3s cubic-bezier(1, 0.1, 0, 0.9);
+  transform: translateZ(0) scale(0);
+  z-index: -1;
+}
+form#stepUpFormWithAI button:hover:before, form#stepUpFormWithAI button:focus:before {
+  transform: scale(1);
+  transition: all 0.3s cubic-bezier(1, 0.1, 0, 0.9);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.du_documentupload h4 {
+  text-transform: inherit;
+}
+
+.du-box {
+  background: #f5f5f5;
+  padding: 40px 0 20px 0;
+}
+
+.du-box i {
+  float: initial;
+  margin-left: calc(50% - 17px);
+}
+
+.du-dropfiles a {
+  color: #2c76bd;
+}
+
+.du-dropfiles a {
+  cursor: pointer;
+}
+
+.du-buttons a {
+  min-width: 100px;
+  margin-left: 20px;
+}
+
+.du-accepted {
+  color: red;
+  margin: 10px 0 0 0;
+  float: left;
+  width: 100%;
+}
+
+.du-bar-wrap {
+  margin: 15px 0;
+  float: left;
+  width: 100%;
+  height: 10px;
+  background: #f5f5f5;
+}
+
+.du-bar-progress {
+  width: 30%;
+  background: #76bf28;
+  height: 100%;
+  transition: all .5s ease;
+}
+
+.du-buttons {
+  padding-top: 20px;
+  float: right;
+  height: 36px;
+}
+
+.du-documents {
+  float: left;
+}
+
+.du-doc {
+  width: 60px;
+  height: 80px;
+  float: left;
+  text-align: center;
+  margin: 0 10px 0 0;
+}
+
+.du-doc .du-doc-options i {
+  opacity: .5;
+  display: none;
+}
+
+.du-doc .du-doc-options i:hover {
+  opacity: 1;
+}
+
+opacity: 1;
+.du-doc.is-selected .du-doc-img,
+.du-doc:hover .du-doc-img {
+  background: white;
+  border: 1px solid #979797;
+}
+
+.du-doc.is-selected .du-doc-options i,
+.du-doc:hover .du-doc-options i {
+  display: block;
+}
+
+.du-doc:hover .du-doc-img {
+  background: white;
+  border: 1px solid black;
+}
+
+.du-doc span {
+  font-size: 12px;
+}
+
+.du-doc-img {
+  width: 60px;
+  text-align: center;
+  margin: 0px 0;
+  background: #f5f5f5;
+  float: left;
+  border: 1px solid #f5f5f5;
+  transition: all .5s ease;
+}
+
+.du-doc-img i {
+  margin: 7px 0 0 13px;
+  float: initial;
+}
+
+.du-doc-options {
+  margin: 10px 0;
+  float: right;
+}
+
+.du-doc-options i {
+  float: right;
+}
+
+@media(max-width: 400px) {
+  .du-buttons {
+    width: 100%;
+  }
+  .du-buttons .btn {
+    width: 100%;
+    margin-left: 0px;
+    margin-bottom: 10px;
+  }
+}
+
+
+#open-file { visibility: hidden;
+  display: none; }
+
+.du-dropfiles-link {
+    color: #2c76bd!important;
+    background: transparent!important;
+    border: none!important;
+    padding: 0px!important;
+}
+
+.du-dropfiles-link:hover {
+text-decoration: underline;
+}
+
+.du-dropfiles-link:focus {
+font-size: 18px;}
+
+.greenBtn, .playReal {
+    border-radius: 0;
+    border: 2px solid red;
+    color: #fff;
+    background-color: red;
+}
+
