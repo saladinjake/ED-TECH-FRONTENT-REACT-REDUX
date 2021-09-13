@@ -20,6 +20,8 @@ window.drf = {
   csrfToken: "BflbcAqq5u5i8NdzTKBhUZmfFrYXlb1tZwq3EQPrUornyky8l9Vn2AKUJkfHXVR6",
 };
 
+let url_new_problem_component =  "/lms/api/create/problem-component/"
+let url_new_discussion_component = "/lms/api/create/discussion-component/"
 
 function removeLoader(){
   $( "#loadingDiv" ).fadeOut(500, function() {
@@ -50,36 +52,7 @@ window.setTargetLessonItem = (insertionId) =>{
   localStorage.setItem('ls_tracker',insertionId);
 }
 
-let getVal = (id) => {
-  return document.getElementById(id).value;
-}
 
-function lessonObjectToFormData(object) {
-    const formData = new FormData();
-    Object.keys(object).forEach(key => formData.append(key, object[key]));
-    return formData;
-}
-
-const saveLessonComponent = (url, formId) => {
-  let lessonData = {
-  component{
-    name: getVal("c-name"),
-    description: getVal("c-description"),
-    type: getVal("c-type"),  //int
-    lesson: getVal("c-lesson-id")
-  }
-  content_type: getVal("c-content-type")
-  html_text :getVal("c-html-text")
- };
- let formEl = $("#"+ formId);
-
- let formData = lessonObjectToFormData(lessonData);
-
-  //make the post and voala
-  createAnyResource("post",
-  url,
-  formEl) 
-}
 
 
 
@@ -586,6 +559,77 @@ const sameOrigin = (url) => {
   );
 };
 
+
+let getVal = (el_id) => {
+  if(document.getElementById(el_id)){
+     return document.getElementById(el_id).value;
+  }
+  return "you dont know what you are doing";
+ 
+}
+
+function lessonObjectToFormData(object) {
+    const formData = new FormData();
+    Object.keys(object).forEach(key => formData.append(key, object[key]));
+    return formData;
+}
+
+
+const getFormData = object => Object.keys(object).reduce((formData, key) => {
+    formData.append(key, object[key]);
+    return formData;
+}, new FormData());
+
+
+
+function buildFormData(formData, data, parentKey) {
+  if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
+    Object.keys(data).forEach(key => {
+      buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
+    });
+  } else {
+    const value = data == null ? '' : data;
+
+    formData.append(parentKey, value);
+  }
+}
+
+function jsonToFormData(data) {
+  const formData = new FormData();
+  
+  buildFormData(formData, data);
+  
+  return formData;
+}
+
+
+
+function obj2FormData(obj, formData = new FormData()){
+
+    formData = formData;
+
+    const createFormData = function(obj, subKeyStr = ''){
+        for(let i in obj){
+            let value          = obj[i];
+            let subKeyStrTrans = subKeyStr ? subKeyStr + '[' + i + ']' : i;
+
+            if(typeof(value) === 'string' || typeof(value) === 'number'){
+
+                formData.append(subKeyStrTrans, value);
+
+            } else if(typeof(value) === 'object'){
+
+                createFormData(value, subKeyStrTrans);
+
+            }
+        }
+    }
+
+    createFormData(obj);
+
+    return formData;
+}
+
 /*the post handler action*/
 /*
  *@param url : description: http://apibase/createlink
@@ -602,20 +646,34 @@ export const createAnyResource = (mode="post",
   console.log(formEl.attr("id"))
   // You need to use standard javascript object here
   var formData = new FormData(form);
-
   // Attach file only if the generic form contains (.* input[type="file"])
   // if($('input[type=file]')[0].files[0].length > 0){
   // for(let i=0; i <= $('input[type=file]')[0].files[0].length; i++){
   if(formEl.attr("id")=="stepUpFormWithAI" || formEl.attr("id")=="stepUpFormWithAI2"){
+    formData.append("filename", $("input[type=file]")[0].files[0]); //
+  }
+  
 
-  formData.append("filename", $("input[type=file]")[0].files[0]); //
-}
+  if(formEl.attr("id")=="myModalMarkdownEditor-SELECT"){
+        document.getElementById("lesson-editor-id").value = localStorage.getItem("ls_tracker") 
+        formData.append("lesson", localStorage.getItem("ls_tracker"))
+        form = $("#"+ "myModalMarkdownEditor-SELECT")[0]  
+  }else if(formEl.attr("id")=="myModalGenericForm-SELECT"){
+         document.getElementById("lesson-editor-id2").value = localStorage.getItem("ls_tracker") 
+        form = $("#"+ "myModalGenericForm-SELECT")[0]  
+        formData.append("lesson", localStorage.getItem("ls_tracker"))
+  }else {
+    //problem and discussion
+  }
+        //no validation for now
+  
+
   // }
   // }
   let data = null;
-  let alert = new Alert({
-    time: 5000,
-  });
+  let jsonData = {};
+  let dataType =""
+  let lessonData = {};
   // in the future get the csrf token from the header after identity is established
   var csrftoken = window.drf.csrfToken;
   $.ajaxSetup({
@@ -631,42 +689,28 @@ export const createAnyResource = (mode="post",
     
         //if its course  creation form
         if(formEl.attr("id")=="stepUpFormWithAI" || formEl.attr("id")=="stepUpFormWithAI2"){
-
-              // check for basic required fields validation requirements
-              let name = document.getElementById("course_name").value;
-              let code = document.getElementById("course_code").value;
-              let authorId = document.getElementById("author").value;
-              let institutionId = document.getElementById("institution");
-              institutionId =
-                institutionId.options[institutionId.selectedIndex].value;
-
-              if (institutionId == "-- Institutions --") {
-                //throw error
-                swal("Error!", "We could not find instructor", "error");
-                return false;
-              } else if (name == "" ){
-                swal("Error!", "Course name is required", "error");
-                return false;
-              } else if( code == "" ){
-                swal("Error!", "Course code required", "error");
-                return false;
-              }else if(institutionId == "")
-              {
-                
-
-                swal("Sorry!", "The course must be attached to an institution it belongs to", "error");
-
-                return false;
-              }
+          // check for basic required fields validation requirements
+          let name = document.getElementById("course_name").value;
+          let code = document.getElementById("course_code").value;
+          let authorId = document.getElementById("author").value;
+          let institutionId = document.getElementById("institution");
+          institutionId = institutionId.options[institutionId.selectedIndex].value;
+          if (institutionId == "-- Institutions --") {
+            //throw error
+            swal("Error!", "We could not find instructor", "error");
+            return false;
+          } else if (name == "" ){
+            swal("Error!", "Course name is required", "error");
+            return false;
+          } else if( code == "" ){
+            swal("Error!", "Course code required", "error");
+            return false;
+          }else if(institutionId == "")
+          {
+            swal("Sorry!", "The course must be attached to an institution it belongs to", "error");
+            return false;
+          }
         }
-        //if it section creation form: check required validation
-
-
-        //if it subsection creation or update form : check required validation
-
-
-        //if its lesson creation or update form : check required validation
-
         //if only file download is required or needed via backend to check for file upload
         // xhr.setRequestHeader("Content-Disposition", 'attachment; filename=' + form[0].files.name);
         xhr.overrideMimeType("multipart/form-data");
@@ -687,8 +731,22 @@ export const createAnyResource = (mode="post",
       contentType = false;
       // console.log(form[0])
     } else {
-      contentType = "application/x-www-form-urlencoded; charset=UTF-8";
-      data = formEl.serialize();
+      
+      //if its only lesson component, data sent has been trasformed above
+      if(formEl.attr("id")=="myModalMarkdownEditor-SELECT" 
+            || formEl.attr("id")=="myModalGenericForm-SELECT" 
+             ){
+
+        contentType ="application/x-www-form-urlencoded; charset=UTF-8";
+        // dataType ="json";
+        
+        data = formEl.serialize();
+
+      }else{
+        contentType = "application/x-www-form-urlencoded; charset=UTF-8"
+        data = formEl.serialize();
+      }
+      
     }
   }
 
@@ -697,9 +755,16 @@ export const createAnyResource = (mode="post",
   if(mode.toLowerCase() !=="post"){
      type = "PATCH"
   }
+  
 
-  //make the post request
-  var httpRequestAjax = $.ajax({
+
+  
+
+
+
+    
+  
+   let httpRequestAjax = $.ajax({
     url: url,
     // method: "POST",
     type:type,
@@ -707,14 +772,17 @@ export const createAnyResource = (mode="post",
     // data: JSON.stringify(data), // if not multipart form
     // contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+) multipart
     // processData: false, // NEEDED, DON'T OMIT THIS  multipart
-
-    contentType: "application/x-www-form-urlencoded; charset=UTF-8", //enc
+    contentType:  contentType,   //"application/x-www-form-urlencoded; charset=UTF-8", //enc
     data: data, //
-
     // headers: {// multipart
-    //   'Accept': "application/json"   //'text/html; q=1.0, */*'  // let the backend accepts html element of the form data request instead of jsons
+    //   'Accept': "application/json 'text/html; q=1.0, */*"  // let the backend accepts html element of the form data request instead of jsons
     // },
   });
+
+   
+
+  //make the post request
+  
 let dataObj ={}
   /*jquery always ajax method used instead of success and error*/
   httpRequestAjax.always(function (data, textStatus, jqXHR) {
@@ -754,6 +822,17 @@ let dataObj ={}
       if(formEl.attr("id")=="addLessonSectionForm"){
           if(mode.toLowerCase() =="post"){
               swal("Sorry", "Failed to create the Lesson Section . You can not add any component to the lesson", "error");
+           }else{
+              swal("Sorry", "Failed to update changes on this section", "error");
+           }
+      }
+
+
+      //component creation
+      if(formEl.attr("id")=="myModalMarkdownEditor-SELECT" 
+            || formEl.attr("id")=="myModalGenericForm-SELECT" ){
+          if(mode.toLowerCase() =="post"){
+              swal("Sorry", "Failed to create the Lesson component . ", "error");
            }else{
               swal("Sorry", "Failed to update changes on this section", "error");
            }
@@ -801,6 +880,17 @@ let dataObj ={}
       }
      
       // alert.error("Failed to create the resource", "Error");
+
+      
+
+      if(formEl.attr("id")=="myModalMarkdownEditor-SELECT" 
+            || formEl.attr("id")=="myModalGenericForm-SELECT"){
+          if(mode.toLowerCase() =="post"){
+             swal("Congratulations", "You successfully created a unit for this lesson", "success");
+           }else{
+             swal("Congratulations", "You successfully updated the unit for this lesson section of this course", "success");
+           }
+       }
     }
     var responseContentType = jqXHR.getResponseHeader("content-type") || "";
     if (responseContentType.toLowerCase().indexOf("text/html") === 0) {
@@ -876,6 +966,24 @@ let dataObj ={}
 
         //finally for lesson components
 
+        if(formEl.attr("id")=="myModalMarkdownEditor-SELECT" 
+            || formEl.attr("id")=="myModalGenericForm-SELECT"  ||  formEl.attr("id")=="myModalMarkdownEditorEditMode-SELECT" 
+            || formEl.attr("id")=="myModalGenericFormEditMode-SELECT" ){
+          if(mode.toLowerCase() =="post" && textStatus != "success"){
+
+            console.log(data, url)
+            // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+           swal("Something went wrong","error") // console the error response
+       
+          }else if(mode.toLowerCase() =="patch" && textStatus == "success"){
+             // return dataObj.response.id
+             //fetch and update record seamlessly via ajax
+          }else{
+             // addUnitSectionData(dataObj.response)
+                 // return dataObj.response.id
+          }
+        }
+
 
 
       
@@ -885,6 +993,8 @@ let dataObj ={}
   });
    
   return  dataObj?.response?.id
+
+  
 };
 
 
@@ -923,6 +1033,8 @@ export const makeRequest = (url, method = "get", details) => {
       break;
   }
 };
+
+
 
 export const getCourses = async (limit = 800000, offset = 0) => {
   let url = base_url + `/lms/api/courses/?limit=${limit}&offset=${offset}`;

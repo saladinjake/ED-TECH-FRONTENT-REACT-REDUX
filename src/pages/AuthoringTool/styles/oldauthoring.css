@@ -14735,10 +14735,6 @@ div.dt-button-info h2 {
   color: #fff;
 }
 
-
-
-
-
 .add-to-list {
   display: block;
   padding: 18px 0;
@@ -15086,9 +15082,6 @@ div.dt-button-info h2 {
   pointer-events: none;
 }
 
-
-
-
 @media (max-width: 500px) {
   .modal-toolbar {
     height: 80px;
@@ -15244,7 +15237,6 @@ div.dt-button-info h2 {
   padding: 3px 5px;
 }
 
-
 #buttonContainer {
   /* width:233px;*/
   margin: 0 auto;
@@ -15379,8 +15371,6 @@ overflow:auto;*/
   --height: 50px;
   --border-radius: 100%;
 }
-
-
 
 .wrapper-box {
   width: var(--width);
@@ -15607,7 +15597,8 @@ tbody.file-list tr {
   display: none;
 }
 
-
+/*authoring edit previewer*/
+/* WYSIWYG Editor */
 .editor-authoring {
   /*width: 40rem;
   min-height: 18rem;
@@ -15616,8 +15607,6 @@ tbody.file-list tr {
   border-radius: 3px;
   margin: 2rem;*/
 }
-
-
 .editor-authoring .authoring-edit-toolbar {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
@@ -15818,8 +15807,6 @@ tbody.file-list tr {
   /*margin: 100px auto;
   width: 50%;*/
 }
-
-
 #markdown-editor .toolbar,
 #markdown-editor2 .toolbar {
   /*background: #4f4f4f;*/
@@ -15915,6 +15902,9 @@ tbody.file-list tr {
   display: block !important;
 }
 
+/*here we add the markup styling for various form components elements during lesson creation
+ 
+*/
 
 @charset "UTF-8";
 
@@ -16249,16 +16239,6 @@ a:focus {
   vertical-align: middle;
 }
 
-
-
-
-
-
-
-
-
-
-
 .form__checkbox .form__label:before,
 .form__checkbox .form__label:after {
   content: "";
@@ -16466,17 +16446,6 @@ a:focus {
   background-attachment: fixed;
   background-position: center;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 .md-editor .dropdown-menu li {
   cursor: pointer;
@@ -16780,6 +16749,60 @@ form#stepUpFormWithAI input[type=checkbox]:checked + label:after {
   left: calc(100% - 28px);
   transform: translateZ(0);
 }
+form#stepUpFormWithAI button {
+  position: relative;
+  overflow: hidden;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 20px;
+  font-size: 12px;
+  font-weight: bold;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: white;
+  border: none;
+  background: #0288D1;
+  border-radius: 3px;
+  transition: all 0.3s cubic-bezier(1, 0.1, 0, 0.9);
+  transform: translateZ(0) translateX(0);
+  z-index: 2;
+}
+form#stepUpFormWithAI button:before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: #01579B;
+  height: 100%;
+  width: 100%;
+  border-radius: 3px;
+  transition: all 0.3s cubic-bezier(1, 0.1, 0, 0.9);
+  transform: translateZ(0) scale(0);
+  z-index: -1;
+}
+form#stepUpFormWithAI button:hover:before, form#stepUpFormWithAI button:focus:before {
+  transform: scale(1);
+  transition: all 0.3s cubic-bezier(1, 0.1, 0, 0.9);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 .du_documentupload h4 {
@@ -16938,56 +16961,4 @@ font-size: 18px;}
     color: #fff;
     background-color: red;
 }
-
-
-
-/*form#stepUpFormWithAI button {
-  position: relative;
-  overflow: hidden;
-  height: 40px;
-  line-height: 40px;
-  padding: 0 20px;
-  font-size: 12px;
-  font-weight: bold;
-  text-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: white;
-  border: none;
-  background: #0288D1;
-  border-radius: 3px;
-  transition: all 0.3s cubic-bezier(1, 0.1, 0, 0.9);
-  transform: translateZ(0) translateX(0);
-  z-index: 2;
-}*/
-/*form#stepUpFormWithAI button:before {
-  content: "";
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  background: #01579B;
-  height: 100%;
-  width: 100%;
-  border-radius: 3px;
-  transition: all 0.3s cubic-bezier(1, 0.1, 0, 0.9);
-  transform: translateZ(0) scale(0);
-  z-index: -1;
-}*/
-/*form#stepUpFormWithAI button:hover:before, form#stepUpFormWithAI button:focus:before {
-  transform: scale(1);
-  transition: all 0.3s cubic-bezier(1, 0.1, 0, 0.9);
-}*/
-
-
-
-
-
-
-
-
-
 

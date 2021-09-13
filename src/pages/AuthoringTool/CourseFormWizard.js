@@ -24,7 +24,17 @@ import 'jquery-ui-bundle/jquery-ui.css';
 import { getLanguages } from "services/language";
 import axios from "axios"
 import swal from "sweetalert"
+import TinyMyce from './tinymyce-plugin';
 
+
+import FroalaEditor from 'froala-editor'
+
+// Load a plugin.
+import 'froala-editor/js/plugins/align.min.js'
+
+// 
+// Initialize editor.
+//
 
 import toast from "react-hot-toast";
 
@@ -49,10 +59,13 @@ import {
   getInstitutionCourses,
   getCourses,
   createAnyResource,
- 
+  getIdFromUrl,
+  getSectionsOfCourseId
+  
 
  
 } from "services/authoring"
+
 
 
 /*the base url link*/
@@ -64,9 +77,10 @@ $.widget.bridge('uibutton', $.ui.button);
 
 
 //import other jquery plugins
-//import bridget like this import jqueryBridget from "jquery-bridget"
+//import bridget like this 
+
 //hook other plugins to jquery using bridget like this in the future
-//jqueryBridget( 'plugin-designated-name', ImportedPlugin, $ );
+// jqueryBridget( 'tinymyce', TinyMyce, $ );
 
 
 
@@ -1177,7 +1191,8 @@ export default class MasterForm extends React.Component {
 
     //handle generic events
 
-
+    let T = new  TinyMyce();
+     T.render("")
   }
 
   /*{key:val}, ["id","name", "email"]*/
@@ -1707,90 +1722,6 @@ class Step1 extends React.Component {
               <div className="col-md-12 card-box">
 
 
-              <Col md="12" sm="12" lg="12">
-        
-                 
-                  <br/> <br/> <br/>
-                  <div className="container-fluid" id="lead-guy" >  
-                        
-
-                         <div className="col-lg-3 col-md-3 col-sm-6" >
-          <a href="#">
-            <div className="widget-panel widget-style-2 bg-white"
-              onClick={() => {
-
-                
-                          swal({
-                            text: 'Search for an instructor by name/email/ phone number. e.g. "saladin jake ".',
-                            content: "input",
-                            button: {
-                            text: "Search!",
-                            closeModal: false,
-                            },
-                          })
-                          .then(name => {
-                            if (!name)  return swal("No instructor email/name was entered!");
-                              // check if user existed in our initial fetch 
-                              // do not make another api request 
-                              //this saves pull request
-     
-                            let targetInstructor = instructors.find(instructor => {
-                                console.log(instructor)
-                                return (instructor?.profile?.name === name) ||  (instructor?.profile?.email === name) || (instructor?.profile?.phone_number === name)
-                            })
-                           
-                              if(targetInstructor){
-                                 let leadGuy =  $("#lead-guy").css({display:"block", color:"#fff"}).html(targetInstructor?.profile?.name)
-                                $("#author").val(targetInstructor?.profile?.id)
-                                 return swal("Success!", "The Instructor was found", "Success");
-
-                             }else{
-
-                                
-                                  swal("WOOPS!", "We could not find instructor", "error");
-                        
-                                  swal.stopLoading();
-                                 return swal.close();
-                            
-
-                             }
-                          })
-                          
-                           
-                          
-
-                    }}
-
-            >
-              <i className="md md-add text-info"></i>
-              <h2
-                className="m-0 text-dark-x counter font-600-x"
-                style={{
-                  fontFamily: "Open Sans",
-                  color: "#000",
-                  fontSize: "14px",
-                }}
-
-                
-              >
-                Add/Change Team Lead
-              </h2>
-              <div
-                className="text-muted-x m-t-5-x"
-                style={{
-                  fontFamily: "Open Sans",
-                  color: "#000",
-                  fontSize: "14px",
-                }}
-              >
-                Add
-              </div>
-            </div>
-           
-             </a>
-          </div></div>
-                
-</Col>
                 <div className="form-group col-md-6 fl-left">
                   
                   <div className="">
@@ -1855,7 +1786,89 @@ class Step1 extends React.Component {
 
 
 
-                <div class="form-group  col-md-6 fl-left">
+                
+                <div className="form-group col-md-6 fl-left">
+                 
+                  <div className="">
+                    <textarea
+                      name="description"
+                      style={{ position: "relative", zIndex: "1" }}
+                      className="form-control"
+                      placeholder="Short description"
+                       value={this.props.description}
+                     onChange={this.props.handleChange}
+                    ></textarea>
+
+                     <label
+                    className="col-md-12 col-form-label"
+                    for="short_description"
+                  >
+                    Course Short description
+                  </label>
+                  </div>
+                </div>
+
+
+
+                <div className="form-group col-md-6 fl-left">
+                 
+                  <div className="">
+                    <textarea
+                      name="overview"
+                      style={{ position: "relative", zIndex: "1" }}
+                      className="form-control"
+                      placeholder="Short description"
+                       value={this.props.overview}
+                     onChange={this.props.handleChange}
+                    ></textarea>
+
+                     <label
+                    className="col-md-12 col-form-label"
+                    for="short_description"
+                  >
+                    Course Overview
+                  </label>
+                  </div>
+                </div>
+
+
+
+                 <div className="form-group col-md-6 fl-left">
+                  <label className="col-md-12 col-form-label" for="description">
+                    Curriculum
+                  </label>
+                  <div className="">
+                    <textarea
+                      name="curriculum"
+                      style={{ position: "relative", zIndex: "1" }}
+                      className="form-control"
+                      placeholder="Short description"
+                       value={this.props.curriculum}
+                     onChange={this.props.handleChange}
+                    ></textarea>
+                  </div>
+                </div>
+
+
+                <div className="form-group col-md-6 fl-left">
+                  <label className="col-md-12 col-form-label" for="description">
+                    What You Will Learn
+                  </label>
+                  <div className="">
+                    <textarea
+                      name="learning_expectation"
+                      style={{ position: "relative", zIndex: "1" }}
+                      className="form-control"
+                      placeholder="Short description"
+                       value={this.props.learning_expectation}
+                     onChange={this.props.handleChange}
+                    ></textarea>
+                  </div>
+                </div>
+
+
+
+              <div class="form-group  col-md-6 fl-left">
                  
                   <div class="" data-select2-id="94">
                     <select
@@ -1891,67 +1904,6 @@ class Step1 extends React.Component {
                      <label class="col-md-12 col-form-label" for="level">
                     Institution
                   </label>
-                  </div>
-                </div>
-
-                <div className="form-group col-md-6 fl-left">
-                 
-                  <div className="">
-                    <textarea
-                      name="description"
-                      style={{ position: "relative", zIndex: "1" }}
-                      className="form-control"
-                      placeholder="Short description"
-                       value={this.props.description}
-                     onChange={this.props.handleChange}
-                    ></textarea>
-
-                     <label
-                    className="col-md-12 col-form-label"
-                    for="short_description"
-                  >
-                    Course Short description
-                  </label>
-                  </div>
-                </div>
-
-
-
-                <div className=" col-md-12 ">
-                 
-                  <div className="">
-                    <textarea
-                      name="overview"
-                      style={{ position: "relative", zIndex: "1" }}
-                      className="form-control"
-                      placeholder="Short description"
-                       value={this.props.overview}
-                     onChange={this.props.handleChange}
-                    ></textarea>
-
-                     <label
-                    className="col-md-12 col-form-label"
-                    for="short_description"
-                  >
-                    Course Overview
-                  </label>
-                  </div>
-                </div>
-
-
-                <div className=" col-md-12">
-                  <label className="col-md-12 col-form-label" for="description">
-                    What You Will Learn
-                  </label>
-                  <div className="">
-                    <textarea
-                      name="learning_expectation"
-                      style={{ position: "relative", zIndex: "1" }}
-                      className="form-control"
-                      placeholder="Short description"
-                       value={this.props.learning_expectation}
-                     onChange={this.props.handleChange}
-                    ></textarea>
                   </div>
                 </div>
 
@@ -2114,7 +2066,7 @@ class Step1 extends React.Component {
 
                 <h2>Card Image</h2>
 
-                    <div class="file-drop-area col-md-12" style={{background: "#f5f5f5",
+                    <div class="file-drop-area col-md-6" style={{background: "#f5f5f5",
   padding: "40px 0 20px 0", margin:"20px"}}>
                       <span class="fake-btn">Choose files</span>
                       <span class="file-msg"></span>
@@ -2132,21 +2084,7 @@ class Step1 extends React.Component {
 
                     
 
-                <div className=" col-md-6">
-                  <label className="col-md-12 col-form-label" for="description">
-                    Curriculum
-                  </label>
-                  <div className="">
-                    <textarea
-                      name="curriculum"
-                      style={{ position: "relative", zIndex: "1" }}
-                      className="form-control"
-                      placeholder="Short description"
-                       value={this.props.curriculum}
-                     onChange={this.props.handleChange}
-                    ></textarea>
-                  </div>
-                </div>
+                
 
 
 
@@ -2679,12 +2617,104 @@ class Step4 extends React.Component {
 
               <div className="row">
         <div className="col-md-12">
+
+
+
+                      <Col md="12" sm="12" lg="12">
+        
+                 
+                  <br/> <br/> <br/>
+                  <div className="container-fluid" id="lead-guy" >  
+                        
+
+                         <div className="col-lg-3 col-md-3 col-sm-6" >
+          <a href="#">
+            <div className="widget-panel widget-style-2 bg-white"
+              onClick={() => {
+
+                
+                          swal({
+                            text: 'Search for an instructor by name/email/ phone number. e.g. "saladin jake ".',
+                            content: "input",
+                            button: {
+                            text: "Search!",
+                            closeModal: false,
+                            },
+                          })
+                          .then(name => {
+                            if (!name)  return swal("No instructor email/name was entered!");
+                              // check if user existed in our initial fetch 
+                              // do not make another api request 
+                              //this saves pull request
+     
+                            let targetInstructor = instructors.find(instructor => {
+                                console.log(instructor)
+                                return (instructor?.profile?.name === name) ||  (instructor?.profile?.email === name) || (instructor?.profile?.phone_number === name)
+                            })
+                           
+                              if(targetInstructor){
+                                 let leadGuy =  $("#lead-guy").css({display:"block", color:"#fff"}).html(targetInstructor?.profile?.name)
+                                $("#author").val(targetInstructor?.profile?.id)
+                                 return swal("Success!", "The Instructor was found", "Success");
+
+                             }else{
+
+                                
+                                  swal("WOOPS!", "We could not find instructor", "error");
+                        
+                                  swal.stopLoading();
+                                 return swal.close();
+                            
+
+                             }
+                          })
+                          
+                           
+                          
+
+                    }}
+
+            >
+              <i className="md md-add text-info"></i>
+              <h2
+                className="m-0 text-dark-x counter font-600-x"
+                style={{
+                  fontFamily: "Open Sans",
+                  color: "#000",
+                  fontSize: "14px",
+                }}
+
+                
+              >
+                Add/Change Team Lead
+              </h2>
+              <div
+                className="text-muted-x m-t-5-x"
+                style={{
+                  fontFamily: "Open Sans",
+                  color: "#000",
+                  fontSize: "14px",
+                }}
+              >
+                Add
+              </div>
+            </div>
+           
+             </a>
+          </div></div>
+                
+</Col>
+
         
 
 
 
 
                 <div id="collabo-guys" className="row">
+
+
+
+
 
                     <div class="col-lg-3 col-md-3 col-sm-6">
                       <a href="#">

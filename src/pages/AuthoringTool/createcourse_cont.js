@@ -24,6 +24,10 @@ import 'jquery-ui-bundle/jquery-ui.css';
 import { getLanguages } from "services/language";
 import axios from "axios"
 import swal from "sweetalert"
+import TinyMyceRender from './tinymyce-plugin';
+
+
+
 
 
 import FroalaEditor from 'froala-editor'
@@ -68,7 +72,8 @@ import {
 
 /*the base url link*/
 let base_url = "http://gapslmsservices.herokuapp.com"; //process.env.REACT_APP_API_URL2
-
+let html_component_url ="/lms/api/create/html-component/"
+let video_component_url = "/lms/api/create/video-component/"
 // Change JQueryUI plugin names to fix name collision with Bootstrap.
 $.widget.bridge('uitooltip', $.ui.tooltip);
 $.widget.bridge('uibutton', $.ui.button);
@@ -80,6 +85,10 @@ $.widget.bridge('uibutton', $.ui.button);
 //jqueryBridget( 'plugin-designated-name', ImportedPlugin, $ );
 
 
+function validYoutubeLink(url) {
+    var p = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+    return (url.match(p)) ? RegExp.$1 : url;
+}
 
 function getCookie(name) {
   var cookieValue = null;
@@ -159,6 +168,20 @@ const createLessonSection = (el) => {
   let lessonRes = createAnyResource('POST',url,form) 
   //save to db
 }
+
+
+const createLessonComponent = (url, form) => {
+
+
+  
+  let lessonRes = createAnyResource('POST',url,form) 
+  //save to db
+  return lessonRes;
+}
+
+
+
+
 
 function formatYouTubeUrl(youtube) {
     var url = youtube;
@@ -365,6 +388,7 @@ const  handleSaveComponentTextEditor =(e) => {
     let T = allowedHeaders.getAttribute('data-basestation')
     let markdownTemplate =  allowedHeaders.getAttribute("data-markdown")
     let _title =  allowedHeaders.getAttribute("data-title")
+    let url = allowedHeaders.getAttribute("data-url")
 
         
          // alert("its editorial") 
@@ -404,6 +428,9 @@ const  handleSaveComponentTextEditor =(e) => {
       const markupBoard = document.getElementById("markup-template-content")
 
       // document.getElementById("myModalMarkdownEditorEditMode").querySelector(".visuell-view2")
+      
+     let res = createLessonComponent(url,$("#myModalMarkdownEditor-SELECT"))
+
       markupBoard.innerHTML =markdownTemplate
       $(".visuell-view").html(getTemplateType(markdownTemplate))
       Target.append(MainClone);
@@ -419,7 +446,8 @@ const  handleSaveComponentGenericForm = () => {
     let Target = $(".dynamo_" + localStorage.getItem("l_tracker"));
     let allowedHeaders =  document.getElementById("myModalGenericForm")
     let T = allowedHeaders.getAttribute('data-basestation')
-    let markdownTemplate =  allowedHeaders.getAttribute("data-markdown")
+    let markdownTemplate =  allowedHeaders.getAttribute("data-markdown");
+    let url =  allowedHeaders.getAttribute("data-url")
 
 
     let randId = uuid()
@@ -467,12 +495,19 @@ const  handleSaveComponentGenericForm = () => {
                      
                     // }
                 }) 
+
+
     MainClone.querySelector(".fa-trash").addEventListener("click", (e) => {
              handleWidgetRemove(e.target)
         })
+
+    let res = createLessonComponent(url,$("#myModalGenericForm-SELECT"))
+
     MainClone.querySelector(".unit_title_place_holder-generic").innerHTML =   $("#title-unit").val()  //add validation for unit component
     MainClone.querySelector(".unit_content_place_holder-generic").innerHTML  = $("#title-unit2").val() || "Edit this content"
     Target.append(MainClone);
+
+
 
   }
 
@@ -705,6 +740,8 @@ export default class MasterForm extends React.Component {
     this.setState({
       currentStep: step,
     });
+
+
   }
 
    /*next step*/
@@ -1056,8 +1093,19 @@ export default class MasterForm extends React.Component {
          console.log("some error occured")
        }
     })("run-logic-sequence")
-
+     let T = new  TinyMyceRender();
+     T.render("")
     //handle generic events
+   //description overview learning_expectation curriculum prerequisite input-area2
+   //  T.render("description")
+   //  T.render("overview")
+   //  T.render("learning_expectation")
+   //  T.render("curriculum")
+   //  T.render("prerequisite")
+   //  T.render("input-area2")
+   // T.render("input-area")
+    // editor.render("")
+    // editor.render("")
    
 
 
@@ -1090,6 +1138,14 @@ export default class MasterForm extends React.Component {
       
          $('select[name="'+k+'"]').attr('selected', $(this).text() == a[k]);
       }
+
+
+      if($('textarea[name="'+k+'"]')){
+      
+         $('textarea[name="'+k+'"]').val(a[k]);
+      }
+
+
 
 
       if($('[name="'+k+'"]')){
@@ -1259,10 +1315,10 @@ export default class MasterForm extends React.Component {
       <Fragment>
         <AddHead />
 
-        <div className="row" id="container-fullscreen">
+        <div className="row" id="container-fullscreen" style={{margin:"10px"}}>
           <div className="col-md-12">
             <div className="card">
-              <div className="card-body">
+              <div className="card-body" >
                 <div id="make-fixed-on-fullscreen">
                   <h4 className="header-title mb-3">
                     Course adding form{" "}
@@ -1585,6 +1641,8 @@ class Step1 extends React.Component {
   constructor(props){
     super(props)
 
+
+
     this.state ={
       
     }
@@ -1615,88 +1673,7 @@ class Step1 extends React.Component {
               <div className="col-md-12 card-box">
 
 
-              <Col md="12" sm="12" lg="12">
-        
-                 
-                  <br/> <br/> <br/>
-                  <div className="container-fluid" id="lead-guy" >  
-                        
-
-                         <div className="col-lg-3 col-md-3 col-sm-6" >
-          <a href="#">
-            <div className="widget-panel widget-style-2 bg-white">
-              <i className="md md-add text-info"></i>
-              <h2
-                className="m-0 text-dark-x counter font-600-x"
-                style={{
-                  fontFamily: "Open Sans",
-                  color: "#000",
-                  fontSize: "14px",
-                }}
-
-                onClick={() => {
-
-                
-                          swal({
-                            text: 'Search for an instructor by name/email/ phone number. e.g. "saladin jake ".',
-                            content: "input",
-                            button: {
-                            text: "Search!",
-                            closeModal: false,
-                            },
-                          })
-                          .then(name => {
-                            if (!name)  return swal("No instructor email/name was entered!");
-                              // check if user existed in our initial fetch 
-                              // do not make another api request 
-                              //this saves pull request
-     
-                            let targetInstructor = instructors.find(instructor => {
-                                console.log(instructor)
-                                return (instructor?.profile?.name === name) ||  (instructor?.profile?.email === name) || (instructor?.profile?.phone_number === name)
-                            })
-                           
-                              if(targetInstructor){
-                                 let leadGuy =  $("#lead-guy").css({display:"block", color:"#fff"}).html(targetInstructor?.profile?.name)
-                                $("#author").val(targetInstructor?.profile?.id)
-                                 return swal("Success!", "The Instructor was found", "Success");
-
-                             }else{
-
-                                
-                                  swal("Oh noes!", "We could not find instructor", "error");
-                        
-                                  swal.stopLoading();
-                                 return swal.close();
-                            
-
-                             }
-                          })
-                          
-                           
-                          
-
-                    }}
-              >
-                Add/Change Team Lead
-              </h2>
-              <div
-                className="text-muted-x m-t-5-x"
-                style={{
-                  fontFamily: "Open Sans",
-                  color: "#000",
-                  fontSize: "14px",
-                }}
-              >
-                Add
-              </div>
-            </div>
-           
-             </a>
-          </div></div>
-                
-</Col>
-                <div className="form-group col-md-6 fl-left">
+                                <div className="form-group col-md-6 fl-left">
                   
                   <div className="">
                     <input
@@ -1739,7 +1716,7 @@ class Step1 extends React.Component {
                  
                   <div className="">
                     <input
-                      style={{ position: "relative", zIndex: "1" }}
+                      style={{ position: "relative", zIndex: "1", marginTop:"-10px" }}
                       type="text"
                       className="form-control"
                       id="course_name"
@@ -1760,7 +1737,89 @@ class Step1 extends React.Component {
 
 
 
-                <div class="form-group  col-md-6 fl-left">
+                
+                <div className="form-group col-md-6 fl-left">
+                 
+                  <div className="">
+                    <textarea
+                      name="description"
+                      style={{ position: "relative", zIndex: "1" }}
+                      className="form-control"
+                      placeholder="Short description"
+                       value={this.props.description}
+                     onChange={this.props.handleChange}
+                    ></textarea>
+
+                     <label
+                    className="col-md-12 col-form-label"
+                    for="short_description"
+                  >
+                    Course Short description
+                  </label>
+                  </div>
+                </div>
+
+
+
+                <div className="form-group col-md-6 fl-left">
+                 
+                  <div className="">
+                    <textarea
+                      name="overview"
+                      style={{ position: "relative", zIndex: "1" }}
+                      className="form-control"
+                      placeholder="Short description"
+                       value={this.props.overview}
+                     onChange={this.props.handleChange}
+                    ></textarea>
+
+                     <label
+                    className="col-md-12 col-form-label"
+                    for="short_description"
+                  >
+                    Course Overview
+                  </label>
+                  </div>
+                </div>
+
+
+
+                 <div className="form-group col-md-6 fl-left">
+                  <label className="col-md-12 col-form-label" for="description">
+                    Curriculum
+                  </label>
+                  <div className="">
+                    <textarea
+                      name="curriculum"
+                      style={{ position: "relative", zIndex: "1" }}
+                      className="form-control"
+                      placeholder="Short description"
+                       value={this.props.curriculum}
+                     onChange={this.props.handleChange}
+                    ></textarea>
+                  </div>
+                </div>
+
+
+                <div className="form-group col-md-6 fl-left">
+                  <label className="col-md-12 col-form-label" for="description">
+                    What You Will Learn
+                  </label>
+                  <div className="">
+                    <textarea
+                      name="learning_expectation"
+                      style={{ position: "relative", zIndex: "1" }}
+                      className="form-control"
+                      placeholder="Short description"
+                       value={this.props.learning_expectation}
+                     onChange={this.props.handleChange}
+                    ></textarea>
+                  </div>
+                </div>
+
+
+
+              <div class="form-group  col-md-6 fl-left">
                  
                   <div class="" data-select2-id="94">
                     <select
@@ -1796,71 +1855,6 @@ class Step1 extends React.Component {
                      <label class="col-md-12 col-form-label" for="level">
                     Institution
                   </label>
-                  </div>
-                </div>
-
-                <div className="form-group col-md-6 fl-left">
-                 
-                  <div className="">
-                    <textarea
-                      name="description"
-                      style={{ position: "relative", zIndex: "1",height:"300px" }}
-                      className="form-control"
-                      placeholder="Short description"
-                       value={this.props.description}
-                     onChange={this.props.handleChange}
-                     id="description"
-                    ></textarea>
-
-                     <label
-                    className="col-md-12 col-form-label"
-                    for="short_description"
-                  >
-                    Course Short description
-                  </label>
-                  </div>
-                </div>
-
-
-
-                <div className=" col-md-12 ">
-                 
-                  <div className="">
-                    <textarea
-                      name="overview"
-                      style={{ position: "relative", zIndex: "1",height:"300px" }}
-                      className="form-control"
-                      placeholder="Short description"
-                       value={this.props.overview}
-                       id="overview"
-                     onChange={this.props.handleChange}
-                    ></textarea>
-
-                     <label
-                    className="col-md-12 col-form-label"
-                    for="short_description"
-                  >
-                    Course Overview
-                  </label>
-                  </div>
-                </div>
-
-
-                <div className=" col-md-12">
-                  <label className="col-md-12 col-form-label" for="description">
-                    What You Will Learn
-                  </label>
-                  <div className="">
-                
-                    <textarea
-                      name="learning_expectation"
-                      style={{ position: "relative", zIndex: "1",height:"300px" }}
-                      className="form-control"
-                      placeholder="Short description"
-                       value={this.props.learning_expectation}
-                     onChange={this.props.handleChange}
-                     id="learning_expectation"
-                    ></textarea>
                   </div>
                 </div>
 
@@ -2014,44 +2008,39 @@ class Step1 extends React.Component {
 
 
 
+
+
+
+
+
+
+
                 <h2>Card Image</h2>
 
-                    <div class="file-drop-area">
+                    <div class="file-drop-area col-md-6" style={{background: "#f5f5f5",
+  padding: "40px 0 20px 0", margin:"20px"}}>
                       <span class="fake-btn">Choose files</span>
-                      <span class="file-msg">or drag and drop files here</span>
+                      <span class="file-msg"></span>
                       <input name="card_image" class="file-input" type="file" multiple   accept="image/*"
                                value={this.props.card_image}
                                onChange={this.props.handleChange} />
 
-                                 <div id="feedback">
+                                 <div id="feedback" style={{display:"none"}}>
     
   </div>
   
-  <label id="progress-label" for="progress"></label>
-  <progress id="progress" value="0" max="100"> </progress>
+  <label  id="progress-label" for="progress" style={{display:"none"}}></label>
+  <progress id="progress" value="0" max="100" style={{display:"none"}}> </progress>
                     </div>
 
                     
 
-                <div className=" col-md-6">
-                  <label className="col-md-12 col-form-label" for="description">
-                    Curriculum
-                  </label>
-                  <div className="">
-                    
-                    <textarea
-                      name="curriculum"
-                      style={{ position: "relative", zIndex: "1",height:"300px" }}
-                      className="form-control"
-                      placeholder="Short description"
-                       value={this.props.curriculum}
-                     onChange={this.props.handleChange}
-                     id="curriculum"
-                    ></textarea>
-                  </div>
-                </div>
+                
 
 
+
+
+                
 
 
                 
@@ -2562,6 +2551,94 @@ class Step4 extends React.Component {
 
               <div className="row">
         <div className="col-md-12">
+
+
+
+                      <Col md="12" sm="12" lg="12">
+        
+                 
+                  <br/> <br/> <br/>
+                  <div className="container-fluid" id="lead-guy" >  
+                        
+
+                         <div className="col-lg-3 col-md-3 col-sm-6" >
+          <a href="#">
+            <div className="widget-panel widget-style-2 bg-white"
+              onClick={() => {
+
+                
+                          swal({
+                            text: 'Search for an instructor by name/email/ phone number. e.g. "saladin jake ".',
+                            content: "input",
+                            button: {
+                            text: "Search!",
+                            closeModal: false,
+                            },
+                          })
+                          .then(name => {
+                            if (!name)  return swal("No instructor email/name was entered!");
+                              // check if user existed in our initial fetch 
+                              // do not make another api request 
+                              //this saves pull request
+     
+                            let targetInstructor = instructors.find(instructor => {
+                                console.log(instructor)
+                                return (instructor?.profile?.name === name) ||  (instructor?.profile?.email === name) || (instructor?.profile?.phone_number === name)
+                            })
+                           
+                              if(targetInstructor){
+                                 let leadGuy =  $("#lead-guy").css({display:"block", color:"#fff"}).html(targetInstructor?.profile?.name)
+                                $("#author").val(targetInstructor?.profile?.id)
+                                 return swal("Success!", "The Instructor was found", "Success");
+
+                             }else{
+
+                                
+                                  swal("WOOPS!", "We could not find instructor", "error");
+                        
+                                  swal.stopLoading();
+                                 return swal.close();
+                            
+
+                             }
+                          })
+                          
+                           
+                          
+
+                    }}
+
+            >
+              <i className="md md-add text-info"></i>
+              <h2
+                className="m-0 text-dark-x counter font-600-x"
+                style={{
+                  fontFamily: "Open Sans",
+                  color: "#000",
+                  fontSize: "14px",
+                }}
+
+                
+              >
+                Add/Change Team Lead
+              </h2>
+              <div
+                className="text-muted-x m-t-5-x"
+                style={{
+                  fontFamily: "Open Sans",
+                  color: "#000",
+                  fontSize: "14px",
+                }}
+              >
+                Add
+              </div>
+            </div>
+           
+             </a>
+          </div></div>
+                
+</Col>
+
         
 
 
@@ -3196,9 +3273,7 @@ const saveMarkdownEditContent = () => {
         );
        
         markdownTemplate = "[pb_html][/pb_text]"
-        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_text]");
-
-        //add other form fields from the db structure
+        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_text]")
         break;
       case "[pb_html][/pb_iframe]":
          _title ="HTML: I-frame Component"
@@ -3211,13 +3286,23 @@ const saveMarkdownEditContent = () => {
         markdownTemplate = "[pb_html][/pb_iframe]"
         htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_iframe]")
 
+        //change the field of the modal to match the widget module
+        // $(".root-block").css({
+        //   display:"none"
+        // })
+
+
         $(".iframe-box").css({
           display:"block"
         })
+
+
+
+
          //change the field of the modal to match the widget module
-        $(".change-title").html("I frame Title")
+        // $(".change-title").html("I frame Title")
         $(".change-title2").html("Add a link to the resource page ( Website )")
-        $(".change-description").html("Iframe Component")
+        // $(".change-description").html("Iframe Component")
         
         break;
 
@@ -3372,12 +3457,15 @@ const saveMarkdownEditContent = () => {
           markdownTemplate =  "[pb_html][/pb_broadcasting]"
         htmlEquivalentTemplate =  getTemplateType("[pb_html][/pb_broadcasting]")
 
+
         //change the field of the modal to match the widget module
         $(".change-title").html("Meeting Link")
         $(".change-title2").html("Meeting ID")
         $(".change-description").html("Add your meeting details")
 
-
+         $(".iframe-box").css({
+          display:"none"
+        })
 
 
         break;
@@ -3397,10 +3485,16 @@ const saveMarkdownEditContent = () => {
         $(".change-title2").html("Meeting ID")
         $(".change-description").html("Add your meeting details")
 
+        // $(".iframe-box").css({
+        //   display:"none"
+        // })
+
         break;
       case "[pb_html][/pb_you_tube]":
          document.querySelector(".main-videosection2").style.display="block" //hide if not video
-   
+
+
+         
        _title ="HTML : Video YouTube"
         Clone = launchFormBoxIntoModal(
           "[pb_html][/pb_you_tube]",
@@ -3411,7 +3505,7 @@ const saveMarkdownEditContent = () => {
           markdownTemplate = "[pb_html][/pb_you_tube]"
         htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_you_tube]")
 
-
+   
          //change the field of the modal to match the widget module
         $(".change-title").html("Video Title")
         $(".change-title2").html("Video Link")
@@ -3420,6 +3514,10 @@ const saveMarkdownEditContent = () => {
         break;
        case "[pb_html][/pb_vimeo]":
          document.querySelector(".main-videosection2").style.display="block" //hide if not video
+
+         $(".iframe-box").css({
+          display:"none"
+        })
    
         _title ="HTML : Vimeo Video  "
 
@@ -3480,6 +3578,7 @@ const saveMarkdownEditContent = () => {
       allowedHeaders =  document.getElementById("myModalGenericForm")
       allowedHeaders.setAttribute('data-basestation', ".dynamo_" + localStorage.getItem("l_tracker"))
       allowedHeaders.setAttribute("data-markdown", TemplateType)
+      allowedHeaders.setAttribute("data-url",video_component_url);
 
     }else{
 
@@ -3488,6 +3587,7 @@ const saveMarkdownEditContent = () => {
       allowedHeaders.setAttribute('data-basestation', ".dynamo_" + localStorage.getItem("l_tracker"))
       allowedHeaders.setAttribute("data-markdown", TemplateType)
       allowedHeaders.setAttribute("data-title",componentTitle)
+      allowedHeaders.setAttribute("data-url",html_component_url);
 
 
     }
@@ -4382,28 +4482,61 @@ const saveMarkdownEditContent = () => {
                   <p class="change-description">Add a title to the unit</p>
                   <div class="row">
                     <div class="divided col-md-12">
+
+                    <form id="myModalGenericForm-SELECT" enctype="application/x-www-form-urlencoded">
                       <div class="form-group root-block">
-                        <label class="change-title">Title</label>
-                        <input type="text" class="form-control" id="title-unit" />
+                        <label class="change-title" >Name</label>
+                        <input type="text" class="form-control" id="editor-html-name" name="name"/>
+                      </div>
+
+
+                      <div class="form-group root-block" >
+                        
+                        <input type="hidden" name="lesson" class="form-control" id="lesson-editor-id2"  />
+                      </div>
+
+
+                      <div class="form-group root-block">
+                        <label class="change-title">Description</label>
+                        <input type="text" name="description" class="form-control" id="editor-html-description" />
+                      </div>
+
+                      <div class="form-group root-block">
+                        <label class="change-title">Content Type </label>
+                        <select id="editor-html-type" class="form-control" name="component_type">
+                              <option value="1">Video</option>    
+                              <option value="2">HTML</option>
+                              <option value="3">Problem</option>
+                              <option value="4">Discussion</option>
+                          
+                      </select>
+                      </div>
+
+                      <div class="form-group">
+                       <select class="form-control" id="editor-html-content-type" name="content_type">
+                                <option value="1">I-Frame</option>
+                                <option value="2">HTML TEXT</option>  
+                                <option value="3">HYBRID</option>
+                        </select>
                       </div>
 
 
                       <div class="form-group root-block2" >
-                        <label class="change-title2">Title 2</label>
+                        <label class="change-title2">Embedded url</label>
                         <input onInput={(e) =>{
                             //if its iframe component
                             let board = document.querySelector("#projector-view")
-                            if(document.querySelector(".iframe-box").style.display=="block"){
-                              document.querySelector(".iframe-boxer").src= e.target.value
-                              board.src= e.target.value
-                            }else if(document.querySelector(".main-videosection2").style.display=="block"){
-                               document.querySelector(".main-videosection-xx").src= e.target.value
-                                board.src= e.target.value
+                            board.src = e.target.value
+
+                             if(validYoutubeLink(e.target.value)){
+                              $(".iframe-box").html('<iframe src="https://www.youtube.com/embed/' + validYoutubeLink(e.target.value) + '" id="videoObject" type="text/html" width="100%" height="265" frameborder="0" allowfullscreen></iframe>');
+
+                            }else{
+                              $(".iframe-box").html('<iframe src="' + e.target.value + '" id="videoObject" type="text/html" width="100%" height="265" frameborder="0" allowfullscreen></iframe>');
+
                             }
-
-
-                            //if its video component
-                        }} type="text" class="form-control" id="title-unit2" />
+                                                        //if its video component
+                        }} type="text" name="embeded_url" class="form-control" id="title-unit2" />
                       </div>
 
 
@@ -4424,8 +4557,8 @@ const saveMarkdownEditContent = () => {
 </div>
                                         </section>
                                       </div>
-
-
+                         </form>
+                      
                     </div>
                   </div>
                 </div>
@@ -4876,15 +5009,80 @@ const saveMarkdownEditContent = () => {
             </div>
           </div>
           <div class="content-area" id="input-output">
-            <textarea id="input-area" class="visuell-view"  rows="30" cols="50">
+
+          <form id="myModalMarkdownEditor-SELECT" enctype="application/x-www-form-urlencoded">
+
+
+          <div class="form-group root-block">
+                        <label class="change-title" >Name</label>
+                        <input type="text" class="form-control" id="editor-html-name" name="name"/>
+                      </div>
+
+
+                      <div class="form-group root-block" >
+                        
+                        <input type="hidden" name="lesson" class="form-control" id="lesson-editor-id"  />
+                      </div>
+
+
+                      <div class="form-group root-block">
+                        <label class="change-title">Description</label>
+                        <input type="text" name="description" class="form-control" id="editor-html-description" />
+                      </div>
+
+                      <div class="form-group root-block">
+                        <label class="change-title">Component Type </label>
+                        <select id="editor-html-type" class="form-control" name="component_type">
+      
+      
+          
+                              <option value="1">Video</option>
+                            
+                        
+                            
+                              <option value="2">HTML</option>
+                            
+                        
+                            
+                              <option value="3">Problem</option>
+                            
+                        
+                            
+                              <option value="4">Discussion</option>
+                            
+                        
+                      </select>
+                      </div>
+
+                      <div class="form-group">
+                       <select class="form-control" id="editor-html-content-type" name="content_type">
+      
+      
+                              
+                                <option value="1">I-Frame</option>
+                              
+                          
+                              
+                                <option value="2">HTML TEXT</option>
+                              
+                          
+                              
+                                <option value="3">HYBRID</option>
+                              
+                          
+                        </select>
+                      </div>
+
+            <textarea id="input-area" class="visuell-view" name="html_text"  rows="30" cols="50">
                   Edit your content Editor 
                   (What you see is what you get)
       Add text content(plain text), 
           markupsand pure html code
-      
   
-             
             </textarea>
+
+
+            </form>
             <div id="output-area" class="html-view"></div>
             <p class="preview-message">Preview Mode</p>
           </div>

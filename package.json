@@ -54,6 +54,7 @@
     "summernote-nodejs": "^1.0.4",
     "sweetalert": "^2.1.2",
     "swiper": "^5.4.5",
+    "tinymce": "^5.9.2",
     "yup": "^0.32.9"
   },
   "scripts": {
