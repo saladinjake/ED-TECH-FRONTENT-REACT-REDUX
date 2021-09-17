@@ -754,7 +754,7 @@ export default class MasterForm extends React.Component {
 
   goToStep(e, step) {
     e.preventDefault();
-    e.target.parentElement.style.border = "1px solid #eee";
+    // e.target.parentElement.style.border = "1px solid #eee";
     e.target.parentElement.style.padding = "2px";
     this.setState({
       currentStep: step,
@@ -1278,6 +1278,7 @@ export default class MasterForm extends React.Component {
         <a style="margin-right:10px;background:#fff;color:#000"
             href="#myModalEdit" role="button" data-toggle="modal"
           data-id="${"miller_" + insertionId}"
+          data-eid="${insertionId}"
             onclick="editSection(this);localStorage.setItem('given_id','dynamic_section_'+'${insertionId}');localStorage.setItem('tracker','${insertionId}');"       
           >
                 
@@ -1824,8 +1825,19 @@ ondragenter="return dragEnterIntoSection(event)"
                       style={{ background: "#f6f6f6", height: "45px" }}
                     >
                       <a
-                        onClick={(e) => {
-                          this.goToStep(e, 1);
+                        onClick={async (e) => {
+                            this.goToStep(e, 1);
+                            await  this.fetchContent()
+                             $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
+
+                          setTimeout(()=> {
+                            let T = new  TinyMyceRender();
+                          T.render("")
+
+                          },3000)
+                          
                         }}
                         href="#basic"
                         data-toggle="tab"
@@ -1836,8 +1848,17 @@ ondragenter="return dragEnterIntoSection(event)"
                       </a>
 
                       <a
-                        onClick={(e) => {
+                        onClick={async (e) => {
                           this.goToStep(e, 2);
+                          await  this.fetchContent()
+                          $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
+                           setTimeout(()=> {
+                            let T = new  TinyMyceRender();
+                          T.render("")
+
+                          },3000)
                         }}
                         href="#outcomes"
                         data-toggle="tab"
@@ -1848,8 +1869,18 @@ ondragenter="return dragEnterIntoSection(event)"
                       </a>
 
                       <a
-                        onClick={(e) => {
+                        onClick={ async (e) => {
+                          await  this.fetchContent()
                           this.goToStep(e, 3);
+                          $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
+
+                           setTimeout(()=> {
+                            let T = new  TinyMyceRender();
+                          T.render("")
+
+                          },3000)
                         }}
                         href="#requirements"
                         data-toggle="tab"
@@ -1868,6 +1899,14 @@ ondragenter="return dragEnterIntoSection(event)"
                       <a
                         onClick={(e) => {
                           this.goToStep(e, 4);
+                          $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
+                           setTimeout(()=> {
+                            let T = new  TinyMyceRender();
+                          T.render("")
+
+                          },3000)
                         }}
                         href="#seo"
                         data-toggle="tab"
@@ -1883,6 +1922,14 @@ ondragenter="return dragEnterIntoSection(event)"
                       <a
                         onClick={(e) => {
                           this.goToStep(e, 5);
+                          $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
+                           setTimeout(()=> {
+                            let T = new  TinyMyceRender();
+                          T.render("")
+
+                          },3000)
                         }}
                         href="#pricing"
                         data-toggle="tab"
@@ -1897,6 +1944,14 @@ ondragenter="return dragEnterIntoSection(event)"
                       <a
                         onClick={(e) => {
                           this.goToStep(e, 8);
+                          $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
+                           setTimeout(()=> {
+                            let T = new  TinyMyceRender();
+                          T.render("")
+
+                          },3000)
                         }}
                         href="#resource"
                         data-toggle="tab"
@@ -1909,6 +1964,11 @@ ondragenter="return dragEnterIntoSection(event)"
                       <a
                         onClick={ async(e) => {
                           this.goToStep(e, 6);
+
+                          $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
+
                           $("#js-parent").html("")
                           await this.courseDetailJson()
                         }}
@@ -1923,6 +1983,14 @@ ondragenter="return dragEnterIntoSection(event)"
                       <a
                         onClick={(e) => {
                           this.goToStep(e, 7);
+                          $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
+                           setTimeout(()=> {
+                            let T = new  TinyMyceRender();
+                          T.render("")
+
+                          },3000)
                         }}
                         href="#finish"
                         data-toggle="tab"
@@ -3033,7 +3101,7 @@ class Step4 extends React.Component {
 
 
 
-                      <Col md="12" sm="12" lg="12">
+                      <div class="col-md-12">
         
                  
                   <br/> <br/> <br/>
@@ -3116,14 +3184,14 @@ class Step4 extends React.Component {
              </a>
           </div></div>
                 
-</Col>
+</div>
 
         
 
 
 
 
-                <div id="collabo-guys" className="row">
+                <div id="collabo-guys" className="col-md-12">
 
                     <div class="col-lg-3 col-md-3 col-sm-6">
                       <a href="#">
@@ -4241,24 +4309,41 @@ const saveMarkdownEditContent = () => {
                 <p>Add a title to the section</p>
                 <div class="row">
                   <div class="divided col-md-12">
+                  <form id="form-edit-section" enctype="application/x-www-form-urlencoded; charset=UTF-8">
+                    
+
                     <div class="form-group">
                       <label>Title</label>
                       <input type="text" class="form-control" id="title_edit" />
                     </div>
 
-                    <div class="form-group" style={{ display: "none" }}>
-                      <label>Section ID</label>
+
+                    <div class="form-group">
+                      <label>Position ID</label>
                       <input
                         type="text"
                         class="form-control"
-                        id="section_id_edit"
+                        id="position_id"
+                        name="position_id"
                       />
                     </div>
 
+
+                    
+
                     <div class="form-group">
                       <label>Overview</label>
-                      <Editor placeholder="overview" />
+                      <textarea placeholder="overview" name="overview" id="overview" ></textarea>
                     </div>
+
+
+
+                    <div class="form-group" style={{display:"none"}}>
+                      <label>Course ID</label>
+                      <input placeholder="overview" name="course" id="course" type="text"/>
+                    </div>
+       </form>
+
                   </div>
                 </div>
               </div>
@@ -6073,6 +6158,10 @@ window.editSection = (el) => {
       .find(".pcs")
       .text()
   );
+
+  let form = $("#form-edit-section")
+  let url = "/lms/api/update/section/"+ el.dataset.eid
+  let sectionRes = createAnyResource('PATCH',url,form)
 };
 
 window.editSubSection = (el) => {
@@ -6087,6 +6176,10 @@ window.editSubSection = (el) => {
       .find(".subsect")
       .text()
   );
+  let form = $("#form-edit-subsection")
+  let url = "/lms/api/update/subsection/"+ el.dataset.eid
+  let sectionRes = createAnyResource('PATCH',url,form)
+
 };
 
 window.replicateSection = () => {

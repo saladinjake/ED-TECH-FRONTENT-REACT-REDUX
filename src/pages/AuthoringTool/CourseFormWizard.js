@@ -723,6 +723,17 @@ Editor.formats = [
 export default class MasterForm extends React.Component {
   constructor(props) {
     super(props);
+
+    let sname,scode, sauthor,sinstitution;
+    if(localStorage.getItem("name")){
+      sname= localStorage.getItem("name") || "";
+      scode = localStorage.getItem("course_code") || "";
+      sauthor = localStorage.getItem("author") || "" ;
+      sinstitution = localStorage.getItem("institution") || ""
+
+    }
+
+
     this.state = {
       /*multistep logic data*/
       currentStep: 1,
@@ -738,8 +749,11 @@ export default class MasterForm extends React.Component {
       //state fields
       /*request form data*/
       
-        name: "",
-        code: "",
+        name: sname,
+        code: scode,
+        institution: sinstitution,   //keypair preporpulated set of inst id
+        author: sauthor,  //keypair preporpulated set of author id
+
         run: "",
         card_image: "",
         intro_video: "",
@@ -762,8 +776,7 @@ export default class MasterForm extends React.Component {
         requirement_no_of_week: 1,  //int
         grace_period_after_deadline: 1, //int
         publication_status: 2,  //int
-        institution: "",   //keypair preporpulated set of inst id
-        author: "",  //keypair preporpulated set of author id
+        
         prerequisite: [
               //key pairs ids of courses
         ],
@@ -832,8 +845,8 @@ export default class MasterForm extends React.Component {
 
   goToStep(e, step) {
     e.preventDefault();
-    e.target.parentElement.style.border = "1px solid #eee";
-    e.target.parentElement.style.padding = "2px";
+    // e.target.parentElement.style.border = "1px solid #eee";
+    // e.target.parentElement.style.padding = "2px";
     this.setState({
       currentStep: step,
     });
@@ -861,6 +874,7 @@ export default class MasterForm extends React.Component {
   /*with one single validation hook function for all form fields*/
   handleChange =   (event) => {
       let { name, value } = event.target;
+      localStorage.setItem(name, value)
        let imageUrl = ""
       console.log(event.target.value)
       if(event.target.name == "entrance_exam_required"){
@@ -883,6 +897,8 @@ export default class MasterForm extends React.Component {
               this.validateField(name, value);
             }
       );
+
+
 
 
       }else if(event.target.name == "card_image"){
@@ -962,6 +978,7 @@ export default class MasterForm extends React.Component {
         });
       //});
       }else{
+        localStorage.setItem(name, value)
 
          //logic 1 - automate state processing of form data
         //dynamically hooks state fields to current value
@@ -1189,6 +1206,15 @@ export default class MasterForm extends React.Component {
        }
     })("run-logic-sequence")
 
+    // let formEl = $("#stepUpFormWithAI")
+    // if(localStorage.getItem("name")){
+    //   document.getElementById("course_name").value = localStorage.getItem("name") ;
+    //   document.getElementById("course_code").value = localStorage.getItem("course_code") ;
+    //   document.getElementById("author").value = localStorage.getItem("author")  ;
+    //   document.getElementById("institution").value =localStorage.getItem("institution")
+
+    // }
+
     //handle generic events
 
     let T = new  TinyMyce();
@@ -1331,7 +1357,7 @@ export default class MasterForm extends React.Component {
     this.persistData("mode","CREATE_MODE")
     let url=   "/lms/api/create/course/"
            //this is a create action
-    this.saveOrUpdateData("create", 'CREATE_MODE', url, $("form#stepUpFormWithAI") )
+    this.saveOrUpdateData("create", 'CREATE_MODE', url, $("form#create-course") )
     
   }
 
@@ -1379,8 +1405,18 @@ export default class MasterForm extends React.Component {
                       style={{ background: "#f6f6f6", height: "45px" }}
                     >
                       <a
-                        onClick={(e) => {
+                        onClick={ async (e) => {
                           this.goToStep(e, 1);
+                            await  this.fetchContent()
+                             $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
+
+                          setTimeout(()=> {
+                            let T = new  TinyMyce();
+                          T.render("")
+                        },3000)
+
                         }}
                         href="#basic"
                         data-toggle="tab"
@@ -1445,10 +1481,23 @@ export default class MasterForm extends React.Component {
                       {/*</li>*/}
 
                       <a
-                        onClick={(e) => {
+                        onClick={ async (e) => {
                           // $(e.target.parentElement).css({background:"#fff"})
                           // swal("WOOPS!", "You need to fill out the required fields marked asterisk (*)", "error");
+                           
+
                            this.goToStep(e, 5);
+                            await  this.fetchContent()
+                             $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
+
+                          setTimeout(()=> {
+                            let T = new  TinyMyce();
+                          T.render("")
+
+                        },3000)
+
                         }}
                         href="#pricing"
                         data-toggle="tab"
@@ -1697,6 +1746,9 @@ class Step1 extends React.Component {
       
     }
 
+    
+     
+
     this.dropRef = createRef()
   }
 
@@ -1721,7 +1773,7 @@ class Step1 extends React.Component {
           <div className="tab-pane active" id="basic">
             <div className="row">
               <div className="col-md-12 card-box">
-
+           <form id="create-course" enctype="">
 
                 <div className="form-group col-md-6 fl-left">
                   
@@ -2110,6 +2162,9 @@ class Step1 extends React.Component {
                   </button>
                 </div>
 
+
+                </form>
+
                 <br />
                 <br />
                 <br />
@@ -2183,6 +2238,10 @@ class Step1 extends React.Component {
         <br />
       </React.Fragment>
     );
+  }
+
+  componentDidMount(){
+
   }
 }
 
@@ -2656,8 +2715,9 @@ class Step4 extends React.Component {
                               if(targetInstructor){
                                  let leadGuy =  $("#lead-guy").css({display:"block", color:"#fff"}).html(targetInstructor?.profile?.name)
                                 $("#author").val(targetInstructor?.profile?.id)
+                                localStorage.setItem("author",targetInstructor?.profile?.id)
                                  return swal("Success!", "The Instructor was found", "Success");
-
+                
                              }else{
 
                                 

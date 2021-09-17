@@ -92,6 +92,7 @@ ondragenter="return dragEnterIntoSection(event)"
         <a style="margin-right:10px;background:#fff;color:#000"
             href="#myModalSubSectionEdit" role="button" data-toggle="modal"
           data-id="${"muu_" + muu_counter}"
+          data-eid="${muu_counter}"
             onclick="editSubSection(this);localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"       
           >
                 
@@ -182,7 +183,7 @@ ondragenter="return dragEnterIntoSection(event)"
        $("#" + localStorage.getItem("tracker"))
       .append(template);
 
-      
+
   } else {
        $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
       setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
@@ -248,6 +249,7 @@ export const addSectionData = (response) => {
         <a style="margin-right:10px;background:#fff;color:#000"
             href="#myModalEdit" role="button" data-toggle="modal"
           data-id="${"miller_" + insertionId}"
+          data-eid="${insertionId}"
             onclick="editSection(this);localStorage.setItem('given_id','dynamic_section_'+'${insertionId}');localStorage.setItem('tracker','${insertionId}');"       
           >
                 
@@ -428,6 +430,7 @@ export const addLessonData = (response) => {
         <a style="margin-right:10px;background:#fff;color:#000"
             href="#myModalSubSectionEdit" role="button" data-toggle="modal"
           data-id="${"muu_" + muu_counter}"
+          data-eid="${muu_counter}"
             onclick="localStorage.setItem('given_lsid','dynamic_lsubsection_'+${muu_counter});localStorage.setItem('ls_tracker',${muu_counter});"       
           >
                 
@@ -461,6 +464,7 @@ export const addLessonData = (response) => {
         <ul class="dropdown-menu" style="margin-left:40px" >
                 <li><a class="dropdown-item"   href="#myModalEdit" role="button" data-toggle="modal"
           data-id="${"lmuu_" + muu_counter}"
+          data-eid="${muu_counter}"
             onclick='setTargetLessonComponent("${muu_counter}")'       
           >Edit </a></li>
 
@@ -668,6 +672,38 @@ export const createAnyResource = (mode="post",
   // if(formEl.attr("id")=="stepUpFormWithAI" || formEl.attr("id")=="stepUpFormWithAI2"){
   //   formData.append("filename", $("input[type=file]")[0].files[0]); //
   // }
+
+
+
+
+  //if its course  creation form
+        if(formEl.attr("id")=="create-course" ){
+          // check for basic required fields validation requirements
+          formEl.find("#course_name").val(localStorage.getItem("name"))  ;
+          formEl.find("#course_code").val(localStorage.getItem("code"))  ;
+          formEl.find("#author").val(localStorage.getItem("author")) ;
+          formEl.find("#institution").val(localStorage.getItem("institution")) 
+          //institutionId = institutionId.options[institutionId.selectedIndex].value;
+          
+
+          if (formEl.find("#author").val() == "-- Institutions --") {
+            //throw error
+            swal("Error!", "We could not find instructor", "error");
+            return false;
+          } else if (formEl.find("#course_name").val() == "" ){
+            swal("Error!", "Course name is required", "error");
+            return false;
+          } else if(  formEl.find("#course_code").val() == "" ){
+            swal("Error!", "Course code required", "error");
+            return false;
+          }else if(formEl.find("#institution").val() == "-- Institutions --")
+          {
+            swal("Sorry!", "The course must be attached to an institution it belongs to", "error");
+            return false;
+          }
+        }
+
+        
   
 
   if(formEl.attr("id")=="myModalMarkdownEditor-SELECT"){
@@ -703,32 +739,7 @@ export const createAnyResource = (mode="post",
         // Send the token only if the method warrants CSRF protection
         // Using the CSRFToken value acquired earlier
     
-        //if its course  creation form
-        // if(formEl.attr("id")=="stepUpFormWithAI" || formEl.attr("id")=="stepUpFormWithAI2"){
-        //   // check for basic required fields validation requirements
-        //   let name = document.getElementById("name").value;
-        //   let code = document.getElementById("course_code").value;
-        //   let authorId = document.getElementById("author").value;
-        //   let institutionId = document.getElementById("institution");
-        //   institutionId = institutionId.options[institutionId.selectedIndex].value;
-        //   if (institutionId == "-- Institutions --") {
-        //     //throw error
-        //     swal("Error!", "We could not find instructor", "error");
-        //     return false;
-        //   } else if (name == "" ){
-        //     swal("Error!", "Course name is required", "error");
-        //     return false;
-        //   } else if( code == "" ){
-        //     swal("Error!", "Course code required", "error");
-        //     return false;
-        //   }else if(institutionId == "")
-        //   {
-        //     swal("Sorry!", "The course must be attached to an institution it belongs to", "error");
-        //     return false;
-        //   }
-        // }
-
-        
+         
         //if only file download is required or needed via backend to check for file upload
         // xhr.setRequestHeader("Content-Disposition", 'attachment; filename=' + form[0].files.name);
         xhr.overrideMimeType("multipart/form-data");
@@ -764,6 +775,8 @@ export const createAnyResource = (mode="post",
         contentType = "application/x-www-form-urlencoded; charset=UTF-8"
         data = formEl.serialize();
       }
+
+
       
     }
   }
@@ -812,9 +825,9 @@ let dataObj ={}
       console.log(data)
       // alert.success("Success", "Created a resource");
      
-      if(formEl.attr("id")=="stepUpFormWithAI" || formEl.attr("id")=="stepUpFormWithAI2"){
+      if(formEl.attr("id")=="create-course" || formEl.attr("id")=="stepUpFormWithAI2"){
           if(mode.toLowerCase() =="post"){
-              swal("Sorry", "Failed to create the resource", "error");
+              swal("Sorry", "Failed to create the resource. Ensure to fill the required fields for course name, course code, institution and select an authoring team", "error");
            }else{
               swal("Sorry", "Failed to update changes on this resource", "error");
            }
@@ -828,11 +841,40 @@ let dataObj ={}
            }
       }
 
-      if(formEl.attr("id")=="addSubSectionForm"){
-          if(mode.toLowerCase() =="post"){
-              swal("Sorry", "Failed to create the section", "error");
-           }else{
-              swal("Sorry", "Failed to update changes on this section", "error");
+      //edit section
+
+      
+      if(formEl.attr("id")=="form-edit-section"){
+          if(mode.toLowerCase() =="patch"){ // this is apatch
+              swal("Sorry", "Failed to update the section", "error");
+           }
+      }
+
+
+      //delete section
+
+      if(formEl.attr("id")=="form-delete-section"){
+          if(mode.toLowerCase() =="delete"){
+              swal("Sorry", "Failed to delete the section", "error");
+           }
+      }
+
+      //edit subsection
+
+      //delete subsection
+
+      if(formEl.attr("id")=="form-edit-subsection"){
+          if(mode.toLowerCase() =="patch"){ // this is apatch
+              swal("Sorry", "Failed to update the section", "error");
+           }
+      }
+
+
+      //delete section
+
+      if(formEl.attr("id")=="form-delete-subsection"){
+          if(mode.toLowerCase() =="delete"){
+              swal("Sorry", "Failed to delete the section", "error");
            }
       }
 
@@ -842,6 +884,25 @@ let dataObj ={}
               swal("Sorry", "Failed to create the Lesson Section . You can not add any component to the lesson", "error");
            }else{
               swal("Sorry", "Failed to update changes on this section", "error");
+           }
+      }
+
+      //edit lesson
+
+      //delete lessons
+
+      if(formEl.attr("id")=="form-edit-lesson"){
+          if(mode.toLowerCase() =="patch"){ // this is apatch
+              swal("Sorry", "Failed to update the lesson", "error");
+           }
+      }
+
+
+      //delete section
+
+      if(formEl.attr("id")=="form-delete-lesson"){
+          if(mode.toLowerCase() =="delete"){
+              swal("Sorry", "Failed to delete the lesson", "error");
            }
       }
 
@@ -858,9 +919,13 @@ let dataObj ={}
 
     } else {
 
-       if(formEl.attr("id")=="stepUpFormWithAI" || formEl.attr("id")=="stepUpFormWithAI2"){
+       if(formEl.attr("id")=="create-course" || formEl.attr("id")=="stepUpFormWithAI2"){
       
            if(mode.toLowerCase() =="post"){
+              localStorage.setItem("name","")
+              localStorage.setItem("code","")
+              localStorage.setItem("author","")
+              localStorage.setItem("institution","")
              swal("Congratulations", "You successfully created a course", "success");
            }else{
              swal("Congratulations", "You successfully updated this course", "success");
