@@ -57,7 +57,7 @@ window.setTargetLessonItem = (insertionId) =>{
 
 
 /*create the boxes holding the lessons*/
-const addSubSectionData = (response) => {
+export const addSubSectionData = (response) => {
   let muu_counter =response?.id
  
    const template = `
@@ -172,17 +172,33 @@ ondragenter="return dragEnterIntoSection(event)"
        $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
       setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
-    $("#js-parent")
-      .find("#" + target)
+    // $("#js-parent")
+    //   .find("#" + target)
+    //   .append(template);
+
+       $("#js-parent").find("#" + target)
       .append(template);
+    //or 
+       $("#" + localStorage.getItem("tracker"))
+      .append(template);
+
+      
   } else {
        $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
       setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
     // alert($("#js-parent").find("#"+target).parent().find(`tr.section-parent_${localStorage.getItem("tracker")}` ).length)
-    $("#js-parent")
-      .find("#" + target)
+   
+
+
+         
+      $("#js-parent").find("#" + target)
       .append(template);
+    //or 
+      //  $("#" + localStorage.getItem("tracker"))
+      // .append(template);
+
+      
   }
 
 
@@ -196,7 +212,7 @@ ondragenter="return dragEnterIntoSection(event)"
 
 
 
-const addSectionData = (response) => {
+export const addSectionData = (response) => {
   let insertionId = response?.id
   // let mycounter = counter++;
   localStorage.setItem("sec_counter", response?.id);
@@ -373,7 +389,7 @@ const addSectionData = (response) => {
 
 
 
-const addLessonData = (response) => {
+export const addLessonData = (response) => {
   let muu_counter = response.id;
 
   localStorage.setItem("l_tracker", muu_counter);
@@ -649,9 +665,9 @@ export const createAnyResource = (mode="post",
   // Attach file only if the generic form contains (.* input[type="file"])
   // if($('input[type=file]')[0].files[0].length > 0){
   // for(let i=0; i <= $('input[type=file]')[0].files[0].length; i++){
-  if(formEl.attr("id")=="stepUpFormWithAI" || formEl.attr("id")=="stepUpFormWithAI2"){
-    formData.append("filename", $("input[type=file]")[0].files[0]); //
-  }
+  // if(formEl.attr("id")=="stepUpFormWithAI" || formEl.attr("id")=="stepUpFormWithAI2"){
+  //   formData.append("filename", $("input[type=file]")[0].files[0]); //
+  // }
   
 
   if(formEl.attr("id")=="myModalMarkdownEditor-SELECT"){
@@ -688,29 +704,31 @@ export const createAnyResource = (mode="post",
         // Using the CSRFToken value acquired earlier
     
         //if its course  creation form
-        if(formEl.attr("id")=="stepUpFormWithAI" || formEl.attr("id")=="stepUpFormWithAI2"){
-          // check for basic required fields validation requirements
-          let name = document.getElementById("course_name").value;
-          let code = document.getElementById("course_code").value;
-          let authorId = document.getElementById("author").value;
-          let institutionId = document.getElementById("institution");
-          institutionId = institutionId.options[institutionId.selectedIndex].value;
-          if (institutionId == "-- Institutions --") {
-            //throw error
-            swal("Error!", "We could not find instructor", "error");
-            return false;
-          } else if (name == "" ){
-            swal("Error!", "Course name is required", "error");
-            return false;
-          } else if( code == "" ){
-            swal("Error!", "Course code required", "error");
-            return false;
-          }else if(institutionId == "")
-          {
-            swal("Sorry!", "The course must be attached to an institution it belongs to", "error");
-            return false;
-          }
-        }
+        // if(formEl.attr("id")=="stepUpFormWithAI" || formEl.attr("id")=="stepUpFormWithAI2"){
+        //   // check for basic required fields validation requirements
+        //   let name = document.getElementById("name").value;
+        //   let code = document.getElementById("course_code").value;
+        //   let authorId = document.getElementById("author").value;
+        //   let institutionId = document.getElementById("institution");
+        //   institutionId = institutionId.options[institutionId.selectedIndex].value;
+        //   if (institutionId == "-- Institutions --") {
+        //     //throw error
+        //     swal("Error!", "We could not find instructor", "error");
+        //     return false;
+        //   } else if (name == "" ){
+        //     swal("Error!", "Course name is required", "error");
+        //     return false;
+        //   } else if( code == "" ){
+        //     swal("Error!", "Course code required", "error");
+        //     return false;
+        //   }else if(institutionId == "")
+        //   {
+        //     swal("Sorry!", "The course must be attached to an institution it belongs to", "error");
+        //     return false;
+        //   }
+        // }
+
+        
         //if only file download is required or needed via backend to check for file upload
         // xhr.setRequestHeader("Content-Disposition", 'attachment; filename=' + form[0].files.name);
         xhr.overrideMimeType("multipart/form-data");
@@ -739,7 +757,7 @@ export const createAnyResource = (mode="post",
 
         contentType ="application/x-www-form-urlencoded; charset=UTF-8";
         // dataType ="json";
-        
+
         data = formEl.serialize();
 
       }else{
@@ -909,8 +927,8 @@ let dataObj ={}
       console.log(dataObj.response, dataObj.response.id)
       if(formEl.attr("id")=="stepUpFormWithAI" || formEl.attr("id")=="stepUpFormWithAI2" ){
           if(mode.toLowerCase() =="post" && textStatus != "success"){
-            window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
-            return dataObj.response.id
+            // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+            // return dataObj.response.id
           }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
              return dataObj.response.id
           }else{
@@ -1051,6 +1069,23 @@ export const getCourses = async (limit = 800000, offset = 0) => {
     });
 };
 
+
+
+export const getCourseData = async (id) => {
+  let url = base_url + `/lms/api/course-content/${id}/`;
+  let request = makeRequest(url);
+  return request
+    .then(function (response) {
+      return response.json();
+    })
+    .then((data) => {
+      if (data) {
+        console.log("Data retrieved from lms:" + data);
+        return data;
+      }
+    });
+};
+
 export const getInstitutionCourses = async (
   id = 0,
   limit = 800000,
@@ -1089,7 +1124,7 @@ export const getCourse = async (id) => {
 };
 
 export const getSectionsOfCourseId = async (courseId) => {
-  let url = base_url + `/lms/api/sections/${courseId}`;
+  let url = base_url + `/lms/api/sections/${courseId}/`;
 
   let request = makeRequest(url);
   return request
@@ -1101,6 +1136,67 @@ export const getSectionsOfCourseId = async (courseId) => {
         console.log("Data retrieved from lms:" + data);
         return data;
       }
+    });
+}
+
+
+
+
+export const  getSubSectionsOfSectionId= async (sectionId) => {
+  let url = base_url + `/lms/api/subsections/${sectionId}/`;
+
+  let request = makeRequest(url);
+  return request
+    .then(function (response) {
+      return response.json();
+    })
+    .then((data) => {
+      if (data) {
+        console.log("Data retrieved from lms:" + data);
+        return data;
+      }
+    });
+}
+export const getLessonsOfSubsection= async (subsectionId) => {
+  let url = base_url + `/lms/api/lessons/${subsectionId}/`;
+
+  let request = makeRequest(url);
+  return request
+    .then(function (response) {
+      return response.json();
+    })
+    .then((data) => {
+      if (data) {
+        console.log("Data retrieved from lms:" + data);
+        return data;
+      }
+    });
+}
+export const getComponentsOfLessons = async (lessonId) => {
+  let url = base_url + `/lms/api/lesson-html-components/${lessonId}`;
+
+  let request = makeRequest(url);
+  return request
+    .then(function (response) {
+      return response.json();
+    })
+    .then((data) => {
+      // console.log(data)
+      return data
+    });
+}
+
+
+export const getVideoComponentsOfLessons = async (lessonId) => {
+  let url = base_url + `/lms/api/lesson-video-components/${lessonId}`;
+
+  let request = makeRequest(url);
+  return request
+    .then(function (response) {
+      return response.json();
+    })
+    .then((data) => {
+       return data
     });
 }
 

@@ -1281,7 +1281,7 @@ export default class MasterForm extends React.Component {
       case "CREATE_MODE": // this is only done once when the app is launched to create new course
         //call the create handler to api with form data
         let newCourseRes =  createAnyResource("POST",url, data)
-        console.log("success creating new course", newCourseRes.responseText)  
+        console.log("success creating new course", newCourseRes)  
         break;
       
       default:
@@ -1446,14 +1446,14 @@ export default class MasterForm extends React.Component {
 
                       <a
                         onClick={(e) => {
-                          $(e.target.parentElement).css({background:"#fff"})
-                          swal("WOOPS!", "You need to fill out the required fields marked asterisk (*)", "error");
-                        
+                          // $(e.target.parentElement).css({background:"#fff"})
+                          // swal("WOOPS!", "You need to fill out the required fields marked asterisk (*)", "error");
+                           this.goToStep(e, 5);
                         }}
                         href="#pricing"
                         data-toggle="tab"
                         className="nav-link rounded-0 pt-2 pb-2"
-                         disabled
+                         
                       >
                         <i className="fa fa-currency mr-1"></i>
                         <span className="d-none d-sm-inline">
@@ -1465,7 +1465,7 @@ export default class MasterForm extends React.Component {
                         onClick={(e) => {
                           $(e.target.parentElement).css({background:"#fff"})
                           swal("WOOPS!", "You need to fill out the required fields marked asterisk (*)", "error");
-                        
+                          
                         }}
                         href="#resource"
                         data-toggle="tab"
@@ -1525,6 +1525,7 @@ export default class MasterForm extends React.Component {
                       style={{height:"1850px"}}
                     >
                       {/*<CSRFToken /> Ready to django into the server*/}
+                      Ensure to select an authoring team*
                       <input type="hidden" name="csrfmiddlewaretoken" value={getCookie("csrfmiddlewaretoken")} />
                       <Step1
                         currentStep={this.state.currentStep}

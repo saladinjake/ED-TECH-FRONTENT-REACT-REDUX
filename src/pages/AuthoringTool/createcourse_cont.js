@@ -25,6 +25,7 @@ import { getLanguages } from "services/language";
 import axios from "axios"
 import swal from "sweetalert"
 import TinyMyceRender from './tinymyce-plugin';
+import TreeBuilder, { findObjectById } from "./TreeBuilder"
 
 
 
@@ -63,11 +64,24 @@ import {
   getCourses,
   createAnyResource,
   getIdFromUrl,
-  getSectionsOfCourseId
+  getSectionsOfCourseId,
+
+
+  getCourseData,
+  //getSectionsOfCourseId,
+  getSubSectionsOfSectionId,
+  getLessonsOfSubsection,
+  getComponentsOfLessons,
+  getVideoComponentsOfLessons,
   
 
- 
+ addSectionData, // dynamic generationwith battries included
+ addSubSectionData,
+ addLessonData
 } from "services/authoring"
+
+
+
 
 
 /*the base url link*/
@@ -622,7 +636,9 @@ Editor.formats = [
 
 export default class MasterForm extends React.Component {
   constructor(props) {
+
     super(props);
+    this.courseData = null;
     this.state = {
       /*multistep logic data*/
       currentStep: 1,
@@ -630,6 +646,8 @@ export default class MasterForm extends React.Component {
       subSectionStep: 1,
       lessonStep: 1,
       finishedClicked: false,
+
+
       modes:["CREATE_MODE","EDIT_MODE"],
       editor:null,  //THE LOGGED IN USERS DETAILS [{token,...details}]
       author: "", // THE LOGGED IN USER NAME {...details}.username
@@ -637,6 +655,7 @@ export default class MasterForm extends React.Component {
       
       //state fields
       /*request form data*/
+      courseDetail: {},
       
         name: "",
         code: "",
@@ -1095,18 +1114,7 @@ export default class MasterForm extends React.Component {
     })("run-logic-sequence")
      let T = new  TinyMyceRender();
      T.render("")
-    //handle generic events
-   //description overview learning_expectation curriculum prerequisite input-area2
-   //  T.render("description")
-   //  T.render("overview")
-   //  T.render("learning_expectation")
-   //  T.render("curriculum")
-   //  T.render("prerequisite")
-   //  T.render("input-area2")
-   // T.render("input-area")
-    // editor.render("")
-    // editor.render("")
-   
+  
 
 
   }
@@ -1157,6 +1165,7 @@ export default class MasterForm extends React.Component {
 
  fetchContent = async () => {
    let instId = this.state.institution
+   this.courseData = await this.courseDetailJson()
    //automated logic
     Promise.all(
       [
@@ -1187,13 +1196,9 @@ export default class MasterForm extends React.Component {
           currentCourseId: res[4]?.id, //just an object
           sections:res[4]?.results
         })
-
-
-          //now dynamically fill in the form
-          this.fill(res[4])
-          
-          
-        }
+        //now dynamically fill in the form
+        this.fill(res[4])    
+      }
         
         // setLoading(false);
       })
@@ -1203,9 +1208,477 @@ export default class MasterForm extends React.Component {
         // setLoading(false);
       });
 
-      
 
-  };
+  }
+
+  reorder(response){
+
+    
+
+  }
+
+
+
+
+  htmlToElem(html) {
+    let temp = document.createElement('template');
+    html = html.trim(); // Never return a space text node as a result
+    temp.innerHTML = html;
+    return temp.content.firstChild;
+  }
+
+
+
+
+
+
+  /*everything belonging to course*/
+  courseDetailJson = async () => {
+   let BIG_JSON  = await getCourseData(this.props.match.params.id);
+   let courseData = BIG_JSON.course_sections;
+   let temp =``;
+   let tempArr =[];
+   let tempArrLessons = []
+
+   $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+      setTimeout(removeLoader,10000); //wait for page load PLUS two seconds.
+     
+     courseData.forEach( async (section) =>   {
+
+      if(!document.getElementById(section.id)){
+
+                 let insertionId =section.id
+ 
+     let templateData =`
+  <li id="${insertionId}" data-parent="${insertionId}" data-restriction="${
+    "miller_" + insertionId
+  }"    data-id="${
+    "miller_" + insertionId
+  }" id="dynamic_section_${insertionId}"  class="card-box root-li view tr-of-root opened col-md-12 ${
+    "miller_" + insertionId
+  } section-list" style=" margin-bottom:10px;">
+   <a style="margin-right:10px;background:#fff;color:#000"
+          data-id="${"miller_" + insertionId}"
+          onclick="localStorage.setItem('given_id','dynamic_section_'+'${insertionId}');localStorage.setItem('tracker','${insertionId}');showSetSubsection(this);"           
+          >
+           <span ><i class="fa fa-chevron-down "></i></span>
+    </a>
+     <span class="tits section__name first-child-of-td" style="font-size:20px"> ${
+       section.name || "Section " + insertionId
+     }</span>
+      <span class="per action" style="float:right">
+      <a style="margin-right:10px;background:#fff;color:#000"
+                   href="#myModalSubsection" role="button" data-toggle="modal"
+                   onclick='setTargetItem("${insertionId}")'
+                  >
+                
+                    <i class="fa fa-plus "></i>
+        </a>
+
+        <a style="margin-right:10px;background:#fff;color:#000"
+            href="#myModalEdit" role="button" data-toggle="modal"
+          data-id="${"miller_" + insertionId}"
+            onclick="editSection(this);localStorage.setItem('given_id','dynamic_section_'+'${insertionId}');localStorage.setItem('tracker','${insertionId}');"       
+          >
+                
+          <i class="fa fa-edit "></i>
+        </a>
+
+
+        <a style="margin-right:10px;background:#fff;color:#000"
+          
+          data-id="${"miller_" + insertionId}"
+           onclick="removeSection(this)"        
+          >
+                
+          <i class="fa fa-trash "></i>
+        </a>
+
+        
+
+         <a class="drag-handle" style="margin-right:10px;background:#fff;color:#000"
+                        
+          >
+         <i class="fa fa-arrows "></i>
+        </a>
+
+       
+
+        
+         <a class="dropright dropright "  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                 
+                <i class="fa fa-ellipsis-v " style="color:#000"></i>
+             
+        <ul class="dropdown-menu" style="margin-left:40px" >
+                <li><a class="dropdown-item" href="#myModalSubsection" role="button" 
+                data-toggle="modal"
+                data-id="${"miller_" + insertionId}"
+                   onclick="localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});"
+                  >Add Sub Section</a></li>
+
+                  
+
+                <li><a class="dropdown-item"   href="#myModalEdit" role="button" data-toggle="modal"
+          data-id="${"miller_" + insertionId}"
+            onclick="editSection(this);localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});"       
+          >Edit </a></li>
+                <li><a class="dropdown-item" 
+                 data-id="${"miller_" + insertionId}"
+                onclick="replicateSection(this);localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});"
+
+                >Replicate Section</a></li>
+                <li><a class="dropdown-item" href="#noclick" >Import </a></li>
+                <li><a class="dropdown-item" 
+                href="#myModalExport" role="button" data-toggle="modal"
+          data-id="${
+            "miller_" + insertionId
+          }" onclick="exportSection();localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});" >Export </a></li>
+                <li><a class="dropdown-item" href="#noclick" onclick="alert('published to live course')" >Publish </a></li>
+                
+             
+           </ul>
+         </a>
+
+          <a style="margin-right:10px;background:#fff;color:#000"
+        
+          data-id="${"miller_" + insertionId}"
+          onclick="showSetSubsection(this);localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});"
+                
+          >
+
+           <span ><i class="fa fa-chevron-down "></i></span>
+</a>
+          
+          
+              
+        </span>
+</li>
+
+    `;
+
+                //  let temp = `<li><div class="card-box">
+                //      <div> 
+                //      <h4><span>Subsection ${section.name}</span>
+                // <span class="pull-right">
+                //     <i class="fa fa-trash"></i>
+                //      <i class="fa fa-edit"></i>
+                //      <i class="fa fa-plus"></i>
+                // </span></h4>
+                
+                //     </div>
+                //      <ul id="${section.id}" class="card-box"></ul></div></li>`
+                //  // temp = this.htmlToElem(temp)
+               $("#js-parent").append(templateData);
+      }
+
+     
+     
+
+      if(section.section_sub_sections){
+         tempArr = section.section_sub_sections;
+
+
+            // still our parent remain the same to transverse up the object while checkmates changes
+            tempArr.forEach(async (subsec,indexer)=> {
+
+              if(!document.getElementById(subsec.id)){
+
+                let muu_counter =subsec.id
+ 
+      let templateSub = `
+         <ul 
+         
+         id="dynamic_subsection_${muu_counter}"  data-id="${
+    "muu_" + muu_counter
+  }" class="fold card-box drop-zone-section root-sub-ul centerSubsection column-list-section-parade ${
+    "muu_" + muu_counter
+  } col-md-10 section-parent_${localStorage.getItem(
+    "tracker"
+  )} subsection-child_${localStorage.getItem(
+    "s_tracker"
+  )} " style="min-width:99%;width:99%;border-bottom:none;border-top:none;margin-left:10px"
+
+ondragenter="return dragEnterIntoSection(event)" 
+         ondrop="return dragDropLessonComponentToSubSection(event)" 
+         ondragover="return dragOverSection(event)"  
+         ondragleave="return dragLeaveLessonIntoSubsection(event)" 
+  >
+            
+              <span class=""  style="height:60px;border-left:3px solid black;margin-top:10px">
+               <span class="title_sub " data-th="Company name" style="font-size:15px">${
+                 subsec?.name || "Subsection"
+               }</span>
+                <span class="subsect" data-th="Customer no"></span>
+                <span data-th="Customer name"></span>
+                <span class="action" data-th="Customer nam"  style="float:right">
+
+
+
+        <a style="margin-right:10px;background:#fff;color:#000"
+            href="#myModalSubSectionEdit" role="button" data-toggle="modal"
+          data-id="${"muu_" + muu_counter}"
+            onclick="editSubSection(this);localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"       
+          >
+                
+          <i class="fa fa-edit "></i>
+        </a>
+
+
+        <a style="margin-right:10px;background:#fff;color:#000"
+          
+          data-id="${"muu_" + muu_counter}"
+           onclick="removeSubSection(this)"        
+          >
+                
+          <i class="fa fa-trash "></i>
+        </a>
+
+
+         <a  class="drag-handle-list" style="margin-right:10px;background:#fff;color:#000"
+          
+         
+                 
+          >
+
+         <i class="fa fa-arrows "></i>
+        </a>
+
+
+
+
+
+         <a class="dropright dropright "  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                 
+                <i class="fa fa-ellipsis-v " style="color:#000"></i>
+             
+        <ul class="dropdown-menu" style="margin-left:40px" >
+
+ 
+
+                
+
+                <li><a class="dropdown-item"    href="#myModalSubSectionEdit" role="button" data-toggle="modal"
+          data-id="${"muu_" + muu_counter}"
+            onclick="editSubSection(this);localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"       
+          >Edit </a></li>
+
+
+
+                <li><a class="dropdown-item"   href="#myModalLesson" role="button" data-toggle="modal"
+          data-id="${"muu_" + muu_counter}"
+            onclick='addlessonSection(this);setTargetSubsectionItem("${muu_counter}") '      
+          >Add Lesson</a></li>
+
+
+                <li><a class="dropdown-item" 
+                 data-id="${"muu_" + muu_counter}"
+                onclick="replicateSubSection(this);localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"
+
+                >Replicate Section</a></li>
+                
+                <li><a class="dropdown-item" href="#noclick"  data-id="${
+                  "muu_" + muu_counter
+                }"
+           onclick="removeSubSection(this)" >Delete</a></li>
+           </ul>
+         </a>
+                </span>
+      </li>
+    </ul>
+`;
+               //  let temp = `<li><div class="card-box">
+               // <div>
+               //  <h4>
+               //  <span>Subsection ${subsec.name}</span>
+               //  <span class="pull-right">
+               //      <i class="fa fa-trash"></i>
+               //       <i class="fa fa-edit"></i>
+               //       <i class="fa fa-plus"></i>
+               //  </span>
+               //  </h4>
+               
+               //  </div>
+               //  <ul id="${subsec.id}"  style="margin-left:20px"></ul></div></li>`  
+                $("#"+ subsec.section).append(templateSub);
+              }
+              let respLessons = subsec.sub_section_lessons
+              
+               respLessons.forEach( (lessons) =>{
+                   if(!document.getElementById(lessons.id)){
+
+                      let muu_counter = lessons.id;
+
+  
+  // alert(localStorage.getItem("lesson_component"))
+  let panel_class =  $(".muu_" + localStorage.getItem("s_tracker"));  // $("." + localStorage.getItem("lesson_component")) //  $(".muu_" + localStorage.getItem("s_tracker"));
+ 
+// onDragStart="dragStart(event)" onDragEnd="dragEnd( event )"
+  let templateLesson = ` 
+      <ul    id="dynamic_subsection_${muu_counter}_lesson_component "  data-id="${
+    "muu_" + muu_counter
+  }" class="reaper-${muu_counter} fold root-lesson-ul draggable dynamo_${localStorage.getItem("l_tracker")} card-box ${
+    "muu_" + muu_counter
+  } col-md-8   section-parent_${localStorage.getItem(
+    "tracker"
+  )} subsection-child_${localStorage.getItem(
+    "s_tracker"
+  )} " style="margin-right:20px;min-width:98%;width:98%" 
+   dragable="true"  
+  
+   >
+  
+   
+      <div class="console" style="display:none">
+    <h4>CONSOLE:</h4>
+  </div>
+        <li class="fold-content">
+  
+               <span class="title_sub " data-th="Company name" style="font-size:15px">${
+                 $("#title_3").val() || "Lesson"
+               }</span>
+                <span class="subsect" data-th="Customer no"></span>
+                <span class="action" data-th="Customer nam"  style="float:right">
+
+
+
+        <a style="margin-right:10px;background:#fff;color:#000"
+            href="#myModalSubSectionEdit" role="button" data-toggle="modal"
+          data-id="${"muu_" + muu_counter}"
+            onclick="localStorage.setItem('given_lsid','dynamic_lsubsection_'+${muu_counter});localStorage.setItem('ls_tracker',${muu_counter});"       
+          >
+                
+          <i class="fa fa-edit "></i>
+        </a>
+
+
+        <a style="margin-right:10px;background:#fff;color:#000"
+          
+          data-id="${"lmuu_" + muu_counter}"
+           onclick=""        
+          >
+                
+          <i class="fa fa-trash "></i>
+        </a>
+
+
+         <a class="drag-handle-list-lessons" style="margin-right:10px;background:#fff;color:#000"
+          data-id="${"lmuu_" + muu_counter}"
+          data-template="dynamic_subsection_${muu_counter}_lesson_component "
+           ondragstart="handleLessonDraggingEntered(event, this)"
+           ondragend="dragEndedSoon(event)"
+           onclick='setTargetLessonItem("${muu_counter}")'
+                 
+          >
+
+         <i class="fa fa-arrows "></i>
+        </a>
+         <a class="dropright dropright "  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-ellipsis-v " style="color:#000"></i>
+        <ul class="dropdown-menu" style="margin-left:40px" >
+                <li><a class="dropdown-item"   href="#myModalEdit" role="button" data-toggle="modal"
+          data-id="${"lmuu_" + muu_counter}"
+            onclick='setTargetLessonComponent("${muu_counter}")'       
+          >Edit </a></li>
+
+
+
+                <li><a class="dropdown-item"   
+          data-id="${"lmuu_" + muu_counter}"
+            onclick='showComponentModal(this);setTargetLessonComponent("${muu_counter}")'      
+          >Add Component</a></li>
+
+
+                <li><a class="dropdown-item" 
+                 data-id="${"lmuu_" + muu_counter}"
+                onclick='setTargetLessonComponent("${muu_counter}")'
+
+                >Replicate Section</a></li>
+                
+                <li><a class="dropdown-item" href="#noclick"  data-id="${
+                  "lmuu_" + muu_counter
+                }"
+           onclick="" >Delete</a></li>
+           </ul>
+         </a>
+         
+
+
+
+                </span>
+</li></ul>`;
+
+                //   let temp = `<li><div class="card-box">
+                //   <div>
+
+                //      <span>Lesson ${lessons.name}</span>
+                // <span class="pull-right">
+                //     <i class="fa fa-trash"></i>
+                //      <i class="fa fa-edit"></i>
+                //      <i class="fa fa-plus"></i>
+                // </span>
+                
+                 
+                //  </div>
+                //   <ul id="${lessons.id}"  style="margin-left:20px"></ul></div></li>`
+                    $("#dynamic_subsection_"+ lessons.sub_section).append(templateLesson);
+                  }
+
+                   // let htmlComponent = await getComponentsOfLessons(lessons.id);
+                   // let videoComponents = await getVideoComponentsOfLessons(lessons.id)
+                   // let components = [...videoComponents.results,...htmlComponent.results]
+                   //sort them by positioning id
+
+                  // htmlComponent.results.forEach(component => {
+                  //    if(!document.getElementById(component.id)){
+                  //      let temp = `<div class="card-box"><h5  id="${component.id}">Component header ${lessons.name}</h5><ul  style="margin-left:20px"></ul></div>`
+                  //      $("#"+ component.lesson).append(temp);
+                  //    }
+
+                  // })
+
+                 
+                 
+          
+                         
+                       
+               })
+            })
+
+            //console.log(TreeObj.tree)
+            //console.log(TreeObj.tree.root)
+       }     
+    })
+
+   
+
+
+
+   //  var BIG_JSON ={
+   //    basic_info: null,
+   //    course_detail:[]
+   //  }; // one big course jacket
+   //  var _BIG_JSON = {}
+
+   //  let course  = await getCourse(this.props.match.params.id);
+   //  let sections =  await getSectionsOfCourseId(course?.id);
+   //   sections = sections.results;
+
+
+   //  let subsections =[];
+   //  let lessons =[];
+   //  let htmls =[];
+   //  let videos =[]
+   //  let html_results_tags = ""
+   //  let keyField = "section" // start transversing from section to find matching subsection
+    
+   // // sub =>section section =>course
+   // // Method 1 still works
+  
+      
+    
+ }
+
+
 
 
   getThisCourseData = (id) => {
@@ -1434,8 +1907,10 @@ export default class MasterForm extends React.Component {
                       </a>
 
                       <a
-                        onClick={(e) => {
+                        onClick={ async(e) => {
                           this.goToStep(e, 6);
+                          $("#js-parent").html("")
+                          await this.courseDetailJson()
                         }}
                         href="#media"
                         data-toggle="tab"
@@ -1671,6 +2146,10 @@ class Step1 extends React.Component {
           <div className="tab-pane active" id="basic">
             <div className="row">
               <div className="col-md-12 card-box">
+
+
+
+              
 
 
                                 <div className="form-group col-md-6 fl-left">
@@ -4147,9 +4626,9 @@ const saveMarkdownEditContent = () => {
               <div class="modal-tab special-broadcast">
                 <i class="tab-icon fa fa-bullhorn fa-2x"></i> Broadcast
               </div>
-              <div class="modal-tab special-conference">
+              {/*<div class="modal-tab special-conference">
                 <i class="tab-icon fa fa-video-camera fa-2x"></i> Teleconfrencing
-              </div>
+              </div>*/}
             </div>
             <div class="modal-build-content widgets-tab active-content">
               <div
@@ -4319,37 +4798,12 @@ const saveMarkdownEditContent = () => {
                 <span>Text Input + hint and feed back</span>
               </div>
             </div>
-            <div class="modal-build-content special-conference">
-              <div
-                class="pb-widget"
-                data-template="[pb_html][/pb_zoom_meeting]"
-                data-type="special"
-                 href="#myModalGenericForm" 
-                 role="button" data-toggle="modal"
-                 data-fields="['Link','Meeting ID']"
-                 
-
-
-              >
-                <i class="fa fa-video-camera fa-2x"></i>
-                <span>Zoom Meeting</span>
-              </div>
-              <div
-                class="pb-widget"
-                data-template="[pb_html][/pb_google_meet]"
-                data-type="special"
-                 href="#myModalGenericForm" 
-                 role="button" data-toggle="modal"
-                data-fields="['Link','Meeting ID']"
-                 
-              >
-                <i class="fa fa-video-camera fa-2x"></i>
-                <span>Google Meet</span>
-              </div>
+            {/*<div class="modal-build-content special-conference">
+              
 
 
 
-            </div>
+            </div>*/}
 
 
             <div class="modal-build-content special-broadcast">
@@ -4376,6 +4830,35 @@ const saveMarkdownEditContent = () => {
               >
                 <i class="fa fa-video-camera fa-2x"></i>
                 <span>Live Events</span>
+              </div>
+
+
+
+              <div
+                class="pb-widget"
+                data-template="[pb_html][/pb_zoom_meeting]"
+                data-type="special"
+                 href="#myModalGenericForm" 
+                 role="button" data-toggle="modal"
+                 data-fields="['Link','Meeting ID']"
+                 
+
+
+              >
+                <i class="fa fa-video-camera fa-2x"></i>
+                <span>Zoom Meeting</span>
+              </div>
+              <div
+                class="pb-widget"
+                data-template="[pb_html][/pb_google_meet]"
+                data-type="special"
+                 href="#myModalGenericForm" 
+                 role="button" data-toggle="modal"
+                data-fields="['Link','Meeting ID']"
+                 
+              >
+                <i class="fa fa-video-camera fa-2x"></i>
+                <span>Google Meet</span>
               </div>
 
 

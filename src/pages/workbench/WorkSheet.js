@@ -11,6 +11,15 @@ import "./modalvideo.css";
 import Data from "./data-fake";
 import { useQuery } from "hooks/useQuery.js";
 
+import {
+  getCourse,
+  getSectionsOfCourseId,
+  getSubSectionsOfSectionId,
+  getLessonsOfSubsection,
+  getComponentsOfLessons,
+  getVideoComponentsOfLessons
+} from "services/authoring"
+
 const WorkBench = (props) => {
   let pageLeftContent = [];
 
@@ -20,6 +29,7 @@ const WorkBench = (props) => {
 
   const [querySearchVal, setVal] = useState(query.get("q"));
   const [querySearchMethod, setMethod] = useState(query.get("method"));
+  const [courseData,setCourseData] = useState()
 
   useEffect(() => {
     if (routeQuery !== null && routeQuery.length > 0) {
@@ -152,6 +162,103 @@ const WorkBench = (props) => {
       });
     });
   });
+
+
+  
+
+  const fetchCourseContent = async () => {
+    var BIG_JSON ={}; // one big course jacket
+    let urls =[];
+    // {courseId: "0932dds..", basic_info: {...},sections:[{},...], lessons:[{}...]} // the id will determine the next and previous state
+   
+    let placeHolder = [];  
+
+     try{
+       //get course
+       let course = await getCourse(props.match.params.id);
+       BIG_JSON["basic_info"] = course;
+       BIG_JSON["course_details"] = [];
+       let SUBSECTION =[]
+       console.log(course)
+       // get sections
+       let sections = await getSectionsOfCourseId(course?.id);
+       sections = sections.results;
+       console.log(sections)
+
+       const DATA = sections.forEach( async (section, index) => {
+          let res = await getSubSectionsOfSectionId(section.id)
+          let allSubs = [...res.results];
+          allSubs.forEach(async (subsec,indexer)=> {
+              let respLessons = await getLessonsOfSubsection(subsec.id)
+              respLessons = respLessons.results;
+              console.log(respLessons,"or",respLessons)
+              respLessons.forEach( async (lessons, ind) => {
+                  BIG_JSON["section-"+ index] = section
+                  BIG_JSON["section-"+ index]["subsection-"+ indexer] = subsec
+                  BIG_JSON["section-"+ index]["subsection-"+ indexer]["lessons-"+ind] = lessons
+
+                  //get the html component
+                   let htmlComponent = await getComponentsOfLessons(lessons.id);
+                  htmlComponent = htmlComponent.results;
+                    htmlComponent.forEach(  (html, indr) => {
+                      BIG_JSON["section-"+ index] = section
+                  BIG_JSON["section-"+ index]["subsection-"+ indexer] = subsec
+                  BIG_JSON["section-"+ index]["subsection-"+ indexer]["lessons-"+ind] = lessons
+
+                      BIG_JSON["section-"+ index]["subsection-"+ indexer]["lessons-"+ind]["html-component-"+ indr] = html
+
+                  })   
+
+
+                  let videoComponent = await getVideoComponentsOfLessons(lessons.id);
+                  videoComponent = videoComponent.results;
+                    videoComponent.forEach( (video, indrx) => {
+                      BIG_JSON["section-"+ index] = section
+                      BIG_JSON["section-"+ index]["subsection-"+ indexer] = subsec
+                      BIG_JSON["section-"+ index]["subsection-"+ indexer]["lessons-"+ind] = lessons
+
+                      BIG_JSON["section-"+ index]["subsection-"+ indexer]["lessons-"+ind]["video-component-"+ indrx] = video
+                      // console.log(BIG_JSON)
+                       
+                      // setCourseData(BIG_JSON);
+                    })
+
+
+              })
+          })
+
+
+
+
+        })
+
+       console.log(BIG_JSON)
+       setCourseData(BIG_JSON)
+         
+       
+       urls =[];
+        //  getLessonsOfSubsection,
+        // getHtmlComponentsOfLessons
+        //getProblemComponentsOfLessons
+       //getDiscussionComponentsOfLessons
+
+          /**
+           * const postIds = ['123', 'dn28e29', 'dn22je3'];
+
+
+           * ****/
+
+
+    }catch(err){
+
+    }
+
+
+  }
+
+  useEffect( async () =>{
+    await  fetchCourseContent()
+  })
 
   function videoId(button) {
     var $videoUrl = button.attr("data-video");

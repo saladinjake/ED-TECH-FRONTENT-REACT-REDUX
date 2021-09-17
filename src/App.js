@@ -419,9 +419,9 @@ function App(props) {
           component={HomePageDesignTwo}
         />
 
-        <LearnersRoute
+        <Route
           exact
-          path={`${process.env.PUBLIC_URL + "/learning/workbench"}`}
+          path={`${process.env.PUBLIC_URL + "/learning/workbench/:id"}`}
           component={WorkBench}
         />
 
