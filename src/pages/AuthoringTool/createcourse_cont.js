@@ -291,7 +291,7 @@ window.showSetSubsection = function(el) {
 
 const LaunchEditBoxEvent = (e) =>{
    /*this is based on categorized module widgets*/
-   alert("testingedit" + e.dataset.template)
+   // alert("testingedit" + e.dataset.template)
   
 
   }
@@ -1235,13 +1235,16 @@ export default class MasterForm extends React.Component {
   /*everything belonging to course*/
   courseDetailJson = async () => {
    let BIG_JSON  = await getCourseData(this.props.match.params.id);
+   console.log(BIG_JSON)
    let courseData = BIG_JSON.course_sections;
    let temp =``;
    let tempArr =[];
    let tempArrLessons = []
 
-   $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-      setTimeout(removeLoader,10000); //wait for page load PLUS two seconds.
+   console.log(courseData)
+
+   // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+   //    setTimeout(removeLoader,10000); //wait for page load PLUS two seconds.
      
      courseData.forEach( async (section) =>   {
 
@@ -1514,8 +1517,9 @@ ondragenter="return dragEnterIntoSection(event)"
   let panel_class =  $(".muu_" + localStorage.getItem("s_tracker"));  // $("." + localStorage.getItem("lesson_component")) //  $(".muu_" + localStorage.getItem("s_tracker"));
  
 // onDragStart="dragStart(event)" onDragEnd="dragEnd( event )"
+  let rndId = "dynamic_subsection_" + muu_counter + "_lesson_component"
   let templateLesson = ` 
-      <ul    id="dynamic_subsection_${muu_counter}_lesson_component "  data-id="${
+      <ul id="${rndId}"  data-id="${
     "muu_" + muu_counter
   }" class="reaper-${muu_counter} fold root-lesson-ul draggable dynamo_${localStorage.getItem("l_tracker")} card-box ${
     "muu_" + muu_counter
@@ -1624,24 +1628,68 @@ ondragenter="return dragEnterIntoSection(event)"
                     $("#dynamic_subsection_"+ lessons.sub_section).append(templateLesson);
                   }
 
-                   // let htmlComponent = await getComponentsOfLessons(lessons.id);
-                   // let videoComponents = await getVideoComponentsOfLessons(lessons.id)
-                   // let components = [...videoComponents.results,...htmlComponent.results]
-                   //sort them by positioning id
+                   let courseComponents = lessons.lesson_components
+                   console.log(courseComponents)
 
-                  // htmlComponent.results.forEach(component => {
-                  //    if(!document.getElementById(component.id)){
-                  //      let temp = `<div class="card-box"><h5  id="${component.id}">Component header ${lessons.name}</h5><ul  style="margin-left:20px"></ul></div>`
-                  //      $("#"+ component.lesson).append(temp);
-                  //    }
+                  courseComponents.forEach(component => {
+                      let launchPad ="#myModalMarkdownEditorEditMode"
+                      if(component.component_type ==1){
+                        launchPad ="#myModalGenericFormEditorEditMode"
+                      }else {
+                        launchPad ="#myModalMarkdownEditorEditMode"
+                      }
 
-                  // })
+                      if(!document.getElementById(component.id)){
+                        let  tempComponent = `<div class="pb-widget-preview-panel" id="${component.id}">
+            
+            
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-10">
+                    <div class="panel-xx panel-dark">
+                    
+              <div class="panel-heading-xx">
+                <span
+                  class="panel-title unit_title_place_holder"
+                  style={{ float: "left",  marginLeft: "10px" }}
+                >${component.name}
+                  
+                </span>
+                <div class="actions-set">
+                  <span><a href="${launchPad}"
+              role="button"
+              data-toggle="modal"><i
+               onclick="LaunchEditBoxEvent(this)"
 
-                 
-                 
+               class="pb-handle-widget fa fa-edit "></i></a></span>
+                               
+                  <span><i class="pb-remove fa fa-trash " onclick="handleWidgetRemove(this)"></i></span>
+                </div>
+              </div>
+            
+                      <div class="panel-body-xx ">
+                        
+                        <div class="content-section-from-input unit_content_place_holder">
+                          Edit this section
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
           
-                         
+          </div>
+`
                        
+       $("#dynamic_subsection_"+ component.lesson_id +"_lesson_component")
+        .append( $(tempComponent));
+                     
+
+                      }
+                     
+                       
+                  })  
                })
             })
 
@@ -1796,26 +1844,76 @@ ondragenter="return dragEnterIntoSection(event)"
                 <div id="make-fixed-on-fullscreen">
                   <h4 className="header-title mb-3">
                     Course adding form{" "}
+
                     <a
-                      href={process.env.PUBLIC_URL + "/authoring/courselist"}
+                      style={{ marginRight: "3px", color:"#fff" }}
+                      href={process.env.PUBLIC_URL+ "/learning/workbench/"+ this.props.match.params.id}
+                      
+                  
+                      className="alignToTitle btn btn-success btn-outline-secondary btn-rounded btn-sm"
+                    >
+                      {" "}
+                      <i className=" mdi mdi-keyboard-backspace"></i> Preview 
+                    </a>
+
+                    <a
+                      style={{ marginRight: "3px", color:"#fff" }}
+                      href={"#"}
+                      onClick={(e) => {
+                      e.preventDefault();
+                      this.saveAndContinue(e)
+                    }}
+                      className="alignToTitle btn btn-success btn-outline-secondary btn-rounded btn-sm"
+                    >
+                      {" "}
+                      <i className=" mdi mdi-keyboard-backspace"></i> Save 
+                    </a>
+
+                    <a
+                      style={{ marginRight: "3px" ,color:"#fff"}}
+                      href={process.env.PUBLIC_URL + "/authoring/create/new/"}
+                      className="alignToTitle btn btn-danger btn-outline-secondary btn-rounded btn-sm"
+                      onClick={() =>{
+                        window.location.reload()
+                      }}
+                    >
+                      {" "}
+                      <i className=" mdi mdi-keyboard-backspace"></i> 
+                      Cancel
+                    </a>
+
+                    <a
+                      style={{ marginRight: "10px" }}
+                    onClick={() =>{
+                        window.location.reload()
+                      }}
+                      href={"#"}
                       className="alignToTitle btn btn-outline-secondary btn-rounded btn-sm"
                     >
                       {" "}
-                      <i className=" mdi mdi-keyboard-backspace"></i> Back to
-                      course list
+                      <i className=" mdi mdi-keyboard-backspace"></i> 
+                      Clear
+                    </a>
+
+                      <a
+                      href={process.env.PUBLIC_URL + "/authoring/course/history"}
+                      className="alignToTitle btn btn-outline-secondary btn-rounded btn-sm"
+                    >
+                      <i className=" mdi mdi-keyboard-backspace"></i> Courses
+                      List
                     </a>
                     <a
-                      style={{ marginRight: "10px" }}
+                      style={{ marginRight: "3px" }}
                       href="#no-grid"
                       onClick={this.togglerFullscreen}
                       id="toggle_fullscreen"
                       className="alignToTitle btn btn-outline-secondary btn-rounded btn-sm"
                     >
-                      {" "}
-                      <i className=" mdi mdi-keyboard-backspace"></i> Toggle
+                      <i className=" mdi mdi-keyboard-backspace"></i> 
                       Fullscreen
                     </a>
-                    <br />
+                    
+                 
                   </h4>
                   <br />
 
@@ -1828,8 +1926,8 @@ ondragenter="return dragEnterIntoSection(event)"
                         onClick={async (e) => {
                             this.goToStep(e, 1);
                             await  this.fetchContent()
-                             $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+                             // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                             //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
 
                           setTimeout(()=> {
@@ -1851,8 +1949,8 @@ ondragenter="return dragEnterIntoSection(event)"
                         onClick={async (e) => {
                           this.goToStep(e, 2);
                           await  this.fetchContent()
-                          $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+                          // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                          //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
                            setTimeout(()=> {
                             let T = new  TinyMyceRender();
@@ -1872,8 +1970,8 @@ ondragenter="return dragEnterIntoSection(event)"
                         onClick={ async (e) => {
                           await  this.fetchContent()
                           this.goToStep(e, 3);
-                          $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+                          // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                          //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
 
                            setTimeout(()=> {
@@ -1899,8 +1997,8 @@ ondragenter="return dragEnterIntoSection(event)"
                       <a
                         onClick={(e) => {
                           this.goToStep(e, 4);
-                          $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+                          // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                          //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
                            setTimeout(()=> {
                             let T = new  TinyMyceRender();
@@ -1922,8 +2020,8 @@ ondragenter="return dragEnterIntoSection(event)"
                       <a
                         onClick={(e) => {
                           this.goToStep(e, 5);
-                          $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+                          // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                          //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
                            setTimeout(()=> {
                             let T = new  TinyMyceRender();
@@ -1944,8 +2042,8 @@ ondragenter="return dragEnterIntoSection(event)"
                       <a
                         onClick={(e) => {
                           this.goToStep(e, 8);
-                          $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+                          // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                          //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
                            setTimeout(()=> {
                             let T = new  TinyMyceRender();
@@ -1965,8 +2063,8 @@ ondragenter="return dragEnterIntoSection(event)"
                         onClick={ async(e) => {
                           this.goToStep(e, 6);
 
-                          $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+                          // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                          //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
 
                           $("#js-parent").html("")
@@ -1983,8 +2081,8 @@ ondragenter="return dragEnterIntoSection(event)"
                       <a
                         onClick={(e) => {
                           this.goToStep(e, 7);
-                          $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+                          // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                          //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
                            setTimeout(()=> {
                             let T = new  TinyMyceRender();
@@ -2281,6 +2379,90 @@ class Step1 extends React.Component {
                   </label>
                   </div>
                 </div>
+
+                
+
+                <div className=" form-group col-md-6 fl-left" style={{display:"none"}}>
+                        <div className="col-md-10  fl-left">
+                          <input
+                            type="text"
+                            placeholder={"Add Team Lead"}
+                              
+                            className="form-control fl-left"
+                            id="author-inset"
+                            name="author"
+                            disabled
+                          />
+                        </div>
+                         <div class="col-md-2  fl-left">
+                            <button
+                              type="button"
+
+                            
+                              className="small text-white"
+
+
+                                onClick={(e) => {
+                                  e.preventDefault()
+                
+                          swal({
+                            text: 'Search for an instructor by name/email/ phone number. e.g. "saladin jake ".',
+                            content: "input",
+                            button: {
+                            text: "Search!",
+                            closeModal: false,
+                            },
+                          })
+                          .then(name => {
+                            if (!name)  return swal("No instructor email/name was entered!");
+                              // check if user existed in our initial fetch 
+                              // do not make another api request 
+                              //this saves pull request
+     
+                            let targetInstructor = instructors.find(instructor => {
+                                console.log(instructor)
+                                return (instructor?.profile?.name === name) ||  (instructor?.profile?.email === name) || (instructor?.profile?.phone_number === name)
+                            })
+                           
+                              if(targetInstructor){
+                                 let leadGuy =  $("#lead-guy").css({display:"block", color:"#fff"}).html(targetInstructor?.profile?.name)
+                                $("#author").val(targetInstructor?.profile?.id)
+                                $("#author-inset").val(targetInstructor?.profile?.email)
+                                this.setState({author:targetInstructor?.profile?.email})
+                                localStorage.setItem("author",targetInstructor?.profile?.id)
+                                
+                                 return swal("Success!", "The Instructor was found", "Success");
+                                  
+                             }else{
+
+                                
+                                  swal("Error", "We could not find instructor", "error");
+                        
+                                  swal.stopLoading();
+                                 return swal.close();
+                            
+
+                             }
+                          })
+                          
+                           
+                          
+
+                    }}
+
+                            >
+                              +
+                            </button>
+                            </div>
+
+                        <br />
+                        <br />
+                        <label class="col-md-12 col-form-label" for="level">
+                    Author<span className="required">*</span></label>
+                </div>
+
+
+
 
 
 
@@ -3101,90 +3283,7 @@ class Step4 extends React.Component {
 
 
 
-                      <div class="col-md-12">
-        
-                 
-                  <br/> <br/> <br/>
-                  <div className="container-fluid" id="lead-guy" >  
-                        
-
-                         <div className="col-lg-3 col-md-3 col-sm-6" >
-          <a href="#">
-            <div className="widget-panel widget-style-2 bg-white"
-              onClick={() => {
-
-                
-                          swal({
-                            text: 'Search for an instructor by name/email/ phone number. e.g. "saladin jake ".',
-                            content: "input",
-                            button: {
-                            text: "Search!",
-                            closeModal: false,
-                            },
-                          })
-                          .then(name => {
-                            if (!name)  return swal("No instructor email/name was entered!");
-                              // check if user existed in our initial fetch 
-                              // do not make another api request 
-                              //this saves pull request
-     
-                            let targetInstructor = instructors.find(instructor => {
-                                console.log(instructor)
-                                return (instructor?.profile?.name === name) ||  (instructor?.profile?.email === name) || (instructor?.profile?.phone_number === name)
-                            })
-                           
-                              if(targetInstructor){
-                                 let leadGuy =  $("#lead-guy").css({display:"block", color:"#fff"}).html(targetInstructor?.profile?.name)
-                                $("#author").val(targetInstructor?.profile?.id)
-                                 return swal("Success!", "The Instructor was found", "Success");
-
-                             }else{
-
-                                
-                                  swal("WOOPS!", "We could not find instructor", "error");
-                        
-                                  swal.stopLoading();
-                                 return swal.close();
-                            
-
-                             }
-                          })
-                          
-                           
-                          
-
-                    }}
-
-            >
-              <i className="md md-add text-info"></i>
-              <h2
-                className="m-0 text-dark-x counter font-600-x"
-                style={{
-                  fontFamily: "Open Sans",
-                  color: "#000",
-                  fontSize: "14px",
-                }}
-
-                
-              >
-                Add/Change Team Lead
-              </h2>
-              <div
-                className="text-muted-x m-t-5-x"
-                style={{
-                  fontFamily: "Open Sans",
-                  color: "#000",
-                  fontSize: "14px",
-                }}
-              >
-                Add
-              </div>
-            </div>
-           
-             </a>
-          </div></div>
-                
-</div>
+                      
 
         
 
@@ -3286,7 +3385,7 @@ class Step4 extends React.Component {
                  }else{
 
                     
-                      swal("Oh noes!", "We could not find instructor", "error");
+                      swal("Error", "We could not find instructor", "error");
             
                       swal.stopLoading();
                      return swal.close();
@@ -3346,7 +3445,7 @@ class Step4 extends React.Component {
 
 
 
-              <div className="mb-3 mt-3">
+              {/*<div className="mb-3 mt-3">
                   <button
                     type="button"
                     className="btn btn-primary text-center"
@@ -3357,7 +3456,7 @@ class Step4 extends React.Component {
                   >
                     Save 
                   </button>
-                </div>
+                </div>*/}
 
             </div>
           </div>
@@ -4116,6 +4215,8 @@ const saveMarkdownEditContent = () => {
   const launchFormBoxIntoModal = (TemplateType,Target,cloneElement, componentTitle) =>{
     //add code deception from data-fields
 
+
+
     //just get the modal that initiates the creation and add headers to it
    let allowedHeaders = null
     if(TemplateType =="[pb_html][/pb_iframe]" || TemplateType =="[pb_html][/pb_video]"
@@ -4138,6 +4239,10 @@ const saveMarkdownEditContent = () => {
 
 
     }
+
+
+     let T = new  TinyMyceRender();
+     T.render("")
 
    
    
@@ -5478,8 +5583,8 @@ const saveMarkdownEditContent = () => {
                   <div class="divided col-md-10">
                    
                           {/*the editor*/}
-                              <div class="editor-authoring" id="markdown-editor">
-          <div class="authoring-edit-toolbar">
+                              <div  class="editor-authoring" id="markdown-editor">
+          <div class="authoring-edit-toolbar" style={{display:"none"}}>
             <div class="line">
               
               <div class="box-internal">
@@ -5560,21 +5665,6 @@ const saveMarkdownEditContent = () => {
 
               
             </div>
-            <div class="line">
-              
-              <div class="box-internal">
-                
-              </div>
-              
-              <div class="box-internal">
-                
-              </div>
-              
-              <div class="box-internal">
-                
-              </div>
-              
-            </div>
           </div>
           <div class="content-area" id="input-output">
 
@@ -5641,7 +5731,7 @@ const saveMarkdownEditContent = () => {
                         </select>
                       </div>
 
-            <textarea id="input-area" class="visuell-view" name="html_text"  rows="30" cols="50">
+            <textarea id="input-area" class="visuell-view" name="html_text"  rows="20" cols="50">
                   Edit your content Editor 
                   (What you see is what you get)
       Add text content(plain text), 
@@ -5778,45 +5868,92 @@ const saveMarkdownEditContent = () => {
                   <p class="change-description">Add a title to the unit</p>
                   <div class="row">
                     <div class="divided col-md-12">
+
+
+
+
+                    <form id="myModalGenericForm-SELECT" enctype="application/x-www-form-urlencoded">
                       <div class="form-group root-block">
-                        <label class="change-title">Title</label>
-                        <input type="text" class="form-control" id="title-unit-b" />
+                        <label class="change-title" >Name</label>
+                        <input type="text" class="form-control" id="editor-html-name" name="name"/>
+                      </div>
+
+
+                      <div class="form-group root-block" >
+                        
+                        <input type="hidden" name="lesson" class="form-control" id="lesson-editor-id2"  />
+                      </div>
+
+
+                      <div class="form-group root-block">
+                        <label class="change-title">Description</label>
+                        <input type="text" name="description" class="form-control" id="editor-html-description" />
+                      </div>
+
+                      <div class="form-group root-block">
+                        <label class="change-title">Content Type </label>
+                        <select id="editor-html-type" class="form-control" name="component_type">
+                              <option value="1">Video</option>    
+                              <option value="2">HTML</option>
+                              <option value="3">Problem</option>
+                              <option value="4">Discussion</option>
+                          
+                      </select>
+                      </div>
+
+                      <div class="form-group">
+                       <select class="form-control" id="editor-html-content-type" name="content_type">
+                                <option value="1">I-Frame</option>
+                                <option value="2">HTML TEXT</option>  
+                                <option value="3">HYBRID</option>
+                        </select>
                       </div>
 
 
                       <div class="form-group root-block2" >
-                        <label class="change-title2">Title 2</label>
+                        <label class="change-title2">Embedded url</label>
                         <input onInput={(e) =>{
                             //if its iframe component
-                            if(document.querySelector(".iframe-box").style.display=="block"){
-                              document.querySelector(".iframe-boxer2").src= e.target.value
-                            }else if(document.querySelector(".main-videosection2").style.display=="block"){
-                                document.querySelector(".main-videosection-xx").src= e.target.value
+                            let board = document.querySelector("#projector-view")
+                            board.src = e.target.value
+
+                             if(validYoutubeLink(e.target.value)){
+                              $(".iframe-box").html('<iframe src="https://www.youtube.com/embed/' + validYoutubeLink(e.target.value) + '" id="videoObject" type="text/html" width="100%" height="265" frameborder="0" allowfullscreen></iframe>');
+
+                            }else{
+                              $(".iframe-box").html('<iframe src="' + e.target.value + '" id="videoObject" type="text/html" width="100%" height="265" frameborder="0" allowfullscreen></iframe>');
+
                             }
-
-
-                            //if its video component
-                        }} type="text" class="form-control" id="title-unit2-b" />
+                                                        //if its video component
+                        }} type="text" name="embeded_url" class="form-control" id="title-unit2" />
                       </div>
 
 
-                      <div class="iframe-box2 col-md-12"  >
+                      <div class="iframe-box col-md-12"  >
                        
-                        <iframe id="" src="" class="col-md-12 iframe-boxer2" style={{width:"100%",border:"2px solid #000"}}/>
+                        <iframe id="" src="" class="col-md-12 iframe-boxer" style={{width:"100%",border:"2px solid #000"}}/>
                       </div>
 
 
                       <div
-                                        className=" main-videosection22 col-md-12"
+                                        className=" main-videosection2 col-md-12"
                                         
                                       >
                                         <section
                                         >
                                           <div  class="embed-responsive embed-responsive-16by9">
-  <iframe  class="embed-responsive-item main-videosection-xx2" src="" id="main-videosection-x"  allowscriptaccess="always" allow="autoplay"></iframe>
+  <iframe  class="embed-responsive-item main-videosection-xx" src="" id="main-videosection-x"  allowscriptaccess="always" allow="autoplay"></iframe>
 </div>
                                         </section>
                                       </div>
+                         </form>
+                    
+                      
+
+                      
+
+                      
+
 
 
                     </div>

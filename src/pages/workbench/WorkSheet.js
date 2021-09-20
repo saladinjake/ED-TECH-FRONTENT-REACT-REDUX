@@ -17,8 +17,156 @@ import {
   getSubSectionsOfSectionId,
   getLessonsOfSubsection,
   getComponentsOfLessons,
-  getVideoComponentsOfLessons
+  getVideoComponentsOfLessons,
+
+  //edit
+
+  // delete
+
+  getCourseData
+
+  //reorder position
+
 } from "services/authoring"
+
+
+function removeLoader(){
+  $( "#loadingDiv" ).fadeOut(500, function() {
+          // fadeOut complete. Remove the loading div
+      $( "#loadingDiv" ).remove(); //makes page more lightweight 
+  });  
+}
+
+
+
+function fit() {
+    var iframes = document.querySelectorAll("iframe.gh-fit")
+
+    for(var id = 0; id < iframes.length; id++) {
+        var win = iframes[id].contentWindow
+        var doc = win.document
+        var html = doc.documentElement
+        var body = doc.body
+        var ifrm = iframes[id] // or win.frameElement
+
+        if(body) {
+            body.style.overflowX = "scroll" // scrollbar-jitter fix
+            body.style.overflowY = "hidden"
+        }
+        if(html) {
+            html.style.overflowX = "scroll" // scrollbar-jitter fix
+            html.style.overflowY = "hidden"
+            var style = win.getComputedStyle(html)
+            ifrm.width = parseInt(style.getPropertyValue("width")) // round value
+            ifrm.height = parseInt(style.getPropertyValue("height"))
+        }
+    }
+
+    window.requestAnimationFrame(fit)
+}
+
+
+window.hoverIntoNav = (el) => {
+  $(el).css({cursor:"pointer", background:"rgba(8,23,200)", color:"#fff"})
+}
+
+window.loadIntoView = (el) => {
+
+ $("#workbench").find("div.module-in-view-port").css({display:"none"})
+  
+  $("#workbench").append(`<div style="margin-left:90px" id="loadingDiv" ><div class="LockOn" >Loading...</div></div>`);
+      // $( "#loadingDiv" ).css({position:"absolute",top:"200px",left:"100px"})
+      setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+   $("#load-module-slide-"+ el.getAttribute("id")).css({display:"block"}).fadeIn()
+   $("#lesson-name").html(el.getAttribute("data-name"))
+   
+   //change the track set to the current video for both next and previous
+   $(".next-slide").attr("data-current-id",el.getAttribute("id"))
+   $(".prev-slide").attr("data-current-id",el.getAttribute("id"))
+   window.addEventListener("click", window.requestAnimationFrame.bind(this, fit))
+  
+}
+
+const nextSlide = (e) => {
+   $("#"+e.target.getAttribute("data-current-id")).next().click()
+}
+
+const prevSlide = (e) => {
+  $("#"+e.target.getAttribute("data-current-id")).prev().click()
+}
+
+
+window.handleToggleAccordion = (el) => {
+   $("#content-" +$(el).attr("id")).toggle()
+    
+  }
+
+
+
+const togglerFullscreen = (e) => {
+    e.preventDefault();
+    // $('#toggle_fullscreen').on('click', function(){
+    // if already full screen; exit
+    // else go fullscreen
+    if (
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.mozFullScreenElement ||
+      document.msFullscreenElement
+    ) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+        $("#container-fullscreen").css({
+          height: "100vh",
+          "overflow-y": "none",
+        });
+
+        $(".container-fullscreen").css({
+          height: "auto",
+          "overflow-y": "none",
+        });
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+    } else {
+      
+
+         let element = $(".container-fullscreen").get(0);
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+        $(".container-fullscreen").css({
+          height: "100vh",
+          "overflow-y": "scroll",
+        });
+      }
+      // element = $("#container-fullscreen").get(0);
+      // if (element.requestFullscreen) {
+      //   element.requestFullscreen();
+      //   $("#container-fullscreen").css({
+      //     height: "600px",
+      //     "overflow-y": "scroll",
+      //   });
+
+
+        // $(".tab-content").css({height:"400px","overflow-y":"none"})
+      //}
+
+       else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+      } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+      } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+      }
+    }
+    // });
+  }
+
+
 
 const WorkBench = (props) => {
   let pageLeftContent = [];
@@ -32,11 +180,11 @@ const WorkBench = (props) => {
   const [courseData,setCourseData] = useState()
 
   useEffect(() => {
-    if (routeQuery !== null && routeQuery.length > 0) {
-      setVal(query.get("q"));
-      setMethod(query.get("inview"));
-      setQueryVal(routeQuery);
-    }
+    // if (routeQuery !== null && routeQuery.length > 0) {
+    //   setVal(query.get("q"));
+    //   setMethod(query.get("inview"));
+    //   setQueryVal(routeQuery);
+    // }
 
     // eslint-disable-next-line
   }, [routeQuery]);
@@ -108,33 +256,7 @@ const WorkBench = (props) => {
     }
   }
 
-  const handleToggleAccordion = (event) => {
-    //Bail if our clicked element doesn't have the class
-    if (!event.target.classList.contains("accordion-toggle")) return;
-
-    // Get the target content
-    var content = document.querySelector(event.target.hash);
-    if (!content) return;
-
-    // Prevent default link behavior
-    event.preventDefault();
-
-    // If the content is already expanded, collapse it and quit
-    if (content.classList.contains("active")) {
-      content.classList.remove("active");
-      return;
-    }
-
-    // Get all open accordion content, loop through it, and close it
-    var accordions = document.querySelectorAll(".accordion-content.active");
-    for (var i = 0; i < accordions.length; i++) {
-      accordions[i].classList.remove("active");
-    }
-
-    // Toggle our content
-    content.classList.toggle("active");
-  };
-
+  
   useEffect(() => {
     window.addEventListener("resize", ResetColumnSizes);
 
@@ -167,92 +289,157 @@ const WorkBench = (props) => {
   
 
   const fetchCourseContent = async () => {
-    var BIG_JSON ={}; // one big course jacket
-    let urls =[];
-    // {courseId: "0932dds..", basic_info: {...},sections:[{},...], lessons:[{}...]} // the id will determine the next and previous state
-   
-    let placeHolder = [];  
+    let BIG_JSON  = await getCourseData(props.match.params.id);
+   console.log(BIG_JSON)
+   let courseData = BIG_JSON.course_sections;
+   let temp =``;
+   let tempArr =[];
+   let tempArrLessons = []
 
-     try{
-       //get course
-       let course = await getCourse(props.match.params.id);
-       BIG_JSON["basic_info"] = course;
-       BIG_JSON["course_details"] = [];
-       let SUBSECTION =[]
-       console.log(course)
-       // get sections
-       let sections = await getSectionsOfCourseId(course?.id);
-       sections = sections.results;
-       console.log(sections)
+   console.log(courseData)
 
-       const DATA = sections.forEach( async (section, index) => {
-          let res = await getSubSectionsOfSectionId(section.id)
-          let allSubs = [...res.results];
-          allSubs.forEach(async (subsec,indexer)=> {
-              let respLessons = await getLessonsOfSubsection(subsec.id)
-              respLessons = respLessons.results;
-              console.log(respLessons,"or",respLessons)
-              respLessons.forEach( async (lessons, ind) => {
-                  BIG_JSON["section-"+ index] = section
-                  BIG_JSON["section-"+ index]["subsection-"+ indexer] = subsec
-                  BIG_JSON["section-"+ index]["subsection-"+ indexer]["lessons-"+ind] = lessons
+   // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+   //    setTimeout(removeLoader,10000); //wait for page load PLUS two seconds.
 
-                  //get the html component
-                   let htmlComponent = await getComponentsOfLessons(lessons.id);
-                  htmlComponent = htmlComponent.results;
-                    htmlComponent.forEach(  (html, indr) => {
-                      BIG_JSON["section-"+ index] = section
-                  BIG_JSON["section-"+ index]["subsection-"+ indexer] = subsec
-                  BIG_JSON["section-"+ index]["subsection-"+ indexer]["lessons-"+ind] = lessons
+   if(courseData){
 
-                      BIG_JSON["section-"+ index]["subsection-"+ indexer]["lessons-"+ind]["html-component-"+ indr] = html
+     courseData.forEach( async (section) =>   {
+      if(section.section_sub_sections){
+         tempArr = section.section_sub_sections;
+            // still our parent remain the same to transverse up the object while checkmates changes
+            tempArr.forEach(async (subsec,indexer)=> {
+              if(!document.getElementById(subsec.id)){
+                let muu_counter =subsec.id
+              }
+              let respLessons = subsec.sub_section_lessons
+              let counter =1;
+               respLessons.forEach( (lessons) =>{
+                   if(!document.getElementById(lessons.id)){
+                      let muu_counter = lessons.id;
+ 
+// onDragStart="dragStart(event)" onDragEnd="dragEnd( event )"
+        let rndId =  muu_counter 
+        let templateLesson = ` 
+            <div id="${rndId}" class="card-box"  data-id="${
+          "muu_" + muu_counter
+        }" 
+        
+                              onclick="handleToggleAccordion(this)"
+                              data-url="content-${muu_counter}"
+                              
+         >
+         <h3 style="font-size:13px;background:rgba(8,23,200);
+         color:#fff; font-weight: bold;margin-left:10px;
+         border-bottom:2px solid #eaeaea;padding:20px
+         "> ${"Lesson: "+ counter++ + "" + " "+  lessons.name}</h3>
 
-                  })   
+      </div><hr/>`;
+
+     
+
+                          $("#js-parental").append(templateLesson);
+                        }
+
+                         let courseComponents = lessons.lesson_components
+                         console.log(courseComponents)
+
+                          
+
+                        courseComponents.forEach( (component, index) => {
+                            
+
+                            if(!document.getElementById(component.id)){
+                              let componentTypeTemplate = ''
+                              if(component.component_type==1){
+                                //
+                                componentTypeTemplate = `<div><h4>${component.name}</h4>
+                                <hr/>
+                                <div >
+                                <p>${component.description || ""}</p>
+                                <iframe class="gh-fit" style="width:100%; border:none;" class="card-box" src="${component.embedded_url}"></iframe>
+
+                                 <p >${component.html_text}</p>
+                                </div></div>
+
+                                `
+
+                              }else {
 
 
-                  let videoComponent = await getVideoComponentsOfLessons(lessons.id);
-                  videoComponent = videoComponent.results;
-                    videoComponent.forEach( (video, indrx) => {
-                      BIG_JSON["section-"+ index] = section
-                      BIG_JSON["section-"+ index]["subsection-"+ indexer] = subsec
-                      BIG_JSON["section-"+ index]["subsection-"+ indexer]["lessons-"+ind] = lessons
+                                 componentTypeTemplate = `<div><h4> ${component.name}</h4>
 
-                      BIG_JSON["section-"+ index]["subsection-"+ indexer]["lessons-"+ind]["video-component-"+ indrx] = video
-                      // console.log(BIG_JSON)
-                       
-                      // setCourseData(BIG_JSON);
-                    })
+                                <hr/>
+                                <div class="">
+                                <p>${component.description || ""}</p>
+                                
+                                 <p >${component.html_text}</p>
+                                </div>`
 
 
-              })
+
+                                if(component.embedded_url){
+                                  componentTypeTemplate+=`<iframe 
+                                  class="card-box gh-fit" 
+                                  style="width:100%; border:none;"
+                                  src="${component.embedded_url}"></iframe>
+`
+                                }
+
+                                componentTypeTemplate+="</div>"
+
+
+                              }
+                             let tempNavComponent =`<div onhover="hoverIntoNav(this)" 
+                             data-name="${component.name}" id="${component.id}" style="
+                            
+                             font-size:12px;color:#000;height:28px;width:100%"
+                              class="content-${component.lesson_id}" onclick="loadIntoView(this)">
+                                 <p onhover="" style="color:rgba(8,20,200);">
+
+                        
+
+                                  ${component.name} </p>
+                              </div><hr/>`;
+
+      let display = index ==0 ? "block" : "none"
+      if(index == 0){
+
+      //initialize tracker counter for next and prev
+   $(".next-slide").attr("data-current-id",component.id)
+   $(".prev-slide").attr("data-current-id",component.id)
+
+      }
+
+      let templateLessonSlide = `<div class="module-in-view-port" id="load-module-slide-${component.id}" style="display:${display}" class="col-md-12 card-box" id="slide-content-${component.id}">
+            
+              <div style="min-height:400px;overflow-y:scroll;margin:20px">
+                ${componentTypeTemplate}
+              </div>
+              <hr/>
+      </div>`
+                             
+             $("#"+ component.lesson_id )
+              .append( $(tempNavComponent));
+
+
+               $("#"+ "workbench" )
+              .append( $(templateLessonSlide));
+               
+                           
+
+                            }
+                             // tempComponent +="</div>"
+                           
+                             
+                        })  
+                     })
+                  })
+
+                  
+             }     
           })
-
-
-
-
-        })
-
-       console.log(BIG_JSON)
-       setCourseData(BIG_JSON)
-         
-       
-       urls =[];
-        //  getLessonsOfSubsection,
-        // getHtmlComponentsOfLessons
-        //getProblemComponentsOfLessons
-       //getDiscussionComponentsOfLessons
-
-          /**
-           * const postIds = ['123', 'dn28e29', 'dn22je3'];
-
-
-           * ****/
-
-
-    }catch(err){
-
-    }
-
+   }
+     
 
   }
 
@@ -724,6 +911,35 @@ const WorkBench = (props) => {
     });
   });
 
+
+const handleToggleAccordion = (event) => {
+    //Bail if our clicked element doesn't have the class
+    if (!event.target.classList.contains("accordion-toggle")) return;
+
+    // Get the target content
+    var content = document.querySelector(event.target.hash);
+    if (!content) return;
+
+    // Prevent default link behavior
+    event.preventDefault();
+
+    // If the content is already expanded, collapse it and quit
+    if (content.classList.contains("active")) {
+      content.classList.remove("active");
+      return;
+    }
+
+    // Get all open accordion content, loop through it, and close it
+    var accordions = document.querySelectorAll(".accordion-content.active");
+    for (var i = 0; i < accordions.length; i++) {
+      accordions[i].classList.remove("active");
+    }
+
+    // Toggle our content
+    content.classList.toggle("active");
+  };
+
+
   return (
     <Fragment>
       <NavBar />
@@ -731,7 +947,7 @@ const WorkBench = (props) => {
       <br />
       <br />
       <br />
-      <div className="container-fluid">
+      <div className="container-fluid container-fullscreen">
         <div id="pagehandler">
           <div
             id="page"
@@ -746,23 +962,27 @@ const WorkBench = (props) => {
               <div className="grid-action-item">
                 <div className="grid-action-item-content" id="1">
                   <h6>
-                    <span className="resize" style={{ marginLeft: "20px" }}>
+                    <span onClick={prevSlide} className="resize prev-slide alignToTitle btn text-dark btn-outline-secondary btn-rounded btn-sm" style={{ marginLeft: "20px" }}>
                       Previous Slide
                     </span>
-                    <span className="handle" style={{ marginLeft: "20px" }}>
+                    <span 
+                     onClick={nextSlide}
+                    className="handle next-slide alignToTitle btn text-dark btn-outline-secondary btn-rounded btn-sm" style={{ marginLeft: "20px" }}>
                       Next Slide
                     </span>
                     <span
                       data-video="https://youtu.be/jnLSYfObARA"
-                      className="handle lets-play"
+                      className="handle lets-play alignToTitle btn text-dark btn-outline-secondary btn-rounded btn-sm"
                       style={{ marginLeft: "20px" }}
                     >
                       Modal View
                     </span>
-                    <span className="handle" style={{ marginLeft: "20px" }}>
+                    <span onClick={togglerFullscreen}
+                      id="toggle_fullscreen"
+                       className="handle alignToTitle btn text-dark btn-outline-secondary btn-rounded btn-sm" style={{ marginLeft: "20px" }}>
                       Full Screen View
                     </span>
-                    <span className="handle" style={{ marginLeft: "20px" }}>
+                    <span className="handle alignToTitle btn text-dark btn-outline-secondary btn-rounded btn-sm" style={{ marginLeft: "20px" }}>
                       Logout
                     </span>
                   </h6>
@@ -771,8 +991,8 @@ const WorkBench = (props) => {
             </div>
 
             <div id="leftcol">
-              <div className="card nav-tabs" id="workbench">
-                <h6 className="card nav-tabs">{Data[0].module1.course_name}</h6>
+              <div className="card nav-tabs " id="workbench">
+                <h6 className="card nav-tabs" id="lesson-name">Lesson Name:</h6>
 
                 {/*
 
@@ -786,7 +1006,6 @@ const WorkBench = (props) => {
 
                                   
 
-                        */}
 
                 <div className="container">
                   <div className="vidcontainer">
@@ -865,8 +1084,14 @@ const WorkBench = (props) => {
                     <div className="loading">
                       <i className="fa fa-spinner fa-spin"></i>
                     </div>
+
                   </div>
+
+
+                        
                 </div>
+
+*/}
               </div>
             </div>
             <div
@@ -903,10 +1128,10 @@ const WorkBench = (props) => {
             </div>
             <div id="tabpages" className="tab-content">
               <div id="content-for-lms">
-                <div id="content1" className="tabpane ">
+                <div id="content1" className="tabpane " style={{minHeight:"300px",overflowY:"scroll"}}>
                   <div>
-                    <nav className="vids">
-                      <a
+                    <nav className="vids" id="js-parental" >
+                    {/*<a
                         style={{ padding: "20px" }}
                         onClick={handleToggleAccordion}
                         href={"#content-1"}
@@ -923,7 +1148,10 @@ const WorkBench = (props) => {
                             </a>
                           );
                         })}
-                      </div>
+                      </div>*/}
+
+
+                      
                     </nav>
                   </div>
                 </div>

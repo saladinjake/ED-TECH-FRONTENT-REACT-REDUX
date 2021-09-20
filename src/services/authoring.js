@@ -8,6 +8,8 @@ import loading_image from "assets/gifs/loading-buffering.gif";
 import $ from "jquery";
 import 'jquery-ui-bundle';
 import 'jquery-ui-bundle/jquery-ui.css';
+import toast from "react-hot-toast";
+
 
 import { getLanguages } from "services/language";
 import axios from "axios"
@@ -926,9 +928,12 @@ let dataObj ={}
               localStorage.setItem("code","")
               localStorage.setItem("author","")
               localStorage.setItem("institution","")
-             swal("Congratulations", "You successfully created a course", "success");
+              toast.success("You successfully created a course");
+                  
+             // swal("Congratulations", "You successfully created a course", "success");
            }else{
-             swal("Congratulations", "You successfully updated this course", "success");
+             toast.success("You successfully edited this course");
+              
            }
 
         }
@@ -937,9 +942,12 @@ let dataObj ={}
 
         if(formEl.attr("id")=="addSectionForm"){
           if(mode.toLowerCase() =="post"){
-             swal("Congratulations", "You successfully created a section for this course. You Can add subsections and then create lessons for your intending course", "success");
+           toast.success("You successfully created a section");
+                  
+             // swal("Congratulations", "You successfully created a course", "success");
            }else{
-             swal("Congratulations", "You successfully updated this section of this course", "success");
+             toast.success("You successfully edited this course section");
+              
            }
       }
 
@@ -947,18 +955,24 @@ let dataObj ={}
 
       if(formEl.attr("id")=="addSubSectionForm"){
           if(mode.toLowerCase() =="post"){
-             swal("Congratulations", "You successfully created a subsection for this course. You Can add subsections and then create lessons for your intending course", "success");
+           toast.success("You successfully created a sub section");
+                  
+             // swal("Congratulations", "You successfully created a course", "success");
            }else{
-             swal("Congratulations", "You successfully updated this subsection of this course", "success");
+             toast.success("You successfully edited this course sub section");
+              
            }
       }
 
 
       if(formEl.attr("id")=="addLessonSectionForm"){
           if(mode.toLowerCase() =="post"){
-             swal("Congratulations", "You successfully created a lesson section to hold your course units for this course. You Can add subsections and then create lessons for your intending course", "success");
+           toast.success("You successfully created a lesson section");
+                  
+             // swal("Congratulations", "You successfully created a course", "success");
            }else{
-             swal("Congratulations", "You successfully updated this lesson section of this course", "success");
+             toast.success("You successfully edited this course lesson section");
+              
            }
       }
      
@@ -969,9 +983,16 @@ let dataObj ={}
       if(formEl.attr("id")=="myModalMarkdownEditor-SELECT" 
             || formEl.attr("id")=="myModalGenericForm-SELECT"){
           if(mode.toLowerCase() =="post"){
-             swal("Congratulations", "You successfully created a unit for this lesson", "success");
+           //   swal("Congratulations", "You successfully created a unit for this lesson", "success");
+           // }else{
+           //   swal("Congratulations", "You successfully updated the unit for this lesson section of this course", "success");
+           // }
+           toast.success("You successfully created a unit section");
+                  
+             // swal("Congratulations", "You successfully created a course", "success");
            }else{
-             swal("Congratulations", "You successfully updated the unit for this lesson section of this course", "success");
+             toast.success("You successfully edited this course unit section");
+              
            }
        }
     }
@@ -990,10 +1011,10 @@ let dataObj ={}
       // console.log(JSON.parse(jqXHR.responseText), "here is the content");
       dataObj.response = JSON.parse(jqXHR.responseText)
       console.log(dataObj.response, dataObj.response.id)
-      if(formEl.attr("id")=="stepUpFormWithAI" || formEl.attr("id")=="stepUpFormWithAI2" ){
-          if(mode.toLowerCase() =="post" && textStatus != "success"){
-            // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
-            // return dataObj.response.id
+      if(formEl.attr("id")=="create-course" || formEl.attr("id")=="stepUpFormWithAI2" ){
+          if(mode.toLowerCase() =="post" && textStatus == "success"){
+             window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+            return dataObj.response.id
           }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
              return dataObj.response.id
           }else{

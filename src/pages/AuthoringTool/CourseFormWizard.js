@@ -1167,7 +1167,7 @@ export default class MasterForm extends React.Component {
 
     return (
       <li className="previous list-inline-item" onClick={this._prev}>
-        <a href="javascript::" className="">
+        <a href="javascript::" className="" disabled>
           {" "}
           <i className="fa fa-arrow-left" style={{ color: "#fff" }}></i>{" "}
         </a>
@@ -1376,28 +1376,73 @@ export default class MasterForm extends React.Component {
                 <div id="make-fixed-on-fullscreen">
                   <h4 className="header-title mb-3">
                     Course adding form{" "}
+
+
                     <a
-                      href={process.env.PUBLIC_URL + "/authoring/courselist"}
+                      style={{ marginRight: "3px", color:"#fff" }}
+                      href={"#"}
+                      onClick={(e) => {
+                      e.preventDefault();
+                      this.saveAndContinue(e)
+                    }}
+                      className="alignToTitle btn btn-success btn-outline-secondary btn-rounded btn-sm"
+                    >
+                      {" "}
+                      <i className=" mdi mdi-keyboard-backspace"></i> Create
+                    </a>
+
+                    <a
+                      style={{ marginRight: "3px" ,color:"#fff"}}
+                      href={process.env.PUBLIC_URL + "/authoring/create/new/"}
+                      className="alignToTitle btn btn-danger btn-outline-secondary btn-rounded btn-sm"
+                      onClick={() =>{
+                        window.location.reload()
+                      }}
+                    >
+                      {" "}
+                      <i className=" mdi mdi-keyboard-backspace"></i> 
+                      Cancel
+                    </a>
+
+                    <a
+                      style={{ marginRight: "10px" }}
+                    onClick={() =>{
+                        window.location.reload()
+                      }}
+                      href={"#"}
                       className="alignToTitle btn btn-outline-secondary btn-rounded btn-sm"
                     >
                       {" "}
-                      <i className=" mdi mdi-keyboard-backspace"></i> Back to
-                      course list
+                      <i className=" mdi mdi-keyboard-backspace"></i> 
+                      Clear
+                    </a>
+
+                      <a
+                      href={process.env.PUBLIC_URL + "/authoring/course/history"}
+                      className="alignToTitle btn btn-outline-secondary btn-rounded btn-sm"
+                    >
+                      <i className=" mdi mdi-keyboard-backspace"></i> Courses
+                      List
                     </a>
                     <a
-                      style={{ marginRight: "10px" }}
+                      style={{ marginRight: "3px" }}
                       href="#no-grid"
                       onClick={this.togglerFullscreen}
                       id="toggle_fullscreen"
                       className="alignToTitle btn btn-outline-secondary btn-rounded btn-sm"
                     >
-                      {" "}
-                      <i className=" mdi mdi-keyboard-backspace"></i> Toggle
+                      <i className=" mdi mdi-keyboard-backspace"></i> 
                       Fullscreen
                     </a>
-                    <br />
+                    
                   </h4>
-                  <br />
+                
+
+                  
+
+                    <br/>
+
+
 
                   <div className="col-md-12">
                     <ul
@@ -1407,6 +1452,15 @@ export default class MasterForm extends React.Component {
                       <a
                         onClick={ async (e) => {
                           this.goToStep(e, 1);
+
+
+                              //hide all input and text area or select or option
+                              $("#create-course").show().fadeIn("slow")
+
+                              //show authoringbox only
+                              $("#hidden-on-reveal").hide().fadeOut("fast")
+
+
                             await  this.fetchContent()
                              $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
                               setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
@@ -1486,17 +1540,23 @@ export default class MasterForm extends React.Component {
                           // swal("WOOPS!", "You need to fill out the required fields marked asterisk (*)", "error");
                            
 
-                           this.goToStep(e, 5);
+                           this.goToStep(e, 1); //5
                             await  this.fetchContent()
                              $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
                               setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
+                              
+                              setTimeout(()=> {
+                                let T = new  TinyMyce();
+                              T.render("")
 
-                          setTimeout(()=> {
-                            let T = new  TinyMyce();
-                          T.render("")
+                            },3000)
 
-                        },3000)
+                              //hide all input and text area or select or option
+                              $("#create-course").hide().fadeOut("fast")
+
+                              //show authoringbox only
+                              $("#hidden-on-reveal").show().fadeIn("slow")
 
                         }}
                         href="#pricing"
@@ -1571,7 +1631,7 @@ export default class MasterForm extends React.Component {
                        novalidate
                       // enctype="multipart/form-data"
                       enctype="application/x-www-form-urlencoded"
-                      style={{height:"1850px"}}
+                      style={{height:"1200px"}}
                     >
                       {/*<CSRFToken /> Ready to django into the server*/}
                       Ensure to select an authoring team*
@@ -1697,8 +1757,7 @@ export default class MasterForm extends React.Component {
                         saveAndContinue={this.saveAndContinue}
                       />
 
-                      <br />
-                      <br />
+                     
                     </form>
 
 
@@ -1715,16 +1774,13 @@ export default class MasterForm extends React.Component {
                           </div>
                      </div>
 
-
-                    <br />
-                    <br />
-                    <div style={{ position: "absolute", bottom: "0px", marginLeft:"20px" }}>
+                    {/*<div style={{ position: "absolute", bottom: "0px", marginLeft:"20px" }}>
                       <ul className="list-inline mb-0 wizard text-center">
                         {this.previousButton}
 
                         {this.nextButton}
                       </ul>
-                    </div>
+                    </div>*/}
                   </div>
                 </div>
               </div>
@@ -1773,6 +1829,268 @@ class Step1 extends React.Component {
           <div className="tab-pane active" id="basic">
             <div className="row">
               <div className="col-md-12 card-box">
+
+
+
+
+
+
+            {/*switcher pane for authoring*/}
+
+              <div className="row" style={{display:"none"}} id="hidden-on-reveal">
+        <div className="col-md-12">
+
+
+
+                      <Col md="12" sm="12" lg="12">
+        
+                 
+                  <br/> <br/> <br/>
+                  <div className="container-fluid" id="lead-guy" >  
+                        
+
+                         <div className="col-lg-3 col-md-3 col-sm-6" >
+          <a href="#">
+            <div className="widget-panel widget-style-2 bg-white"
+              onClick={() => {
+
+                
+                          swal({
+                            text: 'Search for an instructor by name/email/ phone number. e.g. "saladin jake ".',
+                            content: "input",
+                            button: {
+                            text: "Search!",
+                            closeModal: false,
+                            },
+                          })
+                          .then(name => {
+                            if (!name)  return swal("No instructor email/name was entered!");
+                              // check if user existed in our initial fetch 
+                              // do not make another api request 
+                              //this saves pull request
+     
+                            let targetInstructor = instructors.find(instructor => {
+                                console.log(instructor)
+                                return (instructor?.profile?.name === name) ||  (instructor?.profile?.email === name) || (instructor?.profile?.phone_number === name)
+                            })
+                           
+                              if(targetInstructor){
+                                 let leadGuy =  $("#lead-guy").css({display:"block", color:"#fff"}).html(targetInstructor?.profile?.name)
+                                $("#author").val(targetInstructor?.profile?.id)
+                                localStorage.setItem("author",targetInstructor?.profile?.id)
+                                 return swal("Success!", "The Instructor was found", "Success");
+                
+                             }else{
+
+                                
+                                  swal("WOOPS!", "We could not find instructor", "error");
+                        
+                                  swal.stopLoading();
+                                 return swal.close();
+                            
+
+                             }
+                          })
+                          
+                           
+                          
+
+                    }}
+
+            >
+              <i className="md md-add text-info"></i>
+              <h2
+                className="m-0 text-dark-x counter font-600-x"
+                style={{
+                  fontFamily: "Open Sans",
+                  color: "#000",
+                  fontSize: "14px",
+                }}
+
+                
+              >
+                Add/Change Team Lead
+              </h2>
+              <div
+                className="text-muted-x m-t-5-x"
+                style={{
+                  fontFamily: "Open Sans",
+                  color: "#000",
+                  fontSize: "14px",
+                }}
+              >
+                Add
+              </div>
+            </div>
+           
+             </a>
+          </div></div>
+                
+</Col>
+
+        
+
+
+
+
+                <div id="collabo-guys" className="row">
+
+
+
+
+
+                    <div class="col-lg-3 col-md-3 col-sm-6">
+                      <a href="#">
+                        <div className="widget-panel widget-style-2 bg-white">
+                          <i className="fa fa-plus fa-2x text-pink"></i>
+                          <h2
+                            className="m-0 text-dark-x counter font-600-x"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+
+                                onClick={ () => {
+              let values = this.state.collaborators            
+
+              swal({
+                text: 'Search for an instructor by email/ phone number. e.g. "saladinjake@company.com ".',
+                content: "input",
+                button: {
+                text: "Search!",
+                closeModal: false,
+                },
+              })
+              .then(name => {
+                if (!name)  return swal("No instructor email or phone entered was entered!");
+                  // check if user existed in our initial fetch 
+                  // do not make another api request 
+                  //this saves pull request
+
+                     
+                  //TODO: if no collaborators selected 
+                  //LET THE LOGGED IN OR LEAD INSTRUCTOR BE APPENDED AS A COLLABORATOR
+
+                let targetInstructor = instructors.find(instructor => {
+                    console.log(instructor)
+                    return (instructor?.profile?.name === name) ||  (instructor?.profile?.email === name) || (instructor?.profile?.phone_number === name)
+                })
+               
+                  if(targetInstructor){
+                     let collaborators =  $("#collabo-guys")
+                      
+                     let newGuy = $(`
+                      <div class="col-lg-3 col-md-3 col-sm-6">
+                      <a href="#">
+                        <div className="widget-panel widget-style-2 bg-white">
+                          <i className="fa fa-trash fa-2x text-pink"></i>
+                          <h2
+                            className="m-0 text-dark-x counter font-600-x"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+
+                          >
+                            ${targetInstructor?.profile?.first_name} - ${targetInstructor?.profile?.email}
+                          </h2>
+                          <div
+                            className="text-muted-x m-t-5-x"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+                            onclick="alert('test delete operation')"
+
+                            data-id=${targetInstructor?.profile?.id}
+                          >
+                            Remove
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                     `)
+                     
+                    collaborators.append(newGuy.html())
+                  
+
+                     // now let js do the dynamic selection of the hidden authoring_team select form fields
+                    const { name, id, email, phone_number} = targetInstructor?.profile
+                     values.push({
+                      id,name, email, phone_number
+                     })
+
+                     this.setState({collaborators: values})
+
+                      $('select[name=authoring_team]').val(this.state.collaborators) // all collaborators as listArray
+      
+                     return swal("Success!", "The Instructor was found", "Success");
+
+                 }else{
+
+                    
+                      swal("Oh noes!", "We could not find instructor", "error");
+            
+                      swal.stopLoading();
+                     return swal.close();
+                
+
+                 }
+              })
+             
+                 
+                           
+                          
+
+      }}
+                          >
+                            Add collaborator
+                          </h2>
+                          <div
+                            className="text-muted-x m-t-5-x"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+                          >
+                            Add
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+
+
+
+
+
+                </div>
+
+               {/* hidden field that updates its array of data*/}
+               { /*fields will be selected as user finds the  exact email/ phone or name 
+                of the instructors to be added as collaborators*/}
+                <select name="authoring_team[]" multiple  style={{display:"none"}}>
+                      {instructors.length > 0  && instructors.map(instructor => {
+                          return (
+                             <option value={instructor.profile.id}>{instructor.profile.name}</option>
+                          )
+                      })}
+                </select>
+
+
+          
+          <br />
+          
+        </div>
+
+        <br />
+        <br />
+      </div>
+
+    {/*form*/}
            <form id="create-course" enctype="">
 
                 <div className="form-group col-md-6 fl-left">
@@ -1839,6 +2157,131 @@ class Step1 extends React.Component {
 
 
 
+
+
+              <div class="form-group  col-md-6 fl-left">
+                 
+                  <div class="" data-select2-id="94">
+                    <select
+                      style={{ position: "relative", zIndex: "1" }}
+                      class="form-control select2 select2-hidden-accessible"
+                      data-toggle="select2"
+                      id="institution"
+                      name="institution"
+                      
+                      data-select2-id="level"
+                      tabindex="-1"
+                      aria-hidden="true"
+                       value={this.props.institution}
+                     onChange={this.props.handleChange}
+                    >
+
+
+                      
+
+                      <option>-- Institutions --</option>
+                        {institutions &&
+                          institutions.map((language, i) => {
+                            return (
+                              <option key={i} value={language.id}>
+                                {language.name}
+                              </option>
+                            );
+                          })}
+                        
+
+                    </select>
+
+                     <label class="col-md-12 col-form-label" for="level">
+                    Institution <span className="required">*</span>
+                  </label>
+                  </div>
+                </div>
+
+
+
+
+                <div className=" form-group col-md-6 fl-left">
+                        <div className="col-md-10  fl-left">
+                          <input
+                            type="text"
+                            placeholder={"Add Team Lead"}
+                              
+                            className="form-control fl-left"
+                            id="author-inset"
+                            name="author"
+                            disabled
+                          />
+                        </div>
+                         <div class="col-md-2  fl-left">
+                            <button
+                              type="button"
+
+                            
+                              className="small text-white"
+
+
+                                onClick={(e) => {
+                                  e.preventDefault()
+                
+                          swal({
+                            text: 'Search for an instructor by name/email/ phone number. e.g. "saladin jake ".',
+                            content: "input",
+                            button: {
+                            text: "Search!",
+                            closeModal: false,
+                            },
+                          })
+                          .then(name => {
+                            if (!name)  return swal("No instructor email/name was entered!");
+                              // check if user existed in our initial fetch 
+                              // do not make another api request 
+                              //this saves pull request
+     
+                            let targetInstructor = instructors.find(instructor => {
+                                console.log(instructor)
+                                return (instructor?.profile?.name === name) ||  (instructor?.profile?.email === name) || (instructor?.profile?.phone_number === name)
+                            })
+                           
+                              if(targetInstructor){
+                                 let leadGuy =  $("#lead-guy").css({display:"block", color:"#fff"}).html(targetInstructor?.profile?.name)
+                                $("#author").val(targetInstructor?.profile?.id)
+                                $("#author-inset").val(targetInstructor?.profile?.email)
+                                this.setState({author:targetInstructor?.profile?.email})
+                                localStorage.setItem("author",targetInstructor?.profile?.id)
+                                
+                                 return swal("Success!", "The Instructor was found", "Success");
+                                  
+                             }else{
+
+                                
+                                  swal("Error", "We could not find instructor", "error");
+                        
+                                  swal.stopLoading();
+                                 return swal.close();
+                            
+
+                             }
+                          })
+                          
+                           
+                          
+
+                    }}
+
+                            >
+                              +
+                            </button>
+                            </div>
+
+                        <br />
+                        <br />
+                        <label class="col-md-12 col-form-label" for="level">
+                    Author<span className="required">*</span></label>
+                </div>
+
+
+
                 
                 <div className="form-group col-md-6 fl-left">
                  
@@ -1860,6 +2303,10 @@ class Step1 extends React.Component {
                   </label>
                   </div>
                 </div>
+
+
+
+
 
 
 
@@ -1919,46 +2366,6 @@ class Step1 extends React.Component {
                   </div>
                 </div>
 
-
-
-              <div class="form-group  col-md-6 fl-left">
-                 
-                  <div class="" data-select2-id="94">
-                    <select
-                      style={{ position: "relative", zIndex: "1" }}
-                      class="form-control select2 select2-hidden-accessible"
-                      data-toggle="select2"
-                      id="institution"
-                      name="institution"
-                      
-                      data-select2-id="level"
-                      tabindex="-1"
-                      aria-hidden="true"
-                       value={this.props.institution}
-                     onChange={this.props.handleChange}
-                    >
-
-
-                      
-
-                      <option>-- Institutions --</option>
-                        {institutions &&
-                          institutions.map((language, i) => {
-                            return (
-                              <option key={i} value={language.id}>
-                                {language.name}
-                              </option>
-                            );
-                          })}
-                        
-
-                    </select>
-
-                     <label class="col-md-12 col-form-label" for="level">
-                    Institution
-                  </label>
-                  </div>
-                </div>
 
 
 
@@ -2148,7 +2555,7 @@ class Step1 extends React.Component {
 
 
 
-
+{/*
                 <div className="mb-3 mt-3">
                   <button
                     type="button"
@@ -2160,7 +2567,7 @@ class Step1 extends React.Component {
                   >
                     Save 
                   </button>
-                </div>
+                </div>*/}
 
 
                 </form>
@@ -2675,258 +3082,6 @@ class Step4 extends React.Component {
             <div className="col-md-12">
               
 
-              <div className="row">
-        <div className="col-md-12">
-
-
-
-                      <Col md="12" sm="12" lg="12">
-        
-                 
-                  <br/> <br/> <br/>
-                  <div className="container-fluid" id="lead-guy" >  
-                        
-
-                         <div className="col-lg-3 col-md-3 col-sm-6" >
-          <a href="#">
-            <div className="widget-panel widget-style-2 bg-white"
-              onClick={() => {
-
-                
-                          swal({
-                            text: 'Search for an instructor by name/email/ phone number. e.g. "saladin jake ".',
-                            content: "input",
-                            button: {
-                            text: "Search!",
-                            closeModal: false,
-                            },
-                          })
-                          .then(name => {
-                            if (!name)  return swal("No instructor email/name was entered!");
-                              // check if user existed in our initial fetch 
-                              // do not make another api request 
-                              //this saves pull request
-     
-                            let targetInstructor = instructors.find(instructor => {
-                                console.log(instructor)
-                                return (instructor?.profile?.name === name) ||  (instructor?.profile?.email === name) || (instructor?.profile?.phone_number === name)
-                            })
-                           
-                              if(targetInstructor){
-                                 let leadGuy =  $("#lead-guy").css({display:"block", color:"#fff"}).html(targetInstructor?.profile?.name)
-                                $("#author").val(targetInstructor?.profile?.id)
-                                localStorage.setItem("author",targetInstructor?.profile?.id)
-                                 return swal("Success!", "The Instructor was found", "Success");
-                
-                             }else{
-
-                                
-                                  swal("WOOPS!", "We could not find instructor", "error");
-                        
-                                  swal.stopLoading();
-                                 return swal.close();
-                            
-
-                             }
-                          })
-                          
-                           
-                          
-
-                    }}
-
-            >
-              <i className="md md-add text-info"></i>
-              <h2
-                className="m-0 text-dark-x counter font-600-x"
-                style={{
-                  fontFamily: "Open Sans",
-                  color: "#000",
-                  fontSize: "14px",
-                }}
-
-                
-              >
-                Add/Change Team Lead
-              </h2>
-              <div
-                className="text-muted-x m-t-5-x"
-                style={{
-                  fontFamily: "Open Sans",
-                  color: "#000",
-                  fontSize: "14px",
-                }}
-              >
-                Add
-              </div>
-            </div>
-           
-             </a>
-          </div></div>
-                
-</Col>
-
-        
-
-
-
-
-                <div id="collabo-guys" className="row">
-
-
-
-
-
-                    <div class="col-lg-3 col-md-3 col-sm-6">
-                      <a href="#">
-                        <div className="widget-panel widget-style-2 bg-white">
-                          <i className="fa fa-plus fa-2x text-pink"></i>
-                          <h2
-                            className="m-0 text-dark-x counter font-600-x"
-                            style={{
-                              fontFamily: "Open Sans",
-                              color: "#000",
-                              fontSize: "14px",
-                            }}
-
-                                onClick={ () => {
-              let values = this.state.collaborators            
-
-              swal({
-                text: 'Search for an instructor by email/ phone number. e.g. "saladinjake@company.com ".',
-                content: "input",
-                button: {
-                text: "Search!",
-                closeModal: false,
-                },
-              })
-              .then(name => {
-                if (!name)  return swal("No instructor email or phone entered was entered!");
-                  // check if user existed in our initial fetch 
-                  // do not make another api request 
-                  //this saves pull request
-
-                     
-                  //TODO: if no collaborators selected 
-                  //LET THE LOGGED IN OR LEAD INSTRUCTOR BE APPENDED AS A COLLABORATOR
-
-                let targetInstructor = instructors.find(instructor => {
-                    console.log(instructor)
-                    return (instructor?.profile?.name === name) ||  (instructor?.profile?.email === name) || (instructor?.profile?.phone_number === name)
-                })
-               
-                  if(targetInstructor){
-                     let collaborators =  $("#collabo-guys")
-                      
-                     let newGuy = $(`
-                      <div class="col-lg-3 col-md-3 col-sm-6">
-                      <a href="#">
-                        <div className="widget-panel widget-style-2 bg-white">
-                          <i className="fa fa-trash fa-2x text-pink"></i>
-                          <h2
-                            className="m-0 text-dark-x counter font-600-x"
-                            style={{
-                              fontFamily: "Open Sans",
-                              color: "#000",
-                              fontSize: "14px",
-                            }}
-
-                          >
-                            ${targetInstructor?.profile?.first_name} - ${targetInstructor?.profile?.email}
-                          </h2>
-                          <div
-                            className="text-muted-x m-t-5-x"
-                            style={{
-                              fontFamily: "Open Sans",
-                              color: "#000",
-                              fontSize: "14px",
-                            }}
-                            onclick="alert('test delete operation')"
-
-                            data-id=${targetInstructor?.profile?.id}
-                          >
-                            Remove
-                          </div>
-                        </div>
-                      </a>
-                    </div>
-                     `)
-                     
-                    collaborators.append(newGuy.html())
-                  
-
-                     // now let js do the dynamic selection of the hidden authoring_team select form fields
-                    const { name, id, email, phone_number} = targetInstructor?.profile
-                     values.push({
-                      id,name, email, phone_number
-                     })
-
-                     this.setState({collaborators: values})
-
-                      $('select[name=authoring_team]').val(this.state.collaborators) // all collaborators as listArray
-      
-                     return swal("Success!", "The Instructor was found", "Success");
-
-                 }else{
-
-                    
-                      swal("Oh noes!", "We could not find instructor", "error");
-            
-                      swal.stopLoading();
-                     return swal.close();
-                
-
-                 }
-              })
-             
-                 
-                           
-                          
-
-      }}
-                          >
-                            Add collaborator
-                          </h2>
-                          <div
-                            className="text-muted-x m-t-5-x"
-                            style={{
-                              fontFamily: "Open Sans",
-                              color: "#000",
-                              fontSize: "14px",
-                            }}
-                          >
-                            Add
-                          </div>
-                        </div>
-                      </a>
-                    </div>
-
-
-
-
-
-                </div>
-
-               {/* hidden field that updates its array of data*/}
-               { /*fields will be selected as user finds the  exact email/ phone or name 
-                of the instructors to be added as collaborators*/}
-                <select name="authoring_team[]" multiple  style={{display:"none"}}>
-                      {instructors.length > 0  && instructors.map(instructor => {
-                          return (
-                             <option value={instructor.profile.id}>{instructor.profile.name}</option>
-                          )
-                      })}
-                </select>
-
-
-          
-          <br />
-          
-        </div>
-
-        <br />
-        <br />
-      </div>
 
 
 
