@@ -1613,7 +1613,13 @@ export default class MasterForm extends React.Component {
                  let insertionId =section.id
  
      let templateData =`
-  <li id="${insertionId}" data-belongs="${section.course}" data-parent="${insertionId}" data-restriction="${
+  <li id="${insertionId}" 
+  data-belongs="${section.course}"
+  data-name="${section.name}"
+         
+          data-description="${section.description}"
+
+   data-parent="${insertionId}" data-restriction="${
     "miller_" + insertionId
   }"    data-id="${
     "miller_" + insertionId
@@ -1706,7 +1712,12 @@ export default class MasterForm extends React.Component {
 
 
           style="margin-right:10px;color:#fff">
-         <i class="fa fa-arrows "></i>
+         <i class="fa fa-arrows "  data-belongs="${section.course}"
+         data-belongs="${section.course}"
+
+          data-name="${section.name}"
+          data-pos="${section.position_id}"
+          data-description="${section.description}"></i>
         </a>
 
         
@@ -1780,6 +1791,10 @@ export default class MasterForm extends React.Component {
  
       let templateSub = `
          <ul 
+          data-name="${subsec?.name}"
+        
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
          
          id="dynamic_subsection_${muu_counter}"  data-id="${
     "muu_" + muu_counter
@@ -1867,7 +1882,13 @@ export default class MasterForm extends React.Component {
 
          <a  class="drag-handle-list" style="margin-right:10px;color:#fff"
           
-         
+           data-idx="${muu_counter}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+
+          data-id="${"muu_" + muu_counter}"
                  
           >
 
@@ -1931,7 +1952,7 @@ export default class MasterForm extends React.Component {
 `;
                 $("#"+ subsec.section).append(templateSub);
 
-                enableDragSortPositionUpdater("js-root-parent","subsections")
+                enableDragSortPositionUpdater("sections","hello-move-me")
               }
               let respLessons = subsec.sub_section_lessons
               
@@ -1948,8 +1969,11 @@ export default class MasterForm extends React.Component {
   let rndId = "dynamic_subsection_" + muu_counter + "_lesson_component"
   let templateLesson = ` 
       <ul id="${rndId}"  data-id="${
-    "muu_" + muu_counter
-  }" class="reaper-${muu_counter} lessons hello-move-me fold root-lesson-ul draggable dynamo_${localStorage.getItem("l_tracker")} card-box ${
+    "muu_" + muu_counter}"
+    data-name="${lessons?.name}"
+        
+          data-description="${lessons?.description}"
+     class="reaper-${muu_counter} lessons hello-move-me fold root-lesson-ul draggable dynamo_${localStorage.getItem("l_tracker")} card-box ${
     "muu_" + muu_counter
   } col-md-8   section-parent_${localStorage.getItem(
     "tracker"
@@ -1960,11 +1984,6 @@ export default class MasterForm extends React.Component {
   
    >
 
-  
-   
-      <div class="console" style="display:none">
-    <h4>CONSOLE:</h4>
-  </div>
         <li class="fold-content">
   
     <h4 style="background:rgba(8,23,200); margin-right:10px;padding:10px">
@@ -2020,7 +2039,12 @@ export default class MasterForm extends React.Component {
         </a>
 
 
-         <a class="drag-handle-list-lessons" style="margin-right:10px;color:#fff"
+         <a
+          data-name="${lessons?.name}"
+        
+          data-description="${lessons?.description}" 
+
+         class="drag-handle-list-lessons" style="margin-right:10px;color:#fff"
           data-id="${"lmuu_" + muu_counter}"
           data-template="dynamic_subsection_${muu_counter}_lesson_component "
            
@@ -2028,7 +2052,12 @@ export default class MasterForm extends React.Component {
                  
           >
 
-         <i class="fa fa-arrows "></i>
+         <i class="fa fa-arrows "
+            data-name="${lessons?.name}"
+        
+          data-description="${lessons?.description}"
+
+         ></i>
         </a>
          <a class="dropright dropright "  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-ellipsis-v " style="color:#fff"></i>
@@ -2073,7 +2102,7 @@ export default class MasterForm extends React.Component {
 
                     $("#dynamic_subsection_"+ lessons.sub_section).append(templateLesson);
                   
-                    // enableDragSortPositionUpdater("js-root-parent","lessons")          
+                    enableDragSortPositionUpdater("subsections","hello-move-me")          
       
                   }
 
@@ -2133,6 +2162,7 @@ export default class MasterForm extends React.Component {
                        
        $("#dynamic_subsection_"+ component.lesson_id +"_lesson_component")
         .append( $(tempComponent));
+        enableDragSortPositionUpdater("subsections", "hello-move-me")
                      
 
                       }
