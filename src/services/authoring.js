@@ -54,20 +54,55 @@ window.setTargetLessonItem = (insertionId) =>{
   localStorage.setItem('ls_tracker',insertionId);
 }
 
+//date format to mysql
+/**
+ * You first need to create a formatting function to pad numbers to two digits…
+ **/
+function twoDigits(d) {
+    if(0 <= d && d < 10) return "0" + d.toString();
+    if(-10 < d && d < 0) return "-0" + (-1*d).toString();
+    return d.toString();
+}
 
+
+
+
+export const DateFormatter = {
+  
+  mysqlDate: (dateStr) => {
+      Date.prototype.toMysqlFormat = function() {
+          return this.getUTCFullYear() + "-" + twoDigits(1 + this.getUTCMonth()) + "-" + twoDigits(this.getUTCDate()) + " " + twoDigits(this.getUTCHours()) + ":" + twoDigits(this.getUTCMinutes()) + ":" + twoDigits(this.getUTCSeconds());
+      }
+
+      let dateObj;
+
+      if(dateStr.length> 0){
+       dateObj =new Date(dateStr)
+      }else{
+        dateObj = new Date();
+      }
+       alert(dateObj.toMysqlFormat())
+      return dateObj.toMysqlFormat();
+  },
+
+}
 
 
 
 /*create the boxes holding the lessons*/
 export const addSubSectionData = (response) => {
-  let muu_counter =response?.id
+  let muu_counter =response?.id;
+  let subsec = response;
+  //validate that response has a new key id first to avoid thrown error
+
+  if(typeof response == "object" &&  response.hasOwnProperty("id")){
  
-   const template = `
+      let template = `
          <ul 
          
          id="dynamic_subsection_${muu_counter}"  data-id="${
     "muu_" + muu_counter
-  }" class="fold drop-zone-section root-sub-ul centerSubsection column-list-section-parade ${
+  }" class="fold card-box drop-zone-section root-sub-ul centerSubsection column-list-section-parade ${
     "muu_" + muu_counter
   } col-md-10 section-parent_${localStorage.getItem(
     "tracker"
@@ -80,39 +115,59 @@ ondragenter="return dragEnterIntoSection(event)"
          ondragover="return dragOverSection(event)"  
          ondragleave="return dragLeaveLessonIntoSubsection(event)" 
   >
+     <h4 style="background:rgba(8,23,200); margin-right:10px;padding:10px">
             
               <span class=""  style="height:60px;border-left:3px solid black;margin-top:10px">
-               <span class="title_sub " data-th="Company name" style="font-size:15px">${
-                 response?.name || "Subsection"
+               <span class="title_sub " data-th="Company name" style="font-size:20px;color:#fff">${
+                 subsec?.name + " " + subsec?.position_id  || "Subsection"
                }</span>
                 <span class="subsect" data-th="Customer no"></span>
                 <span data-th="Customer name"></span>
                 <span class="action" data-th="Customer nam"  style="float:right">
+       
+       <a    href="#myModalLesson" role="button" data-toggle="modal"
+       style="margin-right:10px;color:#fff"
+          data-id="${"muu_" + muu_counter}"
+            onclick='addlessonSection(this);setTargetSubsectionItem("${muu_counter}") '      
+          ><i class="fa fa-plus"></i></a>
 
 
-
-        <a style="margin-right:10px;background:#fff;color:#000"
+        <a style="margin-right:10px;color:#fff"
             href="#myModalSubSectionEdit" role="button" data-toggle="modal"
           data-id="${"muu_" + muu_counter}"
-          data-eid="${muu_counter}"
-            onclick="editSubSection(this);localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"       
+
+            data-idx="${muu_counter}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+          data-modal="myModalSubSectionEdit"
+
+            onclick="injectToModal(this);"       
           >
                 
           <i class="fa fa-edit "></i>
         </a>
 
 
-        <a style="margin-right:10px;background:#fff;color:#000"
-          
+        <a style="margin-right:10px;color:#fff"
+          data-extint="subsection"
+
+            data-idx="${muu_counter}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+
           data-id="${"muu_" + muu_counter}"
-           onclick="removeSubSection(this)"        
+           onclick="genericDelete(this)"        
           >
                 
           <i class="fa fa-trash "></i>
         </a>
 
 
-         <a  class="drag-handle-list" style="margin-right:10px;background:#fff;color:#000"
+         <a  class="drag-handle-list" style="margin-right:10px;color:#fff"
           
          
                  
@@ -127,44 +182,54 @@ ondragenter="return dragEnterIntoSection(event)"
 
          <a class="dropright dropright "  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                  
-                <i class="fa fa-ellipsis-v " style="color:#000"></i>
+                <i class="fa fa-ellipsis-v " style="color:#fff"></i>
              
         <ul class="dropdown-menu" style="margin-left:40px" >
 
- 
+  <li><a class="dropdown-item"   href="#myModalLesson" role="button" data-toggle="modal"
+          data-id="${"muu_" + muu_counter}"
+            onclick='addlessonSection(this);setTargetSubsectionItem("${muu_counter}") '      
+          >Add</a></li>
 
                 
 
                 <li><a class="dropdown-item"    href="#myModalSubSectionEdit" role="button" data-toggle="modal"
           data-id="${"muu_" + muu_counter}"
-            onclick="editSubSection(this);localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"       
+           data-idx="${muu_counter}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec?.section}"
+
+          data-modal="myModalSubSectionEdit"
+            onclick="injectToModal(this)"       
           >Edit </a></li>
 
 
 
-                <li><a class="dropdown-item"   href="#myModalLesson" role="button" data-toggle="modal"
-          data-id="${"muu_" + muu_counter}"
-            onclick='addlessonSection(this);setTargetSubsectionItem("${muu_counter}") '      
-          >Add Lesson</a></li>
+               
 
 
                 <li><a class="dropdown-item" 
                  data-id="${"muu_" + muu_counter}"
+                  data-idx="${muu_counter}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+           data-parent-id="${subsec?.section}"
+          data-modal="myModalSubSectionEdit"
                 onclick="replicateSubSection(this);localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"
 
                 >Replicate Section</a></li>
                 
-                <li><a class="dropdown-item" href="#noclick"  data-id="${
-                  "muu_" + muu_counter
-                }"
-           onclick="removeSubSection(this)" >Delete</a></li>
            </ul>
          </a>
                 </span>
       </li>
+
+      </h4>
     </ul>
 `;
-
   var newChild = $("<div class='child-table js-child'>").html(template);
   var subchildren = $(".section-parent_" + localStorage.getItem("tracker"))
     .length;
@@ -203,12 +268,7 @@ ondragenter="return dragEnterIntoSection(event)"
 
       
   }
-
-
-
-
-  
-
+}
 
 };
 
@@ -217,52 +277,69 @@ ondragenter="return dragEnterIntoSection(event)"
 
 export const addSectionData = (response) => {
   let insertionId = response?.id
+  let section = response;
   // let mycounter = counter++;
   localStorage.setItem("sec_counter", response?.id);
   let templateData ="no data returned"
   // if(sectionRes){
+  if(typeof response == "object" &&  response.hasOwnProperty("id")){
 
   templateData =`
-  <li data-parent="${insertionId}" data-restriction="${
+  <li id="${insertionId}" data-parent="${insertionId}" data-restriction="${
     "miller_" + insertionId
   }"    data-id="${
     "miller_" + insertionId
-  }" id="dynamic_section_${insertionId}"  class=" root-li view tr-of-root opened col-md-12 ${
+  }" id="dynamic_section_${insertionId}"  class="card-box root-li view tr-of-root opened col-md-12 ${
     "miller_" + insertionId
-  } section-list" style=" margin-bottom:10px;">
-   <a style="margin-right:10px;background:#fff;color:#000"
+  } section-list" style=" margin-bottom:10px;background:#fff;border:2px solid #f5f5f5">
+
+   <h4 style="background:rgba(8,23,200); margin-right:10px;padding:10px">
+   <a style="color:#fff"
           data-id="${"miller_" + insertionId}"
           onclick="localStorage.setItem('given_id','dynamic_section_'+'${insertionId}');localStorage.setItem('tracker','${insertionId}');showSetSubsection(this);"           
           >
            <span ><i class="fa fa-chevron-down "></i></span>
     </a>
-     <span class="tits section__name first-child-of-td" style="font-size:20px"> ${
-       response.name || "Section " + insertionId
+     <span class="tits section__name first-child-of-td" style="font-size:20px;color:#fff"> ${
+       section.name + " " + section.position_id  || "Section " + insertionId
      }</span>
       <span class="per action" style="float:right">
-      <a style="margin-right:10px;background:#fff;color:#000"
+      <a style="margin-right:10px;color:#fff"
                    href="#myModalSubsection" role="button" data-toggle="modal"
-                   onclick='setTargetItem("${insertionId}")'
+                   onclick="localStorage.setItem('given_id','dynamic_section_'+'${insertionId}');
+  localStorage.setItem('tracker','${insertionId}');"
                   >
                 
                     <i class="fa fa-plus "></i>
         </a>
 
-        <a style="margin-right:10px;background:#fff;color:#000"
+        <a style="margin-right:10px;color:#fff"
             href="#myModalEdit" role="button" data-toggle="modal"
           data-id="${"miller_" + insertionId}"
           data-eid="${insertionId}"
-            onclick="editSection(this);localStorage.setItem('given_id','dynamic_section_'+'${insertionId}');localStorage.setItem('tracker','${insertionId}');"       
+          data-id="${"miller_" + insertionId}"
+          data-idx="${insertionId}"
+          data-name="${section.name}"
+          data-pos="${section.position_id}"
+          data-description="${section.description}"
+          data-modal="myModalEdit"
+
+            onclick="injectToModal(this);localStorage.setItem('given_id','dynamic_section_'+'${insertionId}');localStorage.setItem('tracker','${insertionId}');"       
           >
                 
           <i class="fa fa-edit "></i>
         </a>
 
 
-        <a style="margin-right:10px;background:#fff;color:#000"
-          
+        <a style="margin-right:10px;color:#fff"
+          data-extint="section"
+
+          data-idx="${insertionId}"
+          data-name="${section.name}"
+          data-pos="${section.position_id}"
+          data-description="${section.description}"
           data-id="${"miller_" + insertionId}"
-           onclick="removeSection(this)"        
+           onclick="genericDelete(this)"        
           >
                 
           <i class="fa fa-trash "></i>
@@ -270,7 +347,7 @@ export const addSectionData = (response) => {
 
         
 
-         <a class="drag-handle" style="margin-right:10px;background:#fff;color:#000"
+         <a class="drag-handle" style="margin-right:10px;color:#fff"
                         
           >
          <i class="fa fa-arrows "></i>
@@ -281,51 +358,61 @@ export const addSectionData = (response) => {
         
          <a class="dropright dropright "  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                  
-                <i class="fa fa-ellipsis-v " style="color:#000"></i>
+                <i class="fa fa-ellipsis-v " style="color:#fff"></i>
              
         <ul class="dropdown-menu" style="margin-left:40px" >
                 <li><a class="dropdown-item" href="#myModalSubsection" role="button" 
                 data-toggle="modal"
                 data-id="${"miller_" + insertionId}"
                    onclick="localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});"
-                  >Add Sub Section</a></li>
+                  >Add</a></li>
 
                   
 
                 <li><a class="dropdown-item"   href="#myModalEdit" role="button" data-toggle="modal"
           data-id="${"miller_" + insertionId}"
-            onclick="editSection(this);localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});"       
+          data-idx="${insertionId}"
+          data-name="${section.name}"
+          data-pos="${section.position_id}"
+          data-description="${section.description}"
+          data-modal="myModalEdit"
+
+            onclick="injectToModal(this);localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});"       
           >Edit </a></li>
                 <li><a class="dropdown-item" 
+                data-idx="${insertionId}"
+          data-name="${section.name}"
+          data-pos="${section.position_id}"
+          data-description="${section.description}"
+          data-parent-id="${section.id}"
+
                  data-id="${"miller_" + insertionId}"
                 onclick="replicateSection(this);localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});"
 
-                >Replicate Section</a></li>
-                <li><a class="dropdown-item" href="#noclick" >Import </a></li>
+                >Replicate</a></li>
                 <li><a class="dropdown-item" 
                 href="#myModalExport" role="button" data-toggle="modal"
           data-id="${
             "miller_" + insertionId
           }" onclick="exportSection();localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});" >Export </a></li>
-                <li><a class="dropdown-item" href="#noclick" onclick="alert('published to live course')" >Publish </a></li>
                 
              
            </ul>
          </a>
 
-          <a style="margin-right:10px;background:#fff;color:#000"
+          <a style="margin-right:10px;color:#fff"
         
           data-id="${"miller_" + insertionId}"
           onclick="showSetSubsection(this);localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});"
                 
           >
 
-           <span ><i class="fa fa-chevron-down "></i></span>
 </a>
           
           
               
         </span>
+        </h4>
 </li>
 
     `;
@@ -349,45 +436,41 @@ export const addSectionData = (response) => {
   //FOR DRAGABLE EFFECT
   //FOR DRAGABLE EFFECT
 
-  /*
-  *@description: subsection drag event handler
-  @rules0: move root section positions
-  *@rules1: cant move subsection to root section that did not create the subsection
-  *@rules2: cant move lessons to root subsections that did not create the lesson
-  *@rules3: cant move components to root lessons that do not create the component
-  */
-
+  
   var children = $("#js-parent").children.length;
 
 
 
   if (children > 0) {
+    
+
+
     /*sort the main sections that holds all subsection*/
     /*can only move along root section or can only be replaced along root sections*/
-    if (document.getElementById("js-parent")) {
-      var el = document.getElementById("js-parent");
-      var sortableSections = Sortable.create(el, {
-        group: "sections",
-        handle: ".drag-handle",
-      });
-    }
+    // if (document.getElementById("js-parent")) {
+    //   var el = document.getElementById("js-parent");
+    //   var sortableSections = Sortable.create(el, {
+    //     group: "sections",
+    //     handle: ".drag-handle",
+    //   });
+    // }
     
-    /*sort sections subheader components*/
-    /*can only move along sub section component and no where else*/
-    if (document.querySelectorAll(".root-li")) {
-      var children = $(".root-li").children.length;
-      // alert(children)
-      var subsectionGroups = document.querySelectorAll(".root-li");
-      subsectionGroups.forEach(function (ele) {
-        Sortable.create(ele, {
-          group: "columns",
-          handle: ".drag-handle-list",
-        });
-      });
-    }
+    // /*sort sections subheader components*/
+    // /*can only move along sub section component and no where else*/
+    // if (document.querySelectorAll(".root-li")) {
+    //   var children = $(".root-li").children.length;
+    //   // alert(children)
+    //   var subsectionGroups = document.querySelectorAll(".root-li");
+    //   subsectionGroups.forEach(function (ele) {
+    //     Sortable.create(ele, {
+    //       group: "columns",
+    //       handle: ".drag-handle-list",
+    //     });
+    //   });
+    // }
 
-
-  }
+   }
+  } //end if
 };
 
 
@@ -395,14 +478,19 @@ export const addSectionData = (response) => {
 
 export const addLessonData = (response) => {
   let muu_counter = response.id;
+  let lessons = response;
 
-  localStorage.setItem("l_tracker", muu_counter);
-  // alert(localStorage.getItem("lesson_component"))
-  let panel_class =  $(".muu_" + localStorage.getItem("s_tracker"));  // $("." + localStorage.getItem("lesson_component")) //  $(".muu_" + localStorage.getItem("s_tracker"));
- 
-// onDragStart="dragStart(event)" onDragEnd="dragEnd( event )"
-  let template = ` 
-      <ul    id="dynamic_subsection_${muu_counter}_lesson_component "  data-id="${
+    if(typeof response == "object" &&  response.hasOwnProperty("id")){
+
+
+        localStorage.setItem("l_tracker", muu_counter);
+        // alert(localStorage.getItem("lesson_component"))
+        let panel_class =  $(".muu_" + localStorage.getItem("s_tracker"));  // $("." + localStorage.getItem("lesson_component")) //  $(".muu_" + localStorage.getItem("s_tracker"));
+       
+     
+  let rndId = "dynamic_subsection_" + muu_counter + "_lesson_component"
+  let templateLesson = ` 
+      <ul id="${rndId}"  data-id="${
     "muu_" + muu_counter
   }" class="reaper-${muu_counter} fold root-lesson-ul draggable dynamo_${localStorage.getItem("l_tracker")} card-box ${
     "muu_" + muu_counter
@@ -410,10 +498,11 @@ export const addLessonData = (response) => {
     "tracker"
   )} subsection-child_${localStorage.getItem(
     "s_tracker"
-  )} " style="margin-right:20px;min-width:98%;width:98%" 
+  )} " style="margin-right:20px; background:#fff; min-width:98%;width:98%" 
    dragable="true"  
   
    >
+
   
    
       <div class="console" style="display:none">
@@ -421,40 +510,63 @@ export const addLessonData = (response) => {
   </div>
         <li class="fold-content">
   
-               <span class="title_sub " data-th="Company name" style="font-size:15px">${
-                 $("#title_3").val() || "Lesson"
-               }</span>
+    <h4 style="background:rgba(8,23,200); margin-right:10px;padding:10px">
+               <span class="title_sub " data-th="Company name" style="font-size:20px;color:#fff">${
+                 lessons.name || "Lesson" }
+               </span>
                 <span class="subsect" data-th="Customer no"></span>
                 <span class="action" data-th="Customer nam"  style="float:right">
 
 
 
-        <a style="margin-right:10px;background:#fff;color:#000"
-            href="#myModalSubSectionEdit" role="button" data-toggle="modal"
-          data-id="${"muu_" + muu_counter}"
-          data-eid="${muu_counter}"
-            onclick="localStorage.setItem('given_lsid','dynamic_lsubsection_'+${muu_counter});localStorage.setItem('ls_tracker',${muu_counter});"       
-          >
-                
-          <i class="fa fa-edit "></i>
-        </a>
+        <a  style="margin-right:10px;color:#fff"  
+          data-id="${"lmuu_" + muu_counter}"
+          data-idx="${muu_counter}"
+          data-name="${lessons?.name}"
+          data-pos="${lessons?.position_id}"
+          data-description="${lessons?.description}"
+           data-parent-id="${lessons.subsection}"
+            onclick='showComponentModal(this);setTargetLessonComponent("${muu_counter}")'      
+          ><i class="fa fa-plus "></i></a>
 
 
-        <a style="margin-right:10px;background:#fff;color:#000"
+
+          <a class="text-white"   href="#myModalEditLesson" role="button" data-toggle="modal"
+          data-id="${"lmuu_" + muu_counter}"
+          data-idx="${muu_counter}"
+          data-name="${lessons?.name}"
+          data-pos="${lessons?.position_id}"
+          data-description="${lessons?.description}"
+           data-parent-id="${lessons?.subsection}"
+           data-modal="myModalEditLesson"
+           
+            onclick='injectToModal(this);setTargetLessonComponent("${muu_counter}")'       
+          ><i class="fa fa-edit "></i></a>
+
+       
+
+
+        <a style="margin-right:10px;color:#fff"
           
           data-id="${"lmuu_" + muu_counter}"
-           onclick=""        
+          data-extint="lesson"
+
+          data-idx="${muu_counter}"
+          data-name="${lessons?.name}"
+          data-pos="${lessons?.position_id}"
+          data-description="${lessons?.description}"
+           data-parent-id="${lessons?.subsection}"
+           onclick="genericDelete(this)"        
           >
                 
           <i class="fa fa-trash "></i>
         </a>
 
 
-         <a class="drag-handle-list-lessons" style="margin-right:10px;background:#fff;color:#000"
+         <a class="drag-handle-list-lessons" style="margin-right:10px;color:#fff"
           data-id="${"lmuu_" + muu_counter}"
           data-template="dynamic_subsection_${muu_counter}_lesson_component "
-           ondragstart="handleLessonDraggingEntered(event, this)"
-           ondragend="dragEndedSoon(event)"
+           
            onclick='setTargetLessonItem("${muu_counter}")'
                  
           >
@@ -462,12 +574,19 @@ export const addLessonData = (response) => {
          <i class="fa fa-arrows "></i>
         </a>
          <a class="dropright dropright "  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-ellipsis-v " style="color:#000"></i>
+                <i class="fa fa-ellipsis-v " style="color:#fff"></i>
         <ul class="dropdown-menu" style="margin-left:40px" >
-                <li><a class="dropdown-item"   href="#myModalEdit" role="button" data-toggle="modal"
+                <li><a class="dropdown-item"   href="#myModalEditLesson" role="button" data-toggle="modal"
           data-id="${"lmuu_" + muu_counter}"
-          data-eid="${muu_counter}"
-            onclick='setTargetLessonComponent("${muu_counter}")'       
+          data-idx="${muu_counter}"
+          data-name="${lessons?.name}"
+          data-pos="${lessons?.position_id}"
+          data-description="${lessons?.description}"
+           data-parent-id="${lessons?.subsection}"
+
+           data-modal="myModalEditLesson"
+           onclick='injectToModal(this);setTargetLessonComponent("${muu_counter}")'       
+                
           >Edit </a></li>
 
 
@@ -484,10 +603,6 @@ export const addLessonData = (response) => {
 
                 >Replicate Section</a></li>
                 
-                <li><a class="dropdown-item" href="#noclick"  data-id="${
-                  "lmuu_" + muu_counter
-                }"
-           onclick="" >Delete</a></li>
            </ul>
          </a>
          
@@ -495,13 +610,17 @@ export const addLessonData = (response) => {
 
 
                 </span>
+
+                </h4>
 </li></ul>`;
 
-   $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-      setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+         $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+            setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
-  panel_class.append(template);
+        panel_class.append(templateLesson);
 
+
+  }
 };
 
 
@@ -680,12 +799,54 @@ export const createAnyResource = (mode="post",
 
   //if its course  creation form
         if(formEl.attr("id")=="create-course" ){
+           //automatic method
+          // const formIk = document.querySelector(formEl.attr("id"))
+          // Array.from(formIk.elements).filter(e =>{ 
+           
+          //   if( localStorage.getItem( e.getAttribute("name") ) ){
+          //      formEl.find("#"+ e.getAttribute("name")).val(localStorage.getItem( e.getAttribute("name")))
+          //   }
+          // })
+
+          var formElements = new Array();
+    $("input, select, textarea").each(function(){
+        formElements.push($(this));
+    });
+
+
+    
+
+
+        let formEl = $("#create-course");
+     
+          formElements.filter(e =>{ 
+            var element = e;
+            var title = element.title;
+            var id = element.id;
+            var name = element.name;
+            var value = element.value;
+            var type = element.type;
+            var cls = element.className;
+            var tagName = element.tagName;
+            var options = [];
+            var hidden = [];
+            var formDetails = '';
+
+            // check if the data exist in local store
+            if( localStorage.getItem( e.attr("name") ) ){
+               console.log(e.attr("name"))
+               formEl.find("#"+ e.attr("name")).val(localStorage.getItem( e.attr("name")))
+               
+            }
+          })
+
+          //procedural method
           // check for basic required fields validation requirements
-          formEl.find("#course_name").val(localStorage.getItem("name"))  ;
-          formEl.find("#course_code").val(localStorage.getItem("code"))  ;
-          formEl.find("#author").val(localStorage.getItem("author")) ;
-          formEl.find("#institution").val(localStorage.getItem("institution")) 
-          //institutionId = institutionId.options[institutionId.selectedIndex].value;
+          // formEl.find("#course_name").val(localStorage.getItem("name"))  ;
+          // formEl.find("#course_code").val(localStorage.getItem("code"))  ;
+          // formEl.find("#author").val(localStorage.getItem("author")) ;
+          // formEl.find("#institution").val(localStorage.getItem("institution")) 
+          // //institutionId = institutionId.options[institutionId.selectedIndex].value;
           
 
           if (formEl.find("#author").val() == "-- Institutions --") {
@@ -863,7 +1024,7 @@ let dataObj ={}
 
       //edit subsection
 
-      //delete subsection
+      //delete subsection form-edit-subsection: form-edit-subsection
 
       if(formEl.attr("id")=="form-edit-subsection"){
           if(mode.toLowerCase() =="patch"){ // this is apatch
@@ -933,6 +1094,7 @@ let dataObj ={}
              // swal("Congratulations", "You successfully created a course", "success");
            }else{
              toast.success("You successfully edited this course");
+             swal("Success", "Course Updated", "success");
               
            }
 
@@ -1270,6 +1432,22 @@ export const getComponentsOfLessons = async (lessonId) => {
       // console.log(data)
       return data
     });
+}
+
+
+
+export const deleteApi =  async (urlBuild) =>  {
+  let url= base_url + `/lms/api/delete/${urlBuild}/`;
+  console.log(url);
+  return fetch(url, {
+    method:"delete",
+    headers:{
+      Accept:"application/json",
+      "Content-Type":"application/json" // application/x-www-form-urlencoded; charset=UTF-8
+    },
+  })
+
+
 }
 
 

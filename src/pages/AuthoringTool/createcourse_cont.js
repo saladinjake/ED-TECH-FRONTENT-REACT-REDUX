@@ -20,6 +20,7 @@ import loading_image from "assets/gifs/loading-buffering.gif";
 import $ from "jquery";
 import 'jquery-ui-bundle';
 import 'jquery-ui-bundle/jquery-ui.css';
+import HTMLForm from "./Editor";
 
 import { getLanguages } from "services/language";
 import axios from "axios"
@@ -29,6 +30,14 @@ import TreeBuilder, { findObjectById } from "./TreeBuilder"
 
 
 
+//TODO :2) REPLICATE  20% done for sections, reorder subsections, reorder lessons
+//TODO :3) PREVIEW    50% done
+//TODO :4) EXPORT     30% done
+//TODO :5) CHECK AND TEST ALL FIELDS ARE SAVED TO DB  70% done (exception: intro_video,resource section)
+//TODO :6) REORDERING POSITIONING  > done
+  
+   //reorder subsections, 
+   //reorder lessons
 
 
 import FroalaEditor from 'froala-editor'
@@ -77,10 +86,13 @@ import {
 
  addSectionData, // dynamic generationwith battries included
  addSubSectionData,
- addLessonData
+ addLessonData,
+ DateFormatter,
+
+ deleteApi
 } from "services/authoring"
 
-
+import  { enableDragSortPositionUpdater } from "./reorder_positioning" 
 
 
 
@@ -142,9 +154,101 @@ const CSRFToken = () => {
     );
 };
 
+window.projectorInView = function(){
+  //project course data to preview mode
+}
+
+
+window.genericDelete = (e) => {
+
+    // alert(el.dataset.id)
+   $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+  let urlBuild = $(e).attr("data-extint");
+  let urlId = $(e).attr("data-idx");
+  let urlBuilds = `${urlBuild}/${urlId}`;
+  let deletePromises = deleteApi(urlBuilds);
+  deletePromises
+    .then(res => res.text())
+    .then(data => { 
+      console.log(data)
+      console.log("success with delete");
+      $(e).parent().parent().parent().remove();
+  })
+    .catch(err => {
+      console.log(err)
+      throw new Error("COULD NOT PERFORM DELETE OPERATION")
+    })
+}
 
 
 
+window.injectToModal =(el) => {
+   // alert("working magic"+ $(el).attr("data-idx"))
+   if($(el).attr("data-modal") == "myModalEdit"){
+      //section and lesson
+      $("#title_edit").val($(el).attr("data-name"));
+      $("#position_id").val($(el).attr("data-pos"));
+    
+      $("#title_desc_edit").val($(el).attr("data-description"));
+
+      // inject data id to modal to know which element is in need of saving
+      //actually the section id
+      $("#myModalEdit").find("button").attr("editing_course_id", $(el).attr("data-idx"));
+      $("#myModalEdit").find("button").attr("editing_course_name", $(el).attr("data-name"))
+      
+      $("#myModalEdit").find("h5").html("Editing "+ $(el).attr("data-name"))
+      if(localStorage.getItem("course_edit")){
+       $("#myModalEdit").find("#course_val_id").val(localStorage.getItem("course_edit"));
+      }
+      //alert("made it thru to start edit functionality: "+ $(el).attr("data-idx") )
+   }else if($(el).attr("data-modal") == "myModalSubSectionEdit"){
+    //subsection
+
+      $("#title_edit_2").val($(el).attr("data-name"));
+      $("#position_id2").val($(el).attr("data-pos"));
+      
+      $("#title_desc_edit2").val($(el).attr("data-description"));
+
+      // inject data id to modal to know which element is in need of saving
+      //actually the subsection id
+      let btnPayLoad =  $("#myModalSubSectionEdit").find("button");
+      btnPayLoad.attr("editing_subsection_id", $(el).attr("data-idx"));
+      btnPayLoad.attr("editing_course_name", $(el).attr("data-name"))
+      btnPayLoad.attr("editing_parent_id", $(el).attr("data-parent-id"))
+
+      //observers and recievers technique here:
+
+      localStorage.setItem('given_sid','dynamic_subsection_'+$(el).attr("data-idx"));
+      localStorage.setItem('s_tracker',$(el).attr("data-idx")); //purfect!!
+      
+      $("#myModalSubSectionEdit").find("h5").html("Editing "+ $(el).attr("data-name"))
+      if(localStorage.getItem("course_edit")){
+        $("#myModalSubSectionEdit").find("#subsection_id").val(localStorage.getItem("course_edit"));
+      }
+
+   }else if($(el).attr("data-modal")  =="myModalEditLesson"){
+     //the trick: [a] =>passes to [b] => [c] =>gets called => then triggers [d]
+
+
+
+      $("#title_edit3").val($(el).attr("data-name"));
+      $("#position_id3").val($(el).attr("data-pos"));
+      
+      $("#title_desc_edit3").val($(el).attr("data-description"));
+
+      // inject data id to modal to know which element is in need of saving
+      //actually the subsection id
+      let btnPayLoad =  $("#myModalEditLesson").find("button");
+      btnPayLoad.attr("editing_lesson_id", $(el).attr("data-idx"));
+      btnPayLoad.attr("editing_course_name", $(el).attr("data-name"))
+      btnPayLoad.attr("editing_parent_id", $(el).attr("data-parent-id"))
+
+      //observers and recievers technique here:
+      $("#myModalEditLesson").find("h5").html("Editing "+ $(el).attr("data-name"))
+     
+   }
+}
 
 
 let counter = 1;
@@ -313,70 +417,70 @@ function removeLoader(){
 
 
 window.handleLessonDraggingEntered = function(ev, el) {
-  // alert("you are dragging the id: "+ ev.target.getAttribute('id'))
-  ev.dataTransfer.effectAllowed = 'move';
-  ev.dataTransfer.setData( 'text', $(el).attr("data-template") );
-  console.log("dragging id:"+  $(el).attr("data-id") + "  template clone :" + $(el).attr("data-template"))
-  // ev.target.classList.add( "draggable--active" );
-  localStorage.setItem("sendZone",$(el).attr("data-template"))
+  // // alert("you are dragging the id: "+ ev.target.getAttribute('id'))
+  // ev.dataTransfer.effectAllowed = 'move';
+  // ev.dataTransfer.setData( 'text', $(el).attr("data-template") );
+  // console.log("dragging id:"+  $(el).attr("data-id") + "  template clone :" + $(el).attr("data-template"))
+  // // ev.target.classList.add( "draggable--active" );
+  // localStorage.setItem("sendZone",$(el).attr("data-template"))
 }
 
 // these functions prevents default behavior of browser
 window.dragEnterIntoSection = (ev) => {
-  console.log("entering drop-zone:" + ev.target.id)
-  window.event.preventDefault();
-  return true;
+  // console.log("entering drop-zone:" + ev.target.id)
+  // window.event.preventDefault();
+  // return true;
 }
 window.dragOverSection = (ev) => {
-  window.event.preventDefault();
-  ev.dataTransfer.effectAllowed = 'move';
-  ev.target.closest( ".drop-zone-section" ).classList.add( "drop-zone--active" );
+  // window.event.preventDefault();
+  // ev.dataTransfer.effectAllowed = 'move';
+  // ev.target.closest( ".drop-zone-section" ).classList.add( "drop-zone--active" );
 }
 
 window.dragLeaveLessonIntoSubsection = ( event ) => {
   // console.log( "DRAG LEAVE" );
-  event.target.classList.remove( "drop-zone--active" );
+  // event.target.classList.remove( "drop-zone--active" );
 }
 
 
 // function defined for when drop element on target
 window.dragDropLessonComponentToSubSection = ( event ) => {
-  // console.log( 'DROP' );
-  console.log(event.dataTransfer.getData( 'text' ), localStorage.getItem("ls_tracker"))
-  console.log(document.getElementById( "dynamic_subsection_" + localStorage.getItem("s_tracker") + "_lesson_component"  ) )
+  // // console.log( 'DROP' );
+  // console.log(event.dataTransfer.getData( 'text' ), localStorage.getItem("ls_tracker"))
+  // console.log(document.getElementById( "dynamic_subsection_" + localStorage.getItem("s_tracker") + "_lesson_component"  ) )
 
-  $(event.target).closest( ".drop-zone-section" )
+  // $(event.target).closest( ".drop-zone-section" )
 
-  console.log($( "#" + localStorage.getItem("sendZone") ).html())
-     .append( $( "#" + localStorage.getItem("sendZone") ).html()  )
+  // console.log($( "#" + localStorage.getItem("sendZone") ).html())
+  //    .append( $( "#" + localStorage.getItem("sendZone") ).html()  )
 
 
-   if( document.getElementsByClassName( "draggable--active" )){
-    // document.getElementsByClassName( "draggable--active" )[0].classList.remove( "draggable--active" );
-   }
+  //  if( document.getElementsByClassName( "draggable--active" )){
+  //   // document.getElementsByClassName( "draggable--active" )[0].classList.remove( "draggable--active" );
+  //  }
   
-  if ( document.getElementsByClassName( "drop-zone--active" )[0] ) {
-    document.getElementsByClassName( "drop-zone--active" )[0].classList.remove("drop-zone--active" );
-  }
+  // if ( document.getElementsByClassName( "drop-zone--active" )[0] ) {
+  //   document.getElementsByClassName( "drop-zone--active" )[0].classList.remove("drop-zone--active" );
+  // }
 
-  event.preventDefault();
-  event.stopPropagation()
+  // event.preventDefault();
+  // event.stopPropagation()
 
 }
 
 
 window.dragEndedSoon = ( event ) => {
-  // event.preventDefault();
-  console.log( 'DRAG END' );
-  document.getElementsByClassName( "console" )[0].innerHTML = "<h4>CONSOLE: DRAG END</h4>";
-  timeDelay();
-  // remove applied active classes, regardless of where released.
-  if ( document.getElementsByClassName( "draggable--active" )[0] ) {
-    document.getElementsByClassName( "draggable--active" )[0].classList.remove( "draggable--active" );
-  }
-  if ( document.getElementsByClassName( "dropzone--active" )[0] ) {
-    document.getElementsByClassName( "dropzone--active" )[0].classList.remove( "dropzone--active" );
-  }
+  // // event.preventDefault();
+  // console.log( 'DRAG END' );
+  // document.getElementsByClassName( "console" )[0].innerHTML = "<h4>CONSOLE: DRAG END</h4>";
+  // timeDelay();
+  // // remove applied active classes, regardless of where released.
+  // if ( document.getElementsByClassName( "draggable--active" )[0] ) {
+  //   document.getElementsByClassName( "draggable--active" )[0].classList.remove( "draggable--active" );
+  // }
+  // if ( document.getElementsByClassName( "dropzone--active" )[0] ) {
+  //   document.getElementsByClassName( "dropzone--active" )[0].classList.remove( "dropzone--active" );
+  // }
 }
 
 // UTILITY FUNCTIONS
@@ -745,17 +849,255 @@ export default class MasterForm extends React.Component {
       lessons:[]
     };
     /*movement logic data*/
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChange = this.handleInputChange.bind(this);
     this._next = this._next.bind(this);
     this._prev = this._prev.bind(this);
+  }
+
+
+  formatDateToSqlDate = (dateStr) =>{
+    var date = new Date(dateStr);
+    var str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    return str;
+  }
+
+
+
+   handleInputChange = (event) => {
+   
+
+      let { name, value } = event.target;
+      localStorage.setItem(name, value);
+       let imageUrl = ""
+      //console.log(event.target.value);
+
+
+      if(name=="course_start_date_time" || 
+        name =="course_end_date_time" || 
+        name=="enrolment_start_date_time" ||
+         name=="enrolment_end_date_time"){
+        event.target.type="text"
+
+        // value = new Date(value) //DateFormatter.mysqlDate(value);
+        // value = value.toISOString()
+        localStorage.setItem(name, value);
+        // this.formatDateToSqlDate(value);
+        this.setState(
+          {
+            [name]: value,
+          },
+          function () {
+            /*validation hooks*/
+            this.validateField(name, value);
+          }
+        );
+      }else if(event.target.name == "entrance_exam_required"){
+        //(boolean) is for laravel or php
+        if(value=="false"){
+          value = false;
+        }else{
+          value = true
+        }
+         //logic 1 - automate state processing of form data
+        //dynamically hooks state fields to current value
+        this.setState(
+          {
+            [name]: value,
+          },
+          function () {
+            /*validation hooks*/
+            this.validateField(name, value);
+          }
+        );
+      }else if(event.target.name == "card_image"){
+        //handle image upload here
+        const fileUploader = document.getElementById('file-uploader');
+        const feedback = document.getElementById('feedback');
+        const progress = document.getElementById('progress');
+        const reader = new FileReader();
+
+      //fileUploader.addEventListener('change', (event) => {
+        const files = event.target.files;
+        const file = files[0];
+       
+        reader.readAsDataURL(file);
+        reader.addEventListener('progress', (ev) => {
+          if (ev.loaded && ev.total) {
+            const percent = (ev.loaded / ev.total) * 100;
+            progress.value = percent;
+            document.getElementById('progress-label').innerHTML = Math.round(percent) + '%';
+            if (percent === 100) {
+              let msg = `<span style="color:green;">File <u><b>${file.name}</b></u> has been uploaded successfully.</span>`;
+              feedback.innerHTML = msg;
+              // call upload action to cloudinary api
+              const formData = new FormData();
+              formData.append("file", file);
+              formData.append("upload_preset", "hpvklb3p");
+              // eslint-disable-next-line no-undef
+              fetch("https://api.cloudinary.com/v1_1/questence/image/upload", {
+                method: "POST",
+                body: formData,
+              })
+                .then((response) => response.json())
+                .then((data) => {
+
+                  if (typeof data.secure_url !== "undefined") { // ensure the api saving data of uploaded 3rdparty image has a return call to the iamge successfully uploaded
+                    imageUrl = data.secure_url; //get the generated image url
+                    // toast.success("upload successful");
+                     console.log("here made it thru", imageUrl)
+                    // var button = document.querySelector('.save-generic');
+                   var slideout = document.getElementById('notifier');
+                  let successSlide = slideout.querySelector(".success-notification")
+                  // let errorSlide = slideout.querySelector(".error-notification")
+                  slideout.classList.toggle('visible');
+
+                  localStorage.setItem("card_image", imageUrl);
+
+
+                    value = imageUrl; 
+                    // return imageUrl
+
+
+                     //logic 1 - automate state processing of form data
+                      //dynamically hooks state fields to current value
+                    this.setState(
+                          {
+                            card_image: imageUrl,
+                          },
+                          function () {
+                            /*validation hooks*/
+                            this.validateField(name, value);
+                          }
+                    );
+
+
+                  } else {
+                     //toast.error("could not upload image");
+                    return false
+                  }
+                })
+                .catch((error) => {
+                   toast.error("API KEY ***** FOR CLOUDINARY NOT SET. EITHER API KEY HAS EXHAUSTED ITS TRIAL PLAN");
+                  throw error;
+                  return false;
+                });
+           
+            }
+          }
+        });
+      //});
+      }else{
+        localStorage.setItem(name, value)
+
+         //logic 1 - automate state processing of form data
+        //dynamically hooks state fields to current value
+      // this.setState(
+      //       {
+      //         [name]: value,
+      //       },
+      //       function () {
+      //         /*validation hooks*/
+      //         this.validateField(name, value);
+      //       }
+      //);
+
+
+       this.setState({
+      ...this.state,
+      [event.target.name]: event.target.value,
+    });
+
+      }
+       
+
+
+
+  };
+
+
+
+  // const [htmlDescription, setHtmlDescription] = useState("");
+  handleHtmlDescriptionChange = (newValue) => {
+     localStorage.setItem("description", newValue);
+    this.setState({
+      ...this.state,
+      description: newValue
+    })
+  }
+
+  handleHtmlCurriculumChange = (newValue) =>{
+       localStorage.setItem("curriculum", newValue);
+    this.setState({
+      ...this.state,
+      curriculum: newValue
+    })
+  }
+
+  // const [htmlOverView, setHtmlCourseOverView] = useState("");
+  handleHtmlCourseOverViewChange = (newValue) => {
+       localStorage.setItem("overview", newValue);
+    this.setState({
+      ...this.state,
+      overview: newValue
+    })
+  }
+
+  // const [htmlOutcome, setHtmlOutCome] = useState("");
+  handleHtmlOutComeChange =(newValue) => {
+     localStorage.setItem("learning_expectation", newValue);
+    this.setState({
+      ...this.state,
+      learning_expectation: newValue
+    })
+  }
+
+  // const [htmlTopics, setHtmlTopics] = useState("");
+  handleHtmlTopicsChange = (newValue) =>{
+       localStorage.setItem("topics", newValue);
+    this.setState({
+      ...this.state,
+      topics: newValue
+    })
+  }
+
+  // const [htmlPrerequisites, setHtmlPrerequisites] = useState("");
+  handleHtmlPrerequisitesChange =(newValue) => {
+      localStorage.setItem("prerequisite", newValue);
+    this.setState({
+      ...this.state,
+      prerequisite: newValue
+    })
+  }
+
+
+
+  handleChangeTextEditor =(nameKey = "", valueData = "") => {
+    if (nameKey.length > 0 && valueData.length > 0) {
+      this.setState({
+        ...this.state,
+        [nameKey]: valueData,
+      });
+    }
+
+    console.log(this.state)
   }
 
    /*navigation skipper*/
 
   goToStep(e, step) {
     e.preventDefault();
+    // $(".nav-link").removeClass("active")
+    //   .css({
+    //      color:"#000"
+    // });
+    // $(e.target).addClass("active")
+    //   .css({
+    //     color:"#fff", 
+    //     background:"rgba(8,23,200)"
+    // });
+
     // e.target.parentElement.style.border = "1px solid #eee";
-    e.target.parentElement.style.padding = "2px";
+    //e.target.parentElement.style.padding = "2px";
     this.setState({
       currentStep: step,
     });
@@ -971,46 +1313,7 @@ export default class MasterForm extends React.Component {
 
   //AI: logic 2 - trigger validation inputs
   validateField(field_name, value) {
-    // if (Object.keys(this.state.formErrors).includes(field_name)) {
-    //   const fieldValidationErrors = this.state.formErrors;
-    //   const validity = this.state.formValidity;
-    //   const isCourseCode = field_name === "code";
-    //   const isDescription = field_name === "description";
     
-    //   validity[field_name] = value.length > 0;
-    //   fieldValidationErrors[field_name] = validity[field_name]
-    //     ? ""
-    //     : ` is required and cannot be empty`;
-
-    //   if (validity[field_name]) {
-    //     if (isCourseCode) {
-    //       validity[field_name] = value.length >= 5;
-    //       fieldValidationErrors[field_name] = validity[field_name]
-    //         ? ""
-    //         : `${label} should be at least 6-12 characters or more`;
-    //     }
-    //     if (isDescription) {
-    //       validity[field_name] = emailTest.test(value);
-    //       fieldValidationErrors[field_name] = validity[field_name]
-    //         ? ""
-    //         : `${label} should be at least 20 characters long`;
-    //     }
-    //     if (isPasswordConfirmation) {
-    //       validity[field_name] = value === this.state.password;
-    //       fieldValidationErrors[field_name] = validity[field_name]
-    //         ? ""
-    //         : `${label} should match password`;
-    //     }
-    //   }
-
-    //   this.setState(
-    //     {
-    //       formErrors: fieldValidationErrors,
-    //       formValidity: validity,
-    //     },
-    //     () => this.canSubmit()
-    //   );
-    // }
   }
 
   canSubmit() {
@@ -1022,33 +1325,6 @@ export default class MasterForm extends React.Component {
         this.state.formValidity.name &&
         this.state.formValidity.code   
         //&&
-        // this.state.formValidity.run &&
-        // this.state.formValidity.card_image &&
-        // this.state.formValidity.intro_video &&
-        // this.state.formValidity.description &&
-        // this.state.formValidity.overview &&
-        // this.state.formValidity.learning_expectation &&
-        // this.state.formValidity.curriculum &&
-        // this.state.formValidity.level &&  //int
-        // this.state.formValidity.enrolment_type &&
-        // this.state.formValidity.entrance_exam_required && 
-        // this.state.formValidity.cost &&
-        // this.state.formValidity.auditing &&
-        // this.state.formValidity.course_pacing &&
-        // this.state.formValidity.course_start_date_time &&  //2021-08-26T17:13:00+01:00
-        // this.state.formValidity.course_end_date_time &&
-        // this.state.formValidity.enrolment_start_date_time &&
-        // this.state.formValidity.enrolment_end_date_time &&
-        // this.state.formValidity.course_language &&
-        // this.state.formValidity.requirement_hours_per_week && 
-        // this.state.formValidity.requirement_no_of_week && 
-        // this.state.formValidity.grace_period_after_deadline &&
-        // this.state.formValidity.publication_status && 
-        // this.state.formValidity.institution && 
-        // this.state.formValidity.author && 
-        // this.state.formValidity.prerequisite &&
-        // this.state.formValidity.authoring_team
-      
         
     });
   }
@@ -1114,7 +1390,74 @@ export default class MasterForm extends React.Component {
     })("run-logic-sequence")
      let T = new  TinyMyceRender();
      T.render("")
-  
+  var formElements = new Array();
+    $("input, select, textarea").each(function(){
+        formElements.push($(this));
+    });
+
+
+    
+
+
+        let formEl = $("#create-course");
+     
+          formElements.filter(e =>{ 
+            var element = e;
+            var title = element.title;
+            var id = element.id;
+            var name = element.name;
+            var value = element.value;
+            var type = element.type;
+            var cls = element.className;
+            var tagName = element.tagName;
+            var options = [];
+            var hidden = [];
+            var formDetails = '';
+
+            // check if the data exist in local store
+            if( localStorage.getItem( e.attr("name") ) ){
+               console.log(e.attr("name"))
+               formEl.find("#"+ e.attr("name")).val(localStorage.getItem( e.attr("name")))
+            }
+          })
+
+    $(document).ready(function(){
+
+      let el = null, vall ="";
+    if(localStorage.getItem("course_start_date_time")){
+      
+      el = formEl.find("#"+ "course_start_date_time");
+      vall =localStorage.getItem("course_start_date_time")
+      el.attr("type", "text");
+      el.val(vall) 
+      
+    }
+
+    if(localStorage.getItem("course_end_date_time")){
+      el = formEl.find("#"+ "course_end_date_time");
+      vall =localStorage.getItem("course_end_date_time")
+      el.attr("type", "text");
+      el.val(vall) 
+    }
+    if(localStorage.getItem("enrolment_start_date_time")){
+       el = formEl.find("#"+ "enrolment_start_date_time");
+        vall =localStorage.getItem("enrolment_start_date_time")
+      el.attr("type", "text");
+      el.val(vall) 
+    }
+
+    if(localStorage.getItem("enrolment_end_date_time")){
+       el = formEl.find("#"+ "course_start_date_time");
+        vall =localStorage.getItem("course_start_date_time")
+      el.attr("type", "text");
+      el.val(vall) 
+    }
+
+
+
+    })
+    
+
 
 
   }
@@ -1153,19 +1496,28 @@ export default class MasterForm extends React.Component {
          $('textarea[name="'+k+'"]').val(a[k]);
       }
 
-
-
+      //if input type of file for image
+      if($('input[type="file"]')){
+        $('input[name="'+k+'"]').val(a[k]);
+      }else{
 
       if($('[name="'+k+'"]')){
-        console.log(a[k])
         $('[name="'+k+'"]').val(a[k]);
        }
+
+     }
+
+
     }
  }
+
+
+ getAllFormElements = element => Array.from(element.elements).filter(tag =>  ["select", "textarea", "input"].includes(tag.tagName.toLowerCase()));
 
  fetchContent = async () => {
    let instId = this.state.institution
    this.courseData = await this.courseDetailJson()
+   localStorage.setItem("course_edit",this.props.match.params.id);
    //automated logic
     Promise.all(
       [
@@ -1229,7 +1581,11 @@ export default class MasterForm extends React.Component {
 
 
 
-
+  sorted_by_position_id = (arr) =>{
+     return arr.sort((a, b) => {
+       return a.position_id - b.position_id;
+     });
+  } 
 
 
   /*everything belonging to course*/
@@ -1239,9 +1595,13 @@ export default class MasterForm extends React.Component {
    let courseData = BIG_JSON.course_sections;
    let temp =``;
    let tempArr =[];
-   let tempArrLessons = []
+   let tempArrLessons = [];
+   courseData = this.sorted_by_position_id(courseData)
 
-   console.log(courseData)
+   console.log(courseData);
+
+   //resort sections by their position id before d*splay*n
+
 
    // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
    //    setTimeout(removeLoader,10000); //wait for page load PLUS two seconds.
@@ -1253,24 +1613,33 @@ export default class MasterForm extends React.Component {
                  let insertionId =section.id
  
      let templateData =`
-  <li id="${insertionId}" data-parent="${insertionId}" data-restriction="${
+  <li id="${insertionId}" data-belongs="${section.course}" data-parent="${insertionId}" data-restriction="${
     "miller_" + insertionId
   }"    data-id="${
     "miller_" + insertionId
-  }" id="dynamic_section_${insertionId}"  class="card-box root-li view tr-of-root opened col-md-12 ${
+  }" id="dynamic_section_${insertionId}"  class="hello-move-me sections card-box root-li view tr-of-root opened col-md-12 ${
     "miller_" + insertionId
-  } section-list" style=" margin-bottom:10px;">
-   <a style="margin-right:10px;background:#fff;color:#000"
+  } section-list" style="margin-bottom:10px;background:#fff;border:2px solid #f5f5f5">
+
+   <h4 style="background:rgba(8,23,200); margin-right:10px;padding:10px">
+   <a style="color:#fff"
+         data-belongs="${section.course}"
+         data-name="${section.name}"
+          data-pos="${section.position_id}"
           data-id="${"miller_" + insertionId}"
           onclick="localStorage.setItem('given_id','dynamic_section_'+'${insertionId}');localStorage.setItem('tracker','${insertionId}');showSetSubsection(this);"           
           >
            <span ><i class="fa fa-chevron-down "></i></span>
     </a>
-     <span class="tits section__name first-child-of-td" style="font-size:20px"> ${
-       section.name || "Section " + insertionId
+     <span class="tits section__name first-child-of-td export_title" style="font-size:20px;color:#fff"> ${
+       section.name + " " + section.position_id  || "Section " + insertionId
      }</span>
       <span class="per action" style="float:right">
-      <a style="margin-right:10px;background:#fff;color:#000"
+      <a style="margin-right:10px;color:#fff"
+                  
+         data-belongs="${section.course}"
+         data-name="${section.name}"
+          data-pos="${section.position_id}"
                    href="#myModalSubsection" role="button" data-toggle="modal"
                    onclick='setTargetItem("${insertionId}")'
                   >
@@ -1278,101 +1647,121 @@ export default class MasterForm extends React.Component {
                     <i class="fa fa-plus "></i>
         </a>
 
-        <a style="margin-right:10px;background:#fff;color:#000"
+        <a style="margin-right:10px;color:#fff"
             href="#myModalEdit" role="button" data-toggle="modal"
           data-id="${"miller_" + insertionId}"
           data-eid="${insertionId}"
-            onclick="editSection(this);localStorage.setItem('given_id','dynamic_section_'+'${insertionId}');localStorage.setItem('tracker','${insertionId}');"       
+          data-id="${"miller_" + insertionId}"
+          data-idx="${insertionId}"
+          data-name="${section.name}"
+          data-pos="${section.position_id}"
+          data-description="${section.description}"
+          data-belongs="${section.course}"
+          data-modal="myModalEdit"
+
+            onclick="injectToModal(this);localStorage.setItem('given_id','dynamic_section_'+'${insertionId}');localStorage.setItem('tracker','${insertionId}');"       
           >
                 
           <i class="fa fa-edit "></i>
         </a>
 
 
-        <a style="margin-right:10px;background:#fff;color:#000"
-          
+        <a style="margin-right:10px;color:#fff"
+          data-extint="section"
+           data-belongs="${section.course}"
+          data-idx="${insertionId}"
+          data-name="${section.name}"
+          data-pos="${section.position_id}"
+          data-description="${section.description}"
           data-id="${"miller_" + insertionId}"
-           onclick="removeSection(this)"        
+           onclick="genericDelete(this)"        
           >
                 
           <i class="fa fa-trash "></i>
         </a>
 
-        
 
-         <a class="drag-handle" style="margin-right:10px;background:#fff;color:#000"
+
+         <a class="" style="margin-right:10px;color:#fff"
+          data-extint="section"
+         data-belongs="${section.course}"
+          data-idx="${insertionId}"
+          data-name="${section.name}"
+          data-pos="${section.position_id}"
+          data-description="${section.description}"
+          data-id="${"miller_" + insertionId}"
+           onclick="replicateSection(this)"
                         
           >
+         <i class="fa fa-copy "></i>
+        </a>
+         <a class="drag-handle"  
+         data-belongs="${section.course}"
+         data-belongs="${section.course}"
+
+          data-name="${section.name}"
+          data-pos="${section.position_id}"
+          data-description="${section.description}"
+          
+
+
+          style="margin-right:10px;color:#fff">
          <i class="fa fa-arrows "></i>
         </a>
 
-       
+        
+
 
         
-         <a class="dropright dropright "  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="dropright dropright "  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                  
-                <i class="fa fa-ellipsis-v " style="color:#000"></i>
+                <i class="fa fa-ellipsis-v " style="color:#fff"></i>
              
         <ul class="dropdown-menu" style="margin-left:40px" >
                 <li><a class="dropdown-item" href="#myModalSubsection" role="button" 
                 data-toggle="modal"
                 data-id="${"miller_" + insertionId}"
                    onclick="localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});"
-                  >Add Sub Section</a></li>
+                  >Add</a></li>
 
                   
 
                 <li><a class="dropdown-item"   href="#myModalEdit" role="button" data-toggle="modal"
           data-id="${"miller_" + insertionId}"
-            onclick="editSection(this);localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});"       
-          >Edit </a></li>
-                <li><a class="dropdown-item" 
-                 data-id="${"miller_" + insertionId}"
-                onclick="replicateSection(this);localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});"
+          data-idx="${insertionId}"
+          data-name="${section.name}"
+          data-pos="${section.position_id}"
+          data-description="${section.description}"
+          data-modal="myModalEdit"
+          data-belongs="${section.course}"
 
-                >Replicate Section</a></li>
-                <li><a class="dropdown-item" href="#noclick" >Import </a></li>
-                <li><a class="dropdown-item" 
-                href="#myModalExport" role="button" data-toggle="modal"
-          data-id="${
-            "miller_" + insertionId
-          }" onclick="exportSection();localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});" >Export </a></li>
-                <li><a class="dropdown-item" href="#noclick" onclick="alert('published to live course')" >Publish </a></li>
+            onclick="injectToModal(this);localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});"       
+          >Edit </a></li>
                 
              
            </ul>
          </a>
 
-          <a style="margin-right:10px;background:#fff;color:#000"
+          <a style="margin-right:10px;color:#fff"
         
           data-id="${"miller_" + insertionId}"
+          data-belongs="${section.course}"
           onclick="showSetSubsection(this);localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});"
                 
           >
 
-           <span ><i class="fa fa-chevron-down "></i></span>
 </a>
           
           
               
         </span>
+        </h4>
 </li>
 
     `;
 
-                //  let temp = `<li><div class="card-box">
-                //      <div> 
-                //      <h4><span>Subsection ${section.name}</span>
-                // <span class="pull-right">
-                //     <i class="fa fa-trash"></i>
-                //      <i class="fa fa-edit"></i>
-                //      <i class="fa fa-plus"></i>
-                // </span></h4>
-                
-                //     </div>
-                //      <ul id="${section.id}" class="card-box"></ul></div></li>`
-                //  // temp = this.htmlToElem(temp)
                $("#js-parent").append(templateData);
+               enableDragSortPositionUpdater("drag-sort-enable","hello-move-me")
       }
 
      
@@ -1394,7 +1783,7 @@ export default class MasterForm extends React.Component {
          
          id="dynamic_subsection_${muu_counter}"  data-id="${
     "muu_" + muu_counter
-  }" class="fold card-box drop-zone-section root-sub-ul centerSubsection column-list-section-parade ${
+  }" class="fold subsections hello-move-me card-box drop-zone-section root-sub-ul centerSubsection column-list-section-parade ${
     "muu_" + muu_counter
   } col-md-10 section-parent_${localStorage.getItem(
     "tracker"
@@ -1402,43 +1791,81 @@ export default class MasterForm extends React.Component {
     "s_tracker"
   )} " style="min-width:99%;width:99%;border-bottom:none;border-top:none;margin-left:10px"
 
-ondragenter="return dragEnterIntoSection(event)" 
-         ondrop="return dragDropLessonComponentToSubSection(event)" 
-         ondragover="return dragOverSection(event)"  
-         ondragleave="return dragLeaveLessonIntoSubsection(event)" 
+
   >
+     <h4 style="background:rgba(8,23,200); margin-right:10px;padding:10px">
             
               <span class=""  style="height:60px;border-left:3px solid black;margin-top:10px">
-               <span class="title_sub " data-th="Company name" style="font-size:15px">${
-                 subsec?.name || "Subsection"
+               <span class="title_sub export_title" data-th="Company name" style="font-size:20px;color:#fff">${
+                 subsec?.name + " " + subsec?.position_id  || "Subsection"
                }</span>
                 <span class="subsect" data-th="Customer no"></span>
                 <span data-th="Customer name"></span>
                 <span class="action" data-th="Customer nam"  style="float:right">
+       
+       <a    href="#myModalLesson" role="button" data-toggle="modal"
+       style="margin-right:10px;color:#fff"
+          data-id="${"muu_" + muu_counter}"
+            onclick='addlessonSection(this);setTargetSubsectionItem("${muu_counter}") '      
+          ><i class="fa fa-plus"></i></a>
 
 
-
-        <a style="margin-right:10px;background:#fff;color:#000"
+        <a style="margin-right:10px;color:#fff"
             href="#myModalSubSectionEdit" role="button" data-toggle="modal"
           data-id="${"muu_" + muu_counter}"
-            onclick="editSubSection(this);localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"       
+
+            data-idx="${muu_counter}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+          data-modal="myModalSubSectionEdit"
+
+            onclick="injectToModal(this);"       
           >
                 
           <i class="fa fa-edit "></i>
         </a>
 
 
-        <a style="margin-right:10px;background:#fff;color:#000"
-          
+        <a style="margin-right:10px;color:#fff"
+          data-extint="subsection"
+
+            data-idx="${muu_counter}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+
           data-id="${"muu_" + muu_counter}"
-           onclick="removeSubSection(this)"        
+           onclick="genericDelete(this)"        
           >
                 
           <i class="fa fa-trash "></i>
         </a>
 
 
-         <a  class="drag-handle-list" style="margin-right:10px;background:#fff;color:#000"
+        <a style="margin-right:10px;color:#fff"
+          data-extint="subsection"
+
+            data-idx="${muu_counter}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+
+          data-id="${"muu_" + muu_counter}"
+           onclick="replicateSubSection(this)"        
+          >
+                
+          <i class="fa fa-copy"></i>
+        </a>
+
+
+        
+
+
+         <a  class="drag-handle-list" style="margin-right:10px;color:#fff"
           
          
                  
@@ -1453,57 +1880,58 @@ ondragenter="return dragEnterIntoSection(event)"
 
          <a class="dropright dropright "  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                  
-                <i class="fa fa-ellipsis-v " style="color:#000"></i>
+                <i class="fa fa-ellipsis-v " style="color:#fff"></i>
              
         <ul class="dropdown-menu" style="margin-left:40px" >
 
- 
+  <li><a class="dropdown-item"   href="#myModalLesson" role="button" data-toggle="modal"
+          data-id="${"muu_" + muu_counter}"
+            onclick='addlessonSection(this);setTargetSubsectionItem("${muu_counter}") '      
+          >Add</a></li>
 
                 
 
                 <li><a class="dropdown-item"    href="#myModalSubSectionEdit" role="button" data-toggle="modal"
           data-id="${"muu_" + muu_counter}"
-            onclick="editSubSection(this);localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"       
+           data-idx="${muu_counter}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec?.section}"
+          data-belongs="${subsec?.section}"
+
+          data-modal="myModalSubSectionEdit"
+            onclick="injectToModal(this)"       
           >Edit </a></li>
 
 
 
-                <li><a class="dropdown-item"   href="#myModalLesson" role="button" data-toggle="modal"
-          data-id="${"muu_" + muu_counter}"
-            onclick='addlessonSection(this);setTargetSubsectionItem("${muu_counter}") '      
-          >Add Lesson</a></li>
+               
 
 
                 <li><a class="dropdown-item" 
                  data-id="${"muu_" + muu_counter}"
+                  data-idx="${muu_counter}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+           data-parent-id="${subsec?.section}"
+          data-modal="myModalSubSectionEdit"
                 onclick="replicateSubSection(this);localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"
 
                 >Replicate Section</a></li>
                 
-                <li><a class="dropdown-item" href="#noclick"  data-id="${
-                  "muu_" + muu_counter
-                }"
-           onclick="removeSubSection(this)" >Delete</a></li>
            </ul>
          </a>
                 </span>
       </li>
+
+      </h4>
     </ul>
 `;
-               //  let temp = `<li><div class="card-box">
-               // <div>
-               //  <h4>
-               //  <span>Subsection ${subsec.name}</span>
-               //  <span class="pull-right">
-               //      <i class="fa fa-trash"></i>
-               //       <i class="fa fa-edit"></i>
-               //       <i class="fa fa-plus"></i>
-               //  </span>
-               //  </h4>
-               
-               //  </div>
-               //  <ul id="${subsec.id}"  style="margin-left:20px"></ul></div></li>`  
                 $("#"+ subsec.section).append(templateSub);
+
+                enableDragSortPositionUpdater("js-root-parent","subsections")
               }
               let respLessons = subsec.sub_section_lessons
               
@@ -1521,16 +1949,17 @@ ondragenter="return dragEnterIntoSection(event)"
   let templateLesson = ` 
       <ul id="${rndId}"  data-id="${
     "muu_" + muu_counter
-  }" class="reaper-${muu_counter} fold root-lesson-ul draggable dynamo_${localStorage.getItem("l_tracker")} card-box ${
+  }" class="reaper-${muu_counter} lessons hello-move-me fold root-lesson-ul draggable dynamo_${localStorage.getItem("l_tracker")} card-box ${
     "muu_" + muu_counter
   } col-md-8   section-parent_${localStorage.getItem(
     "tracker"
   )} subsection-child_${localStorage.getItem(
     "s_tracker"
-  )} " style="margin-right:20px;min-width:98%;width:98%" 
+  )} " style="margin-right:20px; background:#fff; min-width:98%;width:98%" 
    dragable="true"  
   
    >
+
   
    
       <div class="console" style="display:none">
@@ -1538,39 +1967,63 @@ ondragenter="return dragEnterIntoSection(event)"
   </div>
         <li class="fold-content">
   
-               <span class="title_sub " data-th="Company name" style="font-size:15px">${
-                 $("#title_3").val() || "Lesson"
-               }</span>
+    <h4 style="background:rgba(8,23,200); margin-right:10px;padding:10px">
+               <span class="title_sub export_title" data-th="Company name" style="font-size:20px;color:#fff">${
+                 lessons.name || "Lesson" }
+               </span>
                 <span class="subsect" data-th="Customer no"></span>
                 <span class="action" data-th="Customer nam"  style="float:right">
 
 
 
-        <a style="margin-right:10px;background:#fff;color:#000"
-            href="#myModalSubSectionEdit" role="button" data-toggle="modal"
-          data-id="${"muu_" + muu_counter}"
-            onclick="localStorage.setItem('given_lsid','dynamic_lsubsection_'+${muu_counter});localStorage.setItem('ls_tracker',${muu_counter});"       
-          >
-                
-          <i class="fa fa-edit "></i>
-        </a>
+        <a  style="margin-right:10px;color:#fff"  
+          data-id="${"lmuu_" + muu_counter}"
+          data-idx="${muu_counter}"
+          data-name="${lessons?.name}"
+          data-pos="${lessons?.position_id}"
+          data-description="${lessons?.description}"
+           data-parent-id="${lessons.subsection}"
+            onclick='showComponentModal(this);setTargetLessonComponent("${muu_counter}")'      
+          ><i class="fa fa-plus "></i></a>
 
 
-        <a style="margin-right:10px;background:#fff;color:#000"
+
+          <a class="text-white"   href="#myModalEditLesson" role="button" data-toggle="modal"
+          data-id="${"lmuu_" + muu_counter}"
+          data-idx="${muu_counter}"
+          data-name="${lessons?.name}"
+          data-pos="${lessons?.position_id}"
+          data-description="${lessons?.description}"
+           data-parent-id="${lessons?.subsection}"
+           data-modal="myModalEditLesson"
+           
+            onclick='injectToModal(this);setTargetLessonComponent("${muu_counter}")'       
+          ><i class="fa fa-edit "></i></a>
+
+       
+
+
+        <a style="margin-right:10px;color:#fff"
           
           data-id="${"lmuu_" + muu_counter}"
-           onclick=""        
+          data-extint="lesson"
+
+          data-idx="${muu_counter}"
+          data-name="${lessons?.name}"
+          data-pos="${lessons?.position_id}"
+          data-description="${lessons?.description}"
+           data-parent-id="${lessons?.subsection}"
+           onclick="genericDelete(this)"        
           >
                 
           <i class="fa fa-trash "></i>
         </a>
 
 
-         <a class="drag-handle-list-lessons" style="margin-right:10px;background:#fff;color:#000"
+         <a class="drag-handle-list-lessons" style="margin-right:10px;color:#fff"
           data-id="${"lmuu_" + muu_counter}"
           data-template="dynamic_subsection_${muu_counter}_lesson_component "
-           ondragstart="handleLessonDraggingEntered(event, this)"
-           ondragend="dragEndedSoon(event)"
+           
            onclick='setTargetLessonItem("${muu_counter}")'
                  
           >
@@ -1578,11 +2031,19 @@ ondragenter="return dragEnterIntoSection(event)"
          <i class="fa fa-arrows "></i>
         </a>
          <a class="dropright dropright "  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-ellipsis-v " style="color:#000"></i>
+                <i class="fa fa-ellipsis-v " style="color:#fff"></i>
         <ul class="dropdown-menu" style="margin-left:40px" >
-                <li><a class="dropdown-item"   href="#myModalEdit" role="button" data-toggle="modal"
+                <li><a class="dropdown-item"   href="#myModalEditLesson" role="button" data-toggle="modal"
           data-id="${"lmuu_" + muu_counter}"
-            onclick='setTargetLessonComponent("${muu_counter}")'       
+          data-idx="${muu_counter}"
+          data-name="${lessons?.name}"
+          data-pos="${lessons?.position_id}"
+          data-description="${lessons?.description}"
+           data-parent-id="${lessons?.subsection}"
+
+           data-modal="myModalEditLesson"
+           onclick='injectToModal(this);setTargetLessonComponent("${muu_counter}")'       
+                
           >Edit </a></li>
 
 
@@ -1599,10 +2060,6 @@ ondragenter="return dragEnterIntoSection(event)"
 
                 >Replicate Section</a></li>
                 
-                <li><a class="dropdown-item" href="#noclick"  data-id="${
-                  "lmuu_" + muu_counter
-                }"
-           onclick="" >Delete</a></li>
            </ul>
          </a>
          
@@ -1610,22 +2067,14 @@ ondragenter="return dragEnterIntoSection(event)"
 
 
                 </span>
+
+                </h4>
 </li></ul>`;
 
-                //   let temp = `<li><div class="card-box">
-                //   <div>
-
-                //      <span>Lesson ${lessons.name}</span>
-                // <span class="pull-right">
-                //     <i class="fa fa-trash"></i>
-                //      <i class="fa fa-edit"></i>
-                //      <i class="fa fa-plus"></i>
-                // </span>
-                
-                 
-                //  </div>
-                //   <ul id="${lessons.id}"  style="margin-left:20px"></ul></div></li>`
                     $("#dynamic_subsection_"+ lessons.sub_section).append(templateLesson);
+                  
+                    // enableDragSortPositionUpdater("js-root-parent","lessons")          
+      
                   }
 
                    let courseComponents = lessons.lesson_components
@@ -1766,6 +2215,7 @@ ondragenter="return dragEnterIntoSection(event)"
     //inform user
       var button = document.querySelector('.save-generic');
       var slideout = document.getElementById('notifier');
+      slideout.style.zIndex="9999999999999999";
       let successSlide = slideout.querySelector(".success-notification")
       let errorSlide = slideout.querySelector(".error-notification")
       if(type =="error"){
@@ -1841,12 +2291,12 @@ ondragenter="return dragEnterIntoSection(event)"
           <div className="col-md-12">
             <div className="card">
               <div className="card-body" >
-                <div id="make-fixed-on-fullscreen">
-                  <h4 className="header-title mb-3">
+                <div id="make-fixed-on-fullscreen" >
+                  <h4 className="header-title mb-3" >
                     Course adding form{" "}
 
                     <a
-                      style={{ marginRight: "3px", color:"#fff" }}
+                      style={{ marginRight: "3px", color:"#fff"}}
                       href={process.env.PUBLIC_URL+ "/learning/workbench/"+ this.props.match.params.id}
                       
                   
@@ -1870,7 +2320,7 @@ ondragenter="return dragEnterIntoSection(event)"
                     </a>
 
                     <a
-                      style={{ marginRight: "3px" ,color:"#fff"}}
+                      style={{ marginRight: "3px" ,color:"#fff", background:"rgba(8,23,200)"}}
                       href={process.env.PUBLIC_URL + "/authoring/create/new/"}
                       className="alignToTitle btn btn-danger btn-outline-secondary btn-rounded btn-sm"
                       onClick={() =>{
@@ -1896,6 +2346,7 @@ ondragenter="return dragEnterIntoSection(event)"
                     </a>
 
                       <a
+                      style={{}}
                       href={process.env.PUBLIC_URL + "/authoring/course/history"}
                       className="alignToTitle btn btn-outline-secondary btn-rounded btn-sm"
                     >
@@ -1919,11 +2370,12 @@ ondragenter="return dragEnterIntoSection(event)"
 
                   <div className="col-md-12">
                     <ul
-                      className="nav nav-pills nav-justified form-wizard-header mb-3"
+                      className="col-md-12 nav nav-pills nav-justified form-wizard-header mb-3"
                       style={{ background: "#f6f6f6", height: "45px" }}
                     >
                       <a
-                        onClick={async (e) => {
+
+                      onClick={async (e) => {
                             this.goToStep(e, 1);
                             await  this.fetchContent()
                              // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
@@ -1937,34 +2389,55 @@ ondragenter="return dragEnterIntoSection(event)"
                           },3000)
                           
                         }}
+                        
                         href="#basic"
                         data-toggle="tab"
                         className="nav-link rounded-0 pt-2 pb-2 "
                       >
-                        <i className="fa fa-pen mr-1"></i>
+                        <i className="fa fa-edit mr-1"></i>
                         <span className="d-none d-sm-inline">Basic</span>
                       </a>
 
-                      <a
-                        onClick={async (e) => {
-                          this.goToStep(e, 2);
-                          await  this.fetchContent()
-                          // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                          //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
-                           setTimeout(()=> {
+                      <a
+                        style={{display:"none"}}
+                      onClick={async (e) => {
+                            this.goToStep(e, 1);
+                            await  this.fetchContent()
+                             // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                             //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
+
+                          setTimeout(()=> {
                             let T = new  TinyMyceRender();
                           T.render("")
 
                           },3000)
+                          
                         }}
-                        href="#outcomes"
+                        
+                        href="#basic"
                         data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2"
+                        className="nav-link rounded-0 pt-2 pb-2 "
                       >
-                        <i className="fa fa-camera mr-1"></i>
+                        <i className="fa fa-edit mr-1"></i>
+                        <span className="d-none d-sm-inline">Basic</span>
+                      </a>
+
+
+                      <a
+                      onClick={async (e) => {
+                            this.goToStep(e, 2);
+                            await  this.fetchContent()
+                        }}
+
+                        href="#basic"  className="nav-link rounded-0 pt-2 pb-2 " data-toggle="tab"
+                         
+                      >
+                        <i className="fa fa-edit mr-1"></i>
                         <span className="d-none d-sm-inline">Schedules</span>
                       </a>
+
 
                       <a
                         onClick={ async (e) => {
@@ -1982,40 +2455,34 @@ ondragenter="return dragEnterIntoSection(event)"
                         }}
                         href="#requirements"
                         data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2"
+                        className="nav-link rounded-0 pt-2 pb-2 "
                       >
                         <i className="fa fa-bell mr-1"></i>
                         <span className="d-none d-sm-inline">Grading</span>
                       </a>
 
-                      {/*<li
-                        id="list-nav-gate-6"
-                       style={{border:"1px solid #eee",padding:"2px"}}
-                          className="nav-item"
-                          
-                        >*/}
-                      <a
+                     {/* <a
                         onClick={(e) => {
                           this.goToStep(e, 4);
                           // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
                           //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
-                           setTimeout(()=> {
-                            let T = new  TinyMyceRender();
-                          T.render("")
+                          //  setTimeout(()=> {
+                          //   let T = new  TinyMyceRender();
+                          // T.render("")
 
-                          },3000)
+                          // },3000)
                         }}
                         href="#seo"
                         data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2"
+                        className="nav-link rounded-0 pt-2 pb-2 "
                       >
                         <i className="fa fa-tag mr-1"></i>
                         <span className="d-none d-sm-inline">
                           Learners Group
                         </span>
                       </a>
-                      {/*</li>*/}
+                      */}
 
                       <a
                         onClick={(e) => {
@@ -2031,9 +2498,9 @@ ondragenter="return dragEnterIntoSection(event)"
                         }}
                         href="#pricing"
                         data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2"
+                        className="nav-link rounded-0 pt-2 pb-2 "
                       >
-                        <i className="fa fa-currency mr-1"></i>
+                        <i className="fa fa-users mr-1"></i>
                         <span className="d-none d-sm-inline">
                           Authoring Team
                         </span>
@@ -2053,9 +2520,9 @@ ondragenter="return dragEnterIntoSection(event)"
                         }}
                         href="#resource"
                         data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2"
+                        className="nav-link rounded-0 pt-2 pb-2 "
                       >
-                        <i className="fa fa-currency mr-1"></i>
+                        <i className="fa fa-file mr-1"></i>
                         <span className="d-none d-sm-inline">Resource</span>
                       </a>
 
@@ -2072,9 +2539,9 @@ ondragenter="return dragEnterIntoSection(event)"
                         }}
                         href="#media"
                         data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2"
+                        className="nav-link rounded-0 pt-2 pb-2 "
                       >
-                        <i className="fa fa-video mr-1"></i>
+                        <i className="fa fa-menu mr-1"></i>
                         <span className="d-none d-sm-inline">Content</span>
                       </a>
 
@@ -2092,7 +2559,7 @@ ondragenter="return dragEnterIntoSection(event)"
                         }}
                         href="#finish"
                         data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2"
+                        className="nav-link rounded-0 pt-2 pb-2 "
                       >
                         <i className="fa fa-checkbox mr-1"></i>
                         <span className="d-none d-sm-inline">Process</span>
@@ -2119,7 +2586,21 @@ ondragenter="return dragEnterIntoSection(event)"
                       <Step1
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
+                        stateInitial={this.state}
+                        
+                        
+                        actions={
+                          {
+                    stateAction:this.handleChangeTextEditor,
+                    description:this.handleHtmlDescriptionChange,
+                    overview: this.handleHtmlCourseOverViewChange,
+                    learning_expectation: this.handleHtmlOutComeChange,
+                    prerequisite: this.handleHtmlPrerequisitesChange,
+                    curriculum: this.handleHtmlCurriculumChange
+                  
+                        }}
+                        
                         errorEmailClass={this.errorClass(
                           this.state.formErrors.course_language
                         )}
@@ -2138,9 +2619,10 @@ ondragenter="return dragEnterIntoSection(event)"
                       />
 
                       <Step3
+                      stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
                         institutions={institutions} 
@@ -2148,12 +2630,14 @@ ondragenter="return dragEnterIntoSection(event)"
                         instructors={instructors} 
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
                       />
 
                       <Step4
+                      stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
                         institutions={institutions} 
@@ -2161,12 +2645,15 @@ ondragenter="return dragEnterIntoSection(event)"
                         instructors={instructors} 
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
                       />
 
                       <Step2
+                      stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
+                        stateAction={this.handleChangeTextEditor}
                         errorPasswordClass={this.errorClass(
                           this.state.formErrors.password
                         )}
@@ -2187,9 +2674,10 @@ ondragenter="return dragEnterIntoSection(event)"
                       />
 
                       <Step5
+                      stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
                         institutions={institutions} 
@@ -2197,12 +2685,14 @@ ondragenter="return dragEnterIntoSection(event)"
                         instructors={instructors} 
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
                       />
 
                       <Step6
+                      stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
                         institutions={institutions} 
@@ -2210,11 +2700,12 @@ ondragenter="return dragEnterIntoSection(event)"
                         instructors={instructors} 
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
                       />
                       <Step7
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
                         institutions={institutions} 
@@ -2222,12 +2713,14 @@ ondragenter="return dragEnterIntoSection(event)"
                         instructors={instructors} 
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
                       />
 
                       <Step8
+                      stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
                         institutions={institutions} 
@@ -2235,6 +2728,7 @@ ondragenter="return dragEnterIntoSection(event)"
                         instructors={instructors} 
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
                       />
 
                       <br />
@@ -2259,11 +2753,11 @@ ondragenter="return dragEnterIntoSection(event)"
                     <br />
                     <br />
                     <div style={{ position: "absolute", bottom: "0px" }}>
-                      <ul className="list-inline mb-0 wizard text-center">
+                      {/*<ul className="list-inline mb-0 wizard text-center">
                         {this.previousButton}
 
                         {this.nextButton}
-                      </ul>
+                      </ul>*/}
                     </div>
                   </div>
                 </div>
@@ -2278,15 +2772,168 @@ ondragenter="return dragEnterIntoSection(event)"
   }
 }
 
+
 class Step1 extends React.Component {
   constructor(props){
     super(props)
 
+    let sname,scode, sauthor,sinstitution;
+    if(localStorage.getItem("name")){
+      sname= localStorage.getItem("name") || "";
+      scode = localStorage.getItem("course_code") || "";
+      sauthor = localStorage.getItem("author") || "" ;
+      sinstitution = localStorage.getItem("institution") || ""
 
-
-    this.state ={
-      
     }
+    let sdescription, soverview, sprerequisite, slearning_expectation, scurriculum,
+    scourse_start_date_time, scourse_end_date_time, senrolment_end_date_time, 
+    senrolment_start_date_time;
+    if(localStorage.getItem("overview")){
+
+      soverview = localStorage.getItem("overview") || ""
+    }
+
+    if(localStorage.getItem("description")){
+
+      sdescription = localStorage.getItem("description") || ""
+    }
+    if(localStorage.getItem("prerequisite")){
+      sprerequisite = localStorage.getItem("prerequisite") || ""
+    }
+    if(localStorage.getItem("learning_expectation")){
+      slearning_expectation = localStorage.getItem("learning_expectation") || ""
+    }
+    if(localStorage.getItem("curriculum")){
+      scurriculum = localStorage.getItem("curriculum") || ""
+    }
+
+
+    if(localStorage.getItem("course_start_date_time")){
+      scourse_start_date_time = localStorage.getItem("course_start_date_time") || ""
+    }
+
+    if(localStorage.getItem("course_end_date_time")){
+      scourse_end_date_time = localStorage.getItem("course_end_date_time") || ""
+    }
+    if(localStorage.getItem("enrolment_start_date_time")){
+      senrolment_start_date_time = localStorage.getItem("enrolment_start_date_time") || ""
+    }
+
+    if(localStorage.getItem("enrolment_end_date_time")){
+      senrolment_end_date_time = localStorage.getItem("enrolment_end_date_time") || ""
+    }
+
+
+    this.state = {
+      /*multistep logic data*/
+      currentStep: 1,
+      sectionStep: 1,
+      subSectionStep: 1,
+      lessonStep: 1,
+      finishedClicked: false,
+      modes:["CREATE_MODE","EDIT_MODE"],
+      editor:null,  //THE LOGGED IN USERS DETAILS [{token,...details}]
+      author: "", // THE LOGGED IN USER NAME {...details}.username
+      previledges:["CAN_EDIT","CAN_VIEW","CAN_DELETE","CAN_CREATE"], 
+      name: sname,
+      code: scode,
+      institution: sinstitution,   //keypair preporpulated set of inst id
+      author: sauthor,  //keypair preporpulated set of author id
+
+      description: sdescription,
+      overview: soverview,
+      learning_expectation: slearning_expectation,
+      curriculum: scurriculum,
+      course_start_date_time: scourse_start_date_time,  //2021-08-26T17:13:00+01:00
+      course_end_date_time: scourse_end_date_time,
+      enrolment_start_date_time: senrolment_start_date_time,
+      enrolment_end_date_time: senrolment_end_date_time,
+     
+
+
+
+      
+      //state fields
+      /*request form data*/
+      
+        
+        run: "",
+        card_image: "",
+        intro_video: "",
+        level: 1,  //int
+        enrolment_type: 1,
+        entrance_exam_required: true, 
+        cost: 100.0,  //float
+        auditing: true,
+        course_pacing: 1, //int
+        
+        course_language: "1",
+        requirement_hours_per_week: 1, //int
+        requirement_no_of_week: 1,  //int
+        grace_period_after_deadline: 1, //int
+        publication_status: 2,  //int
+        
+        prerequisite: [
+              //key pairs ids of courses
+        ],
+        authoring_team: [
+                              //key pair authors
+            
+        ],
+
+        /* request resource data*/
+        languages:[], //  getdata
+        instructors:[], //  getdata
+        courses:[], //  getdata
+        institutions:[],  //  getdata
+        currentCourseId:"", //for tracking saved course currently working on
+        
+      formErrors: {
+        /*request form errors data*/
+
+        /*do not change this part: its used in ai logic*/
+        name: "",
+        code: "",
+        run: "",
+        card_image: "",
+        intro_video: "",
+        description: "",
+        overview: "",
+        learning_expectation: "",
+        curriculum: "",
+        level: "",  //int
+        enrolment_type: "",
+        entrance_exam_required: "", 
+        cost: "",  //float
+        auditing: "",
+        course_pacing: "", //int
+        course_start_date_time: "",  //2021-08-26T17:13:00+01:00
+        course_end_date_time: "",
+        enrolment_start_date_time: "",
+        enrolment_end_date_time: "",
+        course_language: "",
+        requirement_hours_per_week: "", 
+        requirement_no_of_week: "", 
+        grace_period_after_deadline: "", 
+        publication_status: "",  
+        institution: "",   
+        author: "", 
+        prerequisite: [],
+        authoring_team: [],
+
+        
+      },
+      formValidity: {
+        email: false,
+        username: false,
+        password: false,
+        passwordConfirmation: false,
+      },
+      canSubmit: false,
+    };
+
+    
+     
 
     this.dropRef = createRef()
   }
@@ -2304,28 +2951,286 @@ class Step1 extends React.Component {
       return null;
     }
     const {institutions, languages, instructors, courses } = this.props
-    console.log(institutions)
+    
 
     return (
       <React.Fragment>
-        <div className="tab-content b-0 mb-0">
+        <div className="tab-content b-0 mb-0" >
           <div className="tab-pane active" id="basic">
             <div className="row">
               <div className="col-md-12 card-box">
 
 
 
-              
 
 
-                                <div className="form-group col-md-6 fl-left">
+
+            {/*switcher pane for authoring*/}
+
+              <div className="row" style={{display:"none"}} id="hidden-on-reveal">
+        <div className="col-md-12">
+
+
+
+                      <Col md="12" sm="12" lg="12">
+        
+                 
+                  <br/> <br/> <br/>
+                  <div className="container-fluid" id="lead-guy" >  
+                        
+
+                         <div className="col-lg-3 col-md-3 col-sm-6" >
+          <a href="#">
+            <div className="widget-panel widget-style-2 bg-white"
+              onClick={() => {
+
+                
+                          swal({
+                            text: 'Search for an instructor by name/email/ phone number. e.g. "saladin jake ".',
+                            content: "input",
+                            button: {
+                            text: "Search!",
+                            closeModal: false,
+                            },
+                          })
+                          .then(name => {
+                            if (!name)  return swal("No instructor email/name was entered!");
+                              // check if user existed in our initial fetch 
+                              // do not make another api request 
+                              //this saves pull request
+     
+                            let targetInstructor = instructors.find(instructor => {
+                                console.log(instructor)
+                                return (instructor?.profile?.name === name) ||  (instructor?.profile?.email === name) || (instructor?.profile?.phone_number === name)
+                            })
+                           
+                              if(targetInstructor){
+                                 let leadGuy =  $("#lead-guy").css({display:"block", color:"#fff"}).html(targetInstructor?.profile?.name)
+                                $("#author").val(targetInstructor?.profile?.id)
+                                localStorage.setItem("author",targetInstructor?.profile?.id)
+                                 return swal("Success!", "The Instructor was found", "Success");
+                
+                             }else{
+
+                                
+                                  swal("WOOPS!", "We could not find instructor", "error");
+                        
+                                  swal.stopLoading();
+                                 return swal.close();
+                            
+
+                             }
+                          })
+                          
+                           
+                          
+
+                    }}
+
+            >
+              <i className="md md-add text-info"></i>
+              <h2
+                className="m-0 text-dark-x counter font-600-x"
+                style={{
+                  fontFamily: "Open Sans",
+                  color: "#000",
+                  fontSize: "14px",
+                }}
+
+                
+              >
+                Add/Change Team Lead
+              </h2>
+              <div
+                className="text-muted-x m-t-5-x"
+                style={{
+                  fontFamily: "Open Sans",
+                  color: "#000",
+                  fontSize: "14px",
+                }}
+              >
+                Add
+              </div>
+            </div>
+           
+             </a>
+          </div></div>
+                
+</Col>
+
+        
+
+
+
+
+                <div id="collabo-guys" className="row">
+
+
+
+
+
+                    <div class="col-lg-3 col-md-3 col-sm-6">
+                      <a href="#">
+                        <div className="widget-panel widget-style-2 bg-white">
+                          <i className="fa fa-plus fa-2x text-pink"></i>
+                          <h2
+                            className="m-0 text-dark-x counter font-600-x"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+
+                                onClick={ () => {
+              let values = this.state.collaborators            
+
+              swal({
+                text: 'Search for an instructor by email/ phone number. e.g. "saladinjake@company.com ".',
+                content: "input",
+                button: {
+                text: "Search!",
+                closeModal: false,
+                },
+              })
+              .then(name => {
+                if (!name)  return swal("No instructor email or phone entered was entered!");
+                  // check if user existed in our initial fetch 
+                  // do not make another api request 
+                  //this saves pull request
+
+                     
+                  //TODO: if no collaborators selected 
+                  //LET THE LOGGED IN OR LEAD INSTRUCTOR BE APPENDED AS A COLLABORATOR
+
+                let targetInstructor = instructors.find(instructor => {
+                    console.log(instructor)
+                    return (instructor?.profile?.name === name) ||  (instructor?.profile?.email === name) || (instructor?.profile?.phone_number === name)
+                })
+               
+                  if(targetInstructor){
+                     let collaborators =  $("#collabo-guys")
+                      
+                     let newGuy = $(`
+                      <div class="col-lg-3 col-md-3 col-sm-6">
+                      <a href="#">
+                        <div className="widget-panel widget-style-2 bg-white">
+                          <i className="fa fa-trash fa-2x text-pink"></i>
+                          <h2
+                            className="m-0 text-dark-x counter font-600-x"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+
+                          >
+                            ${targetInstructor?.profile?.first_name} - ${targetInstructor?.profile?.email}
+                          </h2>
+                          <div
+                            className="text-muted-x m-t-5-x"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+                            onclick="alert('test delete operation')"
+
+                            data-id=${targetInstructor?.profile?.id}
+                          >
+                            Remove
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                     `)
+                     
+                    collaborators.append(newGuy.html())
+                  
+
+                     // now let js do the dynamic selection of the hidden authoring_team select form fields
+                    const { name, id, email, phone_number} = targetInstructor?.profile
+                     values.push({
+                      id,name, email, phone_number
+                     })
+
+                     this.setState({collaborators: values})
+
+                      $('select[name=authoring_team]').val(this.state.collaborators) // all collaborators as listArray
+      
+                     return swal("Success!", "The Instructor was found", "Success");
+
+                 }else{
+
+                    
+                      swal("Oh noes!", "We could not find instructor", "error");
+            
+                      swal.stopLoading();
+                     return swal.close();
+                
+
+                 }
+              })
+             
+                 
+                           
+                          
+
+      }}
+                          >
+                            Add collaborator
+                          </h2>
+                          <div
+                            className="text-muted-x m-t-5-x"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+                          >
+                            Add
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+
+
+
+
+
+                </div>
+
+               {/* hidden field that updates its array of data*/}
+               { /*fields will be selected as user finds the  exact email/ phone or name 
+                of the instructors to be added as collaborators*/}
+                <select name="authoring_team[]" multiple  style={{display:"none"}}>
+                      {instructors.length > 0  && instructors.map(instructor => {
+                          return (
+                             <option value={instructor.profile.id}>{instructor.profile.name}</option>
+                          )
+                      })}
+                </select>
+
+
+          
+          <br />
+          
+        </div>
+
+        <br />
+        <br />
+      </div>
+
+    {/*form*/}
+           <form id="create-course" enctype="">
+
+                <div className="form-group col-md-6 fl-left">
                   
                   <div className="">
                     <input
                       style={{ position: "relative", zIndex: "1" }}
                       type="text"
                       className="form-control"
-                      id="course_code"
+                      id="code"
                       name="code"
                       placeholder="Enter course code"
                       value={this.props.code}
@@ -2364,7 +3269,7 @@ class Step1 extends React.Component {
                       style={{ position: "relative", zIndex: "1", marginTop:"-10px" }}
                       type="text"
                       className="form-control"
-                      id="course_name"
+                      id="name"
                       name="name"
                       placeholder="Enter course title"
 
@@ -2380,9 +3285,53 @@ class Step1 extends React.Component {
                   </div>
                 </div>
 
-                
 
-                <div className=" form-group col-md-6 fl-left" style={{display:"none"}}>
+
+
+
+              <div class="form-group  col-md-6 fl-left">
+                 
+                  <div class="" data-select2-id="94">
+                    <select
+                      style={{ position: "relative", zIndex: "1" }}
+                      class="form-control select2 select2-hidden-accessible"
+                      data-toggle="select2"
+                      id="institution"
+                      name="institution"
+                      
+                      data-select2-id="level"
+                      tabindex="-1"
+                      aria-hidden="true"
+                       value={this.props.institution}
+                     onChange={this.props.handleChange}
+                    >
+
+
+                      
+
+                      <option>-- Institutions --</option>
+                        {institutions &&
+                          institutions.map((language, i) => {
+                            return (
+                              <option key={i} value={language.id}>
+                                {language.name}
+                              </option>
+                            );
+                          })}
+                        
+
+                    </select>
+
+                     <label class="col-md-12 col-form-label" for="level">
+                    Institution <span className="required">*</span>
+                  </label>
+                  </div>
+                </div>
+
+
+
+
+                <div className=" form-group col-md-6 fl-left">
                         <div className="col-md-10  fl-left">
                           <input
                             type="text"
@@ -2463,21 +3412,34 @@ class Step1 extends React.Component {
 
 
 
-
-
-
                 
-                <div className="form-group col-md-6 fl-left">
+                <div className="form-group col-md-12 fl-left">
                  
                   <div className="">
-                    <textarea
+
+
+                  <textarea
+                    style={{display:"none"}}
                       name="description"
-                      style={{ position: "relative", zIndex: "1" }}
+                      id="description"
+                      
                       className="form-control"
                       placeholder="Short description"
                        value={this.props.description}
                      onChange={this.props.handleChange}
                     ></textarea>
+                    
+
+
+                     <HTMLForm
+                        title="description"
+
+                        placeholder={"description"}
+                        value={this.state.description || ""}
+                        action={this.props.actions.description}
+                        stateAction={this.props.actions.stateAction}
+                        name={"description"}
+                      />
 
                      <label
                     className="col-md-12 col-form-label"
@@ -2490,17 +3452,36 @@ class Step1 extends React.Component {
 
 
 
-                <div className="form-group col-md-6 fl-left">
+
+
+
+
+                <div className="form-group col-md-12 fl-left">
                  
                   <div className="">
                     <textarea
                       name="overview"
-                      style={{ position: "relative", zIndex: "1" }}
+                      id="overview"
+                      style={{display:"none"}}
+                      
                       className="form-control"
                       placeholder="Short description"
                        value={this.props.overview}
                      onChange={this.props.handleChange}
                     ></textarea>
+
+
+
+
+                     <HTMLForm
+                        title="overview"
+
+                        placeholder={"overview"}
+                        value={this.state.overview || ""}
+                        action={this.props.actions.overview }
+                        stateAction={this.props.actions.stateAction}
+                        name={"overview"}
+                      />
 
                      <label
                     className="col-md-12 col-form-label"
@@ -2513,79 +3494,65 @@ class Step1 extends React.Component {
 
 
 
-                 <div className="form-group col-md-6 fl-left">
+                 <div className="form-group col-md-12 fl-left">
                   <label className="col-md-12 col-form-label" for="description">
                     Curriculum
                   </label>
                   <div className="">
-                    <textarea
+
+                  <textarea
                       name="curriculum"
-                      style={{ position: "relative", zIndex: "1" }}
+                      id="curriculum"
+                      style={{display:"none"}}
+                      
                       className="form-control"
                       placeholder="Short description"
                        value={this.props.curriculum}
                      onChange={this.props.handleChange}
                     ></textarea>
+
+                    <HTMLForm
+                        title="curriculum"
+
+                        placeholder={"curriculum"}
+                        value={this.state.curriculum || ""}
+                        action={this.props.actions.curriculum}
+                        stateAction={this.props.actions.stateAction}
+                        name={"curriculum"}
+                      />
                   </div>
                 </div>
 
 
-                <div className="form-group col-md-6 fl-left">
+                <div className="form-group col-md-12 fl-left">
                   <label className="col-md-12 col-form-label" for="description">
                     What You Will Learn
                   </label>
                   <div className="">
-                    <textarea
+
+                  <textarea
                       name="learning_expectation"
-                      style={{ position: "relative", zIndex: "1" }}
+                      id="learning_expectation"
+                      style={{display:"none"}}
+                      
                       className="form-control"
                       placeholder="Short description"
-                       value={this.props.learning_expectation}
+                       value={this.props.learning_expectation || ""}
                      onChange={this.props.handleChange}
                     ></textarea>
+
+                    <HTMLForm
+                        title="learning_expectation"
+
+                        placeholder={"learning_expectation"}
+                        value={this.state.learning_expectation}
+                        action={this.props.actions.learning_expectation}
+                        stateAction={this.props.actions.stateAction}
+                        name={"learning_expectation"}
+                      />
                   </div>
                 </div>
 
-
-
-              <div class="form-group  col-md-6 fl-left">
-                 
-                  <div class="" data-select2-id="94">
-                    <select
-                      style={{ position: "relative", zIndex: "1" }}
-                      class="form-control select2 select2-hidden-accessible"
-                      data-toggle="select2"
-                      id="institution"
-                      name="institution"
-                      
-                      data-select2-id="level"
-                      tabindex="-1"
-                      aria-hidden="true"
-                       value={this.props.institution}
-                     onChange={this.props.handleChange}
-                    >
-
-
-                      
-
-                      <option>-- Institutions --</option>
-                        {institutions &&
-                          institutions.map((language, i) => {
-                            return (
-                              <option key={i} value={language.id}>
-                                {language.name}
-                              </option>
-                            );
-                          })}
-                        
-
-                    </select>
-
-                     <label class="col-md-12 col-form-label" for="level">
-                    Institution
-                  </label>
-                  </div>
-                </div>
 
 
 
@@ -2597,7 +3564,7 @@ class Step1 extends React.Component {
                       style={{ position: "relative", zIndex: "1" }}
                       class="form-control select2 select2-hidden-accessible"
                       data-toggle="select2"
-                      name="enrolment_type"
+                      name="level"
                       id="level"
                       data-select2-id="level"
                       tabindex="-1"
@@ -2633,8 +3600,8 @@ class Step1 extends React.Component {
                       style={{ position: "relative", zIndex: "1" }}
                       class="form-control select2 select2-hidden-accessible"
                       data-toggle="select2"
-                      name="level"
-                      id="level"
+                      name="enrolment_type"
+                      id="enrolment_type"
                       data-select2-id="level"
                       tabindex="-1"
                       aria-hidden="true"
@@ -2664,7 +3631,7 @@ class Step1 extends React.Component {
                       class="form-control select2 select2-hidden-accessible"
                       data-toggle="select2"
                       name="entrance_exam_required"
-                      id="level"
+                      id="entrance_exam_required"
                       data-select2-id="level"
                       tabindex="-1"
                       aria-hidden="true"
@@ -2691,20 +3658,23 @@ class Step1 extends React.Component {
                 <div class="form-group  mb-3 col-md-6 fl-left">
                  
                   <div class="co" data-select2-id="94">
+                  <label class="col-md-12 col-form-label" for="level">
+                     Auditing
                     <input
                       style={{ position: "relative", zIndex: "1" }}
                       type="checkbox"
-                      className="form-control"
-                      id="course_title2"
+                      className=""
+                      id="auditing"
                       name="auditing"
                       
                        value={this.props.intro_video}
                      onChange={this.props.handleChange}
                     />
 
-                     <label class="col-md-12 col-form-label" for="level">
-                    Auditing
+
                   </label>
+
+                     
                   </div>
                 </div>
 
@@ -2715,7 +3685,7 @@ class Step1 extends React.Component {
                       style={{ position: "relative", zIndex: "1" }}
                       type="text"
                       className="form-control"
-                      id="course_title2"
+                      id="intro_video"
                       name="intro_video"
                       placeholder="You tube url"
                        value={this.props.intro_video}
@@ -2742,15 +3712,13 @@ class Step1 extends React.Component {
 
 
 
+ <div className="form-group col-md-12 fl-left">
 
-
-                <h2>Card Image</h2>
-
-                    <div class="file-drop-area col-md-6" style={{background: "#f5f5f5",
+                    <div class="file-drop-area col-md-12" style={{background: "#f5f5f5",
   padding: "40px 0 20px 0", margin:"20px"}}>
                       <span class="fake-btn">Choose files</span>
                       <span class="file-msg"></span>
-                      <input name="card_image" class="file-input" type="file" multiple   accept="image/*"
+                      <input id="card_image" name="card_image" class="file-input" type="file" multiple   accept="image/*"
                                value={this.props.card_image}
                                onChange={this.props.handleChange} />
 
@@ -2766,10 +3734,7 @@ class Step1 extends React.Component {
 
                 
 
-
-
-
-                
+</div>
 
 
                 
@@ -2778,7 +3743,7 @@ class Step1 extends React.Component {
 
 
 
-
+{/*
                 <div className="mb-3 mt-3">
                   <button
                     type="button"
@@ -2790,9 +3755,18 @@ class Step1 extends React.Component {
                   >
                     Save 
                   </button>
-                </div>
+                </div>*/}
+
+
+                </form>
 
                 <br />
+                <br />
+                <br />
+                <br />
+                <br />
+
+                 <br />
                 <br />
                 <br />
                 <br />
@@ -2825,24 +3799,12 @@ class Step1 extends React.Component {
         <br />
         <br />
         <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
       </React.Fragment>
     );
+  }
+
+  componentDidMount(){
+
   }
 }
 
@@ -2906,7 +3868,7 @@ class Step5 extends React.Component {
                 </div>
               </div>
 
-              <div class="form-group  col-md-6 fl-left">
+              {/*<div class="form-group  col-md-6 fl-left">
                 
                 <div class="" data-select2-id="94">
                   <select
@@ -2958,7 +3920,7 @@ class Step5 extends React.Component {
                   Assignment/Exam Type
                 </label>
                 </div>
-              </div>
+              </div>*/}
 
               <div class="form-group  mb-3 col-md-6 fl-left">
                 
@@ -2972,81 +3934,21 @@ class Step5 extends React.Component {
                     tabindex="-1"
                     aria-hidden="true"
                   >
-                    <option>-- Language --</option>
-                        {languages.length > 0 &&
-                          languages.map((language, i) => {
-                            return (
-                              <option key={i} value={language.id}>
-                                {language.english}
-                              </option>
-                            );
-                          })}
+                    
+            <option value="1">English</option>
+            <option value="2">French</option>
+            <option value="3">Igbo</option>
+            <option value="4">Hausa</option>
+            <option value="5">Yoruba</option>
+          
+      
                   </select>
                   <label class="col-md-12 col-form-label" for="language_made_in">
                   Language made in
                 </label>
                 </div>
               </div>
-              {/*<div className="form-group row mb-3">
-                <label className="col-md-2 col-form-label" for="outcomes">
-                  Requirements
-                </label>
-                <div className="col-md-10">
-                  <div id="outcomes_area">
-                    <div className="d-flex mt-2">
-                      <div className="flex-grow-1 px-3">
-                        <div className="form-group">
-                          <input
-                            type="text"
-                            className="form-control"
-                            name="outcomes[]"
-                            id="outcomes"
-                            placeholder="Provide outcomes"
-                          />
-                        </div>
-                      </div>
-                      <div className="">
-                        <button
-                          type="button"
-                          className="btn btn-success btn-sm"
-                          name="button"
-                            onClick={this.handleAddShareholder}
-                        >
-                          {" "}
-                          <i className="fa fa-plus"></i>{" "}
-                        </button>
-                      </div>
-                    </div>
-                    <div id="blank_outcome_field" style={{ display: "none" }}>
-                      <div className="d-flex mt-2">
-                        <div className="flex-grow-1 px-3">
-                          <div className="form-group">
-                            <input
-                              type="text"
-                              className="form-control"
-                              name="outcomes[]"
-                              id="outcomes"
-                              placeholder="Provide outcomes"
-                            />
-                          </div>
-                        </div>
-                        <div className="">
-                          <button
-                            type="button"
-                            className="btn btn-danger btn-sm"
-                            style={{ marginTop: "0px" }}
-                            name="button"
-                            onclick="removeOutcome(this)"
-                          >
-                            {" "}
-                            <i className="fa fa-minus"></i>{" "}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>*/}
+             
             </div>
           </div>
         </div>
@@ -3078,9 +3980,9 @@ class Step3 extends React.Component {
                
                 <div className="">
                   <input
-                    type="date"
+                    type="datetime-local"
                     className="form-control"
-                   
+                    id="course_start_date_time"
                     name="course_start_date_time"
                     placeholder="Enter course title"
                     required=""
@@ -3098,9 +4000,9 @@ class Step3 extends React.Component {
                 
                 <div className="">
                   <input
-                    type="date"
+                    type="datetime-local"
                     className="form-control"
-                    id="course_title2"
+                    id="course_end_date_time"
                     name="course_end_date_time"
                     placeholder="Enter course title"
                     required=""
@@ -3117,9 +4019,9 @@ class Step3 extends React.Component {
                
                 <div className="">
                   <input
-                    type="date"
+                    type="datetime-local"
                     className="form-control"
-                    id="course_title"
+                    id="enrolment_start_date_time"
                     name="enrolment_start_date_time"
                     placeholder="Enter course title"
                     required=""
@@ -3136,9 +4038,9 @@ class Step3 extends React.Component {
                 
                 <div className="">
                   <input
-                    type="date"
+                    type="datetime-local"
                     className="form-control"
-                    id="course_title2"
+                    id="enrolment_end_date_time"
                     name="enrolment_end_date_time"
                     placeholder="Enter course title"
                     required=""
@@ -3176,7 +4078,7 @@ class Step3 extends React.Component {
                   <input
                     type="number"
                     className="form-control"
-                    id="course_title2"
+                    id="requirement_no_of_week"
                     name="requirement_no_of_week"
                     placeholder="Enter course title"
                     required=""
@@ -3184,24 +4086,29 @@ class Step3 extends React.Component {
                 </div>
               </div>
 
-              <div className="form-group col-md-12 fl-left">
-                <label className="col-md-12 col-form-label" for="description">
-                  Prerequisites
-                </label>
-                
+             
+             
+
+                <div className="form-group col-md-6 fl-left">
+                     <label className="col-md-12 col-form-label" for="description">
+                    Prerequisites (Enter the unique ID of the prerequisite course)
+                  </label>
+
                 <div className="">
-                  <textarea
-                  id="prerequisite"
-                      name="prerequisite"
-                      style={{ position: "relative", zIndex: "1",height:"300px" }}
-                      className="form-control"
-                      placeholder="Short description"
-                       value={this.props.name}
-                     onChange={this.props.handleChange}
-                    ></textarea>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="prerequisite"
+                    name="prerequisite"
+                    placeholder="Enter course title"
+                    required=""
+                  />
                 </div>
               </div>
 
+            
+
+                
               <div class="form-group  mb-3 col-md-6 fl-left">
                 <label class="col-md-12 col-form-label" for="level">
                   Course Pacing
@@ -3211,7 +4118,7 @@ class Step3 extends React.Component {
                     class="form-control select2 select2-hidden-accessible"
                     data-toggle="select2"
                     name="course_pacing"
-                    id="level"
+                    id="course_pacing"
                     data-select2-id="level"
                     tabindex="-1"
                     aria-hidden="true"
@@ -3229,18 +4136,7 @@ class Step3 extends React.Component {
 
 
 
-                <div className="mb-3 mt-3">
-                  <button
-                    type="button"
-                    className="btn btn-primary text-center"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      
-                    }}
-                  >
-                    Save 
-                  </button>
-                </div>
+                
 
 
               </div>
@@ -3468,7 +4364,32 @@ class Step4 extends React.Component {
 
 
 
-const editSaveSection = (el) => {
+const editSaveSection = (e) => {
+
+   $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+      setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+   
+  let element =  $(e.target);
+  let form = $("#form-edit-section")
+ 
+
+  if(localStorage.getItem("course_edit")){
+
+      document.getElementById("course_val_id").value =localStorage.getItem("course_edit");
+     form = $("#form-edit-section");
+     let url = "/lms/api/update/section/"+ element.attr("editing_course_id") + "/";
+     let sectionRes = createAnyResource('PATCH',url,form)
+     console.log(sectionRes)
+  }else{
+    //something went wrong here 
+
+    //detect if this was an attacker event trying to gain access
+  }
+  
+
+ 
+
+
   $(".miller_" + localStorage.getItem("tracker"))
     .find(".tits")
     .text($("#title_edit").val());
@@ -3478,6 +4399,26 @@ const editSaveSection = (el) => {
 };
 
 const editSaveSubSection = (el) => {
+
+
+    $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+      setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+   
+  let element =  $(el.target);
+  let form = $("#form-edit-subsection")
+ 
+
+    //Recieving end here: from button injected payload ::::====
+
+      document.getElementById("subsection_id").value =element.attr("editing_parent_id") ;
+     form = $("#form-edit-subsection"); //checked
+     let url = "/lms/api/update/subsection/"+ element.attr("editing_subsection_id") + "/";
+     let sectionRes = createAnyResource('PATCH',url,form)
+     console.log(sectionRes)
+
+  
+
+ 
   $(".muu_" + localStorage.getItem("s_tracker"))
     .find(".title_sub")
     .text($("#title_edit_2").val());
@@ -3485,6 +4426,34 @@ const editSaveSubSection = (el) => {
     .find(".subsect")
     .text($("#section_id_edit_2").val());
 };
+
+
+
+
+const editSaveLessons = (e) => {
+
+   $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+      setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+   
+  let element =  $(e.target);
+  let form = $("#form-edit-lesson")
+
+
+
+  document.getElementById("subsection_lid").value =$(e).attr("data-parent-id");
+  form = $("#form-edit-lesson");
+  let url = "/lms/api/update/lesson/"+ element.attr("editing_lesson_id") + "/";
+  let sectionRes = createAnyResource('PATCH',url,form)
+  console.log(sectionRes)
+
+  $(".muu_" + localStorage.getItem("ls_tracker"))
+    .find(".title_sub")
+    .text($(e).attr("editing_course_name") );
+  // $(".dynamic_lsubsection_" + localStorage.getItem("ls_tracker"))
+  //   .find(".pcs")
+  //   .text($("#section_id_edit").val());
+};
+
 
 const Step2 = (props) => {
   const handleTabClick = (tab) => {
@@ -4244,12 +5213,54 @@ const saveMarkdownEditContent = () => {
      let T = new  TinyMyceRender();
      T.render("")
 
-   
-   
     
   }
 
-  
+
+
+  function dragstart_handler(ev) {
+   // Add the target element's id to the data transfer object
+    ev.dataTransfer.setData("application/my-app", ev.target.id);
+    ev.dataTransfer.effectAllowed = "move";
+
+    console.log(ev.target.id);
+  }
+  function dragover_handler(ev) {
+   ev.preventDefault();
+   ev.dataTransfer.dropEffect = "move"
+  }
+  function drop_handler(ev) {
+   ev.preventDefault();
+   // Get the id of the target and add the moved element to the target's DOM
+   const data = ev.dataTransfer.getData("application/my-app");
+   ev.target.appendChild(document.getElementById(data));
+}
+
+   //smooth draging with restrictions and positioning update tracker
+   //sections can only be swiched with section positions
+   useEffect(() => {
+
+    $(document).ready(() => {
+      let givenSections = $(".section-list");
+       if(givenSections.length > 0){
+            givenSections = givenSections.get(0); //jq to v-js
+            Array.from(givenSections).forEach(section =>{
+            
+             //enable draggable effect
+             section.setAttribute("draggable",true);
+             //
+             //handle events on drag and add restriction to drag into positions
+             section.addEventListener("dragstart",(ev) => {
+                dragstart_handler(ev);
+             })
+             //keep track of positioning
+          })
+       }
+    })
+      
+   })
+
+
 
 
 
@@ -4290,20 +5301,22 @@ const saveMarkdownEditContent = () => {
                 </li>
               </ul>
 
-              <ul id="js-parent" class="widow-window"></ul>
+              <div id="position-id">positionin test id: <span id="counterpos"></span></div>
+
+              <ul id="js-parent" class="widow-window drag-sort-enable"></ul>
             
             <br />
             <br /> <br />
             <br />
             <br />
             <a
-              style={{ marginRight: "10px" }}
+              style={{ marginRight: "10px", background:"rgba(8,23,200)", color:"#fff" }}
               href="#myModal"
               role="button"
               data-toggle="modal"
-              className="alignToTitle btn btn-outline-secondary btn-rounded btn-lg"
+              className="alignToTitle btn  btn-rounded btn-lg"
             >
-              <i className=" mdi mdi-keyboard-backspace"></i>Add A New Section
+              <i className=" mdi mdi-keyboard-backspace"></i>New Section
             </a>
             <br />
             <br />
@@ -4361,7 +5374,7 @@ const saveMarkdownEditContent = () => {
 
                     <div class="form-group">
                       <label>Overview</label>
-                      <textarea name="description" class="form-control" style={{height:"300px"}}></textarea>
+                      <textarea name="description" id="description" class="form-control" style={{height:"300px"}}></textarea>
                     </div>
                     </form>
                   </div>
@@ -4394,7 +5407,7 @@ const saveMarkdownEditContent = () => {
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title pull-left" style={{ color: "#000" }}>
+                <h5 id="switch_title" class="modal-title pull-left" style={{ color: "#000" }}>
                   Editing Section Detail
                 </h5>
                 <a
@@ -4419,7 +5432,7 @@ const saveMarkdownEditContent = () => {
 
                     <div class="form-group">
                       <label>Title</label>
-                      <input type="text" class="form-control" id="title_edit" />
+                      <input type="text" class="form-control" name="name" id="title_edit" />
                     </div>
 
 
@@ -4434,28 +5447,31 @@ const saveMarkdownEditContent = () => {
                     </div>
 
 
+                    <div class="form-group" style={{display:"none"}}>
+                      <label>Course ID Field</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="course_val_id"
+                        name="course"
+                        value=""
+                      />
+                    </div>
+
+
                     
 
                     <div class="form-group">
-                      <label>Overview</label>
-                      <textarea placeholder="overview" name="overview" id="overview" ></textarea>
+                      <label>Description</label>
+                      <textarea name="description" class="form-control" style={{width:"100%"}} placeholder="short description of this section" name="description" id="title_desc_edit" ></textarea>
                     </div>
 
 
 
-                    <div class="form-group" style={{display:"none"}}>
-                      <label>Course ID</label>
-                      <input placeholder="overview" name="course" id="course" type="text"/>
-                    </div>
-       </form>
 
-                  </div>
-                </div>
-              </div>
 
-              <div class="modal-footer">
-                <button
-                  onClick={editSaveSection}
+                    <button
+                  onClick={(e)=>{ editSaveSection(e) }}
                   type="button"
                   style={{ background: "rgba(8,23,200)" }}
                   class="btn btn-primary"
@@ -4463,6 +5479,14 @@ const saveMarkdownEditContent = () => {
                 >
                   Add
                 </button>
+       </form>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                
               </div>
             </div>
           </div>
@@ -4496,15 +5520,31 @@ const saveMarkdownEditContent = () => {
                 id="result"
                 style={{ height: "400px", overflowY: "scroll" }}
               >
+
                 <p>Add a title to the section</p>
                 <div class="row">
                   <div class="divided col-md-12">
+
+                  <form id="form-edit-subsection" method="patch" enctype="application/x-www-form-urlencoded; charset=UTF-8"> 
+              
                     <div class="form-group">
                       <label>Title</label>
                       <input
                         type="text"
                         class="form-control"
                         id="title_edit_2"
+                        name="name"
+                      />
+                    </div>
+
+
+                    <div class="form-group">
+                      <label>Position Id</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="position_id2"
+                        name="position"
                       />
                     </div>
 
@@ -4513,32 +5553,151 @@ const saveMarkdownEditContent = () => {
                       <input
                         type="text"
                         class="form-control"
-                        id="section_id_edit_2"
+                        name="section"
+                        id="subsection_id"
                       />
                     </div>
 
                     <div class="form-group">
-                      <label>Overview</label>
-                      <Editor placeholder="overview" />
+                      <label>Description</label>
+                      <textarea class="form-control" id="title_desc_edit2" name="description"></textarea>
                     </div>
-                  </div>
-                </div>
-              </div>
 
-              <div class="modal-footer">
-                <button
-                  onClick={editSaveSubSection}
+
+                    <button
+                  onClick={(e) => {editSaveSubSection(e)}}
                   type="button"
                   style={{ background: "rgba(8,23,200)" }}
                   class="btn btn-primary"
                   data-dismiss="modal"
                 >
-                  Add
+                  Save
                 </button>
+
+                </form>
+
+
+                  </div>
+                </div>
+
+
+                
+              </div>
+
+
+              <div class="modal-footer">
+                
               </div>
             </div>
           </div>
         </div>
+
+
+
+
+        <div
+          style={{ marginTop: "80px" }}
+          class="modal fade"
+          id="myModalEditLesson"
+          tabindex="-1"
+          role="dialog"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 id="switch_title" class="modal-title pull-left" style={{ color: "#000" }}>
+                  Editing Lesson  Detail
+                </h5>
+                <a
+                  href="#"
+                  class="pull-right"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">×</span>
+                </a>
+              </div>
+              <div
+                class="modal-body p-4 col-md-12"
+                id="result"
+                style={{ height: "400px", overflowY: "scroll" }}
+              >
+                <p>Add a title to the section</p>
+                <div class="row">
+                  <div class="divided col-md-12">
+                  <form id="form-edit-lesson" enctype="application/x-www-form-urlencoded; charset=UTF-8">
+                    
+
+                    <div class="form-group">
+                      <label>Title</label>
+                      <input type="text" class="form-control" name="name" id="title_edit3" />
+                    </div>
+
+
+                    <div class="form-group">
+                      <label>Position ID</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="position_id3"
+                        name="position_id"
+                      />
+                    </div>
+
+
+                    <div class="form-group" style={{display:"none"}}>
+                      <label>subsection id Field</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="subsection_lid"
+                        name="subsection"
+                        value=""
+                      />
+                    </div>
+
+
+
+
+
+                    
+
+                    <div class="form-group">
+                      <label>Description</label>
+                      <textarea name="description" class="form-control" style={{width:"100%"}} placeholder="short description of this section" name="description" id="title_desc_edit3" ></textarea>
+                    </div>
+
+
+
+
+
+                    <button
+                  onClick={(e)=>{ editSaveLessons(e) }}
+                  type="button"
+                  style={{ background: "rgba(8,23,200)" }}
+                  class="btn btn-primary"
+                  data-dismiss="modal"
+                >
+                  Save
+                </button>
+       </form>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
 
         <div
           style={{ marginTop: "80px" }}
@@ -4603,21 +5762,24 @@ const saveMarkdownEditContent = () => {
                       <label>Overview</label>
                       <textarea class="form-control" id="overview-set" name="description" style={{height:"200px"}}></textarea>
                     </div>
+
+
+                    <button
+                  onClick={(el) => {addSubSectionContent()}}
+                  type="button"
+                  style={{ background: "rgba(8,23,200)" }}
+                  class="btn btn-primary"
+                  data-dismiss="modal"
+                >
+                  Save
+                </button>
                     </form>
                   </div>
                 </div>
               </div>
 
               <div class="modal-footer">
-                <button
-                  onClick={addSubSectionContent}
-                  type="button"
-                  style={{ background: "rgba(8,23,200)" }}
-                  class="btn btn-primary"
-                  data-dismiss="modal"
-                >
-                  Add
-                </button>
+                
 
               </div>
             </div>
@@ -5177,7 +6339,7 @@ const saveMarkdownEditContent = () => {
                       <div class="form-group root-block">
                         <label class="change-title">Content Type </label>
                         <select id="editor-html-type" class="form-control" name="component_type">
-                              <option value="1">Video</option>    
+                              {/*<option value="1">Video</option> */}   
                               <option value="2">HTML</option>
                               <option value="3">Problem</option>
                               <option value="4">Discussion</option>
@@ -5187,9 +6349,11 @@ const saveMarkdownEditContent = () => {
 
                       <div class="form-group">
                        <select class="form-control" id="editor-html-content-type" name="content_type">
-                                <option value="1">I-Frame</option>
-                                <option value="2">HTML TEXT</option>  
-                                <option value="3">HYBRID</option>
+                                
+                                <option value="2" selected>HTML TEXT</option> 
+
+                                {/*<option value="1">I-Frame</option> 
+                                <option value="3">HYBRID</option>*/}
                         </select>
                       </div>
 
@@ -6261,44 +7425,17 @@ const cloneNew = () => {
 };
 
 window.removeSection = (el) => {
-  // alert(el.dataset.id)
-   $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-      setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
-     
-  // $("#js-remove").on("click", function(){
-  var count = $(".js-child").length;
-  $("." + el.dataset.id).remove(); //addClass("removed"); // hide + remove last child
-  //$("#js-count").text(count - 1); // update count
-  //});
+
+
+
+
 };
 
 window.removeSubSection = (el) => {
-   $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-      setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
-     
-  var count = $(".js-child").length;
-  $("." + el.dataset.id).remove(); //addClass("removed"); // hide + remove last child
 };
 
 window.editSection = (el) => {
-   $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-      setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
-     
-  // alert($("."+el.dataset.id).find(".tits").text())
-  $("#title_edit").val(
-    $("." + el.dataset.id)
-      .find(".tits")
-      .text()
-  );
-  $("#section_id_edit").val(
-    $("." + el.dataset.id)
-      .find(".pcs")
-      .text()
-  );
-
-  let form = $("#form-edit-section")
-  let url = "/lms/api/update/section/"+ el.dataset.eid
-  let sectionRes = createAnyResource('PATCH',url,form)
+  
 };
 
 window.editSubSection = (el) => {
@@ -6319,51 +7456,54 @@ window.editSubSection = (el) => {
 
 };
 
-window.replicateSection = () => {
-  var subchildren = $(".section-parent_" + localStorage.getItem("tracker"))
-    .length;
+window.replicateSection = (el) => {
 
-  let target = "dynamic_section_" + localStorage.getItem("tracker");
-  if (subchildren <= 0) {
-    //alert("here"+ $("#js-parent").find("#"+target).parent().attr("class"))
 
-    var $template = $("#js-parent")
-      .find("#" + target)
-      .clone(true);
-    $("#js-parent").append($template);
-  } else {
-    var $template = $("#js-parent")
-      .find("#" + target)
-      .clone(true);
+    // save the replicated section to database
+     let  form  = $("form#addSectionForm");
+     form.find("#title").val(el.getAttribute("data-name"));
+     form = $("form#addSectionForm");
+    //here is the modal form to add section
+    let url = "/lms/api/create/section/"
+    let sectionRes = createAnyResource('POST',url,form)
 
-    // alert($("#js-parent").find("#"+target).parent().find(`tr.section-parent_${localStorage.getItem("tracker")}` ).length)
-    $("#js-parent").append($template);
-  }
+
+       
+
+  setTimeout(function(){
+       //type check for replacers
+        //if(typeof sectionRes =="object"){
+       let rootSectionBloc = $(el).parent().parent().parent()
+       let clonedNode = rootSectionBloc.clone(true);
+       clonedNode.insertAfter(rootSectionBloc);
+       //work on this for version 2
+
+       //for now reload solves the problem
+       window.location.reload()
+
+  },3000)
+
+    //replace the id with the section api created
 };
 
 window.replicateSubSection = (el) => {
-  // var subchildren = $(".subsection-child_" + localStorage.getItem("s_tracker"))
-  //   .length;
-  // let target = $("."+ el.target.dataset.id)
-  // let target2 = ("."+ target).clone(true)
-
-  
-  // var subchildren = $(".section-parent_" + localStorage.getItem("tracker"))
-  //   .length;
-
-  // target = "muu_" + localStorage.getItem("s_tracker");
-
-
-  //      $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-  //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
-
-  //   // alert($("#js-parent").find("#"+target).parent().find(`tr.section-parent_${localStorage.getItem("tracker")}` ).length)
-  //   $("#" + target)
-  //     .append(target2);
-  
+  let rootSectionBloc = $(el).parent().parent().parent().parent()
+    //get the form data
+  let  form  = $("form#addSubSectionForm"); //here is the modal form to add section
+  form.find("#title_2").val(el.getAttribute("data-name"));
+  form.find("#section_mount_id").val(el.getAttribute("data-parent-id"));
+  let url = "/lms/api/create/subsection/"
+  let sectionRes = createAnyResource('POST',url,form)
+  console.log(rootSectionBloc.html())
+  let clonedNode = rootSectionBloc.clone(true);
+  clonedNode.insertAfter(rootSectionBloc);
+  window.location.reload();
 };
 
-window.exportSection = () => {
+window.exportSection = (el) => {
+  //becomes like this {section: subsection{lesson: {component}}}
+  let rootSectionBloc = $(el).parent().parent().parent()
+
   try {
     $.fn.pop = [].pop;
     $.fn.shift = [].shift;
@@ -6371,24 +7511,18 @@ window.exportSection = () => {
     var data = [];
     var $EXPORT = $("#export");
 
-    var subchildren = $(".section-parent_" + localStorage.getItem("tracker"))
-      .length;
 
-    let target = "dynamic_section_" + localStorage.getItem("tracker");
-    // if(subchildren<=0){
-    // alert("here"+ $(".fold-table").find("#"+target).parent().attr("class"))
-
-    var $rows = $(".fold-table").find("tr:not(.action)");
+    var $rows = $(rootSectionBloc).find("tits");
     // Get the headers (add special header logic here)
     $($rows.shift())
-      .find("th:not(.action)")
+      .find("span.export_title")
       .each(function () {
         headers.push($(this).text().toLowerCase());
       });
 
     // Turn all existing rows into a loopable array
     $rows.each(function () {
-      var $td = $(this).find("td:not(.action)");
+      var $td = $(this).find("span.export_title");
       var h = {};
 
       // Use the headers from earlier to name our hash keys

@@ -1,0 +1,179 @@
+{
+	 "id":2,
+	"institution":"ICAN",
+	"intro":"Our centre offers both training and tutorials in the following certification paths <br/>1.Via the ATS Scheme<br/>2. Non-Accounting Graduate Path<br/>3. Accounting Graduate Path.",
+    "hero-image":"",
+    "courses":[
+    	{
+    		"title":"ATS 1",
+    		"body":[
+    			{
+    				"title":"1.1 Basic Accounting Processes & Systems",
+    				"image":""
+    			},
+    			{
+    				"title":"1.2 Economics",
+    				"image":""
+    			},
+
+    			{
+    				"title":"1.3 Business Law",
+    				"image":""
+    			},
+
+    			{
+    				"title":"1.4 Communication Skills",
+    				"image":""
+    			}
+
+    		]
+    	},
+
+
+    	{
+    		"title":"ATS 2",
+
+    		"body":[
+    			
+
+                 {
+                   "title":"2.1 Principles and Practice of Financial Accounting",
+                   "image":""
+                 },
+                 {
+                   "title":"2.2 Public Sector Accounting",
+                   "image":""
+                 },
+                 {
+                   "title":"2.3 Quantitative Analysis",
+                   "image":""
+                 },
+                 {
+                    "title":"2.4 Information Technology",
+                    "image":""
+                  },
+    		]
+
+    	},
+    	{
+    		"title":"ATS 3 Upon the successful completion of ATS 3, you are qualified as an Associate Accounting Technician of West Africa (AATWA).",
+    		"body":[
+    			{
+                  "title":"3.1 Principles of Auditing",
+                  "image":""
+    			},
+    			{
+                  "title":"3.2 Cost Accounting",
+                  "image":""
+    			},
+
+    			{
+                  "title":"3.3 Preparing Tax Computations and Returns",
+                  "image":""
+    			},
+
+    			{
+                  "title":"3.4 Management",
+                  "image":""
+    			}
+
+    		]
+    	},
+
+
+    	{
+    		"title":"Non-Accounting Graduate Path: For those who graduated from a discipline other than Accounting . For such candidates, our programmes begin from the Foundation level where you will write 5 papers.",
+    		"body":[
+    			
+                {
+                  "title":"A1. Taxation ",
+                  "image":""
+    			},                                                                           
+                {
+                  "title":"A2. Business, Management and Finance",
+                  "image":""
+    			},                               
+                {
+                  "title":"A3. Financial Accounting ",
+                  "image":""
+    			},                                                          
+                {
+                  "title":"A4. Management Information ",
+                  "image":""
+    			},                                              
+                {
+                  "title":"A5. Business Law",
+                  "image":""
+    			},
+
+    		]
+    	}
+
+    	{
+          "title":"Skills Level",
+          "body":[
+          	
+
+              {"title":"B1. Financial Reporting",
+               "image":""
+              },                                                      
+			  {"title":"B2. Audit and Assurance   ", 
+			    "image":""
+			  },                
+			  {"title":"B3. Corporate Strategic Management & Ethics ",
+			    "image":""
+			  },  
+			  {"title":"B4. Performance Management ", 
+			    "image":""
+			  },
+			  {"title":"B5. Public Sector Accounting and Finance", 
+			    "image":""
+			  },
+          ]
+    	},
+
+
+    	{
+    		"title":"Professional Levels",
+
+    		"body":[
+    		
+
+					{
+					  "title":"C1.  Corporate Reporting", 
+					  "image":""
+			        },
+					{
+					  "title":"C2. Advanced Audit and Assurance", 
+					  "image":""
+					},
+					{
+					  "title":"C3. Strategic Financial Management", 
+					  "image":""
+					},
+					{
+					  "title":"C4. Advanced Taxation", 
+					  "image":""
+					},
+					{"title":"C5. Case Study", 
+					"image":""
+					},
+
+    		]
+    	}
+    	
+    ]
+
+}
+
+
+
+
+ 
+
+
+
+
+ 
+
+ 

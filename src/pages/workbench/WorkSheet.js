@@ -970,13 +970,13 @@ const handleToggleAccordion = (event) => {
                     className="handle next-slide alignToTitle btn text-dark btn-outline-secondary btn-rounded btn-sm" style={{ marginLeft: "20px" }}>
                       Next Slide
                     </span>
-                    <span
+                    {/*<span
                       data-video="https://youtu.be/jnLSYfObARA"
                       className="handle lets-play alignToTitle btn text-dark btn-outline-secondary btn-rounded btn-sm"
                       style={{ marginLeft: "20px" }}
                     >
                       Modal View
-                    </span>
+                    </span>*/}
                     <span onClick={togglerFullscreen}
                       id="toggle_fullscreen"
                        className="handle alignToTitle btn text-dark btn-outline-secondary btn-rounded btn-sm" style={{ marginLeft: "20px" }}>

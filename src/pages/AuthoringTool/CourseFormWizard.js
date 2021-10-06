@@ -27,10 +27,8 @@ import swal from "sweetalert"
 import TinyMyce from './tinymyce-plugin';
 
 
-import FroalaEditor from 'froala-editor'
 
-// Load a plugin.
-import 'froala-editor/js/plugins/align.min.js'
+import HTMLForm from "./Editor";
 
 // 
 // Initialize editor.
@@ -636,90 +634,6 @@ const  handleSaveComponentGenericForm = () => {
     // })
   }
 
-class Editor extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { editorHtml: "", theme: "snow" };
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange(html) {
-    this.setState({ editorHtml: html });
-  }
-
-  handleThemeChange(newTheme) {
-    if (newTheme === "core") newTheme = null;
-    this.setState({ theme: newTheme });
-  }
-
-  render() {
-    return (
-      <div>
-        <ReactQuill
-          theme={this.state.theme}
-          onChange={this.handleChange}
-          value={this.state.editorHtml}
-          modules={Editor.modules}
-          formats={Editor.formats}
-          // bounds={'.app'}
-          placeholder={this.props.placeholder}
-        />
-      </div>
-    );
-  }
-}
-
-/*
- * Quill modules to attach to editor
- * See https://quilljs.com/docs/modules/ for complete options
- */
-Editor.modules = {
-  toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
-    [{ size: [] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
-    [
-      { list: "ordered" },
-      { list: "bullet" },
-      { indent: "-1" },
-      { indent: "+1" },
-    ],
-    ["link", "image", "video"],
-    ["clean"],
-  ],
-  clipboard: {
-    // toggle to add extra line breaks when pasting HTML:
-    matchVisual: false,
-  },
-};
-/*
- * Quill editor formats
- * See https://quilljs.com/docs/formats/
- */
-Editor.formats = [
-  "header",
-  "font",
-  "size",
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "blockquote",
-  "list",
-  "bullet",
-  "indent",
-  "link",
-  "image",
-  "video",
-];
-
-/*
- * PropType validation
- */
-//Editor.propTypes = {
-//  placeholder: PropTypes.string,
-//}
-
 export default class MasterForm extends React.Component {
   constructor(props) {
     super(props);
@@ -731,6 +645,25 @@ export default class MasterForm extends React.Component {
       sauthor = localStorage.getItem("author") || "" ;
       sinstitution = localStorage.getItem("institution") || ""
 
+    }
+    let sdescription, soverview, sprerequisite, slearning_expectation, scurriculum
+    if(localStorage.getItem("overview")){
+
+      soverview = localStorage.getItem("overview") || ""
+    }
+
+    if(localStorage.getItem("description")){
+
+      sdescription = localStorage.getItem("description") || ""
+    }
+    if(localStorage.getItem("prerequisite")){
+      sprerequisite = localStorage.getItem("prerequisite") || ""
+    }
+    if(localStorage.getItem("learning_expectation")){
+      slearning_expectation = localStorage.getItem("learning_expectation") || ""
+    }
+    if(localStorage.getItem("curriculum")){
+      scurriculum = localStorage.getItem("curriculum") || ""
     }
 
 
@@ -745,22 +678,27 @@ export default class MasterForm extends React.Component {
       editor:null,  //THE LOGGED IN USERS DETAILS [{token,...details}]
       author: "", // THE LOGGED IN USER NAME {...details}.username
       previledges:["CAN_EDIT","CAN_VIEW","CAN_DELETE","CAN_CREATE"], 
+      name: sname,
+      code: scode,
+      institution: sinstitution,   //keypair preporpulated set of inst id
+      author: sauthor,  //keypair preporpulated set of author id
+
+      description: sdescription,
+      overview: soverview,
+      learning_expectation: slearning_expectation,
+      curriculum: scurriculum,
+     
+
+
+
       
       //state fields
       /*request form data*/
       
-        name: sname,
-        code: scode,
-        institution: sinstitution,   //keypair preporpulated set of inst id
-        author: sauthor,  //keypair preporpulated set of author id
-
+        
         run: "",
         card_image: "",
         intro_video: "",
-        description: "",
-        overview: "",
-        learning_expectation: "",
-        curriculum: "",
         level: 1,  //int
         enrolment_type: 1,
         entrance_exam_required: true, 
@@ -840,41 +778,13 @@ export default class MasterForm extends React.Component {
     this._next = this._next.bind(this);
     this._prev = this._prev.bind(this);
   }
+  
 
-   /*navigation skipper*/
+   handleInputChange = (event) => {
+   
 
-  goToStep(e, step) {
-    e.preventDefault();
-    // e.target.parentElement.style.border = "1px solid #eee";
-    // e.target.parentElement.style.padding = "2px";
-    this.setState({
-      currentStep: step,
-    });
-  }
-
-   /*next step*/
-  _next() {
-    let currentStep = this.state.currentStep;
-    currentStep = currentStep >= 7 ? 8 : currentStep + 1;
-    this.setState({
-      currentStep: currentStep,
-    });
-  }
- 
-  /*go back one step*/
-  _prev() {
-    let currentStep = this.state.currentStep;
-    currentStep = currentStep <= 1 ? 1 : currentStep - 1;
-    this.setState({
-      currentStep: currentStep,
-    });
-  }
-
-  /*one single onchange handler all over the form element*/
-  /*with one single validation hook function for all form fields*/
-  handleChange =   (event) => {
       let { name, value } = event.target;
-      localStorage.setItem(name, value)
+      localStorage.setItem(name, value);
        let imageUrl = ""
       console.log(event.target.value)
       if(event.target.name == "entrance_exam_required"){
@@ -912,7 +822,7 @@ export default class MasterForm extends React.Component {
       //fileUploader.addEventListener('change', (event) => {
         const files = event.target.files;
         const file = files[0];
-        console.log(file)
+       
         reader.readAsDataURL(file);
         reader.addEventListener('progress', (ev) => {
           if (ev.loaded && ev.total) {
@@ -943,6 +853,8 @@ export default class MasterForm extends React.Component {
                   let successSlide = slideout.querySelector(".success-notification")
                   // let errorSlide = slideout.querySelector(".error-notification")
                   slideout.classList.toggle('visible');
+
+                  localStorage.setItem(event.target.name, imageUrl);
 
 
                     value = imageUrl; 
@@ -982,20 +894,131 @@ export default class MasterForm extends React.Component {
 
          //logic 1 - automate state processing of form data
         //dynamically hooks state fields to current value
-      this.setState(
-            {
-              [name]: value,
-            },
-            function () {
-              /*validation hooks*/
-              this.validateField(name, value);
-            }
-      );
+      // this.setState(
+      //       {
+      //         [name]: value,
+      //       },
+      //       function () {
+      //         /*validation hooks*/
+      //         this.validateField(name, value);
+      //       }
+      //);
+
+
+       this.setState({
+      ...this.state,
+      [event.target.name]: event.target.value,
+    });
 
       }
        
 
 
+
+  };
+
+
+
+  // const [htmlDescription, setHtmlDescription] = useState("");
+  handleHtmlDescriptionChange = (newValue) => {
+     localStorage.setItem("description", newValue);
+    this.setState({
+      ...this.state,
+      description: newValue
+    })
+  }
+
+  handleHtmlCurriculumChange = (newValue) =>{
+       localStorage.setItem("curriculum", newValue);
+    this.setState({
+      ...this.state,
+      curriculum: newValue
+    })
+  }
+
+  // const [htmlOverView, setHtmlCourseOverView] = useState("");
+  handleHtmlCourseOverViewChange = (newValue) => {
+       localStorage.setItem("overview", newValue);
+    this.setState({
+      ...this.state,
+      overview: newValue
+    })
+  }
+
+  // const [htmlOutcome, setHtmlOutCome] = useState("");
+  handleHtmlOutComeChange =(newValue) => {
+     localStorage.setItem("learning_expectation", newValue);
+    this.setState({
+      ...this.state,
+      learning_expectation: newValue
+    })
+  }
+
+  // const [htmlTopics, setHtmlTopics] = useState("");
+  handleHtmlTopicsChange = (newValue) =>{
+       localStorage.setItem("topics", newValue);
+    this.setState({
+      ...this.state,
+      topics: newValue
+    })
+  }
+
+  // const [htmlPrerequisites, setHtmlPrerequisites] = useState("");
+  handleHtmlPrerequisitesChange =(newValue) => {
+      localStorage.setItem("prerequisite", newValue);
+    this.setState({
+      ...this.state,
+      prerequisite: newValue
+    })
+  }
+
+
+
+  handleChangeTextEditor =(nameKey = "", valueData = "") => {
+    if (nameKey.length > 0 && valueData.length > 0) {
+      this.setState({
+        ...this.state,
+        [nameKey]: valueData,
+      });
+    }
+
+    console.log(this.state)
+  }
+
+   /*navigation skipper*/
+
+  goToStep(e, step) {
+    e.preventDefault();
+    // e.target.parentElement.style.border = "1px solid #eee";
+    // e.target.parentElement.style.padding = "2px";
+    this.setState({
+      currentStep: step,
+    });
+
+    console.log(this.state)
+  }
+
+   /*next step*/
+  _next() {
+    let currentStep = this.state.currentStep;
+    currentStep = currentStep >= 7 ? 8 : currentStep + 1;
+    this.setState({
+      currentStep: currentStep,
+    });
+  }
+ 
+  /*go back one step*/
+  _prev() {
+    let currentStep = this.state.currentStep;
+    currentStep = currentStep <= 1 ? 1 : currentStep - 1;
+    this.setState({
+      currentStep: currentStep,
+    });
+  }
+
+  /*one single onchange handler all over the form element*/
+  /*with one single validation hook function for all form fields*/
+  handleChange =   (event) => {
       
     }
   
@@ -1064,46 +1087,7 @@ export default class MasterForm extends React.Component {
 
   //AI: logic 2 - trigger validation inputs
   validateField(field_name, value) {
-    // if (Object.keys(this.state.formErrors).includes(field_name)) {
-    //   const fieldValidationErrors = this.state.formErrors;
-    //   const validity = this.state.formValidity;
-    //   const isCourseCode = field_name === "code";
-    //   const isDescription = field_name === "description";
     
-    //   validity[field_name] = value.length > 0;
-    //   fieldValidationErrors[field_name] = validity[field_name]
-    //     ? ""
-    //     : ` is required and cannot be empty`;
-
-    //   if (validity[field_name]) {
-    //     if (isCourseCode) {
-    //       validity[field_name] = value.length >= 5;
-    //       fieldValidationErrors[field_name] = validity[field_name]
-    //         ? ""
-    //         : `${label} should be at least 6-12 characters or more`;
-    //     }
-    //     if (isDescription) {
-    //       validity[field_name] = emailTest.test(value);
-    //       fieldValidationErrors[field_name] = validity[field_name]
-    //         ? ""
-    //         : `${label} should be at least 20 characters long`;
-    //     }
-    //     if (isPasswordConfirmation) {
-    //       validity[field_name] = value === this.state.password;
-    //       fieldValidationErrors[field_name] = validity[field_name]
-    //         ? ""
-    //         : `${label} should match password`;
-    //     }
-    //   }
-
-    //   this.setState(
-    //     {
-    //       formErrors: fieldValidationErrors,
-    //       formValidity: validity,
-    //     },
-    //     () => this.canSubmit()
-    //   );
-    // }
   }
 
   canSubmit() {
@@ -1113,7 +1097,8 @@ export default class MasterForm extends React.Component {
         //THIS FEATURE COULD CHANGE IN THE FUTURE
 
         this.state.formValidity.name &&
-        this.state.formValidity.code   
+        this.state.formValidity.code &&
+        this.state.formValidity.institution  
         //&&
         // this.state.formValidity.run &&
         // this.state.formValidity.card_image &&
@@ -1205,20 +1190,75 @@ export default class MasterForm extends React.Component {
          console.log("some error occured")
        }
     })("run-logic-sequence")
+    localStorage.clear();
 
-    // let formEl = $("#stepUpFormWithAI")
-    // if(localStorage.getItem("name")){
-    //   document.getElementById("course_name").value = localStorage.getItem("name") ;
-    //   document.getElementById("course_code").value = localStorage.getItem("course_code") ;
-    //   document.getElementById("author").value = localStorage.getItem("author")  ;
-    //   document.getElementById("institution").value =localStorage.getItem("institution")
 
-    // }
+    var formElements = new Array();
+    $("input, select, textarea").each(function(){
+        formElements.push($(this));
+    });
 
-    //handle generic events
 
-    let T = new  TinyMyce();
-     T.render("")
+    
+
+
+        let formEl = $("#create-course");
+     
+          formElements.filter(e =>{ 
+            var element = e;
+            var title = element.title;
+            var id = element.id;
+            var name = element.name;
+            var value = element.value;
+            var type = element.type;
+            var cls = element.className;
+            var tagName = element.tagName;
+            var options = [];
+            var hidden = [];
+            var formDetails = '';
+
+            // check if the data exist in local store
+            if( localStorage.getItem( e.attr("name") ) ){
+               console.log(e.attr("name"))
+               formEl.find("#"+ e.attr("name")).val(localStorage.getItem( e.attr("name")))
+               let classAttr = `ql-editor[data-placeholder=${e.attr("name")}]`
+               if(formEl.find("." + classAttr )){
+                // alert(true)
+                //   formEl.find("." + classAttr ).html(localStorage.getItem( e.attr("name")))
+                //     this.setState({
+                //   ...this.state,
+                //   [e.attr("name")]:localStorage.getItem( e.attr("name"))
+                // })
+               }
+
+               
+
+              // if("SELECT"== tagName){
+              //   // GET THE OPTION INDEX OF THE INITIALLY SELECTED 
+              // }else if("INPUT"== tagName){
+                 
+
+              //   this.setState({
+              //     ...this.state,
+              //     [e.attr("name")]:localStorage.getItem( e.attr("name"))
+              //   })
+              // }else {
+              //   //THIS IS DOCUMENT EDITOR
+
+              //   this.setState({
+              //     ...this.state,
+              //     [e.attr("name")]:localStorage.getItem( e.attr("name"))
+              //   })
+
+              // }
+            }
+          })
+
+
+    
+
+    // let T = new  TinyMyce();
+    //  T.render("")
   }
 
   /*{key:val}, ["id","name", "email"]*/
@@ -1466,10 +1506,10 @@ export default class MasterForm extends React.Component {
                               setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
 
-                          setTimeout(()=> {
-                            let T = new  TinyMyce();
-                          T.render("")
-                        },3000)
+                        //   setTimeout(()=> {
+                        //     let T = new  TinyMyce();
+                        //   T.render("")
+                        // },3000)
 
                         }}
                         href="#basic"
@@ -1483,7 +1523,7 @@ export default class MasterForm extends React.Component {
                       <a
                         onClick={(e) => {
                           $(e.target.parentElement).css({background:"#fff"})
-                          swal("WOOPS!", "You need to fill out the required fields marked asterisk (*)", "error");
+                          swal("Sorry!!", "You need to fill out the required fields marked asterisk (*)", "error");
                         
                         }}
                         href="#outcomes"
@@ -1498,7 +1538,7 @@ export default class MasterForm extends React.Component {
                       <a
                         onClick={(e) => {
                           $(e.target.parentElement).css({background:"#fff"})
-                          swal("WOOPS!", "You need to fill out the required fields marked asterisk (*)", "error");
+                          swal("Sorry", "You need to fill out the required fields marked asterisk (*)", "error");
                         
                         }}
                          disabled
@@ -1510,16 +1550,10 @@ export default class MasterForm extends React.Component {
                         <span className="d-none d-sm-inline">Grading</span>
                       </a>
 
-                      {/*<li
-                        id="list-nav-gate-6"
-                       style={{border:"1px solid #eee",padding:"2px"}}
-                          className="nav-item"
-                          
-                        >*/}
-                      <a
+                  {/*    <a
                         onClick={(e) => {
                           $(e.target.parentElement).css({background:"#fff"})
-                          swal("WOOPS!", "You need to fill out the required fields marked asterisk (*)", "error");
+                          swal("Sorry", "You need to fill out the required fields marked asterisk (*)", "error");
                         
                         }}
                         href="#seo"
@@ -1532,7 +1566,7 @@ export default class MasterForm extends React.Component {
                           Learners Group
                         </span>
                       </a>
-                      {/*</li>*/}
+                      */}
 
                       <a
                         onClick={ async (e) => {
@@ -1546,11 +1580,11 @@ export default class MasterForm extends React.Component {
                               setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
                               
-                              setTimeout(()=> {
-                                let T = new  TinyMyce();
-                              T.render("")
+                              // setTimeout(()=> {
+                              //   let T = new  TinyMyce();
+                              // T.render("")
 
-                            },3000)
+                            // },3000)
 
                               //hide all input and text area or select or option
                               $("#create-course").hide().fadeOut("fast")
@@ -1573,7 +1607,7 @@ export default class MasterForm extends React.Component {
                       <a
                         onClick={(e) => {
                           $(e.target.parentElement).css({background:"#fff"})
-                          swal("WOOPS!", "You need to fill out the required fields marked asterisk (*)", "error");
+                          swal("Sorry!!!", "You need to fill out the required fields marked asterisk (*)", "error");
                           
                         }}
                         href="#resource"
@@ -1588,7 +1622,7 @@ export default class MasterForm extends React.Component {
                       <a
                         onClick={(e) => {
                           $(e.target.parentElement).css({background:"#fff"})
-                          swal("WOOPS!", "You need to fill out the required fields marked asterisk (*)", "error");
+                          swal("Sorry!!!", "You need to fill out the required fields marked asterisk (*)", "error");
                         
                         }}
                         href="#media"
@@ -1604,7 +1638,7 @@ export default class MasterForm extends React.Component {
                         onClick={(e) => {
                           $(e.target.parentElement).css({background:"#fff"})
                           $(e.target).css({color:"#333"})
-                          swal("WOOPS!", "You need to fill out the required fields marked asterisk (*)", "error");
+                          swal("Sorry!!!", "You need to fill out the required fields marked asterisk (*)", "error");
                         
                         }}
                         href="#finish"
@@ -1631,7 +1665,7 @@ export default class MasterForm extends React.Component {
                        novalidate
                       // enctype="multipart/form-data"
                       enctype="application/x-www-form-urlencoded"
-                      style={{height:"1200px"}}
+                      style={{height:"2200px"}}
                     >
                       {/*<CSRFToken /> Ready to django into the server*/}
                       Ensure to select an authoring team*
@@ -1639,7 +1673,21 @@ export default class MasterForm extends React.Component {
                       <Step1
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
+                        stateInitial={this.state}
+                        
+                        
+                        actions={
+                          {
+                    stateAction:this.handleChangeTextEditor,
+                    description:this.handleHtmlDescriptionChange,
+                    overview: this.handleHtmlCourseOverViewChange,
+                    learning_expectation: this.handleHtmlOutComeChange,
+                    prerequisite: this.handleHtmlPrerequisitesChange,
+                    curriculum: this.handleHtmlCurriculumChange
+                  
+                        }}
+                        
                         errorEmailClass={this.errorClass(
                           this.state.formErrors.course_language
                         )}
@@ -1658,9 +1706,10 @@ export default class MasterForm extends React.Component {
                       />
 
                       <Step3
+                      stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
                         institutions={institutions} 
@@ -1668,12 +1717,14 @@ export default class MasterForm extends React.Component {
                         instructors={instructors} 
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
                       />
 
                       <Step4
+                      stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
                         institutions={institutions} 
@@ -1681,12 +1732,15 @@ export default class MasterForm extends React.Component {
                         instructors={instructors} 
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
                       />
 
                       <Step2
+                      stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
+                        stateAction={this.handleChangeTextEditor}
                         errorPasswordClass={this.errorClass(
                           this.state.formErrors.password
                         )}
@@ -1707,9 +1761,10 @@ export default class MasterForm extends React.Component {
                       />
 
                       <Step5
+                      stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
                         institutions={institutions} 
@@ -1717,12 +1772,14 @@ export default class MasterForm extends React.Component {
                         instructors={instructors} 
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
                       />
 
                       <Step6
+                      stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
                         institutions={institutions} 
@@ -1730,11 +1787,12 @@ export default class MasterForm extends React.Component {
                         instructors={instructors} 
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
                       />
                       <Step7
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
                         institutions={institutions} 
@@ -1742,12 +1800,14 @@ export default class MasterForm extends React.Component {
                         instructors={instructors} 
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
                       />
 
                       <Step8
+                      stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
                         institutions={institutions} 
@@ -1755,6 +1815,7 @@ export default class MasterForm extends React.Component {
                         instructors={instructors} 
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
                       />
 
                      
@@ -1798,9 +1859,141 @@ class Step1 extends React.Component {
   constructor(props){
     super(props)
 
-    this.state ={
-      
+    let sname,scode, sauthor,sinstitution;
+    if(localStorage.getItem("name")){
+      sname= localStorage.getItem("name") || "";
+      scode = localStorage.getItem("course_code") || "";
+      sauthor = localStorage.getItem("author") || "" ;
+      sinstitution = localStorage.getItem("institution") || ""
+
     }
+    let sdescription, soverview, sprerequisite, slearning_expectation, scurriculum
+    if(localStorage.getItem("overview")){
+
+      soverview = localStorage.getItem("overview") || ""
+    }
+
+    if(localStorage.getItem("description")){
+
+      sdescription = localStorage.getItem("description") || ""
+    }
+    if(localStorage.getItem("prerequisite")){
+      sprerequisite = localStorage.getItem("prerequisite") || ""
+    }
+    if(localStorage.getItem("learning_expectation")){
+      slearning_expectation = localStorage.getItem("learning_expectation") || ""
+    }
+    if(localStorage.getItem("curriculum")){
+      scurriculum = localStorage.getItem("curriculum") || ""
+    }
+
+
+    this.state = {
+      /*multistep logic data*/
+      currentStep: 1,
+      sectionStep: 1,
+      subSectionStep: 1,
+      lessonStep: 1,
+      finishedClicked: false,
+      modes:["CREATE_MODE","EDIT_MODE"],
+      editor:null,  //THE LOGGED IN USERS DETAILS [{token,...details}]
+      author: "", // THE LOGGED IN USER NAME {...details}.username
+      previledges:["CAN_EDIT","CAN_VIEW","CAN_DELETE","CAN_CREATE"], 
+      name: sname,
+      code: scode,
+      institution: sinstitution,   //keypair preporpulated set of inst id
+      author: sauthor,  //keypair preporpulated set of author id
+
+      description: sdescription,
+      overview: soverview,
+      learning_expectation: slearning_expectation,
+      curriculum: scurriculum,
+     
+
+
+
+      
+      //state fields
+      /*request form data*/
+      
+        
+        run: "",
+        card_image: "",
+        intro_video: "",
+        level: 1,  //int
+        enrolment_type: 1,
+        entrance_exam_required: true, 
+        cost: 100.0,  //float
+        auditing: true,
+        course_pacing: 1, //int
+        course_start_date_time: "",  //2021-08-26T17:13:00+01:00
+        course_end_date_time: "",
+        enrolment_start_date_time: "",
+        enrolment_end_date_time: "",
+        course_language: "english",
+        requirement_hours_per_week: 1, //int
+        requirement_no_of_week: 1,  //int
+        grace_period_after_deadline: 1, //int
+        publication_status: 2,  //int
+        
+        prerequisite: [
+              //key pairs ids of courses
+        ],
+        authoring_team: [
+                              //key pair authors
+            
+        ],
+
+        /* request resource data*/
+        languages:[], //  getdata
+        instructors:[], //  getdata
+        courses:[], //  getdata
+        institutions:[],  //  getdata
+        currentCourseId:"", //for tracking saved course currently working on
+        
+      formErrors: {
+        /*request form errors data*/
+
+        /*do not change this part: its used in ai logic*/
+        name: "",
+        code: "",
+        run: "",
+        card_image: "",
+        intro_video: "",
+        description: "",
+        overview: "",
+        learning_expectation: "",
+        curriculum: "",
+        level: "",  //int
+        enrolment_type: "",
+        entrance_exam_required: "", 
+        cost: "",  //float
+        auditing: "",
+        course_pacing: "", //int
+        course_start_date_time: "",  //2021-08-26T17:13:00+01:00
+        course_end_date_time: "",
+        enrolment_start_date_time: "",
+        enrolment_end_date_time: "",
+        course_language: "",
+        requirement_hours_per_week: "", 
+        requirement_no_of_week: "", 
+        grace_period_after_deadline: "", 
+        publication_status: "",  
+        institution: "",   
+        author: "", 
+        prerequisite: [],
+        authoring_team: [],
+
+        
+      },
+      formValidity: {
+        email: false,
+        username: false,
+        password: false,
+        passwordConfirmation: false,
+      },
+      canSubmit: false,
+    };
 
     
      
@@ -1821,7 +2014,7 @@ class Step1 extends React.Component {
       return null;
     }
     const {institutions, languages, instructors, courses } = this.props
-    console.log(institutions)
+    
 
     return (
       <React.Fragment>
@@ -2100,7 +2293,7 @@ class Step1 extends React.Component {
                       style={{ position: "relative", zIndex: "1" }}
                       type="text"
                       className="form-control"
-                      id="course_code"
+                      id="code"
                       name="code"
                       placeholder="Enter course code"
                       value={this.props.code}
@@ -2139,7 +2332,7 @@ class Step1 extends React.Component {
                       style={{ position: "relative", zIndex: "1", marginTop:"-10px" }}
                       type="text"
                       className="form-control"
-                      id="course_name"
+                      id="name"
                       name="name"
                       placeholder="Enter course title"
 
@@ -2283,17 +2476,32 @@ class Step1 extends React.Component {
 
 
                 
-                <div className="form-group col-md-6 fl-left">
+                <div className="form-group col-md-12 fl-left">
                  
                   <div className="">
-                    <textarea
+
+
+                  <textarea
                       name="description"
-                      style={{ position: "relative", zIndex: "1" }}
+                      id="description"
+                      
                       className="form-control"
                       placeholder="Short description"
                        value={this.props.description}
                      onChange={this.props.handleChange}
                     ></textarea>
+                    
+
+
+                     <HTMLForm
+                        title="description"
+
+                        placeholder={"description"}
+                        value={this.state.description || ""}
+                        action={this.props.actions.description}
+                        stateAction={this.props.actions.stateAction}
+                        name={"description"}
+                      />
 
                      <label
                     className="col-md-12 col-form-label"
@@ -2310,17 +2518,32 @@ class Step1 extends React.Component {
 
 
 
-                <div className="form-group col-md-6 fl-left">
+                <div className="form-group col-md-12 fl-left">
                  
                   <div className="">
                     <textarea
                       name="overview"
-                      style={{ position: "relative", zIndex: "1" }}
+                      id="overview"
+                      style={{display:"none"}}
+                      
                       className="form-control"
                       placeholder="Short description"
                        value={this.props.overview}
                      onChange={this.props.handleChange}
                     ></textarea>
+
+
+
+
+                     <HTMLForm
+                        title="overview"
+
+                        placeholder={"overview"}
+                        value={this.state.overview || ""}
+                        action={this.props.actions.overview }
+                        stateAction={this.props.actions.stateAction}
+                        name={"overview"}
+                      />
 
                      <label
                     className="col-md-12 col-form-label"
@@ -2333,36 +2556,62 @@ class Step1 extends React.Component {
 
 
 
-                 <div className="form-group col-md-6 fl-left">
+                 <div className="form-group col-md-12 fl-left">
                   <label className="col-md-12 col-form-label" for="description">
                     Curriculum
                   </label>
                   <div className="">
-                    <textarea
+
+                  <textarea
                       name="curriculum"
-                      style={{ position: "relative", zIndex: "1" }}
+                      id="curriculum"
+                      style={{display:"none"}}
+                      
                       className="form-control"
                       placeholder="Short description"
                        value={this.props.curriculum}
                      onChange={this.props.handleChange}
                     ></textarea>
+
+                    <HTMLForm
+                        title="curriculum"
+
+                        placeholder={"curriculum"}
+                        value={this.state.curriculum || ""}
+                        action={this.props.actions.curriculum}
+                        stateAction={this.props.actions.stateAction}
+                        name={"curriculum"}
+                      />
                   </div>
                 </div>
 
 
-                <div className="form-group col-md-6 fl-left">
+                <div className="form-group col-md-12 fl-left">
                   <label className="col-md-12 col-form-label" for="description">
                     What You Will Learn
                   </label>
                   <div className="">
-                    <textarea
+
+                  <textarea
                       name="learning_expectation"
-                      style={{ position: "relative", zIndex: "1" }}
+                      id="learning_expectation"
+                      style={{display:"none"}}
+                      
                       className="form-control"
                       placeholder="Short description"
-                       value={this.props.learning_expectation}
+                       value={this.props.learning_expectation || ""}
                      onChange={this.props.handleChange}
                     ></textarea>
+
+                    <HTMLForm
+                        title="learning_expectation"
+
+                        placeholder={"learning_expectation"}
+                        value={this.state.learning_expectation}
+                        action={this.props.actions.learning_expectation}
+                        stateAction={this.props.actions.stateAction}
+                        name={"learning_expectation"}
+                      />
                   </div>
                 </div>
 
@@ -2377,7 +2626,7 @@ class Step1 extends React.Component {
                       style={{ position: "relative", zIndex: "1" }}
                       class="form-control select2 select2-hidden-accessible"
                       data-toggle="select2"
-                      name="enrolment_type"
+                      name="level"
                       id="level"
                       data-select2-id="level"
                       tabindex="-1"
@@ -2413,8 +2662,8 @@ class Step1 extends React.Component {
                       style={{ position: "relative", zIndex: "1" }}
                       class="form-control select2 select2-hidden-accessible"
                       data-toggle="select2"
-                      name="level"
-                      id="level"
+                      name="enrolment_type"
+                      id="enrolment_type"
                       data-select2-id="level"
                       tabindex="-1"
                       aria-hidden="true"
@@ -2444,7 +2693,7 @@ class Step1 extends React.Component {
                       class="form-control select2 select2-hidden-accessible"
                       data-toggle="select2"
                       name="entrance_exam_required"
-                      id="level"
+                      id="entrance_exam_required"
                       data-select2-id="level"
                       tabindex="-1"
                       aria-hidden="true"
@@ -2475,7 +2724,7 @@ class Step1 extends React.Component {
                       style={{ position: "relative", zIndex: "1" }}
                       type="checkbox"
                       className="form-control"
-                      id="course_title2"
+                      id="auditing"
                       name="auditing"
                       
                        value={this.props.intro_video}
@@ -2495,7 +2744,7 @@ class Step1 extends React.Component {
                       style={{ position: "relative", zIndex: "1" }}
                       type="text"
                       className="form-control"
-                      id="course_title2"
+                      id="intro_video"
                       name="intro_video"
                       placeholder="You tube url"
                        value={this.props.intro_video}
@@ -2530,7 +2779,7 @@ class Step1 extends React.Component {
   padding: "40px 0 20px 0", margin:"20px"}}>
                       <span class="fake-btn">Choose files</span>
                       <span class="file-msg"></span>
-                      <input name="card_image" class="file-input" type="file" multiple   accept="image/*"
+                      <input id="card_image" name="card_image" class="file-input" type="file" multiple   accept="image/*"
                                value={this.props.card_image}
                                onChange={this.props.handleChange} />
 
@@ -3974,7 +4223,7 @@ const saveMarkdownEditContent = () => {
 
                     <div class="form-group">
                       <label>Overview</label>
-                      <Editor placeholder="overview" />
+                      <textarea name="overview"></textarea>
                     </div>
                   </div>
                 </div>
@@ -4042,7 +4291,7 @@ const saveMarkdownEditContent = () => {
 
                     <div class="form-group">
                       <label>Overview</label>
-                      <Editor placeholder="overview" />
+                      <textarea placeholder="overview" name="overview" ></textarea>
                     </div>
                   </div>
                 </div>
@@ -4114,7 +4363,7 @@ const saveMarkdownEditContent = () => {
 
                     <div class="form-group">
                       <label>Overview</label>
-                      <Editor placeholder="overview" />
+                      <textarea></textarea>
                     </div>
                   </div>
                 </div>
@@ -4182,7 +4431,7 @@ const saveMarkdownEditContent = () => {
 
                     <div class="form-group">
                       <label>Overview</label>
-                      <Editor placeholder="overview" />
+                      <textarea></textarea>
                     </div>
                   </div>
                 </div>
@@ -4351,7 +4600,7 @@ const saveMarkdownEditContent = () => {
 
                     <div class="form-group">
                       <label>Overview</label>
-                      <Editor placeholder="overview" />
+                      <textarea></textarea>
                     </div>
                   </div>
                 </div>
