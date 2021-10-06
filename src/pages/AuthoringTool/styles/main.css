@@ -189,8 +189,17 @@ i.material-icons {
 
 .nav-link {
   padding: 0.5rem 0.5rem;
+  background: rgba(8,20,200);
+  color: #fff;
 }
 
+
+
+.nav-link:active {
+  
+  background: #fff;
+  color: #000;
+}
 .category-action .action-icon {
   color: #98a6ad;
   font-size: 1.2rem;
@@ -219,6 +228,7 @@ i.material-icons {
 .nav-pills .nav-link {
   padding-left: 0px;
   padding-right: 0px;
+   color: #fff;
 }
 .draggable-item {
   cursor: all-scroll;
@@ -277,18 +287,6 @@ body.show {
   display: block;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 /*form notifications*/
 .visible {
   animation: movein 0.5s ease forwards, moveout 0.5s 3s ease forwards;
@@ -297,7 +295,7 @@ body.show {
 #notifier {
   width: 200px;
   height: 100px;
-   background: #70c48f;
+  background: #70c48f;
   color: white;
   border-radius: 3px;
   font-size: 18px;
@@ -310,11 +308,11 @@ body.show {
   z-index: 90000;
 }
 
-.success-notification{
+.success-notification {
   background: #70c48f;
 }
 
-.error-notification{
+.error-notification {
   background: #f9ec2e;
 }
 
@@ -324,23 +322,79 @@ body.show {
 }*/
 
 @keyframes movein {
-  from { left: -200px; }
-  to   { left: 10px; }
+  from {
+    left: -200px;
+  }
+  to {
+    left: 10px;
+  }
 }
 
 @keyframes moveout {
-  from { left: 10px; }
-  to   { left: -200px; }
+  from {
+    left: 10px;
+  }
+  to {
+    left: -200px;
+  }
 }
 
 @keyframes movein {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes moveout {
-  from { opacity: 1; }
-  to   { opacity: 0; }
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+.tooltip {
+  display: inline;
+  position: relative;
+}
+.tooltip:hover:after{
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  justify-content: center;
+  background: #444;
+  border-radius: 8px;
+  color: #fff;
+  content: attr(title);
+  margin: -82px auto 0;
+  font-size: 16px;
+  padding: 13px;
+  width: 220px;
+}
+.tooltip:hover:before{
+  border: solid;
+  border-color: #444 transparent;
+  border-width: 12px 6px 0 6px;
+  content: "";
+  left: 45%;
+  bottom: 30px;
+  position: absolute;
+}

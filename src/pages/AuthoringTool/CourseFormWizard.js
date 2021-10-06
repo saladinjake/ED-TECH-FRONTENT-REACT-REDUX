@@ -23,7 +23,16 @@ import 'jquery-ui-bundle/jquery-ui.css';
 
 import { getLanguages } from "services/language";
 import axios from "axios"
+import swal from "sweetalert"
+import TinyMyce from './tinymyce-plugin';
 
+
+
+import HTMLForm from "./Editor";
+
+// 
+// Initialize editor.
+//
 
 import toast from "react-hot-toast";
 
@@ -46,11 +55,19 @@ import {
   createCourse,
   getCourse,
   getInstitutionCourses,
-  getCourses
+  getCourses,
+  createAnyResource,
+  getIdFromUrl,
+  getSectionsOfCourseId
+  
+
  
 } from "services/authoring"
 
 
+
+/*the base url link*/
+let base_url = "http://gapslmsservices.herokuapp.com"; //process.env.REACT_APP_API_URL2
 
 // Change JQueryUI plugin names to fix name collision with Bootstrap.
 $.widget.bridge('uitooltip', $.ui.tooltip);
@@ -58,9 +75,10 @@ $.widget.bridge('uibutton', $.ui.button);
 
 
 //import other jquery plugins
-//import bridget like this import jqueryBridget from "jquery-bridget"
+//import bridget like this 
+
 //hook other plugins to jquery using bridget like this in the future
-//jqueryBridget( 'plugin-designated-name', ImportedPlugin, $ );
+// jqueryBridget( 'tinymyce', TinyMyce, $ );
 
 
 
@@ -118,7 +136,7 @@ const CSRFToken = () => {
 
       // $(document).keyup(function(objEvent) {
     //   if (objEvent.keyCode ==  13) {
-    //     
+    //       return false
     //   }
     // });
 
@@ -616,93 +634,39 @@ const  handleSaveComponentGenericForm = () => {
     // })
   }
 
-class Editor extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { editorHtml: "", theme: "snow" };
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange(html) {
-    this.setState({ editorHtml: html });
-  }
-
-  handleThemeChange(newTheme) {
-    if (newTheme === "core") newTheme = null;
-    this.setState({ theme: newTheme });
-  }
-
-  render() {
-    return (
-      <div>
-        <ReactQuill
-          theme={this.state.theme}
-          onChange={this.handleChange}
-          value={this.state.editorHtml}
-          modules={Editor.modules}
-          formats={Editor.formats}
-          // bounds={'.app'}
-          placeholder={this.props.placeholder}
-        />
-      </div>
-    );
-  }
-}
-
-/*
- * Quill modules to attach to editor
- * See https://quilljs.com/docs/modules/ for complete options
- */
-Editor.modules = {
-  toolbar: [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
-    [{ size: [] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
-    [
-      { list: "ordered" },
-      { list: "bullet" },
-      { indent: "-1" },
-      { indent: "+1" },
-    ],
-    ["link", "image", "video"],
-    ["clean"],
-  ],
-  clipboard: {
-    // toggle to add extra line breaks when pasting HTML:
-    matchVisual: false,
-  },
-};
-/*
- * Quill editor formats
- * See https://quilljs.com/docs/formats/
- */
-Editor.formats = [
-  "header",
-  "font",
-  "size",
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "blockquote",
-  "list",
-  "bullet",
-  "indent",
-  "link",
-  "image",
-  "video",
-];
-
-/*
- * PropType validation
- */
-//Editor.propTypes = {
-//  placeholder: PropTypes.string,
-//}
-
 export default class MasterForm extends React.Component {
   constructor(props) {
     super(props);
+
+    let sname,scode, sauthor,sinstitution;
+    if(localStorage.getItem("name")){
+      sname= localStorage.getItem("name") || "";
+      scode = localStorage.getItem("course_code") || "";
+      sauthor = localStorage.getItem("author") || "" ;
+      sinstitution = localStorage.getItem("institution") || ""
+
+    }
+    let sdescription, soverview, sprerequisite, slearning_expectation, scurriculum
+    if(localStorage.getItem("overview")){
+
+      soverview = localStorage.getItem("overview") || ""
+    }
+
+    if(localStorage.getItem("description")){
+
+      sdescription = localStorage.getItem("description") || ""
+    }
+    if(localStorage.getItem("prerequisite")){
+      sprerequisite = localStorage.getItem("prerequisite") || ""
+    }
+    if(localStorage.getItem("learning_expectation")){
+      slearning_expectation = localStorage.getItem("learning_expectation") || ""
+    }
+    if(localStorage.getItem("curriculum")){
+      scurriculum = localStorage.getItem("curriculum") || ""
+    }
+
+
     this.state = {
       /*multistep logic data*/
       currentStep: 1,
@@ -714,19 +678,27 @@ export default class MasterForm extends React.Component {
       editor:null,  //THE LOGGED IN USERS DETAILS [{token,...details}]
       author: "", // THE LOGGED IN USER NAME {...details}.username
       previledges:["CAN_EDIT","CAN_VIEW","CAN_DELETE","CAN_CREATE"], 
+      name: sname,
+      code: scode,
+      institution: sinstitution,   //keypair preporpulated set of inst id
+      author: sauthor,  //keypair preporpulated set of author id
+
+      description: sdescription,
+      overview: soverview,
+      learning_expectation: slearning_expectation,
+      curriculum: scurriculum,
+     
+
+
+
       
       //state fields
       /*request form data*/
       
-        name: "",
-        code: "",
+        
         run: "",
         card_image: "",
         intro_video: "",
-        description: "",
-        overview: "",
-        learning_expectation: "",
-        curriculum: "",
         level: 1,  //int
         enrolment_type: 1,
         entrance_exam_required: true, 
@@ -742,8 +714,7 @@ export default class MasterForm extends React.Component {
         requirement_no_of_week: 1,  //int
         grace_period_after_deadline: 1, //int
         publication_status: 2,  //int
-        institution: "",   //keypair preporpulated set of inst id
-        author: "",  //keypair preporpulated set of author id
+        
         prerequisite: [
               //key pairs ids of courses
         ],
@@ -807,40 +778,13 @@ export default class MasterForm extends React.Component {
     this._next = this._next.bind(this);
     this._prev = this._prev.bind(this);
   }
+  
 
-   /*navigation skipper*/
+   handleInputChange = (event) => {
+   
 
-  goToStep(e, step) {
-    e.preventDefault();
-    e.target.parentElement.style.border = "1px solid #eee";
-    e.target.parentElement.style.padding = "2px";
-    this.setState({
-      currentStep: step,
-    });
-  }
-
-   /*next step*/
-  _next() {
-    let currentStep = this.state.currentStep;
-    currentStep = currentStep >= 7 ? 8 : currentStep + 1;
-    this.setState({
-      currentStep: currentStep,
-    });
-  }
- 
-  /*go back one step*/
-  _prev() {
-    let currentStep = this.state.currentStep;
-    currentStep = currentStep <= 1 ? 1 : currentStep - 1;
-    this.setState({
-      currentStep: currentStep,
-    });
-  }
-
-  /*one single onchange handler all over the form element*/
-  /*with one single validation hook function for all form fields*/
-  handleChange =   (event) => {
       let { name, value } = event.target;
+      localStorage.setItem(name, value);
        let imageUrl = ""
       console.log(event.target.value)
       if(event.target.name == "entrance_exam_required"){
@@ -865,6 +809,8 @@ export default class MasterForm extends React.Component {
       );
 
 
+
+
       }else if(event.target.name == "card_image"){
         //handle image upload here
 
@@ -876,7 +822,7 @@ export default class MasterForm extends React.Component {
       //fileUploader.addEventListener('change', (event) => {
         const files = event.target.files;
         const file = files[0];
-        console.log(file)
+       
         reader.readAsDataURL(file);
         reader.addEventListener('progress', (ev) => {
           if (ev.loaded && ev.total) {
@@ -907,6 +853,8 @@ export default class MasterForm extends React.Component {
                   let successSlide = slideout.querySelector(".success-notification")
                   // let errorSlide = slideout.querySelector(".error-notification")
                   slideout.classList.toggle('visible');
+
+                  localStorage.setItem(event.target.name, imageUrl);
 
 
                     value = imageUrl; 
@@ -942,23 +890,135 @@ export default class MasterForm extends React.Component {
         });
       //});
       }else{
+        localStorage.setItem(name, value)
 
          //logic 1 - automate state processing of form data
         //dynamically hooks state fields to current value
-      this.setState(
-            {
-              [name]: value,
-            },
-            function () {
-              /*validation hooks*/
-              this.validateField(name, value);
-            }
-      );
+      // this.setState(
+      //       {
+      //         [name]: value,
+      //       },
+      //       function () {
+      //         /*validation hooks*/
+      //         this.validateField(name, value);
+      //       }
+      //);
+
+
+       this.setState({
+      ...this.state,
+      [event.target.name]: event.target.value,
+    });
 
       }
        
 
 
+
+  };
+
+
+
+  // const [htmlDescription, setHtmlDescription] = useState("");
+  handleHtmlDescriptionChange = (newValue) => {
+     localStorage.setItem("description", newValue);
+    this.setState({
+      ...this.state,
+      description: newValue
+    })
+  }
+
+  handleHtmlCurriculumChange = (newValue) =>{
+       localStorage.setItem("curriculum", newValue);
+    this.setState({
+      ...this.state,
+      curriculum: newValue
+    })
+  }
+
+  // const [htmlOverView, setHtmlCourseOverView] = useState("");
+  handleHtmlCourseOverViewChange = (newValue) => {
+       localStorage.setItem("overview", newValue);
+    this.setState({
+      ...this.state,
+      overview: newValue
+    })
+  }
+
+  // const [htmlOutcome, setHtmlOutCome] = useState("");
+  handleHtmlOutComeChange =(newValue) => {
+     localStorage.setItem("learning_expectation", newValue);
+    this.setState({
+      ...this.state,
+      learning_expectation: newValue
+    })
+  }
+
+  // const [htmlTopics, setHtmlTopics] = useState("");
+  handleHtmlTopicsChange = (newValue) =>{
+       localStorage.setItem("topics", newValue);
+    this.setState({
+      ...this.state,
+      topics: newValue
+    })
+  }
+
+  // const [htmlPrerequisites, setHtmlPrerequisites] = useState("");
+  handleHtmlPrerequisitesChange =(newValue) => {
+      localStorage.setItem("prerequisite", newValue);
+    this.setState({
+      ...this.state,
+      prerequisite: newValue
+    })
+  }
+
+
+
+  handleChangeTextEditor =(nameKey = "", valueData = "") => {
+    if (nameKey.length > 0 && valueData.length > 0) {
+      this.setState({
+        ...this.state,
+        [nameKey]: valueData,
+      });
+    }
+
+    console.log(this.state)
+  }
+
+   /*navigation skipper*/
+
+  goToStep(e, step) {
+    e.preventDefault();
+    // e.target.parentElement.style.border = "1px solid #eee";
+    // e.target.parentElement.style.padding = "2px";
+    this.setState({
+      currentStep: step,
+    });
+
+    console.log(this.state)
+  }
+
+   /*next step*/
+  _next() {
+    let currentStep = this.state.currentStep;
+    currentStep = currentStep >= 7 ? 8 : currentStep + 1;
+    this.setState({
+      currentStep: currentStep,
+    });
+  }
+ 
+  /*go back one step*/
+  _prev() {
+    let currentStep = this.state.currentStep;
+    currentStep = currentStep <= 1 ? 1 : currentStep - 1;
+    this.setState({
+      currentStep: currentStep,
+    });
+  }
+
+  /*one single onchange handler all over the form element*/
+  /*with one single validation hook function for all form fields*/
+  handleChange =   (event) => {
       
     }
   
@@ -1027,46 +1087,7 @@ export default class MasterForm extends React.Component {
 
   //AI: logic 2 - trigger validation inputs
   validateField(field_name, value) {
-    // if (Object.keys(this.state.formErrors).includes(field_name)) {
-    //   const fieldValidationErrors = this.state.formErrors;
-    //   const validity = this.state.formValidity;
-    //   const isCourseCode = field_name === "code";
-    //   const isDescription = field_name === "description";
     
-    //   validity[field_name] = value.length > 0;
-    //   fieldValidationErrors[field_name] = validity[field_name]
-    //     ? ""
-    //     : ` is required and cannot be empty`;
-
-    //   if (validity[field_name]) {
-    //     if (isCourseCode) {
-    //       validity[field_name] = value.length >= 5;
-    //       fieldValidationErrors[field_name] = validity[field_name]
-    //         ? ""
-    //         : `${label} should be at least 6-12 characters or more`;
-    //     }
-    //     if (isDescription) {
-    //       validity[field_name] = emailTest.test(value);
-    //       fieldValidationErrors[field_name] = validity[field_name]
-    //         ? ""
-    //         : `${label} should be at least 20 characters long`;
-    //     }
-    //     if (isPasswordConfirmation) {
-    //       validity[field_name] = value === this.state.password;
-    //       fieldValidationErrors[field_name] = validity[field_name]
-    //         ? ""
-    //         : `${label} should match password`;
-    //     }
-    //   }
-
-    //   this.setState(
-    //     {
-    //       formErrors: fieldValidationErrors,
-    //       formValidity: validity,
-    //     },
-    //     () => this.canSubmit()
-    //   );
-    // }
   }
 
   canSubmit() {
@@ -1076,7 +1097,8 @@ export default class MasterForm extends React.Component {
         //THIS FEATURE COULD CHANGE IN THE FUTURE
 
         this.state.formValidity.name &&
-        this.state.formValidity.code   
+        this.state.formValidity.code &&
+        this.state.formValidity.institution  
         //&&
         // this.state.formValidity.run &&
         // this.state.formValidity.card_image &&
@@ -1130,7 +1152,7 @@ export default class MasterForm extends React.Component {
 
     return (
       <li className="previous list-inline-item" onClick={this._prev}>
-        <a href="javascript::" className="">
+        <a href="javascript::" className="" disabled>
           {" "}
           <i className="fa fa-arrow-left" style={{ color: "#fff" }}></i>{" "}
         </a>
@@ -1168,10 +1190,75 @@ export default class MasterForm extends React.Component {
          console.log("some error occured")
        }
     })("run-logic-sequence")
+    localStorage.clear();
 
-    //handle generic events
+
+    var formElements = new Array();
+    $("input, select, textarea").each(function(){
+        formElements.push($(this));
+    });
 
 
+    
+
+
+        let formEl = $("#create-course");
+     
+          formElements.filter(e =>{ 
+            var element = e;
+            var title = element.title;
+            var id = element.id;
+            var name = element.name;
+            var value = element.value;
+            var type = element.type;
+            var cls = element.className;
+            var tagName = element.tagName;
+            var options = [];
+            var hidden = [];
+            var formDetails = '';
+
+            // check if the data exist in local store
+            if( localStorage.getItem( e.attr("name") ) ){
+               console.log(e.attr("name"))
+               formEl.find("#"+ e.attr("name")).val(localStorage.getItem( e.attr("name")))
+               let classAttr = `ql-editor[data-placeholder=${e.attr("name")}]`
+               if(formEl.find("." + classAttr )){
+                // alert(true)
+                //   formEl.find("." + classAttr ).html(localStorage.getItem( e.attr("name")))
+                //     this.setState({
+                //   ...this.state,
+                //   [e.attr("name")]:localStorage.getItem( e.attr("name"))
+                // })
+               }
+
+               
+
+              // if("SELECT"== tagName){
+              //   // GET THE OPTION INDEX OF THE INITIALLY SELECTED 
+              // }else if("INPUT"== tagName){
+                 
+
+              //   this.setState({
+              //     ...this.state,
+              //     [e.attr("name")]:localStorage.getItem( e.attr("name"))
+              //   })
+              // }else {
+              //   //THIS IS DOCUMENT EDITOR
+
+              //   this.setState({
+              //     ...this.state,
+              //     [e.attr("name")]:localStorage.getItem( e.attr("name"))
+              //   })
+
+              // }
+            }
+          })
+
+
+    
+
+    // let T = new  TinyMyce();
+    //  T.render("")
   }
 
   /*{key:val}, ["id","name", "email"]*/
@@ -1254,19 +1341,15 @@ export default class MasterForm extends React.Component {
   }
 
 
-  saveOrUpdateData = async (type,mode="", data={}) => {
+  saveOrUpdateData =  ( type, mode="", url, data) => {
     //after api call to update or create
     switch(mode){
       case "CREATE_MODE": // this is only done once when the app is launched to create new course
         //call the create handler to api with form data
-        let newCourseRes = await  createCourse(data)
-        console.log("success creating new course")
+        let newCourseRes =  createAnyResource("POST",url, data)
+        console.log("success creating new course", newCourseRes)  
         break;
       
-      case "EDIT_MODE": // called subsequently
-        //call the update handler to api
-        let updateCourseRes = await updateCourse(data)
-        break;
       default:
         throw new Error(`Wrongly accessed mode:- ${mode}`)
         return false;
@@ -1300,7 +1383,7 @@ export default class MasterForm extends React.Component {
         replace(/\*/g, '%2A').
             // The following are not required for percent-encoding per RFC5987, 
             // so we can allow for a little better readability over the wire: |`^
-            replace(/%(?:7C|60|5E)/g, unescape);
+        replace(/%(?:7C|60|5E)/g, unescape);
 }
 
 
@@ -1309,260 +1392,12 @@ export default class MasterForm extends React.Component {
   
    /*implements save and continue logic*/
   saveAndContinue = (e) =>{
-     const {currentCourseId } = this.state;
-     let curr = this.state.currentStep
-
-
-      let formData = new FormData();      
-
-          formData.append("name", "Anewcourse" )
-          formData.append("code", "giberish01")
-          formData.append("run", "")
-          formData.append("card_image", "")
-          formData.append("intro_video", "")
-          formData.append("description", "")
-          formData.append("overview","" )
-          formData.append("learning_expectation", "")
-          formData.append("curriculum", "")
-          formData.append("level", 1)
-          formData.append("enrolment_type", 1)
-          formData.append("entrance_exam_required", false)
-          formData.append("cost", "")
-          formData.append("auditing", false)
-          formData.append("course_pacing", 1)
-          formData.append("course_start_date_time", "")
-          formData.append("course_end_date_time", "")
-          formData.append("enrolment_start_date_time", "")
-          formData.append("enrolment_end_date_time", "")
-          formData.append("course_language", "")
-          formData.append("requirement_hours_per_week", "")
-          formData.append("requirement_no_of_week", "")
-          formData.append("grace_period_after_deadline", "")
-          formData.append("publication_status", 1)
-          formData.append("institution", "cb85e4ff-6636-4201-8e9f-5a9259c936bf")
-          formData.append("author", "097cd2bb-ae72-48e4-9a4d-1ebd2c05be03")
-          formData.append("prerequisite", [])
-          formData.append("authoring_team", [])
-          formData.append('filename', "hello.jpg");
-
-          for (var [key, value] of formData.entries()){
-             console.log(key,value);
-          }
-
-          
-
-
-
-          // add file/file_id if there is one
-          
-            
-
-    
-
-
-     /*AI AUTOMATION SCRIPTING TRIGGERS ONLY WHEN SET CORRECTLY*/
-    /*automate this script to run once using AI LOGIC*/
-    
-    /*2) this reduces downtime and payload for the switch case because this function is resource expensive*/
-    let courseData = currentCourseId !== "" ?  this.getThisCourseData(
-      currentCourseId
-    ) : null;
-    // the dynamic switcher for the AI SCRIPT WHICH KNOWS THE MODE ON THE FORM
-    //3) ENSURE STATE PERSISTENCE
-    courseData == null ? this.persistData("mode","CREATE_MODE") : this.persistData("mode","EDIT_MODE")
-
-    /*another expensive api call made easy with AI LOGIC DOM REFRESHER SALIENT UPDATE*/
-    //1) hide or disable other steps+ 2 so user cannot just navigate to these steps :
-    courseData !== null ? this.porpulateAndHideFields(curr): console.log("do nothing")
-    // go to next steps automatically
-    let step = parseInt(curr)
-    // alert(step)
-    //switch on the step action
-    switch(step){
-       case 1:
-          //call the save method only ones and keep track of the course id returned
-         // HERE IS WHERE THE TRIGGER LIES IN THIS AI LOGIC
-         let nextMoveAllowed = courseData !== null ? this.setState({currentCourseId: courseData.id}): null
-        // check the persistence
-         let persistedStateActionMode = localStorage.getItem("mode") ?  localStorage.getItem("mode") : null
-         if(nextMoveAllowed || ( persistedStateActionMode == "EDIT_MODE" ) ){
-          // CALL EDIT STEP ACTION TO API
-          const  {
-            level,code,name,institution,description,overview,
-            learning_expectation,enrolment_type,entrance_exam_required,
-            auditing,intro_video,curriculum,card_image
-          } = this.state
-          let data = {
-            level :level || courseData.level,
-            code: code || courseData.code,
-            name: name || courseData.name,
-            institution : institution || courseData.institution,
-            description: description || courseData.description,
-            overview : overview || courseData.overview,
-            learning_expectation: learning_expectation || courseData.learning_expectation,
-            enrolment_type : enrolment_type || courseData.enrolment_type,
-            entrance_exam_required: entrance_exam_required || courseData.entrance_exam_required,
-            auditing: auditing || courseData.auditing,
-            intro_video: intro_video || courseData.intro_video,
-            curriculum : curriculum || courseData.curriculum,
-            card_image: card_image || courseData.card_image
-          }
-         // let formData = new FormData() 
-         // Object.keys(data).forEach((key) =>{
-         //    formData.append(key, data[key])
-         //    console.log(key, data[key])
-         //  });
-
-          this.saveOrUpdateData("edit", persistedStateActionMode, data )
-
-
-
-
-          //MOVE
-          // step = step+ 1;
-          // this.goToStep(e,step)
-         } else{
-
-          const  {
-            level,code,name,institution,description,overview,
-            learning_expectation,enrolment_type,entrance_exam_required,
-            auditing,intro_video,curriculum,card_image
-          } = this.state
-          // console.log(formData)
-
-
-                     // let formData = new FormData() 
-
-           let data = {
-    
-              "name": "course2",
-              "code": "9888883918",
-              "run": "",
-              "card_image": "",
-              "intro_video": "",
-              "description": "demo description",
-              "overview": "",
-              "learning_expectation": "",
-              "curriculum": "",
-              "level": 1,
-              "enrolment_type": 1,
-              "entrance_exam_required": false,
-              "cost": "",
-              "auditing": false,
-              "course_pacing": 1,
-              "course_start_date_time": "",
-              "course_end_date_time": "",
-              "enrolment_start_date_time": "",
-              "enrolment_end_date_time": "",
-              "course_language": "",
-              "requirement_hours_per_week": "",
-              "requirement_no_of_week": "",
-              "grace_period_after_deadline": "",
-              "publication_status": 1,
-              "institution": "cb85e4ff-6636-4201-8e9f-5a9259c936bf",
-              "author": "097cd2bb-ae72-48e4-9a4d-1ebd2c05be03",
-              "prerequisite": [],
-              "authoring_team": [],
-              filename:"helloworld.jpg"
-          }
-
-
-
-
-         var fileName = 'my file(2).txt';
-          fetch("http://gapslmsservices.herokuapp.com/lms/api/create/course/", {
-           method: "POST",
-           // credentials: "same-origin",
-          headers: {
-            "X-CSRFToken": getCookie("csrftoken"),
-            Accept: "application/json",
-            "Content-Type": "application/json",
-
-          // "Content-Disposition": "attachment; filename*=UTF-8''" + this.encodeRFC5987ValueChars(fileName),
-          },
-          mode:"cors",
-          body: JSON.stringify(data)
-           // body: details,
-        }).then(res => res.json())
-        .then(data => { 
-          console.log(data) 
-        })
-
-         
-         
-
-
+    const {currentCourseId } = this.state;
+    let curr = this.state.currentStep;
+    this.persistData("mode","CREATE_MODE")
+    let url=   "/lms/api/create/course/"
            //this is a create action
-           // this.saveOrUpdateData("create", persistedStateActionMode, formData )
-           //MOVE 
-             // step = step+ 1;
-          // this.goToStep(e,step)
-         }
-
-      
-         break;
-       case 2:
-
-          // refresh state data
-          let editData2 = {}
-
-         this.saveOrUpdateData("edit", persistedStateActionMode, editData2 )
-         //moves to step next
-         // step = step+ 1;
-         // this.goToStep(e, step);
-
-
-         break;
-       case 3:
-       let editData3 = {}
-
-         this.saveOrUpdateData("edit", persistedStateActionMode, editData3 )
-        //moves to step next
-
-        // step = step+ 1;
-         // this.goToStep(e, step); 
-         break;
-      case 4:
-      let editData4 = {}
-
-         this.saveOrUpdateData("edit", persistedStateActionMode, editData4 )
-        //moves to step next
-        // step = step+ 1;
-         // this.goToStep(e, step); 
-        break;
-       case 5:
-       let editData5 = {}
-
-         this.saveOrUpdateData("edit", persistedStateActionMode, editData5 )
-         //moves to step next
-         // step = step+ 1;
-         // this.goToStep(e, step);
-         break;
-       case 6:
-       let editData6 = {}
-
-         this.saveOrUpdateData("edit", persistedStateActionMode, editData6 )
-         //moves to step next
-         // step = step+ 1;
-         // this.goToStep(e, step);
-         break;
-       case 7:
-       let editData7 = {} // update all fields here
-
-         this.saveOrUpdateData("edit", persistedStateActionMode, editData7 )
-        // step =  1;
-      
-         // perform final action to save all data 
-         // moves status from draft 1 to draft 3
-
-         //moves to step next
-         // this.goToStep(e, step); // takes you back to step 1 so you can see everything in preview mode
-         break;
-       default :
-        //disable the save buttons every where
-          // this.goToStep(e, 1);
-          break;
-    }
+    this.saveOrUpdateData("create", 'CREATE_MODE', url, $("form#create-course") )
     
   }
 
@@ -1581,28 +1416,73 @@ export default class MasterForm extends React.Component {
                 <div id="make-fixed-on-fullscreen">
                   <h4 className="header-title mb-3">
                     Course adding form{" "}
+
+
                     <a
-                      href={process.env.PUBLIC_URL + "/authoring/courselist"}
+                      style={{ marginRight: "3px", color:"#fff" }}
+                      href={"#"}
+                      onClick={(e) => {
+                      e.preventDefault();
+                      this.saveAndContinue(e)
+                    }}
+                      className="alignToTitle btn btn-success btn-outline-secondary btn-rounded btn-sm"
+                    >
+                      {" "}
+                      <i className=" mdi mdi-keyboard-backspace"></i> Create
+                    </a>
+
+                    <a
+                      style={{ marginRight: "3px" ,color:"#fff"}}
+                      href={process.env.PUBLIC_URL + "/authoring/create/new/"}
+                      className="alignToTitle btn btn-danger btn-outline-secondary btn-rounded btn-sm"
+                      onClick={() =>{
+                        window.location.reload()
+                      }}
+                    >
+                      {" "}
+                      <i className=" mdi mdi-keyboard-backspace"></i> 
+                      Cancel
+                    </a>
+
+                    <a
+                      style={{ marginRight: "10px" }}
+                    onClick={() =>{
+                        window.location.reload()
+                      }}
+                      href={"#"}
                       className="alignToTitle btn btn-outline-secondary btn-rounded btn-sm"
                     >
                       {" "}
-                      <i className=" mdi mdi-keyboard-backspace"></i> Back to
-                      course list
+                      <i className=" mdi mdi-keyboard-backspace"></i> 
+                      Clear
+                    </a>
+
+                      <a
+                      href={process.env.PUBLIC_URL + "/authoring/course/history"}
+                      className="alignToTitle btn btn-outline-secondary btn-rounded btn-sm"
+                    >
+                      <i className=" mdi mdi-keyboard-backspace"></i> Courses
+                      List
                     </a>
                     <a
-                      style={{ marginRight: "10px" }}
+                      style={{ marginRight: "3px" }}
                       href="#no-grid"
                       onClick={this.togglerFullscreen}
                       id="toggle_fullscreen"
                       className="alignToTitle btn btn-outline-secondary btn-rounded btn-sm"
                     >
-                      {" "}
-                      <i className=" mdi mdi-keyboard-backspace"></i> Toggle
+                      <i className=" mdi mdi-keyboard-backspace"></i> 
                       Fullscreen
                     </a>
-                    <br />
+                    
                   </h4>
-                  <br />
+                
+
+                  
+
+                    <br/>
+
+
 
                   <div className="col-md-12">
                     <ul
@@ -1610,8 +1490,27 @@ export default class MasterForm extends React.Component {
                       style={{ background: "#f6f6f6", height: "45px" }}
                     >
                       <a
-                        onClick={(e) => {
+                        onClick={ async (e) => {
                           this.goToStep(e, 1);
+
+
+                              //hide all input and text area or select or option
+                              $("#create-course").show().fadeIn("slow")
+
+                              //show authoringbox only
+                              $("#hidden-on-reveal").hide().fadeOut("fast")
+
+
+                            await  this.fetchContent()
+                             $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
+
+                        //   setTimeout(()=> {
+                        //     let T = new  TinyMyce();
+                        //   T.render("")
+                        // },3000)
+
                         }}
                         href="#basic"
                         data-toggle="tab"
@@ -1623,11 +1522,14 @@ export default class MasterForm extends React.Component {
 
                       <a
                         onClick={(e) => {
-                          this.goToStep(e, 2);
+                          $(e.target.parentElement).css({background:"#fff"})
+                          swal("Sorry!!", "You need to fill out the required fields marked asterisk (*)", "error");
+                        
                         }}
                         href="#outcomes"
                         data-toggle="tab"
                         className="nav-link rounded-0 pt-2 pb-2"
+                         disabled={true}
                       >
                         <i className="fa fa-camera mr-1"></i>
                         <span className="d-none d-sm-inline">Schedules</span>
@@ -1635,8 +1537,11 @@ export default class MasterForm extends React.Component {
 
                       <a
                         onClick={(e) => {
-                          this.goToStep(e, 3);
+                          $(e.target.parentElement).css({background:"#fff"})
+                          swal("Sorry", "You need to fill out the required fields marked asterisk (*)", "error");
+                        
                         }}
+                         disabled
                         href="#requirements"
                         data-toggle="tab"
                         className="nav-link rounded-0 pt-2 pb-2"
@@ -1645,34 +1550,53 @@ export default class MasterForm extends React.Component {
                         <span className="d-none d-sm-inline">Grading</span>
                       </a>
 
-                      {/*<li
-                        id="list-nav-gate-6"
-                       style={{border:"1px solid #eee",padding:"2px"}}
-                          className="nav-item"
-                          
-                        >*/}
-                      <a
+                  {/*    <a
                         onClick={(e) => {
-                          this.goToStep(e, 4);
+                          $(e.target.parentElement).css({background:"#fff"})
+                          swal("Sorry", "You need to fill out the required fields marked asterisk (*)", "error");
+                        
                         }}
                         href="#seo"
                         data-toggle="tab"
                         className="nav-link rounded-0 pt-2 pb-2"
+                         disabled
                       >
                         <i className="fa fa-tag mr-1"></i>
                         <span className="d-none d-sm-inline">
                           Learners Group
                         </span>
                       </a>
-                      {/*</li>*/}
+                      */}
 
                       <a
-                        onClick={(e) => {
-                          this.goToStep(e, 5);
+                        onClick={ async (e) => {
+                          // $(e.target.parentElement).css({background:"#fff"})
+                          // swal("WOOPS!", "You need to fill out the required fields marked asterisk (*)", "error");
+                           
+
+                           this.goToStep(e, 1); //5
+                            await  this.fetchContent()
+                             $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
+                              
+                              // setTimeout(()=> {
+                              //   let T = new  TinyMyce();
+                              // T.render("")
+
+                            // },3000)
+
+                              //hide all input and text area or select or option
+                              $("#create-course").hide().fadeOut("fast")
+
+                              //show authoringbox only
+                              $("#hidden-on-reveal").show().fadeIn("slow")
+
                         }}
                         href="#pricing"
                         data-toggle="tab"
                         className="nav-link rounded-0 pt-2 pb-2"
+                         
                       >
                         <i className="fa fa-currency mr-1"></i>
                         <span className="d-none d-sm-inline">
@@ -1682,11 +1606,14 @@ export default class MasterForm extends React.Component {
 
                       <a
                         onClick={(e) => {
-                          this.goToStep(e, 8);
+                          $(e.target.parentElement).css({background:"#fff"})
+                          swal("Sorry!!!", "You need to fill out the required fields marked asterisk (*)", "error");
+                          
                         }}
                         href="#resource"
                         data-toggle="tab"
                         className="nav-link rounded-0 pt-2 pb-2"
+                         disabled
                       >
                         <i className="fa fa-currency mr-1"></i>
                         <span className="d-none d-sm-inline">Resource</span>
@@ -1694,11 +1621,14 @@ export default class MasterForm extends React.Component {
 
                       <a
                         onClick={(e) => {
-                          this.goToStep(e, 6);
+                          $(e.target.parentElement).css({background:"#fff"})
+                          swal("Sorry!!!", "You need to fill out the required fields marked asterisk (*)", "error");
+                        
                         }}
                         href="#media"
                         data-toggle="tab"
                         className="nav-link rounded-0 pt-2 pb-2"
+                         disabled
                       >
                         <i className="fa fa-video mr-1"></i>
                         <span className="d-none d-sm-inline">Content</span>
@@ -1706,11 +1636,15 @@ export default class MasterForm extends React.Component {
 
                       <a
                         onClick={(e) => {
-                          this.goToStep(e, 7);
+                          $(e.target.parentElement).css({background:"#fff"})
+                          $(e.target).css({color:"#333"})
+                          swal("Sorry!!!", "You need to fill out the required fields marked asterisk (*)", "error");
+                        
                         }}
                         href="#finish"
                         data-toggle="tab"
                         className="nav-link rounded-0 pt-2 pb-2"
+                        disabled
                       >
                         <i className="fa fa-checkbox mr-1"></i>
                         <span className="d-none d-sm-inline">Process</span>
@@ -1724,18 +1658,36 @@ export default class MasterForm extends React.Component {
                 <div className="row">
                   <div className="col-md-12">
                     <form
+                      id="stepUpFormWithAI"
                       className="required-form"
                       action="/lms/api/create/course/" 
                       method="POST" 
                        novalidate
-                      enctype="multipart/form-data"
+                      // enctype="multipart/form-data"
+                      enctype="application/x-www-form-urlencoded"
+                      style={{height:"2200px"}}
                     >
                       {/*<CSRFToken /> Ready to django into the server*/}
+                      Ensure to select an authoring team*
                       <input type="hidden" name="csrfmiddlewaretoken" value={getCookie("csrfmiddlewaretoken")} />
                       <Step1
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
+                        stateInitial={this.state}
+                        
+                        
+                        actions={
+                          {
+                    stateAction:this.handleChangeTextEditor,
+                    description:this.handleHtmlDescriptionChange,
+                    overview: this.handleHtmlCourseOverViewChange,
+                    learning_expectation: this.handleHtmlOutComeChange,
+                    prerequisite: this.handleHtmlPrerequisitesChange,
+                    curriculum: this.handleHtmlCurriculumChange
+                  
+                        }}
+                        
                         errorEmailClass={this.errorClass(
                           this.state.formErrors.course_language
                         )}
@@ -1754,9 +1706,10 @@ export default class MasterForm extends React.Component {
                       />
 
                       <Step3
+                      stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
                         institutions={institutions} 
@@ -1764,12 +1717,14 @@ export default class MasterForm extends React.Component {
                         instructors={instructors} 
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
                       />
 
                       <Step4
+                      stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
                         institutions={institutions} 
@@ -1777,12 +1732,15 @@ export default class MasterForm extends React.Component {
                         instructors={instructors} 
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
                       />
 
                       <Step2
+                      stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
+                        stateAction={this.handleChangeTextEditor}
                         errorPasswordClass={this.errorClass(
                           this.state.formErrors.password
                         )}
@@ -1803,9 +1761,10 @@ export default class MasterForm extends React.Component {
                       />
 
                       <Step5
+                      stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
                         institutions={institutions} 
@@ -1813,12 +1772,14 @@ export default class MasterForm extends React.Component {
                         instructors={instructors} 
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
                       />
 
                       <Step6
+                      stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
                         institutions={institutions} 
@@ -1826,11 +1787,12 @@ export default class MasterForm extends React.Component {
                         instructors={instructors} 
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
                       />
                       <Step7
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
                         institutions={institutions} 
@@ -1838,12 +1800,14 @@ export default class MasterForm extends React.Component {
                         instructors={instructors} 
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
                       />
 
                       <Step8
+                      stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleChange}
+                        handleChange={this.handleInputChange}
                         comment={this.state.comment}
                         canSubmit={this.state.canSubmit}
                         institutions={institutions} 
@@ -1851,10 +1815,10 @@ export default class MasterForm extends React.Component {
                         instructors={instructors} 
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
                       />
 
-                      <br />
-                      <br />
+                     
                     </form>
 
 
@@ -1871,16 +1835,13 @@ export default class MasterForm extends React.Component {
                           </div>
                      </div>
 
-
-                    <br />
-                    <br />
-                    <div style={{ position: "absolute", bottom: "0px" }}>
+                    {/*<div style={{ position: "absolute", bottom: "0px", marginLeft:"20px" }}>
                       <ul className="list-inline mb-0 wizard text-center">
                         {this.previousButton}
 
                         {this.nextButton}
                       </ul>
-                    </div>
+                    </div>*/}
                   </div>
                 </div>
               </div>
@@ -1898,9 +1859,144 @@ class Step1 extends React.Component {
   constructor(props){
     super(props)
 
-    this.state ={
-      
+    let sname,scode, sauthor,sinstitution;
+    if(localStorage.getItem("name")){
+      sname= localStorage.getItem("name") || "";
+      scode = localStorage.getItem("course_code") || "";
+      sauthor = localStorage.getItem("author") || "" ;
+      sinstitution = localStorage.getItem("institution") || ""
+
     }
+    let sdescription, soverview, sprerequisite, slearning_expectation, scurriculum
+    if(localStorage.getItem("overview")){
+
+      soverview = localStorage.getItem("overview") || ""
+    }
+
+    if(localStorage.getItem("description")){
+
+      sdescription = localStorage.getItem("description") || ""
+    }
+    if(localStorage.getItem("prerequisite")){
+      sprerequisite = localStorage.getItem("prerequisite") || ""
+    }
+    if(localStorage.getItem("learning_expectation")){
+      slearning_expectation = localStorage.getItem("learning_expectation") || ""
+    }
+    if(localStorage.getItem("curriculum")){
+      scurriculum = localStorage.getItem("curriculum") || ""
+    }
+
+
+    this.state = {
+      /*multistep logic data*/
+      currentStep: 1,
+      sectionStep: 1,
+      subSectionStep: 1,
+      lessonStep: 1,
+      finishedClicked: false,
+      modes:["CREATE_MODE","EDIT_MODE"],
+      editor:null,  //THE LOGGED IN USERS DETAILS [{token,...details}]
+      author: "", // THE LOGGED IN USER NAME {...details}.username
+      previledges:["CAN_EDIT","CAN_VIEW","CAN_DELETE","CAN_CREATE"], 
+      name: sname,
+      code: scode,
+      institution: sinstitution,   //keypair preporpulated set of inst id
+      author: sauthor,  //keypair preporpulated set of author id
+
+      description: sdescription,
+      overview: soverview,
+      learning_expectation: slearning_expectation,
+      curriculum: scurriculum,
+     
+
+
+
+      
+      //state fields
+      /*request form data*/
+      
+        
+        run: "",
+        card_image: "",
+        intro_video: "",
+        level: 1,  //int
+        enrolment_type: 1,
+        entrance_exam_required: true, 
+        cost: 100.0,  //float
+        auditing: true,
+        course_pacing: 1, //int
+        course_start_date_time: "",  //2021-08-26T17:13:00+01:00
+        course_end_date_time: "",
+        enrolment_start_date_time: "",
+        enrolment_end_date_time: "",
+        course_language: "english",
+        requirement_hours_per_week: 1, //int
+        requirement_no_of_week: 1,  //int
+        grace_period_after_deadline: 1, //int
+        publication_status: 2,  //int
+        
+        prerequisite: [
+              //key pairs ids of courses
+        ],
+        authoring_team: [
+                              //key pair authors
+            
+        ],
+
+        /* request resource data*/
+        languages:[], //  getdata
+        instructors:[], //  getdata
+        courses:[], //  getdata
+        institutions:[],  //  getdata
+        currentCourseId:"", //for tracking saved course currently working on
+        
+      formErrors: {
+        /*request form errors data*/
+
+        /*do not change this part: its used in ai logic*/
+        name: "",
+        code: "",
+        run: "",
+        card_image: "",
+        intro_video: "",
+        description: "",
+        overview: "",
+        learning_expectation: "",
+        curriculum: "",
+        level: "",  //int
+        enrolment_type: "",
+        entrance_exam_required: "", 
+        cost: "",  //float
+        auditing: "",
+        course_pacing: "", //int
+        course_start_date_time: "",  //2021-08-26T17:13:00+01:00
+        course_end_date_time: "",
+        enrolment_start_date_time: "",
+        enrolment_end_date_time: "",
+        course_language: "",
+        requirement_hours_per_week: "", 
+        requirement_no_of_week: "", 
+        grace_period_after_deadline: "", 
+        publication_status: "",  
+        institution: "",   
+        author: "", 
+        prerequisite: [],
+        authoring_team: [],
+
+        
+      },
+      formValidity: {
+        email: false,
+        username: false,
+        password: false,
+        passwordConfirmation: false,
+      },
+      canSubmit: false,
+    };
+
+    
+     
 
     this.dropRef = createRef()
   }
@@ -1918,68 +2014,352 @@ class Step1 extends React.Component {
       return null;
     }
     const {institutions, languages, instructors, courses } = this.props
-    console.log(institutions)
+    
 
     return (
       <React.Fragment>
-        <div className="tab-content b-0 mb-0">
+        <div className="tab-content b-0 mb-0" >
           <div className="tab-pane active" id="basic">
             <div className="row">
               <div className="col-md-12 card-box">
+
+
+
+
+
+
+            {/*switcher pane for authoring*/}
+
+              <div className="row" style={{display:"none"}} id="hidden-on-reveal">
+        <div className="col-md-12">
+
+
+
+                      <Col md="12" sm="12" lg="12">
+        
+                 
+                  <br/> <br/> <br/>
+                  <div className="container-fluid" id="lead-guy" >  
+                        
+
+                         <div className="col-lg-3 col-md-3 col-sm-6" >
+          <a href="#">
+            <div className="widget-panel widget-style-2 bg-white"
+              onClick={() => {
+
+                
+                          swal({
+                            text: 'Search for an instructor by name/email/ phone number. e.g. "saladin jake ".',
+                            content: "input",
+                            button: {
+                            text: "Search!",
+                            closeModal: false,
+                            },
+                          })
+                          .then(name => {
+                            if (!name)  return swal("No instructor email/name was entered!");
+                              // check if user existed in our initial fetch 
+                              // do not make another api request 
+                              //this saves pull request
+     
+                            let targetInstructor = instructors.find(instructor => {
+                                console.log(instructor)
+                                return (instructor?.profile?.name === name) ||  (instructor?.profile?.email === name) || (instructor?.profile?.phone_number === name)
+                            })
+                           
+                              if(targetInstructor){
+                                 let leadGuy =  $("#lead-guy").css({display:"block", color:"#fff"}).html(targetInstructor?.profile?.name)
+                                $("#author").val(targetInstructor?.profile?.id)
+                                localStorage.setItem("author",targetInstructor?.profile?.id)
+                                 return swal("Success!", "The Instructor was found", "Success");
+                
+                             }else{
+
+                                
+                                  swal("WOOPS!", "We could not find instructor", "error");
+                        
+                                  swal.stopLoading();
+                                 return swal.close();
+                            
+
+                             }
+                          })
+                          
+                           
+                          
+
+                    }}
+
+            >
+              <i className="md md-add text-info"></i>
+              <h2
+                className="m-0 text-dark-x counter font-600-x"
+                style={{
+                  fontFamily: "Open Sans",
+                  color: "#000",
+                  fontSize: "14px",
+                }}
+
+                
+              >
+                Add/Change Team Lead
+              </h2>
+              <div
+                className="text-muted-x m-t-5-x"
+                style={{
+                  fontFamily: "Open Sans",
+                  color: "#000",
+                  fontSize: "14px",
+                }}
+              >
+                Add
+              </div>
+            </div>
+           
+             </a>
+          </div></div>
+                
+</Col>
+
+        
+
+
+
+
+                <div id="collabo-guys" className="row">
+
+
+
+
+
+                    <div class="col-lg-3 col-md-3 col-sm-6">
+                      <a href="#">
+                        <div className="widget-panel widget-style-2 bg-white">
+                          <i className="fa fa-plus fa-2x text-pink"></i>
+                          <h2
+                            className="m-0 text-dark-x counter font-600-x"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+
+                                onClick={ () => {
+              let values = this.state.collaborators            
+
+              swal({
+                text: 'Search for an instructor by email/ phone number. e.g. "saladinjake@company.com ".',
+                content: "input",
+                button: {
+                text: "Search!",
+                closeModal: false,
+                },
+              })
+              .then(name => {
+                if (!name)  return swal("No instructor email or phone entered was entered!");
+                  // check if user existed in our initial fetch 
+                  // do not make another api request 
+                  //this saves pull request
+
+                     
+                  //TODO: if no collaborators selected 
+                  //LET THE LOGGED IN OR LEAD INSTRUCTOR BE APPENDED AS A COLLABORATOR
+
+                let targetInstructor = instructors.find(instructor => {
+                    console.log(instructor)
+                    return (instructor?.profile?.name === name) ||  (instructor?.profile?.email === name) || (instructor?.profile?.phone_number === name)
+                })
+               
+                  if(targetInstructor){
+                     let collaborators =  $("#collabo-guys")
+                      
+                     let newGuy = $(`
+                      <div class="col-lg-3 col-md-3 col-sm-6">
+                      <a href="#">
+                        <div className="widget-panel widget-style-2 bg-white">
+                          <i className="fa fa-trash fa-2x text-pink"></i>
+                          <h2
+                            className="m-0 text-dark-x counter font-600-x"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+
+                          >
+                            ${targetInstructor?.profile?.first_name} - ${targetInstructor?.profile?.email}
+                          </h2>
+                          <div
+                            className="text-muted-x m-t-5-x"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+                            onclick="alert('test delete operation')"
+
+                            data-id=${targetInstructor?.profile?.id}
+                          >
+                            Remove
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                     `)
+                     
+                    collaborators.append(newGuy.html())
+                  
+
+                     // now let js do the dynamic selection of the hidden authoring_team select form fields
+                    const { name, id, email, phone_number} = targetInstructor?.profile
+                     values.push({
+                      id,name, email, phone_number
+                     })
+
+                     this.setState({collaborators: values})
+
+                      $('select[name=authoring_team]').val(this.state.collaborators) // all collaborators as listArray
+      
+                     return swal("Success!", "The Instructor was found", "Success");
+
+                 }else{
+
+                    
+                      swal("Oh noes!", "We could not find instructor", "error");
+            
+                      swal.stopLoading();
+                     return swal.close();
+                
+
+                 }
+              })
+             
+                 
+                           
+                          
+
+      }}
+                          >
+                            Add collaborator
+                          </h2>
+                          <div
+                            className="text-muted-x m-t-5-x"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+                          >
+                            Add
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+
+
+
+
+
+                </div>
+
+               {/* hidden field that updates its array of data*/}
+               { /*fields will be selected as user finds the  exact email/ phone or name 
+                of the instructors to be added as collaborators*/}
+                <select name="authoring_team[]" multiple  style={{display:"none"}}>
+                      {instructors.length > 0  && instructors.map(instructor => {
+                          return (
+                             <option value={instructor.profile.id}>{instructor.profile.name}</option>
+                          )
+                      })}
+                </select>
+
+
+          
+          <br />
+          
+        </div>
+
+        <br />
+        <br />
+      </div>
+
+    {/*form*/}
+           <form id="create-course" enctype="">
+
                 <div className="form-group col-md-6 fl-left">
-                  <label
-                    className="col-md-12 col-form-label"
-                    for="course_title"
-                  >
-                    Course Code <span className="required">*</span>{" "}
-                  </label>
+                  
                   <div className="">
                     <input
                       style={{ position: "relative", zIndex: "1" }}
                       type="text"
                       className="form-control"
-                      id="course_code"
+                      id="code"
                       name="code"
                       placeholder="Enter course code"
                       value={this.props.code}
                      onChange={this.props.handleChange}
                     />
-                  </div>
-                </div>
-
-                <div className="form-group col-md-6 fl-left">
-                  <label
+                    <label
                     className="col-md-12 col-form-label"
                     for="course_title"
                   >
-                    Course Name <span className="required">*</span>{" "}
+                    Course Code <span className="required">*</span>{" "}
                   </label>
+                  </div>
+                </div>
+
+               {/*this will be the logged in instructor id hidden */}
+                <div className="form-group col-md-6 fl-left" >
+                 
                   <div className="">
                     <input
-                      style={{ position: "relative", zIndex: "1" }}
+                      style={{ position: "relative", zIndex: "1" , display:"none"}}
                       type="text"
                       className="form-control"
-                      id="course_name"
+                      id="author"
+                      name="author"
+                      placeholder="Enter course code"
+                      value="097cd2bb-ae72-48e4-9a4d-1ebd2c05be03"
+                     
+                    />
+                  </div>
+                   </div>
+
+                <div className="form-group col-md-6 fl-left">
+                 
+                  <div className="">
+                    <input
+                      style={{ position: "relative", zIndex: "1", marginTop:"-10px" }}
+                      type="text"
+                      className="form-control"
+                      id="name"
                       name="name"
                       placeholder="Enter course title"
 
                       value={this.props.course_name}
                      onChange={this.props.handleChange}
                     />
+                     <label
+                    className="col-md-12 col-form-label"
+                    for="course_title"
+                  >
+                    Course Name <span className="required">*</span>{" "}
+                  </label>
                   </div>
                 </div>
 
 
 
-                <div class="form-group  col-md-6 fl-left">
-                  <label class="col-md-12 col-form-label" for="level">
-                    Institution
-                  </label>
+
+
+              <div class="form-group  col-md-6 fl-left">
+                 
                   <div class="" data-select2-id="94">
                     <select
                       style={{ position: "relative", zIndex: "1" }}
                       class="form-control select2 select2-hidden-accessible"
                       data-toggle="select2"
+                      id="institution"
                       name="institution"
                       
                       data-select2-id="level"
@@ -2004,79 +2384,249 @@ class Step1 extends React.Component {
                         
 
                     </select>
+
+                     <label class="col-md-12 col-form-label" for="level">
+                    Institution <span className="required">*</span>
+                  </label>
                   </div>
                 </div>
 
-                <div className="form-group col-md-6 fl-left">
-                  <label
-                    className="col-md-12 col-form-label"
-                    for="short_description"
-                  >
-                    Course Short description
-                  </label>
+
+
+
+                <div className=" form-group col-md-6 fl-left">
+                        <div className="col-md-10  fl-left">
+                          <input
+                            type="text"
+                            placeholder={"Add Team Lead"}
+                              
+                            className="form-control fl-left"
+                            id="author-inset"
+                            name="author"
+                            disabled
+                          />
+                        </div>
+                         <div class="col-md-2  fl-left">
+                            <button
+                              type="button"
+
+                            
+                              className="small text-white"
+
+
+                                onClick={(e) => {
+                                  e.preventDefault()
+                
+                          swal({
+                            text: 'Search for an instructor by name/email/ phone number. e.g. "saladin jake ".',
+                            content: "input",
+                            button: {
+                            text: "Search!",
+                            closeModal: false,
+                            },
+                          })
+                          .then(name => {
+                            if (!name)  return swal("No instructor email/name was entered!");
+                              // check if user existed in our initial fetch 
+                              // do not make another api request 
+                              //this saves pull request
+     
+                            let targetInstructor = instructors.find(instructor => {
+                                console.log(instructor)
+                                return (instructor?.profile?.name === name) ||  (instructor?.profile?.email === name) || (instructor?.profile?.phone_number === name)
+                            })
+                           
+                              if(targetInstructor){
+                                 let leadGuy =  $("#lead-guy").css({display:"block", color:"#fff"}).html(targetInstructor?.profile?.name)
+                                $("#author").val(targetInstructor?.profile?.id)
+                                $("#author-inset").val(targetInstructor?.profile?.email)
+                                this.setState({author:targetInstructor?.profile?.email})
+                                localStorage.setItem("author",targetInstructor?.profile?.id)
+                                
+                                 return swal("Success!", "The Instructor was found", "Success");
+                                  
+                             }else{
+
+                                
+                                  swal("Error", "We could not find instructor", "error");
+                        
+                                  swal.stopLoading();
+                                 return swal.close();
+                            
+
+                             }
+                          })
+                          
+                           
+                          
+
+                    }}
+
+                            >
+                              +
+                            </button>
+                            </div>
+
+                        <br />
+                        <br />
+                        <label class="col-md-12 col-form-label" for="level">
+                    Author<span className="required">*</span></label>
+                </div>
+
+
+
+                
+                <div className="form-group col-md-12 fl-left">
+                 
                   <div className="">
-                    <textarea
+
+
+                  <textarea
                       name="description"
-                      style={{ position: "relative", zIndex: "1" }}
+                      id="description"
+                      
                       className="form-control"
                       placeholder="Short description"
                        value={this.props.description}
                      onChange={this.props.handleChange}
                     ></textarea>
+                    
+
+
+                     <HTMLForm
+                        title="description"
+
+                        placeholder={"description"}
+                        value={this.state.description || ""}
+                        action={this.props.actions.description}
+                        stateAction={this.props.actions.stateAction}
+                        name={"description"}
+                      />
+
+                     <label
+                    className="col-md-12 col-form-label"
+                    for="short_description"
+                  >
+                    Course Short description
+                  </label>
                   </div>
                 </div>
 
 
 
-                <div className=" col-md-12 ">
-                  <label
-                    className="col-md-12 col-form-label"
-                    for="short_description"
-                  >
-                    Course Overview
-                  </label>
+
+
+
+
+                <div className="form-group col-md-12 fl-left">
+                 
                   <div className="">
                     <textarea
                       name="overview"
-                      style={{ position: "relative", zIndex: "1" }}
+                      id="overview"
+                      style={{display:"none"}}
+                      
                       className="form-control"
                       placeholder="Short description"
                        value={this.props.overview}
                      onChange={this.props.handleChange}
                     ></textarea>
+
+
+
+
+                     <HTMLForm
+                        title="overview"
+
+                        placeholder={"overview"}
+                        value={this.state.overview || ""}
+                        action={this.props.actions.overview }
+                        stateAction={this.props.actions.stateAction}
+                        name={"overview"}
+                      />
+
+                     <label
+                    className="col-md-12 col-form-label"
+                    for="short_description"
+                  >
+                    Course Overview
+                  </label>
                   </div>
                 </div>
 
 
-                <div className=" col-md-12">
+
+                 <div className="form-group col-md-12 fl-left">
+                  <label className="col-md-12 col-form-label" for="description">
+                    Curriculum
+                  </label>
+                  <div className="">
+
+                  <textarea
+                      name="curriculum"
+                      id="curriculum"
+                      style={{display:"none"}}
+                      
+                      className="form-control"
+                      placeholder="Short description"
+                       value={this.props.curriculum}
+                     onChange={this.props.handleChange}
+                    ></textarea>
+
+                    <HTMLForm
+                        title="curriculum"
+
+                        placeholder={"curriculum"}
+                        value={this.state.curriculum || ""}
+                        action={this.props.actions.curriculum}
+                        stateAction={this.props.actions.stateAction}
+                        name={"curriculum"}
+                      />
+                  </div>
+                </div>
+
+
+                <div className="form-group col-md-12 fl-left">
                   <label className="col-md-12 col-form-label" for="description">
                     What You Will Learn
                   </label>
                   <div className="">
-                    <textarea
+
+                  <textarea
                       name="learning_expectation"
-                      style={{ position: "relative", zIndex: "1" }}
+                      id="learning_expectation"
+                      style={{display:"none"}}
+                      
                       className="form-control"
                       placeholder="Short description"
-                       value={this.props.learning_expectation}
+                       value={this.props.learning_expectation || ""}
                      onChange={this.props.handleChange}
                     ></textarea>
+
+                    <HTMLForm
+                        title="learning_expectation"
+
+                        placeholder={"learning_expectation"}
+                        value={this.state.learning_expectation}
+                        action={this.props.actions.learning_expectation}
+                        stateAction={this.props.actions.stateAction}
+                        name={"learning_expectation"}
+                      />
                   </div>
                 </div>
+
 
 
 
 
                 <div class="form-group  mb-3 col-md-6 fl-left">
-                  <label class="col-md-12 col-form-label" for="level">
-                    Level
-                  </label>
+                 
                   <div class="" data-select2-id="94">
                     <select
                       style={{ position: "relative", zIndex: "1" }}
                       class="form-control select2 select2-hidden-accessible"
                       data-toggle="select2"
-                      name="enrolment_type"
+                      name="level"
                       id="level"
                       data-select2-id="level"
                       tabindex="-1"
@@ -2094,6 +2644,11 @@ class Step1 extends React.Component {
                         Advanced
                       </option>
                     </select>
+
+
+                     <label class="col-md-12 col-form-label" for="level">
+                    Level
+                  </label>
                   </div>
                 </div>
 
@@ -2101,16 +2656,14 @@ class Step1 extends React.Component {
 
 
                 <div class="form-group  mb-3 col-md-6 fl-left">
-                  <label class="col-md-12 col-form-label" for="level">
-                    Enrollment Type
-                  </label>
+                  
                   <div class="" data-select2-id="94">
                     <select
                       style={{ position: "relative", zIndex: "1" }}
                       class="form-control select2 select2-hidden-accessible"
                       data-toggle="select2"
-                      name="level"
-                      id="level"
+                      name="enrolment_type"
+                      id="enrolment_type"
                       data-select2-id="level"
                       tabindex="-1"
                       aria-hidden="true"
@@ -2124,21 +2677,23 @@ class Step1 extends React.Component {
                         By Invitation
                       </option>
                     </select>
+
+                    <label class="col-md-12 col-form-label" for="level">
+                    Enrollment Type
+                  </label>
                   </div>
                 </div>
 
 
                 <div class="form-group  mb-3 col-md-6 fl-left">
-                  <label class="col-md-12 col-form-label" for="level">
-                    Entrance Exam Required
-                  </label>
+                 
                   <div class="" data-select2-id="94">
                     <select
                       style={{ position: "relative", zIndex: "1" }}
                       class="form-control select2 select2-hidden-accessible"
                       data-toggle="select2"
                       name="entrance_exam_required"
-                      id="level"
+                      id="entrance_exam_required"
                       data-select2-id="level"
                       tabindex="-1"
                       aria-hidden="true"
@@ -2152,6 +2707,10 @@ class Step1 extends React.Component {
                         True
                       </option>
                     </select>
+
+                     <label class="col-md-12 col-form-label" for="level">
+                    Entrance Exam Required
+                  </label>
                   </div>
                 </div>
 
@@ -2159,52 +2718,54 @@ class Step1 extends React.Component {
 
 
                 <div class="form-group  mb-3 col-md-6 fl-left">
-                  <label class="col-md-12 col-form-label" for="level">
+                 
+                  <div class="co" data-select2-id="94">
+                    <input
+                      style={{ position: "relative", zIndex: "1" }}
+                      type="checkbox"
+                      className="form-control"
+                      id="auditing"
+                      name="auditing"
+                      
+                       value={this.props.intro_video}
+                     onChange={this.props.handleChange}
+                    />
+
+                     <label class="col-md-12 col-form-label" for="level">
                     Auditing
                   </label>
-                  <div class="co" data-select2-id="94">
-                    <select
-                      style={{ position: "relative", zIndex: "1" }}
-                      class="form-control select2 select2-hidden-accessible"
-                      data-toggle="select2"
-                      name="auditing"
-                      id="level"
-                      data-select2-id="level"
-                      tabindex="-1"
-                      aria-hidden="true"
-                       value={this.props.auditing}
-                     onChange={this.props.handleChange}
-                    >
-                      <option value="beginner" data-select2-id="4">
-                        YES
-                      </option>
-                      <option value="advanced" data-select2-id="95">
-                        NO
-                      </option>
-                    </select>
                   </div>
                 </div>
 
                 <div className="form-group col-md-6 fl-left">
-                  <label
-                    className="col-md-12 col-form-label"
-                    for="course_title"
-                  >
-                    video url<span className="required">*</span>{" "}
-                  </label>
+                  
                   <div className="">
                     <input
                       style={{ position: "relative", zIndex: "1" }}
                       type="text"
                       className="form-control"
-                      id="course_title2"
+                      id="intro_video"
                       name="intro_video"
                       placeholder="You tube url"
                        value={this.props.intro_video}
                      onChange={this.props.handleChange}
                     />
+
+                    <label
+                    className="col-md-12 col-form-label"
+                    for="course_title"
+                  >
+                    video url<span className="required">*</span>{" "}
+                  </label>
                   </div>
                 </div>
+
+
+
+
+
+
+
 
 
 
@@ -2214,38 +2775,25 @@ class Step1 extends React.Component {
 
                 <h2>Card Image</h2>
 
-                    <div class="file-drop-area">
+                    <div class="file-drop-area col-md-6" style={{background: "#f5f5f5",
+  padding: "40px 0 20px 0", margin:"20px"}}>
                       <span class="fake-btn">Choose files</span>
-                      <span class="file-msg">or drag and drop files here</span>
-                      <input name="card_image" class="file-input" type="file" multiple   accept="image/*"
+                      <span class="file-msg"></span>
+                      <input id="card_image" name="card_image" class="file-input" type="file" multiple   accept="image/*"
                                value={this.props.card_image}
                                onChange={this.props.handleChange} />
 
-                                 <div id="feedback">
+                                 <div id="feedback" style={{display:"none"}}>
     
   </div>
   
-  <label id="progress-label" for="progress"></label>
-  <progress id="progress" value="0" max="100"> </progress>
+  <label  id="progress-label" for="progress" style={{display:"none"}}></label>
+  <progress id="progress" value="0" max="100" style={{display:"none"}}> </progress>
                     </div>
 
                     
 
-                <div className=" col-md-6">
-                  <label className="col-md-12 col-form-label" for="description">
-                    Curriculum
-                  </label>
-                  <div className="">
-                    <textarea
-                      name="curriculum"
-                      style={{ position: "relative", zIndex: "1" }}
-                      className="form-control"
-                      placeholder="Short description"
-                       value={this.props.curriculum}
-                     onChange={this.props.handleChange}
-                    ></textarea>
-                  </div>
-                </div>
+                
 
 
 
@@ -2256,7 +2804,7 @@ class Step1 extends React.Component {
 
 
 
-
+{/*
                 <div className="mb-3 mt-3">
                   <button
                     type="button"
@@ -2268,9 +2816,34 @@ class Step1 extends React.Component {
                   >
                     Save 
                   </button>
-                </div>
+                </div>*/}
+
+
+                </form>
 
                 <br />
+                <br />
+                <br />
+                <br />
+                <br />
+
+                 <br />
+                <br />
+                <br />
+                <br />
+                <br /> <br />
+                <br />
+                <br />
+                <br />
+                <br /> <br />
+                <br />
+                <br />
+                <br />
+                <br /> <br />
+                <br />
+                <br />
+                <br />
+                <br /> <br />
                 <br />
                 <br />
                 <br />
@@ -2322,85 +2895,12 @@ class Step1 extends React.Component {
       </React.Fragment>
     );
   }
-}
 
-class DynamicForm extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      shareholders: [{ name: "" }],
-    };
-  }
+  componentDidMount(){
 
-  handleShareholderNameChange = (idx) => (evt) => {
-    const newShareholders = this.state.shareholders.map((shareholder, sidx) => {
-      if (idx !== sidx) return shareholder;
-      return { ...shareholder, name: evt.target.value };
-    });
-
-    this.setState({ shareholders: newShareholders });
-  };
-
-  handleAddShareholder = () => {
-    this.setState({
-      shareholders: this.state.shareholders.concat([{ name: "" }]),
-    });
-  };
-
-  handleRemoveShareholder = (idx) => () => {
-    this.setState({
-      shareholders: this.state.shareholders.filter((s, sidx) => idx !== sidx),
-    });
-  };
-
-  render() {
-    return (
-      <div className="row">
-        <div className="col-md-12">
-          <h6>{this.props.title}</h6>
-
-          {this.state.shareholders.map((shareholder, idx) => (
-            <div className="shareholder form-group ">
-              <div className="col-md-10 fl-left">
-                <input
-                  type="text"
-                  placeholder={` #${idx + 1} Enter an instructors email`}
-                  value={shareholder.name}
-                  onChange={this.handleShareholderNameChange(idx)}
-                  className="form-control fl-left"
-                />
-              </div>
-              {/*<div class="col-md-2">
-            <button
-              type="button"
-              onClick={this.handleRemoveShareholder(idx)}
-              className="small text-white"
-            >
-              -
-            </button>
-            </div>*/}
-
-              <br />
-              <br />
-            </div>
-          ))}
-          <br />
-          <button
-            type="button"
-            onClick={this.handleAddShareholder}
-            className="btn btn-primary text-white"
-            style={{ width: "300px", margin: "10px" }}
-          >
-            Add A Team
-          </button>
-        </div>
-
-        <br />
-        <br />
-      </div>
-    );
   }
 }
+
 
 class Step5 extends React.Component {
   constructor(props) {
@@ -2443,10 +2943,7 @@ class Step5 extends React.Component {
           <div className="row justify-content-center">
             <div className="col-md-12">
               <div className="form-group col-md-6 fl-left">
-                <label className="col-md-12 col-form-label" for="course_title">
-                  Grace period after deadline in weeks{" "}
-                  <span className="required">*</span>{" "}
-                </label>
+               
                 <div className="">
                   <input
                     type="text"
@@ -2457,13 +2954,15 @@ class Step5 extends React.Component {
                     required=""
 
                   />
+                   <label className="col-md-12 col-form-label" for="course_title">
+                  Grace period after deadline in weeks{" "}
+                  <span className="required">*</span>{" "}
+                </label>
                 </div>
               </div>
 
               <div class="form-group  col-md-6 fl-left">
-                <label class="col-md-12 col-form-label" for="level">
-                  Grade
-                </label>
+                
                 <div class="" data-select2-id="94">
                   <select
                     class="form-control select2 select2-hidden-accessible"
@@ -2484,13 +2983,15 @@ class Step5 extends React.Component {
                       90%
                     </option>
                   </select>
+
+                  <label class="col-md-12 col-form-label" for="level">
+                  Grade
+                </label>
                 </div>
               </div>
 
               <div class="form-group  col-md-6 fl-left">
-                <label class="col-md-12 col-form-label" for="level">
-                  Assignment/Exam Type
-                </label>
+                
                 <div class="" data-select2-id="94">
                   <select
                     class="form-control select2 select2-hidden-accessible"
@@ -2508,13 +3009,14 @@ class Step5 extends React.Component {
                       Certificate issued
                     </option>
                   </select>
+                  <label class="col-md-12 col-form-label" for="level">
+                  Assignment/Exam Type
+                </label>
                 </div>
               </div>
 
               <div class="form-group  mb-3 col-md-6 fl-left">
-                <label class="col-md-12 col-form-label" for="language_made_in">
-                  Language made in
-                </label>
+                
                 <div class="">
                   <select
                     class="form-control select2 select2-hidden-accessible"
@@ -2535,6 +3037,9 @@ class Step5 extends React.Component {
                             );
                           })}
                   </select>
+                  <label class="col-md-12 col-form-label" for="language_made_in">
+                  Language made in
+                </label>
                 </div>
               </div>
               {/*<div className="form-group row mb-3">
@@ -2625,9 +3130,7 @@ class Step3 extends React.Component {
           <div className="row card-box">
             <div className="col-md-12">
               <div className="form-group col-md-6 fl-left">
-                <label className="col-md-12 col-form-label" for="course_title">
-                  Course Start Date <span className="required">*</span>{" "}
-                </label>
+               
                 <div className="">
                   <input
                     type="date"
@@ -2639,13 +3142,15 @@ class Step3 extends React.Component {
                      value={this.props.course_start_date_time}
                      onChange={this.props.handleChange}
                   />
+
+                   <label className="col-md-12 col-form-label" for="course_title">
+                  Course Start Date <span className="required">*</span>{" "}
+                </label>
                 </div>
               </div>
 
               <div className="form-group col-md-6 fl-left">
-                <label className="col-md-12 col-form-label" for="course_title">
-                  Course End Date <span className="required">*</span>{" "}
-                </label>
+                
                 <div className="">
                   <input
                     type="date"
@@ -2657,13 +3162,14 @@ class Step3 extends React.Component {
                      value={this.props.course_end_date_time}
                      onChange={this.props.handleChange}
                   />
+                  <label className="col-md-12 col-form-label" for="course_title">
+                  Course End Date <span className="required">*</span>{" "}
+                </label>
                 </div>
               </div>
 
               <div className="form-group col-md-6 fl-left">
-                <label className="col-md-12 col-form-label" for="course_title">
-                  Enrollments Start Date <span className="required">*</span>{" "}
-                </label>
+               
                 <div className="">
                   <input
                     type="date"
@@ -2675,13 +3181,14 @@ class Step3 extends React.Component {
                     value={this.props.enrolment_start_date_time}
                      onChange={this.props.handleChange}
                   />
+                   <label className="col-md-12 col-form-label" for="course_title">
+                  Enrollments Start Date <span className="required">*</span>{" "}
+                </label>
                 </div>
               </div>
 
               <div className="form-group col-md-6 fl-left">
-                <label className="col-md-12 col-form-label" for="course_title">
-                  Enrollments End Date/Time <span className="required">*</span>{" "}
-                </label>
+                
                 <div className="">
                   <input
                     type="date"
@@ -2693,6 +3200,9 @@ class Step3 extends React.Component {
                     value={this.props.enrolment_end_date_time}
                      onChange={this.props.handleChange}
                   />
+                  <label className="col-md-12 col-form-label" for="course_title">
+                  Enrollments End Date/Time <span className="required">*</span>{" "}
+                </label>
                 </div>
               </div>
 
@@ -2799,7 +3309,8 @@ class Step4 extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      shareholders: [{ name: "" }],
+      collaborators: [],
+
     };
   }
 
@@ -2807,27 +3318,8 @@ class Step4 extends React.Component {
 
 
 
-  handleShareholderNameChange = (idx) => (evt) => {
-    const newShareholders = this.state.shareholders.map((shareholder, sidx) => {
-      if (idx !== sidx) return shareholder;
-      return { ...shareholder, name: evt.target.value };
-    });
-
-    this.setState({ shareholders: newShareholders });
-  };
-
-  handleAddShareholder = () => {
-    this.setState({
-      shareholders: this.state.shareholders.concat([{ name: "" }]),
-    });
-  };
-
-  handleRemoveShareholder = (idx) => () => {
-    this.setState({
-      shareholders: this.state.shareholders.filter((s, sidx) => idx !== sidx),
-    });
-  };
   render() {
+    const { instructors } = this.props
     if (this.props.currentStep !== 5) {
       return null;
     }
@@ -2839,49 +3331,6 @@ class Step4 extends React.Component {
             <div className="col-md-12">
               
 
-              <div className="row">
-        <div className="col-md-12">
-          <h6>{this.props.title}</h6>
-
-          {this.state.shareholders.map((shareholder, idx) => (
-            <div className="shareholder form-group ">
-              <div className="col-md-10 fl-left">
-                <input
-                  type="text"
-                  placeholder={` #${idx + 1} Enter an instructors email`}
-                  value={shareholder.name}
-                  onChange={this.handleShareholderNameChange(idx)}
-                  className="form-control fl-left"
-                />
-              </div>
-              {/*<div class="col-md-2">
-            <button
-              type="button"
-              onClick={this.handleRemoveShareholder(idx)}
-              className="small text-white"
-            >
-              -
-            </button>
-            </div>*/}
-
-              <br />
-              <br />
-            </div>
-          ))}
-          <br />
-          <button
-            type="button"
-            onClick={this.handleAddShareholder}
-            className="btn btn-primary text-white"
-            style={{ width: "300px", margin: "10px" }}
-          >
-            Add A Team
-          </button>
-        </div>
-
-        <br />
-        <br />
-      </div>
 
 
 
@@ -2975,6 +3424,14 @@ const Step2 = (props) => {
     });
     Tabs.forEach((tab) => {
       tab.onclick = handleTabClick;
+    });
+
+
+     //disable enter key in a modal section when creating section/lessons
+     $(document).keyup(function(objEvent) {
+      if (objEvent.keyCode ==  13) {
+          return false
+      }
     });
 
 
@@ -3766,7 +4223,7 @@ const saveMarkdownEditContent = () => {
 
                     <div class="form-group">
                       <label>Overview</label>
-                      <Editor placeholder="overview" />
+                      <textarea name="overview"></textarea>
                     </div>
                   </div>
                 </div>
@@ -3834,7 +4291,7 @@ const saveMarkdownEditContent = () => {
 
                     <div class="form-group">
                       <label>Overview</label>
-                      <Editor placeholder="overview" />
+                      <textarea placeholder="overview" name="overview" ></textarea>
                     </div>
                   </div>
                 </div>
@@ -3906,7 +4363,7 @@ const saveMarkdownEditContent = () => {
 
                     <div class="form-group">
                       <label>Overview</label>
-                      <Editor placeholder="overview" />
+                      <textarea></textarea>
                     </div>
                   </div>
                 </div>
@@ -3974,7 +4431,7 @@ const saveMarkdownEditContent = () => {
 
                     <div class="form-group">
                       <label>Overview</label>
-                      <Editor placeholder="overview" />
+                      <textarea></textarea>
                     </div>
                   </div>
                 </div>
@@ -4143,7 +4600,7 @@ const saveMarkdownEditContent = () => {
 
                     <div class="form-group">
                       <label>Overview</label>
-                      <Editor placeholder="overview" />
+                      <textarea></textarea>
                     </div>
                   </div>
                 </div>
@@ -5391,6 +5848,40 @@ const saveMarkdownEditContent = () => {
               </div>
           
           </div>
+
+
+        {/*colla borator template container*/}
+         <div class="col-lg-3 col-md-3 col-sm-6">
+                      <a href="#">
+                        <div className="widget-panel widget-style-2 bg-white">
+                          <i className="fa fa-trash fa-2x text-pink"></i>
+                          <h2
+                            className="m-0 text-dark-x counter font-600-x text-holder"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+
+                          >
+                           
+                          </h2>
+                          <div
+                            className="text-muted-x m-t-5-x delete-holder"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+
+                            
+                          >{/*handle delete of collaborator*/}
+                            Remove
+                          }
+                          </div>
+                        </div>
+                      </a>
+                    </div>
 
 
 

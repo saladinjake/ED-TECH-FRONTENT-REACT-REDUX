@@ -493,6 +493,10 @@ const CreateCourse = (props) => {
     setHtmlPrerequisites(newValue);
   }
 
+
+
+  
+
   return (
     <div>
       <InstructorNavBar />
@@ -1021,6 +1025,8 @@ const CreateCourse = (props) => {
                       />
                     </p>
                   </div>
+
+                 
 
                   <a
                     onClick={handleToggleAccordion}

@@ -1,0 +1,36 @@
+.partnerxa {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  margin: 0px;
+  display: inline;
+  min-width: 900px;
+}
+
+a.set-invert {
+  width: 200px;
+  height: 200px;
+  float: left;
+  min-width: 200px;
+  min-height: 200px;
+  float: left;
+}
+
+a.set-invert:hover {
+  padding: 3px;
+  border: 1px solid #fafafa;
+}
+
+.cell-width .item img {
+  height: 150px;
+}
+
+.details-window-animated-small {
+  height: 160px;
+  width: 100%;
+  opacity: 0;
+  background: rgb(2, 83, 200);
+  position: absolute;
+  marginleft: -20px;
+  marginright: -10px;
+}

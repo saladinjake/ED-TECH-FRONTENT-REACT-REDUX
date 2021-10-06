@@ -122,8 +122,8 @@
     "leftcol leftdragbar tabs "
     "leftcol leftdragbar tabpages"
     "leftcol leftdragbar footer ";
-  grid-template-rows: min-content 1fr 9fr 1fr;
-  grid-template-columns: 20fr 6px 16fr;
+  grid-template-rows: min-content 1fr 12fr 1fr;
+  grid-template-columns: 29fr 6px 10fr;
 }
 
 /*****************************/

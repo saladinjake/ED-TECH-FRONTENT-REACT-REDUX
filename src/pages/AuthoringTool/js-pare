@@ -1,0 +1,103 @@
+ //group class to be moved should have a class of hello-move-me eg all li's in the parent ul
+ //the base class  eg the ul should have aclass drag-sort-enable
+ //usage enableDragSort(parentulclass, groupClassforall_listitem)
+
+
+export const  enableDragSort = (listClass, groupClass) => {
+  const sortableLists = document.getElementsByClassName(listClass);
+  Array.prototype.map.call(sortableLists, (list) => {enableDragList(list, groupClass)});
+}
+
+function enableDragList(list,groupClass) {
+  Array.prototype.map.call(list.children, (item) => {enableDragItem(item,groupClass)});
+}
+
+function enableDragItem(item,groupClass) {
+  //if condition is in group of the allowed class
+  let cls = Array.from(item.classList);
+  console.log(cls)
+  if(cls[0]==groupClass){
+    item.setAttribute('draggable', true)
+    item.ondrag = function(event){handleDrag(event)} 
+    item.ondragend = function(event) {handleDrop(event)}
+  }
+  
+}
+
+function handleDrag(event) {
+  const selectedItem = event.target,  
+  list = selectedItem.parentNode,
+  x = event.clientX,
+  y = event.clientY;
+  const itemTitle = selectedItem.innerHTML;
+
+  //section position tracker
+   var index;
+    for (let i in document.querySelectorAll("#js-parent .section")){
+    if (document.querySelectorAll("#js-parent .section")[i]==event.target){
+       index = i;
+    }
+  }
+    let elementDetail={ 
+      title: itemTitle,
+      target :event.target,
+      index:index,
+    };
+      console.log(elementDetail)
+
+
+    // //subsection tracker
+    // let sectionParent = event.target.parentElement;
+    // console.log(sectionParent.querySelectorAll(".subsection").length)
+    // //track pos only with in the parentof the sub section
+    // for (let j in sectionParent.querySelectorAll(".subsection")){
+    // if (sectionParent.querySelectorAll(".subsection")[j]==event.target)var index = j
+    // }
+    // let subsectionDetail={ 
+    //   title: itemTitle,
+    //   target :event.target,
+    //   index:index,
+    // };
+    // console.log(subsectionDetail)
+
+
+
+    // //lesson tracker
+    // let subsectionParent = event.target.parentElement;
+    // console.log(subsectionParent.querySelectorAll(".lessons").length)
+    // //track pos only with in the parentof the sub section
+    // for (let j in subsectionParent.querySelectorAll(".lessons")){
+    // if (subsectionParent.querySelectorAll(".lessons")[j]==event.target)var index = j
+    // }
+    // let lessonsDetail={ 
+    //   title: itemTitle,
+    //   target :event.target,
+    //   index:index,
+    // };
+    // console.log(lessonsDetail)
+    
+
+   
+ 
+  let cls = selectedItem.classList;
+  cls = Array.from(cls);
+  if(cls[0]== 'hello-move-me'){
+
+    selectedItem.classList.add('drag-sort-active');
+    let swapItem = document.elementFromPoint(x, y) === null ? selectedItem : document.elementFromPoint(x, y);
+    if (list === swapItem.parentNode) {
+      swapItem = swapItem !== selectedItem.nextSibling ? swapItem : swapItem.nextSibling;
+      list.insertBefore(selectedItem, swapItem);
+    }
+
+ }
+ 
+}
+
+function handleDrop(item) {
+  item.target.classList.remove('drag-sort-active');
+}
+
+
+
+//usage here
