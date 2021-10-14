@@ -1077,12 +1077,6 @@ export const AddHead = () => {
             <h4 className="page-title">
               {" "}
               <i className="fa fa-home title_icon"></i> Courses{" "}
-              <a
-                href={process.env.PUBLIC_URL + "/authoring/create/new"}
-                className="btn btn-outline-primary btn-rounded alignToTitle"
-              >
-                <i className="mdi mdi-plus"></i>Add new course
-              </a>
             </h4>
           </div>
         </div>

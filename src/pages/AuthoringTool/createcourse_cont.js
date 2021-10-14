@@ -111,6 +111,65 @@ $.widget.bridge('uibutton', $.ui.button);
 //jqueryBridget( 'plugin-designated-name', ImportedPlugin, $ );
 
 
+
+const collapsibleEffect = () =>{
+  setTimeout(()=>{
+  $(document).ready(function() {
+      // $('.sections').each(function() {
+      //   var tis = $(this), state = false, 
+      //   subunits = tis.find(".subsections")
+      //   subunits.fadeOut()
+      //   tis.click(function() {
+      //     state = !state;
+      //     if(state){
+      //      // subunits.slideToggle(state);
+      //      subunits.fadeIn()
+      //     }else{
+      //       subunits.fadeOut("fast")
+      //     }
+
+          
+      //     tis.toggleClass('active',state);
+      //   });
+      // });
+
+      // $('.subsections').each(function() {
+      //   var tis = $(this), state = false, 
+      //   subunits = tis.find(".lessons")
+      //   subunits.fadeOut()
+      //   tis.click(function() {
+      //     state = !state;
+      //     if(state){
+      //      // subunits.slideToggle(state);
+      //      subunits.fadeIn()
+      //     }else{
+      //       subunits.fadeOut("fast")
+      //     }
+
+          
+      //     tis.toggleClass('active',state);
+      //   });
+      // });
+
+
+
+      // $('.lessons').each(function() {
+      //   var tis = $(this), state = false, 
+      //   subunits = tis.next("ul").slideUp();
+      //   tis.click(function() {
+      //     state = !state;
+      //     subunits.slideToggle(state);
+      //     tis.toggleClass('active',state);
+      //   });
+      // });
+
+  
+
+});
+
+},1000)
+}
+
 function validYoutubeLink(url) {
     var p = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
     return (url.match(p)) ? RegExp.$1 : url;
@@ -157,6 +216,55 @@ const CSRFToken = () => {
 window.projectorInView = function(){
   //project course data to preview mode
 }
+
+
+
+
+  // Methods
+
+
+  const handleWidgetRemove = (widget) => {
+    widget.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
+  };
+
+  window.handleWidgetRemove =  (widget) => {
+     const type = widget.getAttribute("data-component_type");
+
+     console.log(type)
+     const id = widget.getAttribute("data-idx")
+     let url = `html-component/${id}`;
+     switch(type){
+       case "1": //video delete mode
+         url = `video-component/${id}`
+         break;
+       case "2": //html delete mode
+       url = `html-component/${id}`
+         break;
+       case "3": //problem
+       url = `problem-component/${id}`
+         break;
+       case "4": //discussion
+       url = `discussion-component/${id}`
+         break
+     }
+
+  let deletePromises = deleteApi(url);
+  deletePromises
+    .then(res => res.text())
+    .then(data => { 
+      console.log(data)
+      console.log("success with delete");
+      widget.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
+  
+  })
+    .catch(err => {
+      console.log(err)
+      throw new Error("COULD NOT PERFORM DELETE OPERATION")
+    })
+
+
+  }
+
 
 
 window.genericDelete = (e) => {
@@ -216,6 +324,7 @@ window.injectToModal =(el) => {
       btnPayLoad.attr("editing_subsection_id", $(el).attr("data-idx"));
       btnPayLoad.attr("editing_course_name", $(el).attr("data-name"))
       btnPayLoad.attr("editing_parent_id", $(el).attr("data-parent-id"))
+      btnPayLoad.attr("root_parent", $(el).attr("data-idx")) // the self triggered parent block
 
       //observers and recievers technique here:
 
@@ -243,6 +352,8 @@ window.injectToModal =(el) => {
       btnPayLoad.attr("editing_lesson_id", $(el).attr("data-idx"));
       btnPayLoad.attr("editing_course_name", $(el).attr("data-name"))
       btnPayLoad.attr("editing_parent_id", $(el).attr("data-parent-id"))
+      btnPayLoad.attr("root_parent", $(el).attr("data-idx")) // the self triggered parent block
+
 
       //observers and recievers technique here:
       $("#myModalEditLesson").find("h5").html("Editing "+ $(el).attr("data-name"))
@@ -290,10 +401,11 @@ const createLessonSection = (el) => {
 
 const createLessonComponent = (url, form) => {
 
-
-  
-  let lessonRes = createAnyResource('POST',url,form) 
+  let lessonRes = createAnyResource('POST',url,form);
   //save to db
+  console.log(lessonRes)
+
+  //if response exists then update lesson components attributes
   return lessonRes;
 }
 
@@ -384,25 +496,41 @@ window.showSetSubsection = function(el) {
   }
 };
 
+window.LaunchEditBoxEvent = (el) => {
+  let form = $("#myModalMarkdownEditor-SELECT") //will be reset back to post after update
+    form.attr("method", "patch") // switch to edit mode for the same form
+    form.find("#editor-html-name").val(el.getAttribute("data-name"))
+    form.find("#component_id").val(el.getAttribute("data-idx")) //component id
+    form.find("#lesson-editor-id").val(el.getAttribute("data-parent")) //lesson id
+    form.find("#editor-html-description").val(el.getAttribute("data-description"))
+    form.find("#editor-html-type").val(el.getAttribute("data-component_type"))
+    form.find("#editor-html-content-type").val(el.getAttribute("data-content_type"))
+    form.find("#html_text").val(el.getAttribute("data-html_text"))
 
-  // Methods
 
+}
 
-  const handleWidgetRemove = (widget) => {
-    widget.parentElement.parentElement.parentElement.parentElement.remove();
-  };
+const LaunchEditBoxEvent = (el) =>{
+     let form = $("#myModalMarkdownEditor-SELECT")
+     form.attr("method", "patch")
 
+     form.find("#editor-html-name").val(el.getAttribute("data-name"))
+     form.find("#component_id").val(el.getAttribute("data-idx")) //component id
+     form.find("#lesson-editor-id").val(el.getAttribute("data-parent")) //lesson id
+   
+     form.find("#editor-html-description").val(el.getAttribute("data-description"))
+     form.find("#editor-html-type").val(el.getAttribute("data-component_type"))
+     form.find("#editor-html-content-type").val(el.getAttribute("data-content_type"))
+     form.find("#html_text").val(el.getAttribute("data-html_text"))
 
-const LaunchEditBoxEvent = (e) =>{
-   /*this is based on categorized module widgets*/
-   // alert("testingedit" + e.dataset.template)
   
-
   }
 
 window.LaunchPreviewBoxEvent =(Target,MainClone,TemplateType) =>{
     /*just previews the content in the modal section view*/
-  }
+    
+          
+}
 function removeLoader(){
   $( "#loadingDiv" ).fadeOut(500, function() {
           // fadeOut complete. Remove the loading div
@@ -507,50 +635,95 @@ const  handleSaveComponentTextEditor =(e) => {
     let markdownTemplate =  allowedHeaders.getAttribute("data-markdown")
     let _title =  allowedHeaders.getAttribute("data-title")
     let url = allowedHeaders.getAttribute("data-url")
+    let Preview = document.querySelector(
+      "#template-container > .pb-widget-preview-panel"
+    );
 
+    let SClone = Preview.cloneNode(true)      
         
-         // alert("its editorial") 
-
-        let Preview = document.querySelector(
-          "#template-container > .pb-widget-preview-panel"
-        );
-
-        let SClone = Preview.cloneNode(true)      
-        
-          let wrapWrapper = pbCreateNode("li", [
-                        { class: "pb-placeholder-main col-md-12" },
+    let wrapWrapper = pbCreateNode("li", [
+      { class: "pb-placeholder-main col-md-12" },
                      // { onclick:  () => { "openModal(this)" }
-             ]);
+    ]);
 
         wrapWrapper.appendChild(SClone)
         wrapWrapper.setAttribute("id", randId )
         let MainClone = wrapWrapper.cloneNode(true);
         MainClone.id =randId
-      
+
+
+        //the form should keep track of the clone id when user dont reload page
+        let form = $("#myModalMarkdownEditor-SELECT")
+        form.attr("temp_id", randId)
+        form.attr("data-id", randId)
+        form.attr("data-idx", randId)
+        form.attr("data-parent-id", localStorage.getItem("l_tracker"))
+        form.attr("data-content_type",form.find("#editor-html-content-type").val())
+        form.attr("data-component_type",form.find("#editor-html-type").val())
+        form.attr("data-name",form.find("#editor-html-name").val())
+        form.attr("data-pos","1.0")
+        form.attr("data-description",form.find("#editor-html-description").val())
+
+
+
+
+       //fall back attributes if it fails upon saving new data
+        MainClone.querySelector(".fa-edit").setAttribute("data-id", randId)
+        MainClone.querySelector(".fa-edit").setAttribute("data-parent-id", localStorage.getItem("l_tracker"))
+        MainClone.querySelector(".fa-edit").setAttribute("data-content_type",$("#myModalMarkdownEditor-SELECT").find("#editor-html-content-type").val())
+        MainClone.querySelector(".fa-edit").setAttribute("data-component_type",$("#myModalMarkdownEditor-SELECT").find("#editor-html-type").val())
+        MainClone.querySelector(".fa-edit").setAttribute("data-name",$("#myModalMarkdownEditor-SELECT").find("#editor-html-name").val())
+        MainClone.querySelector(".fa-edit").setAttribute("data-pos","1.0")
+        MainClone.querySelector(".fa-edit").setAttribute("data-description",$("#myModalMarkdownEditor-SELECT").find("#editor-html-description").val())
+
+
+        //fall back attributes if it fails upon saving new data
+
+        MainClone.setAttribute("data-id", randId)
+
+
         MainClone.querySelector(".fa-edit").setAttribute("data-template",markdownTemplate)
         MainClone.querySelector(".fa-edit").setAttribute("data-id",randId) //ref the curr main lesson box
         MainClone.querySelector(".fa-edit").addEventListener("click",(es) =>{
              document.getElementById(MainClone.id).setAttribute("data-parent",MainClone.id)
-                  const extracts = $("#" + MainClone.getAttribute("id")).find(".unit_content_place_holder").html();
-                  const editBoard = document.getElementById("myModalMarkdownEditorEditMode").querySelector(".visuell-view2");
-                  editBoard.value = extracts;
-                  const markupBoard = document.getElementById("markup-template-content")
-                  markupBoard.innerHTML =markdownTemplate
+                  // const extracts = $("#" + MainClone.getAttribute("id")).find(".unit_content_place_holder").html();
+                  // const editBoard = document.getElementById("myModalMarkdownEditorEditMode").querySelector(".visuell-view2");
+                  // editBoard.value = extracts;
+                  // const markupBoard = document.getElementById("markup-template-content")
+                  // markupBoard.innerHTML =markdownTemplate
+                  localStorage.setItem("edit_component", randId )
+                  form.attr("method","patch")
+
         })
+
+        // document.getElementById("myModalMarkdownEditorEditMode").querySelector(".visuell-view2")
+      $("#myModalMarkdownEditor-SELECT").find("#input-area4").val(
+        localStorage.getItem("html_text_content")
+      )
+      
 
         MainClone.querySelector(".fa-trash").addEventListener("click", (e) => {
              handleWidgetRemove(e.target)
         })
-      MainClone.querySelector(".unit_title_place_holder").innerHTML= _title   //no title initially for this comonent
-      MainClone.querySelector(".unit_content_place_holder").innerHTML =  getTemplateType(markdownTemplate)        //$("#input-area").val()      //getTemplateType(markdownTemplate)           //$(".visuell-view").html() || "Edit this content"
+      MainClone.querySelector(".unit_title_place_holder").innerHTML= $("#editor-html-name").val()  /// _title   //no title initially for this comonent
+      MainClone.querySelector(".unit_content_place_holder").innerHTML = localStorage.getItem("html_text_content")  //getTemplateType(markdownTemplate)        //$("#input-area").val()      //getTemplateType(markdownTemplate)           //$(".visuell-view").html() || "Edit this content"
       const markupBoard = document.getElementById("markup-template-content")
 
-      // document.getElementById("myModalMarkdownEditorEditMode").querySelector(".visuell-view2")
-      
-     let res = createLessonComponent(url,$("#myModalMarkdownEditor-SELECT"))
 
+     let res = createLessonComponent(url,form)
+
+     console.log(res);
+     localStorage.setItem("html_text_content", "")
+
+
+     
+     console.log($("#myModalMarkdownEditor-SELECT").find(".visuell-view").html())
       markupBoard.innerHTML =markdownTemplate
       $(".visuell-view").html(getTemplateType(markdownTemplate))
+     
+
+      //MainClone.querySelector(".fa-edit")
+      // MainClone.querySelector(".fa-trash")
       Target.append(MainClone);
 
 
@@ -742,6 +915,22 @@ export default class MasterForm extends React.Component {
   constructor(props) {
 
     super(props);
+	let name ="",author ="",institution ="",code =""
+	if(localStorage.getItem("code")
+	   
+	   ){
+		
+        code = localStorage.getItem("code")
+       
+        	
+	}else if(localStorage.getItem("name") ){
+		name = localStorage.getItem("name");
+	}else if(localStorage.getItem("institution")){
+		 institution = localStorage.getItem("institution");
+	}else if(
+	   localStorage.getItem("author")){
+		author = localStorage.getItem("author")	
+	}
     this.courseData = null;
     this.state = {
       /*multistep logic data*/
@@ -756,13 +945,15 @@ export default class MasterForm extends React.Component {
       editor:null,  //THE LOGGED IN USERS DETAILS [{token,...details}]
       author: "", // THE LOGGED IN USER NAME {...details}.username
       previledges:["CAN_EDIT","CAN_VIEW","CAN_DELETE","CAN_CREATE"], 
+	  
+	  
       
       //state fields
       /*request form data*/
       courseDetail: {},
       
-        name: "",
-        code: "",
+        name: name,
+        code: code,
         run: "",
         card_image: "",
         intro_video: "",
@@ -785,8 +976,8 @@ export default class MasterForm extends React.Component {
         requirement_no_of_week: 1,  //int
         grace_period_after_deadline: 1, //int
         publication_status: 2,  //int
-        institution: "",   //keypair preporpulated set of inst id
-        author: "",  //keypair preporpulated set of author id
+        institution: institution,   //keypair preporpulated set of inst id
+        author: author,  //keypair preporpulated set of author id
         prerequisite: [
               //key pairs ids of courses
         ],
@@ -860,6 +1051,19 @@ export default class MasterForm extends React.Component {
     var str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
     return str;
   }
+  
+  autoUpdateFilledData(obj){
+	  for(let k in obj){
+		this.setState(
+          {
+            [k]: obj[k],
+          }
+          
+        );  
+	  }
+  }
+  
+  
 
 
 
@@ -876,7 +1080,10 @@ export default class MasterForm extends React.Component {
         name =="course_end_date_time" || 
         name=="enrolment_start_date_time" ||
          name=="enrolment_end_date_time"){
-        event.target.type="text"
+			 //set it back to text
+        
+		
+		event.target.type="text"
 
         // value = new Date(value) //DateFormatter.mysqlDate(value);
         // value = value.toISOString()
@@ -1079,25 +1286,14 @@ export default class MasterForm extends React.Component {
       });
     }
 
-    console.log(this.state)
+    //console.log(this.state)
   }
 
    /*navigation skipper*/
 
   goToStep(e, step) {
     e.preventDefault();
-    // $(".nav-link").removeClass("active")
-    //   .css({
-    //      color:"#000"
-    // });
-    // $(e.target).addClass("active")
-    //   .css({
-    //     color:"#fff", 
-    //     background:"rgba(8,23,200)"
-    // });
-
-    // e.target.parentElement.style.border = "1px solid #eee";
-    //e.target.parentElement.style.padding = "2px";
+    
     this.setState({
       currentStep: step,
     });
@@ -1388,8 +1584,8 @@ export default class MasterForm extends React.Component {
          console.log("some error occured")
        }
     })("run-logic-sequence")
-     let T = new  TinyMyceRender();
-     T.render("")
+     // let T = new  TinyMyceRender();
+     // T.render("")
   var formElements = new Array();
     $("input, select, textarea").each(function(){
         formElements.push($(this));
@@ -1483,12 +1679,23 @@ export default class MasterForm extends React.Component {
 
   //fill form data automatically if the course exists
   fill(a){
+	let textEditors = ["learning_expectation","description", "prerequisite", "overview", "curriculum"]
     for(var k in a){
+		console.log(k)
       //check if name is part of a dropdown then select the dropdown or make it checked
       if($('select[name="'+k+'"]')){
-      
+        
          $('select[name="'+k+'"]').attr('selected', $(this).text() == a[k]);
       }
+	  
+	  //check if k is a rich text editor content
+	  if(textEditors.includes(k)){
+		  //inject to text editor
+		  var myEditor = $('div[data-placeholder="'+k+'"]') // the editor itself
+          //myEditor = myEditor.children[0];
+		  let html = a[k] || "Place your content for editing with rich text editor";
+		  myEditor.html(html);
+	  }
 
 
       if($('textarea[name="'+k+'"]')){
@@ -1506,8 +1713,6 @@ export default class MasterForm extends React.Component {
        }
 
      }
-
-
     }
  }
 
@@ -1515,6 +1720,7 @@ export default class MasterForm extends React.Component {
  getAllFormElements = element => Array.from(element.elements).filter(tag =>  ["select", "textarea", "input"].includes(tag.tagName.toLowerCase()));
 
  fetchContent = async () => {
+  $("#none-display").css({"opacity":0}).fadeOut("fast")
    let instId = this.state.institution
    this.courseData = await this.courseDetailJson()
    localStorage.setItem("course_edit",this.props.match.params.id);
@@ -1549,7 +1755,9 @@ export default class MasterForm extends React.Component {
           sections:res[4]?.results
         })
         //now dynamically fill in the form
-        this.fill(res[4])    
+        this.fill(res[4]) 
+
+        $("#none-display").css({"opacity":1}).fadeIn("slow")		
       }
         
         // setLoading(false);
@@ -1596,7 +1804,7 @@ export default class MasterForm extends React.Component {
    let temp =``;
    let tempArr =[];
    let tempArrLessons = [];
-   courseData = this.sorted_by_position_id(courseData)
+   courseData = this.sorted_by_position_id(courseData) // sorts by position id
 
    console.log(courseData);
 
@@ -1613,9 +1821,11 @@ export default class MasterForm extends React.Component {
                  let insertionId =section.id
  
      let templateData =`
-  <li id="${insertionId}" 
+  <li open id="${insertionId}" 
   data-belongs="${section.course}"
   data-name="${section.name}"
+  data-idx="${insertionId}"
+  data-root-parent="${insertionId}" 
          
           data-description="${section.description}"
 
@@ -1625,19 +1835,21 @@ export default class MasterForm extends React.Component {
     "miller_" + insertionId
   }" id="dynamic_section_${insertionId}"  class="hello-move-me sections card-box root-li view tr-of-root opened col-md-12 ${
     "miller_" + insertionId
-  } section-list" style="margin-bottom:10px;background:#fff;border:2px solid #f5f5f5">
+  } section-list" >
 
    <h4 style="background:rgba(8,23,200); margin-right:10px;padding:10px">
    <a style="color:#fff"
          data-belongs="${section.course}"
+         data-idx="${insertionId}"
          data-name="${section.name}"
           data-pos="${section.position_id}"
           data-id="${"miller_" + insertionId}"
+          data-root-parent="${insertionId}"
           onclick="localStorage.setItem('given_id','dynamic_section_'+'${insertionId}');localStorage.setItem('tracker','${insertionId}');showSetSubsection(this);"           
           >
            <span ><i class="fa fa-chevron-down "></i></span>
     </a>
-     <span class="tits section__name first-child-of-td export_title" style="font-size:20px;color:#fff"> ${
+     <span class="tits section__name title-given first-child-of-td export_title" style="font-size:20px;color:#fff"> ${
        section.name + " " + section.position_id  || "Section " + insertionId
      }</span>
       <span class="per action" style="float:right">
@@ -1646,6 +1858,8 @@ export default class MasterForm extends React.Component {
          data-belongs="${section.course}"
          data-name="${section.name}"
           data-pos="${section.position_id}"
+          data-idx="${insertionId}"
+          data-root-parent="${insertionId}"
                    href="#myModalSubsection" role="button" data-toggle="modal"
                    onclick='setTargetItem("${insertionId}")'
                   >
@@ -1663,6 +1877,7 @@ export default class MasterForm extends React.Component {
           data-pos="${section.position_id}"
           data-description="${section.description}"
           data-belongs="${section.course}"
+          data-root-parent="${insertionId}"
           data-modal="myModalEdit"
 
             onclick="injectToModal(this);localStorage.setItem('given_id','dynamic_section_'+'${insertionId}');localStorage.setItem('tracker','${insertionId}');"       
@@ -1680,6 +1895,7 @@ export default class MasterForm extends React.Component {
           data-pos="${section.position_id}"
           data-description="${section.description}"
           data-id="${"miller_" + insertionId}"
+          data-root-parent="${insertionId}"
            onclick="genericDelete(this)"        
           >
                 
@@ -1696,6 +1912,7 @@ export default class MasterForm extends React.Component {
           data-pos="${section.position_id}"
           data-description="${section.description}"
           data-id="${"miller_" + insertionId}"
+          data-root-parent="${insertionId}"
            onclick="replicateSection(this)"
                         
           >
@@ -1704,10 +1921,12 @@ export default class MasterForm extends React.Component {
          <a class="drag-handle"  
          data-belongs="${section.course}"
          data-belongs="${section.course}"
+         data-idx="${insertionId}"
 
           data-name="${section.name}"
           data-pos="${section.position_id}"
           data-description="${section.description}"
+          data-root-parent="${insertionId}"
           
 
 
@@ -1745,6 +1964,7 @@ export default class MasterForm extends React.Component {
           data-description="${section.description}"
           data-modal="myModalEdit"
           data-belongs="${section.course}"
+          data-root-parent="${insertionId}"
 
             onclick="injectToModal(this);localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});"       
           >Edit </a></li>
@@ -1757,6 +1977,7 @@ export default class MasterForm extends React.Component {
         
           data-id="${"miller_" + insertionId}"
           data-belongs="${section.course}"
+          data-root-parent="${insertionId}"
           onclick="showSetSubsection(this);localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});"
                 
           >
@@ -1780,6 +2001,7 @@ export default class MasterForm extends React.Component {
 
       if(section.section_sub_sections){
          tempArr = section.section_sub_sections;
+         tempArr = this.sorted_by_position_id(tempArr)
 
 
             // still our parent remain the same to transverse up the object while checkmates changes
@@ -1792,11 +2014,15 @@ export default class MasterForm extends React.Component {
       let templateSub = `
          <ul 
           data-name="${subsec?.name}"
-        
+          data-belongs="${subsec.section}"
           data-description="${subsec?.description}"
           data-parent-id="${subsec.section}"
+          data-pos="${subsec.position_id}"
+          data-idx="${subsec.id}"
+          data-root-parent="${subsec.id}"
+          open
          
-         id="dynamic_subsection_${muu_counter}"  data-id="${
+         id="dynamic_subsection_${subsec.id}"  data-id="${
     "muu_" + muu_counter
   }" class="fold subsections hello-move-me card-box drop-zone-section root-sub-ul centerSubsection column-list-section-parade ${
     "muu_" + muu_counter
@@ -1811,7 +2037,7 @@ export default class MasterForm extends React.Component {
      <h4 style="background:rgba(8,23,200); margin-right:10px;padding:10px">
             
               <span class=""  style="height:60px;border-left:3px solid black;margin-top:10px">
-               <span class="title_sub export_title" data-th="Company name" style="font-size:20px;color:#fff">${
+               <span id="title_sub_${subsec.id}" class="title_sub title-given export_title" data-th="Company name" style="font-size:20px;color:#fff">${
                  subsec?.name + " " + subsec?.position_id  || "Subsection"
                }</span>
                 <span class="subsect" data-th="Customer no"></span>
@@ -1821,6 +2047,15 @@ export default class MasterForm extends React.Component {
        <a    href="#myModalLesson" role="button" data-toggle="modal"
        style="margin-right:10px;color:#fff"
           data-id="${"muu_" + muu_counter}"
+          data-idx="${subsec.id}"
+           data-idx="${subsec.id}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+          data-modal="myModalSubSectionEdit"
+           data-belongs="${subsec.section}"
+
             onclick='addlessonSection(this);setTargetSubsectionItem("${muu_counter}") '      
           ><i class="fa fa-plus"></i></a>
 
@@ -1829,45 +2064,64 @@ export default class MasterForm extends React.Component {
             href="#myModalSubSectionEdit" role="button" data-toggle="modal"
           data-id="${"muu_" + muu_counter}"
 
-            data-idx="${muu_counter}"
+           data-idx="${subsec.id}"
           data-name="${subsec?.name}"
           data-pos="${subsec?.position_id}"
           data-description="${subsec?.description}"
           data-parent-id="${subsec.section}"
           data-modal="myModalSubSectionEdit"
+           data-belongs="${subsec.section}"
+
 
             onclick="injectToModal(this);"       
           >
                 
-          <i class="fa fa-edit "></i>
+          <i class="fa fa-edit "  data-idx="${subsec.id}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+          data-modal="myModalSubSectionEdit"
+           data-belongs="${subsec.section}"
+></i>
         </a>
 
 
         <a style="margin-right:10px;color:#fff"
           data-extint="subsection"
 
-            data-idx="${muu_counter}"
+          data-idx="${subsec.id}"
           data-name="${subsec?.name}"
           data-pos="${subsec?.position_id}"
           data-description="${subsec?.description}"
           data-parent-id="${subsec.section}"
+           data-belongs="${subsec.section}"
 
           data-id="${"muu_" + muu_counter}"
            onclick="genericDelete(this)"        
           >
                 
-          <i class="fa fa-trash "></i>
+          <i class="fa fa-trash "  data-extint="subsection"
+
+          data-idx="${subsec.id}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+           data-belongs="${subsec.section}"
+></i>
         </a>
 
 
         <a style="margin-right:10px;color:#fff"
           data-extint="subsection"
 
-            data-idx="${muu_counter}"
+           data-idx="${subsec.id}"
           data-name="${subsec?.name}"
           data-pos="${subsec?.position_id}"
           data-description="${subsec?.description}"
           data-parent-id="${subsec.section}"
+           data-belongs="${subsec.section}"
 
           data-id="${"muu_" + muu_counter}"
            onclick="replicateSubSection(this)"        
@@ -1882,17 +2136,23 @@ export default class MasterForm extends React.Component {
 
          <a  class="drag-handle-list" style="margin-right:10px;color:#fff"
           
-           data-idx="${muu_counter}"
+          data-idx="${subsec.id}"
           data-name="${subsec?.name}"
           data-pos="${subsec?.position_id}"
           data-description="${subsec?.description}"
           data-parent-id="${subsec.section}"
+           data-belongs="${subsec.section}"
 
           data-id="${"muu_" + muu_counter}"
                  
           >
 
-         <i class="fa fa-arrows "></i>
+         <i class="fa fa-arrows " data-idx="${subsec.id}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+           data-belongs="${subsec.section}"></i>
         </a>
 
 
@@ -1907,6 +2167,7 @@ export default class MasterForm extends React.Component {
 
   <li><a class="dropdown-item"   href="#myModalLesson" role="button" data-toggle="modal"
           data-id="${"muu_" + muu_counter}"
+          data-idx="${subsec.id}"
             onclick='addlessonSection(this);setTargetSubsectionItem("${muu_counter}") '      
           >Add</a></li>
 
@@ -1914,7 +2175,7 @@ export default class MasterForm extends React.Component {
 
                 <li><a class="dropdown-item"    href="#myModalSubSectionEdit" role="button" data-toggle="modal"
           data-id="${"muu_" + muu_counter}"
-           data-idx="${muu_counter}"
+           data-idx="${subsec.id}"
           data-name="${subsec?.name}"
           data-pos="${subsec?.position_id}"
           data-description="${subsec?.description}"
@@ -1932,15 +2193,16 @@ export default class MasterForm extends React.Component {
 
                 <li><a class="dropdown-item" 
                  data-id="${"muu_" + muu_counter}"
-                  data-idx="${muu_counter}"
+                 data-idx="${subsec.id}"
           data-name="${subsec?.name}"
           data-pos="${subsec?.position_id}"
           data-description="${subsec?.description}"
            data-parent-id="${subsec?.section}"
+            data-belongs="${subsec.section}"
           data-modal="myModalSubSectionEdit"
                 onclick="replicateSubSection(this);localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"
 
-                >Replicate Section</a></li>
+                >Copy</a></li>
                 
            </ul>
          </a>
@@ -1955,6 +2217,7 @@ export default class MasterForm extends React.Component {
                 enableDragSortPositionUpdater("sections","hello-move-me")
               }
               let respLessons = subsec.sub_section_lessons
+              respLessons = this.sorted_by_position_id(respLessons)
               
                respLessons.forEach( (lessons) =>{
                    if(!document.getElementById(lessons.id)){
@@ -1966,11 +2229,16 @@ export default class MasterForm extends React.Component {
   let panel_class =  $(".muu_" + localStorage.getItem("s_tracker"));  // $("." + localStorage.getItem("lesson_component")) //  $(".muu_" + localStorage.getItem("s_tracker"));
  
 // onDragStart="dragStart(event)" onDragEnd="dragEnd( event )"
-  let rndId = "dynamic_subsection_" + muu_counter + "_lesson_component"
+  let rndId = "dynamic_subsection_" + lessons.id + "_lesson_component"
   let templateLesson = ` 
       <ul id="${rndId}"  data-id="${
     "muu_" + muu_counter}"
-    data-name="${lessons?.name}"
+    
+          data-idx="${muu_counter}"
+          data-name="${lessons?.name}"
+          data-pos="${lessons?.position_id}"
+          data-description="${lessons?.description}"
+           data-parent-id="${lessons.subsection}"
         
           data-description="${lessons?.description}"
      class="reaper-${muu_counter} lessons hello-move-me fold root-lesson-ul draggable dynamo_${localStorage.getItem("l_tracker")} card-box ${
@@ -1986,8 +2254,8 @@ export default class MasterForm extends React.Component {
 
         <li class="fold-content">
   
-    <h4 style="background:rgba(8,23,200); margin-right:10px;padding:10px">
-               <span class="title_sub export_title" data-th="Company name" style="font-size:20px;color:#fff">${
+    <h4 style="background:rgba(8,20,200); margin-right:10px;padding:10px">
+               <span id="title_sub_${lessons.id}" class="title_sub title-given export_title" data-th="Company name" style="font-size:20px;color:#fff">${
                  lessons.name || "Lesson" }
                </span>
                 <span class="subsect" data-th="Customer no"></span>
@@ -2046,6 +2314,7 @@ export default class MasterForm extends React.Component {
 
          class="drag-handle-list-lessons" style="margin-right:10px;color:#fff"
           data-id="${"lmuu_" + muu_counter}"
+          data-idx="${muu_counter}"
           data-template="dynamic_subsection_${muu_counter}_lesson_component "
            
            onclick='setTargetLessonItem("${muu_counter}")'
@@ -2087,7 +2356,7 @@ export default class MasterForm extends React.Component {
                  data-id="${"lmuu_" + muu_counter}"
                 onclick='setTargetLessonComponent("${muu_counter}")'
 
-                >Replicate Section</a></li>
+                >Copy</a></li>
                 
            </ul>
          </a>
@@ -2110,15 +2379,29 @@ export default class MasterForm extends React.Component {
                    console.log(courseComponents)
 
                   courseComponents.forEach(component => {
-                      let launchPad ="#myModalMarkdownEditorEditMode"
+                      let launchPad ="#myModalMarkdownEditor"
+                      let Info = "IFRAME/VIDEO EDITABLE COMPONENT"
                       if(component.component_type ==1){
                         launchPad ="#myModalGenericFormEditorEditMode"
                       }else {
-                        launchPad ="#myModalMarkdownEditorEditMode"
+                        launchPad ="#myModalMarkdownEditor"
+                        Info = "HTML TEXT EDITABLE COMPONENT"
                       }
 
                       if(!document.getElementById(component.id)){
-                        let  tempComponent = `<div class="pb-widget-preview-panel" id="${component.id}">
+                        let  tempComponent = `<div data-id="${component.id}"
+          data-name="${component?.name}"
+               data-idx="${component.id}"
+          data-parent="${component.lesson_id}"
+          data-pos="${component.position_id}"
+          data-description="${component.description}"
+          data-component_type="${component.component_type}"
+          data-name="${component.name}"
+          data-content_type="${component.content_type}"
+          
+          data-embedded_url="${component.embedded_url}"
+          data-embedded_url="${component.video_type}" 
+          class="hello-move-me components pb-widget-preview-panel" id="${component.id}">
             
             
               <div class="container">
@@ -2127,28 +2410,112 @@ export default class MasterForm extends React.Component {
                     <div class="panel-xx panel-dark">
                     
               <div class="panel-heading-xx">
-                <span
-                  class="panel-title unit_title_place_holder"
-                  style={{ float: "left",  marginLeft: "10px" }}
-                >${component.name}
+                <div class="pull-left">
+                    <span
+                  class="panel-title unit_title_place_holder pull-left title-given"
+                  style={{ float: "left",  marginLeft: "10px", color:"#000" }}
+                > ${Info} / ${component.name}
                   
                 </span>
-                <div class="actions-set">
-                  <span><a href="${launchPad}"
-              role="button"
-              data-toggle="modal"><i
-               onclick="LaunchEditBoxEvent(this)"
 
-               class="pb-handle-widget fa fa-edit "></i></a></span>
+                <div class="actions-set pull-right" >
+               
+
+                  <span><a href="${launchPad}"
+                  data-name="${component?.name}"
+               data-idx="${component.id}"
+          data-parent="${component.lesson_id}"
+          data-pos="${component.position_id}"
+          data-description="${component.description}"
+          data-component_type="${component.component_type}"
+          data-name="${component.name}"
+          data-content_type="${component.content_type}"
+          data-embedded_url="${component.embedded_url}"
+          data-embedded_url="${component.video_type}"
+
+              role="button"
+              data-toggle="modal">
+              <i onclick="LaunchEditBoxEvent(this)"
+               class="pb-handle-widget fa fa-edit fa-2x"
+
+                data-name="${component?.name}"
+               data-idx="${component.id}"
+          data-parent="${component.lesson_id}"
+          data-pos="${component.position_id}"
+          data-description="${component.description}"
+          data-component_type="${component.component_type}"
+          data-name="${component.name}"
+          data-content_type="${component.content_type}"
+          data-embedded_url="${component.embedded_url}"
+          data-embedded_url="${component.video_type}"
+
+
+               ></i>
+               </a></span>
                                
-                  <span><i class="pb-remove fa fa-trash " onclick="handleWidgetRemove(this)"></i></span>
+                  <span><i 
+
+                  data-name="${component?.name}"
+               data-idx="${component.id}"
+          data-parent="${component.lesson_id}"
+          data-pos="${component.position_id}"
+          data-description="${component.description}"
+          data-component_type="${component.component_type}"
+          data-name="${component.name}"
+          data-content_type="${component.content_type}"
+          data-embedded_url="${component.embedded_url}"
+          data-embedded_url="${component.video_type}"
+
+
+                  class="pb-remove fa fa-trash fa-2x" onclick="handleWidgetRemove(this)"></i></span>
+                
+                   <span><a
+          data-name="${component?.name}"
+        
+          data-description="${component?.description}" 
+
+         class="drag-handle-list-lessons" style="margin-right:10px;"
+         
+               data-idx="${component.id}"
+          data-parent="${component.lesson_id}"
+          data-pos="${component.position_id}"
+          data-description="${component.description}"
+          data-component_type="${component.component_type}"
+          data-name="${component.name}"
+          data-content_type="${component.content_type}"
+          data-embedded_url="${component.embedded_url}"
+          data-embedded_url="${component.video_type}"
+           
+         
+                 
+          >
+
+         <i class="fa fa-arrows fa-2x"
+            data-name="${component?.name}"
+               data-idx="${component.id}"
+          data-parent="${component.lesson_id}"
+          data-pos="${component.position_id}"
+          data-description="${component.description}"
+          data-component_type="${component.component_type}"
+          data-name="${component.name}"
+          data-content_type="${component.content_type}"
+          data-embedded_url="${component.embedded_url}"
+          data-embedded_url="${component.video_type}"
+
+          
+        
+
+         ></i>
+        </a></span>
                 </div>
+                </div>
+                
               </div>
             
                       <div class="panel-body-xx ">
-                        
+                       
                         <div class="content-section-from-input unit_content_place_holder">
-                          Edit this section
+                          ${ component?.html_text?.substr(0,200) || "Click the edit icon above to edit this html content" }
                         </div>
 
                       </div>
@@ -2162,7 +2529,7 @@ export default class MasterForm extends React.Component {
                        
        $("#dynamic_subsection_"+ component.lesson_id +"_lesson_component")
         .append( $(tempComponent));
-        enableDragSortPositionUpdater("subsections", "hello-move-me")
+        enableDragSortPositionUpdater("lessons", "hello-move-me")
                      
 
                       }
@@ -2174,7 +2541,12 @@ export default class MasterForm extends React.Component {
 
             //console.log(TreeObj.tree)
             //console.log(TreeObj.tree.root)
-       }     
+       }  
+
+
+
+       //allow collapsible effect on each section , subsections , lessons
+
     })
 
    
@@ -2229,13 +2601,13 @@ export default class MasterForm extends React.Component {
   }
 
 
-  saveOrUpdateData =  ( type, mode="EDIT_MODE", url, data) => {
+  saveOrUpdateData =  ( type, mode="EDIT_MODE", url, data, state={}) => {
     //after api call to update or create
     switch(mode){
       
       case "EDIT_MODE": // called subsequently
         //call the update handler to api
-        let updateCourseRes = createAnyResource("PATCH",url, data)
+        let updateCourseRes = createAnyResource("PATCH",url, data,state)
         break;
       default:
         throw new Error(`Wrongly accessed mode:- ${mode}`)
@@ -2280,11 +2652,42 @@ export default class MasterForm extends React.Component {
   
    /*implements save and continue logic*/
   saveAndContinue = (e) =>{
-     const {currentCourseId } = this.state;
+     const {id } =  this.props.match.params;
      let curr = this.state.currentStep;
      /*Our default url  assumes an update method because much work would be left incomplete during course creation*/
-     let url=  `/lms/api/update/course/${currentCourseId}/`  //
+     let url=  `/lms/api/update/course/${id}/`  //
      let step = parseInt(curr)
+	  let stateData = {...this.state};
+	  
+	  stateData = {
+		  
+        name: localStorage.getItem("name") || "",
+        code:  localStorage.getItem("code") || "",
+        run: localStorage.getItem("run") || "",
+        //card_image:  localStorage.getItem("card_image")|| "",
+        intro_video: localStorage.getItem("intro_video") || "",
+        description: localStorage.getItem("description") || "",
+        overview: localStorage.getItem("overview") || "",
+        learning_expectation: localStorage.getItem("learning_expectation") || "",
+        curriculum: localStorage.getItem("curriculum") || "",
+        level: localStorage.getItem("level") || 1,  //int
+        enrolment_type: localStorage.getItem("enrolment_type") || 1,
+        entrance_exam_required: localStorage.getItem("entrance_exam_required") || false, 
+        cost: localStorage.getItem("cost") || 0.00,  //float
+        //auditing: true,
+        course_pacing: localStorage.getItem("course_pacing") || 1, //int
+        course_start_date_time: localStorage.getItem("course_start_date_time") || "2021-08-26T17:13:00+01:00",  //2021-08-26T17:13:00+01:00
+        course_end_date_time: localStorage.getItem("course_end_date_time") || "2021-08-26T17:13:00+01:00",
+        enrolment_start_date_time: localStorage.getItem("enrolment_start_date_time") || "2021-08-26T17:13:00+01:00",
+        enrolment_end_date_time: localStorage.getItem("enrolment_end_date_time") || "2021-08-26T17:13:00+01:00",
+        course_language: localStorage.getItem("course_language") || "english",
+        requirement_hours_per_week: localStorage.getItem("requirement_hours_per_week") || 1, //int
+        requirement_no_of_week: localStorage.getItem("requirement_no_of_week") || 1,  //int
+        grace_period_after_deadline: localStorage.getItem("grace_period_after_deadline") || 1, //int
+         publication_status: localStorage.getItem("publication_status") || 2,  //int
+        institution: localStorage.getItem("institution") || "",    //keypair preporpulated set of inst id
+        author:  localStorage.getItem("author") || "" ,  //keypair preporpulated set of author id
+	  }
     // alert(step)
     //switch on the step action
     switch(step){
@@ -2294,14 +2697,17 @@ export default class MasterForm extends React.Component {
        case 4:
        case 5:
        case 6:
-           //url will be an update method if the resource exists
-          this.saveOrUpdateData("edit",'EDIT_MODE', url, $("form#stepUpFormWithAI2") )
-          break;
+	   
+		//thn post the form for update 
+         this.saveOrUpdateData("edit",'EDIT_MODE', url, $("form#stepUpFormWithAI2"),stateData )
+       
+		 break;
        case 7:
         // URL WILL CHANGE TO SECTIONS/ SUBSECTIONS AND LESSONS based onaddition and positioning
         // update all fields here
          // url ="/lms/api/create/section/"
-         this.saveOrUpdateData("edit", 'EDIT_MODE',url, $("form#stepUpFormWithAI2") )
+		
+         this.saveOrUpdateData("edit", 'EDIT_MODE',url, $("form#stepUpFormWithAI2"), stateData )
          break;
        default :
           break;
@@ -2316,26 +2722,120 @@ export default class MasterForm extends React.Component {
     return (
       <Fragment>
         <AddHead />
+		
+		
+		
+		<div class="wrapper-loop">
 
-        <div className="row" id="container-fullscreen" style={{margin:"10px"}}>
-          <div className="col-md-12">
-            <div className="card">
-              <div className="card-body" >
-                <div id="make-fixed-on-fullscreen" >
-                  <h4 className="header-title mb-3" >
-                    Course adding form{" "}
+    <input className="menu-xtrigger" type="checkbox" id="navigation" />
+                    <label for="navigation">
+                      Actions
+                     </label>
 
-                    <a
-                      style={{ marginRight: "3px", color:"#fff"}}
-                      href={process.env.PUBLIC_URL+ "/learning/workbench/"+ this.props.match.params.id}
+    <nav className="action-figure">
+	  
+        <ul>
+		<h6  style={{ marginRight: "10px", color:"#fff",background:"rgba(8,23,200)", padding:"20px" }}> Questence</h6><hr/><br/>
+		<li>
+            <a
+                      style={{ marginRight: "3px"}}
+                      href={process.env.PUBLIC_URL+ "/authoring/preview/"+ this.props.match.params.id}
                       
                   
-                      className="alignToTitle btn btn-success btn-outline-secondary btn-rounded btn-sm"
+                      className=""
                     >
                       {" "}
                       <i className=" mdi mdi-keyboard-backspace"></i> Preview 
                     </a>
+					</li>
+					<li>
 
+                    <a
+                      style={{ marginRight: "3px"}}
+                      href={"#"}
+                      onClick={(e) => {
+                      e.preventDefault();
+                      this.saveAndContinue(e)
+                    }}
+                      className=""
+                    >
+                      {" "}
+                      <i className=" mdi mdi-keyboard-backspace"></i> Save 
+                    </a>
+					</li>
+					<li>
+
+                    <a
+                      style={{ marginRight: "3px" }}
+                      href={process.env.PUBLIC_URL + "/authoring/create/new/"}
+                      className=""
+                      onClick={() =>{
+                        window.location.reload()
+                      }}
+                    >
+                      {" "}
+                      <i className=" mdi mdi-keyboard-backspace"></i> 
+                      Cancel
+                    </a>
+					</li>
+
+                     <li>
+                    <a
+                      style={{ marginRight: "10px" }}
+                    onClick={() =>{
+                        window.location.reload()
+                      }}
+                      href={"#"}
+                      className=""
+                    >
+                      {" "}
+                      <i className=" mdi mdi-keyboard-backspace"></i> 
+                      Clear
+                    </a>
+					</li>
+					
+					<li>
+
+                      <a
+                      style={{}}
+                      href={process.env.PUBLIC_URL + "/authoring/course/history"}
+                      className=""
+                    >
+                      <i className=" mdi mdi-keyboard-backspace"></i> Courses
+                      List
+                    </a>
+					</li>
+					
+					<li>
+                    <a
+                      style={{ marginRight: "3px" }}
+                      href="#no-grid"
+                      onClick={this.togglerFullscreen}
+                      id="toggle_fullscreen"
+                      className=""
+                    >
+                      <i className=" mdi mdi-keyboard-backspace"></i> 
+                      Fullscreen
+                    </a>
+                    </li>
+					
+					<li class="questence-slide-show"></li>{/*display any overview video here*/}
+        </ul>
+		
+		
+    </nav>
+
+        <section>
+            <article>
+                
+         
+
+        <div id="none-display" style={{opacity:"0"}} className="row" id="container-fullscreen" style={{margin:"10px"}}>
+          <div className="col-md-12">
+            <div className="card">
+              <div className="card-body" >
+                <div id="make-fixed-on-fullscreen" >
+                  <h4>
                     <a
                       style={{ marginRight: "3px", color:"#fff" }}
                       href={"#"}
@@ -2346,11 +2846,11 @@ export default class MasterForm extends React.Component {
                       className="alignToTitle btn btn-success btn-outline-secondary btn-rounded btn-sm"
                     >
                       {" "}
-                      <i className=" mdi mdi-keyboard-backspace"></i> Save 
+                      <i className=" mdi mdi-keyboard-backspace"></i> Save
                     </a>
 
                     <a
-                      style={{ marginRight: "3px" ,color:"#fff", background:"rgba(8,23,200)"}}
+                      style={{ marginRight: "3px" ,color:"#fff"}}
                       href={process.env.PUBLIC_URL + "/authoring/create/new/"}
                       className="alignToTitle btn btn-danger btn-outline-secondary btn-rounded btn-sm"
                       onClick={() =>{
@@ -2375,14 +2875,7 @@ export default class MasterForm extends React.Component {
                       Clear
                     </a>
 
-                      <a
-                      style={{}}
-                      href={process.env.PUBLIC_URL + "/authoring/course/history"}
-                      className="alignToTitle btn btn-outline-secondary btn-rounded btn-sm"
-                    >
-                      <i className=" mdi mdi-keyboard-backspace"></i> Courses
-                      List
-                    </a>
+                    
                     <a
                       style={{ marginRight: "3px" }}
                       href="#no-grid"
@@ -2394,9 +2887,10 @@ export default class MasterForm extends React.Component {
                       Fullscreen
                     </a>
                     
-                 
                   </h4>
                   <br />
+				  
+				  
 
                   <div className="col-md-12">
                     <ul
@@ -2412,12 +2906,7 @@ export default class MasterForm extends React.Component {
                              //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
 
-                          setTimeout(()=> {
-                            let T = new  TinyMyceRender();
-                          T.render("")
-
-                          },3000)
-                          
+                                                   
                         }}
                         
                         href="#basic"
@@ -2438,11 +2927,6 @@ export default class MasterForm extends React.Component {
                              //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
 
-                          setTimeout(()=> {
-                            let T = new  TinyMyceRender();
-                          T.render("")
-
-                          },3000)
                           
                         }}
                         
@@ -2477,11 +2961,7 @@ export default class MasterForm extends React.Component {
                           //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
 
-                           setTimeout(()=> {
-                            let T = new  TinyMyceRender();
-                          T.render("")
-
-                          },3000)
+                           
                         }}
                         href="#requirements"
                         data-toggle="tab"
@@ -2491,17 +2971,12 @@ export default class MasterForm extends React.Component {
                         <span className="d-none d-sm-inline">Grading</span>
                       </a>
 
-                     {/* <a
+                      <a
                         onClick={(e) => {
                           this.goToStep(e, 4);
                           // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
                           //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
-                          //  setTimeout(()=> {
-                          //   let T = new  TinyMyceRender();
-                          // T.render("")
-
-                          // },3000)
                         }}
                         href="#seo"
                         data-toggle="tab"
@@ -2509,10 +2984,10 @@ export default class MasterForm extends React.Component {
                       >
                         <i className="fa fa-tag mr-1"></i>
                         <span className="d-none d-sm-inline">
-                          Learners Group
+                           Group Config
                         </span>
                       </a>
-                      */}
+                      
 
                       <a
                         onClick={(e) => {
@@ -2520,11 +2995,11 @@ export default class MasterForm extends React.Component {
                           // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
                           //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
-                           setTimeout(()=> {
-                            let T = new  TinyMyceRender();
-                          T.render("")
+                          // setTimeout(()=> {
+                            //let T = new  TinyMyceRender();
+                          //T.render("")
 
-                          },3000)
+                          //},3000)
                         }}
                         href="#pricing"
                         data-toggle="tab"
@@ -2542,11 +3017,8 @@ export default class MasterForm extends React.Component {
                           // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
                           //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
-                           setTimeout(()=> {
-                            let T = new  TinyMyceRender();
-                          T.render("")
+                          
 
-                          },3000)
                         }}
                         href="#resource"
                         data-toggle="tab"
@@ -2578,14 +3050,10 @@ export default class MasterForm extends React.Component {
                       <a
                         onClick={(e) => {
                           this.goToStep(e, 7);
-                          // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                          //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+                          
+                           
 
-                           setTimeout(()=> {
-                            let T = new  TinyMyceRender();
-                          T.render("")
-
-                          },3000)
+                         
                         }}
                         href="#finish"
                         data-toggle="tab"
@@ -2603,8 +3071,7 @@ export default class MasterForm extends React.Component {
                 <div className="row">
                   <div className="col-md-12">
                     <form
-                      id="stepUpFormWithAI2"
-                      className="required-form"
+                      
                       action="#" 
                       method="PATCH" 
                        novalidate
@@ -2618,6 +3085,7 @@ export default class MasterForm extends React.Component {
                         finishedClicked={this.state.finishedClicked}
                         handleChange={this.handleInputChange}
                         stateInitial={this.state}
+						autoUpdateFilledData={this.autoUpdateFilledData}
                         
                         
                         actions={
@@ -2767,13 +3235,13 @@ export default class MasterForm extends React.Component {
 
 
 
-                     <div class="notifier" id="notifier">
+                     <div class="notifier" id="notifier" style={{display:"none"}}>
                           <div class="success-notification">
                              {/*success message*/}
 
                           </div>
 
-                          <div class="error-notification">
+                          <div class="error-notification" >
                               {/*error message*/}
                               Could not perform operation
                           </div>
@@ -2795,6 +3263,14 @@ export default class MasterForm extends React.Component {
             </div>
           </div>
         </div>
+		
+		
+		
+		
+		   </article>
+        </section>
+    </div>
+		
 
         {/*<EditorBox />*/}
       </Fragment>
@@ -2809,15 +3285,15 @@ class Step1 extends React.Component {
 
     let sname,scode, sauthor,sinstitution;
     if(localStorage.getItem("name")){
-      sname= localStorage.getItem("name") || "";
-      scode = localStorage.getItem("course_code") || "";
-      sauthor = localStorage.getItem("author") || "" ;
-      sinstitution = localStorage.getItem("institution") || ""
+      sname= localStorage.getItem("name") ||  this.props.stateInitial.name || "";
+      scode = localStorage.getItem("course_code") ||  this.props.stateInitial.course_code || "";
+      sauthor = localStorage.getItem("author") || this.props.stateInitial.author || "" ;
+      sinstitution = localStorage.getItem("institution") || this.props.stateInitial.institution || ""
 
     }
     let sdescription, soverview, sprerequisite, slearning_expectation, scurriculum,
-    scourse_start_date_time, scourse_end_date_time, senrolment_end_date_time, 
-    senrolment_start_date_time;
+    scourse_start_date_time, scourse_end_date_time, senrolment_end_date_time, scourse_pacing, 
+    senrolment_start_date_time,srequirement_no_of_week, srequirement_hours_per_week;
     if(localStorage.getItem("overview")){
 
       soverview = localStorage.getItem("overview") || ""
@@ -2825,147 +3301,102 @@ class Step1 extends React.Component {
 
     if(localStorage.getItem("description")){
 
-      sdescription = localStorage.getItem("description") || ""
+      sdescription = localStorage.getItem("description") || this.props.stateInitial.description || ""
     }
     if(localStorage.getItem("prerequisite")){
-      sprerequisite = localStorage.getItem("prerequisite") || ""
+      sprerequisite = localStorage.getItem("prerequisite") ||  this.props.stateInitial.prerequisite || ""
     }
     if(localStorage.getItem("learning_expectation")){
-      slearning_expectation = localStorage.getItem("learning_expectation") || ""
+      slearning_expectation = localStorage.getItem("learning_expectation") ||  this.props.stateInitial.learning_expectation || ""
     }
     if(localStorage.getItem("curriculum")){
-      scurriculum = localStorage.getItem("curriculum") || ""
+      scurriculum = localStorage.getItem("curriculum") ||  this.props.stateInitial.curriculum || ""
     }
 
 
     if(localStorage.getItem("course_start_date_time")){
-      scourse_start_date_time = localStorage.getItem("course_start_date_time") || ""
+      scourse_start_date_time = localStorage.getItem("course_start_date_time") ||   this.props.stateInitial.course_start_date_time || ""
     }
 
     if(localStorage.getItem("course_end_date_time")){
-      scourse_end_date_time = localStorage.getItem("course_end_date_time") || ""
+      scourse_end_date_time = localStorage.getItem("course_end_date_time") || this.props.stateInitial.course_end_date_time || ""
     }
     if(localStorage.getItem("enrolment_start_date_time")){
-      senrolment_start_date_time = localStorage.getItem("enrolment_start_date_time") || ""
+      senrolment_start_date_time = localStorage.getItem("enrolment_start_date_time") || this.props.stateInitial.enrolment_start_date_time || ""
     }
 
     if(localStorage.getItem("enrolment_end_date_time")){
-      senrolment_end_date_time = localStorage.getItem("enrolment_end_date_time") || ""
-    }
-
-
-    this.state = {
-      /*multistep logic data*/
-      currentStep: 1,
-      sectionStep: 1,
-      subSectionStep: 1,
-      lessonStep: 1,
-      finishedClicked: false,
-      modes:["CREATE_MODE","EDIT_MODE"],
-      editor:null,  //THE LOGGED IN USERS DETAILS [{token,...details}]
-      author: "", // THE LOGGED IN USER NAME {...details}.username
-      previledges:["CAN_EDIT","CAN_VIEW","CAN_DELETE","CAN_CREATE"], 
-      name: sname,
-      code: scode,
-      institution: sinstitution,   //keypair preporpulated set of inst id
-      author: sauthor,  //keypair preporpulated set of author id
-
-      description: sdescription,
-      overview: soverview,
-      learning_expectation: slearning_expectation,
-      curriculum: scurriculum,
-      course_start_date_time: scourse_start_date_time,  //2021-08-26T17:13:00+01:00
-      course_end_date_time: scourse_end_date_time,
-      enrolment_start_date_time: senrolment_start_date_time,
-      enrolment_end_date_time: senrolment_end_date_time,
-     
-
-
-
+      senrolment_end_date_time = localStorage.getItem("enrolment_end_date_time") || this.props.stateInitial.enrolment_end_date_time || ""
       
-      //state fields
-      /*request form data*/
+	}
+	//here
+	
+	if(localStorage.getItem("requirement_hours_per_week")){
+      srequirement_hours_per_week = localStorage.getItem("requirement_hours_per_week") || this.props.stateInitial.requirement_hours_per_week || ""
       
-        
-        run: "",
-        card_image: "",
-        intro_video: "",
-        level: 1,  //int
-        enrolment_type: 1,
-        entrance_exam_required: true, 
-        cost: 100.0,  //float
-        auditing: true,
-        course_pacing: 1, //int
-        
-        course_language: "1",
-        requirement_hours_per_week: 1, //int
-        requirement_no_of_week: 1,  //int
-        grace_period_after_deadline: 1, //int
-        publication_status: 2,  //int
-        
-        prerequisite: [
-              //key pairs ids of courses
-        ],
-        authoring_team: [
-                              //key pair authors
-            
-        ],
-
-        /* request resource data*/
-        languages:[], //  getdata
-        instructors:[], //  getdata
-        courses:[], //  getdata
-        institutions:[],  //  getdata
-        currentCourseId:"", //for tracking saved course currently working on
-        
-      formErrors: {
-        /*request form errors data*/
-
-        /*do not change this part: its used in ai logic*/
-        name: "",
-        code: "",
-        run: "",
-        card_image: "",
-        intro_video: "",
-        description: "",
-        overview: "",
-        learning_expectation: "",
-        curriculum: "",
-        level: "",  //int
-        enrolment_type: "",
-        entrance_exam_required: "", 
-        cost: "",  //float
-        auditing: "",
-        course_pacing: "", //int
-        course_start_date_time: "",  //2021-08-26T17:13:00+01:00
-        course_end_date_time: "",
-        enrolment_start_date_time: "",
-        enrolment_end_date_time: "",
-        course_language: "",
-        requirement_hours_per_week: "", 
-        requirement_no_of_week: "", 
-        grace_period_after_deadline: "", 
-        publication_status: "",  
-        institution: "",   
-        author: "", 
-        prerequisite: [],
-        authoring_team: [],
-
-        
-      },
-      formValidity: {
-        email: false,
-        username: false,
-        password: false,
-        passwordConfirmation: false,
-      },
-      canSubmit: false,
-    };
+	}
+	
+	if(localStorage.getItem("requirement_no_of_week")){
+      srequirement_no_of_week = localStorage.getItem("requirement_no_of_week") || this.props.stateInitial.requirement_no_of_week || ""
+      
+	}
+	
+	if(localStorage.getItem("course_pacing")){
+      scourse_pacing = localStorage.getItem("course_pacing") || this.props.stateInitial.course_pacing || ""
+      
+	}
+	
+	
+	
+	let prestate = {
+	  enrolment_end_date_time:senrolment_end_date_time,
+	  enrolment_start_date_time:senrolment_start_date_time,
+	  course_end_date_time:scourse_end_date_time,
+	  course_end_date_time:scourse_end_date_time,
+	  curriculum:scurriculum,
+	  learning_expectation:slearning_expectation,
+	  prerequisite: sprerequisite,
+	  overview:soverview,
+	  name:sname,
+	  code:scode,
+	  institution:sinstitution,
+	  author:sauthor,
+	  description: sdescription,
+	  requirement_hours_per_week: srequirement_hours_per_week,
+	  requirement_no_of_week: srequirement_no_of_week,
+	  course_pacing: scourse_pacing
+	  
+	  }
+	
+	console.log(prestate)
+	
 
     
-     
+	
+	this.state ={
+		...prestate
+	}
+	
+	
+	//check if data is fetched from db then make changes to localstorage
+	let textEditors = ["learning_expectation","description", "prerequisite", "overview", "curriculum"]
+    for(var k in prestate){
+      
+	  //check if k is a rich text editor content
+	  if(textEditors.includes(k)){
+		  //inject to text editor
+		  var myEditor = $('div[data-placeholder="'+k+'"]') // the editor itself
+          //myEditor = myEditor.children[0];
+		  let html = prestate[k] || "Place content to be edited with the text editor"
+		  console.log(html)
+		  myEditor.html(html)
+		  
+	  }
+	  
+	}
 
-    this.dropRef = createRef()
+
+    
   }
 
 
@@ -2991,7 +3422,15 @@ class Step1 extends React.Component {
               <div className="col-md-12 card-box">
 
 
-
+ <form
+                      id="stepUpFormWithAI2"
+                      className="required-form"
+                      action="#" 
+                      method="PATCH" 
+                       novalidate
+                      // enctype="multipart/form-data"
+                      enctype="application/x-www-form-urlencoded"
+                    >
 
 
 
@@ -3286,7 +3725,7 @@ class Step1 extends React.Component {
                       id="author"
                       name="author"
                       placeholder="Enter course code"
-                      value="097cd2bb-ae72-48e4-9a4d-1ebd2c05be03"
+                      value={this.props.author}
                      
                     />
                   </div>
@@ -3303,7 +3742,7 @@ class Step1 extends React.Component {
                       name="name"
                       placeholder="Enter course title"
 
-                      value={this.props.course_name}
+                      value={this.props.course_name || this.state.name}
                      onChange={this.props.handleChange}
                     />
                      <label
@@ -3329,10 +3768,9 @@ class Step1 extends React.Component {
                       id="institution"
                       name="institution"
                       
-                      data-select2-id="level"
-                      tabindex="-1"
-                      aria-hidden="true"
-                       value={this.props.institution}
+                    
+                      
+                       value={this.state.institution }
                      onChange={this.props.handleChange}
                     >
 
@@ -3342,8 +3780,9 @@ class Step1 extends React.Component {
                       <option>-- Institutions --</option>
                         {institutions &&
                           institutions.map((language, i) => {
+							  let selected = this.state.institution == language.id ? true : false
                             return (
-                              <option key={i} value={language.id}>
+                              <option key={i} value={language.id} selected={selected}>
                                 {language.name}
                               </option>
                             );
@@ -3449,17 +3888,22 @@ class Step1 extends React.Component {
 
 
                   <textarea
-                    style={{display:"none"}}
+                    
                       name="description"
                       id="description"
-                      
+                      style={{display:"none"}}
                       className="form-control"
                       placeholder="Short description"
-                       value={this.props.description}
-                     onChange={this.props.handleChange}
+                       value={this.state.description}
+                     
                     ></textarea>
                     
-
+                <label
+                    className="col-md-12 col-form-label"
+                    for="short_description"
+                  >
+                    Course Short description
+                  </label>
 
                      <HTMLForm
                         title="description"
@@ -3471,12 +3915,7 @@ class Step1 extends React.Component {
                         name={"description"}
                       />
 
-                     <label
-                    className="col-md-12 col-form-label"
-                    for="short_description"
-                  >
-                    Course Short description
-                  </label>
+                    
                   </div>
                 </div>
 
@@ -3492,12 +3931,12 @@ class Step1 extends React.Component {
                     <textarea
                       name="overview"
                       id="overview"
-                      style={{display:"none"}}
+                    style={{display:"none"}}
                       
                       className="form-control"
                       placeholder="Short description"
-                       value={this.props.overview}
-                     onChange={this.props.handleChange}
+                       value={this.state.overview}
+                  
                     ></textarea>
 
 
@@ -3533,12 +3972,11 @@ class Step1 extends React.Component {
                   <textarea
                       name="curriculum"
                       id="curriculum"
-                      style={{display:"none"}}
-                      
+                       style={{display:"none"}}
                       className="form-control"
                       placeholder="Short description"
-                       value={this.props.curriculum}
-                     onChange={this.props.handleChange}
+                       value={this.state.curriculum}
+                     
                     ></textarea>
 
                     <HTMLForm
@@ -3564,11 +4002,11 @@ class Step1 extends React.Component {
                       name="learning_expectation"
                       id="learning_expectation"
                       style={{display:"none"}}
-                      
+                       style={{display:"none"}}
                       className="form-control"
                       placeholder="Short description"
-                       value={this.props.learning_expectation || ""}
-                     onChange={this.props.handleChange}
+                       value={this.state.learning_expectation || ""}
+                     
                     ></textarea>
 
                     <HTMLForm
@@ -3685,28 +4123,6 @@ class Step1 extends React.Component {
 
 
 
-                <div class="form-group  mb-3 col-md-6 fl-left">
-                 
-                  <div class="co" data-select2-id="94">
-                  <label class="col-md-12 col-form-label" for="level">
-                     Auditing
-                    <input
-                      style={{ position: "relative", zIndex: "1" }}
-                      type="checkbox"
-                      className=""
-                      id="auditing"
-                      name="auditing"
-                      
-                       value={this.props.intro_video}
-                     onChange={this.props.handleChange}
-                    />
-
-
-                  </label>
-
-                     
-                  </div>
-                </div>
 
                 <div className="form-group col-md-6 fl-left">
                   
@@ -3735,7 +4151,29 @@ class Step1 extends React.Component {
 
 
 
+        
+                <div class="form-group  mb-3 col-md-12 fl-left">
+                 
+                  <div class="co" data-select2-id="94">
+                  <label class="col-md-12 col-form-label" for="level">
+                     Auditing
+                    <input
+                      style={{ position: "relative", zIndex: "1" }}
+                      type="checkbox"
+                      className=""
+                      id="auditing"
+                      name="auditing"
+                      
+                       value={this.props.intro_video}
+                     onChange={this.props.handleChange}
+                    />
 
+
+                  </label>
+
+                     
+                  </div>
+                </div>
 
 
 
@@ -3801,9 +4239,10 @@ class Step1 extends React.Component {
                 <br />
                 <br />
                 <br />
-
+</form>
                 
               </div>
+			  
             </div>{" "}
           </div>{" "}
         </div>
@@ -3876,7 +4315,7 @@ class Step5 extends React.Component {
  
     return (
       <React.Fragment>
-        <div className="tab-pane card-box" id="outcomes">
+        <div className="tab-pane card-box schedules-form" id="outcomes">
           <div className="row justify-content-center">
             <div className="col-md-12">
               <div className="form-group col-md-6 fl-left">
@@ -3952,9 +4391,144 @@ class Step5 extends React.Component {
                 </div>
               </div>*/}
 
-              <div class="form-group  mb-3 col-md-6 fl-left">
+             
+            </div>
+          </div>
+        </div>
+      </React.Fragment>
+    );
+  }
+}
+
+class Step3 extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      shareholders: [{ name: "" }],
+    };
+	this.bindUndo = this.undoDateTime.bind(this)
+  }
+  
+  undoDateTime = (e) => {
+	  let name = e.target.getAttribute("data-for");
+	  if(name=="course_start_date_time" || 
+        name =="course_end_date_time" || 
+        name=="enrolment_start_date_time" ||
+         name=="enrolment_end_date_time"){
+			 
+			//set this to date time when undo is clicked
+       
+		$("input[name='"+ name +"']").attr("type","datetime-local")
+      }
+      
+  }
+
+  render() {
+    const {institutions, languages, instructors, courses } = this.props
+ 
+    if (this.props.currentStep !== 2) {
+      return null;
+    }
+    return (
+      <React.Fragment>
+	   <form id="schedules-form" className="required-form" action="#"  method="PATCH"  enctype="application/x-www-form-urlencoded">
+        <div className="tab-pane" id="requirements">
+          <div className="row card-box">
+            <div className="col-md-12">
+            
+              <div className="form-group col-md-6 fl-left">
+                 <label className="col-md-12 col-form-label" for="course_title">
+                  Course Start Date <span className="required">*</span>{" "}
+                </label>
+                <div className="col col-md-12">
+                  <input
+                    type="text"
+                    className="form-control col-md-10 fl-left"
+                    id="course_start_date_time"
+                    name="course_start_date_time"
+                    placeholder="Enter course title"
+                    required=""
+                     value={this.state.course_start_date_time}
+                     onChange={this.props.handleChange}
+                  />
+				  
+				  	<div data-for="course_start_date_time" class="col-md-2 fl-left undo" onClick={(e)=>{ this.bindUndo(e)}}><i class="fa fa-undo"></i>Change</div>
+                 
+                </div>
+              </div>
+
+              <div className="form-group col-md-6 fl-left">
+                 <label className="col-md-12 col-form-label" for="course_title">
+                  Course End Date <span className="required">*</span>{" "}
+                </label>
+                <div className="col col-md-12">
+                  <input
+                    type="text"
+                    className="form-control col-md-10 fl-left"
+                    id="course_end_date_time"
+                    name="course_end_date_time"
+                    placeholder="Enter course title"
+                    required=""
+                     value={this.props.course_end_date_time}
+                     onChange={this.props.handleChange}
+                  />
+				  
+				  	<div data-for="course_end_date_time" class="col-md-2 fl-left undo" onClick={(e)=>{ this.bindUndo(e)}}><i class="fa fa-undo"></i>Change</div>
+                 
+                </div>
+              </div>
+
+              
+              <div className="form-group col-md-6 fl-left">
+                 <label className="col-md-12 col-form-label" for="course_title">
+                  Enrollment Start <span className="required">*</span>{" "}
+                </label>
+                <div className="col col-md-12">
+                  <input
+                    type="text"
+                    className="form-control col-md-10 fl-left"
+                    id="enrolment_start_date_time"
+                    name="enrolment_start_date_time"
+                    placeholder="Enter course title"
+                    required=""
+                     value={this.state.enrolment_start_date_time}
+                     onChange={this.props.handleChange}
+                  />
+				  
+				  	<div data-for="enrolment_start_date_time" class="col-md-2 fl-left undo" onClick={(e)=>{ this.bindUndo(e)}}><i class="fa fa-undo"></i> Change</div>
+                 
+                </div>
+              </div>
+
+               <div className="form-group col-md-6 fl-left">
+                 <label className="col-md-12 col-form-label" for="course_title">
+                  Enrollment Start <span className="required">*</span>{" "}
+                </label>
+                <div className="col col-md-12">
+                  <input
+                    type="text"
+                    className="form-control col-md-10 fl-left"
+                    id="enrolment_end_date_time"
+                    name="enrolment_end_date_time"
+                    placeholder="Enter course title"
+                    required=""
+                     value={this.state.enrolment_end_date_time}
+                     onChange={this.props.handleChange}
+                  />
+				  
+				  	<div data-for="enrolment_end_date_time" onClick={(e)=>{ this.bindUndo(e)}} class="col-md-2 fl-left undo"><i class="fa fa-undo"></i> Change</div>
+                 
+                </div>
+              </div>
+			  
+			  
+			  
+              <div class="form-group  mb-3 col-md-12 fl-left" style={{margin:"10px"}}>
                 
                 <div class="">
+				 <label class="col-md-12 col-form-label" for="language_made_in">
+                  Course Language
+                </label>
                   <select
                     class="form-control select2 select2-hidden-accessible"
                     data-toggle="select2"
@@ -3973,113 +4547,7 @@ class Step5 extends React.Component {
           
       
                   </select>
-                  <label class="col-md-12 col-form-label" for="language_made_in">
-                  Language made in
-                </label>
-                </div>
-              </div>
-             
-            </div>
-          </div>
-        </div>
-      </React.Fragment>
-    );
-  }
-}
-
-class Step3 extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      shareholders: [{ name: "" }],
-    };
-  }
-
-  render() {
-    const {institutions, languages, instructors, courses } = this.props
- 
-    if (this.props.currentStep !== 2) {
-      return null;
-    }
-    return (
-      <React.Fragment>
-        <div className="tab-pane" id="requirements">
-          <div className="row card-box">
-            <div className="col-md-12">
-              <div className="form-group col-md-6 fl-left">
-               
-                <div className="">
-                  <input
-                    type="datetime-local"
-                    className="form-control"
-                    id="course_start_date_time"
-                    name="course_start_date_time"
-                    placeholder="Enter course title"
-                    required=""
-                     value={this.props.course_start_date_time}
-                     onChange={this.props.handleChange}
-                  />
-
-                   <label className="col-md-12 col-form-label" for="course_title">
-                  Course Start Date <span className="required">*</span>{" "}
-                </label>
-                </div>
-              </div>
-
-              <div className="form-group col-md-6 fl-left">
-                
-                <div className="">
-                  <input
-                    type="datetime-local"
-                    className="form-control"
-                    id="course_end_date_time"
-                    name="course_end_date_time"
-                    placeholder="Enter course title"
-                    required=""
-                     value={this.props.course_end_date_time}
-                     onChange={this.props.handleChange}
-                  />
-                  <label className="col-md-12 col-form-label" for="course_title">
-                  Course End Date <span className="required">*</span>{" "}
-                </label>
-                </div>
-              </div>
-
-              <div className="form-group col-md-6 fl-left">
-               
-                <div className="">
-                  <input
-                    type="datetime-local"
-                    className="form-control"
-                    id="enrolment_start_date_time"
-                    name="enrolment_start_date_time"
-                    placeholder="Enter course title"
-                    required=""
-                    value={this.props.enrolment_start_date_time}
-                     onChange={this.props.handleChange}
-                  />
-                   <label className="col-md-12 col-form-label" for="course_title">
-                  Enrollments Start Date <span className="required">*</span>{" "}
-                </label>
-                </div>
-              </div>
-
-              <div className="form-group col-md-6 fl-left">
-                
-                <div className="">
-                  <input
-                    type="datetime-local"
-                    className="form-control"
-                    id="enrolment_end_date_time"
-                    name="enrolment_end_date_time"
-                    placeholder="Enter course title"
-                    required=""
-                    value={this.props.enrolment_end_date_time}
-                     onChange={this.props.handleChange}
-                  />
-                  <label className="col-md-12 col-form-label" for="course_title">
-                  Enrollments End Date/Time <span className="required">*</span>{" "}
-                </label>
+                 
                 </div>
               </div>
 
@@ -4164,15 +4632,11 @@ class Step3 extends React.Component {
                   </select>
                 </div>
 
-
-
-                
-
-
               </div>
             </div>
           </div>
         </div>
+		</form>
       </React.Fragment>
     );
   }
@@ -4199,7 +4663,7 @@ class Step4 extends React.Component {
     return (
       <React.Fragment>
         {" "}
-        <div className="tab-pane" id="pricing">
+        <div className="tab-pane schedules-form" id="pricing">
           <div className="row card-box">
             <div className="col-md-12">
               
@@ -4446,13 +4910,18 @@ const editSaveSubSection = (el) => {
      let sectionRes = createAnyResource('PATCH',url,form)
      console.log(sectionRes)
 
+
+     let rootParent = document.getElementById("dynamic_subsection_"+ element.attr("root_parent"))
+     rootParent = $(rootParent)
   
 
- 
-  $(".muu_" + localStorage.getItem("s_tracker"))
-    .find(".title_sub")
+  
+  // $(".muu_" + localStorage.getItem("s_tracker"))
+   rootParent
+    .find("#title_sub_"+ element.attr("root_parent"))
     .text($("#title_edit_2").val());
-  $(".muu_" + localStorage.getItem("s_tracker"))
+  // $(".muu_" + localStorage.getItem("s_tracker"))
+   rootParent
     .find(".subsect")
     .text($("#section_id_edit_2").val());
 };
@@ -4476,12 +4945,22 @@ const editSaveLessons = (e) => {
   let sectionRes = createAnyResource('PATCH',url,form)
   console.log(sectionRes)
 
-  $(".muu_" + localStorage.getItem("ls_tracker"))
-    .find(".title_sub")
-    .text($(e).attr("editing_course_name") );
-  // $(".dynamic_lsubsection_" + localStorage.getItem("ls_tracker"))
-  //   .find(".pcs")
-  //   .text($("#section_id_edit").val());
+  //this is bizarre: it exist but dont update the dom
+
+  // $(".fold-content")
+  //   .find(".title_sub"+ element.attr("root_parent"))
+  //   .text($(e).attr("editing_course_name") );
+
+  let rndId= "dynamic_subsection_" + element.attr("root_parent") + "_lesson_component"
+
+//this should do the trick
+  let rootParent = document.getElementById(rndId);
+  let headTitle = rootParent.querySelector("#title_sub_"+element.attr("root_parent"))
+  headTitle.innerHTML = $("#title_edit3").val() 
+
+  // $(".muu_" + localStorage.getItem("ls_tracker"))
+  
+ 
 };
 
 
@@ -4535,6 +5014,17 @@ const Step2 = (props) => {
     Tabs.forEach((tab) => {
       tab.onclick = handleTabClick;
     });
+
+
+
+    //settimeout
+    collapsibleEffect();
+
+
+
+
+    
+
 
 
      //disable enter key in a modal section when creating section/lessons
@@ -5307,7 +5797,7 @@ const saveMarkdownEditContent = () => {
 
   return (
     <React.Fragment>
-      <div className="tab-pane" id="media">
+      <div className="tab-pane schedules-form" id="media">
         <div className="row">
           <div className="col-md-12">
             {/* <div id="nestable-menu">
@@ -5991,9 +6481,9 @@ const saveMarkdownEditContent = () => {
         {/*lesson categories section goes here* myModalLessonGroup*/}
         <div id="myModalLessonGroup" class="modal-build">
           <div class="modal-build-inner">
-            <div class="modal-toolbar">
+            <div class="modal-toolbar" onClick={()=>{closeModal()}}>
               <h2 class="modal-title">Lessons Component</h2>
-              <i id="pb-modal-close" class="fa fa-times"></i>
+              <i id="pb-modal-close" class="fa fa-times" ></i>
             </div>
             <div class="modal-tabs">
               <div class="modal-tab widgets-tab active-tab">
@@ -6278,6 +6768,20 @@ const saveMarkdownEditContent = () => {
               </div>
 
 
+              <div
+                class="pb-widget"
+                data-template="[pb_html][/pb_you_tube]"
+                data-type="special"
+                href="#myModalGenericForm" 
+                 role="button" data-toggle="modal"
+                 data-fields="['Title','Link']"
+                 
+              >
+                <i class="fas fa-video-camera fa-2x"></i>
+                <span>MP4 Videos</span>
+              </div>
+
+
 
             </div>
 
@@ -6369,21 +6873,18 @@ const saveMarkdownEditContent = () => {
                       <div class="form-group root-block">
                         <label class="change-title">Content Type </label>
                         <select id="editor-html-type" class="form-control" name="component_type">
-                              {/*<option value="1">Video</option> */}   
-                              <option value="2">HTML</option>
-                              <option value="3">Problem</option>
-                              <option value="4">Discussion</option>
+                             <option value="1">Video</option>   
+                               <option value="2">HTML</option>
+                             
                           
                       </select>
                       </div>
 
                       <div class="form-group">
                        <select class="form-control" id="editor-html-content-type" name="content_type">
-                                
-                                <option value="2" selected>HTML TEXT</option> 
-
-                                {/*<option value="1">I-Frame</option> 
-                                <option value="3">HYBRID</option>*/}
+                          
+                                <option value="1">I-Frame</option> 
+                                <option value="3">HYBRID</option>
                         </select>
                       </div>
 
@@ -6403,7 +6904,7 @@ const saveMarkdownEditContent = () => {
 
                             }
                                                         //if its video component
-                        }} type="text" name="embeded_url" class="form-control" id="title-unit2" />
+                        }} type="text" name="embedded_url" class="form-control" id="title-unit2" />
                       </div>
 
 
@@ -6872,6 +7373,8 @@ const saveMarkdownEditContent = () => {
 
 
                       <div class="form-group root-block" >
+                      <input type="hidden" name="component_id" class="form-control" id="component_id"  />
+  
                         
                         <input type="hidden" name="lesson" class="form-control" id="lesson-editor-id"  />
                       </div>
@@ -6884,54 +7387,34 @@ const saveMarkdownEditContent = () => {
 
                       <div class="form-group root-block">
                         <label class="change-title">Component Type </label>
-                        <select id="editor-html-type" class="form-control" name="component_type">
-      
-      
-          
-                              <option value="1">Video</option>
-                            
-                        
-                            
-                              <option value="2">HTML</option>
-                            
-                        
-                            
+                        <select id="editor-html-type" class="form-control" name="component_type">                      
+                              <option value="2">HTML</option>                      
                               <option value="3">Problem</option>
-                            
-                        
-                            
                               <option value="4">Discussion</option>
-                            
-                        
                       </select>
                       </div>
-
                       <div class="form-group">
                        <select class="form-control" id="editor-html-content-type" name="content_type">
-      
-      
-                              
                                 <option value="1">I-Frame</option>
-                              
-                          
-                              
                                 <option value="2">HTML TEXT</option>
-                              
-                          
-                              
                                 <option value="3">HYBRID</option>
-                              
-                          
                         </select>
                       </div>
+                      <input  
+            id="input-area4" class="visuell-view html_text" 
+            name="html_text"  />
 
-            <textarea id="input-area" class="visuell-view" name="html_text"  rows="20" cols="50">
-                  Edit your content Editor 
-                  (What you see is what you get)
-      Add text content(plain text), 
-          markupsand pure html code
-  
-            </textarea>
+            <HTMLForm
+              title="html_text"
+              placeholder={"html_text"}
+              value={"this initial state"}
+              action={(e)=>{  document.getElementById("input-area4").value=e; localStorage.setItem("html_text_content",e); console.log(e)}}
+              stateAction={(e)=>{  document.getElementById("input-area4").value=e; console.log(e)}}
+              name={"html_text"}
+            />
+
+            
+            
 
 
             </form>
@@ -7573,6 +8056,21 @@ window.exportSection = (el) => {
 //handle state positioning
 
 class Step6 extends React.Component {
+  showAdvancedSettings(e){
+	  e.preventDefault();
+	
+	  let target = document.querySelector("#slideeffect")
+	  target.style.width = "80%"
+	  target.style.left="0"
+	  $("#slideeffect").fadeIn("slow")
+	   $("#slideeffect").css({width:"80%"})
+  }
+  
+  closeAdvancedSettingsPanel(e){
+	  e.preventDefault()
+	  $("#slideeffect").fadeOut("slow")
+	  $("#slideeffect").css({width:"0px"})
+  }
   render() {
     if (this.props.currentStep !== 4) {
       return null;
@@ -7581,39 +8079,228 @@ class Step6 extends React.Component {
       <React.Fragment>
         {" "}
         <div className="tab-pane" id="seo">
-          <div className="row justify-content-center">
-            <div className="col-md-8">
-              <div className="form-group row mb-3">
-                <label
-                  className="col-md-2 col-form-label"
-                  for="website_keywords"
-                >
-                  Add Field Name
-                </label>
-                <div className="col-md-10">
-                  <input
-                    type="text"
-                    className="form-control bootstrap-tag-input"
-                    id="meta_keywords"
-                    name="meta_keywords"
-                    data-role="tagsinput"
-                    style={{ width: "100%", display: "none" }}
-                    placeholder="Write a keyword and then press enter button"
-                  />
-                  <div className="bootstrap-tagsinput">
-                    <input
-                      size="43"
-                      type="text"
-                      placeholder="Write a keyword and then press enter button"
-                    />
-                  </div>
-                </div>
-              </div>
+          <div className="row">
+            <div className="col-md-12">
+			
+			
+			
+			{/*here is what you can manage*/}
+			
+			<div class="col-md-12 configurations">
+<div class="toggleslider pull-right"><a href="" onClick={(e)=>{this.showAdvancedSettings(e)}}>Advanced Settings</a></div>
+
+  <div class="pull-left col-md-6">
+<h1 class=" ">Group Configurations</h1>
+    <p>Configuration settings for different possible group of learners</p>
+  </div>
+  
+  <div class="pull-right col-md-12">
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="name-col">Course General Settings</th>
+                    <th>Can Edit</th>
+                    <th>Can Delete</th>
+                    <th>Can Read</th>
+                    <th>Can Create</th>
+                    <th>5</th>
+                    <th>6</th>
+                    <th class="missed-col">Revert</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="student">
+                    <td class="name-col">Free Course Enrolled Learners Group</td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+             <td class="missed-col">Undo Previledges</td>
+              </tr>
+                <tr class="student">
+                        <td class="name-col">Paid Enrolled Learners</td>
+                     <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+             <td class="missed-col">Undo Previledges</td>
+                </tr>
+                <tr class="student">
+                    <td class="name-col">Premium Members</td>
+                     
+                <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+             <td class="missed-col">Undo Previledges</td>
+                </tr>
+                <tr class="student">
+                    <td class="name-col">Subscribers Group</td>
+                     <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+             <td class="missed-col">Undo Previledges</td>
+                </tr>
+                <tr class="student">
+                    <td class="name-col">MultiNational Learning Group</td>
+                      
+                     <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+             <td class="missed-col">Undo Previledges</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+  </div>
+
+
+
+
+
+
+  
+  <div class="slideeffect" id="slideeffect">
+  <p class="closeslide" ><a onClick={(e)=>{this.closeAdvancedSettingsPanel(e)}} href="">X</a></p>
+   
+    
+      
+  <div class="pull-left col-md-6">
+<h1 class=" ">Advanced Settings</h1>
+    <p>Configuration settings for specific course features</p>
+  </div>
+  
+  <div class="pull-right col-md-12" style={{height:"500px",overflowY:"scroll",overflowX:"hidden",borderTop:"4px solid #fff"}}>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="name-col">Advanced Settings</th>
+                    <th>Can Edit</th>
+                    <th>Can Delete</th>
+                    <th>Can Read</th>
+                    <th>Can Create</th>
+                    <th>5</th>
+                    <th>6</th>
+                    <th class="missed-col">Revert</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="student">
+                    <td class="name-col">Free Course Enrolled Learners Group</td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+             <td class="missed-col">Undo Previledges</td>
+              </tr>
+                <tr class="student">
+                        <td class="name-col">Paid Enrolled Learners</td>
+                     <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+             <td class="missed-col">Undo Previledges</td>
+                </tr>
+                <tr class="student">
+                    <td class="name-col">Premium Members</td>
+                     
+                <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+             <td class="missed-col">Undo Previledges</td>
+                </tr>
+                <tr class="student">
+                    <td class="name-col">Subscribers Group</td>
+                     <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+             <td class="missed-col">Undo Previledges</td>
+                </tr>
+                <tr class="student">
+                    <td class="name-col">MultiNational Learning Group</td>
+                      
+                     <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+             <td class="missed-col">Undo Previledges</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+  </div>
+
+
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+			
+			
+			
+			{/*ends work here*/}
+            
             </div>
-            <div className="col-md-8">
-              <div className="form-group row mb-3"></div>
-            </div>
-          </div>
+		  </div>
         </div>
       </React.Fragment>
     );
@@ -7688,13 +8375,22 @@ class Step8 extends React.Component {
     var output = document.getElementById("fileList");
     var children = "";
     for (var i = 0; i < input.files.length; ++i) {
-      children +=
-        "<tr><td>" +
-        input.files.item(i).name +
-        '<span class="remove-list" onclick="return this.parentNode.remove()">X</span>' +
-        "</td></tr>";
+		console.log(input.files.item(i))
+		
+		children = `<tr class="col-md-3"><td>
+        ${input.files.item(i).name} 
+       
+        </td>
+		<td> ${input.files.item(i).lastModifiedDate}</td>
+		<td>${input.files.item(i).type}</td>
+		<td><img style="height:200px" width="200px" src="${input.files.item(i).name}" /></td>
+		<td> <span class="remove-list fa fa-trash" onclick="return this.parentElement.parentNode.remove()"></span></td>
+		
+		</tr>`
+      output  = $(output);
+	  output.append(children)
     }
-    output.innerHTML = children;
+    
   };
   render() {
     if (this.props.currentStep !== 8) {
@@ -7710,30 +8406,30 @@ class Step8 extends React.Component {
                   <i className="fa fa-check-all"></i>
                 </h2>
 
-                <div class="divbox">
-                  <div class="custom-file">
+                <div class="col-md-12">
+                  <div class="form-group">
                     <input
                       type="file"
-                      class="custom-file-input-style"
+                      class="form-control"
                       id="file"
                       multiple
                       onChange={this.updateList}
                     />
                     <label class="custom-file-label" for="file">
-                      <img
-                        width="30"
-                        src="https://image.flaticon.com/icons/svg/54/54565.svg"
-                      />{" "}
-                      Upload Files
+                     
+                      Upload Multiple files 
                     </label>
                   </div>
                 </div>
 
-                <table>
-                  <th>File Name</th>
-                  <th>image url</th>
-                  <th>preview</th>
-                  <th>Action</th>
+                <table class="table col-md-12">
+				<thead style={{background:"rgba(8,23,200)"}}>
+                  <th class="col-md-3" style={{color:"#fff"}}>File Name</th>
+                  <th class="col-md-3" style={{color:"#fff"}}>Last Modified</th>
+                  <th class="col-md-3" style={{color:"#fff"}}>Type</th>
+				  <th class="col-md-3" style={{color:"#fff"}}>Preview</th>
+                  <th class="col-md-3" style={{color:"#fff"}}>Action</th>
+				 </thead>
                   <tbody id="fileList" class="file-list"></tbody>
                 </table>
               </div>

@@ -102,6 +102,7 @@ import AuthorProfileSetting from "./pages/AuthoringTool/ProfilePage";
 import AuthoringSectionDynamicLessons from "pages/AuthoringTool/dynamic_content";
 import AuthoringSectionDynamicLessons3 from "pages/AuthoringTool/dynamic_content_3layer";
 
+import AuthoringPreview from "./pages/AuthoringTool/preview"
 import TestForm from "pages/AuthoringTool/test-formcreate";
 import $ from "jquery";
 
@@ -501,6 +502,13 @@ function App(props) {
           exact
           path={`${process.env.PUBLIC_URL + "/authoring/create/new/:id"}`}
           component={AuthorFormCont}
+        />
+
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/authoring/preview/:id"}`}
+          component={AuthoringPreview}
         />
 
         <Route
