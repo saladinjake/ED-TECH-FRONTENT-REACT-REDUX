@@ -889,10 +889,19 @@ export const createAnyResource = (mode="post",
           for(var k in state){
             console.log(k + " : " + state[k]) 
 			if(k=="card_image" || k=="intro_video"){
-				//for uploads
+				//for uploads handle this when agreed upon change made for video upload of intro_video bcus there is no where to upload files on backend
+				
+			}else if(k=="authoring_team"){
+				//now clone and append the jetpacks of all my collaborators
+				
+				
+				let template = `<input name="${k}" style='display:none' value="${state[k]}">`;
+			    new_form.append(template)
+				console.log(k,state[k])
+      
 				
 			}else{
-				let template = `<input name=${k} style='display:none' value="${state[k]}">`;
+				let template = `<input name="${k}" style='display:none' value="${state[k]}">`;
 			    new_form.append(template)
 			}
 			
@@ -1503,6 +1512,36 @@ export const getComponentsOfLessons = async (lessonId) => {
 
 
 
+
+export const getComponent = async (componentId, type) => {
+  let bitUrls =`/lms/api/`
+  let url = base_url 
+  if(type==1){
+    bitUrls = bitUrls + `video-component/`
+    url = base_url+ bitUrls + `${componentId}`
+  }else if(type==2){
+    bitUrls = bitUrls + `html-components/`
+     url = base_url+ bitUrls + `${componentId}`
+  }else if(type==3){
+   bitUrls = bitUrls + `problem-component/`
+     url = base_url+ bitUrls + `${componentId}`
+  }else{
+     bitUrls = bitUrls + `discussion-component/`
+     url = base_url+ bitUrls + `${componentId}`
+  }
+
+  let request = makeRequest(url);
+  return request
+    .then(function (response) {
+      return response.json();
+    })
+    .then((data) => {
+      // console.log(data)
+      return data
+    });
+}
+
+
 export const deleteApi =  async (urlBuild) =>  {
   let url= base_url + `/lms/api/delete/${urlBuild}/`;
   console.log(url);
@@ -1621,7 +1660,7 @@ export const getInstructorProfiles = async (limit = 8000000, offset = 0) => {
 };
 
 export const getInstructorProfile = async (id) => {
-  let url = base_url + `/profile-resource/api/author-profiles/${id}`;
+  let url = base_url + `/profile-resource/api/author-profile/${id}`;
   let request = makeRequest(url);
   return request
     .then(function (response) {

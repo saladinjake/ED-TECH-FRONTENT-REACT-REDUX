@@ -111,6 +111,57 @@ function App(props) {
     $(".footer p , .footer span").each(function () {
       $(this).css({ color: "#fff" });
     });
+
+
+
+    // Selecting all required elements
+const wrapper = document.querySelector(".wrapper-notice"),
+toast = wrapper.querySelector(".toast-offline"),
+title = toast.querySelector("span"),
+subTitle = toast.querySelector("p"),
+wifiIcon = toast.querySelector(".icon"),
+closeIcon = toast.querySelector(".close-icon");
+
+window.onload = ()=>{
+    function ajax(){
+        let xhr = new XMLHttpRequest(); //creating new XML object
+        xhr.open("GET", "https://jsonplaceholder.typicode.com/posts", true); //sending get request on this URL
+        xhr.onload = ()=>{ //once ajax loaded
+            //if ajax status is equal to 200 or less than 300 that mean user is getting data from that provided url
+            //or his/her response status is 200 that means he/she is online
+            if(xhr.status == 200 && xhr.status < 300){
+                toast.classList.remove("offline");
+                title.innerText = "You're online now";
+                subTitle.innerText = "Internet Connection Established.";
+                wifiIcon.innerHTML = '<i class="uil uil-wifi fa fa-wifi fa-2x"></i>';
+                closeIcon.onclick = ()=>{ //hide toast notification on close icon click
+                    wrapper.classList.add("hide");
+                }
+                setTimeout(()=>{ //hide the toast notification automatically after 5 seconds
+                    wrapper.classList.add("hide");
+                }, 5000);
+            }else{
+                offline(); //calling offline function if ajax status is not equal to 200 or not less that 300
+            }
+        }
+        xhr.onerror = ()=>{
+            offline(); ////calling offline function if the passed url is not correct or returning 404 or other error
+        }
+        xhr.send(); //sending get request to the passed url
+    }
+
+        function offline(){ //function for offline
+            wrapper.classList.remove("hide");
+            toast.classList.add("offline");
+            title.innerText = "You're offline now";
+            subTitle.innerText = "Opps! Internet is disconnected.";
+            wifiIcon.innerHTML = '<i class="uil uil-wifi-slash"></i>';
+        }
+
+        setInterval(()=>{ //this setInterval function call ajax frequently after 100ms
+            ajax();
+        }, 100);
+    }
   });
 
   return (
@@ -137,6 +188,34 @@ function App(props) {
         }}
       />*/}
 
+
+      <div class="wrapper-notice">
+          <div class="toast-offline">
+            <div class="content">
+                  <div class="icon"><i class=" fa fa-wifi "></i></div>
+                      <div class="details">
+                        <span>Network status</span>
+                        <p>Connecting...</p>
+                      </div>
+                  </div>
+                <div class="close-icon"><i class="fa fa-times"></i></div>
+          </div>
+        </div>
+
+
+        <div class="notification-notice">
+          <div class="toast-offline2">
+            <div class="content">
+                  <div class="icon"><i class=" fa fa-wifi "></i></div>
+                      <div class="details">
+                        <span>Information Message</span>
+                        <p></p>
+                      </div>
+                  </div>
+                <div class="close-icon"><i class="fa fa-times"></i></div>
+          </div>
+        </div>
+      
       <Notification />
       <GlobalStyle />
       <ScrollToTop />

@@ -74,22 +74,18 @@ import {
   createAnyResource,
   getIdFromUrl,
   getSectionsOfCourseId,
-
-
   getCourseData,
   //getSectionsOfCourseId,
   getSubSectionsOfSectionId,
   getLessonsOfSubsection,
   getComponentsOfLessons,
   getVideoComponentsOfLessons,
-  
-
  addSectionData, // dynamic generationwith battries included
  addSubSectionData,
  addLessonData,
  DateFormatter,
-
- deleteApi
+ deleteApi,
+ getComponent
 } from "services/authoring"
 
 import  { enableDragSortPositionUpdater } from "./reorder_positioning" 
@@ -113,61 +109,7 @@ $.widget.bridge('uibutton', $.ui.button);
 
 
 const collapsibleEffect = () =>{
-  setTimeout(()=>{
-  $(document).ready(function() {
-      // $('.sections').each(function() {
-      //   var tis = $(this), state = false, 
-      //   subunits = tis.find(".subsections")
-      //   subunits.fadeOut()
-      //   tis.click(function() {
-      //     state = !state;
-      //     if(state){
-      //      // subunits.slideToggle(state);
-      //      subunits.fadeIn()
-      //     }else{
-      //       subunits.fadeOut("fast")
-      //     }
-
-          
-      //     tis.toggleClass('active',state);
-      //   });
-      // });
-
-      // $('.subsections').each(function() {
-      //   var tis = $(this), state = false, 
-      //   subunits = tis.find(".lessons")
-      //   subunits.fadeOut()
-      //   tis.click(function() {
-      //     state = !state;
-      //     if(state){
-      //      // subunits.slideToggle(state);
-      //      subunits.fadeIn()
-      //     }else{
-      //       subunits.fadeOut("fast")
-      //     }
-
-          
-      //     tis.toggleClass('active',state);
-      //   });
-      // });
-
-
-
-      // $('.lessons').each(function() {
-      //   var tis = $(this), state = false, 
-      //   subunits = tis.next("ul").slideUp();
-      //   tis.click(function() {
-      //     state = !state;
-      //     subunits.slideToggle(state);
-      //     tis.toggleClass('active',state);
-      //   });
-      // });
-
   
-
-});
-
-},1000)
 }
 
 function validYoutubeLink(url) {
@@ -218,16 +160,11 @@ window.projectorInView = function(){
 }
 
 
-
-
-  // Methods
-
-
-  const handleWidgetRemove = (widget) => {
+const handleWidgetRemove = (widget) => {
     widget.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
-  };
+};
 
-  window.handleWidgetRemove =  (widget) => {
+window.handleWidgetRemove =  (widget) => {
      const type = widget.getAttribute("data-component_type");
 
      console.log(type)
@@ -535,7 +472,107 @@ function removeLoader(){
   $( "#loadingDiv" ).fadeOut(500, function() {
           // fadeOut complete. Remove the loading div
       $( "#loadingDiv" ).remove(); //makes page more lightweight 
-  });  
+  }); 
+
+
+
+
+  //init accordion
+  // 
+}
+
+
+
+function initAccordion(){
+  $(function() {
+    var Accordion = function(el, multiple)     {
+        this.el = el || {};
+        this.multiple = multiple || false;
+
+        var links = this.el.find('h4');
+        links.on('click', {
+            el: this.el,
+            multiple: this.multiple
+        }, this.dropdown)
+    }
+
+    Accordion.prototype.dropdown =     function(e) {
+        var $el = e.data.el,
+        $this = $(this), 
+        $next = $this.next();
+
+        $next.slideToggle();
+
+        var $parentElement = $this.parent().parent().parent();
+       
+         // for sections
+        if( $parentElement.find("li.sections")){
+         
+           let rootSection = $parentElement.find("li.sections")
+           if(rootSection.hasClass("open") && rootSection.hasClass("sections")){
+
+               //$parentElement.removeClass('open');
+               rootSection.removeClass("open")
+             //  rootSection.find(".subsections.accordion-content").css({display:"none"}).fadeOut("slow")
+              
+           }else if(!rootSection.hasClass("open")){
+              rootSection.addClass("open")
+
+             
+              rootSection.find(".subsections.accordion-content").css({display:"block"}).fadeIn("slow")
+              //$parentElement.addClass("open")
+           } 
+
+          
+
+     }
+                  
+          
+         if($parentElement.find("ul.subsections")){
+            
+           let rootSection = $parentElement.find("ul.subsections")
+           if(rootSection.hasClass("open") && rootSection.hasClass("subsections")){
+
+               //$parentElement.removeClass('open');
+               rootSection.removeClass("open")
+           }else if(!rootSection.hasClass("open")){
+              rootSection.addClass("open")
+              //$parentElement.addClass("open")
+           } 
+
+        }
+
+
+
+
+        //lessons
+
+        if($parentElement.find("ul.lessons")){
+            
+           let rootSection = $parentElement.find("ul.lessons")
+           if(rootSection.hasClass("open") && rootSection.hasClass("lessons")){
+
+               //$parentElement.removeClass('open');
+               rootSection.removeClass("open")
+               //hide all its component
+               rootSection.find(".components.accordion-content").css({display:"none"})
+
+           }else if(!rootSection.hasClass("open")){
+              rootSection.addClass("open")
+              //display all its components
+              //$parentElement.addClass("open")
+              rootSection.find(".components.accordion-content").css({display:"block"})
+
+           } 
+
+        }
+
+        // if (!e.data.multiple) {
+        //     $el.find('ul').not($next).slideDown().parent().addClass('open');
+        // };
+    }
+    var accordion = new Accordion($('#js-parent'), false);
+});
 }
 
 
@@ -1068,11 +1105,19 @@ export default class MasterForm extends React.Component {
 
 
    handleInputChange = (event) => {
+
+    //notification set
+        // Selecting all required elements
+const wrapper = document.querySelector(".notification-notice"),
+toast = wrapper.querySelector(".toast-offline2"),
+title = toast.querySelector("span"),
+subTitle = toast.querySelector("p"),
+wifiIcon = toast.querySelector(".icon"),
+closeIcon = toast.querySelector(".close-icon");
    
 
       let { name, value } = event.target;
-      localStorage.setItem(name, value);
-       let imageUrl = ""
+      let imageUrl = ""
       //console.log(event.target.value);
 
 
@@ -1083,7 +1128,7 @@ export default class MasterForm extends React.Component {
 			 //set it back to text
         
 		
-		event.target.type="text"
+		     event.target.type="text"
 
         // value = new Date(value) //DateFormatter.mysqlDate(value);
         // value = value.toISOString()
@@ -1116,6 +1161,8 @@ export default class MasterForm extends React.Component {
             this.validateField(name, value);
           }
         );
+        localStorage.setItem(name, value);
+      
       }else if(event.target.name == "card_image"){
         //handle image upload here
         const fileUploader = document.getElementById('file-uploader');
@@ -1194,24 +1241,99 @@ export default class MasterForm extends React.Component {
         });
       //});
       }else{
+
+        // for just input and text area or editable 
+         let limitCode =10, limitName =150
+        if(name=="code"){
+          limitCode = 10
+          if(value.length > limitCode){
+              value = value.substring(0, limitCode);
+              let queryInputEnforce = `input[name=${name}]`;
+              queryInputEnforce = document.querySelector(queryInputEnforce);
+               queryInputEnforce.value = value
+
+
+               wrapper.style.display="block"
+               wrapper.classList.remove("hide");
+            toast.classList.remove("offline");
+                title.innerText = "Notification Message";
+                subTitle.innerText = "Limit text exceeded. Maximum input allowed is " + limitCode + " characters";
+                wifiIcon.innerHTML = '<i style="background:red" class="uil uil-wifi fa fa-times fa-2x"></i>';
+                closeIcon.onclick = ()=>{ //hide toast notification on close icon click
+                    wrapper.classList.add("hide");
+                }
+                setTimeout(()=>{ //hide the toast notification automatically after 5 seconds
+                    wrapper.classList.add("hide");
+                }, 5000);
+
+          } else{
+             let query = `div[class=${name}]`;
+             let labelCount;
+             if(document.querySelector(query)){
+            
+               labelCount = document.querySelector(query);
+               labelCount = labelCount.querySelector("span")
+               labelCount.innerHTML = value.length + "/" + limitCode + " inputs characters entered";
+             }
+         
+           
+          }
+
+        }
+
+        if(name=="name"){
+          
+
+          if(value.length > limitName){
+            value = value.substring(0, limitName);
+            let queryInputEnforce = `input[name=${name}]`;
+            queryInputEnforce = document.querySelector(queryInputEnforce);
+            queryInputEnforce.value = value
+
+
+            
+
+
+          } else{
+             let query = `div[class=${name}]`;
+             let labelCount;
+             if(document.querySelector(query)){
+            
+                labelCount = document.querySelector(query);
+                labelCount = labelCount.querySelector("span")
+                labelCount.innerHTML = value.length + "/" + limitName + " inputs characters entered";
+             }
+          
+          }
+        }
+
+         if(name=="description"){
+            let limit =250
+
+            if(value.length > limit){
+              value = value.substring(0, limit);
+              let queryInputEnforce = `input[name=${name}]`;
+              queryInputEnforce = document.querySelector(queryInputEnforce);
+              queryInputEnforce.value = value
+
+            } else{
+               let query = `div[class=${name}]`;
+               let labelCount;
+                if(document.querySelector(query)){
+                  
+                   labelCount = document.querySelector(query);
+                   labelCount = labelCount.querySelector("span")
+                   labelCount.innerHTML = value.length + "/" + limit + " inputs characters entered";
+                }
+            }
+        }
+
+        
         localStorage.setItem(name, value)
-
-         //logic 1 - automate state processing of form data
-        //dynamically hooks state fields to current value
-      // this.setState(
-      //       {
-      //         [name]: value,
-      //       },
-      //       function () {
-      //         /*validation hooks*/
-      //         this.validateField(name, value);
-      //       }
-      //);
-
 
        this.setState({
       ...this.state,
-      [event.target.name]: event.target.value,
+      [event.target.name]: value,
     });
 
       }
@@ -1833,11 +1955,11 @@ export default class MasterForm extends React.Component {
     "miller_" + insertionId
   }"    data-id="${
     "miller_" + insertionId
-  }" id="dynamic_section_${insertionId}"  class="hello-move-me sections card-box root-li view tr-of-root opened col-md-12 ${
+  }" id="dynamic_section_${insertionId}"  class="hello-move-me sections  root-li view tr-of-root opened col-md-12 ${
     "miller_" + insertionId
   } section-list" >
 
-   <h4 style="background:rgba(8,23,200); margin-right:10px;padding:10px">
+   <h4 class="card-box" style="background:rgba(8,23,200);margin-bottom:30px; margin-right:10px;padding:10px; ">
    <a style="color:#fff"
          data-belongs="${section.course}"
          data-idx="${insertionId}"
@@ -1847,12 +1969,12 @@ export default class MasterForm extends React.Component {
           data-root-parent="${insertionId}"
           onclick="localStorage.setItem('given_id','dynamic_section_'+'${insertionId}');localStorage.setItem('tracker','${insertionId}');showSetSubsection(this);"           
           >
-           <span ><i class="fa fa-chevron-down "></i></span>
+           <span class="content-entry"><i class="fa fa-chevron-down "></i></span>
     </a>
      <span class="tits section__name title-given first-child-of-td export_title" style="font-size:20px;color:#fff"> ${
        section.name + " " + section.position_id  || "Section " + insertionId
      }</span>
-      <span class="per action" style="float:right">
+      <span class="per action card-box" style="float:right;background:rgba(8,23,200);padding:10px;margin-top:-50px;border-20px solid #ccc">
       <a style="margin-right:10px;color:#fff"
                   
          data-belongs="${section.course}"
@@ -1982,8 +2104,10 @@ export default class MasterForm extends React.Component {
                 
           >
 
-</a>
+</a><br/>
           
+<span style="font-size:12px;color:#fff">Section ${section.position_id} contains (${section.section_sub_sections.length}) Subsection</span>
+         
           
               
         </span>
@@ -2020,11 +2144,11 @@ export default class MasterForm extends React.Component {
           data-pos="${subsec.position_id}"
           data-idx="${subsec.id}"
           data-root-parent="${subsec.id}"
-          open
+          
          
          id="dynamic_subsection_${subsec.id}"  data-id="${
     "muu_" + muu_counter
-  }" class="fold subsections hello-move-me card-box drop-zone-section root-sub-ul centerSubsection column-list-section-parade ${
+  }" class="fold subsections accordion-content hello-move-me drop-zone-section root-sub-ul view opened centerSubsection column-list-section-parade ${
     "muu_" + muu_counter
   } col-md-10 section-parent_${localStorage.getItem(
     "tracker"
@@ -2034,18 +2158,19 @@ export default class MasterForm extends React.Component {
 
 
   >
-     <h4 style="background:rgba(8,23,200); margin-right:10px;padding:10px">
+     <h4 class="card-box" style="background:#f6f6f6; margin-right:10px;padding:10px">
             
-              <span class=""  style="height:60px;border-left:3px solid black;margin-top:10px">
-               <span id="title_sub_${subsec.id}" class="title_sub title-given export_title" data-th="Company name" style="font-size:20px;color:#fff">${
+              <span class=""  style="height:60px;margin-top:10px">
+			  <span ><i class="fa fa-chevron-down " style="color:#000"></i></span>
+               <span id="title_sub_${subsec.id}" class="title_sub title-given export_title" data-th="Company name" style="font-size:20px;color:#000">${
                  subsec?.name + " " + subsec?.position_id  || "Subsection"
                }</span>
                 <span class="subsect" data-th="Customer no"></span>
                 <span data-th="Customer name"></span>
-                <span class="action" data-th="Customer nam"  style="float:right">
+                <span class="action card-box" style="float:right;background:#eaeaea;padding:4px;margin-top:-30px;border:2px solid #ccc" data-th="Customer nam"  >
        
        <a    href="#myModalLesson" role="button" data-toggle="modal"
-       style="margin-right:10px;color:#fff"
+       style="margin-right:10px;color:#000"
           data-id="${"muu_" + muu_counter}"
           data-idx="${subsec.id}"
            data-idx="${subsec.id}"
@@ -2060,7 +2185,7 @@ export default class MasterForm extends React.Component {
           ><i class="fa fa-plus"></i></a>
 
 
-        <a style="margin-right:10px;color:#fff"
+        <a style="margin-right:10px;color:#000"
             href="#myModalSubSectionEdit" role="button" data-toggle="modal"
           data-id="${"muu_" + muu_counter}"
 
@@ -2087,7 +2212,7 @@ export default class MasterForm extends React.Component {
         </a>
 
 
-        <a style="margin-right:10px;color:#fff"
+        <a style="margin-right:10px;color:#000"
           data-extint="subsection"
 
           data-idx="${subsec.id}"
@@ -2113,7 +2238,7 @@ export default class MasterForm extends React.Component {
         </a>
 
 
-        <a style="margin-right:10px;color:#fff"
+        <a style="margin-right:10px;color:#000"
           data-extint="subsection"
 
            data-idx="${subsec.id}"
@@ -2134,7 +2259,7 @@ export default class MasterForm extends React.Component {
         
 
 
-         <a  class="drag-handle-list" style="margin-right:10px;color:#fff"
+         <a  class="drag-handle-list" style="margin-right:10px;color:#000"
           
           data-idx="${subsec.id}"
           data-name="${subsec?.name}"
@@ -2161,7 +2286,7 @@ export default class MasterForm extends React.Component {
 
          <a class="dropright dropright "  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                  
-                <i class="fa fa-ellipsis-v " style="color:#fff"></i>
+                <i class="fa fa-ellipsis-v " style="color:#000"></i>
              
         <ul class="dropdown-menu" style="margin-left:40px" >
 
@@ -2206,6 +2331,9 @@ export default class MasterForm extends React.Component {
                 
            </ul>
          </a>
+         <br/>
+     <span style="font-size:12px;color:#000">Subsections (${subsec.position_id}) contains (${subsec.sub_section_lessons.length}) Lessons </span>
+         
                 </span>
       </li>
 
@@ -2241,7 +2369,7 @@ export default class MasterForm extends React.Component {
            data-parent-id="${lessons.subsection}"
         
           data-description="${lessons?.description}"
-     class="reaper-${muu_counter} lessons hello-move-me fold root-lesson-ul draggable dynamo_${localStorage.getItem("l_tracker")} card-box ${
+     class="reaper-${muu_counter} lessons hello-move-me accordion-content fold root-lesson-ul view opened draggable dynamo_${localStorage.getItem("l_tracker")}  ${
     "muu_" + muu_counter
   } col-md-8   section-parent_${localStorage.getItem(
     "tracker"
@@ -2255,11 +2383,12 @@ export default class MasterForm extends React.Component {
         <li class="fold-content">
   
     <h4 style="background:rgba(8,20,200); margin-right:10px;padding:10px">
+	<span class="content-entry"><i class="fa fa-chevron-down " style="color:#fff"></i></span>
                <span id="title_sub_${lessons.id}" class="title_sub title-given export_title" data-th="Company name" style="font-size:20px;color:#fff">${
                  lessons.name || "Lesson" }
                </span>
                 <span class="subsect" data-th="Customer no"></span>
-                <span class="action" data-th="Customer nam"  style="float:right">
+                <span class="action card-box" style="float:right;background:rgba(8,23,200);padding:10px;margin-top:-50px;border-20px solid #ccc" data-th="Customer nam"  >
 
 
 
@@ -2359,7 +2488,8 @@ export default class MasterForm extends React.Component {
                 >Copy</a></li>
                 
            </ul>
-         </a>
+         </a><br/>
+		 <span style="font-size:12px;color:#fff">Lesson ${lessons.position_id} contains (${lessons.lesson_components.length}) modules </span>
          
 
 
@@ -2388,8 +2518,10 @@ export default class MasterForm extends React.Component {
                         Info = "HTML TEXT EDITABLE COMPONENT"
                       }
 
+                      //if component is  problem or discussion
+
                       if(!document.getElementById(component.id)){
-                        let  tempComponent = `<div data-id="${component.id}"
+                        let  tempComponent = `<ul data-id="${component.id}"
           data-name="${component?.name}"
                data-idx="${component.id}"
           data-parent="${component.lesson_id}"
@@ -2401,27 +2533,23 @@ export default class MasterForm extends React.Component {
           
           data-embedded_url="${component.embedded_url}"
           data-embedded_url="${component.video_type}" 
-          class="hello-move-me components pb-widget-preview-panel" id="${component.id}">
+          class="hello-move-me components accordion-content pb-widget-preview-panel" id="${component.id}">
             
             
-              <div class="container">
+              <div class="">
                 <div class="row">
-                  <div class="col-md-10">
-                    <div class="panel-xx panel-dark">
+                  <div class="col-md-12">
+                    <div class="">
                     
-              <div class="panel-heading-xx">
-                <div class="pull-left">
-                    <span
-                  class="panel-title unit_title_place_holder pull-left title-given"
-                  style={{ float: "left",  marginLeft: "10px", color:"#000" }}
-                > ${Info} / ${component.name}
-                  
-                </span>
+              <div class="">
+                <div class=" col-md-12">
+                   
+
 
                 <div class="actions-set pull-right" >
                
 
-                  <span><a href="${launchPad}"
+                  <span ><a href="${launchPad}"
                   data-name="${component?.name}"
                data-idx="${component.id}"
           data-parent="${component.lesson_id}"
@@ -2511,11 +2639,20 @@ export default class MasterForm extends React.Component {
                 </div>
                 
               </div>
+              <br/> <br/><br/><br/>
             
-                      <div class="panel-body-xx ">
-                       
+                      <div class="col-md-12">
+                      <h4
+                  class="col-md-12"
+                  
+                > <span class="compo-type" style="font-size:25px">Component Type: ${Info}</span><br/><span style="font-size:25px;">Title</span><span style="font-size:25px;font-weight:bold;color:#000" class=" unit_title_place_holder  title-given "> ${component.name}
+                  </span>
+                 </h4><br/>
+
+                                              
                         <div class="content-section-from-input unit_content_place_holder">
-                          ${ component?.html_text?.substr(0,200) || "Click the edit icon above to edit this html content" }
+          
+                          <p>${ component?.html_text?.substr(0,200) || component?.embedded_url || "Click the edit icon above to edit this unit" }</p>
                         </div>
 
                       </div>
@@ -2524,7 +2661,7 @@ export default class MasterForm extends React.Component {
                 </div>
               </div>
           
-          </div>
+          </ul>
 `
                        
        $("#dynamic_subsection_"+ component.lesson_id +"_lesson_component")
@@ -2549,7 +2686,7 @@ export default class MasterForm extends React.Component {
 
     })
 
-   
+   initAccordion() 
 
 
 
@@ -2680,14 +2817,22 @@ export default class MasterForm extends React.Component {
         course_end_date_time: localStorage.getItem("course_end_date_time") || "2021-08-26T17:13:00+01:00",
         enrolment_start_date_time: localStorage.getItem("enrolment_start_date_time") || "2021-08-26T17:13:00+01:00",
         enrolment_end_date_time: localStorage.getItem("enrolment_end_date_time") || "2021-08-26T17:13:00+01:00",
-        course_language: localStorage.getItem("course_language") || "english",
+        course_language: localStorage.getItem("course_language") || 1,
         requirement_hours_per_week: localStorage.getItem("requirement_hours_per_week") || 1, //int
         requirement_no_of_week: localStorage.getItem("requirement_no_of_week") || 1,  //int
         grace_period_after_deadline: localStorage.getItem("grace_period_after_deadline") || 1, //int
          publication_status: localStorage.getItem("publication_status") || 2,  //int
         institution: localStorage.getItem("institution") || "",    //keypair preporpulated set of inst id
         author:  localStorage.getItem("author") || "" ,  //keypair preporpulated set of author id
+		//for the authoring team you can uselocalstorage but i dont want to do that
+		//make it more complex to be deciphered
+		authoring_team :  JSON.parse(localStorage.getItem("authoring_team")) || []
+		
+		
+		//inthe  create course or update on the fly append the jackpacks of all entered or searched authors
 	  }
+	  
+	  
     // alert(step)
     //switch on the step action
     switch(step){
@@ -2972,11 +3117,14 @@ export default class MasterForm extends React.Component {
                       </a>
 
                       <a
-                        onClick={(e) => {
-                          this.goToStep(e, 4);
-                          // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                          //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+                        onClick={async (e) => {
+                            this.goToStep(e, 4);
+                            await  this.fetchContent()
+                             // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                             //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
+
+                                                   
                         }}
                         href="#seo"
                         data-toggle="tab"
@@ -2990,16 +3138,14 @@ export default class MasterForm extends React.Component {
                       
 
                       <a
-                        onClick={(e) => {
-                          this.goToStep(e, 5);
-                          // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                          //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+                        onClick={async (e) => {
+                            this.goToStep(e, 5);
+                           
+                             // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                             //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
-                          // setTimeout(()=> {
-                            //let T = new  TinyMyceRender();
-                          //T.render("")
 
-                          //},3000)
+                                                   
                         }}
                         href="#pricing"
                         data-toggle="tab"
@@ -3012,13 +3158,14 @@ export default class MasterForm extends React.Component {
                       </a>
 
                       <a
-                        onClick={(e) => {
-                          this.goToStep(e, 8);
-                          // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                          //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+                       onClick={async (e) => {
+                            this.goToStep(e, 8);
+                            await  this.fetchContent()
+                             // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                             //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
-                          
 
+                                                   
                         }}
                         href="#resource"
                         data-toggle="tab"
@@ -3031,7 +3178,8 @@ export default class MasterForm extends React.Component {
                       <a
                         onClick={ async(e) => {
                           this.goToStep(e, 6);
-
+                          await  this.fetchContent()
+                                 
                           // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
                           //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
@@ -3694,7 +3842,7 @@ class Step1 extends React.Component {
 
                 <div className="form-group col-md-6 fl-left">
                   
-                  <div className="">
+                  <div className="code">
                     <input
                       style={{ position: "relative", zIndex: "1" }}
                       type="text"
@@ -3709,7 +3857,7 @@ class Step1 extends React.Component {
                     className="col-md-12 col-form-label"
                     for="course_title"
                   >
-                    Course Code <span className="required">*</span>{" "}
+                    Course Code <span className="required ">*</span>{" "}
                   </label>
                   </div>
                 </div>
@@ -3717,7 +3865,7 @@ class Step1 extends React.Component {
                {/*this will be the logged in instructor id hidden */}
                 <div className="form-group col-md-6 fl-left" >
                  
-                  <div className="">
+                  <div className="author">
                     <input
                       style={{ position: "relative", zIndex: "1" , display:"none"}}
                       type="text"
@@ -3733,7 +3881,7 @@ class Step1 extends React.Component {
 
                 <div className="form-group col-md-6 fl-left">
                  
-                  <div className="">
+                  <div className="name">
                     <input
                       style={{ position: "relative", zIndex: "1", marginTop:"-10px" }}
                       type="text"
@@ -3760,7 +3908,7 @@ class Step1 extends React.Component {
 
               <div class="form-group  col-md-6 fl-left">
                  
-                  <div class="" data-select2-id="94">
+                  <div class="institution" data-select2-id="94">
                     <select
                       style={{ position: "relative", zIndex: "1" }}
                       class="form-control select2 select2-hidden-accessible"
@@ -3801,7 +3949,7 @@ class Step1 extends React.Component {
 
 
                 <div className=" form-group col-md-6 fl-left">
-                        <div className="col-md-10  fl-left">
+                        <div className="col-md-10  fl-left author">
                           <input
                             type="text"
                             placeholder={"Add Team Lead"}
@@ -3884,7 +4032,7 @@ class Step1 extends React.Component {
                 
                 <div className="form-group col-md-12 fl-left">
                  
-                  <div className="">
+                  <div className="description">
 
 
                   <textarea
@@ -3903,7 +4051,7 @@ class Step1 extends React.Component {
                     for="short_description"
                   >
                     Course Short description
-                  </label>
+                  </label><span></span>
 
                      <HTMLForm
                         title="description"
@@ -3927,7 +4075,7 @@ class Step1 extends React.Component {
 
                 <div className="form-group col-md-12 fl-left">
                  
-                  <div className="">
+                  <div className="overview">
                     <textarea
                       name="overview"
                       id="overview"
@@ -3938,6 +4086,13 @@ class Step1 extends React.Component {
                        value={this.state.overview}
                   
                     ></textarea>
+
+                    <label
+                    className="col-md-12 col-form-label"
+                    for="short_description"
+                  >
+                    Course Overview
+                  </label><span></span>
 
 
 
@@ -3952,22 +4107,18 @@ class Step1 extends React.Component {
                         name={"overview"}
                       />
 
-                     <label
-                    className="col-md-12 col-form-label"
-                    for="short_description"
-                  >
-                    Course Overview
-                  </label>
+                     
                   </div>
                 </div>
 
 
 
                  <div className="form-group col-md-12 fl-left">
+                  
+                  <div className="curriculum">
                   <label className="col-md-12 col-form-label" for="description">
                     Curriculum
-                  </label>
-                  <div className="">
+                  </label><span></span>
 
                   <textarea
                       name="curriculum"
@@ -4649,6 +4800,152 @@ class Step4 extends React.Component {
       collaborators: [],
 
     };
+	
+
+	
+  }
+  
+  componentDidMount(){
+	     
+	  	//auto preset team lead or throw error if team lead dont exist
+    $(document).ready(()=>{
+		//show loader to fetch the instructor
+		                     
+	  setTimeout(()=>{
+		  //end loader
+		  
+		   this.teamLeadDetail()
+	  },10000);
+	  
+	  let leadNext = document.getElementById("nextLead");
+	  let collaboNext =  document.getElementById("nextCollaborator")
+	  
+	  
+
+	})  
+  }
+  
+  nextInstructor(){
+	 // alert("called fron template string clicked")
+	  //change this logic to be infinitely indepenedent on the id
+	  // document.getElementById("card1").className = "card1 animate-slide-out";
+    //document.getElementById("card2").className = "card2 animate-slide-in";
+
+  }
+  
+  nextCollaborator(){
+	  // document.getElementById("card2").className = "card2 animate-slide-out";
+    //document.getElementById("card1").className = "card1 animate-slide-in";
+  }
+  
+  async teamLeadDetail(){
+	 //encapsulate the feature of the leadinstructor search
+	  
+	  if(localStorage.getItem("author")){
+		  const leadId = localStorage.getItem("author")
+	  
+		  //then a team lead
+		  let leadDetail =  await this.getLeadDetail();
+		  
+		  if(leadDetail){
+		  leadDetail = leadDetail.profile
+		  let teamleadTemplate =`<div style="background:#f6f6f6;padding:20px" id="cardbox card" class="card1 animate-slide-out ">
+                    <div class="mdl-card__media">
+                            <div class="article-image-purple">
+                                <div class="mdl-card__title">
+                                    <h4 class="mdl-card__title-text title-text--white">Team Lead: ${leadDetail.first_name} ${leadDetail.last_name}</h4>
+                               <hr/>
+							   </div>
+								
+                            </div>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <!-- TAG Chips -->
+                        <span class="mdl-chip">
+                        <span class="mdl-chip__text"  data-filter=".mdl-card" data-filter-tag="a">Contact Detail</span>
+                        </span><br/>
+                        <span class="mdl-chip">
+                        <span class="mdl-chip__text" data-filter=".mdl-card" data-filter-tag="e">Email: ${leadDetail.email}</span>
+                        </span><br/>
+                        <span class="mdl-chip">
+                        <span class="mdl-chip__text" data-filter=".mdl-card" data-filter-tag="g">Phone ${leadDetail.phone_number}</span>
+                        </span><br/>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        Title :
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border pagination">
+                        <a id="nextLead" onclick="alert('event bubbles'); ${this.nextInstructor()}" class="next btn-next mdl-button btn-default" style="color:#fff">NEXT</a>
+                    </div>
+                </div>
+              `
+			  
+			  
+			  
+			  let collaborators = $("#collabo-guys")
+			  collaborators.append(teamleadTemplate)
+	      }else{
+			  //some error occured
+		  }
+	  }else{
+		  swal("Notice","Please Ensure to have a team lead")
+		  let teamLeadInstall = document.querySelector("div#teamleadInstall");
+		  teamLeadInstall.style.opacity="1"
+		  return "No Team Lead"
+	  }
+  }
+  
+  async getLeadDetail(){
+	 //a fresh api search detail of instructor to find all information of the team leader
+	 //avoid expensive api calls
+	 if(localStorage.getItem("author")){
+		 let instructorId = localStorage.getItem("author")
+		 let lead_guy = await getInstructorProfile(instructorId)
+		 console.log(lead_guy)
+		 return lead_guy
+	 }else{
+		 //add a team lead error here
+		 
+		 return false
+	 }
+	
+  }
+  
+  
+  getInstructorsDetail(name){
+	  
+	 const { instructors } = this.props;
+	 console.log(instructors)
+     let searchResults = instructors.find(instructor => {
+		 let fullname = instructor?.profile?.first_name + ""+ instructor?.profile?.last_name
+        if(fullname.toLowerCase() == name.toLowerCase()){
+			return instructor
+		}else if(instructor?.profile?.email == name){
+			return instructor
+		}else if(instructor?.profile?.phone_number == name){
+			return instructor
+		}else{
+			
+			swal("Instructor was not found with input data: "+ name);
+			return false;
+		}
+        
+      }) 
+	  return searchResults;
+  }
+  
+  runLoopSlideShow(){
+	 if(localStorage.getItem("authoring_team")){
+		//foreach json parse of the collaboratores
+        //add rev slideshow
+		let teamMates = JSON.parse(localStorage.getItem("authoring_team"))
+			           						
+	  }
+				  
+  }
+  
+  redrawFrame(){
+	 return this.runLoopSlideShow()
   }
 
 
@@ -4656,7 +4953,8 @@ class Step4 extends React.Component {
 
 
   render() {
-    const { instructors } = this.props
+    const { instructors } = this.props;
+	
     if (this.props.currentStep !== 5) {
       return null;
     }
@@ -4670,35 +4968,41 @@ class Step4 extends React.Component {
 
               <div className="row">
         <div className="col-md-12">
-
-
-
-                      
-
-        
-
-
-
-
-                <div id="collabo-guys" className="col-md-12">
-
-                    <div class="col-lg-3 col-md-3 col-sm-6">
-                      <a href="#">
-                        <div className="widget-panel widget-style-2 bg-white">
-                          <i className="fa fa-plus fa-2x text-pink"></i>
-                          <h2
-                            className="m-0 text-dark-x counter font-600-x"
-                            style={{
-                              fontFamily: "Open Sans",
-                              color: "#000",
-                              fontSize: "14px",
-                            }}
-
+		
+		
+		
+		
+		<div className="form-group col-md-6 fl-left">
+                 <label className="col-md-12 col-form-label" for="course_title">
+                  Search or add collaborator by name ,email or phone number<span className="required">*</span>{" "}
+                </label>
+                <div className="col col-md-12 collaboratorlist-append">
+                  <input
+                    type="text"
+                    className="form-control col-md-10 fl-left"
+                    id="collaboratorslist"
+                    name="collaboratorslist"
+                    placeholder="Search or add collaborator"
+                    required=""
+                     
+                     onChange={this.props.handleChange}
+                  />
+				  
+				  	<div   class="col-md-2 fl-left undo" 
                                 onClick={ () => {
-              let values = this.state.collaborators            
+			  let temp =[]
+              let values = (this.state.collaborators.length > 0 ) ? this.state.collaborators : [];
+			  if(localStorage.getItem("authoring_team")){
+				  temp = localStorage.getItem("authoring_team") || [];
+				  	  
+			  }else{
+				   localStorage.setItem("authoring_team",JSON.stringify([]))
+			  }
+          			  
+             			  
 
               swal({
-                text: 'Search for an instructor by email/ phone number. e.g. "saladinjake@company.com ".',
+                text: 'Search for an instructor by email/ phone number or fullname e.g. "saladinjake@company.com ".',
                 content: "input",
                 button: {
                 text: "Search!",
@@ -4715,113 +5019,184 @@ class Step4 extends React.Component {
                   //TODO: if no collaborators selected 
                   //LET THE LOGGED IN OR LEAD INSTRUCTOR BE APPENDED AS A COLLABORATOR
 
-                let targetInstructor = instructors.find(instructor => {
-                    console.log(instructor)
-                    return (instructor?.profile?.name === name) ||  (instructor?.profile?.email === name) || (instructor?.profile?.phone_number === name)
-                })
+                let targetInstructor = this.getInstructorsDetail(name) // if not false continue below
                
                   if(targetInstructor){
                      let collaborators =  $("#collabo-guys")
-                      
-                     let newGuy = $(`
-                      <div class="col-lg-3 col-md-3 col-sm-6">
-                      <a href="#">
-                        <div className="widget-panel widget-style-2 bg-white">
-                          <i className="fa fa-trash fa-2x text-pink"></i>
-                          <h2
-                            className="m-0 text-dark-x counter font-600-x"
-                            style={{
-                              fontFamily: "Open Sans",
-                              color: "#000",
-                              fontSize: "14px",
-                            }}
-
-                          >
-                            ${targetInstructor?.profile?.first_name} - ${targetInstructor?.profile?.email}
-                          </h2>
-                          <div
-                            className="text-muted-x m-t-5-x"
-                            style={{
-                              fontFamily: "Open Sans",
-                              color: "#000",
-                              fontSize: "14px",
-                            }}
-                            onclick="alert('test delete operation')"
-
-                            data-id=${targetInstructor?.profile?.id}
-                          >
-                            Remove
-                          </div>
-                        </div>
-                      </a>
+					 
+					 
+			
+		            let collaboratorsTemplate =`<br/><div style="background:#f6f6f6;padding:20px;width:100%;display:none" id="${targetInstructor.profile?.id}" class="card2 animate-slide-out">
+                    <div class="mdl-card__media">
+                            <div class="article-image-purple">
+                                <div class="mdl-card__title">
+                                    <h4 class="mdl-card__title-text title-text--white">Collaborator: ${targetInstructor.profile?.first_name} ${targetInstructor.profile?.last_name}</h4>
+                               <hr/>
+							   </div>
+								
+                            </div>
                     </div>
-                     `)
+                    <div class="mdl-card__supporting-text">
+                        <!-- TAG Chips -->
+                        <span class="mdl-chip">
+                        <span class="mdl-chip__text"  data-filter=".mdl-card" data-filter-tag="a">Contact Detail</span>
+                        </span><br/>
+                        <span class="mdl-chip">
+                        <span class="mdl-chip__text" data-filter=".mdl-card" data-filter-tag="e">Email: ${targetInstructor.profile?.email}</span>
+                        </span><br/>
+                        <span class="mdl-chip">
+                        <span class="mdl-chip__text" data-filter=".mdl-card" data-filter-tag="g">Phone ${targetInstructor.profile?.phone_number}</span>
+                        </span><br/>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        Title :
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border pagination">
+                        <a id="brianna" class="next btn-next mdl-button btn-default" style="color:#fff">NEXT</a>
+                    </div>
+                </div>
+              `
+			
+                      
+                   
                      
-                    collaborators.append(newGuy.html())
-                  
-
-                     // now let js do the dynamic selection of the hidden authoring_team select form fields
+                    collaborators.append(collaboratorsTemplate)
+               
+                  //this is the logic behind filling the multiple select hidden field input arrays of authoring_team
+				  //DO NOT DELETE THIS LINES
+                   // now let js do the dynamic selection of the hidden authoring_team select form fields
                     const { name, id, email, phone_number} = targetInstructor?.profile
-                     values.push({
-                      id,name, email, phone_number
-                     })
-
-                     this.setState({collaborators: values})
-
-                      $('select[name=authoring_team]').val(this.state.collaborators) // all collaborators as listArray
-      
-                     return swal("Success!", "The Instructor was found", "Success");
+                     values.push(
+					  id,
+					 //{
+                      //id ,name, email, phone_number
+                     //}
+					 )
+					 
+                   //SAVES THE STATE TO LOCAL STORE AND REACT STATE
+                   //this.setState({authoring_team: values})
+				   this.setState({collaborators: [...this.state.collaborators, {id,name,email,phone_number}]})
+                   //let teamMateBlocs = $('select[name=authoring_team]').val(this.state.collaborators) // all collaborators as listArray
+				   //let newMate = (<option)
+				   
+				   //console.log($('select[name=authoring_team]').val())
+                   
+					if(temp){
+						 let tempstore = localStorage.getItem("authoring_team")
+						 console.log(tempstore)
+						temp = JSON.parse(tempstore)
+						temp = [...temp,...values]
+						localStorage.setItem("authoring_team",JSON.stringify(temp))
+					}
+					console.log(localStorage.getItem("authoring_team"))
+                   return swal("Success!", "The Instructor was found", "Success");
 
                  }else{
 
                     
-                      swal("Error", "We could not find instructor", "error");
+                   swal("Error", "We could not find instructor. If you search request is by email, ensure case sensitivity for the exact email request", "error");
             
-                      swal.stopLoading();
-                     return swal.close();
+                   swal.stopLoading();
+                   return swal.close();
                 
 
                  }
               })
              
-                 
-                           
-                          
-
       }}
-                          >
-                            Add collaborator
-                          </h2>
-                          <div
-                            className="text-muted-x m-t-5-x"
-                            style={{
-                              fontFamily: "Open Sans",
-                              color: "#000",
-                              fontSize: "14px",
-                            }}
-                          >
-                            Add
-                          </div>
-                        </div>
-                      </a>
-                    </div>
+	  ><i class="fa fa-plus"></i> Add</div>
+                 
+                </div>
+              </div>
+		
+		
+		
+		
+
+
+
+                      
+
+        
 
 
 
 
+                <div  className="col-md-6 fl-left">
+				    <h4>Course Team</h4><hr/>
+					
+					
+					<main class="mdl-layout__content">
+            
+                   <div id="collabo-guys" class="content-grid mdl-grid portfolio-max-width">
+				   {this.runLoopSlideShow()}
 
+				   
+                     </div>
+				  
+				  </main>
+				  
+				  <div id="teamleadInstall" style={{opacity:"0"}}>
+					    <h5>Add Team Lead</h5>
+						{/*action event to add a team lead if he was not added or removed by mistake*/}
+						<hr/>
+					</div>
+                   
                 </div>
 
                {/* hidden field that updates its array of data*/}
                { /*fields will be selected as user finds the  exact email/ phone or name 
                 of the instructors to be added as collaborators*/}
                 <select name="authoring_team[]" multiple  style={{display:"none"}}>
-                      {instructors.length > 0  && instructors.map(instructor => {
+                      {this.state.collaborators.length > 0  && this.state.collaborators.map(instructor => {
                           return (
-                             <option value={instructor.profile.id}>{instructor.profile.name}</option>
+                             <option value={instructor.id}>{instructor.name}</option>
                           )
                       })}
                 </select>
+				
+				<div class="container-fluid">
+				   <div class="row">
+				   <h4>Collaborators</h4>
+				      <div class="col-md-12">
+					  {this.state.collaborators.length > 0  && this.state.collaborators.map(instructor => {
+                          return (
+                            <div class="col-md-3">
+							<div style="background:#f6f6f6;padding:20px;width:100%;display:none" id="" class="card2 animate-slide-out">
+                    <div class="mdl-card__media">
+                            <div class="article-image-purple">
+                                <div class="mdl-card__title">
+                                    <h4 class="mdl-card__title-text title-text--white">Collaborator: {instructor.first_name} {instructor.last_name}</h4>
+                               <hr/>
+							   </div>
+								
+                            </div>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                      
+                        <span class="mdl-chip">
+                        <span class="mdl-chip__text"  data-filter=".mdl-card" data-filter-tag="a">Contact Detail</span>
+                        </span><br/>
+                        <span class="mdl-chip">
+                        <span class="mdl-chip__text" data-filter=".mdl-card" data-filter-tag="e">Email: {instructor.email}</span>
+                        </span><br/>
+                        <span class="mdl-chip">
+                        <span class="mdl-chip__text" data-filter=".mdl-card" data-filter-tag="g">Phone {instructor.phone_number}</span>
+                        </span><br/>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        Title :
+                    </div>
+                    
+                </div>
+							</div>
+                          )
+                      })}
+					    
+					  </div>
+				   </div>
+				
+				</div>
 
 
           
@@ -4835,18 +5210,6 @@ class Step4 extends React.Component {
 
 
 
-              {/*<div className="mb-3 mt-3">
-                  <button
-                    type="button"
-                    className="btn btn-primary text-center"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      this.props.saveAndContinue(e)
-                    }}
-                  >
-                    Save 
-                  </button>
-                </div>*/}
 
             </div>
           </div>

@@ -14285,7 +14285,7 @@ div.dt-button-info h2 {
 .fold-content h3 {
   margin-top: 0;
 }
-.fold-content > table {
+.fold-content > div, .fold-content > ul, .fold-content > li {
   background: white;
   color: #555;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
@@ -15136,7 +15136,7 @@ div.dt-button-info h2 {
   /*align-items: center;*/
   font-size: 1.8rem;
   margin: 1% 0;
-  border: 1px solid #eee;
+  
 }
 
 .pb-widget-preview:hover {
@@ -17118,13 +17118,14 @@ html {
 
 
 .hello-move-me{
-   border-left: 10px solid rgba(8,23,200);
+  
 
 }
 
 .sections {
   width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 40px;
+
  
 }
 .sections .title-given {
@@ -17134,21 +17135,24 @@ html {
 }
 .sections .title-given::-webkit-details-marker {
   margin-right: 14px;
+  
 }
 .sections  .subsections {
   margin: 5px 0;
-  margin-left: 15px;
+  margin-left: 25px;
   position: relative;
-  border-left: 5px solid #c20000;
+  border-left: 1px solid #fff;
+   border-right:2px solid #eaeaea;
 }
 .sections  .subsections::after {
   content: "";
   position: absolute;
   top: -5px;
   left: -10px;
-  width: 1px;
+  width: 4px;
   height: calc(36px + 10px);
-  background-color: #c7d3df;
+  background-color: #000; /*#c7d3df;*/
+  
 }
 .sections  .subsections:last-child::after {
   height: calc(36px / 2 + 5px);
@@ -17159,8 +17163,11 @@ html {
   top: calc(36px / 2);
   left: -10px;
   width: 8px;
-  height: 1px;
-  background-color: #c7d3df;
+  height: 4px;
+   background-color: #000;
+    border-right:2px solid #eaeaea;
+ 
+  
 }
 .sections  .subsections[open]:not(:last-child)::after {
   height: calc(100% + 5px);
@@ -17176,18 +17183,22 @@ html {
   margin-right: 14px;
 }
 .sections  .subsections  .lessons {
-  margin: 5px 0;
-  margin-left: 15px;
-  position: relative;
+  
+  margin-left: 35px;
+  border-bottom:2px solid #eaeaea;
+   border-left: 2px solid #000;
+  
+  
+  
 }
 .sections  .subsections  .lessons::after {
   content: "";
   position: absolute;
   top: -5px;
   left: -10px;
-  width: 1px;
+  width: 4px;
   height: calc(28px + 10px);
-  background-color: #c7d3df;
+  background-color: #000;
 }
 .sections  .subsections  .lessons:last-child::after {
   height: calc(28px / 2 + 5px);
@@ -17198,8 +17209,8 @@ html {
   top: calc(28px / 2);
   left: -10px;
   width: 8px;
-  height: 1px;
-  background-color: #c7d3df;
+  height: 4px;
+  background-color: #000;
 }
 .sections  .subsections  .lessons[open]:not(:last-child)::after {
   height: calc(100% + 5px);
@@ -17224,15 +17235,23 @@ html {
 }
 
 .components {
-  margin: 5px 0;
+  /* margin: 5px 0;
   padding: 5px 10px;
-  background-color: #dfe7ec;
-  border: 1px solid #c7d3df;
+  
+ border: 1px solid #c7d3df;*/
   border-radius: 3px;
   color: #545f69;
   position: relative;
   margin-left: 15px;
   position: relative;
+   border-left: 1px solid #000;
+   background: #f6f6f6f;
+   border-left: 10px solid #f6f6f6;
+   padding: 10px;
+
+   box-shadow: 0px 13px 21px -10px rgba(0, 0, 0, 0.2);
+border-left: 4px solid #eaeaea;
+  border-right: 10px solid #f6f6f6;
 }
 .components span {
   color: #041320;
@@ -17242,9 +17261,9 @@ html {
   position: absolute;
   top: -5px;
   left: -10px;
-  width: 1px;
+  width: 4px;
   height: calc(28px + 10px);
-  background-color: #c7d3df;
+  background-color: #000;
 }
 .components:last-child::after {
   height: calc(28px / 2 + 5px);
@@ -17255,8 +17274,8 @@ html {
   top: calc(28px / 2);
   left: -10px;
   width: 8px;
-  height: 1px;
-  background-color: #c7d3df;
+  height: 4px;
+  background-color: #000;
 }
 .components[open]:not(:last-child)::after {
   height: calc(100% + 5px);
@@ -17265,7 +17284,9 @@ html {
 
 
 
-
+.components h4{
+  margin-top: -50px;
+}
 
  .ql-container {
   min-height: 10em;
@@ -17415,9 +17436,10 @@ html {
 
 
  .undo{
-  padding:13px;
+  padding:14px;
   background:rgba(8,23,200);
   color:#fff;
+  
 }
 
 
@@ -17509,8 +17531,9 @@ nav.action-figure ul{
     padding:0;
     margin:0;
     list-style:none;
-   background:#f6f6f6;
+   background:#ffff;
     overflow:hidden;
+    border-right: 4px solid rgba(8,23,200);
 	
 	
 	 -webkit-transition: border-color 0.15s ease-in-out,
@@ -17526,14 +17549,14 @@ nav.action-figure li{
 }
 nav.action-figure a{
     color:#000;
-    font-size:1em;
+    font-size:1.4em;
     font-family:'helvetica neue', helvetica, arial, sans-serif;
     text-decoration:none;
     display:block;
     padding:12px 15px;
     font-weight:300;
     letter-spacing:2px;
-  border-bottom:1px solid #fff; 
+  border-bottom:3px solid #f6f6f6; 
 }
 nav.action-figure ul li a:hover, nav.action-figure ul li:hover{
     background:rgba(8,23,2000);
@@ -17869,3 +17892,121 @@ fl-rightside{
     width: 80%; 
     left: 0;
 }*/
+
+
+
+
+
+
+
+
+
+
+.mdl-layout__content{
+	width:100%;
+	
+}
+
+
+
+.card1,.card2{
+	
+	
+}
+
+
+/*authoring team slider*/
+.card2 {
+  position: absolute;
+}
+
+.animate-slide-in {
+  animation: card-slide-in linear 1s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+@keyframes card-slide-in {
+  0% {
+    transform: translate(150%);
+  }
+}
+.animate-slide-out {
+  animation: card-slide-out linear 1.5s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+@keyframes card-slide-out {
+  10% {
+    transform: translate(150%);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*accordion toggle slideup*/
+#js-parent {
+    position: relative;
+    width: 100%;
+    /*border: 1px solid #0079c1;*/
+    border-top: none;
+    outline: 0;
+    cursor: pointer
+}
+
+#js-parent h4 {
+    display: block;
+    position: relative;
+    margin: 0;
+    padding: 0.625em 0.625em 0.625em 2em;
+   
+    font-size: 1.25em;
+    font-weight: normal;
+    color: #000;
+    cursor: pointer;
+}
+
+#js-parent h4:hover,
+#js-parent h4:active,
+#js-parent  .content-entry.open h4 {
+    background-color: rgba(8,23,200);
+    color: white;
+}
+
+#js-parent h4:hover i:before,
+#js-parent h4:hover i:active,
+#js-parent h4 .content-entry.open i {
+    color: white;
+}
+
+
+
+
+
+.accordion-content {
+    display: none;
+    padding-left: 2.3125em;
+    margin-top: 10px;
+
+}
+
+
+.accordion-content h4{
+   margin-top: 0px;
+   background: #eaeaea;
+   width: 100%;
+}
+
+
