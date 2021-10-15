@@ -13,7 +13,7 @@ class Editor extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      editorHtml: this.props.value || "Edit this content" || "", 
+      editorHtml: this.props.placeholder || "Edit this content" || "", 
       theme: "snow" };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -50,6 +50,45 @@ class Editor extends React.Component {
       iframe.src = "data:text/html;charset=utf-8," + encodeURI(html);
     });
   }
+  
+  imageHandler = () => {
+        const input = document.createElement('input');
+
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.click();
+
+        input.onchange = async () => {
+            const file = input.files[0];
+            const formData = new FormData();
+
+            formData.append("file", file);
+
+            // Save current cursor state
+            const range = this.quill.getSelection(true);
+
+            // Insert temporary loading placeholder image
+            this.quill.insertEmbed(range.index, 'image', `${window.location.origin}/public/images/loaders/placeholder.gif`);
+
+            // Move cursor to right side of image (easier to continue typing)
+            this.quill.setSelection(range.index + 1);
+			
+			//save the image to the api end point resource
+
+            const res = await postNewsImageToCloudinaryApi(formData); // API post, returns image location as string e.g. 'http://www.example.com/images/foo.png'
+
+            // Remove placeholder image
+            this.quill.deleteText(range.index, 1);
+
+            // Insert uploaded image
+            // this.quill.insertEmbed(range.index, 'image', res.body.image);
+			if(res){
+			this.quill.insertEmbed(range.index, 'image', res);	
+			}
+            
+        };
+    }
+	
 
   render() {
     return (
@@ -57,20 +96,7 @@ class Editor extends React.Component {
         <br />
         <br />
         <div>
-          <p
-            style={{
-              fontWeight: "700",
-              fontFamily: "Open Sans",
-              color: "#000",
-              fontSize: "12px",
-              lineHeight: "20px",
-
-              marginTop: "14px",
-              marginRight: "7px",
-            }}
-          >
-            {this.props.placeholder}{" "}
-          </p>
+          
           {/*<button className="md-trigger button-preview" data-modal="modal-12">Live Edit Preview</button>*/}
         </div>
         <ReactQuill
@@ -115,6 +141,40 @@ class Editor extends React.Component {
   }
 }
 
+
+
+
+
+
+
+
+
+
+	
+async function postNewsImageToCloudinaryApi(formData){
+		
+    formData.append("upload_preset", "hpvklb3p");
+              // eslint-disable-next-line no-undef
+	let res = await fetch("https://api.cloudinary.com/v1_1/questence/image/upload", {
+       method: "POST",
+      body: formData,
+    })
+	
+	 if (typeof res?.secure_url !== "undefined") { // ensure the api saving data of uploaded 3rdparty image has a return call to the iamge successfully uploaded
+      let  imageUrl = res.secure_url; //get the generated image url
+
+        return imageUrl
+
+     } else {
+                     //toast.error("could not upload image");
+        return false
+    }
+            
+           
+}
+
+
+
 /*
  * Quill modules to attach to editor
  * See https://quilljs.com/docs/modules/ for complete options
@@ -124,10 +184,8 @@ Editor.modules = {
     [
       { header: "1" },
       { header: "2" },
-      { header: "3" },
-      { header: "4" },
-      { header: "5" },
-      { header: "6" },
+	  { header: [3, 4, 5, 6] },
+     
       { font: [] },
     ],
     [{ size: [] }],
@@ -140,11 +198,19 @@ Editor.modules = {
     ],
     ["link", "image", "video"],
     ["clean"],
+	["codeblock"]
+	
   ],
   clipboard: {
     // toggle to add extra line breaks when pasting HTML:
     matchVisual: false,
   },
+  
+  //handlers: {
+                    //image: this.imageHandler
+    //},
+  
+ 
 };
 /*
  * Quill editor formats

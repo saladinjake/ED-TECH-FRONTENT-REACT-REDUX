@@ -780,7 +780,8 @@ function obj2FormData(obj, formData = new FormData()){
  */
 export const createAnyResource = (mode="post",
   parts = "/lms/api/create/course/",
-  formEl
+  formEl,
+  state ={} // optional
 ) => {
   var url = base_url + parts;
   var form = formEl[0];
@@ -866,6 +867,54 @@ export const createAnyResource = (mode="post",
           }
         }
 
+
+       // else if its an update of the form for each tab run the following event
+	   if(formEl.attr("id")=="stepUpFormWithAI2"){ //or more
+          //loop thru the current state then update what we have by cfreateing the form value then append to the
+		//dynamic invisible form element to be sent to database
+		//ie. gen form data on fly not added to the dom itself. just a temp usage
+		formEl = $("#stepUpFormWithAI2");
+			
+		if(state){
+           formEl = $("#stepUpFormWithAI2");
+			console.log(state)
+		  //recreate the form data with the state changed value by filling it with what was typed before
+          //url will be an update method if the resource exists
+		  let textEditors = [
+		    "learning_expectation",
+		    "description","prerequisite", 
+			"overview","curriculum"
+		  ];
+		  let new_form = $("<form id='quickform-update-onfly' method='patch' enctype='application/x-www-form-urlencoded'></form>")
+          for(var k in state){
+            console.log(k + " : " + state[k]) 
+			if(k=="card_image" || k=="intro_video"){
+				//for uploads handle this when agreed upon change made for video upload of intro_video bcus there is no where to upload files on backend
+				
+			}else if(k=="authoring_team"){
+				//now clone and append the jetpacks of all my collaborators
+				
+				
+				let template = `<input name="${k}" style='display:none' value="${state[k]}">`;
+			    new_form.append(template)
+				console.log(k,state[k])
+      
+				
+			}else{
+				let template = `<input name="${k}" style='display:none' value="${state[k]}">`;
+			    new_form.append(template)
+			}
+			
+			//for booleans checks
+			
+		  }
+		  formEl =    new_form;//$("#stepUpFormWithAI2"); // switch to a new fly form
+		  
+		  
+		 
+		}
+		 
+	   }
         
   
 
@@ -1082,7 +1131,7 @@ let dataObj ={}
 
     } else {
 
-       if(formEl.attr("id")=="create-course" || formEl.attr("id")=="stepUpFormWithAI2"){
+       if(formEl.attr("id")=="create-course" || formEl.attr("id")=="quickform-update-onfly"){
       
            if(mode.toLowerCase() =="post"){
               localStorage.setItem("name","")
@@ -1164,7 +1213,7 @@ let dataObj ={}
       console.log(jqXHR.responseText, "text type");
 
        // dataObj.response = JSON.parse(jqXHR.responseText)
-      console.log(dataObj.response, dataObj.response.id)
+//      console.log(dataObj.response, dataObj.response.id)
 
        // return  jqXHR.responseText
 
@@ -1172,6 +1221,7 @@ let dataObj ={}
       // console.log(jqXHR.responseJSON);
       // console.log(JSON.parse(jqXHR.responseText), "here is the content");
       dataObj.response = JSON.parse(jqXHR.responseText)
+
       console.log(dataObj.response, dataObj.response.id)
       if(formEl.attr("id")=="create-course" || formEl.attr("id")=="stepUpFormWithAI2" ){
           if(mode.toLowerCase() =="post" && textStatus == "success"){
@@ -1225,7 +1275,7 @@ let dataObj ={}
              // return dataObj.response.id
           }else{
              addLessonData(dataObj.response)
-                 // return dataObj.response.id
+            //return dataObj.response.id
           }
         }
 
@@ -1242,11 +1292,37 @@ let dataObj ={}
            swal("Something went wrong","error") // console the error response
        
           }else if(mode.toLowerCase() =="patch" && textStatus == "success"){
-             // return dataObj.response.id
+             return dataObj.response.id
              //fetch and update record seamlessly via ajax
           }else{
              // addUnitSectionData(dataObj.response)
-                 // return dataObj.response.id
+
+             //the parent : from the form attribute
+
+             //the component: from the form attribute
+    //          //manipulate the attributes by changing the created component id with the id of the database store
+    //           $("#"+ formEl.attr("temp_id")).attr("data-idx", dataObj.response.id)
+    //           $("#"+ formEl.attr("data_id")).attr("data-idx", dataObj.response.id)
+    //           $("#"+ formEl.attr("data_idx")).attr("data-idx", dataObj.response.id)
+
+
+    //           //similar to the id of the edit and delete for the component
+    //           $("#"+ formEl.attr("temp_id")).find("fa-edit").attr("data-idx", dataObj.response.id)
+    //           $("#"+ formEl.attr("data_id")).find("fa-edit").attr("data-idx", dataObj.response.id)
+    //           $("#"+ formEl.attr("data_idx")).find("fa-edit").attr("data-idx", dataObj.response.id)
+
+    //           $("#"+ formEl.attr("temp_id")).find("fa-trash").attr("data-idx", dataObj.response.id)
+    //           $("#"+ formEl.attr("data_id")).find("fa-trash").attr("data-idx", dataObj.response.id)
+    //           $("#"+ formEl.attr("data_idx")).find("fa-trash").attr("data-idx", dataObj.response.id)
+
+    //          //finally reset the data of the form ids to the current id created component
+    // $("#"+ formEl.attr("data_idx")).attr("id", dataObj.response.id)
+
+    //           formEl.attr("temp_id", dataObj.response.id)
+    //           formEl.attr("data-id", dataObj.response.id)
+    //           formEl.attr("data-idx", dataObj.response.id)
+
+                return dataObj.response.id
           }
         }
 
@@ -1436,6 +1512,36 @@ export const getComponentsOfLessons = async (lessonId) => {
 
 
 
+
+export const getComponent = async (componentId, type) => {
+  let bitUrls =`/lms/api/`
+  let url = base_url 
+  if(type==1){
+    bitUrls = bitUrls + `video-component/`
+    url = base_url+ bitUrls + `${componentId}`
+  }else if(type==2){
+    bitUrls = bitUrls + `html-components/`
+     url = base_url+ bitUrls + `${componentId}`
+  }else if(type==3){
+   bitUrls = bitUrls + `problem-component/`
+     url = base_url+ bitUrls + `${componentId}`
+  }else{
+     bitUrls = bitUrls + `discussion-component/`
+     url = base_url+ bitUrls + `${componentId}`
+  }
+
+  let request = makeRequest(url);
+  return request
+    .then(function (response) {
+      return response.json();
+    })
+    .then((data) => {
+      // console.log(data)
+      return data
+    });
+}
+
+
 export const deleteApi =  async (urlBuild) =>  {
   let url= base_url + `/lms/api/delete/${urlBuild}/`;
   console.log(url);
@@ -1554,7 +1660,7 @@ export const getInstructorProfiles = async (limit = 8000000, offset = 0) => {
 };
 
 export const getInstructorProfile = async (id) => {
-  let url = base_url + `/profile-resource/api/author-profiles/${id}`;
+  let url = base_url + `/profile-resource/api/author-profile/${id}`;
   let request = makeRequest(url);
   return request
     .then(function (response) {

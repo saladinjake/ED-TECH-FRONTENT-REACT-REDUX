@@ -320,7 +320,7 @@ const WorkBench = (props) => {
 // onDragStart="dragStart(event)" onDragEnd="dragEnd( event )"
         let rndId =  muu_counter 
         let templateLesson = ` 
-            <div id="${rndId}" class="card-box"  data-id="${
+            <div id="${rndId}" class="card"  data-id="${
           "muu_" + muu_counter
         }" 
         
@@ -358,7 +358,7 @@ const WorkBench = (props) => {
                                 <p>${component.description || ""}</p>
                                 <iframe class="gh-fit" style="width:100%; border:none;" class="card-box" src="${component.embedded_url}"></iframe>
 
-                                 <p >${component.html_text}</p>
+                                 <p class="card-box">${component.html_text}</p>
                                 </div></div>
 
                                 `
@@ -369,7 +369,7 @@ const WorkBench = (props) => {
                                  componentTypeTemplate = `<div><h4> ${component.name}</h4>
 
                                 <hr/>
-                                <div class="">
+                                <div class="card">
                                 <p>${component.description || ""}</p>
                                 
                                  <p >${component.html_text}</p>
@@ -1106,22 +1106,22 @@ const handleToggleAccordion = (event) => {
               <div className="col-md-12 card">
                 <ul className="nav nav-tabs" id="user-nav-tabs">
                   <li role="presentation" className="active col-md-2">
-                    <a href="#c1"> Lesson</a>
+                    <a href="#c1"><i class="fa fa-user"></i></a>
                   </li>
                   <li role="presentation" className="col-md-2">
-                    <a href="#c2">Transcript</a>
+                    <a href="#c2"><i class="fa fa-edit"></i></a>
                   </li>
                   <li role="presentation" className="col-md-2">
-                    <a href="#c3">Live</a>
+                    <a href="#c3"><i class="fa fa-spinner"></i></a>
                   </li>
                   <li role="presentation" className="col-md-2">
-                    <a href="#c4">Notifications</a>
+                    <a href="#c4"><i class="fa fa-envelope"></i></a>
                   </li>
                   <li role="presentation" className="col-md-2">
-                    <a href="#c5">Forums</a>
+                    <a href="#c5"><i class="fa fa-comment"></i></a>
                   </li>
                   <li role="presentation" className="col-md-2">
-                    <a href="#c6">Note</a>
+                    <a href="#c6"><i class="fa fa-file"></i></a>
                   </li>
                 </ul>
               </div>
