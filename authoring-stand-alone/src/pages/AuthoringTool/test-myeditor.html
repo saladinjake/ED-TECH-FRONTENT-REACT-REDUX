@@ -1,0 +1,269 @@
+<style type="text/css">
+    div,iframe.editOnMe {
+  width: 65% !important;
+  margin: auto;
+  display: block;
+  border: 1px solid #ccc;
+}
+iframe.editOnMe{
+  height:600px !important;
+}
+div {
+  border: none;
+  margin-bottom: 10px;
+}
+button.edith,input.edith,select.edith {
+  margin:5px;
+  
+}
+
+button.edith{
+  background:#fff;
+  border-radius:25px;
+  border:1px solid #fafafa;
+  
+}
+
+button:hover{
+  background:rgba(8,23,200);
+  color:#fff;
+}
+
+.tab-buttons{
+  border:1px solid #eaeaea;
+}
+</style>
+<body>
+  <div class="tab-buttons">
+    <button class="edith" onclick="Edit('bold','richTextField')" title="bold"><i class="fa fa-bold"></i></button>
+    <button class="edith" onclick="Edit('italic','richTextField')" title="italic"><i class="fa fa-italic"></i></button>
+    <button class="edith" onclick="Edit('underline','richTextField')" title="underline"><i class="fa fa-underline"></i></button>
+    <button class="edith" onclick="Edit('strikeThrough','richTextField')" title="strikeThrough"><i class="fa fa-strikethrough"></i></button>
+    <button class="edith" onclick="Edit('justifyLeft','richTextField')" title="Align Left"><i class="fa fa-align-left"></i></button>
+    <button class="edith" onclick="Edit('justifyCenter','richTextField')" title="Align Center"><i class="fa fa-align-center"></i></button>
+    <button class="edith" onclick="Edit('justifyFull','richTextField')" title="justify"><i class="fa fa-align-justify"></i></button>
+    <button class="edith" onclick="Edit('cut')" title="cut"><i class="fa fa-cut"></i></button>
+    <button class="edith" onclick="Edit('copy','richTextField')" title="Copy"><i class="fa fa-copy"></i></button>
+    <button class="edith" onclick="Edit('indent','richTextField')" title="text-indent"><i class="fa fa-indent"></i></button>
+    <button class="edith" onclick="Edit('outdent','richTextField')" title="text outdent"><i class="fa fa-outdent"></i></button>
+    <button class="edith" onclick="Edit('subscript')" title="subscript"><i class="fa fa-subscript"></i></button>
+    <button class="edith" onclick="Edit('superscript','richTextField')" title="subscript"><i class="fa fa-superscript"></i></button>
+    <button class="edith" onclick="Edit('undo','richTextField')" title="undo"><i class="fa fa-undo"></i></button>
+    <button class="edith" onclick="Edit('redo','richTextField')" title="redo"><i class="fa fa-redo"></i></button>
+    <button class="edith" onclick="Edit('insertUnorderedList','richTextField')" title="unordered list"><i class="fa fa-list-ul"></i></button>
+    <button class="edith" onclick="Edit('insertOrderedList',)" title="ordered list"><i class="fa fa-list-ol"></i></button>
+    <button class="edith" onclick="Edit('insertParagraph','richTextField')"><i class="fa fa-paragraph"></i></button>
+    <select class="edith" onchange="execVal('formatBlock',this.value,'richTextField')">
+        <option value="H1">H1</option>
+        <option value="H2">H2</option>
+        <option value="H3">H3</option>
+        <option value="H4">H4</option>
+        <option value="H5">H5</option>
+        <option value="H6">H6</option>
+      </select>
+    <br>
+    
+    <button class="edith" onclick="Edit('createLink',prompt('Enter a URL,http://'), 'richTextField')"><i class="fa fa-link"></i></button>
+    <button class="edith" onclick="Edit('unlink', 'richTextField')"><i class="fa fa-unlink"></i></button>
+    <button class="edith" onclick="Edit('insertHorizontalRule','richTextField')" title="insert Horizontal Rule">insert Horizontal Rule</button>
+    <select onchange="execVal('fontName',this.value, 'richTextField')">
+        <option value="Arial">Arial</option>
+        <option value="Comic Sans MS">Comic Sans MS</option>
+        <option value="Courier">Courier</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Tahoma">Tahoma</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Verdana">Verdana</option>
+      </select>
+    <select onchange="execVal('fontSize',this.value, 'richTextField')" title="font size">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+      </select>Font Color<input type="color" onchange="execVal('foreColor',this.value, 'richTextField')" /> Highlight<input type="color" onchange="execVal('hiliteColor',this.value, 'richTextField')" />
+    <button class="edith" onclic="Edit('SelectAll', 'richTextField')">Select All</button>
+  </div>
+  <iframe name="richTextField" id="learnoutcomes" style="width:80%;height: 80%;margin:auto;display: block;max-height:200px">
+      
+    </iframe>
+  
+  
+  
+  
+  <div class="tab-buttons">
+    <button class="edith" onclick="Edit('bold','richTextField')" title="bold"><i class="fa fa-bold"></i></button>
+    <button class="edith" onclick="Edit('italic','richTextField')" title="italic"><i class="fa fa-italic"></i></button>
+    <button class="edith" onclick="Edit('underline','richTextField')" title="underline"><i class="fa fa-underline"></i></button>
+    <button class="edith" onclick="Edit('strikeThrough','richTextField')" title="strikeThrough"><i class="fa fa-strikethrough"></i></button>
+    <button class="edith" onclick="Edit('justifyLeft','richTextField')" title="Align Left"><i class="fa fa-align-left"></i></button>
+    <button class="edith" onclick="Edit('justifyCenter','richTextField')" title="Align Center"><i class="fa fa-align-center"></i></button>
+    <button class="edith" onclick="Edit('justifyFull','richTextField')" title="justify"><i class="fa fa-align-justify"></i></button>
+    <button class="edith" onclick="Edit('cut')" title="cut"><i class="fa fa-cut"></i></button>
+    <button class="edith" onclick="Edit('copy','richTextField')" title="Copy"><i class="fa fa-copy"></i></button>
+    <button class="edith" onclick="Edit('indent','richTextField')" title="text-indent"><i class="fa fa-indent"></i></button>
+    <button class="edith" onclick="Edit('outdent','richTextField')" title="text outdent"><i class="fa fa-outdent"></i></button>
+    <button class="edith" onclick="Edit('subscript')" title="subscript"><i class="fa fa-subscript"></i></button>
+    <button class="edith" onclick="Edit('superscript','richTextField')" title="subscript"><i class="fa fa-superscript"></i></button>
+    <button class="edith" onclick="Edit('undo','richTextField')" title="undo"><i class="fa fa-undo"></i></button>
+    <button class="edith" onclick="Edit('redo','richTextField')" title="redo"><i class="fa fa-redo"></i></button>
+    <button class="edith" onclick="Edit('insertUnorderedList','richTextField')" title="unordered list"><i class="fa fa-list-ul"></i></button>
+    <button class="edith" onclick="Edit('insertOrderedList',)" title="ordered list"><i class="fa fa-list-ol"></i></button>
+    <button class="edith" onclick="Edit('insertParagraph','richTextField')"><i class="fa fa-paragraph"></i></button>
+    <select onchange="execVal('formatBlock',this.value,'richTextField')">
+        <option value="H1">H1</option>
+        <option value="H2">H2</option>
+        <option value="H3">H3</option>
+        <option value="H4">H4</option>
+        <option value="H5">H5</option>
+        <option value="H6">H6</option>
+      </select>
+    <br>
+   
+    <button class="edith" onclick="Edit('createLink',prompt('Enter a URL,http://'), 'richTextField')"><i class="fa fa-link"></i></button>
+    <button class="edith" onclick="Edit('unlink', 'richTextField')"><i class="fa fa-unlink"></i></button>
+     <button class="edith" onclick="Edit('insertHorizontalRule','richTextField')" title="insert Horizontal Rule">insert Horizontal Rule</button>
+    <select onchange="execVal('fontName',this.value, 'richTextField')">
+        <option value="Arial">Arial</option>
+        <option value="Comic Sans MS">Comic Sans MS</option>
+        <option value="Courier">Courier</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Tahoma">Tahoma</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Verdana">Verdana</option>
+      </select>
+    <select onchange="execVal('fontSize',this.value, 'richTextField')" title="font size">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+      </select>Font Color<input type="color" onchange="execVal('foreColor',this.value, 'richTextField')" /> Highlight<input type="color" onchange="execVal('hiliteColor',this.value, 'richTextField')" />
+    <button class="edith" onclic="Edit('SelectAll', 'richTextField')">Select All</button>
+  </div>
+  <iframe name="richTextField" id="richTextField" style="width:80%;height: 80%;margin:auto;display: block;max-height:200px">
+      
+    </iframe>
+  
+  
+  
+  <div class="tab-buttons">
+    <button class="edith" onclick="Edit('bold','richTextField')" title="bold"><i class="fa fa-bold"></i></button>
+    <button class="edith" onclick="Edit('italic','richTextField')" title="italic"><i class="fa fa-italic"></i></button>
+    <button class="edith" onclick="Edit('underline','richTextField')" title="underline"><i class="fa fa-underline"></i></button>
+    <button class="edith" onclick="Edit('strikeThrough','richTextField')" title="strikeThrough"><i class="fa fa-strikethrough"></i></button>
+    <button class="edith" onclick="Edit('justifyLeft','richTextField')" title="Align Left"><i class="fa fa-align-left"></i></button>
+    <button class="edith" onclick="Edit('justifyCenter','richTextField')" title="Align Center"><i class="fa fa-align-center"></i></button>
+    <button class="edith" onclick="Edit('justifyFull','richTextField')" title="justify"><i class="fa fa-align-justify"></i></button>
+    <button class="edith" onclick="Edit('cut')" title="cut"><i class="fa fa-cut"></i></button>
+    <button class="edith" onclick="Edit('copy','richTextField')" title="Copy"><i class="fa fa-copy"></i></button>
+    <button class="edith" onclick="Edit('indent','richTextField')" title="text-indent"><i class="fa fa-indent"></i></button>
+    <button class="edith" onclick="Edit('outdent','richTextField')" title="text outdent"><i class="fa fa-outdent"></i></button>
+    <button class="edith" onclick="Edit('subscript')" title="subscript"><i class="fa fa-subscript"></i></button>
+    <button class="edith" onclick="Edit('superscript','richTextField')" title="subscript"><i class="fa fa-superscript"></i></button>
+    <button class="edith" onclick="Edit('undo','richTextField')" title="undo"><i class="fa fa-undo"></i></button>
+    <button class="edith" onclick="Edit('redo','richTextField')" title="redo"><i class="fa fa-redo"></i></button>
+    <button class="edith" onclick="Edit('insertUnorderedList','richTextField')" title="unordered list"><i class="fa fa-list-ul"></i></button>
+    <button class="edith" onclick="Edit('insertOrderedList',)" title="ordered list"><i class="fa fa-list-ol"></i></button>
+    <button class="edith" onclick="Edit('insertParagraph','richTextField')"><i class="fa fa-paragraph"></i></button>
+    <select onchange="execVal('formatBlock',this.value,'richTextField')">
+        <option value="H1">H1</option>
+        <option value="H2">H2</option>
+        <option value="H3">H3</option>
+        <option value="H4">H4</option>
+        <option value="H5">H5</option>
+        <option value="H6">H6</option>
+      </select>
+    <br>
+    
+    <button class="edith" onclick="Edit('createLink',prompt('Enter a URL,http://'), 'richTextField')"><i class="fa fa-link"></i></button>
+    <button class="edith" onclick="Edit('unlink', 'richTextField')"><i class="fa fa-unlink"></i></button>
+    <button class="edith" onclick="Edit('insertHorizontalRule','richTextField')" title="insert Horizontal Rule">insert Horizontal Rule</button>
+    <select onchange="execVal('fontName',this.value, 'richTextField')">
+        <option value="Arial">Arial</option>
+        <option value="Comic Sans MS">Comic Sans MS</option>
+        <option value="Courier">Courier</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Tahoma">Tahoma</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Verdana">Verdana</option>
+      </select>
+    <select onchange="execVal('fontSize',this.value, 'richTextField')" title="font size">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+      </select>Font Color<input type="color" onchange="execVal('foreColor',this.value, 'richTextField')" /> Highlight<input type="color" onchange="execVal('hiliteColor',this.value, 'richTextField')" />
+    <button class="edith" onclic="Edit('SelectAll', 'richTextField')">Select All</button>
+  </div>
+  <iframe name="richTextField" id="prerequisites" style="width:80%;height: 80%;margin:auto;display: block;max-height:200px">
+      
+    </iframe>
+  
+  
+  
+  <div class="tab-buttons">
+    <button class="edith" onclick="Edit('bold','richTextField')" title="bold"><i class="fa fa-bold"></i></button>
+    <button class="edith" onclick="Edit('italic','richTextField')" title="italic"><i class="fa fa-italic"></i></button>
+    <button class="edith" onclick="Edit('underline','richTextField')" title="underline"><i class="fa fa-underline"></i></button>
+    <button class="edith" onclick="Edit('strikeThrough','richTextField')" title="strikeThrough"><i class="fa fa-strikethrough"></i></button>
+    <button class="edith" onclick="Edit('justifyLeft','richTextField')" title="Align Left"><i class="fa fa-align-left"></i></button>
+    <button class="edith" onclick="Edit('justifyCenter','richTextField')" title="Align Center"><i class="fa fa-align-center"></i></button>
+    <button class="edith" onclick="Edit('justifyFull','richTextField')" title="justify"><i class="fa fa-align-justify"></i></button>
+    <button class="edith" onclick="Edit('cut')" title="cut"><i class="fa fa-cut"></i></button>
+    <button class="edith" onclick="Edit('copy','richTextField')" title="Copy"><i class="fa fa-copy"></i></button>
+    <button class="edith" onclick="Edit('indent','richTextField')" title="text-indent"><i class="fa fa-indent"></i></button>
+    <button class="edith" onclick="Edit('outdent','richTextField')" title="text outdent"><i class="fa fa-outdent"></i></button>
+    <button class="edith" onclick="Edit('subscript')" title="subscript"><i class="fa fa-subscript"></i></button>
+    <button class="edith" onclick="Edit('superscript','richTextField')" title="subscript"><i class="fa fa-superscript"></i></button>
+    <button class="edith" onclick="Edit('undo','richTextField')" title="undo"><i class="fa fa-undo"></i></button>
+    <button class="edith" onclick="Edit('redo','richTextField')" title="redo"><i class="fa fa-redo"></i></button>
+    <button class="edith" onclick="Edit('insertUnorderedList','richTextField')" title="unordered list"><i class="fa fa-list-ul"></i></button>
+    <button class="edith" onclick="Edit('insertOrderedList',)" title="ordered list"><i class="fa fa-list-ol"></i></button>
+    <button class="edith" onclick="Edit('insertParagraph','richTextField')"><i class="fa fa-paragraph"></i></button>
+    <select onchange="execVal('formatBlock',this.value,'richTextField')">
+        <option value="H1">H1</option>
+        <option value="H2">H2</option>
+        <option value="H3">H3</option>
+        <option value="H4">H4</option>
+        <option value="H5">H5</option>
+        <option value="H6">H6</option>
+      </select>
+    <br>
+    
+    <button class="edith" onclick="Edit('createLink',prompt('Enter a URL,http://'), 'richTextField')"><i class="fa fa-link"></i></button>
+    <button class="edith" onclick="Edit('unlink', 'richTextField')"><i class="fa fa-unlink"></i></button>
+
+    <button class="edith" onclick="Edit('insertHorizontalRule','richTextField')" title="insert Horizontal Rule">insert Horizontal Rule</button>
+    <select onchange="execVal('fontName',this.value, 'richTextField')">
+        <option value="Arial">Arial</option>
+        <option value="Comic Sans MS">Comic Sans MS</option>
+        <option value="Courier">Courier</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Tahoma">Tahoma</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Verdana">Verdana</option>
+      </select>
+    <select onchange="execVal('fontSize',this.value, 'richTextField')" title="font size">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+      </select>Font Color<input type="color" onchange="execVal('foreColor',this.value, 'richTextField')" /> Highlight<input type="color" onchange="execVal('hiliteColor',this.value, 'richTextField')" />
+    <button class="edith" onclic="Edit('SelectAll', 'richTextField')">Select All</button>
+  </div>
+  <iframe name="richTextField4" id="curricullum" style="width:80%;height: 80%;margin:auto;display: block;max-height:200px">
+      
+    </iframe>
+  
+  
