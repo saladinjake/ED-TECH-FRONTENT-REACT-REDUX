@@ -64,7 +64,49 @@ function twoDigits(d) {
     return d.toString();
 }
 
+function showNotificationSuccess(type="success",stitle="",message=""){
+  
 
+  $(document).ready(function(){
+
+    //notification set
+        // Selecting all required elements
+    const wrapper = document.querySelector(".notification-notice"),
+    toast = wrapper.querySelector(".toast-offline2"),
+    title = toast.querySelector("span"),
+    subTitle = toast.querySelector("p"),
+    wifiIcon = toast.querySelector(".icon"),
+    closeIcon = toast.querySelector(".close-icon");
+
+    
+
+
+    wrapper.style.display="block"
+    wrapper.classList.remove("hide");
+    toast.classList.remove("offline");
+    title.innerText = stitle;
+    subTitle.innerText = message;
+    let bg="gray", checkmark="fa fa-times"
+    if(type=="success"){
+     bg="green"
+     checkmark="fa fa-check-circle"
+    }else if(type=="error"){
+      bg="red"
+    }else{
+      checkmark="fa fa-arrows"
+      bg ="gray"
+    }
+    wifiIcon.innerHTML = `<i style="background:${bg}" class="${checkmark} fa-2x"></i>`;
+    closeIcon.onclick = ()=>{ //hide toast notification on close icon click
+        wrapper.classList.add("hide");
+    }
+    setTimeout(()=>{ //hide the toast notification automatically after 5 seconds
+        wrapper.classList.add("hide");
+    }, 5000);
+
+  })
+  
+}
 
 
 export const DateFormatter = {
@@ -810,9 +852,9 @@ export const createAnyResource = (mode="post",
           // })
 
           var formElements = new Array();
-    $("input, select, textarea").each(function(){
-        formElements.push($(this));
-    });
+          $("input, select, textarea").each(function(){
+              formElements.push($(this));
+          });
 
 
     
@@ -871,13 +913,13 @@ export const createAnyResource = (mode="post",
        // else if its an update of the form for each tab run the following event
 	   if(formEl.attr("id")=="stepUpFormWithAI2"){ //or more
           //loop thru the current state then update what we have by cfreateing the form value then append to the
-		//dynamic invisible form element to be sent to database
-		//ie. gen form data on fly not added to the dom itself. just a temp usage
-		formEl = $("#stepUpFormWithAI2");
+      		//dynamic invisible form element to be sent to database
+		     //ie. gen form data on fly not added to the dom itself. just a temp usage
+		       formEl = $("#stepUpFormWithAI2");
 			
 		if(state){
            formEl = $("#stepUpFormWithAI2");
-			console.log(state)
+		      	console.log(state)
 		  //recreate the form data with the state changed value by filling it with what was typed before
           //url will be an update method if the resource exists
 		  let textEditors = [
@@ -995,9 +1037,29 @@ export const createAnyResource = (mode="post",
 
   console.log(data);
   let type = "POST"
-  if(mode.toLowerCase() !=="post"){
-     type = "PATCH"
+
+  if(formEl.attr("method") == "put"|| formEl.attr("method") == "PUT"){
+    type ="PUT"
+  }else if(mode){
+    if(mode.toLowerCase() !=="post" ){
+       type = "PATCH"
+    }
+
   }
+  
+
+  //switching between the mode cases
+  // if(formEl.attr("method") =="put"){
+  //     type = "PUT"
+  // }else if(mode.toLowerCase() !=="put"){
+
+  //   if(mode.toLowerCase() !=="post" ){
+  //      type = "PATCH"
+  //   }else{
+  //      type = "POST"
+  //   }
+
+  // }
   
 
 
@@ -1139,11 +1201,16 @@ let dataObj ={}
               localStorage.setItem("author","")
               localStorage.setItem("institution","")
               toast.success("You successfully created a course");
+
+              showNotificationSuccess("success", "New Course Created", "You successfully created a course")
+
                   
              // swal("Congratulations", "You successfully created a course", "success");
            }else{
              toast.success("You successfully edited this course");
              swal("Success", "Course Updated", "success");
+
+             showNotificationSuccess("success", "Course Updated", "Course has been sucessfully updated")
               
            }
 
@@ -1154,10 +1221,18 @@ let dataObj ={}
         if(formEl.attr("id")=="addSectionForm"){
           if(mode.toLowerCase() =="post"){
            toast.success("You successfully created a section");
+
+           showNotificationSuccess("success", "Section Creation", "You successfully created a section")
+             
+
+
                   
              // swal("Congratulations", "You successfully created a course", "success");
            }else{
              toast.success("You successfully edited this course section");
+
+            showNotificationSuccess("success", "Section Updated", "You successfully edited this course section")
+
               
            }
       }
@@ -1167,10 +1242,17 @@ let dataObj ={}
       if(formEl.attr("id")=="addSubSectionForm"){
           if(mode.toLowerCase() =="post"){
            toast.success("You successfully created a sub section");
+
+           showNotificationSuccess("success", "Sub Section Creation", "You successfully created a sub set section")
+           
                   
              // swal("Congratulations", "You successfully created a course", "success");
            }else{
              toast.success("You successfully edited this course sub section");
+
+              showNotificationSuccess("success", "Sub Section Edit", "You successfully edited this sub section")
+           
+
               
            }
       }
@@ -1179,11 +1261,15 @@ let dataObj ={}
       if(formEl.attr("id")=="addLessonSectionForm"){
           if(mode.toLowerCase() =="post"){
            toast.success("You successfully created a lesson section");
+
+           showNotificationSuccess("success", "Lesson Creation", "You successfully created a Lesson section")
+           
                   
              // swal("Congratulations", "You successfully created a course", "success");
            }else{
              toast.success("You successfully edited this course lesson section");
-              
+              showNotificationSuccess("success", "Lesson Update ", "You successfully updated the lesson")
+           
            }
       }
      
@@ -1199,11 +1285,15 @@ let dataObj ={}
            //   swal("Congratulations", "You successfully updated the unit for this lesson section of this course", "success");
            // }
            toast.success("You successfully created a unit section");
+
+           showNotificationSuccess("success", "Unit Created", "You successfully created a lesson unit or module")
+           
                   
              // swal("Congratulations", "You successfully created a course", "success");
            }else{
              toast.success("You successfully edited this course unit section");
-              
+             showNotificationSuccess("success", "Unit Edited", "You successfully edited this lesson unit or module")
+            
            }
        }
     }
@@ -1241,7 +1331,8 @@ let dataObj ={}
           if(mode.toLowerCase() =="post" && textStatus != "success"){
             // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
            swal("Some error occured","error") // console the error response
-       
+           showNotificationSuccess("error", "Section Creation Error", "An error occured while creating the resource. refresh and try again.")
+           
           }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
              // return dataObj.response.id
              //update the change
@@ -1256,7 +1347,8 @@ let dataObj ={}
           if(mode.toLowerCase() =="post" && textStatus != "success"){
             // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
            swal("Some error occured","error") // console the error response
-       
+           showNotificationSuccess("error", "Sub Section Creation Error", "An error occured while creating the resource. refresh and try again.")
+           
           }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
              // return dataObj.response.id
           }else{
@@ -1270,7 +1362,8 @@ let dataObj ={}
           if(mode.toLowerCase() =="post" && textStatus != "success"){
             // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
            swal("Some error occured","error") // console the error response
-       
+          showNotificationSuccess("error", "Lesson Creation Error", "An error occured while creating the resource. refresh and try again.")
+           
           }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
              // return dataObj.response.id
           }else{
@@ -1290,8 +1383,11 @@ let dataObj ={}
             console.log(data, url)
             // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
            swal("Something went wrong","error") // console the error response
-       
-          }else if(mode.toLowerCase() =="patch" && textStatus == "success"){
+           showNotificationSuccess("error", "Lesson Module Creation Error", "An error occured while creating the resource. refresh and try again.")
+           
+          }else if(mode.toLowerCase() =="patch" || mode.toLowerCase() =="put" && textStatus == "success"){
+              showNotificationSuccess("success", "Lesson Module Edit ", "The Module/course unit was saved successfully")
+          
              return dataObj.response.id
              //fetch and update record seamlessly via ajax
           }else{
@@ -1520,7 +1616,7 @@ export const getComponent = async (componentId, type) => {
     bitUrls = bitUrls + `video-component/`
     url = base_url+ bitUrls + `${componentId}`
   }else if(type==2){
-    bitUrls = bitUrls + `html-components/`
+    bitUrls = bitUrls + `html-component/`
      url = base_url+ bitUrls + `${componentId}`
   }else if(type==3){
    bitUrls = bitUrls + `problem-component/`

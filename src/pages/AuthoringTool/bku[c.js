@@ -74,27 +74,21 @@ import {
   createAnyResource,
   getIdFromUrl,
   getSectionsOfCourseId,
-
-
   getCourseData,
   //getSectionsOfCourseId,
   getSubSectionsOfSectionId,
   getLessonsOfSubsection,
   getComponentsOfLessons,
   getVideoComponentsOfLessons,
-  
-
  addSectionData, // dynamic generationwith battries included
  addSubSectionData,
  addLessonData,
  DateFormatter,
-
- deleteApi
+ deleteApi,
+ getComponent
 } from "services/authoring"
 
 import  { enableDragSortPositionUpdater } from "./reorder_positioning" 
-
-
 
 /*the base url link*/
 let base_url = "http://gapslmsservices.herokuapp.com"; //process.env.REACT_APP_API_URL2
@@ -110,6 +104,111 @@ $.widget.bridge('uibutton', $.ui.button);
 //hook other plugins to jquery using bridget like this in the future
 //jqueryBridget( 'plugin-designated-name', ImportedPlugin, $ );
 
+
+
+const collapsibleEffect = () =>{
+  
+}
+
+
+
+
+//Get the button  eg <button  id="myBtn" title="Go to top">Top</button>
+
+function scrollFunction(e) {
+
+  $(document).ready(()=>{
+
+    var mybutton = document.getElementById("myBtn");
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    mybutton.style.display = "block";
+  } else {
+    mybutton.style.display = "none";
+  }
+
+  })
+  
+}
+
+// When the user clicks on the button or a submit is made, scroll to the top of the document
+function scrollToTop() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+
+
+
+window.videoModalPreview = (el) =>{
+   let src = el.dataset.videolink
+
+
+// Gets the video src from the data-src on each button
+let srcVideo =""  
+let $videoUrl = src ||  $(el).data("videolink");
+
+if ($videoUrl.indexOf("youtube") !== -1) {
+        var et = $videoUrl.lastIndexOf("&");
+        if (et !== -1) {
+          $videoUrl = $videoUrl.substring(0, et);
+        }
+        var embed = $videoUrl.indexOf("embed");
+        if (embed !== -1) {
+          $videoUrl =
+            "https://www.youtube.com/watch?v=" +
+            $videoUrl.substring(embed + 6, embed + 17);
+        }
+
+        srcVideo =
+          "https://www.youtube.com/embed/" +
+          $videoUrl.substring($videoUrl.length - 11, $videoUrl.length) +
+          "?autoplay=1&mute=1&loop=1&playlist=" +
+          $videoUrl.substring($videoUrl.length - 11, $videoUrl.length) +
+          "";
+  } else if ($videoUrl.indexOf("youtu") !== -1) {
+        var et = $videoUrl.lastIndexOf("&");
+        if (et !== -1) {
+          $videoUrl = $videoUrl.substring(0, et);
+        }
+        var embed = $videoUrl.indexOf("embed");
+        if (embed !== -1) {
+          $videoUrl =
+            "https://youtu.be/" + $videoUrl.substring(embed + 6, embed + 17);
+        }
+
+        srcVideo =
+          "https://www.youtube.com/embed/" +
+          $videoUrl.substring($videoUrl.length - 11, $videoUrl.length) +
+          "?autoplay=0&mute=0&enablejsapi=1&amp;?rel=0&amp;controls=0&amp;showinfo=0&loop=1&playlist=" +
+          $videoUrl.substring($videoUrl.length - 11, $videoUrl.length) +
+          "";
+  } else if ($videoUrl.indexOf("vimeo") !== -1) {
+        srcVideo =
+          "https://player.vimeo.com/video/" +
+          $videoUrl
+            .substring($videoUrl.indexOf(".com") + 5, $videoUrl.length)
+            .replace("/", "") +
+          "?autoplay=1";
+  }
+
+  
+$('#modalFullScreenPreviewIframeAndVideos').css({display:"block"})  
+// when the modal is opened autoplay it  
+$('#modalFullScreenPreviewIframeAndVideos').on('shown.bs.modal', function (e) {
+    
+// set the video src to autoplay and not to show related video. Youtube related video is like a box of chocolates... you never know what you're gonna get
+$("#projector-view").attr('src',srcVideo  ); 
+})
+  
+
+
+// stop playing the youtube video when I close the modal
+$('#modalFullScreenPreviewIframeAndVideos').on('hide.bs.modal', function (e) {
+//     // a poor man's stop video
+     $("#projector-view").attr('src',srcVideo); 
+}) 
+    
+
+}
 
 function validYoutubeLink(url) {
     var p = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
@@ -141,6 +240,147 @@ function getCookie(name) {
 
 
 
+
+/**
+ *  Read More JS
+ *  Truncates text via specfied character length with more/less actions.
+ *  Maintains original format of pre truncated text.
+ *  usage: ReadMore.init()
+ *  @todo   Add destroy method for ajaxed content support.
+ *
+ */
+ const ReadMore = (() => {
+   let s;
+
+   return {
+
+     settings() {
+       return {
+         content: document.querySelectorAll('.js-read-more'),
+         originalContentArr: [],
+         truncatedContentArr: [],
+         moreLink: "Read More",
+         lessLink: "Less Link",
+       }
+     },
+
+     init() {
+       s = this.settings();
+       this.bindEvents();
+     },
+
+     bindEvents() {
+       ReadMore.truncateText();
+     },
+
+     /**
+      * Count Words
+      * Helper to handle word count.
+      * @param {string} str - Target content string.
+      */
+     countWords(str) {
+       return str.split(/\s+/).length;
+     },
+
+     /**
+      * Ellpise Content
+      * @param {string} str - content string.
+      * @param {number} wordsNum - Number of words to show before truncation.
+      */
+     ellipseContent(str, wordsNum) {
+       return str.split(/\s+/).slice(0, wordsNum).join(' ') + '...';
+     },
+
+     /**
+      * Truncate Text
+      * Truncate and ellipses contented content
+      * based on specified word count.
+      * Calls createLink() and handleClick() methods.
+      */
+     truncateText() {
+
+       for (let i = 0; i < s.content.length; i++) {
+         //console.log(s.content)
+         const originalContent = s.content[i].innerHTML;
+         const numberOfWords = s.content[i].dataset.rmWords;
+         const truncateContent = ReadMore.ellipseContent(originalContent, numberOfWords);
+         const originalContentWords = ReadMore.countWords(originalContent);
+
+         s.originalContentArr.push(originalContent);
+         s.truncatedContentArr.push(truncateContent);
+
+         if (numberOfWords < originalContentWords) {
+           s.content[i].innerHTML = s.truncatedContentArr[i];
+           let self = i;
+           ReadMore.createLink(self)
+         }
+       }
+       ReadMore.handleClick(s.content);
+     },
+
+     /**
+      * Create Link
+      * Creates and Inserts Read More Link
+      * @param {number} index - index reference of looped item
+      */
+     createLink(index) {
+       const linkWrap = document.createElement('span');
+
+       linkWrap.className = 'read-more__link-wrap';
+
+       linkWrap.innerHTML = `<a id="read-more_${index}" class="read-more__link" style="cursor:pointer;">${s.moreLink}</a>`;
+
+       // Inset created link
+       s.content[index].parentNode.insertBefore(linkWrap, s.content[index].nextSibling);
+
+     },
+
+     /**
+      * Handle Click
+      * Toggle Click eve
+      */
+     handleClick(el) {
+       const readMoreLink = document.querySelectorAll('.read-more__link');
+
+       for (let j = 0, l = readMoreLink.length; j < l; j++) {
+
+         readMoreLink[j].addEventListener('click', function() {
+
+           const moreLinkID = this.getAttribute('id');
+           let index = moreLinkID.split('_')[1];
+
+           el[index].classList.toggle('is-expanded');
+
+           if (this.dataset.clicked !== 'true') {
+              el[index].innerHTML = s.originalContentArr[index];
+              this.innerHTML = s.lessLink;
+              this.dataset.clicked = true;
+           } else {
+             el[index].innerHTML = s.truncatedContentArr[index];
+             this.innerHTML = s.moreLink;
+             this.dataset.clicked = false;
+           }
+         });
+       }
+     },
+
+     /**
+      * Open All
+      * Method to expand all instances on the page.
+      */
+     openAll() {
+       const instances = document.querySelectorAll('.read-more__link');
+       const content = document.querySelectorAll('.js-read-more')
+         for (let i = 0; i < instances.length; i++) {
+           content[i].innerHTML = s.truncatedContentArr[i];
+           instances[i].innerHTML = s.moreLink;
+         }
+       }
+     }
+ })();
+
+
+
 function setCookie(name,val){
   document.cookie[name] = val
 }
@@ -157,6 +397,50 @@ const CSRFToken = () => {
 window.projectorInView = function(){
   //project course data to preview mode
 }
+
+
+const handleWidgetRemove = (widget) => {
+    widget.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
+};
+
+window.handleWidgetRemove =  (widget) => {
+     const type = widget.getAttribute("data-component_type");
+
+     console.log(type)
+     const id = widget.getAttribute("data-idx")
+     let url = `html-component/${id}`;
+     switch(type){
+       case "1": //video delete mode
+         url = `video-component/${id}`
+         break;
+       case "2": //html delete mode
+       url = `html-component/${id}`
+         break;
+       case "3": //problem
+       url = `problem-component/${id}`
+         break;
+       case "4": //discussion
+       url = `discussion-component/${id}`
+         break
+     }
+
+  let deletePromises = deleteApi(url);
+  deletePromises
+    .then(res => res.text())
+    .then(data => { 
+      console.log(data)
+      console.log("success with delete");
+      widget.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
+  
+  })
+    .catch(err => {
+      console.log(err)
+      throw new Error("COULD NOT PERFORM DELETE OPERATION")
+    })
+
+
+  }
+
 
 
 window.genericDelete = (e) => {
@@ -216,6 +500,7 @@ window.injectToModal =(el) => {
       btnPayLoad.attr("editing_subsection_id", $(el).attr("data-idx"));
       btnPayLoad.attr("editing_course_name", $(el).attr("data-name"))
       btnPayLoad.attr("editing_parent_id", $(el).attr("data-parent-id"))
+      btnPayLoad.attr("root_parent", $(el).attr("data-idx")) // the self triggered parent block
 
       //observers and recievers technique here:
 
@@ -243,6 +528,8 @@ window.injectToModal =(el) => {
       btnPayLoad.attr("editing_lesson_id", $(el).attr("data-idx"));
       btnPayLoad.attr("editing_course_name", $(el).attr("data-name"))
       btnPayLoad.attr("editing_parent_id", $(el).attr("data-parent-id"))
+      btnPayLoad.attr("root_parent", $(el).attr("data-idx")) // the self triggered parent block
+
 
       //observers and recievers technique here:
       $("#myModalEditLesson").find("h5").html("Editing "+ $(el).attr("data-name"))
@@ -290,10 +577,11 @@ const createLessonSection = (el) => {
 
 const createLessonComponent = (url, form) => {
 
-
-  
-  let lessonRes = createAnyResource('POST',url,form) 
+  let lessonRes = createAnyResource('POST',url,form);
   //save to db
+  console.log(lessonRes)
+
+  //if response exists then update lesson components attributes
   return lessonRes;
 }
 
@@ -384,30 +672,299 @@ window.showSetSubsection = function(el) {
   }
 };
 
+window.LaunchEditBoxEvent = async (el) => {
+  //SMART TYPE DETECTOR
 
-  // Methods
+  //for lesson component of text, video and iframes only
+  $(".close").click((e)=>{
+    e.preventDefault()
+    $("#openModal-about").css({opacity:0}).fadeOut("fast")
+  })
 
+  const type = el.getAttribute("data-component_type");
+  let formId = el.getAttribute("data-form") //myModalGenericForm-SELECT
+  let form = $("#"+el.getAttribute("data-form")) //will be reset back to post after update
+  let urlBuild = "/lms/api/update"+  el.getAttribute("data-action-figure"); 
+  form.attr("method","PATCH")
+  form  = form;
 
-  const handleWidgetRemove = (widget) => {
-    widget.parentElement.parentElement.parentElement.parentElement.remove();
-  };
-
-
-const LaunchEditBoxEvent = (e) =>{
-   /*this is based on categorized module widgets*/
-   // alert("testingedit" + e.dataset.template)
+  let componentDetail = await getComponent(el.getAttribute("data-idx"),type)
   
+  if(form){
+    
+     form.find("#editor-html-name").val( componentDetail.name ||el.getAttribute("data-name"))
+     form.find("#component_id").val( componentDetail.id || el.getAttribute("data-idx")) //component id
+     form.find("#lesson-editor-id").val(componentDetail.lesson || el.getAttribute("data-parent")) //lesson id
+   
+     form.find("#editor-html-description").val( componentDetail.description  || el.getAttribute("data-description"))
+     form.find("#editor-html-type").val(el.getAttribute("data-component_type"))
+     form.find("#editor-html-content-type").val( componentDetail.component_type || el.getAttribute("data-content_type"))
+     //form.find("div[placeholder='html_text']").html(componentDetail.html_text || el.getAttribute("data-html_text"))
+     //document.querySelector("div[placeholder='attributeValue']")
+     //form.find("#html_text").html(  componentDetail.html_text || el.getAttribute("data-html_text"))
+  
+      let key = "html_text"
+      let html = "An empty content";
+      $("#title-unit-edited").val($("#embedded_url_"+componentDetail.id).html() ) //lesson id
+   
+   
+     if(key=="myModalGenericForm-SELECT"){
+       key = "description"
+       html = componentDetail.description
+        
+       
+     }else{
+      key = "html_text"
+       html = $("#readmore_"+componentDetail.id).html() || "Place your content for editing with rich text editor";
+     
+     }
+     alert(form.attr("id"))
+      $("#title-unit2").val($("#embedded_url_"+componentDetail.id).html() ) //lesson id
+   
+      var myEditor = $('div[data-placeholder="'+key+'"]') // the editor itself
+          //myEditor = myEditor.children[0];
+      myEditor.html(html);
+    //lets get and fill the edit form and change title OF THE FORM TO EDITING LESSON NAME
+    $("#myModalMarkdownEditor").find("h5").html("Editing Component: "+ componentDetail.name)
+    
 
+
+    // now handle when the button to save is clicked if its generic
+    //generic refers to video or iframe
+    $("#save_new_insertion_component_generic-edit").click((e)=>{
+      e.preventDefault()
+      console.log("click event happened on view")
+
+      //make the patch request to the api to save editing...
+      //switch the undisplayed html form text for html_* so data can be saved to it
+      form.find("#video-descr").val(myEditor.html())
+      //make the patch request to the api to save editing... when all is green
+      let res = createAnyResource("patch",urlBuild, form)
+      console.log(res)
+
+
+      scrollToTop()
+    })
+
+    //handle save editing for just html text editor
+
+    $("#save_new_insertion_component_htmleditor").css({display:"block"}) //show edit button
+    $("#save_new_insertion_component").css({display:"none"}) // hide creat button
+
+    $("#save_new_insertion_component_htmleditor").click((e)=>{
+      e.preventDefault()
+      console.log("click event happened")
+
+      //switch the undisplayed html form text for html_* so data can be saved to it
+
+      form.find("#input-area4").val(myEditor.html())
+
+
+
+      //make the patch request to the api to save editing... when all is green
+      let res = createAnyResource("patch",urlBuild, form)
+      console.log(res)
+
+      scrollToTop()
+    })
+
+
+    //handle save for problem component
+
+
+
+    //handle save for discussion component
+
+
+
+    
+  }else{
+    swal("Error", "API ACCESSED WRONGLY!!","ERROR")
+  }
+
+}
+
+const LaunchEditBoxEvent = async (el) =>{
+    //SMART TYPE DETECTOR
+
+  //for lesson component of text, video and iframes only
+  $(".close").click((e)=>{
+    e.preventDefault()
+    $("#openModal-about").css({opacity:0}).fadeOut("fast")
+  })
+
+  const type = el.getAttribute("data-component_type");
+  let form = $("#"+el.getAttribute("data-form")) //will be reset back to post after update
+  let urlBuild = "/lms/api"+  el.getAttribute("data-action-figure"); 
+  form.attr("method","PUT")
+  form  = form;
+
+  
+  let componentDetail = await getComponent(el.getAttribute("data-idx"),type)
+  
+  
+  // form.attr("action", el.getAttribute("data-action-figure")) // this is not monolithic app
+
+  console.log( urlBuild)
+  if(form){
+    
+     form.find("#editor-html-name").val( componentDetail.name ||el.getAttribute("data-name"))
+     form.find("#component_id").val( componentDetail.id || el.getAttribute("data-idx")) //component id
+     form.find("#lesson-editor-id").val(componentDetail.lesson || el.getAttribute("data-parent")) //lesson id
+   
+     form.find("#editor-html-description").val( componentDetail.description  || el.getAttribute("data-description"))
+     form.find("#editor-html-type").val(el.getAttribute("data-component_type"))
+     form.find("#editor-html-content-type").val( componentDetail.component_type || el.getAttribute("data-content_type"))
+     form.find("div[placeholder=html_text]").html(componentDetail.html_text || el.getAttribute("data-html_text"))
+     //document.querySelector("div[placeholder='attributeValue']")
+     //form.find("#html_text").html(  componentDetail.html_text || el.getAttribute("data-html_text"))
+  
+    //lets get and fill the edit form and change title OF THE FORM TO EDITING LESSON NAME
+    $("#myModalMarkdownEditor").find("h5").html("Editing Component: "+ componentDetail.name)
+    
+
+
+    // now handle when the button to save is clicked if its generic
+    //generic refers to video or iframe
+    $("#save_edit_insertion_component_generic").click((e)=>{
+      e.preventDefault()
+      console.log("click event happened")
+
+      //make the patch request to the api to save editing...
+    })
+
+    //handle save editing for just html text editor
+
+    $("#save_new_insertion_component_htmleditor").css({display:"block"}) //show edit button
+    $("#save_new_insertion_component").css({display:"none"}) // hide creat button
+
+    $("#save_new_insertion_component_htmleditor").click((e)=>{
+      e.preventDefault()
+      console.log("click event happened")
+
+      //make the patch request to the api to save editing... when all is green
+      let res = createAnyResource("put",urlBuild, form)
+      console.log(res)
+    })
+
+
+
+    
+  }else{
+    swal("Error", "API ACCESSED WRONGLY!!","ERROR")
+  }
   }
 
 window.LaunchPreviewBoxEvent =(Target,MainClone,TemplateType) =>{
     /*just previews the content in the modal section view*/
-  }
+    
+          
+}
 function removeLoader(){
   $( "#loadingDiv" ).fadeOut(500, function() {
           // fadeOut complete. Remove the loading div
       $( "#loadingDiv" ).remove(); //makes page more lightweight 
-  });  
+  }); 
+
+
+
+
+  //init accordion
+  // 
+}
+
+
+
+function initAccordion(){
+  $(function() {
+    var Accordion = function(el, multiple)     {
+        this.el = el || {};
+        this.multiple = multiple || false;
+
+        var links = this.el.find('h4');
+        links.on('click', {
+            el: this.el,
+            multiple: this.multiple
+        }, this.dropdown)
+    }
+
+    Accordion.prototype.dropdown =     function(e) {
+        var $el = e.data.el,
+        $this = $(this), 
+        $next = $this.next();
+
+        $next.slideToggle();
+
+        var $parentElement = $this.parent().parent().parent();
+       
+         // for sections
+        if( $parentElement.find("li.sections")){
+         
+           let rootSection = $parentElement.find("li.sections")
+           if(rootSection.hasClass("open") && rootSection.hasClass("sections")){
+
+               //$parentElement.removeClass('open');
+               rootSection.removeClass("open")
+             //  rootSection.find(".subsections.accordion-content").css({display:"none"}).fadeOut("slow")
+              
+           }else if(!rootSection.hasClass("open")){
+              rootSection.addClass("open")
+
+             
+              rootSection.find(".subsections.accordion-content").css({display:"block"}).fadeIn("slow")
+              //$parentElement.addClass("open")
+           } 
+
+          
+
+     }
+                  
+          
+         if($parentElement.find("ul.subsections")){
+            
+           let rootSection = $parentElement.find("ul.subsections")
+           if(rootSection.hasClass("open") && rootSection.hasClass("subsections")){
+
+               //$parentElement.removeClass('open');
+               rootSection.removeClass("open")
+           }else if(!rootSection.hasClass("open")){
+              rootSection.addClass("open")
+              //$parentElement.addClass("open")
+           } 
+
+        }
+
+
+
+
+        //lessons
+
+        if($parentElement.find("ul.lessons")){
+            
+           let rootSection = $parentElement.find("ul.lessons")
+           if(rootSection.hasClass("open") && rootSection.hasClass("lessons")){
+
+               //$parentElement.removeClass('open');
+               rootSection.removeClass("open")
+               //hide all its component
+               rootSection.find(".components.accordion-content").css({display:"none"})
+
+           }else if(!rootSection.hasClass("open")){
+              rootSection.addClass("open")
+              //display all its components
+              //$parentElement.addClass("open")
+              rootSection.find(".components.accordion-content").css({display:"block"})
+
+           } 
+
+        }
+
+        // if (!e.data.multiple) {
+        //     $el.find('ul').not($next).slideDown().parent().addClass('open');
+        // };
+    }
+    var accordion = new Accordion($('#js-parent'), false);
+});
 }
 
 
@@ -507,50 +1064,95 @@ const  handleSaveComponentTextEditor =(e) => {
     let markdownTemplate =  allowedHeaders.getAttribute("data-markdown")
     let _title =  allowedHeaders.getAttribute("data-title")
     let url = allowedHeaders.getAttribute("data-url")
+    let Preview = document.querySelector(
+      "#template-container > .pb-widget-preview-panel"
+    );
 
+    let SClone = Preview.cloneNode(true)      
         
-         // alert("its editorial") 
-
-        let Preview = document.querySelector(
-          "#template-container > .pb-widget-preview-panel"
-        );
-
-        let SClone = Preview.cloneNode(true)      
-        
-          let wrapWrapper = pbCreateNode("li", [
-                        { class: "pb-placeholder-main col-md-12" },
+    let wrapWrapper = pbCreateNode("li", [
+      { class: "pb-placeholder-main col-md-12" },
                      // { onclick:  () => { "openModal(this)" }
-             ]);
+    ]);
 
         wrapWrapper.appendChild(SClone)
         wrapWrapper.setAttribute("id", randId )
         let MainClone = wrapWrapper.cloneNode(true);
         MainClone.id =randId
-      
+
+
+        //the form should keep track of the clone id when user dont reload page
+        let form = $("#myModalMarkdownEditor-SELECT")
+        form.attr("temp_id", randId)
+        form.attr("data-id", randId)
+        form.attr("data-idx", randId)
+        form.attr("data-parent-id", localStorage.getItem("l_tracker"))
+        form.attr("data-content_type",form.find("#editor-html-content-type").val())
+        form.attr("data-component_type",form.find("#editor-html-type").val())
+        form.attr("data-name",form.find("#editor-html-name").val())
+        form.attr("data-pos","1.0")
+        form.attr("data-description",form.find("#editor-html-description").val())
+
+
+
+
+       //fall back attributes if it fails upon saving new data
+        MainClone.querySelector(".fa-edit").setAttribute("data-id", randId)
+        MainClone.querySelector(".fa-edit").setAttribute("data-parent-id", localStorage.getItem("l_tracker"))
+        MainClone.querySelector(".fa-edit").setAttribute("data-content_type",$("#myModalMarkdownEditor-SELECT").find("#editor-html-content-type").val())
+        MainClone.querySelector(".fa-edit").setAttribute("data-component_type",$("#myModalMarkdownEditor-SELECT").find("#editor-html-type").val())
+        MainClone.querySelector(".fa-edit").setAttribute("data-name",$("#myModalMarkdownEditor-SELECT").find("#editor-html-name").val())
+        MainClone.querySelector(".fa-edit").setAttribute("data-pos","1.0")
+        MainClone.querySelector(".fa-edit").setAttribute("data-description",$("#myModalMarkdownEditor-SELECT").find("#editor-html-description").val())
+
+
+        //fall back attributes if it fails upon saving new data
+
+        MainClone.setAttribute("data-id", randId)
+
+
         MainClone.querySelector(".fa-edit").setAttribute("data-template",markdownTemplate)
         MainClone.querySelector(".fa-edit").setAttribute("data-id",randId) //ref the curr main lesson box
         MainClone.querySelector(".fa-edit").addEventListener("click",(es) =>{
              document.getElementById(MainClone.id).setAttribute("data-parent",MainClone.id)
-                  const extracts = $("#" + MainClone.getAttribute("id")).find(".unit_content_place_holder").html();
-                  const editBoard = document.getElementById("myModalMarkdownEditorEditMode").querySelector(".visuell-view2");
-                  editBoard.value = extracts;
-                  const markupBoard = document.getElementById("markup-template-content")
-                  markupBoard.innerHTML =markdownTemplate
+                  // const extracts = $("#" + MainClone.getAttribute("id")).find(".unit_content_place_holder").html();
+                  // const editBoard = document.getElementById("myModalMarkdownEditorEditMode").querySelector(".visuell-view2");
+                  // editBoard.value = extracts;
+                  // const markupBoard = document.getElementById("markup-template-content")
+                  // markupBoard.innerHTML =markdownTemplate
+                  localStorage.setItem("edit_component", randId )
+                  form.attr("method","patch")
+
         })
+
+        // document.getElementById("myModalMarkdownEditorEditMode").querySelector(".visuell-view2")
+      $("#myModalMarkdownEditor-SELECT").find("#input-area4").val(
+        localStorage.getItem("html_text_content")
+      )
+      
 
         MainClone.querySelector(".fa-trash").addEventListener("click", (e) => {
              handleWidgetRemove(e.target)
         })
-      MainClone.querySelector(".unit_title_place_holder").innerHTML= _title   //no title initially for this comonent
-      MainClone.querySelector(".unit_content_place_holder").innerHTML =  getTemplateType(markdownTemplate)        //$("#input-area").val()      //getTemplateType(markdownTemplate)           //$(".visuell-view").html() || "Edit this content"
+      MainClone.querySelector(".unit_title_place_holder").innerHTML= $("#editor-html-name").val()  /// _title   //no title initially for this comonent
+      MainClone.querySelector(".unit_content_place_holder").innerHTML = localStorage.getItem("html_text_content")  //getTemplateType(markdownTemplate)        //$("#input-area").val()      //getTemplateType(markdownTemplate)           //$(".visuell-view").html() || "Edit this content"
       const markupBoard = document.getElementById("markup-template-content")
 
-      // document.getElementById("myModalMarkdownEditorEditMode").querySelector(".visuell-view2")
-      
-     let res = createLessonComponent(url,$("#myModalMarkdownEditor-SELECT"))
 
+     let res = createLessonComponent(url,form)
+
+     console.log(res);
+     localStorage.setItem("html_text_content", "")
+
+
+     
+     console.log($("#myModalMarkdownEditor-SELECT").find(".visuell-view").html())
       markupBoard.innerHTML =markdownTemplate
       $(".visuell-view").html(getTemplateType(markdownTemplate))
+     
+
+      //MainClone.querySelector(".fa-edit")
+      // MainClone.querySelector(".fa-trash")
       Target.append(MainClone);
 
 
@@ -742,6 +1344,22 @@ export default class MasterForm extends React.Component {
   constructor(props) {
 
     super(props);
+  let name ="",author ="",institution ="",code =""
+  if(localStorage.getItem("code")
+     
+     ){
+    
+        code = localStorage.getItem("code")
+       
+          
+  }else if(localStorage.getItem("name") ){
+    name = localStorage.getItem("name");
+  }else if(localStorage.getItem("institution")){
+     institution = localStorage.getItem("institution");
+  }else if(
+     localStorage.getItem("author")){
+    author = localStorage.getItem("author") 
+  }
     this.courseData = null;
     this.state = {
       /*multistep logic data*/
@@ -756,13 +1374,15 @@ export default class MasterForm extends React.Component {
       editor:null,  //THE LOGGED IN USERS DETAILS [{token,...details}]
       author: "", // THE LOGGED IN USER NAME {...details}.username
       previledges:["CAN_EDIT","CAN_VIEW","CAN_DELETE","CAN_CREATE"], 
+    
+    
       
       //state fields
       /*request form data*/
       courseDetail: {},
       
-        name: "",
-        code: "",
+        name: name,
+        code: code,
         run: "",
         card_image: "",
         intro_video: "",
@@ -785,8 +1405,8 @@ export default class MasterForm extends React.Component {
         requirement_no_of_week: 1,  //int
         grace_period_after_deadline: 1, //int
         publication_status: 2,  //int
-        institution: "",   //keypair preporpulated set of inst id
-        author: "",  //keypair preporpulated set of author id
+        institution: institution,   //keypair preporpulated set of inst id
+        author: author,  //keypair preporpulated set of author id
         prerequisite: [
               //key pairs ids of courses
         ],
@@ -860,15 +1480,36 @@ export default class MasterForm extends React.Component {
     var str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +  date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
     return str;
   }
+  
+  autoUpdateFilledData(obj){
+    for(let k in obj){
+    this.setState(
+          {
+            [k]: obj[k],
+          }
+          
+        );  
+    }
+  }
+  
+  
 
 
 
    handleInputChange = (event) => {
+
+    //notification set
+        // Selecting all required elements
+const wrapper = document.querySelector(".notification-notice"),
+toast = wrapper.querySelector(".toast-offline2"),
+title = toast.querySelector("span"),
+subTitle = toast.querySelector("p"),
+wifiIcon = toast.querySelector(".icon"),
+closeIcon = toast.querySelector(".close-icon");
    
 
       let { name, value } = event.target;
-      localStorage.setItem(name, value);
-       let imageUrl = ""
+      let imageUrl = ""
       //console.log(event.target.value);
 
 
@@ -876,7 +1517,10 @@ export default class MasterForm extends React.Component {
         name =="course_end_date_time" || 
         name=="enrolment_start_date_time" ||
          name=="enrolment_end_date_time"){
-        event.target.type="text"
+       //set it back to text
+        
+    
+         event.target.type="text"
 
         // value = new Date(value) //DateFormatter.mysqlDate(value);
         // value = value.toISOString()
@@ -909,6 +1553,8 @@ export default class MasterForm extends React.Component {
             this.validateField(name, value);
           }
         );
+        localStorage.setItem(name, value);
+      
       }else if(event.target.name == "card_image"){
         //handle image upload here
         const fileUploader = document.getElementById('file-uploader');
@@ -987,24 +1633,99 @@ export default class MasterForm extends React.Component {
         });
       //});
       }else{
+
+        // for just input and text area or editable 
+         let limitCode =10, limitName =150
+        if(name=="code"){
+          limitCode = 10
+          if(value.length > limitCode){
+              value = value.substring(0, limitCode);
+              let queryInputEnforce = `input[name=${name}]`;
+              queryInputEnforce = document.querySelector(queryInputEnforce);
+               queryInputEnforce.value = value
+
+
+               wrapper.style.display="block"
+               wrapper.classList.remove("hide");
+            toast.classList.remove("offline");
+                title.innerText = "Notification Message";
+                subTitle.innerText = "Limit text exceeded. Maximum input allowed is " + limitCode + " characters";
+                wifiIcon.innerHTML = '<i style="background:red" class="uil uil-wifi fa fa-times fa-2x"></i>';
+                closeIcon.onclick = ()=>{ //hide toast notification on close icon click
+                    wrapper.classList.add("hide");
+                }
+                setTimeout(()=>{ //hide the toast notification automatically after 5 seconds
+                    wrapper.classList.add("hide");
+                }, 5000);
+
+          } else{
+             let query = `div[class=${name}]`;
+             let labelCount;
+             if(document.querySelector(query)){
+            
+               labelCount = document.querySelector(query);
+               labelCount = labelCount.querySelector("span")
+               labelCount.innerHTML = value.length + "/" + limitCode + " inputs characters entered";
+             }
+         
+           
+          }
+
+        }
+
+        if(name=="name"){
+          
+
+          if(value.length > limitName){
+            value = value.substring(0, limitName);
+            let queryInputEnforce = `input[name=${name}]`;
+            queryInputEnforce = document.querySelector(queryInputEnforce);
+            queryInputEnforce.value = value
+
+
+            
+
+
+          } else{
+             let query = `div[class=${name}]`;
+             let labelCount;
+             if(document.querySelector(query)){
+            
+                labelCount = document.querySelector(query);
+                labelCount = labelCount.querySelector("span")
+                labelCount.innerHTML = value.length + "/" + limitName + " inputs characters entered";
+             }
+          
+          }
+        }
+
+         if(name=="description"){
+            let limit =250
+
+            if(value.length > limit){
+              value = value.substring(0, limit);
+              let queryInputEnforce = `input[name=${name}]`;
+              queryInputEnforce = document.querySelector(queryInputEnforce);
+              queryInputEnforce.value = value
+
+            } else{
+               let query = `div[class=${name}]`;
+               let labelCount;
+                if(document.querySelector(query)){
+                  
+                   labelCount = document.querySelector(query);
+                   labelCount = labelCount.querySelector("span")
+                   labelCount.innerHTML = value.length + "/" + limit + " inputs characters entered";
+                }
+            }
+        }
+
+        
         localStorage.setItem(name, value)
-
-         //logic 1 - automate state processing of form data
-        //dynamically hooks state fields to current value
-      // this.setState(
-      //       {
-      //         [name]: value,
-      //       },
-      //       function () {
-      //         /*validation hooks*/
-      //         this.validateField(name, value);
-      //       }
-      //);
-
 
        this.setState({
       ...this.state,
-      [event.target.name]: event.target.value,
+      [event.target.name]: value,
     });
 
       }
@@ -1079,25 +1800,14 @@ export default class MasterForm extends React.Component {
       });
     }
 
-    console.log(this.state)
+    //console.log(this.state)
   }
 
    /*navigation skipper*/
 
   goToStep(e, step) {
     e.preventDefault();
-    // $(".nav-link").removeClass("active")
-    //   .css({
-    //      color:"#000"
-    // });
-    // $(e.target).addClass("active")
-    //   .css({
-    //     color:"#fff", 
-    //     background:"rgba(8,23,200)"
-    // });
-
-    // e.target.parentElement.style.border = "1px solid #eee";
-    //e.target.parentElement.style.padding = "2px";
+    
     this.setState({
       currentStep: step,
     });
@@ -1381,6 +2091,7 @@ export default class MasterForm extends React.Component {
 
   
   componentDidMount(){
+   
     (async (trigger) =>{
        try{
          await this.fetchContent()
@@ -1388,15 +2099,15 @@ export default class MasterForm extends React.Component {
          console.log("some error occured")
        }
     })("run-logic-sequence")
-     let T = new  TinyMyceRender();
-     T.render("")
+     // let T = new  TinyMyceRender();
+     // T.render("")
   var formElements = new Array();
     $("input, select, textarea").each(function(){
         formElements.push($(this));
     });
 
 
-    
+    let thisClass = this; 
 
 
         let formEl = $("#create-course");
@@ -1420,6 +2131,8 @@ export default class MasterForm extends React.Component {
                formEl.find("#"+ e.attr("name")).val(localStorage.getItem( e.attr("name")))
             }
           })
+
+
 
     $(document).ready(function(){
 
@@ -1454,13 +2167,746 @@ export default class MasterForm extends React.Component {
     }
 
 
+     //call the problem component binder events handlers
+     thisClass.handleProblemComponent()
+
+
+     //handle scroll bar to top event
+
+     var topScroll = document.getElementById("myBtn");
+     topScroll.addEventListener("click", (e) => {scrollToTop(e)})
+     // When the user scrolls down 20px from the top of the document, show the button
+     window.onscroll = function() {scrollFunction()};
+
+
 
     })
     
 
+  
 
 
   }
+
+
+  //launch events for problem component
+  handleProblemComponent(){
+      // -------------------------------------------
+    let thisClass = this;
+    // DEFAULT INPUT AND OUTPUT AREA
+    let textarea = document.querySelector( '#input-areadisplay' );
+    let outputArea = document.querySelector( '#output-areadisplay' );
+    let previewMessage = document.querySelector( '.preview-messagedisplay' );
+
+
+    // var regExp = /\(([^)]+)\)/;
+    // var matches = regExp.exec("I expect five hundred dollars ($500).");
+
+    // //matches[1] contains the value between the parentheses
+    // console.log(matches[1]);
+
+    // -------------------------------------------
+    // TOOLBAR
+    // -------------------------------------------
+    const preview = document.querySelector( '#previewdisplay' );
+    const boldButton = document.querySelector( '#bold' );
+    const italicButton = document.querySelector( '#italic' );
+    const heading1Button = document.querySelector( '#heading1' );
+    const heading2Button = document.querySelector( '#heading2' );
+    const heading3Button = document.querySelector( '#heading3' );
+    const linkButton = document.querySelector( '#link' );
+    // const tokenButton = document.querySelector( '#token' );
+    const ulButton = document.querySelector( '#list-ul' );
+    const olButton = document.querySelector( '#list-ol' );
+    const selectedBox = document.querySelector("#sub-selection")
+
+
+    //define inner functions
+
+    function setInputArea( inputElement ) {
+      textarea = inputElement;
+    }
+
+    function setOutputArea( outputElement ) {
+      outputArea = outputElement;
+    }
+
+
+    function output( lines ) {
+      outputArea.innerHTML = lines;
+    }
+
+
+
+    //start event listener for button toolbars
+    boldButton.addEventListener( 'click', () =>
+      thisClass.insertText( textarea, '****', 'demo', 2, 6 )
+    );
+
+    italicButton.addEventListener( 'click', () =>
+      thisClass.insertText( textarea, '**', 'demo',  1, 5 )
+    );
+
+    heading1Button.addEventListener( 'click', () =>
+      thisClass.insertText( textarea, '#', 'heading1', 1, 9 )
+    );
+
+    heading2Button.addEventListener( 'click', () =>
+      thisClass.insertText( textarea, '##', 'heading2', 2, 10 )
+    );
+
+    heading3Button.addEventListener( 'click', () =>
+      thisClass.insertText( textarea, '###', 'heading3', 3, 11 )
+    );
+
+    linkButton.addEventListener( 'click', () =>
+      thisClass.insertText( textarea, '[](http://...)', 'url text', 1, 9 )
+    );
+
+    // tokenButton.addEventListener( 'click', () =>
+    //   insertText( textarea, '{{}}', 'tokenValue', 2, 12 )
+    // );
+
+    ulButton.addEventListener( 'click', function() {
+      thisClass.insertText( textarea, '* ', 'item', 2, 6 );
+    } );
+
+    olButton.addEventListener( 'click', () =>
+      thisClass.insertText( textarea, '1. ', 'item', 3, 7 )
+    );
+
+
+   //if a change is made then add the question based on the selected html type
+    selectedBox.addEventListener("change", (e)=>{
+         let val = selectedBox.options[selectedBox.selectedIndex].getAttribute("data-markdown")
+         let syntax =``;
+         switch (val){
+            case "[pb_html]/[pb_multichoice]":
+             syntax = `"""\nExample Question here: who was made king of your country -sample question? \n
+      [x] option 1 and 2 are correct\n
+      [x]  option 1 and 2 are correct\n
+      []  Victor Victor Juwa\n
+      []  No one else but me  \n"""`
+              thisClass.insertText( textarea, syntax, "\nMultichoice:\n", 0, 0 )
+              break;
+            case "[pb_html]/[pb_checkbox]":
+             syntax = `"""\nExample Question here:   who was made king of your country -sample question? \n
+      [o] The right answer\n
+      []  Saladin Jake\n
+      []  Victor Victor Juwa\n
+      []  No one else but me\n"""`
+                thisClass.insertText( textarea, syntax, "\ncheckbox:\n" )
+              break;
+            case "[pb_html]/[pb_input]":
+             syntax = `"""\nExample Question here:  How Many Continents are in the world? \n
+      [i] Your Answer\n"""`
+                thisClass.insertText( textarea, syntax, "\nInput:\n")
+              break;
+            case "[pb_html]/[pb_numeric]":
+             syntax = `"""\nExample Question here : 2+ 2? \n
+      [n] Your Answer\n"""`
+                thisClass.insertText( textarea, syntax, "\nNumeric:\n" )
+              break;
+            case "[pb_html]/[pb_dropdown]":
+             syntax = `"""\nExample Question here:  who was made king of your country -sample question? \n
+      [d]    Your next generations\n
+      [d]     Saladin Jake\n
+      [d]     Victor Victor Juwa\n
+      [d][x]  The right Answer\n
+      [HINT] someone with a mantle of leadership to rule the world\n"""`;
+             thisClass.insertText( textarea, syntax, "\ndropdown:\n")
+
+
+
+              break;
+            case "[pb_html]/[pb_dropdown_feedback]":
+             syntax = `"""\nExample Question here:  who was made king of your country -sample question? \n
+      [d] Your next generations\n
+      [d]  Saladin Jake\n
+      [d][x]  The right answer\n
+      []  No one else but me\n
+      [HINT] someone with a mantle of leadership to rule the world\n"""`;
+             thisClass.insertText( textarea, syntax, "\ndropdown_feedback:\n" )
+
+              break;
+            case "[pb_html]/[pb_numeric_feedback]":
+               syntax = `"""\nExample Question here : 2+ 2? \n
+      [n] Your Answer\n
+      [HINT] A number in the range of 1 through 8 or more \n"""`
+                thisClass.insertText( textarea, syntax, "\nnumeric_feedback:\n" )
+              break;
+            case "[pb_html]/[pb_input_feedback]":
+               syntax = `"""\nHow Many Continents are in the world? \n
+      [i] Your Answer\n
+      [HINT] A number in the range of 1 -10\n"""`
+                thisClass.insertText( textarea, syntax, "\ninput_feedback:\n")
+              
+              break;
+            case "[pb_html]/[pb_checkbox_feedback]":
+             syntax = `"""\nExample Question here:  who was made king of your country -sample question? \n
+      [o] The right answer\n
+      []  Saladin Jake\n
+      []  Victor Victor Juwa\n
+      []  No one else but me\n
+      [HINT] someone with a mantle of leadership to rule the world\n"""`;
+             thisClass.insertText( textarea, syntax, "\ncheckbox_feedback:\n")
+
+              break;
+            case "[pb_html]/[pb_multichoice_feedback]":
+              syntax = `"""\nExample Question here:  who was made king of your country -sample question? \n
+      [x] Your next generations\n
+      [x]  Saladin Jake\n
+      []  Victor Victor Juwa\n
+      []  No one else but me\n
+      [HINT] someone with a mantle of leadership to rule the world\n"""`
+                  thisClass.insertText( textarea, syntax, "\nmultichoice_feedback:\n")
+              break;
+            default:
+              break;
+
+         
+         }
+      })
+
+
+     //output display event handler parser that converts the markdown template to html element
+      preview.addEventListener( 'click', () => {
+           //the inner function called
+            output( thisClass.parse( textarea.value ) );
+
+            if(preview.textContent=="Preview"){
+             preview.textContent = "Edit Mode"
+            }else{
+              preview.textContent="Preview"
+            }
+
+            outputArea.classList.toggle( 'show' );
+            previewMessage.classList.toggle( 'show' );
+            preview.classList.toggle( 'active' );
+          } );
+
+
+   }
+
+
+  insertText( textarea, syntax, placeholder = 'demo', selectionStart = 0, selectionEnd = 0 ) {
+      // Current Selection
+      const currentSelectionStart = textarea.selectionStart;
+      const currentSelectionEnd = textarea.selectionEnd;
+      const currentText = textarea.value;
+
+      
+
+      if( currentSelectionStart === currentSelectionEnd ) {
+        const textWithSyntax = textarea.value = currentText.substring( 0, currentSelectionStart ) + syntax + currentText.substring( currentSelectionEnd );
+        textarea.value = textWithSyntax.substring( 0, currentSelectionStart + selectionStart ) + placeholder + textWithSyntax.substring( currentSelectionStart + selectionStart )
+
+        textarea.focus();
+        textarea.selectionStart = currentSelectionStart + selectionStart;
+        textarea.selectionEnd = currentSelectionEnd + selectionEnd;
+      } else {
+        const selectedText = currentText.substring( currentSelectionStart, currentSelectionEnd );
+        const withoutSelection = currentText.substring( 0, currentSelectionStart ) + currentText.substring( currentSelectionEnd );
+        const textWithSyntax = withoutSelection.substring( 0, currentSelectionStart ) + syntax + withoutSelection.substring( currentSelectionStart );
+
+        // Surround selected text
+        textarea.value = textWithSyntax.substring( 0, currentSelectionStart + selectionStart ) + selectedText + textWithSyntax.substring( currentSelectionStart + selectionStart );
+
+        textarea.focus();
+        textarea.selectionEnd = currentSelectionEnd + selectionStart + selectedText.length;
+      }
+  }
+
+
+   //markdown parser for html elements
+// -------------------------------------------
+// PARSER
+// -------------------------------------------
+
+ parse( content ) {
+        // Regular Expressions
+        const h1 = /^#{1}[^#].*$/gm;
+        const h2 = /^#{2}[^#].*$/gm;
+        const h3 = /^#{3}[^#].*$/gm;
+        const bold = /\*\*[^\*\n]+\*\*/gm;
+        const italics = /[^\*]\*[^\*\n]+\*/gm;
+        const link = /\[[\w|\(|\)|\s|\*|\?|\-|\.|\,]*(\]\(){1}[^\)]*\)/gm;
+        const lists = /^((\s*((\*|\-)|\d(\.|\))) [^\n]+))+$/gm;
+        const unorderedList = /^[\*|\+|\-]\s.*$/;
+        const unorderedSubList = /^\s\s\s*[\*|\+|\-]\s.*$/;
+        const orderedList = /^\d\.\s.*$/;
+        const orderedSubList = /^\s\s+\d\.\s.*$/;
+        const myRegexQuestions =/[\.*\w+(\"{3}\[\]|\[x\]|\[o\]|\[n\]|\[o\]|\[HINT\s+\]+)+\s\.*]+/gm;
+
+         //  /^".*"$/
+         // /\G[^"]*(?:"[^"\s]*"[^"]*)*("[^"\s]*\s[^"]*")/
+
+         // /[^\s"']+|"([^"]*)"|'([^']*)'/        #for single or double
+
+         // /(?:"[^"\s]*"[^"]*)*("\S*\s[^"]*")/
+        const myRegexQuestionsFull = /(?:"[^"\s]*"[^"]*)*("\S*\s[^"]*")+/
+         
+
+         //  /^[^"]*(?:"(?:[^"\s]|[^"\s][^"]*[^"\s])?"[^"]*)*$/
+
+         //  /"(.*?)(\w+)\b"/m
+        const matchesFull = content.match(myRegexQuestionsFull)
+        console.log(matchesFull)
+
+
+      //   var texto = 'Multichoice:""" Example Question here: who was made king f your country -sample question? [x] option 1 and 2 are correct [x]  option 1 and 2 are correct []  Victor Victor Juwa []  No one else but me """ ';
+
+      // var textoLimpo = texto.replace(/"([^"]*)"/g, function (a, b, c) {
+      //     return  b.replace(/^\s+|\s+$/g, '') ;
+      // });
+      // alert(textoLimpo); 
+        
+        //working splits // /[\.*\w+(\[\]|\[x\]|\[o\]|\[n\]|\[o\]|\[HINT\s+\]+)+\s\.*]+/gm;
+
+        const regex3quotes = /[\"{3}.*]+/
+
+        const hintRegex = /[HINT:(\s\.*)]/
+        
+
+        // /([\.*\w+(\[\]|\[x\]|\[o\]|\[n\]|\[o\]|\[HINT\s+\]+)+\s\.*]+)(.*\s+)+/gm; 
+        const multichoice = "[pb_html]/[pb_multichoice]";
+        const checkbox = "[pb_html]/[pb_checkbox]";
+
+        const finalQuestionsArrangements = [];
+        let htmlComponent = [];
+        let undecidedComponent = []
+        let templateStr ="" //form questioniar
+        
+
+
+         //check box and multi choice markdown parser
+
+         //if type contains [x] its checkbox
+
+
+        let dropdownWrapper = `<div class="field"><select>`
+        //if 3 quotes for problem question
+         if(regex3quotes.test(content)){
+            //match = content.match(regex3quotes)
+            //console.log(match)
+
+
+            // let myRegex = /(.*[\"]{3}(.*\s+)+[\"]{3})(.*\s+)+/gm;         +
+           const matches = content.match(myRegexQuestions)
+           console.log(matches)
+           let question= '';
+           let objectives_component =[]
+           let hintQuestion = ""
+           matches.forEach( element => {
+            
+             if(element.match(/\"\"\"/)){
+              //console.log(element.replace(/\"\"\"/, ""))
+              element = element.replace(/\"\"\"/, "")
+              // join all strings relating to the question text   
+             }
+              
+             // this is the question
+             if(!element.match(/.*[\[.*\]]/)){
+                 question = question + ""+ element
+
+              }
+
+              //objective question of the component type or just what refers to the componet
+
+              if(element.match(/[\[.*\]]/)){
+                  if(element.match(/[\[x{0,1}\]]/)){
+                    //this is multiselect -x || [x] with the answer
+                    let eachMatches = element.match(/(.*\w[\[x{0}\].*\s\w+])+/gm) ///[\[x{0}\]]/
+                    console.log(eachMatches)
+
+                    let targetsRegex = /\[.*?\]+/gm     //  /[\[x{0}*\]]+/gm // [x] or [] // alone
+                    let component_for_html_view =  element.match(/\[.*?\]+/gm) //
+
+
+                    //var r= new RegExp(/\)[^\(]*\b(\w+)\b[^\)]*\(/g);
+                    //var res = mytext.match(r) ;
+
+                    console.log(component_for_html_view)
+
+                    let checkboxes = false;
+                    let multichoices = false;
+
+                    undecidedComponent = component_for_html_view.find(component =>{
+                        return component == "[]" 
+                    })
+
+                    
+
+                    //build the html equivalent
+                    component_for_html_view.forEach((component,index)=>{
+                        if(component=='[x]'){
+                          //this is multichoice
+                          console.log(component)
+                          multichoices = true
+
+                          htmlComponent.push(
+                            `<div class="field">
+                            <p for="five">${ eachMatches[index]}</p>
+                            <input  type="checkbox" checked/></div>`
+                          )
+
+
+                          objectives_component.push( eachMatches[index])
+                        }  
+
+                    })
+                    
+                     component_for_html_view.forEach((component,index)=>{
+                      if(component=='[o]'){
+                          //this is checkbox
+                          checkboxes = true
+
+                          htmlComponent.push(
+                            `<div class="field"><p for="five">${ eachMatches[index]}</p><br/><input  type="radio" checked/></div>`
+                          )
+
+                           objectives_component.push( eachMatches[index])
+
+                      }
+
+                     })
+
+                    component_for_html_view.forEach((component,index)=>{
+                     if(component=='[i]'){
+                          //this input
+                          htmlComponent.push(
+                            ` <div class='field'>
+                             <p for="five">${ eachMatches[index]}</p> <br/><input  type="text" />
+                          
+                            </div>
+
+                            `
+                          )
+
+                           objectives_component.push( eachMatches[index])
+
+                     }
+                   })
+
+                     component_for_html_view.forEach((component,index)=>{
+
+                       if(component=='[n]'){
+                              //this is numeric input
+
+                              htmlComponent.push(
+                                ` <div class='field'><p for="five">${ eachMatches[index]}</p><input  type="number" checked/><div>`
+                              )
+
+                               objectives_component.push( eachMatches[index])
+
+                        }
+
+                  })
+                        // else if(component=='[d]' ){
+                        //    //this is dropdown
+                        //    dropdownWrapper +=`<option>${ eachMatches[index]}</option>`
+                        //     objectives_component.push( eachMatches[index])
+                           
+
+                        // }else if(component=='[d][x]'){
+                        //    dropdownWrapper +=`<option selected>${ eachMatches[index]}</option>`
+                        //     objectives_component.push( eachMatches[index])
+
+                        // }
+                    //})
+                    
+                    
+
+                    let undecidedGroups = component_for_html_view.filter(component =>{
+                      return component == '[]'
+                    }) ;
+
+                    console.log(undecidedGroups)
+                    let  gotMultichoices =component_for_html_view.find(component =>{
+                      return component == '[x]'
+                    }) ;
+
+                    let  gotCheckboxes =component_for_html_view.find(component =>{
+                      return component == '[o]'
+                    }) ;
+
+                    let  gotDropdown =component_for_html_view.find(component =>{
+                      return component == '[d]'
+                    }) ;
+
+                    if(gotMultichoices && undecidedGroups){
+                      //make them multi
+                      //do something with undecidedComponent ie. the text definition
+                       undecidedGroups.forEach((component,index)=>{
+                          htmlComponent.push(
+                               `<div class='field'><p for="five">${ eachMatches[index]}</p><input  type="checkbox" checked/></div>`
+                          )
+
+                           objectives_component.push( eachMatches[index])
+                         
+                       })
+                    }else if(gotCheckboxes  && undecidedGroups){
+                      //make them check
+                      undecidedGroups.forEach((component,index)=>{
+                       
+
+                        htmlComponent.push(
+                               `<div class='field'><p for="five">${ eachMatches[index]}</p><br/><input  type="radio" /></div>`
+                          )
+
+                           objectives_component.push( eachMatches[index])
+
+                      })
+
+                    }
+
+                    // else if(gotDropdown && undecidedGroups){
+                    //   // make dropdown html
+                    //    undecidedGroups.forEach((component,index)=>{
+                    //       dropdownWrapper +=`<option >${ eachMatches[index]}</option>`
+
+                    //    })
+                    // }
+
+
+                    // if(dropdownWrapper.length> 14){
+                    //   dropdownWrapper+="</select></div>" 
+                    // htmlComponent.push(
+                    //      dropdownWrapper  
+                    //       )
+                    
+                    // }
+
+                    
+
+                  }
+
+                  console.log(htmlComponent)
+
+                //  //strip out the hint section to enable you get the entire question
+                // if(element.match(/\[(HINT)\]/)){
+                //    hintQuestion =element
+                //    element = element.replace(/[\[.*\]]/,"")
+                //    console.log(hintQuestion)
+
+                //  }
+                 //objectives_component  objectives_component + "\n"+ element
+
+              }
+
+
+
+
+
+            
+            
+          } );
+
+
+
+            if(question && htmlComponent.length ){
+                let extractedQuestion =question
+
+
+
+                //q & a build the ui jacket dynamically
+                templateStr += `<form class="problems-questions">
+                <br/><h4>${extractedQuestion}</h4><br/>
+
+                `
+                htmlComponent.forEach(questionOption =>{
+                  templateStr+=questionOption
+                })
+                templateStr+=`<div class='field form-actions'>
+          <button class="setMove" type='submit'>Next</button>
+        </div></form>`
+
+                templateStr = templateStr.replace(/^\s+|\s+$|\s+(?=\s)/g, "");
+
+                
+                console.log(templateStr)
+
+                
+
+            }
+
+            
+            const extractedText = templateStr
+            content = content.replace(matchesFull[0], extractedText  );
+
+            content = content.replace(/^\s+|\s+$|\s+(?=\s)/g, "");
+            
+
+
+        // Example: # Heading 1
+        if( h1.test( content ) ) {
+          const matches = content.match( h1 );
+          //console.log(matches)
+          matches.forEach( element => {
+            const extractedText = element.slice( 1 );
+            content = content.replace( element, '<h1>' + extractedText + '</h1>' );
+          } );
+        }
+
+         }
+        
+
+         
+
+
+        // Example: # Heading 1
+        if( h1.test( content ) ) {
+          const matches = content.match( h1 );
+          console.log(matches)
+          matches.forEach( element => {
+            const extractedText = element.slice( 1 );
+            content = content.replace( element, '<h1>' + extractedText + '</h1>' );
+          } );
+        }
+
+        // Example: # Heading 2
+        if( h2.test( content ) ) {
+          const matches = content.match( h2 );
+
+          matches.forEach( element => {
+            const extractedText = element.slice( 2 );
+            content = content.replace( element, '<h2>' + extractedText + '</h2>' );
+          } );
+        }
+
+        // Example: # Heading 3
+        if( h3.test( content ) ) {
+          const matches = content.match( h3 );
+
+          matches.forEach( element => {
+            const extractedText = element.slice( 3 );
+            content = content.replace( element, '<h3>' + extractedText + '</h3>' );
+          } );
+        }
+
+        // Example: **Bold**
+        if( bold.test( content ) ) {
+          const matches = content.match( bold );
+
+          matches.forEach( element => {
+            const extractedText = element.slice( 2, -2 );
+            content = content.replace( element, '<strong>' + extractedText + '</strong>' );
+          } );
+        }
+
+        // Example: *Italic*
+        if( italics.test( content ) ) {
+          const matches = content.match( italics );
+
+          matches.forEach( element => {
+            const extractedText = element.slice( 2, -1 );
+            content = content.replace( element, ' <em>' + extractedText + '</em>' );
+          } );
+        }
+
+        // Example: [I'm an inline-style link](https://www.google.com)
+        if( link.test( content ) ) {
+          const links = content.match( link );
+
+          links.forEach( element => {
+            const text = element.match( /^\[.*\]/ )[ 0 ].slice( 1, -1 );
+            const url = element.match( /\]\(.*\)/ )[ 0 ].slice( 2, -1 );
+
+            content = content.replace( element, '<a href="' + url + '">' + text + '</a>' );
+          } );
+        }
+
+        if( lists.test( content ) ) {
+          const matches = content.match( lists );
+
+          matches.forEach( list => {
+            const listArray = list.split( '\n' );
+
+            const formattedList = listArray.map( ( currentValue, index, array ) => {
+              if( unorderedList.test( currentValue ) ) {
+                currentValue = '<li>' + currentValue.slice( 2 ) + '</li>';
+
+                if( !  unorderedList.test( array[ index - 1 ] ) && ! unorderedSubList.test( array[ index - 1 ] ) ) {
+                  currentValue = '<ul>' + currentValue;
+                }
+
+                if( !  unorderedList.test( array[ index + 1 ] )  &&  ! unorderedSubList.test( array[ index + 1 ] ) ) {
+                  currentValue = currentValue + '</ul>';
+                }
+
+                if( unorderedSubList.test( array[ index + 1 ] ) || orderedSubList.test( array[ index + 1 ] ) ) {
+                  currentValue = currentValue.replace( '</li>', '' );
+                }
+              }
+
+              if( unorderedSubList.test( currentValue ) ) {
+                currentValue = currentValue.trim();
+                currentValue = '<li>' + currentValue.slice( 2 ) + '</li>';
+
+                if( ! unorderedSubList.test( array[ index - 1 ] ) ) {
+                  currentValue = '<ul>' + currentValue;
+                }
+
+                if( ! unorderedSubList.test( array[ index + 1 ] ) && unorderedList.test( array[ index + 1 ] ) ) {
+                  currentValue = currentValue + '</ul></li>';
+                }
+
+                if( ! unorderedSubList.test( array[ index + 1 ] ) && ! unorderedList.test( array[ index + 1 ] ) ) {
+                  currentValue = currentValue + '</ul></li></ul>';
+                }
+              }
+
+              if( orderedList.test( currentValue ) ) {
+                currentValue = '<li>' + currentValue.slice( 2 ) + '</li>';
+
+                if( ! orderedList.test( array[ index - 1 ] ) && ! orderedSubList.test( array[ index - 1 ] ) ) {
+                  currentValue = '<ol>' + currentValue;
+                }
+
+                if( ! orderedList.test( array[ index + 1 ] ) && ! orderedSubList.test( array[ index + 1 ] ) && ! orderedList.test( array[ index + 1 ] ) ) {
+                  currentValue = currentValue + '</ol>';
+                }
+
+                if( unorderedSubList.test( array[ index + 1 ] ) || orderedSubList.test( array[ index + 1 ] ) ) {
+                  currentValue = currentValue.replace( '</li>', '' );
+                }
+              }
+
+              if( orderedSubList.test( currentValue ) ) {
+                currentValue = currentValue.trim();
+                currentValue = '<li>' + currentValue.slice( 2 ) + '</li>';
+
+                if( ! orderedSubList.test( array[ index - 1 ] ) ) {
+                  currentValue = '<ol>' + currentValue;
+                }
+
+                if( orderedList.test( array[ index + 1 ] ) && ! orderedSubList.test( array[ index + 1 ] ) ) {
+                  currentValue = currentValue + '</ol>';
+                }
+
+                if( ! orderedList.test( array[ index + 1 ] ) && ! orderedSubList.test( array[ index + 1 ] ) ) {
+                  currentValue = currentValue + '</ol></li></ol>';
+                }
+              }
+
+              return currentValue;
+            } ).join( '' );
+
+            console.log( formattedList );
+            content = content.replace( list, formattedList );
+          } );
+        }
+
+        
+
+        return content.split( '\n' ).map( line => {
+          if( ! h1.test( line ) && ! h2.test( line ) && ! h3.test( line ) && ! unorderedList.test( line ) && ! unorderedSubList.test( line ) && ! orderedList.test( line ) && ! orderedSubList.test( line ) ) {
+            return line.replace( line, '<p>' + line + '</p>' );
+          }
+        } ).join( '' );
+}
+
+
 
   /*{key:val}, ["id","name", "email"]*/
   /*used only when necessary in search for instructor by either email or name field*/
@@ -1483,12 +2929,23 @@ export default class MasterForm extends React.Component {
 
   //fill form data automatically if the course exists
   fill(a){
+  let textEditors = ["learning_expectation","description", "prerequisite", "overview", "curriculum"]
     for(var k in a){
+    console.log(k)
       //check if name is part of a dropdown then select the dropdown or make it checked
       if($('select[name="'+k+'"]')){
-      
+        
          $('select[name="'+k+'"]').attr('selected', $(this).text() == a[k]);
       }
+    
+    //check if k is a rich text editor content
+    if(textEditors.includes(k)){
+      //inject to text editor
+      var myEditor = $('div[data-placeholder="'+k+'"]') // the editor itself
+          //myEditor = myEditor.children[0];
+      let html = a[k] || "Place your content for editing with rich text editor";
+      myEditor.html(html);
+    }
 
 
       if($('textarea[name="'+k+'"]')){
@@ -1506,8 +2963,6 @@ export default class MasterForm extends React.Component {
        }
 
      }
-
-
     }
  }
 
@@ -1515,6 +2970,7 @@ export default class MasterForm extends React.Component {
  getAllFormElements = element => Array.from(element.elements).filter(tag =>  ["select", "textarea", "input"].includes(tag.tagName.toLowerCase()));
 
  fetchContent = async () => {
+  $("#none-display").css({"opacity":0}).fadeOut("fast")
    let instId = this.state.institution
    this.courseData = await this.courseDetailJson()
    localStorage.setItem("course_edit",this.props.match.params.id);
@@ -1549,7 +3005,9 @@ export default class MasterForm extends React.Component {
           sections:res[4]?.results
         })
         //now dynamically fill in the form
-        this.fill(res[4])    
+        this.fill(res[4]) 
+
+        $("#none-display").css({"opacity":1}).fadeIn("slow")    
       }
         
         // setLoading(false);
@@ -1581,7 +3039,11 @@ export default class MasterForm extends React.Component {
 
 
 
-
+  sorted_by_position_id = (arr) =>{
+     return arr.sort((a, b) => {
+       return a.position_id - b.position_id;
+     });
+  } 
 
 
   /*everything belonging to course*/
@@ -1591,9 +3053,13 @@ export default class MasterForm extends React.Component {
    let courseData = BIG_JSON.course_sections;
    let temp =``;
    let tempArr =[];
-   let tempArrLessons = []
+   let tempArrLessons = [];
+   courseData = this.sorted_by_position_id(courseData) // sorts by position id
 
-   console.log(courseData)
+   console.log(courseData);
+
+   //resort sections by their position id before d*splay*n
+
 
    // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
    //    setTimeout(removeLoader,10000); //wait for page load PLUS two seconds.
@@ -1605,28 +3071,45 @@ export default class MasterForm extends React.Component {
                  let insertionId =section.id
  
      let templateData =`
-  <li id="${insertionId}" data-belongs="${section.course}" data-parent="${insertionId}" data-restriction="${
+  <li open id="${insertionId}" 
+  data-belongs="${section.course}"
+  data-name="${section.name}"
+  data-idx="${insertionId}"
+  data-root-parent="${insertionId}" 
+         
+          data-description="${section.description}"
+
+   data-parent="${insertionId}" data-restriction="${
     "miller_" + insertionId
   }"    data-id="${
     "miller_" + insertionId
-  }" id="dynamic_section_${insertionId}"  class="hello-move-me sections card-box root-li view tr-of-root opened col-md-12 ${
+  }" id="dynamic_section_${insertionId}"  class="hello-move-me sections  root-li view tr-of-root opened col-md-12 ${
     "miller_" + insertionId
-  } section-list" style="margin-bottom:10px;background:#fff;border:2px solid #f5f5f5">
+  } section-list" >
 
-   <h4 style="background:rgba(8,23,200); margin-right:10px;padding:10px">
+   <h4 class="card-box" style="background:rgba(8,23,200);margin-bottom:30px; margin-right:10px;padding:10px; ">
    <a style="color:#fff"
-
+         data-belongs="${section.course}"
+         data-idx="${insertionId}"
+         data-name="${section.name}"
+          data-pos="${section.position_id}"
           data-id="${"miller_" + insertionId}"
+          data-root-parent="${insertionId}"
           onclick="localStorage.setItem('given_id','dynamic_section_'+'${insertionId}');localStorage.setItem('tracker','${insertionId}');showSetSubsection(this);"           
           >
-           <span ><i class="fa fa-chevron-down "></i></span>
+           <span class="content-entry"><i class="fa fa-chevron-down "></i></span>
     </a>
-     <span class="tits section__name first-child-of-td export_title" style="font-size:20px;color:#fff"> ${
+     <span class="tits section__name title-given first-child-of-td export_title" style="font-size:20px;color:#fff"> ${
        section.name + " " + section.position_id  || "Section " + insertionId
      }</span>
-      <span class="per action" style="float:right">
+      <span class="per action card-box" style="float:right;background:rgba(8,23,200);padding:10px;margin-top:-50px;border-20px solid #ccc">
       <a style="margin-right:10px;color:#fff"
-
+                  
+         data-belongs="${section.course}"
+         data-name="${section.name}"
+          data-pos="${section.position_id}"
+          data-idx="${insertionId}"
+          data-root-parent="${insertionId}"
                    href="#myModalSubsection" role="button" data-toggle="modal"
                    onclick='setTargetItem("${insertionId}")'
                   >
@@ -1643,6 +3126,8 @@ export default class MasterForm extends React.Component {
           data-name="${section.name}"
           data-pos="${section.position_id}"
           data-description="${section.description}"
+          data-belongs="${section.course}"
+          data-root-parent="${insertionId}"
           data-modal="myModalEdit"
 
             onclick="injectToModal(this);localStorage.setItem('given_id','dynamic_section_'+'${insertionId}');localStorage.setItem('tracker','${insertionId}');"       
@@ -1654,12 +3139,13 @@ export default class MasterForm extends React.Component {
 
         <a style="margin-right:10px;color:#fff"
           data-extint="section"
-
+           data-belongs="${section.course}"
           data-idx="${insertionId}"
           data-name="${section.name}"
           data-pos="${section.position_id}"
           data-description="${section.description}"
           data-id="${"miller_" + insertionId}"
+          data-root-parent="${insertionId}"
            onclick="genericDelete(this)"        
           >
                 
@@ -1670,12 +3156,13 @@ export default class MasterForm extends React.Component {
 
          <a class="" style="margin-right:10px;color:#fff"
           data-extint="section"
-
+         data-belongs="${section.course}"
           data-idx="${insertionId}"
           data-name="${section.name}"
           data-pos="${section.position_id}"
           data-description="${section.description}"
           data-id="${"miller_" + insertionId}"
+          data-root-parent="${insertionId}"
            onclick="replicateSection(this)"
                         
           >
@@ -1683,15 +3170,23 @@ export default class MasterForm extends React.Component {
         </a>
          <a class="drag-handle"  
          data-belongs="${section.course}"
+         data-belongs="${section.course}"
+         data-idx="${insertionId}"
 
           data-name="${section.name}"
           data-pos="${section.position_id}"
           data-description="${section.description}"
+          data-root-parent="${insertionId}"
           
 
 
           style="margin-right:10px;color:#fff">
-         <i class="fa fa-arrows "></i>
+         <i class="fa fa-arrows "  data-belongs="${section.course}"
+         data-belongs="${section.course}"
+
+          data-name="${section.name}"
+          data-pos="${section.position_id}"
+          data-description="${section.description}"></i>
         </a>
 
         
@@ -1718,6 +3213,8 @@ export default class MasterForm extends React.Component {
           data-pos="${section.position_id}"
           data-description="${section.description}"
           data-modal="myModalEdit"
+          data-belongs="${section.course}"
+          data-root-parent="${insertionId}"
 
             onclick="injectToModal(this);localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});"       
           >Edit </a></li>
@@ -1729,12 +3226,16 @@ export default class MasterForm extends React.Component {
           <a style="margin-right:10px;color:#fff"
         
           data-id="${"miller_" + insertionId}"
+          data-belongs="${section.course}"
+          data-root-parent="${insertionId}"
           onclick="showSetSubsection(this);localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});"
                 
           >
 
-</a>
+</a><br/>
           
+<span style="font-size:12px;color:#fff">Section ${section.position_id} contains (${section.section_sub_sections.length}) Subsection</span>
+         
           
               
         </span>
@@ -1744,7 +3245,7 @@ export default class MasterForm extends React.Component {
     `;
 
                $("#js-parent").append(templateData);
-               enableDragSortPositionUpdater("js-root-parent","sections")
+               enableDragSortPositionUpdater("drag-sort-enable","hello-move-me")
       }
 
      
@@ -1752,6 +3253,7 @@ export default class MasterForm extends React.Component {
 
       if(section.section_sub_sections){
          tempArr = section.section_sub_sections;
+         tempArr = this.sorted_by_position_id(tempArr)
 
 
             // still our parent remain the same to transverse up the object while checkmates changes
@@ -1763,10 +3265,18 @@ export default class MasterForm extends React.Component {
  
       let templateSub = `
          <ul 
+          data-name="${subsec?.name}"
+          data-belongs="${subsec.section}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+          data-pos="${subsec.position_id}"
+          data-idx="${subsec.id}"
+          data-root-parent="${subsec.id}"
+          
          
-         id="dynamic_subsection_${muu_counter}"  data-id="${
+         id="dynamic_subsection_${subsec.id}"  data-id="${
     "muu_" + muu_counter
-  }" class="fold subsections hello-move-me card-box drop-zone-section root-sub-ul centerSubsection column-list-section-parade ${
+  }" class="fold subsections accordion-content hello-move-me drop-zone-section root-sub-ul view opened centerSubsection column-list-section-parade ${
     "muu_" + muu_counter
   } col-md-10 section-parent_${localStorage.getItem(
     "tracker"
@@ -1776,65 +3286,126 @@ export default class MasterForm extends React.Component {
 
 
   >
-     <h4 style="background:rgba(8,23,200); margin-right:10px;padding:10px">
+     <h4 class="card-box" style="background:#f6f6f6; margin-right:10px;padding:10px">
             
-              <span class=""  style="height:60px;border-left:3px solid black;margin-top:10px">
-               <span class="title_sub export_title" data-th="Company name" style="font-size:20px;color:#fff">${
+              <span class=""  style="height:60px;margin-top:10px">
+        <span ><i class="fa fa-chevron-down " style="color:#000"></i></span>
+               <span id="title_sub_${subsec.id}" class="title_sub title-given export_title" data-th="Company name" style="font-size:20px;color:#000">${
                  subsec?.name + " " + subsec?.position_id  || "Subsection"
                }</span>
                 <span class="subsect" data-th="Customer no"></span>
                 <span data-th="Customer name"></span>
-                <span class="action" data-th="Customer nam"  style="float:right">
+                <span class="action card-box" style="float:right;background:#eaeaea;padding:4px;margin-top:-30px;border:2px solid #ccc" data-th="Customer nam"  >
        
        <a    href="#myModalLesson" role="button" data-toggle="modal"
-       style="margin-right:10px;color:#fff"
+       style="margin-right:10px;color:#000"
           data-id="${"muu_" + muu_counter}"
-            onclick='addlessonSection(this);setTargetSubsectionItem("${muu_counter}") '      
-          ><i class="fa fa-plus"></i></a>
-
-
-        <a style="margin-right:10px;color:#fff"
-            href="#myModalSubSectionEdit" role="button" data-toggle="modal"
-          data-id="${"muu_" + muu_counter}"
-
-            data-idx="${muu_counter}"
+          data-idx="${subsec.id}"
+           data-idx="${subsec.id}"
           data-name="${subsec?.name}"
           data-pos="${subsec?.position_id}"
           data-description="${subsec?.description}"
           data-parent-id="${subsec.section}"
           data-modal="myModalSubSectionEdit"
+           data-belongs="${subsec.section}"
 
-            onclick="injectToModal(this);"       
-          >
-                
-          <i class="fa fa-edit "></i>
-        </a>
+            onclick='addlessonSection(this);setTargetSubsectionItem("${muu_counter}") '      
+          ><i class="fa fa-plus"></i></a>
 
 
-        <a style="margin-right:10px;color:#fff"
-          data-extint="subsection"
+        <a style="margin-right:10px;color:#000"
+            href="#myModalSubSectionEdit" role="button" data-toggle="modal"
+          data-id="${"muu_" + muu_counter}"
 
-            data-idx="${muu_counter}"
+           data-idx="${subsec.id}"
           data-name="${subsec?.name}"
           data-pos="${subsec?.position_id}"
           data-description="${subsec?.description}"
           data-parent-id="${subsec.section}"
+          data-modal="myModalSubSectionEdit"
+           data-belongs="${subsec.section}"
+
+
+            onclick="injectToModal(this);"       
+          >
+                
+          <i class="fa fa-edit "  data-idx="${subsec.id}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+          data-modal="myModalSubSectionEdit"
+           data-belongs="${subsec.section}"
+></i>
+        </a>
+
+
+        <a style="margin-right:10px;color:#000"
+          data-extint="subsection"
+
+          data-idx="${subsec.id}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+           data-belongs="${subsec.section}"
 
           data-id="${"muu_" + muu_counter}"
            onclick="genericDelete(this)"        
           >
                 
-          <i class="fa fa-trash "></i>
+          <i class="fa fa-trash "  data-extint="subsection"
+
+          data-idx="${subsec.id}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+           data-belongs="${subsec.section}"
+></i>
         </a>
 
 
-         <a  class="drag-handle-list" style="margin-right:10px;color:#fff"
+        <a style="margin-right:10px;color:#000"
+          data-extint="subsection"
+
+           data-idx="${subsec.id}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+           data-belongs="${subsec.section}"
+
+          data-id="${"muu_" + muu_counter}"
+           onclick="replicateSubSection(this)"        
+          >
+                
+          <i class="fa fa-copy"></i>
+        </a>
+
+
+        
+
+
+         <a  class="drag-handle-list" style="margin-right:10px;color:#000"
           
-         
+          data-idx="${subsec.id}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+           data-belongs="${subsec.section}"
+
+          data-id="${"muu_" + muu_counter}"
                  
           >
 
-         <i class="fa fa-arrows "></i>
+         <i class="fa fa-arrows " data-idx="${subsec.id}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+           data-belongs="${subsec.section}"></i>
         </a>
 
 
@@ -1843,12 +3414,13 @@ export default class MasterForm extends React.Component {
 
          <a class="dropright dropright "  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                  
-                <i class="fa fa-ellipsis-v " style="color:#fff"></i>
+                <i class="fa fa-ellipsis-v " style="color:#000"></i>
              
         <ul class="dropdown-menu" style="margin-left:40px" >
 
   <li><a class="dropdown-item"   href="#myModalLesson" role="button" data-toggle="modal"
           data-id="${"muu_" + muu_counter}"
+          data-idx="${subsec.id}"
             onclick='addlessonSection(this);setTargetSubsectionItem("${muu_counter}") '      
           >Add</a></li>
 
@@ -1856,7 +3428,7 @@ export default class MasterForm extends React.Component {
 
                 <li><a class="dropdown-item"    href="#myModalSubSectionEdit" role="button" data-toggle="modal"
           data-id="${"muu_" + muu_counter}"
-           data-idx="${muu_counter}"
+           data-idx="${subsec.id}"
           data-name="${subsec?.name}"
           data-pos="${subsec?.position_id}"
           data-description="${subsec?.description}"
@@ -1874,18 +3446,22 @@ export default class MasterForm extends React.Component {
 
                 <li><a class="dropdown-item" 
                  data-id="${"muu_" + muu_counter}"
-                  data-idx="${muu_counter}"
+                 data-idx="${subsec.id}"
           data-name="${subsec?.name}"
           data-pos="${subsec?.position_id}"
           data-description="${subsec?.description}"
            data-parent-id="${subsec?.section}"
+            data-belongs="${subsec.section}"
           data-modal="myModalSubSectionEdit"
                 onclick="replicateSubSection(this);localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"
 
-                >Replicate Section</a></li>
+                >Copy</a></li>
                 
            </ul>
          </a>
+         <br/>
+     <span style="font-size:12px;color:#000">Subsections (${subsec.position_id}) contains (${subsec.sub_section_lessons.length}) Lessons </span>
+         
                 </span>
       </li>
 
@@ -1894,9 +3470,10 @@ export default class MasterForm extends React.Component {
 `;
                 $("#"+ subsec.section).append(templateSub);
 
-                enableDragSortPositionUpdater("js-root-parent","subsections")
+                enableDragSortPositionUpdater("sections","hello-move-me")
               }
               let respLessons = subsec.sub_section_lessons
+              respLessons = this.sorted_by_position_id(respLessons)
               
                respLessons.forEach( (lessons) =>{
                    if(!document.getElementById(lessons.id)){
@@ -1908,11 +3485,19 @@ export default class MasterForm extends React.Component {
   let panel_class =  $(".muu_" + localStorage.getItem("s_tracker"));  // $("." + localStorage.getItem("lesson_component")) //  $(".muu_" + localStorage.getItem("s_tracker"));
  
 // onDragStart="dragStart(event)" onDragEnd="dragEnd( event )"
-  let rndId = "dynamic_subsection_" + muu_counter + "_lesson_component"
+  let rndId = "dynamic_subsection_" + lessons.id + "_lesson_component"
   let templateLesson = ` 
       <ul id="${rndId}"  data-id="${
-    "muu_" + muu_counter
-  }" class="reaper-${muu_counter} lessons hello-move-me fold root-lesson-ul draggable dynamo_${localStorage.getItem("l_tracker")} card-box ${
+    "muu_" + muu_counter}"
+    
+          data-idx="${muu_counter}"
+          data-name="${lessons?.name}"
+          data-pos="${lessons?.position_id}"
+          data-description="${lessons?.description}"
+           data-parent-id="${lessons.subsection}"
+        
+          data-description="${lessons?.description}"
+     class="reaper-${muu_counter} lessons hello-move-me accordion-content fold root-lesson-ul view opened draggable dynamo_${localStorage.getItem("l_tracker")}  ${
     "muu_" + muu_counter
   } col-md-8   section-parent_${localStorage.getItem(
     "tracker"
@@ -1923,19 +3508,15 @@ export default class MasterForm extends React.Component {
   
    >
 
-  
-   
-      <div class="console" style="display:none">
-    <h4>CONSOLE:</h4>
-  </div>
         <li class="fold-content">
   
-    <h4 style="background:rgba(8,23,200); margin-right:10px;padding:10px">
-               <span class="title_sub export_title" data-th="Company name" style="font-size:20px;color:#fff">${
+    <h4 style="background:rgba(8,20,200); margin-right:10px;padding:10px">
+  <span class="content-entry"><i class="fa fa-chevron-down " style="color:#fff"></i></span>
+               <span id="title_sub_${lessons.id}" class="title_sub title-given export_title" data-th="Company name" style="font-size:20px;color:#fff">${
                  lessons.name || "Lesson" }
                </span>
                 <span class="subsect" data-th="Customer no"></span>
-                <span class="action" data-th="Customer nam"  style="float:right">
+                <span class="action card-box" style="float:right;background:rgba(8,23,200);padding:10px;margin-top:-50px;border-20px solid #ccc" data-th="Customer nam"  >
 
 
 
@@ -1983,15 +3564,26 @@ export default class MasterForm extends React.Component {
         </a>
 
 
-         <a class="drag-handle-list-lessons" style="margin-right:10px;color:#fff"
+         <a
+          data-name="${lessons?.name}"
+        
+          data-description="${lessons?.description}" 
+
+         class="drag-handle-list-lessons" style="margin-right:10px;color:#fff"
           data-id="${"lmuu_" + muu_counter}"
+          data-idx="${muu_counter}"
           data-template="dynamic_subsection_${muu_counter}_lesson_component "
            
            onclick='setTargetLessonItem("${muu_counter}")'
                  
           >
 
-         <i class="fa fa-arrows "></i>
+         <i class="fa fa-arrows "
+            data-name="${lessons?.name}"
+        
+          data-description="${lessons?.description}"
+
+         ></i>
         </a>
          <a class="dropright dropright "  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-ellipsis-v " style="color:#fff"></i>
@@ -2021,10 +3613,11 @@ export default class MasterForm extends React.Component {
                  data-id="${"lmuu_" + muu_counter}"
                 onclick='setTargetLessonComponent("${muu_counter}")'
 
-                >Replicate Section</a></li>
+                >Copy</a></li>
                 
            </ul>
-         </a>
+         </a><br/>
+     <span style="font-size:12px;color:#fff">Lesson ${lessons.position_id} contains (${lessons.lesson_components.length}) modules </span>
          
 
 
@@ -2036,53 +3629,208 @@ export default class MasterForm extends React.Component {
 
                     $("#dynamic_subsection_"+ lessons.sub_section).append(templateLesson);
                   
-                    // enableDragSortPositionUpdater("js-root-parent","lessons")          
+                    enableDragSortPositionUpdater("subsections","hello-move-me")          
       
                   }
 
                    let courseComponents = lessons.lesson_components
                    console.log(courseComponents)
 
+
                   courseComponents.forEach(component => {
-                      let launchPad ="#myModalMarkdownEditorEditMode"
+                    //console.log(component)
+                     let playVideoEnabled = " ";
+                      let launchPad ="#myModalMarkdownEditor"
+                      let form = ""
+                      let actionBuilder = `/html-component/${component.id}/`
+                      let Info = "IFRAME/VIDEO EDITABLE COMPONENT"
+                      let readmoreInitialized = "none";
+                      let enableLink ="none"
                       if(component.component_type ==1){
                         launchPad ="#myModalGenericFormEditorEditMode"
-                      }else {
-                        launchPad ="#myModalMarkdownEditorEditMode"
+                        form = "myModalGenericForm-SELECT"
+                        actionBuilder = `/video-component/${component.id}/`
+                      }else if(component.component_type ==2) {
+                        launchPad ="#myModalMarkdownEditor"
+                        Info = "HTML TEXT EDITABLE COMPONENT"
+                        form="myModalMarkdownEditor-SELECT"
+                        actionBuilder = `/html-component/${component.id}/`
+                      }else if(component.component_type ==3){
+                        launchPad ="#openModal-about"
+                        Info = "HTML PROBLEM COMPONENT"
+                        form = "myModalProblemForm-SELECT"
+                        actionBuilder = `/problem-component/${component.id}/`
+                      }else if(component.component_type ==4){
+                        //not implemented the ui for this
+                        launchPad ="#openModal-about2"
+                        Info = "HTML DISCUSSION COMPONENT"
+                        form = "myModalDiscussionForm-SELECT"
+                        actionBuilder = `/discussion-component/${component.id}/`
                       }
 
-                      if(!document.getElementById(component.id)){
-                        let  tempComponent = `<div class="pb-widget-preview-panel" id="${component.id}">
-            
-            
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-10">
-                    <div class="panel-xx panel-dark">
-                    
-              <div class="panel-heading-xx">
-                <span
-                  class="panel-title unit_title_place_holder"
-                  style={{ float: "left",  marginLeft: "10px" }}
-                >${component.name}
-                  
-                </span>
-                <div class="actions-set">
-                  <span><a href="${launchPad}"
-              role="button"
-              data-toggle="modal"><i
-               onclick="LaunchEditBoxEvent(this)"
+                      if(component.embedded_url){
+                        playVideoEnabled = `<a role="button"
+              data-toggle="modal" href="#modalFullScreenPreviewIframeAndVideos" data-videolink="${component.embedded_url}" onclick="videoModalPreview(this)" style="cursor:pointer;padding:10px;border-radius:50%;color:#000"><i  class="fa fa-video-camera fa-2x"></i></a>`
+                        enableLink ="block"
+                      }
+                     
+                      if(component?.html_text){
+                        readmoreInitialized ="block"
+                      }
 
-               class="pb-handle-widget fa fa-edit "></i></a></span>
-                               
-                  <span><i class="pb-remove fa fa-trash " onclick="handleWidgetRemove(this)"></i></span>
-                </div>
-              </div>
+                      //if component is  problem or discussion
+
+                      if(!document.getElementById(component.id)){
+                        let  tempComponent = `<ul data-id="${component.id}"
+          data-name="${component?.name}"
+               data-idx="${component.id}"
+          data-parent="${component.lesson_id}"
+          data-pos="${component.position_id}"
+          data-description="${component.description}"
+          data-component_type="${component.component_type}"
+          data-name="${component.name}"
+          data-content_type="${component.content_type}"
+          data-form="${form}"
+          data-action-figure="${actionBuilder}"
+          
+          data-embedded_url="${component.embedded_url}"
+          data-embedded_url="${component.video_type}" 
+          class="hello-move-me components accordion-content pb-widget-preview-panel" id="${component.id}">
             
-                      <div class="panel-body-xx ">
-                        
+            
+              <div class="">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="">
+                    
+              <div class="">
+                <div class=" col-md-12">
+                   
+
+
+                <div class="actions-set pull-right" >
+               
+
+                  <span ><a href="${launchPad}"
+                  data-name="${component?.name}"
+               data-idx="${component.id}"
+          data-parent="${component.lesson_id}"
+          data-pos="${component.position_id}"
+          data-description="${component.description}"
+          data-component_type="${component.component_type}"
+          data-name="${component.name}"
+          data-content_type="${component.content_type}"
+          data-embedded_url="${component.embedded_url}"
+          data-embedded_url="${component.video_type}"
+          data-form="${form}"
+          data-action-figure="${actionBuilder}"
+
+              role="button"
+              data-toggle="modal">
+              <i onclick="LaunchEditBoxEvent(this)"
+               class="pb-handle-widget fa fa-edit fa-2x"
+
+                data-name="${component?.name}"
+               data-idx="${component.id}"
+          data-parent="${component.lesson_id}"
+          data-pos="${component.position_id}"
+          data-description="${component.description}"
+          data-component_type="${component.component_type}"
+          data-name="${component.name}"
+          data-content_type="${component.content_type}"
+          data-embedded_url="${component.embedded_url}"
+          data-embedded_url="${component.video_type}"
+          data-form="${form}"
+          data-action-figure="${actionBuilder}"
+
+
+               ></i>
+               </a></span>
+                               
+                  <span><i 
+
+                  data-name="${component?.name}"
+               data-idx="${component.id}"
+          data-parent="${component.lesson_id}"
+          data-pos="${component.position_id}"
+          data-description="${component.description}"
+          data-component_type="${component.component_type}"
+          data-name="${component.name}"
+          data-content_type="${component.content_type}"
+          data-embedded_url="${component.embedded_url}"
+          data-embedded_url="${component.video_type}"
+          data-form="${form}"
+          data-action-figure="${actionBuilder}"
+
+
+                  class="pb-remove fa fa-trash fa-2x" onclick="handleWidgetRemove(this)"></i></span>
+                
+                   <span><a
+          data-name="${component?.name}"
+        
+          data-description="${component?.description}" 
+
+         class="drag-handle-list-lessons" style="margin-right:10px;"
+         
+               data-idx="${component.id}"
+          data-parent="${component.lesson_id}"
+          data-pos="${component.position_id}"
+          data-description="${component.description}"
+          data-component_type="${component.component_type}"
+          data-name="${component.name}"
+          data-content_type="${component.content_type}"
+          data-embedded_url="${component.embedded_url}"
+          data-embedded_url="${component.video_type}"
+          data-form="${form}"
+          data-action-figure="${actionBuilder}"
+           
+         
+                 
+          >
+
+         <i class="fa fa-arrows fa-2x"
+            data-name="${component?.name}"
+               data-idx="${component.id}"
+          data-parent="${component.lesson_id}"
+          data-pos="${component.position_id}"
+          data-description="${component.description}"
+          data-component_type="${component.component_type}"
+          data-name="${component.name}"
+          data-content_type="${component.content_type}"
+          data-embedded_url="${component.embedded_url}"
+          data-embedded_url="${component.video_type}"
+          data-form="${form}"
+          data-action-figure="${actionBuilder}"
+
+          
+        
+
+         ></i>
+        </a></span>
+                </div>
+                </div>
+                
+              </div>
+              <br/> <br/><br/><br/>
+            
+                      <div class="col-md-12">
+                      <h4
+                  class="col-md-12"
+                  
+                > <span class="compo-type" style="font-size:25px">Component Type: ${Info}</span><br/><span style="font-size:25px;">Title</span><span style="font-size:25px;font-weight:bold;color:#000" class=" unit_title_place_holder  title-given "> ${component.name}
+                  </span>
+                 </h4><br/>
+
+
+                      <div id="readmore_${component.id}" style="display:${readmoreInitialized}"  class="readmore js-read-more" data-rm-words="70">
+                          ${component?.html_text }
+                      </div>
+
+                                              
                         <div class="content-section-from-input unit_content_place_holder">
-                          Edit this section
+                           <p style={{display:${enableLink} }} id="embedded_url_${component.id}">${component?.embedded_url}</p>
+                           
+                          <p>${playVideoEnabled} ${    "Click the edit icon above to edit this unit" }</p>
                         </div>
 
                       </div>
@@ -2091,11 +3839,12 @@ export default class MasterForm extends React.Component {
                 </div>
               </div>
           
-          </div>
+          </ul>
 `
                        
        $("#dynamic_subsection_"+ component.lesson_id +"_lesson_component")
         .append( $(tempComponent));
+        enableDragSortPositionUpdater("lessons", "hello-move-me")
                      
 
                       }
@@ -2107,10 +3856,16 @@ export default class MasterForm extends React.Component {
 
             //console.log(TreeObj.tree)
             //console.log(TreeObj.tree.root)
-       }     
+       }  
+
+
+
+       //allow collapsible effect on each section , subsections , lessons
+
     })
 
-   
+   initAccordion() 
+   ReadMore.init()
 
 
 
@@ -2162,13 +3917,13 @@ export default class MasterForm extends React.Component {
   }
 
 
-  saveOrUpdateData =  ( type, mode="EDIT_MODE", url, data) => {
+  saveOrUpdateData =  ( type, mode="EDIT_MODE", url, data, state={}) => {
     //after api call to update or create
     switch(mode){
       
       case "EDIT_MODE": // called subsequently
         //call the update handler to api
-        let updateCourseRes = createAnyResource("PATCH",url, data)
+        let updateCourseRes = createAnyResource("PATCH",url, data,state)
         break;
       default:
         throw new Error(`Wrongly accessed mode:- ${mode}`)
@@ -2178,6 +3933,7 @@ export default class MasterForm extends React.Component {
     //inform user
       var button = document.querySelector('.save-generic');
       var slideout = document.getElementById('notifier');
+      slideout.style.zIndex="9999999999999999";
       let successSlide = slideout.querySelector(".success-notification")
       let errorSlide = slideout.querySelector(".error-notification")
       if(type =="error"){
@@ -2212,11 +3968,50 @@ export default class MasterForm extends React.Component {
   
    /*implements save and continue logic*/
   saveAndContinue = (e) =>{
-     const {currentCourseId } = this.state;
+     const {id } =  this.props.match.params;
      let curr = this.state.currentStep;
      /*Our default url  assumes an update method because much work would be left incomplete during course creation*/
-     let url=  `/lms/api/update/course/${currentCourseId}/`  //
+     let url=  `/lms/api/update/course/${id}/`  //
      let step = parseInt(curr)
+    let stateData = {...this.state};
+    
+    stateData = {
+      
+        name: localStorage.getItem("name") || "",
+        code:  localStorage.getItem("code") || "",
+        run: localStorage.getItem("run") || "",
+        //card_image:  localStorage.getItem("card_image")|| "",
+        intro_video: localStorage.getItem("intro_video") || "",
+        description: localStorage.getItem("description") || "",
+        overview: localStorage.getItem("overview") || "",
+        learning_expectation: localStorage.getItem("learning_expectation") || "",
+        curriculum: localStorage.getItem("curriculum") || "",
+        level: localStorage.getItem("level") || 1,  //int
+        enrolment_type: localStorage.getItem("enrolment_type") || 1,
+        entrance_exam_required: localStorage.getItem("entrance_exam_required") || false, 
+        cost: localStorage.getItem("cost") || 0.00,  //float
+        //auditing: true,
+        course_pacing: localStorage.getItem("course_pacing") || 1, //int
+        course_start_date_time: localStorage.getItem("course_start_date_time") || "2021-08-26T17:13:00+01:00",  //2021-08-26T17:13:00+01:00
+        course_end_date_time: localStorage.getItem("course_end_date_time") || "2021-08-26T17:13:00+01:00",
+        enrolment_start_date_time: localStorage.getItem("enrolment_start_date_time") || "2021-08-26T17:13:00+01:00",
+        enrolment_end_date_time: localStorage.getItem("enrolment_end_date_time") || "2021-08-26T17:13:00+01:00",
+        course_language: localStorage.getItem("course_language") || 1,
+        requirement_hours_per_week: localStorage.getItem("requirement_hours_per_week") || 1, //int
+        requirement_no_of_week: localStorage.getItem("requirement_no_of_week") || 1,  //int
+        grace_period_after_deadline: localStorage.getItem("grace_period_after_deadline") || 1, //int
+         publication_status: localStorage.getItem("publication_status") || 2,  //int
+        institution: localStorage.getItem("institution") || "",    //keypair preporpulated set of inst id
+        author:  localStorage.getItem("author") || "" ,  //keypair preporpulated set of author id
+    //for the authoring team you can uselocalstorage but i dont want to do that
+    //make it more complex to be deciphered
+    authoring_team :  JSON.parse(localStorage.getItem("authoring_team")) || []
+    
+    
+    //inthe  create course or update on the fly append the jackpacks of all entered or searched authors
+    }
+    
+    
     // alert(step)
     //switch on the step action
     switch(step){
@@ -2226,14 +4021,17 @@ export default class MasterForm extends React.Component {
        case 4:
        case 5:
        case 6:
-           //url will be an update method if the resource exists
-          this.saveOrUpdateData("edit",'EDIT_MODE', url, $("form#stepUpFormWithAI2") )
-          break;
+     
+    //thn post the form for update 
+         this.saveOrUpdateData("edit",'EDIT_MODE', url, $("form#stepUpFormWithAI2"),stateData )
+       
+     break;
        case 7:
         // URL WILL CHANGE TO SECTIONS/ SUBSECTIONS AND LESSONS based onaddition and positioning
         // update all fields here
          // url ="/lms/api/create/section/"
-         this.saveOrUpdateData("edit", 'EDIT_MODE',url, $("form#stepUpFormWithAI2") )
+    
+         this.saveOrUpdateData("edit", 'EDIT_MODE',url, $("form#stepUpFormWithAI2"), stateData )
          break;
        default :
           break;
@@ -2248,26 +4046,120 @@ export default class MasterForm extends React.Component {
     return (
       <Fragment>
         <AddHead />
+    
+    
+    
+    <div class="wrapper-loop">
 
-        <div className="row" id="container-fullscreen" style={{margin:"10px"}}>
-          <div className="col-md-12">
-            <div className="card">
-              <div className="card-body" >
-                <div id="make-fixed-on-fullscreen" >
-                  <h4 className="header-title mb-3" >
-                    Course adding form{" "}
+    <input className="menu-xtrigger" type="checkbox" id="navigation" />
+                    <label for="navigation">
+                      Actions
+                     </label>
 
-                    <a
-                      style={{ marginRight: "3px", color:"#fff"}}
-                      href={process.env.PUBLIC_URL+ "/learning/workbench/"+ this.props.match.params.id}
+    <nav className="action-figure">
+    
+        <ul>
+    <h6  style={{ marginRight: "10px", color:"#fff",background:"rgba(8,23,200)", padding:"20px" }}> Questence</h6><hr/><br/>
+    <li>
+            <a
+                      style={{ marginRight: "3px"}}
+                      href={process.env.PUBLIC_URL+ "/authoring/preview/"+ this.props.match.params.id}
                       
                   
-                      className="alignToTitle btn btn-success btn-outline-secondary btn-rounded btn-sm"
+                      className=""
                     >
                       {" "}
                       <i className=" mdi mdi-keyboard-backspace"></i> Preview 
                     </a>
+          </li>
+          <li>
 
+                    <a
+                      style={{ marginRight: "3px"}}
+                      href={"#"}
+                      onClick={(e) => {
+                      e.preventDefault();
+                      this.saveAndContinue(e)
+                    }}
+                      className=""
+                    >
+                      {" "}
+                      <i className=" mdi mdi-keyboard-backspace"></i> Save 
+                    </a>
+          </li>
+          <li>
+
+                    <a
+                      style={{ marginRight: "3px" }}
+                      href={process.env.PUBLIC_URL + "/authoring/create/new/"}
+                      className=""
+                      onClick={() =>{
+                        window.location.reload()
+                      }}
+                    >
+                      {" "}
+                      <i className=" mdi mdi-keyboard-backspace"></i> 
+                      Cancel
+                    </a>
+          </li>
+
+                     <li>
+                    <a
+                      style={{ marginRight: "10px" }}
+                    onClick={() =>{
+                        window.location.reload()
+                      }}
+                      href={"#"}
+                      className=""
+                    >
+                      {" "}
+                      <i className=" mdi mdi-keyboard-backspace"></i> 
+                      Clear
+                    </a>
+          </li>
+          
+          <li>
+
+                      <a
+                      style={{}}
+                      href={process.env.PUBLIC_URL + "/authoring/course/history"}
+                      className=""
+                    >
+                      <i className=" mdi mdi-keyboard-backspace"></i> Courses
+                      List
+                    </a>
+          </li>
+          
+          <li>
+                    <a
+                      style={{ marginRight: "3px" }}
+                      href="#no-grid"
+                      onClick={this.togglerFullscreen}
+                      id="toggle_fullscreen"
+                      className=""
+                    >
+                      <i className=" mdi mdi-keyboard-backspace"></i> 
+                      Fullscreen
+                    </a>
+                    </li>
+          
+          <li class="questence-slide-show"></li>{/*display any overview video here*/}
+        </ul>
+    
+    
+    </nav>
+
+        <section>
+            <article>
+                
+         
+
+        <div id="none-display" style={{opacity:"0"}} className="row" id="container-fullscreen" style={{margin:"10px"}}>
+          <div className="col-md-12">
+            <div className="card">
+              <div className="card-body" >
+                <div id="make-fixed-on-fullscreen" >
+                  <h4>
                     <a
                       style={{ marginRight: "3px", color:"#fff" }}
                       href={"#"}
@@ -2278,11 +4170,11 @@ export default class MasterForm extends React.Component {
                       className="alignToTitle btn btn-success btn-outline-secondary btn-rounded btn-sm"
                     >
                       {" "}
-                      <i className=" mdi mdi-keyboard-backspace"></i> Save 
+                      <i className=" mdi mdi-keyboard-backspace"></i> Save
                     </a>
 
                     <a
-                      style={{ marginRight: "3px" ,color:"#fff", background:"rgba(8,23,200)"}}
+                      style={{ marginRight: "3px" ,color:"#fff"}}
                       href={process.env.PUBLIC_URL + "/authoring/create/new/"}
                       className="alignToTitle btn btn-danger btn-outline-secondary btn-rounded btn-sm"
                       onClick={() =>{
@@ -2307,14 +4199,7 @@ export default class MasterForm extends React.Component {
                       Clear
                     </a>
 
-                      <a
-                      style={{}}
-                      href={process.env.PUBLIC_URL + "/authoring/course/history"}
-                      className="alignToTitle btn btn-outline-secondary btn-rounded btn-sm"
-                    >
-                      <i className=" mdi mdi-keyboard-backspace"></i> Courses
-                      List
-                    </a>
+                    
                     <a
                       style={{ marginRight: "3px" }}
                       href="#no-grid"
@@ -2326,9 +4211,10 @@ export default class MasterForm extends React.Component {
                       Fullscreen
                     </a>
                     
-                 
                   </h4>
                   <br />
+          
+          
 
                   <div className="col-md-12">
                     <ul
@@ -2344,12 +4230,7 @@ export default class MasterForm extends React.Component {
                              //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
 
-                          setTimeout(()=> {
-                            let T = new  TinyMyceRender();
-                          T.render("")
-
-                          },3000)
-                          
+                                                   
                         }}
                         
                         href="#basic"
@@ -2370,11 +4251,6 @@ export default class MasterForm extends React.Component {
                              //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
 
-                          setTimeout(()=> {
-                            let T = new  TinyMyceRender();
-                          T.render("")
-
-                          },3000)
                           
                         }}
                         
@@ -2409,11 +4285,7 @@ export default class MasterForm extends React.Component {
                           //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
 
-                           setTimeout(()=> {
-                            let T = new  TinyMyceRender();
-                          T.render("")
-
-                          },3000)
+                           
                         }}
                         href="#requirements"
                         data-toggle="tab"
@@ -2423,17 +4295,15 @@ export default class MasterForm extends React.Component {
                         <span className="d-none d-sm-inline">Grading</span>
                       </a>
 
-                     {/* <a
-                        onClick={(e) => {
-                          this.goToStep(e, 4);
-                          // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                          //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+                      <a
+                        onClick={async (e) => {
+                            this.goToStep(e, 4);
+                            await  this.fetchContent()
+                             // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                             //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
-                          //  setTimeout(()=> {
-                          //   let T = new  TinyMyceRender();
-                          // T.render("")
 
-                          // },3000)
+                                                   
                         }}
                         href="#seo"
                         data-toggle="tab"
@@ -2441,22 +4311,20 @@ export default class MasterForm extends React.Component {
                       >
                         <i className="fa fa-tag mr-1"></i>
                         <span className="d-none d-sm-inline">
-                          Learners Group
+                           Group Config
                         </span>
                       </a>
-                      */}
+                      
 
                       <a
-                        onClick={(e) => {
-                          this.goToStep(e, 5);
-                          // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                          //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+                        onClick={async (e) => {
+                            this.goToStep(e, 5);
+                           
+                             // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                             //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
-                           setTimeout(()=> {
-                            let T = new  TinyMyceRender();
-                          T.render("")
 
-                          },3000)
+                                                   
                         }}
                         href="#pricing"
                         data-toggle="tab"
@@ -2469,16 +4337,14 @@ export default class MasterForm extends React.Component {
                       </a>
 
                       <a
-                        onClick={(e) => {
-                          this.goToStep(e, 8);
-                          // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                          //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+                       onClick={async (e) => {
+                            this.goToStep(e, 8);
+                            await  this.fetchContent()
+                             // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                             //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
-                           setTimeout(()=> {
-                            let T = new  TinyMyceRender();
-                          T.render("")
 
-                          },3000)
+                                                   
                         }}
                         href="#resource"
                         data-toggle="tab"
@@ -2491,7 +4357,8 @@ export default class MasterForm extends React.Component {
                       <a
                         onClick={ async(e) => {
                           this.goToStep(e, 6);
-
+                          await  this.fetchContent()
+                                 
                           // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
                           //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
 
@@ -2510,14 +4377,10 @@ export default class MasterForm extends React.Component {
                       <a
                         onClick={(e) => {
                           this.goToStep(e, 7);
-                          // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                          //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+                          
+                           
 
-                           setTimeout(()=> {
-                            let T = new  TinyMyceRender();
-                          T.render("")
-
-                          },3000)
+                         
                         }}
                         href="#finish"
                         data-toggle="tab"
@@ -2535,8 +4398,7 @@ export default class MasterForm extends React.Component {
                 <div className="row">
                   <div className="col-md-12">
                     <form
-                      id="stepUpFormWithAI2"
-                      className="required-form"
+                      
                       action="#" 
                       method="PATCH" 
                        novalidate
@@ -2550,6 +4412,7 @@ export default class MasterForm extends React.Component {
                         finishedClicked={this.state.finishedClicked}
                         handleChange={this.handleInputChange}
                         stateInitial={this.state}
+            autoUpdateFilledData={this.autoUpdateFilledData}
                         
                         
                         actions={
@@ -2699,13 +4562,13 @@ export default class MasterForm extends React.Component {
 
 
 
-                     <div class="notifier" id="notifier">
+                     <div class="notifier" id="notifier" style={{display:"none"}}>
                           <div class="success-notification">
                              {/*success message*/}
 
                           </div>
 
-                          <div class="error-notification">
+                          <div class="error-notification" >
                               {/*error message*/}
                               Could not perform operation
                           </div>
@@ -2727,8 +4590,351 @@ export default class MasterForm extends React.Component {
             </div>
           </div>
         </div>
+    
+    
+    
+        <button  id="myBtn" title="Go to top"><i class="fa fa-arrow-up"></i></button>
+       </article>
+        </section>
+    </div>
 
-        {/*<EditorBox />*/}
+
+
+
+{/*Place All required workbench modals here*/}
+
+{/*Always make component for problems avaialable on code run*/}
+    
+    {/*this is the work bench for problem component question and answer authoring builder*/}
+
+      <div  style={{ marginTop: "20px" }}
+          class="modal fade"
+          id="openModal-about"
+          tabindex="-1"
+          role="dialog"
+          aria-hidden="true">
+      <div>
+      <div class="modal-header">
+        <h3>Problem Component Section</h3>
+      </div>
+         <a href="#close" title="Close" class="close">X</a>
+         
+        <div class="parallax-view-reset col-md-12">
+  <input type="checkbox" id="menu-toggle" class="hidden" />
+  <label for="menu-toggle" class="woosh">
+  Toggle Hint 
+  </label>
+
+  <div id="style-5" class="menu-section-reset scrollbar col-md-3">
+   <div class="divBlockHint">
+    <h2 class="hint-region fixed-set">Hints</h2>
+    <p class="hint-region white-board">
+    <b>To add markdown types of various problem 
+    components use the syntax below. </b><br/><br/>
+    <b><span>*** """ Ensure to place enclose your 
+    markdown code in 
+    tripple double quotes """ ***</span></b>
+
+    <br/><br/><b><span>*** """ All new markdown code 
+    should preceed with a new line """ ***</span></b>
+
+    <br/><br/><b><span>*** """ You can switch between preview
+     and edit mode by clicking the preview or edit button """ ***</span></b>
+    </p>
+    
+      <h4 class="hint-region">Markdown Codes Below</h4>
+      <div class="hint-region">
+        <h5 class="active">Multiple choices</h5>
+        <span>Sample
+          <code>
+            <br/>
+<span>""" Example Question here: who was made king of your country -sample question? </span><br/>
+<span>[x] option 1 and 2 are correct</span><br/>
+<span>[x]  option 1 and 2 are correct</span><br/>
+<span>[]  Victor Victor Juwa</span><br/>
+<span>[]  No one else but me """</span><br/>
+               </code>
+        <br/>
+</span>
+
+
+      </div>
+
+
+      <div class="hint-region">
+        <h5 class="active">Checkboxes choice</h5>
+         <span>Sample
+          <code>
+            <br/>
+<span>""" Example Question here: who was made king of your country -sample question? </span><br/>
+<span>[o] option 1  correct</span><br/>
+<span>[]  A wrong answer</span><br/>
+<span>[]  Victor Victor Juwa</span><br/>
+<span>[]  No one else but me """</span><br/>
+               </code>
+        <br/>
+</span>
+
+
+
+      </div>
+
+
+
+
+
+
+
+
+      <div class="hint-region">
+        <h5 class="active">Text Input Box</h5>
+         <span>Sample
+          <code>
+            <br/>
+<span>""" Example Question here : 2+ 2? \n question? </span><br/>
+<span>[i] Your Answer\n """</span><br/>
+
+               </code>
+        <br/>
+</span>
+
+
+
+      </div>
+
+
+
+
+
+      <div class="hint-region">
+        <h5 class="active">Numeric Input (Digits Only)</h5>
+         <span>Sample
+          <code>
+            <br/>
+            <span>""" Example Question here : 2+ 2? \n question? </span><br/>
+<span>[n] Your Answer\n """</span><br/>
+
+
+               </code>
+        <br/>
+</span>
+
+
+
+      </div>
+
+
+
+
+      <div class="hint-region">
+        <h5 class="active">Dropdown Option </h5>
+         <span>Sample
+          <code>
+            <br/>
+<span>""" Example Question here: who was made king of your country -sample question? </span><br/>
+<span>[d][x] option 1  correct</span><br/>
+<span>[d]  A wrong answer</span><br/>
+<span>[d]  Victor Victor Juwa</span><br/>
+<span>[d]  No one else but me """</span><br/>
+               </code>
+        <br/>
+</span>
+
+
+
+      </div>
+
+
+
+
+      <div class="hint-region">
+        <h5 class="active">Checkbox choice with hint and feedback</h5>
+         <span>Sample
+          <code>
+            <br/>
+<span>""" Example Question here: who was made king of your country -sample question? </span><br/>
+<span>[o] option 1  correct</span><br/>
+<span>[]  A wrong answer</span><br/>
+<span>[]  Victor Victor Juwa</span><br/>
+<span>[]  No one else but me """</span><br/>
+               </code>
+        <br/>
+</span>
+
+
+      </div>
+
+
+
+      <div class="hint-region">
+        <h5 class="active">Multichoice choice with hint and feedback</h5>
+         <span>Sample
+          <code>
+            <br/>
+<span>""" Example Question here: who was made king of your country -sample question? </span><br/>
+<span>[x] option 1  correct</span><br/>
+<span>[]  A wrong answer</span><br/>
+<span>[]  Victor Victor Juwa</span><br/>
+<span>[]  No one else but me """</span><br/>
+               </code>
+        <br/>
+</span>
+
+
+
+      </div>
+      
+
+
+
+      <div class="hint-region">
+        <h5 class="active">Text Input  with hint and feedback</h5>
+         <span>Sample
+          <code>
+            <br/>
+<span>""" Example Question here: who was made king of your country -sample question? </span><br/>
+<span>[i] Your Answer</span><br/>
+
+               </code>
+        <br/>
+</span>
+
+
+
+      </div>
+
+
+
+            <div class="hint-region">
+        <h5 class="active">Numeric Input  with hint and feedback</h5>
+         <span>Sample
+          <code>
+            <br/>
+<span>""" Example Question here: who was made king of your country -sample question? </span><br/>
+<span>[i] Your Answer</span><br/>
+
+               </code>
+        <br/>
+</span>
+
+
+
+      </div>
+
+
+            <div class="hint-region">
+        <h5 class="active">Dropdown  with hint and feedback</h5>
+         <span>Sample
+          <code>
+            <br/>
+<span>""" Example Question here: who was made king of your country -sample question? </span><br/>
+<span>[i] Your Answer</span><br/>
+
+               </code>
+        <br/>
+</span>
+
+
+
+      </div>
+
+
+      </div>
+     
+  </div>
+  <div class="content-section-reset col-md-12">
+    <div class="container-section-reset">
+      <div class="row">
+        <div class="col-md-12">
+
+        
+          <div id="markdown-editordisplay">
+
+
+  <div class="toolbardisplay">
+    <div class="group">
+      <button id="heading1"><i class="fa fa-header" aria-hidden="true"></i>1</button>
+      <button id="heading2"><i class="fa fa-header" aria-hidden="true"></i>2</button>
+      <button id="heading3"><i class="fa fa-header" aria-hidden="true"></i>3</button>
+    </div>
+    <div class="group">
+      <button id="bold"><i class="fa fa-bold" aria-hidden="true"></i></button>
+      <button id="italic"><i class="fa fa-italic" aria-hidden="true"></i></button>
+    </div>
+    <div class="group">
+      <button id="link"><i class="fa fa-link" aria-hidden="true"></i></button>
+      <button id="list-ul"><i class="fa fa-list-ul" aria-hidden="true"></i></button>
+      <button id="list-ol"><i class="fa fa-list-ol" aria-hidden="true"></i></button>
+      <button id="token" style={{display:"none"}}></button>
+      
+      <div class="select-dropdown">
+        <select id="sub-selection">
+          <option >--  Click here to select a question type   ---</option>
+          <option data-markdown="[pb_html]/[pb_multichoice]" value="1">Multi Choice</option>
+          <option data-markdown="[pb_html]/[pb_checkbox]" value="2">Checkboxes</option>
+          <option data-markdown="[pb_html]/[pb_numeric]" value="3">Numerical Inputs</option>
+            <option data-markdown="[pb_html]/[pb_input]" value="4">Text Inputs</option>
+            <option data-markdown="[pb_html]/[pb_dropdown]" value="5">Dropdown</option>
+          
+
+             <option data-markdown="[pb_html]/[pb_multichoice_feedback]" value="7">Multi Choice + Hints And Feedback</option>
+          <option data-markdown="[pb_html]/[pb_checkbox_feedback]" value="8">Checkboxes + Hints And Feedback</option>
+          <option data-markdown="[pb_html]/[pb_numeric_feedback]" value="9">Numerical Inputs + Hints And Feedback</option>
+            <option data-markdown="[pb_html]/[pb_input_feedback]" value="10">Text Inputs + Hints And Feedback</option>
+            <option data-markdown="[pb_html]/[pb_dropdown_feedback]" value="11">Dropdown + Hints And Feedback</option>
+          
+        </select>
+      </div>
+    </div>
+    <button id="previewdisplay">Preview</button>
+  </div>
+  <div id="input-outputdisplay">
+    <textarea id="input-areadisplay" rows="30" cols="50"></textarea>
+    <div id="output-areadisplay"></div>
+    <p class="preview-messagedisplay">Preview Mode</p>
+  </div>
+</div>
+
+        </div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+{/*action floating buttons*/}
+
+<div id="container-floating">
+  <div class="nd4 nds"><img class="reminder" />
+    <p class="letter" title="save">S</p>
+  </div>
+  
+  <div class="nd3 nds">
+  <img class="reminder" src="//ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/1x/ic_reminders_speeddial_white_24dp.png" />
+  </div>
+  
+  <div class="nd1 nds">
+    <p class="letter" title="cancel">X</p>
+  </div>
+
+  <div id="floating-button">
+    <p class="plus">+</p>
+    <img class="edit" src="https://ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/1x/bt_compose2_1x.png" />
+  </div>
+</div>
+
+
+
+       </div>
+   </div>
+
+   </div>
+
+
+{/*Always make component for problems avaialable on code run*/}
       </Fragment>
     );
   }
@@ -2741,15 +4947,15 @@ class Step1 extends React.Component {
 
     let sname,scode, sauthor,sinstitution;
     if(localStorage.getItem("name")){
-      sname= localStorage.getItem("name") || "";
-      scode = localStorage.getItem("course_code") || "";
-      sauthor = localStorage.getItem("author") || "" ;
-      sinstitution = localStorage.getItem("institution") || ""
+      sname= localStorage.getItem("name") ||  this.props.stateInitial.name || "";
+      scode = localStorage.getItem("course_code") ||  this.props.stateInitial.course_code || "";
+      sauthor = localStorage.getItem("author") || this.props.stateInitial.author || "" ;
+      sinstitution = localStorage.getItem("institution") || this.props.stateInitial.institution || ""
 
     }
     let sdescription, soverview, sprerequisite, slearning_expectation, scurriculum,
-    scourse_start_date_time, scourse_end_date_time, senrolment_end_date_time, 
-    senrolment_start_date_time;
+    scourse_start_date_time, scourse_end_date_time, senrolment_end_date_time, scourse_pacing, 
+    senrolment_start_date_time,srequirement_no_of_week, srequirement_hours_per_week;
     if(localStorage.getItem("overview")){
 
       soverview = localStorage.getItem("overview") || ""
@@ -2757,147 +4963,102 @@ class Step1 extends React.Component {
 
     if(localStorage.getItem("description")){
 
-      sdescription = localStorage.getItem("description") || ""
+      sdescription = localStorage.getItem("description") || this.props.stateInitial.description || ""
     }
     if(localStorage.getItem("prerequisite")){
-      sprerequisite = localStorage.getItem("prerequisite") || ""
+      sprerequisite = localStorage.getItem("prerequisite") ||  this.props.stateInitial.prerequisite || ""
     }
     if(localStorage.getItem("learning_expectation")){
-      slearning_expectation = localStorage.getItem("learning_expectation") || ""
+      slearning_expectation = localStorage.getItem("learning_expectation") ||  this.props.stateInitial.learning_expectation || ""
     }
     if(localStorage.getItem("curriculum")){
-      scurriculum = localStorage.getItem("curriculum") || ""
+      scurriculum = localStorage.getItem("curriculum") ||  this.props.stateInitial.curriculum || ""
     }
 
 
     if(localStorage.getItem("course_start_date_time")){
-      scourse_start_date_time = localStorage.getItem("course_start_date_time") || ""
+      scourse_start_date_time = localStorage.getItem("course_start_date_time") ||   this.props.stateInitial.course_start_date_time || ""
     }
 
     if(localStorage.getItem("course_end_date_time")){
-      scourse_end_date_time = localStorage.getItem("course_end_date_time") || ""
+      scourse_end_date_time = localStorage.getItem("course_end_date_time") || this.props.stateInitial.course_end_date_time || ""
     }
     if(localStorage.getItem("enrolment_start_date_time")){
-      senrolment_start_date_time = localStorage.getItem("enrolment_start_date_time") || ""
+      senrolment_start_date_time = localStorage.getItem("enrolment_start_date_time") || this.props.stateInitial.enrolment_start_date_time || ""
     }
 
     if(localStorage.getItem("enrolment_end_date_time")){
-      senrolment_end_date_time = localStorage.getItem("enrolment_end_date_time") || ""
+      senrolment_end_date_time = localStorage.getItem("enrolment_end_date_time") || this.props.stateInitial.enrolment_end_date_time || ""
+      
+  }
+  //here
+  
+  if(localStorage.getItem("requirement_hours_per_week")){
+      srequirement_hours_per_week = localStorage.getItem("requirement_hours_per_week") || this.props.stateInitial.requirement_hours_per_week || ""
+      
+  }
+  
+  if(localStorage.getItem("requirement_no_of_week")){
+      srequirement_no_of_week = localStorage.getItem("requirement_no_of_week") || this.props.stateInitial.requirement_no_of_week || ""
+      
+  }
+  
+  if(localStorage.getItem("course_pacing")){
+      scourse_pacing = localStorage.getItem("course_pacing") || this.props.stateInitial.course_pacing || ""
+      
+  }
+  
+  
+  
+  let prestate = {
+    enrolment_end_date_time:senrolment_end_date_time,
+    enrolment_start_date_time:senrolment_start_date_time,
+    course_end_date_time:scourse_end_date_time,
+    course_end_date_time:scourse_end_date_time,
+    curriculum:scurriculum,
+    learning_expectation:slearning_expectation,
+    prerequisite: sprerequisite,
+    overview:soverview,
+    name:sname,
+    code:scode,
+    institution:sinstitution,
+    author:sauthor,
+    description: sdescription,
+    requirement_hours_per_week: srequirement_hours_per_week,
+    requirement_no_of_week: srequirement_no_of_week,
+    course_pacing: scourse_pacing
+    
     }
-
-
-    this.state = {
-      /*multistep logic data*/
-      currentStep: 1,
-      sectionStep: 1,
-      subSectionStep: 1,
-      lessonStep: 1,
-      finishedClicked: false,
-      modes:["CREATE_MODE","EDIT_MODE"],
-      editor:null,  //THE LOGGED IN USERS DETAILS [{token,...details}]
-      author: "", // THE LOGGED IN USER NAME {...details}.username
-      previledges:["CAN_EDIT","CAN_VIEW","CAN_DELETE","CAN_CREATE"], 
-      name: sname,
-      code: scode,
-      institution: sinstitution,   //keypair preporpulated set of inst id
-      author: sauthor,  //keypair preporpulated set of author id
-
-      description: sdescription,
-      overview: soverview,
-      learning_expectation: slearning_expectation,
-      curriculum: scurriculum,
-      course_start_date_time: scourse_start_date_time,  //2021-08-26T17:13:00+01:00
-      course_end_date_time: scourse_end_date_time,
-      enrolment_start_date_time: senrolment_start_date_time,
-      enrolment_end_date_time: senrolment_end_date_time,
-     
-
-
-
-      
-      //state fields
-      /*request form data*/
-      
-        
-        run: "",
-        card_image: "",
-        intro_video: "",
-        level: 1,  //int
-        enrolment_type: 1,
-        entrance_exam_required: true, 
-        cost: 100.0,  //float
-        auditing: true,
-        course_pacing: 1, //int
-        
-        course_language: "1",
-        requirement_hours_per_week: 1, //int
-        requirement_no_of_week: 1,  //int
-        grace_period_after_deadline: 1, //int
-        publication_status: 2,  //int
-        
-        prerequisite: [
-              //key pairs ids of courses
-        ],
-        authoring_team: [
-                              //key pair authors
-            
-        ],
-
-        /* request resource data*/
-        languages:[], //  getdata
-        instructors:[], //  getdata
-        courses:[], //  getdata
-        institutions:[],  //  getdata
-        currentCourseId:"", //for tracking saved course currently working on
-        
-      formErrors: {
-        /*request form errors data*/
-
-        /*do not change this part: its used in ai logic*/
-        name: "",
-        code: "",
-        run: "",
-        card_image: "",
-        intro_video: "",
-        description: "",
-        overview: "",
-        learning_expectation: "",
-        curriculum: "",
-        level: "",  //int
-        enrolment_type: "",
-        entrance_exam_required: "", 
-        cost: "",  //float
-        auditing: "",
-        course_pacing: "", //int
-        course_start_date_time: "",  //2021-08-26T17:13:00+01:00
-        course_end_date_time: "",
-        enrolment_start_date_time: "",
-        enrolment_end_date_time: "",
-        course_language: "",
-        requirement_hours_per_week: "", 
-        requirement_no_of_week: "", 
-        grace_period_after_deadline: "", 
-        publication_status: "",  
-        institution: "",   
-        author: "", 
-        prerequisite: [],
-        authoring_team: [],
-
-        
-      },
-      formValidity: {
-        email: false,
-        username: false,
-        password: false,
-        passwordConfirmation: false,
-      },
-      canSubmit: false,
-    };
+  
+  console.log(prestate)
+  
 
     
-     
+  
+  this.state ={
+    ...prestate
+  }
+  
+  
+  //check if data is fetched from db then make changes to localstorage
+  let textEditors = ["learning_expectation","description", "prerequisite", "overview", "curriculum"]
+    for(var k in prestate){
+      
+    //check if k is a rich text editor content
+    if(textEditors.includes(k)){
+      //inject to text editor
+      var myEditor = $('div[data-placeholder="'+k+'"]') // the editor itself
+          //myEditor = myEditor.children[0];
+      let html = prestate[k] || "Place content to be edited with the text editor"
+      console.log(html)
+      myEditor.html(html)
+      
+    }
+    
+  }
 
-    this.dropRef = createRef()
+
+    
   }
 
 
@@ -2923,7 +5084,15 @@ class Step1 extends React.Component {
               <div className="col-md-12 card-box">
 
 
-
+ <form
+                      id="stepUpFormWithAI2"
+                      className="required-form"
+                      action="#" 
+                      method="PATCH" 
+                       novalidate
+                      // enctype="multipart/form-data"
+                      enctype="application/x-www-form-urlencoded"
+                    >
 
 
 
@@ -3187,7 +5356,7 @@ class Step1 extends React.Component {
 
                 <div className="form-group col-md-6 fl-left">
                   
-                  <div className="">
+                  <div className="code inputWithIcon inputIconBg">
                     <input
                       style={{ position: "relative", zIndex: "1" }}
                       type="text"
@@ -3197,12 +5366,12 @@ class Step1 extends React.Component {
                       placeholder="Enter course code"
                       value={this.props.code}
                      onChange={this.props.handleChange}
-                    />
+                    />  <i class="fa fa-edit " aria-hidden="true"></i>
                     <label
                     className="col-md-12 col-form-label"
                     for="course_title"
                   >
-                    Course Code <span className="required">*</span>{" "}
+                    Course Code <span className="required ">*</span>{" "}
                   </label>
                   </div>
                 </div>
@@ -3210,7 +5379,7 @@ class Step1 extends React.Component {
                {/*this will be the logged in instructor id hidden */}
                 <div className="form-group col-md-6 fl-left" >
                  
-                  <div className="">
+                  <div className="author inputWithIcon">
                     <input
                       style={{ position: "relative", zIndex: "1" , display:"none"}}
                       type="text"
@@ -3218,15 +5387,15 @@ class Step1 extends React.Component {
                       id="author"
                       name="author"
                       placeholder="Enter course code"
-                      value="097cd2bb-ae72-48e4-9a4d-1ebd2c05be03"
+                      value={this.props.author}
                      
-                    />
+                    /> <i class="fa fa-edit " aria-hidden="true"></i>
                   </div>
                    </div>
 
                 <div className="form-group col-md-6 fl-left">
                  
-                  <div className="">
+                  <div className="name">
                     <input
                       style={{ position: "relative", zIndex: "1", marginTop:"-10px" }}
                       type="text"
@@ -3235,7 +5404,7 @@ class Step1 extends React.Component {
                       name="name"
                       placeholder="Enter course title"
 
-                      value={this.props.course_name}
+                      value={this.props.course_name || this.state.name}
                      onChange={this.props.handleChange}
                     />
                      <label
@@ -3253,7 +5422,7 @@ class Step1 extends React.Component {
 
               <div class="form-group  col-md-6 fl-left">
                  
-                  <div class="" data-select2-id="94">
+                  <div class="institution" data-select2-id="94">
                     <select
                       style={{ position: "relative", zIndex: "1" }}
                       class="form-control select2 select2-hidden-accessible"
@@ -3261,10 +5430,9 @@ class Step1 extends React.Component {
                       id="institution"
                       name="institution"
                       
-                      data-select2-id="level"
-                      tabindex="-1"
-                      aria-hidden="true"
-                       value={this.props.institution}
+                    
+                      
+                       value={this.state.institution }
                      onChange={this.props.handleChange}
                     >
 
@@ -3274,8 +5442,9 @@ class Step1 extends React.Component {
                       <option>-- Institutions --</option>
                         {institutions &&
                           institutions.map((language, i) => {
+                let selected = this.state.institution == language.id ? true : false
                             return (
-                              <option key={i} value={language.id}>
+                              <option key={i} value={language.id} selected={selected}>
                                 {language.name}
                               </option>
                             );
@@ -3294,7 +5463,7 @@ class Step1 extends React.Component {
 
 
                 <div className=" form-group col-md-6 fl-left">
-                        <div className="col-md-10  fl-left">
+                        <div className="col-md-10  fl-left author">
                           <input
                             type="text"
                             placeholder={"Add Team Lead"}
@@ -3362,7 +5531,7 @@ class Step1 extends React.Component {
                     }}
 
                             >
-                              +
+                              <i style={{marginTop:"-20px"}} class="fa fa-undo fa-2x"></i>
                             </button>
                             </div>
 
@@ -3377,21 +5546,26 @@ class Step1 extends React.Component {
                 
                 <div className="form-group col-md-12 fl-left">
                  
-                  <div className="">
+                  <div className="description">
 
 
                   <textarea
-                    style={{display:"none"}}
+                    
                       name="description"
                       id="description"
-                      
+                      style={{display:"none"}}
                       className="form-control"
                       placeholder="Short description"
-                       value={this.props.description}
-                     onChange={this.props.handleChange}
+                       value={this.state.description}
+                     
                     ></textarea>
                     
-
+                <label
+                    className="col-md-12 col-form-label"
+                    for="short_description"
+                  >
+                    Course Short description
+                  </label><span></span>
 
                      <HTMLForm
                         title="description"
@@ -3403,12 +5577,7 @@ class Step1 extends React.Component {
                         name={"description"}
                       />
 
-                     <label
-                    className="col-md-12 col-form-label"
-                    for="short_description"
-                  >
-                    Course Short description
-                  </label>
+                    
                   </div>
                 </div>
 
@@ -3420,17 +5589,24 @@ class Step1 extends React.Component {
 
                 <div className="form-group col-md-12 fl-left">
                  
-                  <div className="">
+                  <div className="overview">
                     <textarea
                       name="overview"
                       id="overview"
-                      style={{display:"none"}}
+                    style={{display:"none"}}
                       
                       className="form-control"
                       placeholder="Short description"
-                       value={this.props.overview}
-                     onChange={this.props.handleChange}
+                       value={this.state.overview}
+                  
                     ></textarea>
+
+                    <label
+                    className="col-md-12 col-form-label"
+                    for="short_description"
+                  >
+                    Course Overview
+                  </label><span></span>
 
 
 
@@ -3445,32 +5621,27 @@ class Step1 extends React.Component {
                         name={"overview"}
                       />
 
-                     <label
-                    className="col-md-12 col-form-label"
-                    for="short_description"
-                  >
-                    Course Overview
-                  </label>
+                     
                   </div>
                 </div>
 
 
 
                  <div className="form-group col-md-12 fl-left">
+                  
+                  <div className="curriculum">
                   <label className="col-md-12 col-form-label" for="description">
                     Curriculum
-                  </label>
-                  <div className="">
+                  </label><span></span>
 
                   <textarea
                       name="curriculum"
                       id="curriculum"
-                      style={{display:"none"}}
-                      
+                       style={{display:"none"}}
                       className="form-control"
                       placeholder="Short description"
-                       value={this.props.curriculum}
-                     onChange={this.props.handleChange}
+                       value={this.state.curriculum}
+                     
                     ></textarea>
 
                     <HTMLForm
@@ -3496,11 +5667,11 @@ class Step1 extends React.Component {
                       name="learning_expectation"
                       id="learning_expectation"
                       style={{display:"none"}}
-                      
+                       style={{display:"none"}}
                       className="form-control"
                       placeholder="Short description"
-                       value={this.props.learning_expectation || ""}
-                     onChange={this.props.handleChange}
+                       value={this.state.learning_expectation || ""}
+                     
                     ></textarea>
 
                     <HTMLForm
@@ -3617,28 +5788,6 @@ class Step1 extends React.Component {
 
 
 
-                <div class="form-group  mb-3 col-md-6 fl-left">
-                 
-                  <div class="co" data-select2-id="94">
-                  <label class="col-md-12 col-form-label" for="level">
-                     Auditing
-                    <input
-                      style={{ position: "relative", zIndex: "1" }}
-                      type="checkbox"
-                      className=""
-                      id="auditing"
-                      name="auditing"
-                      
-                       value={this.props.intro_video}
-                     onChange={this.props.handleChange}
-                    />
-
-
-                  </label>
-
-                     
-                  </div>
-                </div>
 
                 <div className="form-group col-md-6 fl-left">
                   
@@ -3667,7 +5816,29 @@ class Step1 extends React.Component {
 
 
 
+        
+                <div class="form-group  mb-3 col-md-12 fl-left">
+                 
+                  <div class="co" data-select2-id="94">
+                  <label class="col-md-12 col-form-label" for="level">
+                     Auditing
+                    <input
+                      style={{ position: "relative", zIndex: "1" }}
+                      type="checkbox"
+                      className=""
+                      id="auditing"
+                      name="auditing"
+                      
+                       value={this.props.intro_video}
+                     onChange={this.props.handleChange}
+                    />
 
+
+                  </label>
+
+                     
+                  </div>
+                </div>
 
 
 
@@ -3733,9 +5904,10 @@ class Step1 extends React.Component {
                 <br />
                 <br />
                 <br />
-
+</form>
                 
               </div>
+        
             </div>{" "}
           </div>{" "}
         </div>
@@ -3808,7 +5980,7 @@ class Step5 extends React.Component {
  
     return (
       <React.Fragment>
-        <div className="tab-pane card-box" id="outcomes">
+        <div className="tab-pane card-box schedules-form" id="outcomes">
           <div className="row justify-content-center">
             <div className="col-md-12">
               <div className="form-group col-md-6 fl-left">
@@ -3884,9 +6056,144 @@ class Step5 extends React.Component {
                 </div>
               </div>*/}
 
-              <div class="form-group  mb-3 col-md-6 fl-left">
+             
+            </div>
+          </div>
+        </div>
+      </React.Fragment>
+    );
+  }
+}
+
+class Step3 extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      shareholders: [{ name: "" }],
+    };
+  this.bindUndo = this.undoDateTime.bind(this)
+  }
+  
+  undoDateTime = (e) => {
+    let name = e.target.getAttribute("data-for");
+    if(name=="course_start_date_time" || 
+        name =="course_end_date_time" || 
+        name=="enrolment_start_date_time" ||
+         name=="enrolment_end_date_time"){
+       
+      //set this to date time when undo is clicked
+       
+    $("input[name='"+ name +"']").attr("type","datetime-local")
+      }
+      
+  }
+
+  render() {
+    const {institutions, languages, instructors, courses } = this.props
+ 
+    if (this.props.currentStep !== 2) {
+      return null;
+    }
+    return (
+      <React.Fragment>
+     <form id="schedules-form" className="required-form" action="#"  method="PATCH"  enctype="application/x-www-form-urlencoded">
+        <div className="tab-pane" id="requirements">
+          <div className="row card-box">
+            <div className="col-md-12">
+            
+              <div className="form-group col-md-6 fl-left">
+                 <label className="col-md-12 col-form-label" for="course_title">
+                  Course Start Date <span className="required">*</span>{" "}
+                </label>
+                <div className="col col-md-12">
+                  <input
+                    type="text"
+                    className="form-control col-md-10 fl-left"
+                    id="course_start_date_time"
+                    name="course_start_date_time"
+                    placeholder="Enter course title"
+                    required=""
+                     value={this.state.course_start_date_time}
+                     onChange={this.props.handleChange}
+                  />
+          
+            <div data-for="course_start_date_time" class="col-md-2 fl-left undo" onClick={(e)=>{ this.bindUndo(e)}}><i class="fa fa-undo"></i>Change</div>
+                 
+                </div>
+              </div>
+
+              <div className="form-group col-md-6 fl-left">
+                 <label className="col-md-12 col-form-label" for="course_title">
+                  Course End Date <span className="required">*</span>{" "}
+                </label>
+                <div className="col col-md-12">
+                  <input
+                    type="text"
+                    className="form-control col-md-10 fl-left"
+                    id="course_end_date_time"
+                    name="course_end_date_time"
+                    placeholder="Enter course title"
+                    required=""
+                     value={this.props.course_end_date_time}
+                     onChange={this.props.handleChange}
+                  />
+          
+            <div data-for="course_end_date_time" class="col-md-2 fl-left undo" onClick={(e)=>{ this.bindUndo(e)}}><i class="fa fa-undo"></i>Change</div>
+                 
+                </div>
+              </div>
+
+              
+              <div className="form-group col-md-6 fl-left">
+                 <label className="col-md-12 col-form-label" for="course_title">
+                  Enrollment Start <span className="required">*</span>{" "}
+                </label>
+                <div className="col col-md-12">
+                  <input
+                    type="text"
+                    className="form-control col-md-10 fl-left"
+                    id="enrolment_start_date_time"
+                    name="enrolment_start_date_time"
+                    placeholder="Enter course title"
+                    required=""
+                     value={this.state.enrolment_start_date_time}
+                     onChange={this.props.handleChange}
+                  />
+          
+            <div data-for="enrolment_start_date_time" class="col-md-2 fl-left undo" onClick={(e)=>{ this.bindUndo(e)}}><i class="fa fa-undo"></i> Change</div>
+                 
+                </div>
+              </div>
+
+               <div className="form-group col-md-6 fl-left">
+                 <label className="col-md-12 col-form-label" for="course_title">
+                  Enrollment Start <span className="required">*</span>{" "}
+                </label>
+                <div className="col col-md-12">
+                  <input
+                    type="text"
+                    className="form-control col-md-10 fl-left"
+                    id="enrolment_end_date_time"
+                    name="enrolment_end_date_time"
+                    placeholder="Enter course title"
+                    required=""
+                     value={this.state.enrolment_end_date_time}
+                     onChange={this.props.handleChange}
+                  />
+          
+            <div data-for="enrolment_end_date_time" onClick={(e)=>{ this.bindUndo(e)}} class="col-md-2 fl-left undo"><i class="fa fa-undo"></i> Change</div>
+                 
+                </div>
+              </div>
+        
+        
+        
+              <div class="form-group  mb-3 col-md-12 fl-left" style={{margin:"10px"}}>
                 
                 <div class="">
+         <label class="col-md-12 col-form-label" for="language_made_in">
+                  Course Language
+                </label>
                   <select
                     class="form-control select2 select2-hidden-accessible"
                     data-toggle="select2"
@@ -3905,113 +6212,7 @@ class Step5 extends React.Component {
           
       
                   </select>
-                  <label class="col-md-12 col-form-label" for="language_made_in">
-                  Language made in
-                </label>
-                </div>
-              </div>
-             
-            </div>
-          </div>
-        </div>
-      </React.Fragment>
-    );
-  }
-}
-
-class Step3 extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      shareholders: [{ name: "" }],
-    };
-  }
-
-  render() {
-    const {institutions, languages, instructors, courses } = this.props
- 
-    if (this.props.currentStep !== 2) {
-      return null;
-    }
-    return (
-      <React.Fragment>
-        <div className="tab-pane" id="requirements">
-          <div className="row card-box">
-            <div className="col-md-12">
-              <div className="form-group col-md-6 fl-left">
-               
-                <div className="">
-                  <input
-                    type="datetime-local"
-                    className="form-control"
-                    id="course_start_date_time"
-                    name="course_start_date_time"
-                    placeholder="Enter course title"
-                    required=""
-                     value={this.props.course_start_date_time}
-                     onChange={this.props.handleChange}
-                  />
-
-                   <label className="col-md-12 col-form-label" for="course_title">
-                  Course Start Date <span className="required">*</span>{" "}
-                </label>
-                </div>
-              </div>
-
-              <div className="form-group col-md-6 fl-left">
-                
-                <div className="">
-                  <input
-                    type="datetime-local"
-                    className="form-control"
-                    id="course_end_date_time"
-                    name="course_end_date_time"
-                    placeholder="Enter course title"
-                    required=""
-                     value={this.props.course_end_date_time}
-                     onChange={this.props.handleChange}
-                  />
-                  <label className="col-md-12 col-form-label" for="course_title">
-                  Course End Date <span className="required">*</span>{" "}
-                </label>
-                </div>
-              </div>
-
-              <div className="form-group col-md-6 fl-left">
-               
-                <div className="">
-                  <input
-                    type="datetime-local"
-                    className="form-control"
-                    id="enrolment_start_date_time"
-                    name="enrolment_start_date_time"
-                    placeholder="Enter course title"
-                    required=""
-                    value={this.props.enrolment_start_date_time}
-                     onChange={this.props.handleChange}
-                  />
-                   <label className="col-md-12 col-form-label" for="course_title">
-                  Enrollments Start Date <span className="required">*</span>{" "}
-                </label>
-                </div>
-              </div>
-
-              <div className="form-group col-md-6 fl-left">
-                
-                <div className="">
-                  <input
-                    type="datetime-local"
-                    className="form-control"
-                    id="enrolment_end_date_time"
-                    name="enrolment_end_date_time"
-                    placeholder="Enter course title"
-                    required=""
-                    value={this.props.enrolment_end_date_time}
-                     onChange={this.props.handleChange}
-                  />
-                  <label className="col-md-12 col-form-label" for="course_title">
-                  Enrollments End Date/Time <span className="required">*</span>{" "}
-                </label>
+                 
                 </div>
               </div>
 
@@ -4096,15 +6297,11 @@ class Step3 extends React.Component {
                   </select>
                 </div>
 
-
-
-                
-
-
               </div>
             </div>
           </div>
         </div>
+    </form>
       </React.Fragment>
     );
   }
@@ -4117,6 +6314,152 @@ class Step4 extends React.Component {
       collaborators: [],
 
     };
+  
+
+  
+  }
+  
+  componentDidMount(){
+       
+      //auto preset team lead or throw error if team lead dont exist
+    $(document).ready(()=>{
+    //show loader to fetch the instructor
+                         
+    setTimeout(()=>{
+      //end loader
+      
+       this.teamLeadDetail()
+    },10000);
+    
+    let leadNext = document.getElementById("nextLead");
+    let collaboNext =  document.getElementById("nextCollaborator")
+    
+    
+
+  })  
+  }
+  
+  nextInstructor(){
+   // alert("called fron template string clicked")
+    //change this logic to be infinitely indepenedent on the id
+    // document.getElementById("card1").className = "card1 animate-slide-out";
+    //document.getElementById("card2").className = "card2 animate-slide-in";
+
+  }
+  
+  nextCollaborator(){
+    // document.getElementById("card2").className = "card2 animate-slide-out";
+    //document.getElementById("card1").className = "card1 animate-slide-in";
+  }
+  
+  async teamLeadDetail(){
+   //encapsulate the feature of the leadinstructor search
+    
+    if(localStorage.getItem("author")){
+      const leadId = localStorage.getItem("author")
+    
+      //then a team lead
+      let leadDetail =  await this.getLeadDetail();
+      
+      if(leadDetail){
+      leadDetail = leadDetail.profile
+      let teamleadTemplate =`<div style="background:#f6f6f6;padding:20px" id="cardbox card" class="card1 animate-slide-out ">
+                    <div class="mdl-card__media">
+                            <div class="article-image-purple">
+                                <div class="mdl-card__title">
+                                    <h4 class="mdl-card__title-text title-text--white">Team Lead: ${leadDetail.first_name} ${leadDetail.last_name}</h4>
+                               <hr/>
+                 </div>
+                
+                            </div>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <!-- TAG Chips -->
+                        <span class="mdl-chip">
+                        <span class="mdl-chip__text"  data-filter=".mdl-card" data-filter-tag="a">Contact Detail</span>
+                        </span><br/>
+                        <span class="mdl-chip">
+                        <span class="mdl-chip__text" data-filter=".mdl-card" data-filter-tag="e">Email: ${leadDetail.email}</span>
+                        </span><br/>
+                        <span class="mdl-chip">
+                        <span class="mdl-chip__text" data-filter=".mdl-card" data-filter-tag="g">Phone ${leadDetail.phone_number}</span>
+                        </span><br/>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        Title :
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border pagination">
+                        <a id="nextLead" onclick="alert('event bubbles'); ${this.nextInstructor()}" class="next btn-next mdl-button btn-default" style="color:#fff">NEXT</a>
+                    </div>
+                </div>
+              `
+        
+        
+        
+        let collaborators = $("#collabo-guys")
+        collaborators.append(teamleadTemplate)
+        }else{
+        //some error occured
+      }
+    }else{
+      //swal("Notice","Please Ensure to have a team lead")
+      //let teamLeadInstall = document.querySelector("div#teamleadInstall");
+     // teamLeadInstall.style.opacity="1"
+      return "No Team Lead"
+    }
+  }
+  
+  async getLeadDetail(){
+   //a fresh api search detail of instructor to find all information of the team leader
+   //avoid expensive api calls
+   if(localStorage.getItem("author")){
+     let instructorId = localStorage.getItem("author")
+     let lead_guy = await getInstructorProfile(instructorId)
+     console.log(lead_guy)
+     return lead_guy
+   }else{
+     //add a team lead error here
+     
+     return false
+   }
+  
+  }
+  
+  
+  getInstructorsDetail(name){
+    
+   const { instructors } = this.props;
+   console.log(instructors)
+     let searchResults = instructors.find(instructor => {
+     let fullname = instructor?.profile?.first_name + ""+ instructor?.profile?.last_name
+        if(fullname.toLowerCase() == name.toLowerCase()){
+      return instructor
+    }else if(instructor?.profile?.email == name){
+      return instructor
+    }else if(instructor?.profile?.phone_number == name){
+      return instructor
+    }else{
+      
+      swal("Instructor was not found with input data: "+ name);
+      return false;
+    }
+        
+      }) 
+    return searchResults;
+  }
+  
+  runLoopSlideShow(){
+   if(localStorage.getItem("authoring_team")){
+    //foreach json parse of the collaboratores
+        //add rev slideshow
+    let teamMates = JSON.parse(localStorage.getItem("authoring_team"))
+                            
+    }
+          
+  }
+  
+  redrawFrame(){
+   return this.runLoopSlideShow()
   }
 
 
@@ -4124,49 +6467,56 @@ class Step4 extends React.Component {
 
 
   render() {
-    const { instructors } = this.props
+    const { instructors } = this.props;
+  
     if (this.props.currentStep !== 5) {
       return null;
     }
     return (
       <React.Fragment>
         {" "}
-        <div className="tab-pane" id="pricing">
+        <div className="tab-pane schedules-form" id="pricing">
           <div className="row card-box">
             <div className="col-md-12">
               
 
               <div className="row">
         <div className="col-md-12">
-
-
-
-                      
-
-        
-
-
-
-
-                <div id="collabo-guys" className="col-md-12">
-
-                    <div class="col-lg-3 col-md-3 col-sm-6">
-                      <a href="#">
-                        <div className="widget-panel widget-style-2 bg-white">
-                          <i className="fa fa-plus fa-2x text-pink"></i>
-                          <h2
-                            className="m-0 text-dark-x counter font-600-x"
-                            style={{
-                              fontFamily: "Open Sans",
-                              color: "#000",
-                              fontSize: "14px",
-                            }}
-
+    
+    
+    
+    
+    <div className="form-group col-md-6 fl-left">
+                 <label className="col-md-12 col-form-label" for="course_title">
+                  Search or add collaborator by name ,email or phone number<span className="required">*</span>{" "}
+                </label>
+                <div className="col col-md-12 collaboratorlist-append">
+                  <input
+                    type="text"
+                    className="form-control col-md-10 fl-left"
+                    id="collaboratorslist"
+                    name="collaboratorslist"
+                    placeholder="Search or add collaborator"
+                    required=""
+                     
+                     onChange={this.props.handleChange}
+                  />
+          
+            <div   class="col-md-2 fl-left undo" 
                                 onClick={ () => {
-              let values = this.state.collaborators            
+        let temp =[]
+              let values = (this.state.collaborators.length > 0 ) ? this.state.collaborators : [];
+        if(localStorage.getItem("authoring_team")){
+          temp = localStorage.getItem("authoring_team") || [];
+              
+        }else{
+           localStorage.setItem("authoring_team",JSON.stringify([]))
+        }
+                  
+                    
 
               swal({
-                text: 'Search for an instructor by email/ phone number. e.g. "saladinjake@company.com ".',
+                text: 'Search for an instructor by email/ phone number or fullname e.g. "saladinjake@company.com ".',
                 content: "input",
                 button: {
                 text: "Search!",
@@ -4183,113 +6533,184 @@ class Step4 extends React.Component {
                   //TODO: if no collaborators selected 
                   //LET THE LOGGED IN OR LEAD INSTRUCTOR BE APPENDED AS A COLLABORATOR
 
-                let targetInstructor = instructors.find(instructor => {
-                    console.log(instructor)
-                    return (instructor?.profile?.name === name) ||  (instructor?.profile?.email === name) || (instructor?.profile?.phone_number === name)
-                })
+                let targetInstructor = this.getInstructorsDetail(name) // if not false continue below
                
                   if(targetInstructor){
                      let collaborators =  $("#collabo-guys")
-                      
-                     let newGuy = $(`
-                      <div class="col-lg-3 col-md-3 col-sm-6">
-                      <a href="#">
-                        <div className="widget-panel widget-style-2 bg-white">
-                          <i className="fa fa-trash fa-2x text-pink"></i>
-                          <h2
-                            className="m-0 text-dark-x counter font-600-x"
-                            style={{
-                              fontFamily: "Open Sans",
-                              color: "#000",
-                              fontSize: "14px",
-                            }}
-
-                          >
-                            ${targetInstructor?.profile?.first_name} - ${targetInstructor?.profile?.email}
-                          </h2>
-                          <div
-                            className="text-muted-x m-t-5-x"
-                            style={{
-                              fontFamily: "Open Sans",
-                              color: "#000",
-                              fontSize: "14px",
-                            }}
-                            onclick="alert('test delete operation')"
-
-                            data-id=${targetInstructor?.profile?.id}
-                          >
-                            Remove
-                          </div>
-                        </div>
-                      </a>
-                    </div>
-                     `)
-                     
-                    collaborators.append(newGuy.html())
-                  
-
-                     // now let js do the dynamic selection of the hidden authoring_team select form fields
-                    const { name, id, email, phone_number} = targetInstructor?.profile
-                     values.push({
-                      id,name, email, phone_number
-                     })
-
-                     this.setState({collaborators: values})
-
-                      $('select[name=authoring_team]').val(this.state.collaborators) // all collaborators as listArray
+           
+           
       
-                     return swal("Success!", "The Instructor was found", "Success");
+                let collaboratorsTemplate =`<br/><div style="background:#f6f6f6;padding:20px;width:100%;display:none" id="${targetInstructor.profile?.id}" class="card2 animate-slide-out">
+                    <div class="mdl-card__media">
+                            <div class="article-image-purple">
+                                <div class="mdl-card__title">
+                                    <h4 class="mdl-card__title-text title-text--white">Collaborator: ${targetInstructor.profile?.first_name} ${targetInstructor.profile?.last_name}</h4>
+                               <hr/>
+                 </div>
+                
+                            </div>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <!-- TAG Chips -->
+                        <span class="mdl-chip">
+                        <span class="mdl-chip__text"  data-filter=".mdl-card" data-filter-tag="a">Contact Detail</span>
+                        </span><br/>
+                        <span class="mdl-chip">
+                        <span class="mdl-chip__text" data-filter=".mdl-card" data-filter-tag="e">Email: ${targetInstructor.profile?.email}</span>
+                        </span><br/>
+                        <span class="mdl-chip">
+                        <span class="mdl-chip__text" data-filter=".mdl-card" data-filter-tag="g">Phone ${targetInstructor.profile?.phone_number}</span>
+                        </span><br/>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        Title :
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border pagination">
+                        <a id="brianna" class="next btn-next mdl-button btn-default" style="color:#fff">NEXT</a>
+                    </div>
+                </div>
+              `
+      
+                      
+                   
+                     
+                    collaborators.append(collaboratorsTemplate)
+               
+                  //this is the logic behind filling the multiple select hidden field input arrays of authoring_team
+          //DO NOT DELETE THIS LINES
+                   // now let js do the dynamic selection of the hidden authoring_team select form fields
+                    const { name, id, email, phone_number} = targetInstructor?.profile
+                     values.push(
+            id,
+           //{
+                      //id ,name, email, phone_number
+                     //}
+           )
+           
+                   //SAVES THE STATE TO LOCAL STORE AND REACT STATE
+                   //this.setState({authoring_team: values})
+           this.setState({collaborators: [...this.state.collaborators, {id,name,email,phone_number}]})
+                   //let teamMateBlocs = $('select[name=authoring_team]').val(this.state.collaborators) // all collaborators as listArray
+           //let newMate = (<option)
+           
+           //console.log($('select[name=authoring_team]').val())
+                   
+          if(temp){
+             let tempstore = localStorage.getItem("authoring_team")
+             console.log(tempstore)
+            temp = JSON.parse(tempstore)
+            temp = [...temp,...values]
+            localStorage.setItem("authoring_team",JSON.stringify(temp))
+          }
+          console.log(localStorage.getItem("authoring_team"))
+                   return swal("Success!", "The Instructor was found", "Success");
 
                  }else{
 
                     
-                      swal("Error", "We could not find instructor", "error");
+                   swal("Error", "We could not find instructor. If you search request is by email, ensure case sensitivity for the exact email request", "error");
             
-                      swal.stopLoading();
-                     return swal.close();
+                   swal.stopLoading();
+                   return swal.close();
                 
 
                  }
               })
              
-                 
-                           
-                          
-
       }}
-                          >
-                            Add collaborator
-                          </h2>
-                          <div
-                            className="text-muted-x m-t-5-x"
-                            style={{
-                              fontFamily: "Open Sans",
-                              color: "#000",
-                              fontSize: "14px",
-                            }}
-                          >
-                            Add
-                          </div>
-                        </div>
-                      </a>
-                    </div>
+    ><i class="fa fa-plus"></i> Add</div>
+                 
+                </div>
+              </div>
+    
+    
+    
+    
+
+
+
+                      
+
+        
 
 
 
 
+                <div  className="col-md-6 fl-left">
+            <h4>Course Team</h4><hr/>
+          
+          
+          <main class="mdl-layout__content">
+            
+                   <div id="collabo-guys" class="content-grid mdl-grid portfolio-max-width">
+           {this.runLoopSlideShow()}
 
+           
+                     </div>
+          
+          </main>
+          
+          <div id="teamleadInstall" style={{opacity:"0"}}>
+              <h5>Add Team Lead</h5>
+            {/*action event to add a team lead if he was not added or removed by mistake*/}
+            <hr/>
+          </div>
+                   
                 </div>
 
                {/* hidden field that updates its array of data*/}
                { /*fields will be selected as user finds the  exact email/ phone or name 
                 of the instructors to be added as collaborators*/}
                 <select name="authoring_team[]" multiple  style={{display:"none"}}>
-                      {instructors.length > 0  && instructors.map(instructor => {
+                      {this.state.collaborators.length > 0  && this.state.collaborators.map(instructor => {
                           return (
-                             <option value={instructor.profile.id}>{instructor.profile.name}</option>
+                             <option value={instructor.id}>{instructor.name}</option>
                           )
                       })}
                 </select>
+        
+        <div class="container-fluid">
+           <div class="row">
+           <h4>Collaborators</h4>
+              <div class="col-md-12">
+            {this.state.collaborators.length > 0  && this.state.collaborators.map(instructor => {
+                          return (
+                            <div class="col-md-3">
+              <div style="background:#f6f6f6;padding:20px;width:100%;display:none" id="" class="card2 animate-slide-out">
+                    <div class="mdl-card__media">
+                            <div class="article-image-purple">
+                                <div class="mdl-card__title">
+                                    <h4 class="mdl-card__title-text title-text--white">Collaborator: {instructor.first_name} {instructor.last_name}</h4>
+                               <hr/>
+                 </div>
+                
+                            </div>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                      
+                        <span class="mdl-chip">
+                        <span class="mdl-chip__text"  data-filter=".mdl-card" data-filter-tag="a">Contact Detail</span>
+                        </span><br/>
+                        <span class="mdl-chip">
+                        <span class="mdl-chip__text" data-filter=".mdl-card" data-filter-tag="e">Email: {instructor.email}</span>
+                        </span><br/>
+                        <span class="mdl-chip">
+                        <span class="mdl-chip__text" data-filter=".mdl-card" data-filter-tag="g">Phone {instructor.phone_number}</span>
+                        </span><br/>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        Title :
+                    </div>
+                    
+                </div>
+              </div>
+                          )
+                      })}
+              
+            </div>
+           </div>
+        
+        </div>
 
 
           
@@ -4303,18 +6724,6 @@ class Step4 extends React.Component {
 
 
 
-              {/*<div className="mb-3 mt-3">
-                  <button
-                    type="button"
-                    className="btn btn-primary text-center"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      this.props.saveAndContinue(e)
-                    }}
-                  >
-                    Save 
-                  </button>
-                </div>*/}
 
             </div>
           </div>
@@ -4378,13 +6787,18 @@ const editSaveSubSection = (el) => {
      let sectionRes = createAnyResource('PATCH',url,form)
      console.log(sectionRes)
 
+
+     let rootParent = document.getElementById("dynamic_subsection_"+ element.attr("root_parent"))
+     rootParent = $(rootParent)
   
 
- 
-  $(".muu_" + localStorage.getItem("s_tracker"))
-    .find(".title_sub")
+  
+  // $(".muu_" + localStorage.getItem("s_tracker"))
+   rootParent
+    .find("#title_sub_"+ element.attr("root_parent"))
     .text($("#title_edit_2").val());
-  $(".muu_" + localStorage.getItem("s_tracker"))
+  // $(".muu_" + localStorage.getItem("s_tracker"))
+   rootParent
     .find(".subsect")
     .text($("#section_id_edit_2").val());
 };
@@ -4408,12 +6822,22 @@ const editSaveLessons = (e) => {
   let sectionRes = createAnyResource('PATCH',url,form)
   console.log(sectionRes)
 
-  $(".muu_" + localStorage.getItem("ls_tracker"))
-    .find(".title_sub")
-    .text($(e).attr("editing_course_name") );
-  // $(".dynamic_lsubsection_" + localStorage.getItem("ls_tracker"))
-  //   .find(".pcs")
-  //   .text($("#section_id_edit").val());
+  //this is bizarre: it exist but dont update the dom
+
+  // $(".fold-content")
+  //   .find(".title_sub"+ element.attr("root_parent"))
+  //   .text($(e).attr("editing_course_name") );
+
+  let rndId= "dynamic_subsection_" + element.attr("root_parent") + "_lesson_component"
+
+//this should do the trick
+  let rootParent = document.getElementById(rndId);
+  let headTitle = rootParent.querySelector("#title_sub_"+element.attr("root_parent"))
+  headTitle.innerHTML = $("#title_edit3").val() 
+
+  // $(".muu_" + localStorage.getItem("ls_tracker"))
+  
+ 
 };
 
 
@@ -4469,294 +6893,23 @@ const Step2 = (props) => {
     });
 
 
+
+    //settimeout
+    collapsibleEffect();
+
+
+
+
+    
+
+
+
      //disable enter key in a modal section when creating section/lessons
      $(document).keyup(function(objEvent) {
       if (objEvent.keyCode ==  13) {
           return false
       }
     });
-
-
-
-
-
-    /*LETS DEFINE OUR ACTION EVENT FOR  THE MARDOWN EDITOR*/
-    const preview = document.querySelector( '#preview' );
-    const boldButton = document.querySelector( '#bold' );
-    const italicButton = document.querySelector( '#italic' );
-    const heading1Button = document.querySelector( '#heading1' );
-    const heading2Button = document.querySelector( '#heading2' );
-    const heading3Button = document.querySelector( '#heading3' );
-    const linkButton = document.querySelector( '#link' );
-    const tokenButton = document.querySelector( '#token' );
-    const ulButton = document.querySelector( '#list-ul' );
-    const olButton = document.querySelector( '#list-ol' );
-
-
-    // DEFAULT INPUT AND OUTPUT AREA mark down effect
-let textarea = document.querySelector( '#input-area' );
-let outputArea = document.querySelector( '#output-area' );
-let previewMessage = document.querySelector( '.preview-message' );
-
-
-
-  if(heading1Button && heading2Button){
-
-    preview.addEventListener( 'click', () => {
-        output( parse( textarea.value ) );
-
-      outputArea.classList.toggle( 'show' );
-      previewMessage.classList.toggle( 'show' );
-      preview.classList.toggle( 'active' );
-    } );
-
-    boldButton.addEventListener( 'click', () =>
-      insertText( textarea, '****', 'demo', 2, 6 )
-    );
-
-    italicButton.addEventListener( 'click', () =>
-      insertText( textarea, '**', 'demo',  1, 5 )
-    );
-
-    heading1Button.addEventListener( 'click', () =>
-      insertText( textarea, '#', 'heading1', 1, 9 )
-    );
-
-    heading2Button.addEventListener( 'click', () =>
-      insertText( textarea, '##', 'heading2', 2, 10 )
-    );
-
-    heading3Button.addEventListener( 'click', () =>
-      insertText( textarea, '###', 'heading3', 3, 11 )
-    );
-
-    linkButton.addEventListener( 'click', () =>
-      insertText( textarea, '[](http://...)', 'url text', 1, 9 )
-    );
-
-    tokenButton.addEventListener( 'click', () =>
-      insertText( textarea, '{{}}', 'tokenValue', 2, 12 )
-    );
-
-    ulButton.addEventListener( 'click', function() {
-      insertText( textarea, '* ', 'item', 2, 6 );
-    } );
-
-    olButton.addEventListener( 'click', () =>
-      insertText( textarea, '1. ', 'item', 3, 7 )
-    );
-
-  }
-    
-
-// -------------------------------------------
-
-function setInputArea( inputElement ) {
-  textarea = inputElement;
-}
-
-function setOutputArea( outputElement ) {
-  outputArea = outputElement;
-}
-
-function insertText( textarea, syntax, placeholder = 'demo', selectionStart = 0, selectionEnd = 0 ) {
-  // Current Selection
-  const currentSelectionStart = textarea.selectionStart;
-  const currentSelectionEnd = textarea.selectionEnd;
-  const currentText = textarea.value;
-
-  if( currentSelectionStart === currentSelectionEnd ) {
-    const textWithSyntax = textarea.value = currentText.substring( 0, currentSelectionStart ) + syntax + currentText.substring( currentSelectionEnd );
-    textarea.value = textWithSyntax.substring( 0, currentSelectionStart + selectionStart ) + placeholder + textWithSyntax.substring( currentSelectionStart + selectionStart )
-
-    textarea.focus();
-    textarea.selectionStart = currentSelectionStart + selectionStart;
-    textarea.selectionEnd = currentSelectionEnd + selectionEnd;
-  } else {
-    const selectedText = currentText.substring( currentSelectionStart, currentSelectionEnd );
-    const withoutSelection = currentText.substring( 0, currentSelectionStart ) + currentText.substring( currentSelectionEnd );
-    const textWithSyntax = withoutSelection.substring( 0, currentSelectionStart ) + syntax + withoutSelection.substring( currentSelectionStart );
-
-    // Surround selected text
-    textarea.value = textWithSyntax.substring( 0, currentSelectionStart + selectionStart ) + selectedText + textWithSyntax.substring( currentSelectionStart + selectionStart );
-
-    textarea.focus();
-    textarea.selectionEnd = currentSelectionEnd + selectionStart + selectedText.length;
-  }
-}
-
-function output( lines ) {
-  outputArea.innerHTML = lines;
-}
-
-// -------------------------------------------
-// PARSER
-// -------------------------------------------
-
-function parse( content ) {
-  // Regular Expressions
-  const h1 = /^#{1}[^#].*$/gm;
-  const h2 = /^#{2}[^#].*$/gm;
-  const h3 = /^#{3}[^#].*$/gm;
-  const bold = /\*\*[^\*\n]+\*\*/gm;
-  const italics = /[^\*]\*[^\*\n]+\*/gm;
-  const link = /\[[\w|\(|\)|\s|\*|\?|\-|\.|\,]*(\]\(){1}[^\)]*\)/gm;
-  const lists = /^((\s*((\*|\-)|\d(\.|\))) [^\n]+))+$/gm;
-  const unorderedList = /^[\*|\+|\-]\s.*$/;
-  const unorderedSubList = /^\s\s\s*[\*|\+|\-]\s.*$/;
-  const orderedList = /^\d\.\s.*$/;
-  const orderedSubList = /^\s\s+\d\.\s.*$/;
-
-  // Example: # Heading 1
-  if( h1.test( content ) ) {
-    const matches = content.match( h1 );
-
-    matches.forEach( element => {
-      const extractedText = element.slice( 1 );
-      content = content.replace( element, '<h1>' + extractedText + '</h1>' );
-    } );
-  }
-
-  // Example: # Heading 2
-  if( h2.test( content ) ) {
-    const matches = content.match( h2 );
-
-    matches.forEach( element => {
-      const extractedText = element.slice( 2 );
-      content = content.replace( element, '<h2>' + extractedText + '</h2>' );
-    } );
-  }
-
-  // Example: # Heading 3
-  if( h3.test( content ) ) {
-    const matches = content.match( h3 );
-
-    matches.forEach( element => {
-      const extractedText = element.slice( 3 );
-      content = content.replace( element, '<h3>' + extractedText + '</h3>' );
-    } );
-  }
-
-  // Example: **Bold**
-  if( bold.test( content ) ) {
-    const matches = content.match( bold );
-
-    matches.forEach( element => {
-      const extractedText = element.slice( 2, -2 );
-      content = content.replace( element, '<strong>' + extractedText + '</strong>' );
-    } );
-  }
-
-  // Example: *Italic*
-  if( italics.test( content ) ) {
-    const matches = content.match( italics );
-
-    matches.forEach( element => {
-      const extractedText = element.slice( 2, -1 );
-      content = content.replace( element, ' <em>' + extractedText + '</em>' );
-    } );
-  }
-
-  // Example: [I'm an inline-style link](https://www.google.com)
-  if( link.test( content ) ) {
-    const links = content.match( link );
-
-    links.forEach( element => {
-      const text = element.match( /^\[.*\]/ )[ 0 ].slice( 1, -1 );
-      const url = element.match( /\]\(.*\)/ )[ 0 ].slice( 2, -1 );
-
-      content = content.replace( element, '<a href="' + url + '">' + text + '</a>' );
-    } );
-  }
-
-  if( lists.test( content ) ) {
-    const matches = content.match( lists );
-
-    matches.forEach( list => {
-      const listArray = list.split( '\n' );
-
-      const formattedList = listArray.map( ( currentValue, index, array ) => {
-        if( unorderedList.test( currentValue ) ) {
-          currentValue = '<li>' + currentValue.slice( 2 ) + '</li>';
-
-          if( !  unorderedList.test( array[ index - 1 ] ) && ! unorderedSubList.test( array[ index - 1 ] ) ) {
-            currentValue = '<ul>' + currentValue;
-          }
-
-          if( !  unorderedList.test( array[ index + 1 ] )  &&  ! unorderedSubList.test( array[ index + 1 ] ) ) {
-            currentValue = currentValue + '</ul>';
-          }
-
-          if( unorderedSubList.test( array[ index + 1 ] ) || orderedSubList.test( array[ index + 1 ] ) ) {
-            currentValue = currentValue.replace( '</li>', '' );
-          }
-        }
-
-        if( unorderedSubList.test( currentValue ) ) {
-          currentValue = currentValue.trim();
-          currentValue = '<li>' + currentValue.slice( 2 ) + '</li>';
-
-          if( ! unorderedSubList.test( array[ index - 1 ] ) ) {
-            currentValue = '<ul>' + currentValue;
-          }
-
-          if( ! unorderedSubList.test( array[ index + 1 ] ) && unorderedList.test( array[ index + 1 ] ) ) {
-            currentValue = currentValue + '</ul></li>';
-          }
-
-          if( ! unorderedSubList.test( array[ index + 1 ] ) && ! unorderedList.test( array[ index + 1 ] ) ) {
-            currentValue = currentValue + '</ul></li></ul>';
-          }
-        }
-
-        if( orderedList.test( currentValue ) ) {
-          currentValue = '<li>' + currentValue.slice( 2 ) + '</li>';
-
-          if( ! orderedList.test( array[ index - 1 ] ) && ! orderedSubList.test( array[ index - 1 ] ) ) {
-            currentValue = '<ol>' + currentValue;
-          }
-
-          if( ! orderedList.test( array[ index + 1 ] ) && ! orderedSubList.test( array[ index + 1 ] ) && ! orderedList.test( array[ index + 1 ] ) ) {
-            currentValue = currentValue + '</ol>';
-          }
-
-          if( unorderedSubList.test( array[ index + 1 ] ) || orderedSubList.test( array[ index + 1 ] ) ) {
-            currentValue = currentValue.replace( '</li>', '' );
-          }
-        }
-
-        if( orderedSubList.test( currentValue ) ) {
-          currentValue = currentValue.trim();
-          currentValue = '<li>' + currentValue.slice( 2 ) + '</li>';
-
-          if( ! orderedSubList.test( array[ index - 1 ] ) ) {
-            currentValue = '<ol>' + currentValue;
-          }
-
-          if( orderedList.test( array[ index + 1 ] ) && ! orderedSubList.test( array[ index + 1 ] ) ) {
-            currentValue = currentValue + '</ol>';
-          }
-
-          if( ! orderedList.test( array[ index + 1 ] ) && ! orderedSubList.test( array[ index + 1 ] ) ) {
-            currentValue = currentValue + '</ol></li></ol>';
-          }
-        }
-
-        return currentValue;
-      } ).join( '' );
-
-      console.log( formattedList );
-      content = content.replace( list, formattedList );
-    } );
-  }
-
-  return content.split( '\n' ).map( line => {
-    if( ! h1.test( line ) && ! h2.test( line ) && ! h3.test( line ) && ! unorderedList.test( line ) && ! unorderedSubList.test( line ) && ! orderedList.test( line ) && ! orderedSubList.test( line ) ) {
-      return line.replace( line, '<p>' + line + '</p>' );
-    }
-  } ).join( '' );
-}
-
 
 
 
@@ -4808,7 +6961,7 @@ const saveMarkdownEditContent = () => {
     const Type = Widget.getAttribute("data-type");
     const TemplateType = Widget.getAttribute("data-template"); //
     $("#title-unit").val("")
-    $("#title-unit2").val("")
+    //$("#title-unit2").val("")
     $(".iframe-boxer").attr("src","")
     $(".main-videosection2").attr("src","")
     $("#projector-view").attr("src","")
@@ -4884,144 +7037,10 @@ const saveMarkdownEditContent = () => {
         break;
 
       case "[pb_html][/pb_common_problems]":
-         _title ="Problems : Common Problems"
-        Clone = launchFormBoxIntoModal(
-          "[pb_html][/pb_common_problems]",
-          Target,
-          MainClone,
-          _title
-        );
-
-        markdownTemplate = "[pb_html][/pb_common_problems]"
-        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_common_problems]")
-        break;
-      case "[pb_html][/pb_checkboxes]":
-       _title ="Problems : Checkboxes"
-        Clone = launchFormBoxIntoModal(
-          "[pb_html][/pb_checkboxes]",
-          Target,
-          MainClone,
-          _title
-        );
-
-        markdownTemplate = "[pb_html][/pb_checkboxes]"
-        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_checkboxes]")
-        break;
-      case "[pb_html][/pb_numeric_input]":
-       _title ="Problems : Numerical Inputs"
-        Clone = launchFormBoxIntoModal(
-          "[pb_html][/pb_numeric_input]",
-          Target,
-          MainClone,
-          _title
-        );
-
-        markdownTemplate = "[pb_html][/pb_numeric_input]"
-        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_numeric_input]")
-        break;
-     case "[pb_html][/pb_numeric_input_feed]":
-         _title ="Problems : Numerical Input With Feed Back"
-        Clone = launchFormBoxIntoModal(
-          "[pb_html][/pb_numeric_input_feed]",
-          Target,
-          MainClone,
-          _title
-        );
-
-        markdownTemplate = "[pb_html][/pb_numeric_input_feed]"
-        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_numeric_input_feed]")
-        break;
-
-      case "[pb_html][/pb_text_input]":
-       _title ="Problems : Text Input"
-        Clone = launchFormBoxIntoModal(
-          "[pb_html][/pb_text_input]",
-          Target,
-          MainClone,
-          _title
-        );
-
-        markdownTemplate = "[pb_html][/pb_text_input]"
-        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_text_input]")
-        break;
-      case "[pb_html][/pb_multiple_choice]":
-       _title ="Problems : Multi Choice"
-        Clone = launchFormBoxIntoModal(
-          "[pb_html][/pb_multiple_choice]",
-          Target,
-          MainClone,
-          _title
-        );
-
-        markdownTemplate = "[pb_html][/pb_multiple_choice]"
-        htmlEquivalentTemplate =getTemplateType("[pb_html][/pb_multiple_choice]")
-        break;
-      case "[pb_html][/pb_text_input_feed]":
-        _title ="Problems : Text Input With Feed Back"
-        Clone = launchFormBoxIntoModal(
-          "[pb_html][/pb_text_input_feed]",
-          Target,
-          MainClone,
-          _title
-        );
-
-        markdownTemplate = "[pb_html][/pb_text_input_feed]"
-        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_text_input_feed]")
-        break;
-      case "[pb_html][/pb_dropdown]":
-       _title ="Problems : Drop Down"
-        Clone = launchFormBoxIntoModal(
-          "[pb_html][/pb_dropdown]",
-          Target,
-          MainClone,
-           _title
-        );
-
-        markdownTemplate = "[pb_html][/pb_dropdown]"
-        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_dropdown]")
-        break;
-      case "[pb_html][/pb_dropdown_feed]":
-       _title ="Problems : Drop Down With Feed Back"
-        Clone = launchFormBoxIntoModal(
-          "[pb_html][/pb_dropdown_feed]",
-          Target,
-          MainClone,
-          _title
-        );
-
-        markdownTemplate =  "[pb_html][/pb_dropdown_feed]"
-        htmlEquivalentTemplate = getTemplateType( "[pb_html][/pb_dropdown_feed]")
-        break;
-      case "[pb_html][/pb_checkboxes_feed]":
-       _title ="Problems : Checkboxes With Feed Back"
-        Clone = launchFormBoxIntoModal(
-          "[pb_html][/pb_checkboxes_feed]",
-          Target,
-          MainClone,
-          _title
-        );
-        break;
-      case "[pb_html][/pb_button]":
-       _title ="Problems : Buttons"
-        Clone = launchFormBoxIntoModal(
-          "[pb_html][/pb_button]",
-          Target,
-          MainClone,
-          _title
-        );
-          markdownTemplate = "[pb_html][/pb_button]"
-        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_button]")
-        break;
-      case "[pb_html][/pb_multiple_choice_feed]":
-         _title ="Problems : Multiple Choice"
-        Clone = launchFormBoxIntoModal(
-          "[pb_html][/pb_multiple_choice_feed]",
-          Target,
-          MainClone,
-          _title
-        );
-          markdownTemplate = "[pb_html][/pb_multiple_choice_feed]"
-        htmlEquivalentTemplate = getTemplateType("[pb_html][/pb_multiple_choice_feed]")
+        // i changed the strategy to this
+        //just launch an entirely new panel work bench for problems
+        // because problem component is a whole new big stuff to handle
+        $("#openModal-about").css({opacity:1})
         break;
       case "[pb_html][/pb_broadcasting]":
         _title ="Html : Video Broadcast"
@@ -5114,7 +7133,7 @@ const saveMarkdownEditContent = () => {
 
         break;
       default:
-        Clone = launchFormBoxIntoModal("[pb_html][/pb_text]",Target,MainClone, "HTML: Text Editor")
+       //Clone = launchFormBoxIntoModal("[pb_html][/pb_text]",Target,MainClone, "HTML: Text Editor")
         return false;
     }
 
@@ -5239,7 +7258,7 @@ const saveMarkdownEditContent = () => {
 
   return (
     <React.Fragment>
-      <div className="tab-pane" id="media">
+      <div className="tab-pane schedules-form" id="media">
         <div className="row">
           <div className="col-md-12">
             {/* <div id="nestable-menu">
@@ -5263,7 +7282,9 @@ const saveMarkdownEditContent = () => {
                 </li>
               </ul>
 
-              <ul id="js-parent" class="widow-window js-root-parent"></ul>
+              <div id="position-id">positionin test id: <span id="counterpos"></span></div>
+
+              <ul id="js-parent" class="widow-window drag-sort-enable"></ul>
             
             <br />
             <br /> <br />
@@ -5334,7 +7355,7 @@ const saveMarkdownEditContent = () => {
 
                     <div class="form-group">
                       <label>Overview</label>
-                      <textarea name="description" class="form-control" style={{height:"300px"}}></textarea>
+                      <textarea name="description" id="description" class="form-control" style={{height:"300px"}}></textarea>
                     </div>
                     </form>
                   </div>
@@ -5921,19 +7942,20 @@ const saveMarkdownEditContent = () => {
         {/*lesson categories section goes here* myModalLessonGroup*/}
         <div id="myModalLessonGroup" class="modal-build">
           <div class="modal-build-inner">
-            <div class="modal-toolbar">
+            <div class="modal-toolbar" onClick={()=>{closeModal()}}>
               <h2 class="modal-title">Lessons Component</h2>
-              <i id="pb-modal-close" class="fa fa-times"></i>
+              <i id="pb-modal-close" class="fa fa-times" ></i>
             </div>
             <div class="modal-tabs">
               <div class="modal-tab widgets-tab active-tab">
                 <i class="tab-icon fa fa-code fa-2x"></i>Html
               </div>
-              <div class="modal-tab background-tab">
-                <i class="tab-icon fa  fa-question-circle-o fa-2x"></i> Problem
-              </div>
+              
               <div class="modal-tab special-video">
                 <i class="tab-icon fa fa-video-camera fa-2x"></i> Video
+              </div>
+              <div class="modal-tab background-tab">
+                <i class="tab-icon fa  fa-question-circle-o fa-2x"></i> Problems & Discussions
               </div>
               <div class="modal-tab special-broadcast">
                 <i class="tab-icon fa fa-bullhorn fa-2x"></i> Broadcast
@@ -5974,141 +7996,36 @@ const saveMarkdownEditContent = () => {
                 class="pb-widget"
                 data-template="[pb_html][/pb_common_problems]"
                 data-type="background"
-                 href="#myModalMarkdownEditor" 
+                 href="#openModal-about" 
                  role="button" data-toggle="modal"
                   data-fields="['','']"
                  
               >
                 <i class="fa fa-comment fa-2x"></i>
-                <span>Common Problems</span>
-              </div>
-              <div
-                class="pb-widget"
-                data-template="[pb_html][/pb_checkboxes]"
-                data-type="background"
-                href="#myModalMarkdownEditor" 
-                 role="button" data-toggle="modal"
-                  data-fields="['','']"
-                  
-              >
-                <i class="fa fa-check-square-o fa-2x"></i>
-                <span>Checkboxes</span>
+                <span>Add Problem Component</span>
+                <span>(Questions creation Component)</span>
               </div>
 
-              <div
+               <div
                 class="pb-widget"
-                data-template="[pb_html][/pb_numeric_input]"
+                data-template="[pb_html][/pb_discussions]"
                 data-type="background"
-                href="#myModalMarkdownEditor" 
-                 role="button" data-toggle="modal"
-                  data-fields="['','']"
-                 onClick={()=>{localStorage.setItem('user_action',"[pb_html][/pb_numeric_input]")}}
-              >
-                <i class="fa fa-keyboard-o fa-2x"></i>
-                <span>Numerical Input</span>
-              </div>
-              <div
-                class="pb-widget"
-                data-template="[pb_html][/pb_text_input]"
-                data-type="background"
-                href="#myModalMarkdownEditor" 
+                 href="#discussionModal" 
                  role="button" data-toggle="modal"
                   data-fields="['','']"
                  
               >
-
-                <i class="fa fa-keyboard-o fa-2x"></i>
-                <span>Text Input</span>
+                <i class="fa fa-comment fa-2x"></i>
+                <span>Add Discussion Component</span>
+                <span>(Discussion creation Component)</span>
               </div>
 
-              
+            </div>
 
-              <div
-                class="pb-widget"
-                data-template="[pb_html][/pb_multiple_choice]"
-                data-type="background"
-                href="#myModalMarkdownEditor" 
-                 role="button" data-toggle="modal"
-                  data-fields="['','']"
-                 
-              >
-                <i class="fa fa-quora fa-2x"></i>
-                <span>Multiple Choice </span>
-              </div>
 
-              <div
-                class="pb-widget"
-                data-template="[pb_html][/pb_dropdown]"
-                data-type="background"
-                href="#myModalMarkdownEditor" 
-                 role="button" data-toggle="modal"
-                  data-fields="['','']"
-                 
-              >
-                <i class="fa fa-chevron-circle-down fa-2x"></i>
-                <span>Dropdown</span>
-              </div>
-              <div
-                class="pb-widget"
-                data-template="[pb_html][/pb_dropdown_feed]"
-                data-type="background"
-                href="#myModalMarkdownEditor" 
-                 role="button" data-toggle="modal"
-                  data-fields="['','']"
-                 
-              >
-                <i class="fa fa-chevron-circle-down fa-2x"></i>
-                <span>Dropdown + hint and feedback</span>
-              </div>
-
-              <div
-                class="pb-widget"
-                data-template="[pb_html][/pb_checkboxes_feed]"
-                data-type="background"
-                href="#myModalMarkdownEditor" 
-                 role="button" data-toggle="modal"
-                  data-fields="['','']"
-                 
-              >
-                <i class="fa fa-check-square-o fa-2x"></i>
-                <span>Checkboxes + hint and feedback</span>
-              </div>
-              <div
-                class="pb-widget"
-                data-template="[pb_html][/pb_multiple_choice_feed]"
-                data-type="background"
-                href="#myModalMarkdownEditor" 
-                 role="button" data-toggle="modal"
-                  data-fields="['','']"
-                 
-              >
-                <i class="fa fa-quora fa-2x"></i>
-                <span>Multiple Choice + hint and feed back</span>
-              </div>
-              <div
-                class="pb-widget"
-                data-template="[pb_html][/pb_numeric_input_feed]"
-                data-type="background"
-                href="#myModalMarkdownEditor" 
-                 role="button" data-toggle="modal"
-                  data-fields="['','']"
-                 
-              >
-                <i class="fa fa-text fa-2x"></i>
-                <span>Numerical Input + hint and feed back</span>
-              </div>
-              <div
-                class="pb-widget"
-                data-template="[pb_html][/pb_text_input_feed]"
-                data-type="background"
-                href="#myModalMarkdownEditor" 
-                 role="button" data-toggle="modal"
-                  data-fields="['','']"
-                 
-              >
-                <i class="fa fa-text fa-2x"></i>
-                <span>Text Input + hint and feed back</span>
-              </div>
+            <div class="modal-build-content background-tab">
+              <p>Click on any of the sections above to add either a problem 
+              (question and answer option series) or a discussion module block</p>
             </div>
             {/*<div class="modal-build-content special-conference">
               
@@ -6208,6 +8125,20 @@ const saveMarkdownEditContent = () => {
               </div>
 
 
+              <div
+                class="pb-widget"
+                data-template="[pb_html][/pb_you_tube]"
+                data-type="special"
+                href="#myModalGenericForm" 
+                 role="button" data-toggle="modal"
+                 data-fields="['Title','Link']"
+                 
+              >
+                <i class="fas fa-video-camera fa-2x"></i>
+                <span>MP4 Videos</span>
+              </div>
+
+
 
             </div>
 
@@ -6238,7 +8169,7 @@ const saveMarkdownEditContent = () => {
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title pull-left put-title" >Add Unit Component</h5>
+                  <h5 class="modal-title pull-left put-title" style={{color:"#000"}} >Add Unit Component</h5>
                   <a onClick={()=>{
                     let board = document.querySelector("#projector-view")
                             if(document.querySelector(".iframe-box").style.display=="block"){
@@ -6291,35 +8222,32 @@ const saveMarkdownEditContent = () => {
                       </div>
 
 
-                      <div class="form-group root-block">
+                      <div class="form-group root-block" >
                         <label class="change-title">Description</label>
                         <input type="text" name="description" class="form-control" id="editor-html-description" />
                       </div>
 
-                      <div class="form-group root-block">
+                      <div class="form-group root-block" style={{display:"none"}}>
                         <label class="change-title">Content Type </label>
                         <select id="editor-html-type" class="form-control" name="component_type">
-                              {/*<option value="1">Video</option> */}   
-                              <option value="2">HTML</option>
-                              <option value="3">Problem</option>
-                              <option value="4">Discussion</option>
+                             <option value="1" selected>Video</option>   
+                               <option value="2">HTML</option>
+                             
                           
                       </select>
                       </div>
 
-                      <div class="form-group">
+                      <div class="form-group" style={{display:"none"}}>
                        <select class="form-control" id="editor-html-content-type" name="content_type">
-                                
-                                <option value="2" selected>HTML TEXT</option> 
-
-                                {/*<option value="1">I-Frame</option> 
-                                <option value="3">HYBRID</option>*/}
+                          
+                                <option value="1" selected>I-Frame</option> 
+                                <option value="3">HYBRID</option>
                         </select>
                       </div>
 
 
                       <div class="form-group root-block2" >
-                        <label class="change-title2">Embedded url</label>
+                        <label class="change-title2">Embedded url link</label>
                         <input onInput={(e) =>{
                             //if its iframe component
                             let board = document.querySelector("#projector-view")
@@ -6333,8 +8261,9 @@ const saveMarkdownEditContent = () => {
 
                             }
                                                         //if its video component
-                        }} type="text" name="embeded_url" class="form-control" id="title-unit2" />
+                        }} type="text" name="embedded_url" class="form-control" id="title-unit2" />
                       </div>
+                      <br/> <br/>
 
 
                       <div class="iframe-box col-md-12"  >
@@ -6371,7 +8300,22 @@ const saveMarkdownEditContent = () => {
                     onClick={handleSaveComponentGenericForm}
                     
                   >
-                    Add
+                    Add Component
+                  </button>
+
+                  {/*disable the edit action*/}
+                  <button
+                    style={{display:"none"}}
+                    id="save_edit_insertion_component_generic"
+                    data-notification="be careful not to delete this notification id"
+                    type="button"
+                   
+                    class="btn btn-success unit-appender-for-modalgeneric-form-content"
+                    data-dismiss="modal"
+                    onClick={handleEditSaveGeneric}
+                    
+                  >
+                    Save Editing
                   </button>
                 </div>
               </div>
@@ -6388,8 +8332,9 @@ const saveMarkdownEditContent = () => {
         {/*modalFullScreenPreviewIframeAndVideos*/}
       <Fragment>
 
+
       <div
-          style={{ marginTop: "80px" }}
+          style={{ marginTop: "-20px" }}
           class="modal fade"
           id="modalFullScreenPreviewIframeAndVideos"
           tabindex="-1"
@@ -6400,7 +8345,7 @@ const saveMarkdownEditContent = () => {
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title pull-left" style={{ color: "#000" }}>
-                  Add component
+                  Video Preview
                 </h5>
                 <a
                   href="#"
@@ -6414,7 +8359,7 @@ const saveMarkdownEditContent = () => {
               <div
                 class="modal-body p-4 col-md-12"
               
-             
+               
               >
              
                 <div class="row">
@@ -6423,7 +8368,7 @@ const saveMarkdownEditContent = () => {
                           {/*the editor*/}
           
           
-          <iframe class="content-area" id="projector-view" />
+          <iframe class="content-area" src="" id="projector-view" />
           
       
 
@@ -6448,8 +8393,7 @@ const saveMarkdownEditContent = () => {
         </Fragment>
 
 
-
-
+      
         {/*this is the edit component modal myModal for any html editing component */}
         <Fragment>
       
@@ -6628,6 +8572,7 @@ const saveMarkdownEditContent = () => {
 
               <div class="modal-footer box-internal">
                 <button
+
                   id="save_new_insertion_component2"
                   data-notification="Be careful not to delete these action id"
                   type="button"
@@ -6638,7 +8583,7 @@ const saveMarkdownEditContent = () => {
                       handleEditSaveTextEditor()
                     }}
                 >
-                  Save
+                  Add Component
                 </button>
 
                  <button
@@ -6802,66 +8747,47 @@ const saveMarkdownEditContent = () => {
 
 
                       <div class="form-group root-block" >
+                      <input type="hidden" name="component_id" class="form-control" id="component_id"  />
+  
                         
                         <input type="hidden" name="lesson" class="form-control" id="lesson-editor-id"  />
                       </div>
 
 
-                      <div class="form-group root-block">
+                      <div class="form-group">
                         <label class="change-title">Description</label>
                         <input type="text" name="description" class="form-control" id="editor-html-description" />
                       </div>
 
-                      <div class="form-group root-block">
+                      <div class="form-group" style={{display:"none"}}>
                         <label class="change-title">Component Type </label>
-                        <select id="editor-html-type" class="form-control" name="component_type">
-      
-      
-          
-                              <option value="1">Video</option>
-                            
-                        
-                            
-                              <option value="2">HTML</option>
-                            
-                        
-                            
-                              <option value="3">Problem</option>
-                            
-                        
-                            
-                              <option value="4">Discussion</option>
-                            
-                        
+                        <select id="editor-html-type" class="form-control" name="component_type">                      
+                              <option value="2" selected>HTML</option>                      
+                              
                       </select>
                       </div>
-
-                      <div class="form-group">
+                      <div class="form-group" style={{display:"none"}}>
                        <select class="form-control" id="editor-html-content-type" name="content_type">
-      
-      
-                              
                                 <option value="1">I-Frame</option>
-                              
-                          
-                              
-                                <option value="2">HTML TEXT</option>
-                              
-                          
-                              
+                                <option value="2" selected>HTML TEXT</option>
                                 <option value="3">HYBRID</option>
-                              
-                          
                         </select>
                       </div>
+                      <input style={{display:"none"}}  
+            id="input-area4" class="visuell-view html_text" 
+            name="html_text"  />
 
-            <textarea id="input-area" class="visuell-view" name="html_text"  rows="20" cols="50">
-                  Edit your content Editor 
-                  (What you see is what you get)
-      Add text content(plain text), 
-          markupsand pure html code
-  
-            </textarea>
+            <HTMLForm
+              title="html_text"
+              placeholder={"html_text"}
+              value={"this initial state"}
+              action={(e)=>{  document.getElementById("input-area4").value=e; localStorage.setItem("html_text_content",e); console.log(e)}}
+              stateAction={(e)=>{  document.getElementById("input-area4").value=e; console.log(e)}}
+              name={"html_text"}
+            />
+
+            
+            
 
 
             </form>
@@ -6906,7 +8832,20 @@ const saveMarkdownEditContent = () => {
                   data-dismiss="modal"
                   onClick={handleSaveComponentTextEditor}
                 >
-                  Save Editing
+                 Add Component
+                </button>
+
+
+                <button
+                  id="save_new_insertion_component_htmleditor"
+                  data-notification="Be careful not to delete these action id"
+                  type="button"
+                  style={{display:"none", color:"#fff"}}
+                  class="btn-primary btn success btn  btn-small pull-left"
+                  data-dismiss="modal"
+                  onClick={handleEditSaveTextEditor}
+                >
+                 Save Editing
                 </button>
 
                  <button
@@ -6953,7 +8892,7 @@ const saveMarkdownEditContent = () => {
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title pull-left edit-title" id="edit-title">Editing</h5>
+                  <h5 style={{color:"#000"}} class="modal-title pull-left edit-title" id="edit-title">Editing</h5>
                   <a onClick={()=>{
                     let board = document.querySelector("#projector-view")
                             if(document.querySelector(".iframe-box").style.display=="block"){
@@ -7009,15 +8948,20 @@ const saveMarkdownEditContent = () => {
                       </div>
 
 
-                      <div class="form-group root-block">
+                      <div class="form-group root-block" style={{display:"none"}}>
                         <label class="change-title">Description</label>
-                        <input type="text" name="description" class="form-control" id="editor-html-description" />
+                        <input type="text" id="video-descr" name="description" class="form-control" id="editor-html-description" />
                       </div>
 
-                      <div class="form-group root-block">
+
+
+                      
+
+
+                      <div class="form-group root-block"  style={{display:"none"}}>
                         <label class="change-title">Content Type </label>
-                        <select id="editor-html-type" class="form-control" name="component_type">
-                              <option value="1">Video</option>    
+                        <select  id="editor-html-type" class="form-control" name="component_type">
+                              <option value="1" selected>Video</option>    
                               <option value="2">HTML</option>
                               <option value="3">Problem</option>
                               <option value="4">Discussion</option>
@@ -7025,9 +8969,9 @@ const saveMarkdownEditContent = () => {
                       </select>
                       </div>
 
-                      <div class="form-group">
+                      <div class="form-group" style={{display:"none"}}>
                        <select class="form-control" id="editor-html-content-type" name="content_type">
-                                <option value="1">I-Frame</option>
+                                <option value="1" selected>I-Frame</option>
                                 <option value="2">HTML TEXT</option>  
                                 <option value="3">HYBRID</option>
                         </select>
@@ -7049,8 +8993,22 @@ const saveMarkdownEditContent = () => {
 
                             }
                                                         //if its video component
-                        }} type="text" name="embeded_url" class="form-control" id="title-unit2" />
+                        }} type="text" name="embedded_url" class="form-control" id="title-unit-edited" />
                       </div>
+
+
+                      <HTMLForm
+                        title="description"
+                        placeholder={"description"}                   
+                        name={"description"}
+                        value={"this initial state"}
+                        action={(e)=>{   $("#video-descr").val(e); console.log(e)}}
+                        stateAction={(e)=>{   $("#video-descr").val(e);}}
+             
+                      />
+
+
+
 
 
                       <div class="iframe-box col-md-12"  >
@@ -7092,7 +9050,7 @@ const saveMarkdownEditContent = () => {
                     style={{ background: "rgba(8,23,200)" }}
                     class="btn btn-primary unit-appender-for-modalgeneric-form-content"
                     data-dismiss="modal"
-                    onClick={handleEditSaveGeneric}
+                    
                    
                   >
                     Save
@@ -7240,6 +9198,76 @@ const saveMarkdownEditContent = () => {
 
 
 
+          <div
+          
+
+          style={{ marginTop: "80px" }}
+          class="modal fade"
+          id="myModalPreviewVideo"
+          tabindex="-1"
+          role="dialog"
+          aria-hidden="true"
+        >
+          <div class=" modal-full" >
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title pull-left" style={{ color: "#000" }}>
+                  Add component
+                </h5>
+                <a
+                  href="#"
+                  class="pull-right"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">×</span>
+                </a>
+              </div>
+              <div
+                class="modal-body p-4 col-md-12"
+              
+             
+              >
+             
+                <div class="row">
+                  <div class="divided col-md-12">
+                   
+                          {/*the editor*/}
+          
+          
+           <button type="button" class="close-preview" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>        
+       
+<div class="embed-responsive embed-responsive-16by9">
+  <iframe class="embed-responsive-item" src="" id="videoscreen"  allowscriptaccess="always" allow="autoplay"></iframe>
+</div>
+
+
+
+                  </div>
+
+
+
+              </div>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
           <div class="pb-widget-preview-panel">
             
@@ -7281,6 +9309,23 @@ const saveMarkdownEditContent = () => {
               </div>
           
           </div>
+
+
+
+        {/*video modal template iframe preview*/}
+
+
+
+
+
+      
+        
+
+  
+  
+
+
+
 
 
         {/*colla borator template container*/}
@@ -7417,21 +9462,47 @@ window.editSubSection = (el) => {
 };
 
 window.replicateSection = (el) => {
-   let rootSectionBloc = $(el).parent().parent().parent()
-                             
-                             
-    console.log(rootSectionBloc.html())
-    let clonedNode = rootSectionBloc.clone(true);
-    clonedNode.insertAfter(rootSectionBloc);
+
+
+    // save the replicated section to database
+     let  form  = $("form#addSectionForm");
+     form.find("#title").val(el.getAttribute("data-name"));
+     form = $("form#addSectionForm");
+    //here is the modal form to add section
+    let url = "/lms/api/create/section/"
+    let sectionRes = createAnyResource('POST',url,form)
+
+
+       
+
+  setTimeout(function(){
+       //type check for replacers
+        //if(typeof sectionRes =="object"){
+       let rootSectionBloc = $(el).parent().parent().parent()
+       let clonedNode = rootSectionBloc.clone(true);
+       clonedNode.insertAfter(rootSectionBloc);
+       //work on this for version 2
+
+       //for now reload solves the problem
+       window.location.reload()
+
+  },3000)
+
+    //replace the id with the section api created
 };
 
 window.replicateSubSection = (el) => {
-  let rootSectionBloc = $(el).parent().parent().parent()
-                             
-                             
-    console.log(rootSectionBloc.html())
-    let clonedNode = rootSectionBloc.clone(true);
-    clonedNode.insertAfter(rootSectionBloc);
+  let rootSectionBloc = $(el).parent().parent().parent().parent()
+    //get the form data
+  let  form  = $("form#addSubSectionForm"); //here is the modal form to add section
+  form.find("#title_2").val(el.getAttribute("data-name"));
+  form.find("#section_mount_id").val(el.getAttribute("data-parent-id"));
+  let url = "/lms/api/create/subsection/"
+  let sectionRes = createAnyResource('POST',url,form)
+  console.log(rootSectionBloc.html())
+  let clonedNode = rootSectionBloc.clone(true);
+  clonedNode.insertAfter(rootSectionBloc);
+  window.location.reload();
 };
 
 window.exportSection = (el) => {
@@ -7477,6 +9548,21 @@ window.exportSection = (el) => {
 //handle state positioning
 
 class Step6 extends React.Component {
+  showAdvancedSettings(e){
+    e.preventDefault();
+  
+    let target = document.querySelector("#slideeffect")
+    target.style.width = "80%"
+    target.style.left="0"
+    $("#slideeffect").fadeIn("slow")
+     $("#slideeffect").css({width:"80%"})
+  }
+  
+  closeAdvancedSettingsPanel(e){
+    e.preventDefault()
+    $("#slideeffect").fadeOut("slow")
+    $("#slideeffect").css({width:"0px"})
+  }
   render() {
     if (this.props.currentStep !== 4) {
       return null;
@@ -7485,39 +9571,352 @@ class Step6 extends React.Component {
       <React.Fragment>
         {" "}
         <div className="tab-pane" id="seo">
-          <div className="row justify-content-center">
-            <div className="col-md-8">
-              <div className="form-group row mb-3">
-                <label
-                  className="col-md-2 col-form-label"
-                  for="website_keywords"
-                >
-                  Add Field Name
-                </label>
-                <div className="col-md-10">
-                  <input
-                    type="text"
-                    className="form-control bootstrap-tag-input"
-                    id="meta_keywords"
-                    name="meta_keywords"
-                    data-role="tagsinput"
-                    style={{ width: "100%", display: "none" }}
-                    placeholder="Write a keyword and then press enter button"
-                  />
-                  <div className="bootstrap-tagsinput">
-                    <input
-                      size="43"
-                      type="text"
-                      placeholder="Write a keyword and then press enter button"
-                    />
-                  </div>
+          <div className="row">
+            <div className="col-md-12"> 
+
+
+
+            
+
+
+
+            <div class="group-add-form">
+
+
+
+
+                <div className=" form-group col-md-6 fl-left">
+                        <div className="col-md-10  fl-left author">
+                        <label>Group Name</label>
+                           <input
+                            type="text"
+                            placeholder={"Add a new member to group by email"}
+                              
+                            className="form-control fl-left"
+                            id="member-inset"
+                            name="name"
+                            disabled
+                          />
+
+                      </div>
                 </div>
-              </div>
+
+               <div className=" form-group col-md-6 fl-left">
+                        <div className="col-md-10  fl-left author">
+                          <input
+                            type="text"
+                            placeholder={"Add a new member to group by email"}
+                              
+                            className="form-control fl-left"
+                            id="member-inset"
+                            name="member"
+                            disabled
+                          />
+                        </div>
+                         <div class="col-md-2  fl-left">
+                            <button
+                              type="button"
+
+                            
+                              className="small text-white"
+
+
+                                onClick={(e) => {
+                                  e.preventDefault()
+                
+                          swal({
+                            text: 'Search for a student or instructor to add to the group by name/email/ phone number. e.g. "saladin jake ".',
+                            content: "input",
+                            button: {
+                            text: "Search!",
+                            closeModal: false,
+                            },
+                          })
+                          .then(name => {
+                            if (!name) {
+
+                             return swal("No instructor email/name was entered!");
+                                
+                            }
+                            
+                            if(name){    
+                                 return swal("Success!", "The Instructor was found", "Success");
+                                  
+                             }else{
+
+                                
+                                  swal("Error", "We could not find instructor", "error");
+                        
+                                  swal.stopLoading();
+                                 return swal.close();
+                            
+
+                             }
+                          })
+                          
+                           
+                          
+
+                    }}
+
+                            >
+                              <i style={{marginTop:"-20px"}} class="fa fa-undo fa-2x"></i>
+                            </button>
+                            </div>
+
+                        <br />
+                        <br />
+                        <label class="col-md-12 col-form-label" for="level">
+                    Member<span className="required">*</span></label>
+                </div>
+
+
+
+                <div className=" form-group col-md-12 fl-left">
+                        <div className="col-md-10  fl-left author">
+                          <select>
+                            <option value="1">Student</option>
+                             <option value="2">Readers</option>{/*this is not part of the first iteration of the contract*/}
+                              <option value="3">Authors</option>
+                          </select>
+
+                      </div>
+                </div>
+
+
+                <div className=" form-group col-md-6 fl-left">
+                        <div className="col-md-10  fl-left author">
+                          <input type="hidden" name="course"  id="group_course_id"/>
+
+                      </div>
+                </div>
+
+
+                         <div class="toggleslider pull-left"><a href="" onClick={(e)=>{}}>Create New group</a></div>
+
             </div>
-            <div className="col-md-8">
-              <div className="form-group row mb-3"></div>
+      
+      
+      
+      {/*here is what you can manage*/}
+      
+      <div class="col-md-12 configurations">
+<div class="toggleslider"><a href="" onClick={(e)=>{this.showAdvancedSettings(e)}}>Advanced Settings</a></div>
+            <div class="toggleslider"><a href="" onClick={(e)=>{}}>Add new user to group</a></div>
+   
+
+  <div class="pull-left col-md-6">
+<h1 class=" ">Group Configurations</h1>
+    <p>Configuration settings for different possible group of learners</p>
+  </div>
+  
+  <div class="pull-right col-md-12">
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="name-col">Course General Settings</th>
+                    <th>Can Edit</th>
+                    <th>Can Delete</th>
+                    <th>Can Read</th>
+                    <th>Can Create</th>
+                    <th>5</th>
+                    <th>6</th>
+                    <th class="missed-col">Revert</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="student">
+                    <td class="name-col">Free Course Enrolled Learners Group</td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+             <td class="missed-col">Undo Previledges</td>
+              </tr>
+                <tr class="student">
+                        <td class="name-col">Paid Enrolled Learners</td>
+                     <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+             <td class="missed-col">Undo Previledges</td>
+                </tr>
+                <tr class="student">
+                    <td class="name-col">Premium Members</td>
+                     
+                <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+             <td class="missed-col">Undo Previledges</td>
+                </tr>
+                <tr class="student">
+                    <td class="name-col">Subscribers Group</td>
+                     <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+             <td class="missed-col">Undo Previledges</td>
+                </tr>
+                <tr class="student">
+                    <td class="name-col">MultiNational Learning Group</td>
+                      
+                     <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+             <td class="missed-col">Undo Previledges</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+  </div>
+
+
+
+
+
+
+  
+  <div class="slideeffect" id="slideeffect">
+  <p class="closeslide" ><a onClick={(e)=>{this.closeAdvancedSettingsPanel(e)}} href="">X</a></p>
+   
+    
+      
+  <div class="pull-left col-md-6">
+<h1 class=" ">Advanced Settings</h1>
+    <p>Configuration settings for specific course features</p>
+  </div>
+  
+  <div class="pull-right col-md-12" style={{height:"500px",overflowY:"scroll",overflowX:"hidden",borderTop:"4px solid #fff"}}>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="name-col">Advanced Settings</th>
+                    <th>Can Edit</th>
+                    <th>Can Delete</th>
+                    <th>Can Read</th>
+                    <th>Can Create</th>
+                    <th>5</th>
+                    <th>6</th>
+                    <th class="missed-col">Revert</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="student">
+                    <td class="name-col">Free Course Enrolled Learners Group</td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+             <td class="missed-col">Undo Previledges</td>
+              </tr>
+                <tr class="student">
+                        <td class="name-col">Paid Enrolled Learners</td>
+                     <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+             <td class="missed-col">Undo Previledges</td>
+                </tr>
+                <tr class="student">
+                    <td class="name-col">Premium Members</td>
+                     
+                <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+             <td class="missed-col">Undo Previledges</td>
+                </tr>
+                <tr class="student">
+                    <td class="name-col">Subscribers Group</td>
+                     <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+             <td class="missed-col">Undo Previledges</td>
+                </tr>
+                <tr class="student">
+                    <td class="name-col">MultiNational Learning Group</td>
+                      
+                     <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+                  
+                    <td class="attend-col"><input type="checkbox" /></td>
+             <td class="missed-col">Undo Previledges</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+  </div>
+
+
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+      
+      
+      
+      {/*ends work here*/}
+            
             </div>
-          </div>
+      </div>
         </div>
       </React.Fragment>
     );
@@ -7592,13 +9991,22 @@ class Step8 extends React.Component {
     var output = document.getElementById("fileList");
     var children = "";
     for (var i = 0; i < input.files.length; ++i) {
-      children +=
-        "<tr><td>" +
-        input.files.item(i).name +
-        '<span class="remove-list" onclick="return this.parentNode.remove()">X</span>' +
-        "</td></tr>";
+    console.log(input.files.item(i))
+    
+    children = `<tr class="col-md-3"><td>
+        ${input.files.item(i).name} 
+       
+        </td>
+    <td> ${input.files.item(i).lastModifiedDate}</td>
+    <td>${input.files.item(i).type}</td>
+    <td><img style="height:200px" width="200px" src="${input.files.item(i).name}" /></td>
+    <td> <span class="remove-list fa fa-trash" onclick="return this.parentElement.parentNode.remove()"></span></td>
+    
+    </tr>`
+      output  = $(output);
+    output.append(children)
     }
-    output.innerHTML = children;
+    
   };
   render() {
     if (this.props.currentStep !== 8) {
@@ -7614,30 +10022,30 @@ class Step8 extends React.Component {
                   <i className="fa fa-check-all"></i>
                 </h2>
 
-                <div class="divbox">
-                  <div class="custom-file">
+                <div class="col-md-12">
+                  <div class="form-group">
                     <input
                       type="file"
-                      class="custom-file-input-style"
+                      class="form-control"
                       id="file"
                       multiple
                       onChange={this.updateList}
                     />
                     <label class="custom-file-label" for="file">
-                      <img
-                        width="30"
-                        src="https://image.flaticon.com/icons/svg/54/54565.svg"
-                      />{" "}
-                      Upload Files
+                     
+                      Upload Multiple files 
                     </label>
                   </div>
                 </div>
 
-                <table>
-                  <th>File Name</th>
-                  <th>image url</th>
-                  <th>preview</th>
-                  <th>Action</th>
+                <table class="table col-md-12">
+        <thead style={{background:"rgba(8,23,200)"}}>
+                  <th class="col-md-3" style={{color:"#fff"}}>File Name</th>
+                  <th class="col-md-3" style={{color:"#fff"}}>Last Modified</th>
+                  <th class="col-md-3" style={{color:"#fff"}}>Type</th>
+          <th class="col-md-3" style={{color:"#fff"}}>Preview</th>
+                  <th class="col-md-3" style={{color:"#fff"}}>Action</th>
+         </thead>
                   <tbody id="fileList" class="file-list"></tbody>
                 </table>
               </div>
