@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Datas from "../../data/404/error.json";
 import { Link } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
-import HeaderTwo from "../../components/HeaderTwo";
+
 import Footer from "../../components/Footer";
 import { Styles } from "./styles/pageNotFound.js";
 import NavBar from "components/Navbar";

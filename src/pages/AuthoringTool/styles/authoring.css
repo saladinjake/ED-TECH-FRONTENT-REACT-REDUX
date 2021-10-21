@@ -17358,17 +17358,17 @@ border-left: 4px solid #eaeaea;
 
 
 .schedules-form input{
-	  padding:22px;
+    padding:22px;
 }
 
 
 .schedules-form select {
-	height:50px;
-	 padding:10px;
+  height:50px;
+   padding:10px;
 }
 .schedules-form select option{
-	font-size:40px;
-	height:40px;
+  font-size:40px;
+  height:40px;
 }
 
 
@@ -17391,17 +17391,17 @@ border-left: 4px solid #eaeaea;
 
 
 #schedules-form input{
-	  padding:22px;
+    padding:22px;
 }
 
 
 #schedules-form select {
-	height:50px;
-	 padding:10px;
+  height:50px;
+   padding:10px;
 }
 #schedules-form select option{
-	font-size:40px;
-	height:40px;
+  font-size:40px;
+  height:40px;
 }
 
 
@@ -17418,17 +17418,17 @@ border-left: 4px solid #eaeaea;
 
 
 #stepUpFormWithAI2 input{
-	  padding:22px;
+    padding:22px;
 }
 
 
 #stepUpFormWithAI2 select {
-	height:50px;
-	 padding:10px;
+  height:50px;
+   padding:10px;
 }
 #stepUpFormWithAI2 select option{
-	font-size:40px;
-	height:40px;
+  font-size:40px;
+  height:40px;
 }
 
 
@@ -17453,17 +17453,17 @@ border-left: 4px solid #eaeaea;
 
 
 #stepUpFormWithAI input{
-	  padding:22px;
+    padding:22px;
 }
 
 
 #stepUpFormWithAI select {
-	height:50px;
-	 padding:10px;
+  height:50px;
+   padding:10px;
 }
 #stepUpFormWithAI select option{
-	font-size:40px;
-	height:40px;
+  font-size:40px;
+  height:40px;
 }
 
 
@@ -17520,8 +17520,8 @@ nav.action-figure{
     -webkit-transition:all 200ms ease-in;
     -o-transition:all 200ms ease-in;
     transition:all 200ms ease-in;
-	
-	 -webkit-transition: border-color 0.15s ease-in-out,
+  
+   -webkit-transition: border-color 0.15s ease-in-out,
     -webkit-box-shadow 0.15s ease-in-out;
   transition: border-color 0.15s ease-in-out,
     -webkit-box-shadow 0.15s ease-in-out;
@@ -17538,9 +17538,9 @@ nav.action-figure ul{
    background:#ffff;
     overflow:hidden;
     border-right: 4px solid rgba(8,23,200);
-	
-	
-	 -webkit-transition: border-color 0.15s ease-in-out,
+  
+  
+   -webkit-transition: border-color 0.15s ease-in-out,
     -webkit-box-shadow 0.15s ease-in-out;
   transition: border-color 0.15s ease-in-out,
     -webkit-box-shadow 0.15s ease-in-out;
@@ -17579,8 +17579,8 @@ input.menu-xtrigger ~ label{
     font-size:14px;
     
     position:absolute;
-    top:20px;
-    right:40px;
+    top:90px;
+    left:40px;
     -moz-transition:all 200ms ease-in;
     -webkit-transition:all 200ms ease-in;
     -o-transition:all 200ms ease-in;
@@ -17907,15 +17907,15 @@ fl-rightside{
 
 
 .mdl-layout__content{
-	width:100%;
-	
+  width:100%;
+  
 }
 
 
 
 .card1,.card2{
-	
-	
+  
+  
 }
 
 

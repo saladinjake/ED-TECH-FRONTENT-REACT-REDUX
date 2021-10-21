@@ -13,7 +13,7 @@ import Dropzone, { ImageFile } from "react-dropzone";
 //import PropTypes from "prop-types"
 // Complete SortableJS (with all plugins)
 import Sortable from "sortablejs/modular/sortable.complete.esm.js"; 
-import Lessons from "./dynamic_content";
+//import Lessons from "./dynamic_content";
 /*magicican victor jake dibs*/
 import  { getTemplateType } from "./markdown_generator"
 import loading_image from "assets/gifs/loading-buffering.gif";
@@ -774,216 +774,26 @@ export default class MasterForm extends React.Component {
       canSubmit: false,
     };
     /*movement logic data*/
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChange = this.handleInputChange.bind(this);
     this._next = this._next.bind(this);
     this._prev = this._prev.bind(this);
   }
   
 
    handleInputChange = (event) => {
-   
-
+    
       let { name, value } = event.target;
-      localStorage.setItem(name, value);
-       let imageUrl = ""
-      console.log(event.target.value)
-      if(event.target.name == "entrance_exam_required"){
-        //(boolean) is for laravel or php
-        if(value=="false"){
-          value = false;
-        }else{
-          value = true
-        }
-
-
-         //logic 1 - automate state processing of form data
-        //dynamically hooks state fields to current value
-      this.setState(
-            {
-              [name]: value,
-            },
-            function () {
-              /*validation hooks*/
-              this.validateField(name, value);
-            }
-      );
-
-
-
-
-      }else if(event.target.name == "card_image"){
-        //handle image upload here
-
-        const fileUploader = document.getElementById('file-uploader');
-        const feedback = document.getElementById('feedback');
-        const progress = document.getElementById('progress');
-        const reader = new FileReader();
-
-      //fileUploader.addEventListener('change', (event) => {
-        const files = event.target.files;
-        const file = files[0];
-       
-        reader.readAsDataURL(file);
-        reader.addEventListener('progress', (ev) => {
-          if (ev.loaded && ev.total) {
-            const percent = (ev.loaded / ev.total) * 100;
-            progress.value = percent;
-            document.getElementById('progress-label').innerHTML = Math.round(percent) + '%';
-            if (percent === 100) {
-              let msg = `<span style="color:green;">File <u><b>${file.name}</b></u> has been uploaded successfully.</span>`;
-              feedback.innerHTML = msg;
-              // call upload action to cloudinary api
-              const formData = new FormData();
-              formData.append("file", file);
-              formData.append("upload_preset", "hpvklb3p");
-              // eslint-disable-next-line no-undef
-              fetch("https://api.cloudinary.com/v1_1/questence/image/upload", {
-                method: "POST",
-                body: formData,
-              })
-                .then((response) => response.json())
-                .then((data) => {
-
-                  if (typeof data.secure_url !== "undefined") { // ensure the api saving data of uploaded 3rdparty image has a return call to the iamge successfully uploaded
-                    imageUrl = data.secure_url; //get the generated image url
-                    // toast.success("upload successful");
-                     console.log("here made it thru", imageUrl)
-                    // var button = document.querySelector('.save-generic');
-                   var slideout = document.getElementById('notifier');
-                  let successSlide = slideout.querySelector(".success-notification")
-                  // let errorSlide = slideout.querySelector(".error-notification")
-                  slideout.classList.toggle('visible');
-
-                  localStorage.setItem(event.target.name, imageUrl);
-
-
-                    value = imageUrl; 
-                    // return imageUrl
-
-
-                     //logic 1 - automate state processing of form data
-                      //dynamically hooks state fields to current value
-                    this.setState(
-                          {
-                            card_image: imageUrl,
-                          },
-                          function () {
-                            /*validation hooks*/
-                            this.validateField(name, value);
-                          }
-                    );
-
-
-                  } else {
-                     //toast.error("could not upload image");
-                    return false
-                  }
-                })
-                .catch((error) => {
-                   toast.error("API KEY ***** FOR CLOUDINARY NOT SET. EITHER API KEY HAS EXHAUSTED ITS TRIAL PLAN");
-                  throw error;
-                  return false;
-                });
-           
-            }
-          }
-        });
-      //});
-      }else{
-        localStorage.setItem(name, value)
-
-         //logic 1 - automate state processing of form data
-        //dynamically hooks state fields to current value
-      // this.setState(
-      //       {
-      //         [name]: value,
-      //       },
-      //       function () {
-      //         /*validation hooks*/
-      //         this.validateField(name, value);
-      //       }
-      //);
-
-
-       this.setState({
-      ...this.state,
-      [event.target.name]: event.target.value,
-    });
-
-      }
-       
-
-
+      localStorage.setItem(name,value)
+      this.setState({
+        ...this.state,
+        [event.target.name]: event.target.value,
+      });
+      
 
   };
 
 
 
-  // const [htmlDescription, setHtmlDescription] = useState("");
-  handleHtmlDescriptionChange = (newValue) => {
-     localStorage.setItem("description", newValue);
-    this.setState({
-      ...this.state,
-      description: newValue
-    })
-  }
-
-  handleHtmlCurriculumChange = (newValue) =>{
-       localStorage.setItem("curriculum", newValue);
-    this.setState({
-      ...this.state,
-      curriculum: newValue
-    })
-  }
-
-  // const [htmlOverView, setHtmlCourseOverView] = useState("");
-  handleHtmlCourseOverViewChange = (newValue) => {
-       localStorage.setItem("overview", newValue);
-    this.setState({
-      ...this.state,
-      overview: newValue
-    })
-  }
-
-  // const [htmlOutcome, setHtmlOutCome] = useState("");
-  handleHtmlOutComeChange =(newValue) => {
-     localStorage.setItem("learning_expectation", newValue);
-    this.setState({
-      ...this.state,
-      learning_expectation: newValue
-    })
-  }
-
-  // const [htmlTopics, setHtmlTopics] = useState("");
-  handleHtmlTopicsChange = (newValue) =>{
-       localStorage.setItem("topics", newValue);
-    this.setState({
-      ...this.state,
-      topics: newValue
-    })
-  }
-
-  // const [htmlPrerequisites, setHtmlPrerequisites] = useState("");
-  handleHtmlPrerequisitesChange =(newValue) => {
-      localStorage.setItem("prerequisite", newValue);
-    this.setState({
-      ...this.state,
-      prerequisite: newValue
-    })
-  }
-
-
-
-  handleChangeTextEditor =(nameKey = "", valueData = "") => {
-    if (nameKey.length > 0 && valueData.length > 0) {
-      this.setState({
-        ...this.state,
-        [nameKey]: valueData,
-      });
-    }
-
-    console.log(this.state)
-  }
 
    /*navigation skipper*/
 
@@ -1100,33 +910,7 @@ export default class MasterForm extends React.Component {
         this.state.formValidity.code &&
         this.state.formValidity.institution  
         //&&
-        // this.state.formValidity.run &&
-        // this.state.formValidity.card_image &&
-        // this.state.formValidity.intro_video &&
-        // this.state.formValidity.description &&
-        // this.state.formValidity.overview &&
-        // this.state.formValidity.learning_expectation &&
-        // this.state.formValidity.curriculum &&
-        // this.state.formValidity.level &&  //int
-        // this.state.formValidity.enrolment_type &&
-        // this.state.formValidity.entrance_exam_required && 
-        // this.state.formValidity.cost &&
-        // this.state.formValidity.auditing &&
-        // this.state.formValidity.course_pacing &&
-        // this.state.formValidity.course_start_date_time &&  //2021-08-26T17:13:00+01:00
-        // this.state.formValidity.course_end_date_time &&
-        // this.state.formValidity.enrolment_start_date_time &&
-        // this.state.formValidity.enrolment_end_date_time &&
-        // this.state.formValidity.course_language &&
-        // this.state.formValidity.requirement_hours_per_week && 
-        // this.state.formValidity.requirement_no_of_week && 
-        // this.state.formValidity.grace_period_after_deadline &&
-        // this.state.formValidity.publication_status && 
-        // this.state.formValidity.institution && 
-        // this.state.formValidity.author && 
-        // this.state.formValidity.prerequisite &&
-        // this.state.formValidity.authoring_team
-      
+        
         
     });
   }
@@ -1221,44 +1005,11 @@ export default class MasterForm extends React.Component {
             if( localStorage.getItem( e.attr("name") ) ){
                console.log(e.attr("name"))
                formEl.find("#"+ e.attr("name")).val(localStorage.getItem( e.attr("name")))
-               let classAttr = `ql-editor[data-placeholder=${e.attr("name")}]`
-               if(formEl.find("." + classAttr )){
-                // alert(true)
-                //   formEl.find("." + classAttr ).html(localStorage.getItem( e.attr("name")))
-                //     this.setState({
-                //   ...this.state,
-                //   [e.attr("name")]:localStorage.getItem( e.attr("name"))
-                // })
-               }
-
-               
-
-              // if("SELECT"== tagName){
-              //   // GET THE OPTION INDEX OF THE INITIALLY SELECTED 
-              // }else if("INPUT"== tagName){
-                 
-
-              //   this.setState({
-              //     ...this.state,
-              //     [e.attr("name")]:localStorage.getItem( e.attr("name"))
-              //   })
-              // }else {
-              //   //THIS IS DOCUMENT EDITOR
-
-              //   this.setState({
-              //     ...this.state,
-              //     [e.attr("name")]:localStorage.getItem( e.attr("name"))
-              //   })
-
-              // }
+               let classAttr = `ql-editor[data-placeholder=${e.attr("name")}]`        
             }
           })
 
 
-    
-
-    // let T = new  TinyMyce();
-    //  T.render("")
   }
 
   /*{key:val}, ["id","name", "email"]*/
@@ -1407,7 +1158,8 @@ export default class MasterForm extends React.Component {
     
     return (
       <Fragment>
-        <AddHead />
+        <NavBar />
+        <br/><br/><br/><br/><br/><br/>
 
         <div className="row" id="container-fullscreen">
           <div className="col-md-12">
@@ -1480,7 +1232,7 @@ export default class MasterForm extends React.Component {
 
                   
 
-                    <br/>
+                    <br/><br /><br />
 
 
 
@@ -1665,7 +1417,7 @@ export default class MasterForm extends React.Component {
                        novalidate
                       // enctype="multipart/form-data"
                       enctype="application/x-www-form-urlencoded"
-                      style={{height:"2200px"}}
+                      style={{height:"300px"}}
                     >
                       {/*<CSRFToken /> Ready to django into the server*/}
                       Ensure to select an authoring team*
@@ -1673,7 +1425,7 @@ export default class MasterForm extends React.Component {
                       <Step1
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleInputChange}
+                        handleChange={this.handleChange}
                         stateInitial={this.state}
                         
                         
@@ -1705,119 +1457,7 @@ export default class MasterForm extends React.Component {
                         saveAndContinue={this.saveAndContinue}
                       />
 
-                      <Step3
-                      stateInitial={this.state}
-                        currentStep={this.state.currentStep}
-                        finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleInputChange}
-                        comment={this.state.comment}
-                        canSubmit={this.state.canSubmit}
-                        institutions={institutions} 
-                        languages={languages}
-                        instructors={instructors} 
-                        courses={courses}
-                        saveAndContinue={this.saveAndContinue}
-                        stateAction={this.handleChangeTextEditor}
-                      />
-
-                      <Step4
-                      stateInitial={this.state}
-                        currentStep={this.state.currentStep}
-                        finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleInputChange}
-                        comment={this.state.comment}
-                        canSubmit={this.state.canSubmit}
-                        institutions={institutions} 
-                        languages={languages}
-                        instructors={instructors} 
-                        courses={courses}
-                        saveAndContinue={this.saveAndContinue}
-                        stateAction={this.handleChangeTextEditor}
-                      />
-
-                      <Step2
-                      stateInitial={this.state}
-                        currentStep={this.state.currentStep}
-                        finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleInputChange}
-                        stateAction={this.handleChangeTextEditor}
-                        errorPasswordClass={this.errorClass(
-                          this.state.formErrors.password
-                        )}
-                        password={this.state.password}
-                        errorPassword={this.state.formErrors.password}
-                        errorPasswordConfirmationClass={this.errorClass(
-                          this.state.formErrors.passwordConfirmation
-                        )}
-                        passwordConfirmation={this.state.passwordConfirmation}
-                        errorPasswordConfirmation={
-                          this.state.formErrors.passwordConfirmation
-                        }
-                        institutions={institutions} 
-                        languages={languages}
-                        instructors={instructors} 
-                        courses={courses}
-                        saveAndContinue={this.saveAndContinue}
-                      />
-
-                      <Step5
-                      stateInitial={this.state}
-                        currentStep={this.state.currentStep}
-                        finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleInputChange}
-                        comment={this.state.comment}
-                        canSubmit={this.state.canSubmit}
-                        institutions={institutions} 
-                        languages={languages}
-                        instructors={instructors} 
-                        courses={courses}
-                        saveAndContinue={this.saveAndContinue}
-                        stateAction={this.handleChangeTextEditor}
-                      />
-
-                      <Step6
-                      stateInitial={this.state}
-                        currentStep={this.state.currentStep}
-                        finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleInputChange}
-                        comment={this.state.comment}
-                        canSubmit={this.state.canSubmit}
-                        institutions={institutions} 
-                        languages={languages}
-                        instructors={instructors} 
-                        courses={courses}
-                        saveAndContinue={this.saveAndContinue}
-                        stateAction={this.handleChangeTextEditor}
-                      />
-                      <Step7
-                        currentStep={this.state.currentStep}
-                        finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleInputChange}
-                        comment={this.state.comment}
-                        canSubmit={this.state.canSubmit}
-                        institutions={institutions} 
-                        languages={languages}
-                        instructors={instructors} 
-                        courses={courses}
-                        saveAndContinue={this.saveAndContinue}
-                        stateAction={this.handleChangeTextEditor}
-                      />
-
-                      <Step8
-                      stateInitial={this.state}
-                        currentStep={this.state.currentStep}
-                        finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleInputChange}
-                        comment={this.state.comment}
-                        canSubmit={this.state.canSubmit}
-                        institutions={institutions} 
-                        languages={languages}
-                        instructors={instructors} 
-                        courses={courses}
-                        saveAndContinue={this.saveAndContinue}
-                        stateAction={this.handleChangeTextEditor}
-                      />
-
+                      
                      
                     </form>
 
@@ -1867,27 +1507,7 @@ class Step1 extends React.Component {
       sinstitution = localStorage.getItem("institution") || ""
 
     }
-    let sdescription, soverview, sprerequisite, slearning_expectation, scurriculum
-    if(localStorage.getItem("overview")){
-
-      soverview = localStorage.getItem("overview") || ""
-    }
-
-    if(localStorage.getItem("description")){
-
-      sdescription = localStorage.getItem("description") || ""
-    }
-    if(localStorage.getItem("prerequisite")){
-      sprerequisite = localStorage.getItem("prerequisite") || ""
-    }
-    if(localStorage.getItem("learning_expectation")){
-      slearning_expectation = localStorage.getItem("learning_expectation") || ""
-    }
-    if(localStorage.getItem("curriculum")){
-      scurriculum = localStorage.getItem("curriculum") || ""
-    }
-
-
+    
     this.state = {
       /*multistep logic data*/
       currentStep: 1,
@@ -1904,51 +1524,6 @@ class Step1 extends React.Component {
       institution: sinstitution,   //keypair preporpulated set of inst id
       author: sauthor,  //keypair preporpulated set of author id
 
-      description: sdescription,
-      overview: soverview,
-      learning_expectation: slearning_expectation,
-      curriculum: scurriculum,
-     
-
-
-
-      
-      //state fields
-      /*request form data*/
-      
-        
-        run: "",
-        card_image: "",
-        intro_video: "",
-        level: 1,  //int
-        enrolment_type: 1,
-        entrance_exam_required: true, 
-        cost: 100.0,  //float
-        auditing: true,
-        course_pacing: 1, //int
-        course_start_date_time: "",  //2021-08-26T17:13:00+01:00
-        course_end_date_time: "",
-        enrolment_start_date_time: "",
-        enrolment_end_date_time: "",
-        course_language: "english",
-        requirement_hours_per_week: 1, //int
-        requirement_no_of_week: 1,  //int
-        grace_period_after_deadline: 1, //int
-        publication_status: 2,  //int
-        
-        prerequisite: [
-              //key pairs ids of courses
-        ],
-        authoring_team: [
-                              //key pair authors
-            
-        ],
-
-        /* request resource data*/
-        languages:[], //  getdata
-        instructors:[], //  getdata
-        courses:[], //  getdata
-        institutions:[],  //  getdata
         currentCourseId:"", //for tracking saved course currently working on
         
       formErrors: {
@@ -2298,6 +1873,7 @@ class Step1 extends React.Component {
                       placeholder="Enter course code"
                       value={this.props.code}
                      onChange={this.props.handleChange}
+                     maxlength="10"
                     />
                     <label
                     className="col-md-12 col-form-label"
@@ -2335,7 +1911,7 @@ class Step1 extends React.Component {
                       id="name"
                       name="name"
                       placeholder="Enter course title"
-
+                    maxlength="150"
                       value={this.props.course_name}
                      onChange={this.props.handleChange}
                     />
@@ -2472,333 +2048,6 @@ class Step1 extends React.Component {
                         <label class="col-md-12 col-form-label" for="level">
                     Author<span className="required">*</span></label>
                 </div>
-
-
-
-                
-                <div className="form-group col-md-12 fl-left">
-                 
-                  <div className="">
-
-
-                  <textarea
-                      name="description"
-                      id="description"
-                      
-                      className="form-control"
-                      placeholder="Short description"
-                       value={this.props.description}
-                     onChange={this.props.handleChange}
-                    ></textarea>
-                    
-
-
-                     <HTMLForm
-                        title="description"
-
-                        placeholder={"description"}
-                        value={this.state.description || ""}
-                        action={this.props.actions.description}
-                        stateAction={this.props.actions.stateAction}
-                        name={"description"}
-                      />
-
-                     <label
-                    className="col-md-12 col-form-label"
-                    for="short_description"
-                  >
-                    Course Short description
-                  </label>
-                  </div>
-                </div>
-
-
-
-
-
-
-
-                <div className="form-group col-md-12 fl-left">
-                 
-                  <div className="">
-                    <textarea
-                      name="overview"
-                      id="overview"
-                      style={{display:"none"}}
-                      
-                      className="form-control"
-                      placeholder="Short description"
-                       value={this.props.overview}
-                     onChange={this.props.handleChange}
-                    ></textarea>
-
-
-
-
-                     <HTMLForm
-                        title="overview"
-
-                        placeholder={"overview"}
-                        value={this.state.overview || ""}
-                        action={this.props.actions.overview }
-                        stateAction={this.props.actions.stateAction}
-                        name={"overview"}
-                      />
-
-                     <label
-                    className="col-md-12 col-form-label"
-                    for="short_description"
-                  >
-                    Course Overview
-                  </label>
-                  </div>
-                </div>
-
-
-
-                 <div className="form-group col-md-12 fl-left">
-                  <label className="col-md-12 col-form-label" for="description">
-                    Curriculum
-                  </label>
-                  <div className="">
-
-                  <textarea
-                      name="curriculum"
-                      id="curriculum"
-                      style={{display:"none"}}
-                      
-                      className="form-control"
-                      placeholder="Short description"
-                       value={this.props.curriculum}
-                     onChange={this.props.handleChange}
-                    ></textarea>
-
-                    <HTMLForm
-                        title="curriculum"
-
-                        placeholder={"curriculum"}
-                        value={this.state.curriculum || ""}
-                        action={this.props.actions.curriculum}
-                        stateAction={this.props.actions.stateAction}
-                        name={"curriculum"}
-                      />
-                  </div>
-                </div>
-
-
-                <div className="form-group col-md-12 fl-left">
-                  <label className="col-md-12 col-form-label" for="description">
-                    What You Will Learn
-                  </label>
-                  <div className="">
-
-                  <textarea
-                      name="learning_expectation"
-                      id="learning_expectation"
-                      style={{display:"none"}}
-                      
-                      className="form-control"
-                      placeholder="Short description"
-                       value={this.props.learning_expectation || ""}
-                     onChange={this.props.handleChange}
-                    ></textarea>
-
-                    <HTMLForm
-                        title="learning_expectation"
-
-                        placeholder={"learning_expectation"}
-                        value={this.state.learning_expectation}
-                        action={this.props.actions.learning_expectation}
-                        stateAction={this.props.actions.stateAction}
-                        name={"learning_expectation"}
-                      />
-                  </div>
-                </div>
-
-
-
-
-
-                <div class="form-group  mb-3 col-md-6 fl-left">
-                 
-                  <div class="" data-select2-id="94">
-                    <select
-                      style={{ position: "relative", zIndex: "1" }}
-                      class="form-control select2 select2-hidden-accessible"
-                      data-toggle="select2"
-                      name="level"
-                      id="level"
-                      data-select2-id="level"
-                      tabindex="-1"
-                      aria-hidden="true"
-                       value={this.props.enrolment_type}
-                     onChange={this.props.handleChange}
-                    >
-                      <option value="1" data-select2-id="4">
-                        Introductory
-                      </option>
-                      <option value="2" data-select2-id="95">
-                        Intermediate
-                      </option>
-                      <option value="3" data-select2-id="96">
-                        Advanced
-                      </option>
-                    </select>
-
-
-                     <label class="col-md-12 col-form-label" for="level">
-                    Level
-                  </label>
-                  </div>
-                </div>
-
-
-
-
-                <div class="form-group  mb-3 col-md-6 fl-left">
-                  
-                  <div class="" data-select2-id="94">
-                    <select
-                      style={{ position: "relative", zIndex: "1" }}
-                      class="form-control select2 select2-hidden-accessible"
-                      data-toggle="select2"
-                      name="enrolment_type"
-                      id="enrolment_type"
-                      data-select2-id="level"
-                      tabindex="-1"
-                      aria-hidden="true"
-                       value={this.props.level}
-                     onChange={this.props.handleChange}
-                    >
-                      <option value="1" data-select2-id="4">
-                        Open
-                      </option>
-                      <option value="2" data-select2-id="95">
-                        By Invitation
-                      </option>
-                    </select>
-
-                    <label class="col-md-12 col-form-label" for="level">
-                    Enrollment Type
-                  </label>
-                  </div>
-                </div>
-
-
-                <div class="form-group  mb-3 col-md-6 fl-left">
-                 
-                  <div class="" data-select2-id="94">
-                    <select
-                      style={{ position: "relative", zIndex: "1" }}
-                      class="form-control select2 select2-hidden-accessible"
-                      data-toggle="select2"
-                      name="entrance_exam_required"
-                      id="entrance_exam_required"
-                      data-select2-id="level"
-                      tabindex="-1"
-                      aria-hidden="true"
-                       value={this.props.entrance_exam_required}
-                     onChange={this.props.handleChange}
-                    >
-                      <option value="false" data-select2-id="0">
-                        False
-                      </option>
-                      <option value="true" data-select2-id="1">
-                        True
-                      </option>
-                    </select>
-
-                     <label class="col-md-12 col-form-label" for="level">
-                    Entrance Exam Required
-                  </label>
-                  </div>
-                </div>
-
-
-
-
-                <div class="form-group  mb-3 col-md-6 fl-left">
-                 
-                  <div class="co" data-select2-id="94">
-                    <input
-                      style={{ position: "relative", zIndex: "1" }}
-                      type="checkbox"
-                      className="form-control"
-                      id="auditing"
-                      name="auditing"
-                      
-                       value={this.props.intro_video}
-                     onChange={this.props.handleChange}
-                    />
-
-                     <label class="col-md-12 col-form-label" for="level">
-                    Auditing
-                  </label>
-                  </div>
-                </div>
-
-                <div className="form-group col-md-6 fl-left">
-                  
-                  <div className="">
-                    <input
-                      style={{ position: "relative", zIndex: "1" }}
-                      type="text"
-                      className="form-control"
-                      id="intro_video"
-                      name="intro_video"
-                      placeholder="You tube url"
-                       value={this.props.intro_video}
-                     onChange={this.props.handleChange}
-                    />
-
-                    <label
-                    className="col-md-12 col-form-label"
-                    for="course_title"
-                  >
-                    video url<span className="required">*</span>{" "}
-                  </label>
-                  </div>
-                </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                <h2>Card Image</h2>
-
-                    <div class="file-drop-area col-md-6" style={{background: "#f5f5f5",
-  padding: "40px 0 20px 0", margin:"20px"}}>
-                      <span class="fake-btn">Choose files</span>
-                      <span class="file-msg"></span>
-                      <input id="card_image" name="card_image" class="file-input" type="file" multiple   accept="image/*"
-                               value={this.props.card_image}
-                               onChange={this.props.handleChange} />
-
-                                 <div id="feedback" style={{display:"none"}}>
-    
-  </div>
-  
-  <label  id="progress-label" for="progress" style={{display:"none"}}></label>
-  <progress id="progress" value="0" max="100" style={{display:"none"}}> </progress>
-                    </div>
-
-                    
-
-                
-
-
-
-
-                
 
 
 

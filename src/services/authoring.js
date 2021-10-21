@@ -64,7 +64,7 @@ function twoDigits(d) {
     return d.toString();
 }
 
-function showNotificationSuccess(type="success",stitle="",message=""){
+export const showNotificationSuccess = (type="success",stitle="",message="") =>{
   
 
   $(document).ready(function(){
@@ -1315,7 +1315,7 @@ let dataObj ={}
       console.log(dataObj.response, dataObj.response.id)
       if(formEl.attr("id")=="create-course" || formEl.attr("id")=="stepUpFormWithAI2" ){
           if(mode.toLowerCase() =="post" && textStatus == "success"){
-             window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+             window.location.href= process.env.PUBLIC_URL + "/course/continue/edit/"+ dataObj.response.id
             return dataObj.response.id
           }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
              return dataObj.response.id

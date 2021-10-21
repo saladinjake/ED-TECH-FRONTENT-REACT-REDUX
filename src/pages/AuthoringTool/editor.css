@@ -1,4 +1,4 @@
-button-preview {
+.button-preview {
   display: block;
   margin: 5% auto 0;
 
@@ -6,12 +6,13 @@ button-preview {
   border: 2px solid #444;
   padding: 5px 10px;
 
-  &.md-close {
-    margin-top: 40px;
-  }
+ 
 }
 
-//Component
+ .button-preview .md-close {
+    margin-top: 40px;
+  }
+
 .md-modal-preview {
   position: fixed;
   top: 10px;
@@ -148,7 +149,7 @@ button-preview {
 @media screen and (min-width: 0) and (max-width: 991px) {
   .edit-focus .quill {
     position: absolute;
-    top: 0;
+    top: 200px;
     height: 226px;
     overflow: hidden;
     left: 0;

@@ -1,8 +1,22 @@
-import React, { useEffect, Fragment } from "react";
+import React, { useEffect, Fragment, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
+import { Link } from "react-router-dom"
 // import { Styles } from "./styles/sidebar.js"
 import "./styles/authoring.css";
 import "./styles/main.css";
+
+
+import "./css/text.css";
+import "./css/overview.css";
+import "./css/icons.css";
+
+import {
+  getCourses,
+  deleteApi,
+  showNotificationSuccess
+} from "services/authoring"
+
+import swal from "sweetalert"
 
 import $ from "jquery";
 
@@ -1071,28 +1085,203 @@ export const OverviewDash = () => {
 export const AddHead = () => {
   return (
     <div className="row ">
-      <div className="col-md-12">
-        <div className="card" style={{ height: "80px" }}>
-          <div className="card-body">
-            <h4 className="page-title">
-              {" "}
-              <i className="fa fa-home title_icon"></i> Courses{" "}
-            </h4>
-          </div>
-        </div>
-      </div>
+      
     </div>
   );
 };
 
 export const AddBoxes = () => {
   return (
-    <div className="row">
+
+
+  <Fragment>
+     
+      <Container>
+        <Row>
+         
+          <Col lg="12">
+            <div className="card-box" style={{ height: "480px", background: `url(${process.env.PUBLIC_URL + "/assets/images/partner1.jpg"})`, backgroundSize:"cover",repeat:"no-repeat" }}>
+              <div
+                className="bar-widget"
+                style={{ margin: "auto", width: "100%" }}
+              >
+                <div className="table-box">
+                  <div className="table-detail">
+                    <h4
+                      style={{
+                        fontWeight: "300px",
+                        color: "#333",
+                        fontSize: "45px",
+                        fontFamily: "Open Sans",
+                        lineHight: "34px",
+                        letterSpacing: "-1px",
+                        fontWeight: "normal",
+                      }}
+                    >
+                      Hello Guest,
+                    </h4>
+                    <p
+                      className="text-muted m-b-0 m-t-0"
+                      style={{
+                        fontFamily: "Open Sans",
+                        color: "#000",
+                        fontSize: "14px",
+                      }}
+                    >
+                      Welcome back to your questense dashboard.
+                    </p>
+                    <p
+                      className="text-muted m-b-0 m-t-0"
+                      style={{
+                        fontFamily: "Open Sans",
+                        color: "#000",
+                        fontSize: "14px",
+                      }}
+                    >
+                      You can continue editing your unfinished course                    </p>
+                    <br />
+                    <br />
+                    <a
+                      type="button"
+                      className="btn dropdown-toggle waves-effect"
+                      href={process.env.PUBLIC_URL + "/course/create/new"}
+                      style={{
+                        background: "rgb(2, 83, 200)",
+                        fontSize: "12px",
+                        marginLeft: "10px",
+                        fontWeight: "bold",
+                        fontFamily: "Open Sans",
+                        color: "#fff",
+                      }}
+                    >
+                      CREATE COURSE
+                    </a>
+                  </div>
+                  <div className="table-detail text-right" style={{background:"rgba(8,23,200);padding:10px"}}>
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Col>
+          
+        </Row>
+
+        <Row className="row">
+          <Col lg="3" sm="6">
+            <div className="widget-panel widget-style-2 bg-white">
+              <i className="md md-add text-info"></i>
+              <h2
+                className="m-0 text-dark-x counter font-600-x"
+                style={{
+                  fontFamily: "Open Sans",
+                  color: "#000",
+                  fontSize: "14px",
+                }}
+              >
+                {0}
+              </h2>
+              <div
+                className="text-muted-x m-t-5-x"
+                style={{
+                  fontFamily: "Open Sans",
+                  color: "#000",
+                  fontSize: "14px",
+                }}
+              >
+                Draft Courses
+              </div>
+            </div>
+          </Col>
+
+          <Col lg="3" sm="6">
+            <div className="widget-panel widget-style-2 bg-white">
+              <Link to={process.env.PUBLIC_URL + ``}>
+                <i className="md md-store-mall-directory  text-brown"></i>
+                <h2
+                  className="m-0 text-dark-x counter font-600-x"
+                  style={{
+                    fontFamily: "Open Sans",
+                    color: "#000",
+                    fontSize: "14px",
+                  }}
+                >
+                  {0}
+                </h2>
+                <div
+                  className="text-muted-x m-t-5-x"
+                  style={{
+                    fontFamily: "Open Sans",
+                    color: "#000",
+                    fontSize: "14px",
+                  }}
+                >
+                 Active Courses
+                </div>
+              </Link>
+            </div>
+          </Col>
+          <Col lg="3" sm="6">
+            <Link to={process.env.PUBLIC_URL + ``}>
+              <div className="widget-panel widget-style-2 bg-white">
+                <i className="md md-add-shopping-cart text-pink"></i>
+                <h2
+                  className="m-0 text-dark-x counter font-600-x"
+                  style={{
+                    fontFamily: "Open Sans",
+                    color: "#000",
+                    fontSize: "14px",
+                  }}
+                >
+                  {0}
+                </h2>
+                <div
+                  className="text-muted-x m-t-5-x"
+                  style={{
+                    fontFamily: "Open Sans",
+                    color: "#000",
+                    fontSize: "14px",
+                  }}
+                >
+                  Pending Courses
+                </div>
+              </div>
+            </Link>
+          </Col>
+          <Col lg="3" sm="6">
+            <div className="widget-panel widget-style-2 bg-white">
+              <i className="md md-account-child text-custom"></i>
+              <h2
+                className="m-0 text-dark-x counter font-600-x"
+                style={{
+                  fontFamily: "Open Sans",
+                  color: "#000",
+                  fontSize: "14px",
+                }}
+              >
+                {0}
+              </h2>
+              <div
+                className="text-muted-c m-t-5-x"
+                style={{
+                  fontFamily: "Open Sans",
+                  color: "#000",
+                  fontSize: "14px",
+                }}
+              >
+                Paid Courses
+              </div>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+
+    {/*<div className="row">
       <div className="col-md-12">
         <div className="card widget-inline">
           <div className="card-body p-0">
             <div className="row no-gutters">
-              <div className="col">
+              <div className="col" style={{background:"rgba(8,23,200)"}}>
                 <a href="#" className="text-secondary">
                   <div
                     className="card shadow-none m-0"
@@ -1101,7 +1290,7 @@ export const AddBoxes = () => {
                     <div className="card-body text-center">
                       <i
                         className="fa fa-link text-muted"
-                        style={{ fontSize: "24px" }}
+                        style={{ fontSize: "24px", color:"#fff" }}
                       ></i>
                       <h3>
                         <span>0 </span>
@@ -1112,7 +1301,7 @@ export const AddBoxes = () => {
                 </a>
               </div>
 
-              <div className="col">
+              <div className="col" style={{background:"rgba(8,23,200)"}}>
                 <a href="#" className="text-secondary">
                   <div
                     className="card shadow-none m-0 border-left"
@@ -1121,12 +1310,12 @@ export const AddBoxes = () => {
                     <div className="card-body text-center">
                       <i
                         className="fa fa-link-broken text-muted"
-                        style={{ fontSize: "24px" }}
+                        style={{ fontSize: "24px",color:"#fff" }}
                       ></i>
                       <h3>
                         <span>0 </span>
                       </h3>
-                      <p className="text-muted font-15 mb-0">Pending courses</p>
+                      <p className="text-muted font-15 mb-0" style={{color:"#fff"}}>Pending courses</p>
                     </div>
                   </div>
                 </a>
@@ -1195,24 +1384,33 @@ export const AddBoxes = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div>*/}
+
+    </Fragment>
+    
   );
 };
 
 export const AddFormBox = () => {
-  useEffect(() => {
+  const [courses, setcourses] = useState([]);
+  useEffect( async () => {
     //fetch all the categories
     //fetch all the language
     //fetch
-  });
+    const res = await getCourses();
+    
+    setcourses(res.results);
+    console.log(res.results)
+
+  },[]);
 
   return (
     <div className="row">
       <div className="col-md-12">
         <div className="card">
           <div className="card-body">
-            <h4 className="mb-3 header-title">Course list</h4>
-            <form
+            <h4 style={{background:"rgba(8,23,200),color:#fff;padding:10px"}} className="mb-3 header-title">Course list</h4>
+            {/*<form
               className="row justify-content-center"
               action="/user/courses"
               method="get"
@@ -1226,79 +1424,8 @@ export const AddFormBox = () => {
                     name="category_id"
                     id="category_id"
                   >
-                    <option value="all" selected>
-                      All
-                    </option>
-                    <optgroup label="ARTS & HUMANITIES ">
-                      <option value="69">Education</option>
-                      <option value="70">History</option>
-                      <option value="71">Political Science</option>
-                      <option value="72">Sociology</option>
-                      <option value="73">Geography</option>
-                      <option value="76">Media and Journalism</option>
-                      <option value="77">Architecture</option>
-                    </optgroup>
-                    <optgroup label="BUSINESS">
-                      <option value="86">Business Process Management </option>
-                      <option value="124">Service Management</option>
-                      <option value="125">Supply Chain Management</option>
-                      <option value="126">
-                        Sales and Marketing Management
-                      </option>
-                      <option value="127">Risk Management</option>
-                      <option value="128">Customer Service</option>
-                      <option value="129">Business Leadership</option>
-                      <option value="130">Human Resources</option>
-                      <option value="131">Finance and Banking</option>
-                      <option value="132">Accounting</option>
-                    </optgroup>
-                    <optgroup label="HEALTH CARE">
-                      <option value="88">Nursing </option>
-                      <option value="89">Disease and Disorders</option>
-                      <option value="90">Nutrition</option>
-                      <option value="91">Caregiving</option>
-                      <option value="92">Pharmacology</option>
-                    </optgroup>
-                    <optgroup label="LAW & SOCIAL SCIENCES">
-                      <option value="95">Law</option>
-                      <option value="96">Economics</option>
-                      <option value="97">Psychology</option>
-                    </optgroup>
-                    <optgroup label="INFORMATION TECHNOLOGY">
-                      <option value="100">Network and security</option>
-                      <option value="101">IT Management</option>
-                      <option value="102">Digital Marketing</option>
-                      <option value="103">
-                        Web Site and Application Development
-                      </option>
-                    </optgroup>
-                    <optgroup label="MATHEMATICS ">
-                      <option value="105">SS1 Mathematics</option>
-                      <option value="106">SS2 Mathematics</option>
-                      <option value="107">SS3 Mathematics</option>
-                    </optgroup>
-                    <optgroup label="ENGINEERING AND PHYSICAL SCIENCES">
-                      <option value="110">
-                        Computer Science and Engineering
-                      </option>
-                      <option value="111">Electrical Engineering </option>
-                      <option value="112">Mechanical Engineering</option>
-                      <option value="113">Chemical Engineering</option>
-                      <option value="114">Civil Engineering</option>
-                      <option value="116">Biology </option>
-                      <option value="117">Physics </option>
-                      <option value="118">Chemistry</option>
-                      <option value="119">Environmental Studies</option>
-                      <option value="120">Agricultural Science</option>
-                    </optgroup>
-                    <optgroup label="LANGUAGE ">
-                      <option value="134">English</option>
-                      <option value="135">Yoruba</option>
-                      <option value="136">Igbo</option>
-                      <option value="137">Hausa</option>
-                      <option value="138">Chinese</option>
-                      <option value="139">French</option>
-                    </optgroup>
+                   
+                    
                   </select>
                 </div>
               </div>
@@ -1351,7 +1478,7 @@ export const AddFormBox = () => {
                   Filter
                 </button>
               </div>
-            </form>
+            </form>*/}
 
             <div className="table-responsive-sm mt-4">
               <table
@@ -1388,23 +1515,16 @@ export const AddFormBox = () => {
                       colspan="1"
                       aria-label="Category"
                     >
-                      Category
+                      Start Date
                     </th>
-                    <th
-                      class="sorting_disabled"
-                      rowspan="1"
-                      colspan="1"
-                      aria-label="Lesson and section"
-                    >
-                      Lesson and section
-                    </th>
+                    
                     <th
                       class="sorting_disabled"
                       rowspan="1"
                       colspan="1"
                       aria-label="Enrolled student"
                     >
-                      Enrolled student
+                      End Date
                     </th>
                     <th
                       class="sorting_disabled"
@@ -1433,199 +1553,110 @@ export const AddFormBox = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr role="row" class="even">
-                    <td class="sorting_1" tabindex="0">
-                      2
-                    </td>
-                    <td>
-                      <strong>
-                        <a href="#user/course_form/course_edit/29">
-                          Analytics for Decision Making
-                        </a>
-                      </strong>
-                      <br />
-                      <small class="text-muted">
-                        Instructor: <b>Instructor-02 Questence</b>
-                      </small>
-                    </td>
-                    <td>
-                      <span class="badge badge-dark-lighten">
-                        Human Resources
-                      </span>
-                    </td>
-                    <td>
-                      <small class="text-muted">
-                        <b>Total section</b>: 2
-                      </small>
-                      <br />
-                      <small class="text-muted">
-                        <b>Total lesson</b>: 2
-                      </small>
-                      <br />
-                    </td>
-                    <td>
-                      <small class="text-muted">
-                        <b>Total enrolment</b>: 0
-                      </small>
-                    </td>
-                    <td>
-                      <span class="badge badge-danger-lighten">Pending</span>
-                    </td>
-                    <td>
-                      <span class="badge badge-success-lighten">Free</span>
-                    </td>
-                    <td>
-                      <div class="dropright dropright">
-                        <button
-                          type="button"
-                          class="btn btn-sm btn-outline-primary btn-rounded btn-icon"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        >
-                          <i class="fa fa-eye" style={{ color: "#000" }}></i>
-                        </button>
-                        <ul class="dropdown-menu">
-                          <li>
-                            <a
-                              class="dropdown-item"
-                              href="#/course-detail"
-                              target="_blank"
-                            >
-                              Create
-                            </a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#/course_edit/29">
-                              Edit this course
-                            </a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#/course_edit/29">
-                              Replicate
-                            </a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#noclick">
-                              Import
-                            </a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#noclick">
-                              Export
-                            </a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#noclick">
-                              Publish
-                            </a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#noclick">
-                              Mark As Draft
-                            </a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#noclick">
-                              Release
-                            </a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#noclick">
-                              Delete
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
+                  
 
-                  <tr role="row" class="odd">
-                    <td class="sorting_1" tabindex="0">
-                      2
-                    </td>
-                    <td>
-                      <strong>
-                        <a href="#user/course_form/course_edit/29">
-                          Analytics for Decision Making
-                        </a>
-                      </strong>
-                      <br />
-                      <small class="text-muted">
-                        Instructor: <b>Instructor-02 Questence</b>
-                      </small>
-                    </td>
-                    <td>
-                      <span class="badge badge-dark-lighten">
-                        Human Resources
-                      </span>
-                    </td>
-                    <td>
-                      <small class="text-muted">
-                        <b>Total section</b>: 2
-                      </small>
-                      <br />
-                      <small class="text-muted">
-                        <b>Total lesson</b>: 2
-                      </small>
-                      <br />
-                    </td>
-                    <td>
-                      <small class="text-muted">
-                        <b>Total enrolment</b>: 0
-                      </small>
-                    </td>
-                    <td>
-                      <span class="badge badge-danger-lighten">Pending</span>
-                    </td>
-                    <td>
-                      <span class="badge badge-success-lighten">Free</span>
-                    </td>
-                    <td>
-                      <div class="dropright dropright">
-                        <button
-                          type="button"
-                          class="btn btn-sm btn-outline-primary btn-rounded btn-icon"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        >
-                          <i class="fa fa-eye" style={{ color: "#000" }}></i>
-                        </button>
-                        <ul class="dropdown-menu">
-                          <li>
-                            <a
-                              class="dropdown-item"
-                              href="#/course-detail"
-                              target="_blank"
-                            >
-                              View course front
-                            </a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#/course_edit/29">
-                              Edit this course
-                            </a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#/course_edit/29">
-                              Section and lesson
-                            </a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#noclick">
-                              Mark as drafted
-                            </a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#noclick">
-                              Delete
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
+               
+                     {courses.length > 0 && courses.map( (course,index) =>{
+                        
+                           return(
+                                <tr role="row"  >
+                              <td class="sorting_1" tabindex="0">
+                                 {course.code}
+                              </td>
+                                <td>
+                                  <strong>
+                                    <a href="user/course_form/course_edit/29">
+                                      {course.name}
+                                    </a>
+                                  </strong>
+                                  <br />
+                                  <small class="text-muted">
+                                    {course.author}
+                                  </small>
+                                </td>
+                                <td>
+                                  <span class="badge badge-dark-lighten">
+                                    {
+
+course?.course_start_date_time || "Not Set"
+}
+                                  </span>
+                                </td>
+                                
+                                <td>
+                                  <small class="text-muted">
+                                    <b>{course?.course_end_date_time || "Not set"}</b>
+                                  </small>
+                                </td>
+                                <td>
+                                  <span class="badge badge-danger-lighten">Pending</span>
+                                </td>
+                                <td>
+                                  <span class="badge badge-success-lighten">{course?.cost || "Free Course"}</span>
+                                </td>
+                                <td>
+                                  <div class="dropright dropright">
+                                    <button
+                                      type="button"
+                                      class="btn btn-sm btn-outline-primary btn-rounded btn-icon"
+                                      data-toggle="dropdown"
+                                      aria-haspopup="true"
+                                      aria-expanded="false"
+                                    >
+                                      <i class="fa fa-eye" style={{ color: "#000" }}></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                      <li>
+                                        <a
+                                          class="dropdown-item"
+                                          href={`${process.env.PUBLIC_URL + "/course/preview/"}`+  course.id}
+                                          
+                                          target="_blank"
+                                        >
+                                          View course front
+                                        </a>
+                                      </li>
+                                      <li>
+                                        <a class="dropdown-item" 
+                                        href={`${process.env.PUBLIC_URL + "/course/continue/edit/"}`+   course.id}
+                                          
+
+                                        >
+                                          Edit this course
+                                        </a>
+                                      </li>
+                                      <li>
+                                        <a class="dropdown-item" href="#noclick">
+                                          Mark as drafted
+                                        </a>
+                                      </li>
+                                      <li>
+                                        <a onClick={(e) => {
+                                          e.preventDefault()
+                                            let url = `course/${course?.id}`
+                                            let deletePromises = deleteApi(url);
+                                          deletePromises
+                                            .then(res => res.text())
+                                            .then(data => { 
+                                              let widget = e.target;
+                                              console.log(data)
+                                              console.log("success with delete");
+                                              
+                                              showNotificationSuccess("Success", `Course ${course?.name}  Deletion was successful`)
+                                              setTimeout(()=>{window.location.reload()},2000)
+                                          })
+                                        }} class="dropdown-item" href="">
+                                          Delete
+                                        </a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </td>
+
+                            </tr>
+                           )
+                     })}
+                
                 </tbody>
               </table>
 

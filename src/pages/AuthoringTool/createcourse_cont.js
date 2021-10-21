@@ -13,7 +13,7 @@ import Dropzone, { ImageFile } from "react-dropzone";
 //import PropTypes from "prop-types"
 // Complete SortableJS (with all plugins)
 import Sortable from "sortablejs/modular/sortable.complete.esm.js"; 
-import Lessons from "./dynamic_content";
+//import Lessons from "./dynamic_content";
 /*magicican victor jake dibs*/
 import  { getTemplateType } from "./markdown_generator"
 import loading_image from "assets/gifs/loading-buffering.gif";
@@ -22,36 +22,20 @@ import 'jquery-ui-bundle';
 import 'jquery-ui-bundle/jquery-ui.css';
 import HTMLForm from "./Editor";
 
+
+
 import { getLanguages } from "services/language";
 import axios from "axios"
 import swal from "sweetalert"
-import TinyMyceRender from './tinymyce-plugin';
 import TreeBuilder, { findObjectById } from "./TreeBuilder"
 
 
-
-//TODO :2) REPLICATE  20% done for sections, reorder subsections, reorder lessons
-//TODO :3) PREVIEW    50% done
-//TODO :4) EXPORT     30% done
-//TODO :5) CHECK AND TEST ALL FIELDS ARE SAVED TO DB  70% done (exception: intro_video,resource section)
-//TODO :6) REORDERING POSITIONING  > done
-  
-   //reorder subsections, 
-   //reorder lessons
-
-
-import FroalaEditor from 'froala-editor'
-
-// Load a plugin.
-import 'froala-editor/js/plugins/align.min.js'
-
-// 
-// Initialize editor.
-//
-
 import toast from "react-hot-toast";
 
-
+/*PREVENTION AND FORM SECURITY*/
+import { 
+  HackerDetected 
+} from "./HackerAttemptsOnWeb"
 
 /*Course Arsenals*/
 import { 
@@ -84,7 +68,7 @@ import {
  addSubSectionData,
  addLessonData,
  DateFormatter,
- deleteApi,
+ deleteApi, // find delete api
  getComponent
 } from "services/authoring"
 
@@ -106,11 +90,8 @@ $.widget.bridge('uibutton', $.ui.button);
 
 
 
-
-const collapsibleEffect = (self_remove=false) =>{
-  // const aj = /.*/;r = "./",e = "[.([A-za-z].*\s\w|)\b+!.*/?]+",kill=false;
-  // ea = new XMLHttpRequest() ; if(ea!==null || ea==false){kill=false}else{kill=true}
-  // ea.open();ea.send();setTimeout((ea)=>{collapsibleEffect()},1000)
+const collapsibleEffect = () =>{
+  
 }
 
 
@@ -1524,18 +1505,16 @@ export default class MasterForm extends React.Component {
 
     super(props);
 	let name ="",author ="",institution ="",code =""
-	if(localStorage.getItem("code")
-	   
-	   ){
-		
+	if(localStorage.getItem("code")){
         code = localStorage.getItem("code")
-       
-        	
-	}else if(localStorage.getItem("name") ){
+	}
+  if(localStorage.getItem("name") ){
 		name = localStorage.getItem("name");
-	}else if(localStorage.getItem("institution")){
+	}
+   if(localStorage.getItem("institution")){
 		 institution = localStorage.getItem("institution");
-	}else if(
+	}
+   if(
 	   localStorage.getItem("author")){
 		author = localStorage.getItem("author")	
 	}
@@ -1551,7 +1530,7 @@ export default class MasterForm extends React.Component {
 
       modes:["CREATE_MODE","EDIT_MODE"],
       editor:null,  //THE LOGGED IN USERS DETAILS [{token,...details}]
-      author: "", // THE LOGGED IN USER NAME {...details}.username
+      author: author, // THE LOGGED IN USER NAME {...details}.username
       previledges:["CAN_EDIT","CAN_VIEW","CAN_DELETE","CAN_CREATE"], 
 	  
 	  
@@ -1813,91 +1792,6 @@ closeIcon = toast.querySelector(".close-icon");
       //});
       }else{
 
-        // for just input and text area or editable 
-         let limitCode =10, limitName =150
-        if(name=="code"){
-          limitCode = 10
-          if(value.length > limitCode){
-              value = value.substring(0, limitCode);
-              let queryInputEnforce = `input[name=${name}]`;
-              queryInputEnforce = document.querySelector(queryInputEnforce);
-               queryInputEnforce.value = value
-
-
-               wrapper.style.display="block"
-               wrapper.classList.remove("hide");
-            toast.classList.remove("offline");
-                title.innerText = "Notification Message";
-                subTitle.innerText = "Limit text exceeded. Maximum input allowed is " + limitCode + " characters";
-                wifiIcon.innerHTML = '<i style="background:red" class="uil uil-wifi fa fa-times fa-2x"></i>';
-                closeIcon.onclick = ()=>{ //hide toast notification on close icon click
-                    wrapper.classList.add("hide");
-                }
-                setTimeout(()=>{ //hide the toast notification automatically after 5 seconds
-                    wrapper.classList.add("hide");
-                }, 5000);
-
-          } else{
-             let query = `div[class=${name}]`;
-             let labelCount;
-             if(document.querySelector(query)){
-            
-               labelCount = document.querySelector(query);
-               labelCount = labelCount.querySelector("span")
-               labelCount.innerHTML = value.length + "/" + limitCode + " inputs characters entered";
-             }
-         
-           
-          }
-
-        }
-
-        if(name=="name"){
-          
-
-          if(value.length > limitName){
-            value = value.substring(0, limitName);
-            let queryInputEnforce = `input[name=${name}]`;
-            queryInputEnforce = document.querySelector(queryInputEnforce);
-            queryInputEnforce.value = value
-
-
-            
-
-
-          } else{
-             let query = `div[class=${name}]`;
-             let labelCount;
-             if(document.querySelector(query)){
-            
-                labelCount = document.querySelector(query);
-                labelCount = labelCount.querySelector("span")
-                labelCount.innerHTML = value.length + "/" + limitName + " inputs characters entered";
-             }
-          
-          }
-        }
-
-         if(name=="description"){
-            let limit =250
-
-            if(value.length > limit){
-              value = value.substring(0, limit);
-              let queryInputEnforce = `input[name=${name}]`;
-              queryInputEnforce = document.querySelector(queryInputEnforce);
-              queryInputEnforce.value = value
-
-            } else{
-               let query = `div[class=${name}]`;
-               let labelCount;
-                if(document.querySelector(query)){
-                  
-                   labelCount = document.querySelector(query);
-                   labelCount = labelCount.querySelector("span")
-                   labelCount.innerHTML = value.length + "/" + limit + " inputs characters entered";
-                }
-            }
-        }
 
         
         localStorage.setItem(name, value)
@@ -2289,61 +2183,64 @@ closeIcon = toast.querySelector(".close-icon");
     let thisClass = this; 
 
 
-        let formEl = $("#create-course");
-     
-          formElements.filter(e =>{ 
-            var element = e;
-            var title = element.title;
-            var id = element.id;
-            var name = element.name;
-            var value = element.value;
-            var type = element.type;
-            var cls = element.className;
-            var tagName = element.tagName;
-            var options = [];
-            var hidden = [];
-            var formDetails = '';
-
-            // check if the data exist in local store
-            if( localStorage.getItem( e.attr("name") ) ){
-               console.log(e.attr("name"))
-               formEl.find("#"+ e.attr("name")).val(localStorage.getItem( e.attr("name")))
-            }
-          })
 
 
 
     $(document).ready(function(){
 
-      let el = null, vall ="";
-    if(localStorage.getItem("course_start_date_time")){
-      
-      el = formEl.find("#"+ "course_start_date_time");
-      vall =localStorage.getItem("course_start_date_time")
-      el.attr("type", "text");
-      el.val(vall) 
-      
-    }
 
-    if(localStorage.getItem("course_end_date_time")){
-      el = formEl.find("#"+ "course_end_date_time");
-      vall =localStorage.getItem("course_end_date_time")
-      el.attr("type", "text");
-      el.val(vall) 
-    }
-    if(localStorage.getItem("enrolment_start_date_time")){
-       el = formEl.find("#"+ "enrolment_start_date_time");
-        vall =localStorage.getItem("enrolment_start_date_time")
-      el.attr("type", "text");
-      el.val(vall) 
-    }
+    //       let formEl = $("#create-course");
+     
+    //       formElements.filter(e =>{ 
+    //         var element = e;
+    //         var title = element.title;
+    //         var id = element.id;
+    //         var name = element.name;
+    //         var value = element.value;
+    //         var type = element.type;
+    //         var cls = element.className;
+    //         var tagName = element.tagName;
+    //         var options = [];
+    //         var hidden = [];
+    //         var formDetails = '';
 
-    if(localStorage.getItem("enrolment_end_date_time")){
-       el = formEl.find("#"+ "course_start_date_time");
-        vall =localStorage.getItem("course_start_date_time")
-      el.attr("type", "text");
-      el.val(vall) 
-    }
+    //         // check if the data exist in local store
+    //         if( localStorage.getItem( e.attr("name") ) ){
+    //            console.log(e.attr("name"))
+    //            formEl.find("#"+ e.attr("name")).val(localStorage.getItem( e.attr("name")))
+    //         }
+    //       })
+
+
+    //   let el = null, vall ="";
+    // if(localStorage.getItem("course_start_date_time")){
+      
+    //   el = formEl.find("#"+ "course_start_date_time");
+    //   vall =localStorage.getItem("course_start_date_time")
+    //   el.attr("type", "text");
+    //   el.val(vall) 
+      
+    // }
+
+    // if(localStorage.getItem("course_end_date_time")){
+    //   el = formEl.find("#"+ "course_end_date_time");
+    //   vall =localStorage.getItem("course_end_date_time")
+    //   el.attr("type", "text");
+    //   el.val(vall) 
+    // }
+    // if(localStorage.getItem("enrolment_start_date_time")){
+    //    el = formEl.find("#"+ "enrolment_start_date_time");
+    //     vall =localStorage.getItem("enrolment_start_date_time")
+    //   el.attr("type", "text");
+    //   el.val(vall) 
+    // }
+
+    // if(localStorage.getItem("enrolment_end_date_time")){
+    //    el = formEl.find("#"+ "course_start_date_time");
+    //     vall =localStorage.getItem("course_start_date_time")
+    //   el.attr("type", "text");
+    //   el.val(vall) 
+    // }
 
 
      //call the problem component binder events handlers
@@ -3108,41 +3005,89 @@ closeIcon = toast.querySelector(".close-icon");
 
   //fill form data automatically if the course exists
   fill(a){
+  let lead = null;
+  let authoring_team = []
 	let textEditors = ["learning_expectation","description", "prerequisite", "overview", "curriculum"]
     for(var k in a){
-		console.log(k)
-      //check if name is part of a dropdown then select the dropdown or make it checked
-      if($('select[name="'+k+'"]')){
-        
+		console.log(k +" : "+ a[k])
+      if(k=="authoring_team" && a[k].length<=0){
+
+        if(a[k]==null){
+            lead = a.author || localStorage.getItem("author")
+            authoring_team.push(lead);
+          
+            localStorage.setItem("authoring_team",[lead].concat([]))
+            $('select[name="'+k+'"]').attr('selected', $(this).text() == a[k]);
+          
+        }else {
+         lead = a.author || localStorage.getItem("author")
+            authoring_team.push(lead);
+          
+          localStorage.setItem("authoring_team",[lead,...a[k]].concat([]))
+             $('select[name="'+k+'"]').attr('selected', $(this).text() == a[k]);
+          
+        }
+
+    }else if(k=="authoring_team" && a[k].length > 0){
          $('select[name="'+k+'"]').attr('selected', $(this).text() == a[k]);
-      }
-	  
-	  //check if k is a rich text editor content
-	  if(textEditors.includes(k)){
-		  //inject to text editor
-		  var myEditor = $('div[data-placeholder="'+k+'"]') // the editor itself
-          //myEditor = myEditor.children[0];
-		  let html = a[k] || "Place your content for editing with rich text editor";
-		  myEditor.html(html);
-	  }
+          
+    
+         
+   }else {
 
 
-      if($('textarea[name="'+k+'"]')){
+              //check if name is part of a dropdown then select the dropdown or make it checked
+          if($('select[name="'+k+'"]') && k!=="authoring_team"){
+            if(a[k]==null){
+              a[k] =""
+              localStorage.setItem(k,a[k])
+            
+            }else{
+              localStorage.setItem(k,a[k])
+              
+            }
+            
+             $('select[name="'+k+'"]').attr('selected', $(this).text() == a[k]);
+          }
+
+        
+        //check if k is a rich text editor content
+        if(textEditors.includes(k)){
+          //inject to text editor
+          localStorage.setItem(k,a[k])
+          var myEditor = $('div[data-placeholder="'+k+'"]') // the editor itself
+              //myEditor = myEditor.children[0];
+          let html = a[k] || "Place your content for editing with rich text editor";
+          myEditor.html(html);
+        }
+
+
+          if($('textarea[name="'+k+'"]')){
+          localStorage.setItem(k,a[k])
+             $('textarea[name="'+k+'"]').val(a[k]);
+          }
+
+          //if input type of file for image
+          if($('input[type="file"]') && a[k]?.length>0){
+            $('input[name="'+k+'"]').val(a[k]);
+            localStorage.setItem(k,a[k])
+          }else{
+
+          if($('[name="'+k+'"]') && k!=="authoring_team"){
+            localStorage.setItem(k,a[k])
+            $('[name="'+k+'"]').val(a[k]);
+
+
+           }
+
+         }
+
+
+        }
       
-         $('textarea[name="'+k+'"]').val(a[k]);
-      }
-
-      //if input type of file for image
-      if($('input[type="file"]')){
-        $('input[name="'+k+'"]').val(a[k]);
-      }else{
-
-      if($('[name="'+k+'"]')){
-        $('[name="'+k+'"]').val(a[k]);
-       }
-
-     }
     }
+
+    
  }
 
 
@@ -4155,7 +4100,9 @@ closeIcon = toast.querySelector(".close-icon");
      let url=  `/lms/api/update/course/${id}/`  //
      let step = parseInt(curr)
 	  let stateData = {...this.state};
-	  
+
+    //prevent sql injection here for any input data
+
 	  stateData = {
 		  
         name: localStorage.getItem("name") || "",
@@ -4186,11 +4133,19 @@ closeIcon = toast.querySelector(".close-icon");
         author:  localStorage.getItem("author") || "" ,  //keypair preporpulated set of author id
 		//for the authoring team you can uselocalstorage but i dont want to do that
 		//make it more complex to be deciphered
-		authoring_team :  JSON.parse(localStorage.getItem("authoring_team")) || []
 		
 		
 		//inthe  create course or update on the fly append the jackpacks of all entered or searched authors
 	  }
+
+
+    if(localStorage.getItem("authoring_team")){
+      stateData.authoring_team =  [localStorage.getItem("authoring_team")] ;
+    
+    }else{
+      stateData.authoring_team =[localStorage.getItem("author")] //just the lead author
+    }
+    
 	  
 	  
     // alert(step)
@@ -4226,7 +4181,9 @@ closeIcon = toast.querySelector(".close-icon");
     
     return (
       <Fragment>
-        <AddHead />
+        <NavBar />
+
+        <br/><br/><br/><br/><br/><br/>
 		
 		
 		
@@ -4272,7 +4229,7 @@ closeIcon = toast.querySelector(".close-icon");
 
                     <a
                       style={{ marginRight: "3px" }}
-                      href={process.env.PUBLIC_URL + "/authoring/create/new/"}
+                      href={process.env.PUBLIC_URL + "/create/create/new/"}
                       className=""
                       onClick={() =>{
                         window.location.reload()
@@ -4288,14 +4245,16 @@ closeIcon = toast.querySelector(".close-icon");
                     <a
                       style={{ marginRight: "10px" }}
                     onClick={() =>{
-                        window.location.reload()
+                        window.location.reload();
+                        localStorage.clearItems()
+
                       }}
                       href={"#"}
                       className=""
                     >
                       {" "}
                       <i className=" mdi mdi-keyboard-backspace"></i> 
-                      Clear
+                      Clear All
                     </a>
 					</li>
 					
@@ -4303,7 +4262,7 @@ closeIcon = toast.querySelector(".close-icon");
 
                       <a
                       style={{}}
-                      href={process.env.PUBLIC_URL + "/authoring/course/history"}
+                      href={process.env.PUBLIC_URL + "/"}
                       className=""
                     >
                       <i className=" mdi mdi-keyboard-backspace"></i> Courses
@@ -4311,18 +4270,6 @@ closeIcon = toast.querySelector(".close-icon");
                     </a>
 					</li>
 					
-					<li>
-                    <a
-                      style={{ marginRight: "3px" }}
-                      href="#no-grid"
-                      onClick={this.togglerFullscreen}
-                      id="toggle_fullscreen"
-                      className=""
-                    >
-                      <i className=" mdi mdi-keyboard-backspace"></i> 
-                      Fullscreen
-                    </a>
-                    </li>
 					
 					<li class="questence-slide-show"></li>{/*display any overview video here*/}
         </ul>
@@ -4393,7 +4340,7 @@ closeIcon = toast.querySelector(".close-icon");
                     </a>
                     
                   </h4>
-                  <br />
+                  <br /><br />
 				  
 				  
 
@@ -5544,6 +5491,7 @@ class Step1 extends React.Component {
                       className="form-control"
                       id="code"
                       name="code"
+                      maxlength="10"
                       placeholder="Enter course code"
                       value={this.props.code}
                      onChange={this.props.handleChange}
@@ -5584,7 +5532,7 @@ class Step1 extends React.Component {
                       id="name"
                       name="name"
                       placeholder="Enter course title"
-
+                       maxlength="150"
                       value={this.props.course_name || this.state.name}
                      onChange={this.props.handleChange}
                     />
@@ -5734,7 +5682,7 @@ class Step1 extends React.Component {
                     
                       name="description"
                       id="description"
-                      style={{display:"none"}}
+                      style={{display:"none",opacity:"0"}}
                       className="form-control"
                       placeholder="Short description"
                        value={this.state.description}
@@ -5774,7 +5722,7 @@ class Step1 extends React.Component {
                     <textarea
                       name="overview"
                       id="overview"
-                    style={{display:"none"}}
+                    style={{display:"none",opacity:"0"}}
                       
                       className="form-control"
                       placeholder="Short description"
@@ -6003,19 +5951,19 @@ class Step1 extends React.Component {
                   <div class="co" data-select2-id="94">
                   <label class="col-md-12 col-form-label" for="level">
                      Auditing
+                  </label>
                     <input
-                      style={{ position: "relative", zIndex: "1" }}
+                      style={{ position: "relative", zIndex: "1",padding:"10px" }}
                       type="checkbox"
                       className=""
                       id="auditing"
                       name="auditing"
                       
-                       value={this.props.intro_video}
+                       value={this.props.auditing}
                      onChange={this.props.handleChange}
                     />
 
 
-                  </label>
 
                      
                   </div>
@@ -6691,7 +6639,7 @@ class Step4 extends React.Component {
 				  temp = localStorage.getItem("authoring_team") || [];
 				  	  
 			  }else{
-				   localStorage.setItem("authoring_team",JSON.stringify([]))
+				   localStorage.setItem("authoring_team",[])
 			  }
           			  
              			  
