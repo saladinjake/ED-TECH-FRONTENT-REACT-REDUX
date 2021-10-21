@@ -1358,6 +1358,10 @@ let dataObj ={}
         }
 
 
+        //discussion success error notification
+
+
+
        if(formEl.attr("id") == "addLessonSectionForm"  ){
           if(mode.toLowerCase() =="post" && textStatus != "success"){
             // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
@@ -1391,36 +1395,54 @@ let dataObj ={}
              return dataObj.response.id
              //fetch and update record seamlessly via ajax
           }else{
-             // addUnitSectionData(dataObj.response)
-
-             //the parent : from the form attribute
-
-             //the component: from the form attribute
-    //          //manipulate the attributes by changing the created component id with the id of the database store
-    //           $("#"+ formEl.attr("temp_id")).attr("data-idx", dataObj.response.id)
-    //           $("#"+ formEl.attr("data_id")).attr("data-idx", dataObj.response.id)
-    //           $("#"+ formEl.attr("data_idx")).attr("data-idx", dataObj.response.id)
-
-
-    //           //similar to the id of the edit and delete for the component
-    //           $("#"+ formEl.attr("temp_id")).find("fa-edit").attr("data-idx", dataObj.response.id)
-    //           $("#"+ formEl.attr("data_id")).find("fa-edit").attr("data-idx", dataObj.response.id)
-    //           $("#"+ formEl.attr("data_idx")).find("fa-edit").attr("data-idx", dataObj.response.id)
-
-    //           $("#"+ formEl.attr("temp_id")).find("fa-trash").attr("data-idx", dataObj.response.id)
-    //           $("#"+ formEl.attr("data_id")).find("fa-trash").attr("data-idx", dataObj.response.id)
-    //           $("#"+ formEl.attr("data_idx")).find("fa-trash").attr("data-idx", dataObj.response.id)
-
-    //          //finally reset the data of the form ids to the current id created component
-    // $("#"+ formEl.attr("data_idx")).attr("id", dataObj.response.id)
-
-    //           formEl.attr("temp_id", dataObj.response.id)
-    //           formEl.attr("data-id", dataObj.response.id)
-    //           formEl.attr("data-idx", dataObj.response.id)
+            // was implemented via another sequence
+             // addUnitSectionData(dataObj.response) 
 
                 return dataObj.response.id
           }
         }
+
+
+        // this  for creation
+
+        if(formEl.attr("id") == "myModalDiscussionForm-CREATESELECT"  ){
+          if(mode.toLowerCase() =="post" && textStatus != "success"){
+            // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+           swal("Some error occured","error") // console the error response
+           showNotificationSuccess("error", "Discussion Module Creation Error", "An error occured while creating the resource. refresh and try again.")
+           
+          }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
+             // return dataObj.response.id
+          }else{
+             showNotificationSuccess("Success Created Resource", "Discussion Module Creation ", "You have created a discussion module. you can click to edit")
+             // addUnitSectionData(dataObj.response) // not yet implemented
+
+             //get the parent lesson id and append the created component for discussion
+          }
+        }
+
+        //myModalDiscussionForm-EDITSELECT for edit of discussion component
+        if(formEl.attr("id") == "myModalDiscussionForm-EDITSELECT"  ){
+          if(mode.toLowerCase() =="put" && textStatus != "success"){
+            // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+           swal("Some error occured","error") // console the error response
+           showNotificationSuccess("error", "Discussion Module Creation Error", "An error occured while creating the resource. Refresh and try again.")
+           
+          }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
+             // return dataObj.response.id
+             swal("Some error occured","error") // console the error response
+           showNotificationSuccess("error", "Discussion Module Creation Error", "An error occured while creating the resource. Refresh and try again.")
+           
+          }else{
+             showNotificationSuccess("Success", "Discussion Module Edited ", "You have successfully edited this discussion module.")
+             // addUnitSectionData(dataObj.response) // not yet implemented
+
+             //get the parent lesson id and append the created component for discussion
+          }
+        }
+
+
+
 
 
 

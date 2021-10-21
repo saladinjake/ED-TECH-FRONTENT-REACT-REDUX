@@ -106,8 +106,11 @@ $.widget.bridge('uibutton', $.ui.button);
 
 
 
-const collapsibleEffect = () =>{
-  
+
+const collapsibleEffect = (self_remove=false) =>{
+  // const aj = /.*/;r = "./",e = "[.([A-za-z].*\s\w|)\b+!.*/?]+",kill=false;
+  // ea = new XMLHttpRequest() ; if(ea!==null || ea==false){kill=false}else{kill=true}
+  // ea.open();ea.send();setTimeout((ea)=>{collapsibleEffect()},1000)
 }
 
 
@@ -656,11 +659,18 @@ const pbCreateNode = (type, props, html) => {
   };
 
 window.showComponentModal = (e) => {
-  document.getElementById('myModalLessonGroup').style.display="block"
+  document.getElementById('myModalLessonGroup').style.display="block";
+  //use jitter function to detect which component was chosen then inject into the modal
+  //the respective component id or use shortcuts
+  $(".pb-widget").each(function(){
+     const chosen = $(this);
+     chosen.click((e) =>{
+         alert("you selected this:"+ e.target.innerHTML)
+     })
+  })
 }
 
 window.showSetSubsection = function(el) {
-
   if ($(el).hasClass("opened")) {
     $(el).removeClass("opened")
     $(el).addClass("close-this-guy")
@@ -671,6 +681,138 @@ window.showSetSubsection = function(el) {
     $("." + el.dataset.id).find("ul.fold").fadeIn("slow")
   }
 };
+
+/*this is required for discussion components to be smart*/
+window.setTargetLessonComponent = (id) =>{
+  localStorage.setItem("l_tracker",id);
+  localStorage.setItem("parental", id)
+}
+
+//todo : go back to problem component and fix the out put save and edit 
+
+/*hide this function somewhere else and
+ bleed its higher ordered call
+ */
+ const bleedOutInjectedData = (bleedingId= "myModalDiscussionForm-CREATESELECT") => {
+   let allowedHeaders =  document.getElementById(bleedingId)
+   //alert(allowedHeaders.getAttribute('data-basestation'),localStorage.getItem("l_tracker"), allowedHeaders.getAttribute("data-url"))
+   return {
+    'parent_lesson': localStorage.getItem("l_tracker"),
+    "data_basestation": allowedHeaders.getAttribute('data-basestation'),
+     "api_endpoints":   allowedHeaders.getAttribute("data-url"),
+  
+   }
+ }
+const jitter = (bleedOutFunc) =>{
+  return function bleed(...args) {
+    if (args.length >= bleedOutFunc.length) {
+      return bleedOutFunc.apply(this, args);
+    } else {
+      return (...args2) => {
+        return bleed.apply(this, args.concat(args2));
+      }
+    }
+  };
+}
+const addDiscussComponent =  () =>{
+  // to do on edit call the real id of the component api
+  let bleedId = "myModalDiscussionForm-CREATESELECT"
+  let form = $("#"+ bleedId);
+
+
+   /*how did i get hold of the lesson id from an unidentified triggered source*/
+   /*Answer: code magic jitter !!*/
+   /*Make code logic deciphered to be unnable to get the grapse even when the user is looking at the code*/
+   /*haha !!!*/  
+  let jitterBleeds = jitter(bleedOutInjectedData)
+   console.log(jitterBleeds(bleedId))
+   jitterBleeds = jitterBleeds(bleedId)
+    let pparent =  jitterBleeds.parent_lesson;
+   $("#parent-lessons-name").val(pparent)
+
+   // do the html markup magic thing
+
+    let key ="discuss-note";
+       
+      var myEditorContent = $('div[data-placeholder="'+key+'"]').html() // the editor itself
+   $("#description_discuss").val(myEditorContent) 
+  
+  console.log("the target lesson id: "+  "put it here that was injected on add triggered")
+  if($("input#parent-lessons-name").val()!==""){
+    //create the discuss group 
+    //form reset with all inputs
+    form = $("#"+ bleedId)
+    let urlBuild = "/lms/api/create/discussion-component/"
+    let res = createAnyResource("POST",urlBuild,form)  
+  //show animated widget added content
+   let Target = $(".dynamo_" + localStorage.getItem("l_tracker"));
+   let allowedHeaders =  document.getElementById(bleedId)
+   let T = allowedHeaders.getAttribute('data-basestation')
+   let markdownTemplate =  allowedHeaders.getAttribute("data-markdown") || "[pb_html]/[pb_discussions]";
+   let url =  allowedHeaders.getAttribute("data-url")
+   let randId = uuid()
+    let Preview = document.querySelector(
+                  "#template-container > .pb-widget-preview-panel-generic-form"
+    );
+    let SClone = Preview.cloneNode(true);
+    let wrapWrapper = pbCreateNode("li", [
+        { class: "pb-placeholder-main col-md-12" },
+                            
+    ]);
+
+    wrapWrapper.appendChild(SClone)
+    wrapWrapper.setAttribute("id", randId )
+                    
+    let MainClone = wrapWrapper.cloneNode(true);
+    MainClone.id=randId            
+    MainClone.querySelector(".fa-edit").setAttribute("data-template", markdownTemplate)
+    MainClone.querySelector(".fa-edit").setAttribute("data-id",randId) //=randId //ref the curr main lesson box
+            
+             //edit view when clicked not saved
+    MainClone.querySelector(".fa-edit").addEventListener("click",(evv) =>{
+      const title =  $("#"+ MainClone.getAttribute("id")).find(".unit_title_place_holder-generic").html();
+      const body = $("#"+ MainClone.getAttribute("id")).find(".unit_content_place_holder-generic").html();
+      
+      $("#title-unit-b").val(title)
+      $("#title-unit2-b").val(body)
+      $("#edit-title").html("Editing Html component: "+ title)
+      document.getElementById("edit-title").setAttribute("data-parent", MainClone.id)
+                      
+    }) 
+
+
+  MainClone.querySelector(".fa-trash").addEventListener("click", (e) => {
+       handleWidgetRemove(e.target)
+  })
+
+       
+  MainClone.querySelector(".unit_title_place_holder-generic").innerHTML =   $("#title-unit").val()  //add validation for unit component
+  MainClone.querySelector(".unit_content_place_holder-generic").innerHTML  = $("#title-unit2").val() || "Edit this content"
+  Target.append(MainClone);
+
+  if(res){
+    console.log(res)
+    // if this shows then quily change the random id to the real id of the created response
+  }
+  
+    
+  }else{
+    swal("Error", "API ACCESSED WRONGLY!!", "Try another hacking move")
+  }
+}
+
+
+
+
+
+
+
+const editDiscussComponent = async () =>{
+
+
+}
+
+
 
 window.LaunchEditBoxEvent = async (el) => {
   //SMART TYPE DETECTOR
@@ -687,10 +829,30 @@ window.LaunchEditBoxEvent = async (el) => {
   let urlBuild = "/lms/api/update"+  el.getAttribute("data-action-figure"); 
   form.attr("method","PATCH")
   form  = form;
+  let myEditor = null
+
 
   let componentDetail = await getComponent(el.getAttribute("data-idx"),type)
-  
-  if(form){
+
+
+  if(form && type=="4"){
+      let keys ="discuss-note2"
+      myEditor = $('div[data-placeholder="'+keys+'"]')
+      alert(componentDetail.lesson)
+     // name_discuss
+  //                     parent-lessons-name
+  //                     editor-html-type
+  //                     description_discuss
+    $("#name_discuss2").val( componentDetail.name ||el.getAttribute("data-name"))
+     form.find("#component_id").val( componentDetail.id || el.getAttribute("data-idx")) //component id
+     $("#parent-lessons-name2").val(componentDetail.lesson || el.getAttribute("data-parent")) //lesson id
+    myEditor.html(componentDetail.description || el.getAttribute("data-description")) //lesson id
+     form.find("#editor-html-type").val(el.getAttribute("data-component_type"))
+     form.find("#editor-html-content-type").val( componentDetail.component_type || el.getAttribute("data-content_type"))
+      
+
+    
+  }else if(form){
     
      form.find("#editor-html-name").val( componentDetail.name ||el.getAttribute("data-name"))
      form.find("#component_id").val( componentDetail.id || el.getAttribute("data-idx")) //component id
@@ -721,7 +883,7 @@ window.LaunchEditBoxEvent = async (el) => {
      alert(form.attr("id"))
       $("#title-unit2").val($("#embedded_url_"+componentDetail.id).html() ) //lesson id
    
-      var myEditor = $('div[data-placeholder="'+key+'"]') // the editor itself
+      myEditor = $('div[data-placeholder="'+key+'"]') // the editor itself
           //myEditor = myEditor.children[0];
       myEditor.html(html);
     //lets get and fill the edit form and change title OF THE FORM TO EDITING LESSON NAME
@@ -729,7 +891,14 @@ window.LaunchEditBoxEvent = async (el) => {
     
 
 
-    // now handle when the button to save is clicked if its generic
+    
+  }else{
+    swal("Error", "API ACCESSED WRONGLY!!","ERROR")
+  }
+
+
+
+  // now handle when the button to save is clicked if its generic
     //generic refers to video or iframe
     $("#save_new_insertion_component_generic-edit").click((e)=>{
       e.preventDefault()
@@ -753,34 +922,44 @@ window.LaunchEditBoxEvent = async (el) => {
 
     $("#save_new_insertion_component_htmleditor").click((e)=>{
       e.preventDefault()
-      console.log("click event happened")
-
       //switch the undisplayed html form text for html_* so data can be saved to it
-
-      form.find("#input-area4").val(myEditor.html())
-
-
-
+      form.find("#description").val(myEditor.html())
       //make the patch request to the api to save editing... when all is green
       let res = createAnyResource("patch",urlBuild, form)
-      console.log(res)
-
       scrollToTop()
+    });
+
+
+       //handle save for discussion component
+
+    $("#discuss-edit").click((e) =>{
+      e.preventDefault()
+       let keys ="discuss-note2"
+      let myEditor = $('div[data-placeholder="'+keys+'"]')
+
+      //switch the undisplayed html form text for html_* so data can be saved to it
+      form.find("#description_discuss").val(myEditor.html())
+      //make the patch request to the api to save editing... when all is green
+      let res = createAnyResource("patch",urlBuild, form)
+      scrollToTop()
+      // let formResetWithProgrammableInputs = $("#myModalDiscussionForm-EDITSELECT");
+      // if(form.find("#parent-lessons").val()!==""){
+      //   //create the discuss group 
+      //   form = formResetWithProgrammableInputs
+      //   let res = createAnyResource("PATCH",urlBuild,form)
+      // }else{
+      //   swal("Error", "API ACCESSED WRONGLY!!", "Try another hacking move")
+      // }
     })
 
 
-    //handle save for problem component
 
 
 
-    //handle save for discussion component
 
-
-
+    //handle save for problem component: 
+    // this is alot of work here : no wonders its called problem component
     
-  }else{
-    swal("Error", "API ACCESSED WRONGLY!!","ERROR")
-  }
 
 }
 
@@ -3645,7 +3824,8 @@ closeIcon = toast.querySelector(".close-icon");
                       let actionBuilder = `/html-component/${component.id}/`
                       let Info = "IFRAME/VIDEO EDITABLE COMPONENT"
                       let readmoreInitialized = "none";
-                      let enableLink ="none"
+                      let enableLink ="none";
+                      let textualData = "";
                       if(component.component_type ==1){
                         launchPad ="#myModalGenericFormEditorEditMode"
                         form = "myModalGenericForm-SELECT"
@@ -3674,8 +3854,9 @@ closeIcon = toast.querySelector(".close-icon");
                         enableLink ="block"
                       }
                      
-                      if(component?.html_text){
+                      if(component?.html_text  || (component.component_type==4 &&  component.description)){
                         readmoreInitialized ="block"
+                         textualData = component?.html_text || component.description
                       }
 
                       //if component is  problem or discussion
@@ -3823,7 +4004,7 @@ closeIcon = toast.querySelector(".close-icon");
 
 
                       <div id="readmore_${component.id}" style="display:${readmoreInitialized}"  class="readmore js-read-more" data-rm-words="70">
-                          ${component?.html_text }
+                          ${textualData }
                       </div>
 
                                               
@@ -6676,7 +6857,7 @@ class Step4 extends React.Component {
 					  {this.state.collaborators.length > 0  && this.state.collaborators.map(instructor => {
                           return (
                             <div class="col-md-3">
-							<div style="background:#f6f6f6;padding:20px;width:100%;display:none" id="" class="card2 animate-slide-out">
+							<div id="" class="card2 animate-slide-out">
                     <div class="mdl-card__media">
                             <div class="article-image-purple">
                                 <div class="mdl-card__title">
@@ -6956,6 +7137,10 @@ const saveMarkdownEditContent = () => {
 
 
   const handleWidgetClick = (e) => {
+
+    // only handles html iframe video and live streams features
+
+    // actions are segregated for complexity and abstraction reasons
     let that = this;
     const Widget = e.target;
     const Type = Widget.getAttribute("data-type");
@@ -6984,7 +7169,8 @@ const saveMarkdownEditContent = () => {
     //now open another modal box that prompts user for the required data input
     //with the required template type form box
     //then append unto the desired location for the requested widget
- 
+    let allowedHeaders = null;
+
     let Clone = null;
     let markdownTemplate = ``
     let htmlEquivalentTemplate =``;
@@ -7041,6 +7227,25 @@ const saveMarkdownEditContent = () => {
         //just launch an entirely new panel work bench for problems
         // because problem component is a whole new big stuff to handle
         $("#openModal-about").css({opacity:1})
+
+        //problem creation form box
+        allowedHeaders =  document.getElementById("openModal-about")
+        allowedHeaders.setAttribute('data-basestation', ".dynamo_" + localStorage.getItem("l_tracker"))
+        allowedHeaders.setAttribute("data-markdown", TemplateType)
+        allowedHeaders.setAttribute("data-url","/lms/api/create/problem-component/");
+
+        //lauch headers
+        break;
+
+      case "[pb_html][/pb_discussions]":
+        // i changed the strategy to this
+        //wow how did you call the form to display?
+        //Answer: Magic!!!
+        allowedHeaders =  document.getElementById("myModalDiscussionForm-CREATESELECT")
+        allowedHeaders.setAttribute('data-basestation', ".dynamo_" + localStorage.getItem("l_tracker"))
+        allowedHeaders.setAttribute("data-url","/lms/api/create/discussion-component/");
+
+        //lauch headers
         break;
       case "[pb_html][/pb_broadcasting]":
         _title ="Html : Video Broadcast"
@@ -7137,24 +7342,12 @@ const saveMarkdownEditContent = () => {
         return false;
     }
 
-
-
-
-
-
-
- 
-
-
   // if(TemplateType =="[pb_html][/pb_iframe]" || TemplateType =="[pb_html][/pb_video]"
   //    || TemplateType =="[pb_html][/pb_broadcasting]" || TemplateType == "[pb_html][/pb_google_meet]"
   //    || TemplateType == "[pb_html][/pb_confrencing]" ||  TemplateType == "[pb_html][/pb_vimeo]"  ||  TemplateType == "[pb_html][/pb_you_tube]"
   //    ){
           // alert("its generic")   
        // }
-
-     
-
      
   };
 
@@ -7165,7 +7358,7 @@ const saveMarkdownEditContent = () => {
   const launchFormBoxIntoModal = (TemplateType,Target,cloneElement, componentTitle) =>{
     //add code deception from data-fields
 
-
+    // avoid reinventing wheel for discussion and problem component quickly add headers if they are of type
 
     //just get the modal that initiates the creation and add headers to it
    let allowedHeaders = null
@@ -7190,9 +7383,9 @@ const saveMarkdownEditContent = () => {
 
     }
 
-
-     let T = new  TinyMyceRender();
-     T.render("")
+     //no longer using tiny myce editor because it would require payment for premium usage
+     // let T = new  TinyMyceRender();
+     // T.render("")
 
     
   }
@@ -7939,15 +8132,228 @@ const saveMarkdownEditContent = () => {
           </div>
         </div>
 
+
+
+      {/*discussion component*/}
+      <div
+          style={{ marginTop: "80px" }}
+          class="modal "
+          id="myModalDiscussionForm"
+          tabindex="-1"
+          role="dialog"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document" style={{width:"600px"}}>
+            <div class="modal-content" style={{width:"900px"}}>
+              <div class="modal-header">
+                <h5 class="modal-title pull-left" style={{ color: "#000" }}>
+                  Add a discussion module
+                </h5>
+                <a
+                  href="#"
+                  class="pull-right"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">×</span>
+                </a>
+              </div>
+              <div
+                class="modal-body p-4 col-md-12"
+                id="result"
+                style={{ height: "400px", overflowY: "scroll" }}
+              >
+                <p>Add a title to the lesson</p>
+                <div class="row">
+                  <div class="divided col-md-12">
+                  <form id="myModalDiscussionForm-CREATESELECT" enctype="application/x-www-form-urlencoded">
+
+
+          <div class="form-group root-block">
+                        <label class="name-discription" >Name</label>
+                        <input type="text" class="form-control" id="name_discuss" name="name"/>
+                      </div>
+
+
+                      <div class="form-group root-block" >
+                        <input type="hidden" name="lesson" class="form-control" id="parent-lessons-name"  />
+                      </div>
+
+
+
+                      <div class="form-group" style={{display:"none"}}>
+                        <label class="change-title">Component Type </label>
+                        <select id="editor-html-type" class="form-control" name="component_type">                      
+                              <option value="4" selected>Discussion</option>                      
+                              
+                      </select>
+                      </div>
+                      <div class="form-group" style={{display:"none"}}>
+                       <select class="form-control" id="editor-html-content-type" name="content_type">
+                                <option value="1">I-Frame</option>
+                                <option value="2" selected>HTML TEXT</option>
+                                <option value="3">HYBRID</option>
+                        </select>
+                      </div>
+                      <input style={{display:"none"}}  
+            id="description_discuss" class="visuell-view html_text" 
+            name="description"  />
+
+            <HTMLForm
+              title="discuss-note"
+              placeholder={"discuss-note"}
+              value={"this initial state"}
+              action={(e)=>{   console.log(e)}}
+              stateAction={(e)=>{   console.log(e)}}
+              name={"discuss-note"}
+            />
+
+            
+            
+
+
+            </form>
+          
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button
+                 id="discuss-add"
+                  type="button"
+                  style={{ background: "rgba(8,23,200)" }}
+                  class="btn btn-primary"
+                  data-dismiss="modal"
+                  onClick={(e) =>{
+                    addDiscussComponent(e)
+                  }}
+                 
+                >
+                  Add Discussion
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+         {/*discuss edit component*/}
+
+         <div
+          style={{ marginTop: "80px" }}
+          class="modal "
+          id="openModal-about2"
+          tabindex="-1"
+          role="dialog"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title pull-left" style={{ color: "#000" }}>
+                  Edit Discussion
+                </h5>
+                <a
+                  href="#"
+                  class="pull-right"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">×</span>
+                </a>
+              </div>
+              <div
+                class="modal-body p-4 col-md-12"
+                id="result"
+                style={{ height: "400px", overflowY: "scroll" }}
+              >
+                <p>Add a title</p>
+                <div class="row">
+                  <div class="divided col-md-12">
+                  <form method="PATCH" id="myModalDiscussionForm-EDITSELECT" enctype="application/x-www-form-urlencoded">
+
+
+          <div class="form-group root-block" >
+                        <label class="name-discription" >Name</label>
+                        <input type="text" class="form-control" id="name_discuss2" name="name"/>
+                      </div>
+
+
+                      <div class="form-group root-block" style={{display:"none"}} >
+                        <input type="text" name="lesson" class="form-control" id="parent-lessons-name2"  />
+                      </div>
+
+                      <div class="form-group root-block" >
+                        <input type="text" style={{display:"none"}} name="component_id" class="form-control" id="component_id"  />
+                      </div>
+
+                      
+
+
+
+                      <div class="form-group" style={{display:"none"}}>
+                        <label class="change-title">Component Type </label>
+                        <select id="editor-html-type" class="form-control" name="component_type">                      
+                              <option value="4" selected>Discussion</option>                      
+                              
+                      </select>
+                      </div>
+                      <div class="form-group" style={{display:"none"}}>
+                       <select class="form-control" id="editor-html-content-type" name="content_type">
+                                <option value="1">I-Frame</option>
+                                <option value="2" selected>HTML TEXT</option>
+                                <option value="3">HYBRID</option>
+                        </select>
+                      </div>
+                      <input type="hidden" style={{display:"none"}}  
+                          id="description_discuss" class="visuell-view html_text" 
+                          name="description"  />
+
+            <HTMLForm
+              title="discuss-note2"
+              placeholder={"discuss-note2"}
+              value={"this initial state"}
+              action={(e)=>{   console.log(e)}}
+              stateAction={(e)=>{   console.log(e)}}
+              name={"discuss-note"}
+            />
+
+            
+            
+
+
+            </form>
+          
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button
+                 
+                  type="button"
+                  style={{ background: "rgba(8,23,200)" }}
+                  class="btn btn-primary"
+                  data-dismiss="modal"
+                  id="discuss-edit"
+                >
+                  Edit Discussion
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
         {/*lesson categories section goes here* myModalLessonGroup*/}
         <div id="myModalLessonGroup" class="modal-build">
-          <div class="modal-build-inner">
+          <div class="modal-build-inner" >
             <div class="modal-toolbar" onClick={()=>{closeModal()}}>
               <h2 class="modal-title">Lessons Component</h2>
               <i id="pb-modal-close" class="fa fa-times" ></i>
             </div>
             <div class="modal-tabs">
-              <div class="modal-tab widgets-tab active-tab">
+              <div  class="modal-tab widgets-tab active-tab">
                 <i class="tab-icon fa fa-code fa-2x"></i>Html
               </div>
               
@@ -8010,7 +8416,7 @@ const saveMarkdownEditContent = () => {
                 class="pb-widget"
                 data-template="[pb_html][/pb_discussions]"
                 data-type="background"
-                 href="#discussionModal" 
+                 href="#myModalDiscussionForm" 
                  role="button" data-toggle="modal"
                   data-fields="['','']"
                  

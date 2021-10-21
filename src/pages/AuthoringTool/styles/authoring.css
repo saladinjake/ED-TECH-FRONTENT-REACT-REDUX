@@ -14984,7 +14984,7 @@ div.dt-button-info h2 {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #f9f9f9;
-  background: rgba(8,23,200);
+  background: #eaeaea;
 }
 
 .modal-tab {
@@ -14997,8 +14997,8 @@ div.dt-button-info h2 {
   font-size: 1rem;
   transition: all 200ms ease-in-out;
  /* color: #33333380;*/
-  background: rgba(8,23,200);
-  color: #fff;
+  /*background: rgba(8,23,200);*/
+  color: #000;
 }
 
 .tab-icon {
@@ -15042,8 +15042,8 @@ div.dt-button-info h2 {
 .pb-widget {
   position: relative;
   background: #f9f9f9;
-  /*background: rgba(8,23,200);
-*/
+  background: rgba(8,23,200);
+
   width: 30%;
   display: flex;
   align-items: center;
@@ -15065,7 +15065,8 @@ div.dt-button-info h2 {
 }
 
 .pb-widget i {
-  color: #33333380;
+ /* color: #33333380;*/
+ color: #fff;
   font-size: 2rem;
   transition: all 200ms ease-in-out;
   padding: 5px 0;
@@ -15081,7 +15082,7 @@ div.dt-button-info h2 {
 
 .pb-widget span {
   font-size: 1rem;
-  color: #000;
+  color: #fff;
 }
 
 .pb-widget span,
