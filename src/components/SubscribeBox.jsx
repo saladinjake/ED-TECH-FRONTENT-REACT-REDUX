@@ -10,7 +10,7 @@ const SubscribeBox = () => {
                 <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
                 <div class="input-group mb-3">
                     <input type="text" class="form-control top-left-radius-50 bottom-left-radius-50 p-2p5" placeholder="E-mail address" aria-label="E-mail address" aria-describedby="button-addon2" />
-                    <button class="btn btn-solid-teal bottom-right-radius-50 top-right-radius-50 width-170" type="button" id="button-addon2">Subscribe</button>
+                    <button class="btn btn-solid-teal bottom-right-radius-50 top-right-radius-50 col-md-3 col-sm-4" type="button" id="button-addon2">Subscribe</button>
                     </div>
                 </div>
             </div>

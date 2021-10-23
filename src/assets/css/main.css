@@ -1,6 +1,6 @@
 .hero-banner-bg{
-    background: url("../images/banner-2.png");
-    background-size: contain;
+    background: url("../images/header 1.png");
+    background-size: cover;
     /* background-position: center center; */
     background-repeat: no-repeat;
 }
@@ -39,7 +39,7 @@
 }
 
 .top-left-radius-20{
-    border-top-right-radius: 20px !important;
+    border-top-left-radius: 20px !important;
 }
 
 .bottom-right-radius-20{
@@ -103,6 +103,10 @@
     background: linear-gradient(90deg, #333333 0%, #555555 100%);
 }
 
+.bg-grey-gradient{
+    background: linear-gradient(180deg, #555555 0%, #777777 100%);
+}
+
 .bg-green-gradient{
     background: linear-gradient(180deg, #00873D 0%, #4CB963 100%);
 }
@@ -154,4 +158,53 @@ p{
 
 .bg-grey{
     background: #555555;
+}
+
+.text-14{
+    font-size: 14px !important;
+}
+
+.text-11{
+    font-size: 11px !important;
+}
+
+.text-24{
+    font-size: 24px !important;
+}
+
+.bg-transparent-black{
+    background: #000;
+    opacity: 0.9;
+}
+
+/* If the screen size is 601px wide or more, set the font-size of <div> to 80px */
+@media screen and (min-width: 701px) {
+    .q-text-link{
+        font-size: 13px;
+    }
+  }
+  
+/* If the screen size is 600px wide or less, set the font-size of <div> to 30px */
+@media screen and (max-width: 700px) {
+    .q-text-link{
+        font-size: 10.5px;
+    }
+}
+
+
+.slick-next:before {
+    content: '→';
+    color: #000 !important;
+    font-size: 2rem !important;
+}
+
+.slick-prev:before {
+    content: '→';
+    color: #000 !important;
+    font-size: 2rem !important;
+}
+
+
+.size-2rem{
+    font-size: 1.5rem;
 }

@@ -1,15 +1,15 @@
 import React from 'react';
-import CourseCard from './CourseCard';
+import CategoryCard from './CategoryCard';
 import Slider from "react-slick";
 
-const CoursesSection = () => {
+const CategorySection = () => {
     var settings = {
         dots: true,
         arrows: true,
         infinite: true,
         speed: 1000,
-        slidesToShow: 4,
-        slidesToScroll: 4,
+        slidesToShow: 3,
+        slidesToScroll: 3,
         initialSlide: 0,
         autoplay: false,
         responsive: [
@@ -19,8 +19,7 @@ const CoursesSection = () => {
               slidesToShow: 3,
               slidesToScroll: 3,
               infinite: true,
-              dots: true,
-              
+              dots: true
             }
           },
           {
@@ -28,16 +27,14 @@ const CoursesSection = () => {
             settings: {
               slidesToShow: 2,
               slidesToScroll: 2,
-              initialSlide: 2,
-              
+              initialSlide: 2
             }
           },
           {
             breakpoint: 480,
             settings: {
               slidesToShow: 1,
-              slidesToScroll: 1,
-              
+              slidesToScroll: 1
             }
           }
         ]
@@ -46,24 +43,22 @@ const CoursesSection = () => {
         <>
             <div className="container my-5">
                 <div className="row mb-3">
-                    <h4 className="subheading-1 col">Featured Courses</h4>
+                    <h4 className="subheading-1 col">Categories</h4>
                     <div className="col">
-                        <a href="" className="btn btn-solid-teal border-radius-50 float-end px-3 text-14">See all courses <i class="bi bi-chevron-right"></i></a>
+                        <a href="" className="btn btn-solid-teal text-14 border-radius-50 float-end px-3">All categories <i class="bi bi-chevron-right"></i></a>
                     </div>
                 </div>
-                {/* <div className="row"> */}
+                <div className="row">
                     <Slider {...settings} className="row">
-                        <CourseCard />
-                        <CourseCard />
-                        <CourseCard />
-                        <CourseCard />
-                        <CourseCard />
-                        <CourseCard />
+                        <CategoryCard />
+                        <CategoryCard />
+                        <CategoryCard />
+                        <CategoryCard />
                     </Slider>
-                {/* </div> */}
+                </div>
             </div>
         </>
      );
 }
  
-export default CoursesSection;
+export default CategorySection;
