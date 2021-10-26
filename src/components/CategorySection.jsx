@@ -45,7 +45,7 @@ const CategorySection = () => {
                 <div className="row mb-3">
                     <h4 className="subheading-1 col">Categories</h4>
                     <div className="col">
-                        <a href="" className="btn btn-solid-teal text-14 border-radius-50 float-end px-3">All categories <i class="bi bi-chevron-right"></i></a>
+                        <a href="" className="btn btn-solid-teal text-14 border-radius-50 float-end px-3">All categories <i className="bi bi-chevron-right"></i></a>
                     </div>
                 </div>
                 <div className="row">

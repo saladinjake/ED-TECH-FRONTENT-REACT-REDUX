@@ -1,210 +1,249 @@
-.hero-banner-bg{
-    background: url("../images/header 1.png");
-    background-size: cover;
-    /* background-position: center center; */
-    background-repeat: no-repeat;
+.hero-banner-bg {
+  background: url("../images/header 1.png");
+  background-size: cover;
+  /* background-position: center center; */
+  background-repeat: no-repeat;
 }
-.min-height-430{
-    min-height: 430px;
+.min-height-430 {
+  min-height: 430px;
 }
-.text-green{
-    color: #115718 !important;
-}
-
-.text-light-green{
-    color: #00873D !important;
+.text-green {
+  color: #115718 !important;
 }
 
-.bg-green{
-    background: #00873D !important;
-    color: #fff;
+.text-light-green {
+  color: #00873d !important;
 }
 
-.btn-rounded{
-    border-radius: 100px !important;
-    padding: 7px 30px !important;
-}
-  
-  
-.btn-solid-teal{
-    background: #00798C !important;
-    color: #fff !important;
+.bg-green {
+  background: #00873d !important;
+  color: #fff;
 }
 
-.bottom-right-radius-50{
-    border-bottom-right-radius: 50px !important;
-}
-.top-right-radius-50{
-    border-top-right-radius: 50px !important;
+.btn-rounded {
+  border-radius: 100px !important;
+  padding: 7px 30px !important;
 }
 
-.top-left-radius-20{
-    border-top-left-radius: 20px !important;
+.btn-solid-teal {
+  background: #00798c !important;
+  color: #fff !important;
 }
 
-.bottom-right-radius-20{
-    border-bottom-right-radius: 20px !important;
+.bottom-right-radius-50 {
+  border-bottom-right-radius: 50px !important;
 }
-.top-right-radius-20{
-    border-top-right-radius: 20px !important;
-    
+.top-right-radius-50 {
+  border-top-right-radius: 50px !important;
 }
 
-.bottom-left-radius-20{
-    border-bottom-left-radius: 20px !important;
+.top-left-radius-20 {
+  border-top-left-radius: 20px !important;
+}
+
+.bottom-right-radius-20 {
+  border-bottom-right-radius: 20px !important;
+}
+.top-right-radius-20 {
+  border-top-right-radius: 20px !important;
+}
+
+.bottom-left-radius-20 {
+  border-bottom-left-radius: 20px !important;
 }
 
 .rounded-start-20 {
-    border-bottom-left-radius: 1rem !important;
-    border-top-left-radius: 1rem !important;
+  border-bottom-left-radius: 1rem !important;
+  border-top-left-radius: 1rem !important;
 }
 
-.bottom-left-radius-50{
-    border-bottom-left-radius: 50px !important;
+.bottom-left-radius-50 {
+  border-bottom-left-radius: 50px !important;
 }
-.top-left-radius-50{
-    border-top-left-radius: 50px !important;
-    
-}
-
-.border-radius-50{
-    border-radius: 50px !important;
-}
-.border-radius-10{
-    border-radius: 10px !important;
-}
-.border-radius-15{
-    border-radius: 15px !important;
-}
-.border-radius-20{
-    border-radius: 20px !important;
-}
-.width-170{
-    width: 170px;
+.top-left-radius-50 {
+  border-top-left-radius: 50px !important;
 }
 
-.p-2p5{
-    padding: 0.7rem !important;
+.border-radius-50 {
+  border-radius: 50px !important;
+}
+.border-radius-10 {
+  border-radius: 10px !important;
+}
+.border-radius-15 {
+  border-radius: 15px !important;
+}
+.border-radius-20 {
+  border-radius: 20px !important;
+}
+.width-170 {
+  width: 170px;
 }
 
-.subscribe-box{
-    background: url("../images/footer.png");
-    background-repeat: no-repeat;
-    background-size: cover;
+.p-2p5 {
+  padding: 0.7rem !important;
 }
 
-.questence-nuggets{
-    background: url("../images/questence-info.png");
-    background-repeat: no-repeat;
-    background-size: cover;
+.subscribe-box {
+  background: url("../images/footer.png");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
-.bg-dark-gradient{
-    background: linear-gradient(90deg, #333333 0%, #555555 100%);
+.questence-nuggets {
+  background: url("../images/questence-info.png");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
-.bg-grey-gradient{
-    background: linear-gradient(180deg, #555555 0%, #777777 100%);
+.bg-dark-gradient {
+  background: linear-gradient(90deg, #333333 0%, #555555 100%);
 }
 
-.bg-green-gradient{
-    background: linear-gradient(180deg, #00873D 0%, #4CB963 100%);
+.bg-grey-gradient {
+  background: linear-gradient(180deg, #555555 0%, #777777 100%);
 }
 
-.questence-nuggets-left-border{
-    border-left: solid 10px #fff;
+.bg-green-gradient {
+  background: linear-gradient(180deg, #00873d 0%, #4cb963 100%);
 }
 
-h1,h2,h3,h4,h5,h6, p{
-    font-family: 'Raleway', sans-serif;
+.questence-nuggets-left-border {
+  border-left: solid 10px #fff;
 }
 
-p{
-    font-size: 18px;
-    font-style: normal;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  font-family: "Raleway", sans-serif;
 }
 
-.heading-lg{
-    font-size: 34px;
-    font-weight: 700;
-    font-style: normal;
+p {
+  font-size: 18px;
+  font-style: normal;
 }
 
-.heading-lg{
-    font-size: 34px;
-    font-weight: 700;
-    font-style: normal;
+.heading-lg {
+  font-size: 34px;
+  font-weight: 700;
+  font-style: normal;
 }
 
-.p-lg-font{
-    font-size: 18px;
-    font-weight: 400;
-    font-style: normal;
+.heading-lg {
+  font-size: 34px;
+  font-weight: 700;
+  font-style: normal;
 }
 
-.subheading-1{
-    font-size: 24px;
-    font-weight: 600;
-    font-style: normal;
+.p-lg-font {
+  font-size: 18px;
+  font-weight: 400;
+  font-style: normal;
 }
 
-.q-text-link{
-    font-size: 13.7px;
+.subheading-1 {
+  font-size: 24px;
+  font-weight: 600;
+  font-style: normal;
 }
 
-.bottom-left-radius-10{
-    border-bottom-left-radius: 10px !important;
+.q-text-link {
+  font-size: 13.7px;
 }
 
-.bg-grey{
-    background: #555555;
+.bottom-left-radius-10 {
+  border-bottom-left-radius: 10px !important;
 }
 
-.text-14{
-    font-size: 14px !important;
+.bg-grey {
+  background: #555555;
 }
 
-.text-11{
-    font-size: 11px !important;
+.text-14 {
+  font-size: 14px !important;
 }
 
-.text-24{
-    font-size: 24px !important;
+.text-11 {
+  font-size: 11px !important;
 }
 
-.bg-transparent-black{
-    background: #000;
-    opacity: 0.9;
+.text-24 {
+  font-size: 24px !important;
+}
+
+.bg-transparent-black {
+  background: #000;
+  opacity: 0.9;
 }
 
 /* If the screen size is 601px wide or more, set the font-size of <div> to 80px */
 @media screen and (min-width: 701px) {
-    .q-text-link{
-        font-size: 13px;
-    }
+  .q-text-link {
+    font-size: 13px;
   }
-  
-/* If the screen size is 600px wide or less, set the font-size of <div> to 30px */
-@media screen and (max-width: 700px) {
-    .q-text-link{
-        font-size: 10.5px;
-    }
 }
 
+/* If the screen size is 600px wide or less, set the font-size of <div> to 30px */
+@media screen and (max-width: 700px) {
+  .q-text-link {
+    font-size: 10.5px;
+  }
+}
 
 .slick-next:before {
-    content: '→';
-    color: #000 !important;
-    font-size: 2rem !important;
+  content: "→";
+  color: #000 !important;
+  font-size: 2rem !important;
 }
 
 .slick-prev:before {
-    content: '→';
-    color: #000 !important;
-    font-size: 2rem !important;
+  content: "→";
+  color: #000 !important;
+  font-size: 2rem !important;
 }
 
+.size-2rem {
+  font-size: 1.5rem;
+}
 
-.size-2rem{
-    font-size: 1.5rem;
+.dropdown-menu {
+  min-width: 200px;
+}
+.dropdown-menu.columns-2 {
+  min-width: 400px;
+}
+.dropdown-menu.columns-3 {
+  min-width: 600px;
+}
+.dropdown-menu li a {
+  padding: 5px 15px;
+  font-weight: 300;
+}
+.multi-column-dropdown {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+.multi-column-dropdown li a {
+  display: block;
+  clear: both;
+  line-height: 1.428571429;
+  color: #333;
+  white-space: normal;
+}
+.multi-column-dropdown li a:hover {
+  text-decoration: none;
+  color: #262626;
+  background-color: #999;
+}
+
+@media (max-width: 767px) {
+  .dropdown-menu.multi-column {
+    min-width: 240px !important;
+    overflow-x: hidden;
+  }
 }

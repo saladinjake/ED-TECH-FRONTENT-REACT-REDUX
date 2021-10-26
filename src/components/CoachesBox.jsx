@@ -6,13 +6,13 @@ import Slider from 'react-slick';
 const CoachesBox = () => {
     var settings = {
         dots: true,
-        arrows: true,
+        arrows: false,
         infinite: true,
         speed: 1000,
         slidesToShow: 1,
         slidesToScroll: 1,
         initialSlide: 0,
-        autoplay: false,
+        autoplay: true,
         responsive: [
           {
             breakpoint: 1024,
@@ -79,9 +79,9 @@ const CoachesBox = () => {
         <div className="container d-md-none mb-5">
             
             <Slider {...settings} className="row">
-                <CoachCard cardTitle="OLUYEMI ADEOSUN" cardBtnText="Start Learning" cardImage="/Main.png" cardText2="ELECTED MEMBER  |  GOVERNING COUNCIL  |  CHARTERED INSTITUTE OF PERSONAL MANAGEMENT (CIPM)  |  SPHRI GPHR MCIPM MBA MSC" cardText="Join me on Questence for exciting adventure as we muster the basics of playing the guitar."/>
-                <CoachCard cardTitle="OLUYEMI ADEOSUN" cardBtnText="Start Learning" cardImage="/Main.png" cardText2="ELECTED MEMBER  |  GOVERNING COUNCIL  |  CHARTERED INSTITUTE OF PERSONAL MANAGEMENT (CIPM)  |  SPHRI GPHR MCIPM MBA MSC" cardText="Join me on Questence for exciting adventure as we muster the basics of playing the guitar."/>
-                <CoachCard cardTitle="OLUYEMI ADEOSUN" cardBtnText="Start Learning" cardImage="/Main.png" cardText2="ELECTED MEMBER  |  GOVERNING COUNCIL  |  CHARTERED INSTITUTE OF PERSONAL MANAGEMENT (CIPM)  |  SPHRI GPHR MCIPM MBA MSC" cardText="Join me on Questence for exciting adventure as we muster the basics of playing the guitar."/>
+                <CoachCard cardTitle="OLUYEMI ADEOSUN" cardBtnText="Start Learning" cardImage="/coach-1.png" cardText2="ELECTED MEMBER  |  GOVERNING COUNCIL  |  CHARTERED INSTITUTE OF PERSONAL MANAGEMENT (CIPM)  |  SPHRI GPHR MCIPM MBA MSC" cardText="Join me on Questence for exciting adventure as we muster the basics of playing the guitar."/>
+                <CoachCard cardTitle="OLUYEMI ADEOSUN" cardBtnText="Start Learning" cardImage="/coach-2.png" cardText2="ELECTED MEMBER  |  GOVERNING COUNCIL  |  CHARTERED INSTITUTE OF PERSONAL MANAGEMENT (CIPM)  |  SPHRI GPHR MCIPM MBA MSC" cardText="Join me on Questence for exciting adventure as we muster the basics of playing the guitar."/>
+                <CoachCard cardTitle="OLUYEMI ADEOSUN" cardBtnText="Start Learning" cardImage="/coach-3.png" cardText2="ELECTED MEMBER  |  GOVERNING COUNCIL  |  CHARTERED INSTITUTE OF PERSONAL MANAGEMENT (CIPM)  |  SPHRI GPHR MCIPM MBA MSC" cardText="Join me on Questence for exciting adventure as we muster the basics of playing the guitar."/>
             </Slider>
         </div>
     </>

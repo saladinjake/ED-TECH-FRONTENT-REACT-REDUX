@@ -48,7 +48,7 @@ const CoursesSection = () => {
                 <div className="row mb-3">
                     <h4 className="subheading-1 col">Featured Courses</h4>
                     <div className="col">
-                        <a href="" className="btn btn-solid-teal border-radius-50 float-end px-3 text-14">See all courses <i class="bi bi-chevron-right"></i></a>
+                        <a href="" className="btn btn-solid-teal border-radius-50 float-end px-3 text-14">See all courses <i className="bi bi-chevron-right"></i></a>
                     </div>
                 </div>
                 {/* <div className="row"> */}

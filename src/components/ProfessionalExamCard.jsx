@@ -6,7 +6,7 @@ const ProfessionalExamCard = ({imgUrl}) => {
         <div className="col m-2">
             <div className="card shadow-md border-radius-20  shadow-sm">                   
                 <div className="card-body px-5 py-5 top-right-radius-20 top-left-radius-20">
-                <img src={imgUrl} className="img-fluid top-right-radius-20 bottom-right-radius-20" alt="..." />
+                <img src={imgUrl} className="img-fluid top-right-radius-20 bottom-right-radius-20" alt="Professional Body" />
                 </div>
                 <div className="card-footer bg-grey-gradient border m-0 border-radius-20">
                     <div className="row pt-2">

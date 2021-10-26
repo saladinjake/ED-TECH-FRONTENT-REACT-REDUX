@@ -39,6 +39,7 @@ const WhyQuestence = () => {
             settings: {
               slidesToShow: 1,
               slidesToScroll: 1,
+              arrows: false,
               
             }
           }
@@ -47,48 +48,48 @@ const WhyQuestence = () => {
     return ( 
         <>
             <div className="d-none d-md-flex p-3 mb-3 border-bottom questence-nuggets shadow-sm my-auto min-height-430">
-                <div class="container">
-                    <div class="row py-5">
-                        <div class="col-md-4 col-sm-12 mb-2 align-items-center d-flex">
+                <div className="container">
+                    <div className="row py-5">
+                        <div className="col-md-4 col-sm-12 mb-2 align-items-center d-flex">
                             <h4 className="text-white">The Questence platform allows you plan and learn at your own pace and in your own style.</h4>
                         </div>
-                        <div class="col text-white p-4 questence-nuggets-left-border bg-transparent-black bottom-right-radius-20 top-right-radius-20">
-                            <div class="row">
-                                <div class="col-md-6 col-sm-12">
+                        <div className="col text-white p-4 questence-nuggets-left-border bg-transparent-black bottom-right-radius-20 top-right-radius-20">
+                            <div className="row">
+                                <div className="col-md-6 col-sm-12">
                                     <div className="row">
                                         <img src="/no1.svg" className="col-2" style={{height: "fit-content"}}/>
                                         <div className="col">
-                                            <h6 class="fw-bold">Easy to Use</h6>
-                                            <p class="fs-6">Easily enrol and schedule your classes.</p>
+                                            <h6 className="fw-bold">Easy to Use</h6>
+                                            <p className="fs-6">Easily enrol and schedule your classes.</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-sm-12">
+                                <div className="col-md-6 col-sm-12">
                                     <div className="row">
                                         <img src="/no2.svg" className="col-2" style={{height: "fit-content"}}/>
                                         <div className="col">
-                                            <h6 class="fw-bold">Certification Pathways</h6>
-                                            <p class="fs-6">Ease your path to professional certifications by choosing standalone courses or multiple programmes.</p>
+                                            <h6 className="fw-bold">Certification Pathways</h6>
+                                            <p className="fs-6">Ease your path to professional certifications by choosing standalone courses or multiple programmes.</p>
                                         </div>
                                     </div>
                                 </div>
                             </div> 
-                            <div class="row mt-4">
-                                <div class="col-md-6 col-sm-12">
+                            <div className="row mt-4">
+                                <div className="col-md-6 col-sm-12">
                                     <div className="row">
                                         <img src="/n03.svg" className="col-2" style={{height: "fit-content"}}/>
                                         <div className="col">
-                                            <h6 class="fw-bold">Learn with your Peers</h6>
-                                            <p class="fs-6">Form tutorial groups with fellow learners and review lessons together with or without your instuctor present. Post questions either to the instructor, or to your classmates</p>
+                                            <h6 className="fw-bold">Learn with your Peers</h6>
+                                            <p className="fs-6">Form tutorial groups with fellow learners and review lessons together with or without your instuctor present. Post questions either to the instructor, or to your classmates</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-sm-12">
+                                <div className="col-md-6 col-sm-12">
                                     <div className="row">
                                         <img src="/n04.svg" className="col-2" style={{height: "fit-content"}}/>
                                         <div className="col">
-                                            <h6 class="fw-bold">Live & Recorded Classes</h6>
-                                            <p class="fs-6">Attend your class live or watch the recording at your convenience.</p>
+                                            <h6 className="fw-bold">Live & Recorded Classes</h6>
+                                            <p className="fs-6">Attend your class live or watch the recording at your convenience.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -99,19 +100,19 @@ const WhyQuestence = () => {
             </div>
 
             <div className="d-md-none p-3 mb-3 border-bottom questence-nuggets shadow-sm my-auto min-height-430">
-                <div class="container">
-                    <div class="row py-5">
-                        <div class="col-sm-12 mb-2 align-items-center d-flex">
+                <div className="container">
+                    <div className="row py-5">
+                        <div className="col-sm-12 mb-2 align-items-center d-flex">
                             <h4 className="text-white text-center">The Questence platform allows you plan and learn at your own pace and in your own style.</h4>
                         </div>
-                        <div class="col-sm-12 text-white p-4 pb-0 questence-nuggets-left-border bg-transparent-black bottom-right-radius-20 top-right-radius-20">
+                        <div className="col-sm-12 text-white p-4 pb-0 questence-nuggets-left-border bg-transparent-black bottom-right-radius-20 top-right-radius-20">
                             <Slider {...settings} className="row">
                                 <div className="">
                                     <div className="row">
                                         <img src="/no1.svg" className="col-2" style={{height: "fit-content"}}/>
                                         <div className="col">
-                                            <h6 class="fw-bold">Easy to Use</h6>
-                                            <p class="fs-6">Easily enrol and schedule your classes.</p>
+                                            <h6 className="fw-bold">Easy to Use</h6>
+                                            <p className="fs-6">Easily enrol and schedule your classes.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -119,8 +120,8 @@ const WhyQuestence = () => {
                                     <div className="row">
                                         <img src="/no2.svg" className="col-2" style={{height: "fit-content"}}/>
                                         <div className="col">
-                                            <h6 class="fw-bold">Certification Pathways</h6>
-                                            <p class="fs-6">Ease your path to professional certifications by choosing standalone courses or multiple programmes.</p>
+                                            <h6 className="fw-bold">Certification Pathways</h6>
+                                            <p className="fs-6">Ease your path to professional certifications by choosing standalone courses or multiple programmes.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -128,8 +129,8 @@ const WhyQuestence = () => {
                                     <div className="row">
                                         <img src="/n03.svg" className="col-2" style={{height: "fit-content"}}/>
                                         <div className="col">
-                                            <h6 class="fw-bold">Learn with your Peers</h6>
-                                            <p class="fs-6">Form tutorial groups with fellow learners and review lessons together with or without your instuctor present. Post questions either to the instructor, or to your classmates</p>
+                                            <h6 className="fw-bold">Learn with your Peers</h6>
+                                            <p className="fs-6">Form tutorial groups with fellow learners and review lessons together with or without your instuctor present. Post questions either to the instructor, or to your classmates</p>
                                         </div>
                                     </div>
                                 </div>
@@ -137,8 +138,8 @@ const WhyQuestence = () => {
                                     <div className="row">
                                         <img src="/n04.svg" className="col-2" style={{height: "fit-content"}}/>
                                         <div className="col">
-                                            <h6 class="fw-bold">Live & Recorded Classes</h6>
-                                            <p class="fs-6">Attend your class live or watch the recording at your convenience.</p>
+                                            <h6 className="fw-bold">Live & Recorded Classes</h6>
+                                            <p className="fs-6">Attend your class live or watch the recording at your convenience.</p>
                                         </div>
                                     </div>
                                 </div>

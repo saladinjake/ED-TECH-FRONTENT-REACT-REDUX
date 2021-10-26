@@ -23,7 +23,7 @@ const HorizontalCard = () => {
         <div className="container d-md-none my-5">
             <div className="card text-white border-radius-20 overflow-hidden">
                 <div style={{height: "auto",width: "100%", overflow: "hidden"}}>
-                    <img src="/partnerWithUs.png" className="card-img-top img-fluid" alt="Coaches-img" style={{height:"200px"}}/>
+                    <img src="/partnerWithUs-mobile.png" className="card-img-top img-fluid" alt="Coaches-img" />
                 </div>
                 <div className="card-body bg-green-gradient p-4">
                     <h5 className="card-heading ">Partner With Us</h5>

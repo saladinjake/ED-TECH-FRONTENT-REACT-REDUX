@@ -34,7 +34,8 @@ const ProfessionalBodySection = () => {
             breakpoint: 480,
             settings: {
               slidesToShow: 1,
-              slidesToScroll: 1
+              slidesToScroll: 1,
+              arrows: false
             }
           }
         ]
@@ -44,10 +45,10 @@ const ProfessionalBodySection = () => {
             <div className="container mt-5">
                 <div className="row mb-3">
                     <h4 className="subheading-1 col">Professional Exams?</h4>
-                    <p class="text-14">The Questencw Digital Learning Centre deploys cutting edge technology to help you ace your next professional examination. Providing unparalled
+                    <p className="text-14">The Questencw Digital Learning Centre deploys cutting edge technology to help you ace your next professional examination. Providing unparalled
 levels of interactivity and convenience.</p>
                 </div>
-                <div className="row">
+                <div className="row mx-2">
                     <Slider {...settings} className="row">
                         <ProfessionalExamCard imgUrl="/nim 1.png"/>
                         <ProfessionalExamCard imgUrl="/cipm.png"/>
