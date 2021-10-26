@@ -1026,12 +1026,19 @@ export const createAnyResource =  async (mode="post",
         //now clone and append the jetpacks of all my collaborators
         
         tempVal = localStorage.getItem(k)
-        let template = `<input name="${k}" style='display:none' value="${tempVal}">`;
-          new_form.append(template)
+       // let template = `<input name="${k}" style='display:none' value="${JSON.parse(tempVal)}">`;
+          
+          let templateOpt = `<select name="authoring_team[]" style='display:none' multiple>`;
+           let fakeSelectOptions = JSON.parse(tempVal) 
+           fakeSelectOptions.forEach(opt =>{
+             templateOpt+=`<option selected value=${opt}>${opt}</option>`
+           })
+           templateOpt=`</select>`
+          new_form.append(templateOpt)
         
       } else if(k=="prerequisite"){
          tempVal = localStorage.getItem(k)
-         alert(tempVal)
+         //alert(tempVal)
          let fakeSelectOptions = []
           // let templateOpt = `<select name="prerequisite" style='display:none' multiple>`;
           //  fakeSelectOptions = [...fakeSelectOptions,state[k]]

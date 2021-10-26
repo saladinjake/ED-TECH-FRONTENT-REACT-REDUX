@@ -3833,17 +3833,22 @@ Who is the entrepreneur who created questence?\n
 		console.log(k +" : "+ a[k])
       if(k=="prerequisite"){
          //display all the course ids
-         if(typeof a[k]=="Array"){
-               a[k].forEach(coursePrerequisites => {
-                  tmpPre=`<li class="preliminary_courses">Required Course ID :${coursePrerequisites}</li>`
+         // if(typeof a[k]=="Array"){
+         //       a[k].forEach(coursePrerequisites => {
+         //          tmpPre=`<li class="preliminary_courses">Required Course ID :${coursePrerequisites}</li>`
 
-                  $("#preliminary_courses").append(tmpPre)
-               })
-               localStorage.setItem(k,a[k])
-         }else{
-            localStorage.setItem(k,[])
+         //          $("#preliminary_courses").append(tmpPre)
+         //       })
+         //       localStorage.setItem(k,a[k])
+         // }else{
+         //    localStorage.setItem(k,[])
 
-         }
+         // }
+         localStorage.setItem(k,a[k])
+         tmpPre=`<li class="preliminary_courses">Required Course ID :${a[k]}</li>`
+          $('input[name="'+k+'"]').val(a[k]);
+          $("#preliminary_courses").append(tmpPre)
+          
         
 
       }
@@ -3887,9 +3892,16 @@ Who is the entrepreneur who created questence?\n
 
 
             if(k=="entrance_exam_required"){
+              if(a[k]==true){
+                 // let valueSelector =`select option[value="${a[k]}"]`
+             $('select[name="'+k+'"] option').attr('selected', $(this).text().toLowerCase() == a[k]);
+             //document.querySelectorAll('select[name="'+k+'"] option[value=valueB]')[1].text
+              }else{
+                 // let valueSelector =`select option[value="${a[k]}"]`
+               $('select[name="'+k+'"] option').attr('selected', $(this).text().toLowerCase() == a[k]);
+           
+              }
                 
-            // let valueSelector =`select option[value="${a[k]}"]`
-             //$('select[name="'+k+'"]').attr('selected', $(this).val() == a[k]);
                       
             }else{
               $('select[name="'+k+'"]').attr('selected', $(this).text() == a[k]);
@@ -3899,11 +3911,17 @@ Who is the entrepreneur who created questence?\n
 
 
 
+
+
+
+
          
            
           }
 
         
+
+
         //check if k is a rich text editor content
         if(textEditors.includes(k)){
           //inject to text editor
@@ -3937,6 +3955,24 @@ Who is the entrepreneur who created questence?\n
 
 
         }
+
+
+
+
+        if(k=="entrance_exam_required"){
+              if(a[k]==true){
+                 // let valueSelector =`select option[value="${a[k]}"]`
+             $('select[name="'+k+'"] option').attr('selected', $(this).text().toLowerCase() == a[k]);
+             //document.querySelectorAll('select[name="'+k+'"] option[value=valueB]')[1].text
+              //document.querySelector('select[name="'+k+'"]').selectedIndex = "2";
+              }else{
+                 // let valueSelector =`select option[value="${a[k]}"]`
+              $('select[name="'+k+'"] option').attr('selected', $(this).text().toLowerCase() == a[k]);
+                //document.querySelector('select[name="'+k+'"]').selectedIndex = "1";
+              }
+                
+                      
+            }
       
     }
 
@@ -5104,6 +5140,11 @@ filenameWithoutExtension(filename) {
         localStorage.setItem(field,this.state[field] )
       }
     })
+
+    let pre =[]
+    if(localStorage.getItem("prerequisite").length>0){
+      pre = localStorage.getItem("prerequisite")
+    }
     
 
 	  stateData = {
@@ -5122,7 +5163,7 @@ filenameWithoutExtension(filename) {
         entrance_exam_required: localStorage.getItem("entrance_exam_required") || false, 
         cost: localStorage.getItem("cost") || 0.00,  //float
         auditing: true,
-        prerequisite:localStorage.getItem("prerequisite")|| [],
+        prerequisite:pre,
         course_pacing: localStorage.getItem("course_pacing") || 1, //int
         course_start_date_time: this.state.course_start_date_time || localStorage.getItem("course_start_date_time") || "2021-08-26T17:13:00+01:00",  //2021-08-26T17:13:00+01:00
         course_end_date_time: this.state.course_end_date_time || localStorage.getItem("course_end_date_time") || "2021-08-26T17:13:00+01:00",
@@ -5143,12 +5184,36 @@ filenameWithoutExtension(filename) {
 	  }
 
 
-    if(localStorage.getItem("authoring_team")){
-      stateData.authoring_team =  [localStorage.getItem("authoring_team")] ;
+
+  let tempstore = localStorage.getItem("authoring_team")
+
+  if(tempstore?.match(/[\[\.*\]]/)){
+   
+  
+     console.log(tempstore)
+     let temp_auth = JSON.parse(tempstore)
+     temp_auth = [...temp_auth]
+     localStorage.setItem("authoring_team",JSON.stringify(temp_auth))
+    stateData.authoring_team = temp_auth  ;
+  
+
+             
+            
+  }else{
+      if(localStorage.getItem("authoring_team").length > 0){
+        stateData.authoring_team =[localStorage.getItem("author")] //just the lead author
+        localStorage.setItem("authoring_team",JSON.stringify(stateData.authoring_team))
+      }else{
+        stateData.authoring_team =[localStorage.getItem("author")] //just the lead author
+        localStorage.setItem("authoring_team",JSON.stringify(stateData.authoring_team))
+     
+      }
+           
+  }
+          
+
+
     
-    }else{
-      stateData.authoring_team =[localStorage.getItem("author")] //just the lead author
-    }
     
 	  
 	  
@@ -7018,6 +7083,56 @@ class Step1 extends React.Component {
 
 
 
+
+                <div className="form-group col-md-6 fl-left">
+                     <label className="col-md-12 col-form-label" for="description">
+                    Prerequisites (Enter the unique ID of the prerequisite course)
+                  </label>
+
+                <div className="">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="prerequisite"
+                    name="prerequisite"
+                    placeholder="Enter course title"
+                    required=""
+                    value={this.props.prerequisite}
+                    onChange={this.props.handleChange}
+
+                  />
+                </div>
+                <ul id="preliminary_courses"></ul>
+              </div>
+
+
+                              <div class="form-group  mb-3 col-md-6 fl-left">
+                 
+                  <div class="pull-right " data-select2-id="94">
+                  <label class="col-md-12 col-form-label" for="level">
+                     Auditing
+                  </label>
+                    <input
+                      style={{ position: "relative", zIndex: "1",padding:"10px" }}
+                      type="checkbox"
+                      className=""
+                      id="auditing"
+                      name="auditing"
+                      
+                       value={this.props.auditing}
+                     onChange={this.props.handleChange}
+                    />
+
+
+
+                     
+                  </div>
+                </div>
+
+
+
+
+
                 
                 <div className="form-group col-md-12 fl-left">
                  
@@ -7058,6 +7173,11 @@ class Step1 extends React.Component {
                     
                   </div>
                 </div>
+
+
+
+            
+
 
 
 
@@ -7329,29 +7449,6 @@ class Step1 extends React.Component {
 
 
         
-                <div class="form-group  mb-3 col-md-6 fl-left">
-                 
-                  <div class="pull-right " data-select2-id="94">
-                  <label class="col-md-12 col-form-label" for="level">
-                     Auditing
-                  </label>
-                    <input
-                      style={{ position: "relative", zIndex: "1",padding:"10px" }}
-                      type="checkbox"
-                      className=""
-                      id="auditing"
-                      name="auditing"
-                      
-                       value={this.props.auditing}
-                     onChange={this.props.handleChange}
-                    />
-
-
-
-                     
-                  </div>
-                </div>
-
 
 
 
@@ -7749,29 +7846,7 @@ class Step3 extends React.Component {
              
              
 
-                <div className="form-group col-md-6 fl-left">
-                     <label className="col-md-12 col-form-label" for="description">
-                    Prerequisites (Enter the unique ID of the prerequisite course)
-                  </label>
-
-                <div className="">
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="prerequisite"
-                    name="prerequisite"
-                    placeholder="Enter course title"
-                    required=""
-                    value={this.props.prerequisite}
-                    onChange={this.props.handleChange}
-
-                  />
-                </div>
-                <ul id="preliminary_courses"></ul>
-              </div>
-
-            
-
+                
                 
               <div class="form-group  mb-3 col-md-6 fl-left">
                 <label class="col-md-12 col-form-label" for="level">
@@ -8013,13 +8088,13 @@ class Step4 extends React.Component {
 				  
 				  	<div   class="col-md-2 fl-left undo" 
                                 onClick={ () => {
-			  let temp =[]
+			  let temp =JSON.stringify([])
               let values = (this.state.collaborators.length > 0 ) ? this.state.collaborators : [];
-			  if(localStorage.getItem("authoring_team")){
-				  temp = localStorage.getItem("authoring_team") || [];
+			  if(localStorage.getItem("authoring_team") ){
+				  temp = localStorage.getItem("authoring_team") || JSON.stringify([])
 				  	  
 			  }else{
-				   localStorage.setItem("authoring_team",[])
+				   localStorage.setItem("authoring_team",JSON.stringify([]))
 			  }
           			  
              			  
@@ -8104,13 +8179,24 @@ class Step4 extends React.Component {
 				   
 				   //console.log($('select[name=authoring_team]').val())
                    
-					if(temp){
+					if(temp?.match(/[\[\.*\]]/)){
 						 let tempstore = localStorage.getItem("authoring_team")
-						 console.log(tempstore)
-						temp = JSON.parse(tempstore)
-						temp = [...temp,...values]
-						localStorage.setItem("authoring_team",JSON.stringify(temp))
-					}
+            
+               console.log(tempstore)
+               temp = JSON.parse(tempstore)
+               temp = [...temp,...values]
+               localStorage.setItem("authoring_team",JSON.stringify(temp))
+
+             
+						
+					}else{
+            if(localStorage.getItem("authoring_team").length > 0){
+               temp = localStorage.getItem("authoring_team")
+             }else{
+               temp =localStorage.getItem("author")
+             }
+           
+          }
 					console.log(localStorage.getItem("authoring_team"))
                    return swal("Success!", "The Instructor was found", "Success");
 
@@ -8883,7 +8969,7 @@ const saveMarkdownEditContent = () => {
                     </div>
 
 
-                    <select class="form-control" name="group_passed" id="id_group_passed">
+                    <select style={{display:"none"}} class="form-control" name="group_passed" id="id_group_passed">
                       <option value="" selected="">-----SELECT A VISIBLE GROUP----</option>
 
                       {groupOwner && groupOwner.map(group =>{
