@@ -37,50 +37,122 @@ import AuthorProfileSetting from "./pages/AuthoringTool/ProfilePage";
 
 import $ from "jquery";
 
+import {
+  createAnyResource
+} from "services/authoring"
+
+const testAjaxificationGet = async (mode="GET",params) => {
+   return $.ajax( {
+      url: "http://gapslmsservices.herokuapp.com/lms/api/courses?limit=1000&offset=0",
+      mode:mode, //use type for post
+      contentType: "application/x-www-form-urlencoded; charset=UTF-8", //enc
+      data: params, //
+    });
+}
+
+
+const testAjaxificationPostX = async (mode="POST",url,form) => {
+
+     try{
+
+   // // let res = await  createAnyResource(
+   // //    "POST",
+   // //    "/lms/api/create/course/",
+   // //     form
+   // // );
+
+
+
+   // // console.log(res)
+   // return res;
+   
+    }catch(e){
+      alert("You only get better if you try harder")
+      console.log(e)
+    }
+
+
+
+
+   
+   
+   
+}
+
+
 
 function App(props) {
-  useEffect(() => {
+  useEffect( async () => {
     $(".footer p , .footer span").each(function () {
       $(this).css({ color: "#fff" });
     });
 
 
 
-    // Selecting all required elements
-const wrapper = document.querySelector(".wrapper-notice"),
-toast = wrapper.querySelector(".toast-offline"),
-title = toast.querySelector("span"),
-subTitle = toast.querySelector("p"),
-wifiIcon = toast.querySelector(".icon"),
-closeIcon = toast.querySelector(".close-icon");
+   let form = $("<form id='create-course' method='POST'></form>");
+   let name = $("<input type='text' />")
+   name.val("An hidden way to create data to post here")
+   name.attr("name","name");
+   form.append(name);
+   let course_code = $("<input type='text' />");
+   course_code.val("123456789"); course_code.attr("name","code");
+   form.append(course_code);
+   let author = $("<input type='text' />"); author.attr("name","author");
+   author.val("30007f4a-0826-4416-ab5e-3b6d236876ad")
+   form.append(author)
+   let institution = $("<input type='text' />");
+   institution.attr("name","institution")
+   institution.val("cb85e4ff-6636-4201-8e9f-5a9259c936bf");
+   form.append(institution) 
 
-window.onload = ()=>{
-    function ajax(){
-        let xhr = new XMLHttpRequest(); //creating new XML object
-        xhr.open("GET", "https://jsonplaceholder.typicode.com/posts", true); //sending get request on this URL
-        xhr.onload = ()=>{ //once ajax loaded
-            //if ajax status is equal to 200 or less than 300 that mean user is getting data from that provided url
-            //or his/her response status is 200 that means he/she is online
-            if(xhr.status == 200 && xhr.status < 300){
-                toast.classList.remove("offline");
-                title.innerText = "You're online now";
-                subTitle.innerText = "Internet Connection Established.";
-                wifiIcon.innerHTML = '<i class="uil uil-wifi fa fa-wifi fa-2x"></i>';
-                closeIcon.onclick = ()=>{ //hide toast notification on close icon click
-                    wrapper.classList.add("hide");
-                }
-                setTimeout(()=>{ //hide the toast notification automatically after 5 seconds
-                    wrapper.classList.add("hide");
-                }, 5000);
-            }else{
-                offline(); //calling offline function if ajax status is not equal to 200 or not less that 300
-            }
+
+    let res = await testAjaxificationPostX("POST","", form)
+    console.log(res)
+
+
+   //$(document).ready(()=>{
+
+
+
+        // Selecting all required elements
+    const wrapper = document.querySelector(".wrapper-notice"),
+    toast = wrapper.querySelector(".toast-offline"),
+    title = toast.querySelector("span"),
+    subTitle = toast.querySelector("p"),
+    wifiIcon = toast.querySelector(".icon"),
+    closeIcon = toast.querySelector(".close-icon");
+   
+      
+     function ajax(){
+        try{
+          let xhr = new XMLHttpRequest(); //creating new XML object
+          xhr.open("GET", "https://jsonplaceholder.typicode.com/posts", true); //sending get request on this URL
+          xhr.onload = ()=>{ //once ajax loaded
+              //if ajax status is equal to 200 or less than 300 that mean user is getting data from that provided url
+              //or his/her response status is 200 that means he/she is online
+              if(xhr.status == 200 && xhr.status < 300){
+                  toast.classList.remove("offline");
+                  title.innerText = "You're online now";
+                  subTitle.innerText = "Internet Connection Established.";
+                  wifiIcon.innerHTML = '<i class="uil uil-wifi fa fa-wifi fa-2x"></i>';
+                  closeIcon.onclick = ()=>{ //hide toast notification on close icon click
+                      wrapper.classList.add("hide");
+                  }
+                  setTimeout(()=>{ //hide the toast notification automatically after 5 seconds
+                      wrapper.classList.add("hide");
+                  }, 5000);
+              }else{
+                  offline(); //calling offline function if ajax status is not equal to 200 or not less that 300
+              }
+          }
+          xhr.onerror = ()=>{
+              offline(); ////calling offline function if the passed url is not correct or returning 404 or other error
+          }
+          xhr.send(); //sending get request to the passed url
+        }catch(e){
+          
         }
-        xhr.onerror = ()=>{
-            offline(); ////calling offline function if the passed url is not correct or returning 404 or other error
-        }
-        xhr.send(); //sending get request to the passed url
-    }
+      }
 
         function offline(){ //function for offline
             wrapper.classList.remove("hide");
@@ -93,8 +165,10 @@ window.onload = ()=>{
         setInterval(()=>{ //this setInterval function call ajax frequently after 100ms
             ajax();
         }, 100);
-    }
-  });
+        
+
+     //   })
+  },[]);
 
   return (
     <Router history={history}>
@@ -121,32 +195,6 @@ window.onload = ()=>{
       />*/}
 
 
-      <div class="wrapper-notice">
-          <div class="toast-offline">
-            <div class="content">
-                  <div class="icon"><i class=" fa fa-wifi "></i></div>
-                      <div class="details">
-                        <span>Network status</span>
-                        <p>Connecting...</p>
-                      </div>
-                  </div>
-                <div class="close-icon"><i class="fa fa-times"></i></div>
-          </div>
-        </div>
-
-
-        <div class="notification-notice">
-          <div class="toast-offline2">
-            <div class="content">
-                  <div class="icon"><i class=" fa fa-wifi "></i></div>
-                      <div class="details">
-                        <span>Information Message</span>
-                        <p></p>
-                      </div>
-                  </div>
-                <div class="close-icon"><i class="fa fa-times"></i></div>
-          </div>
-        </div>
       
       <Notification />
       <GlobalStyle />

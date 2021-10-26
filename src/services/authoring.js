@@ -33,6 +33,7 @@ function removeLoader(){
 }
 
 
+
 window.setTargetItem = (insertionId) =>{
   localStorage.setItem('given_id','dynamic_section_'+insertionId);
   localStorage.setItem('tracker',insertionId);
@@ -64,6 +65,9 @@ function twoDigits(d) {
     return d.toString();
 }
 
+
+
+
 export const showNotificationSuccess = (type="success",stitle="",message="") =>{
   
 
@@ -85,7 +89,7 @@ export const showNotificationSuccess = (type="success",stitle="",message="") =>{
     wrapper.classList.remove("hide");
     toast.classList.remove("offline");
     title.innerText = stitle;
-    subTitle.innerText = message;
+    subTitle.innerHTML= message;
     let bg="gray", checkmark="fa fa-times"
     if(type=="success"){
      bg="green"
@@ -102,7 +106,7 @@ export const showNotificationSuccess = (type="success",stitle="",message="") =>{
     }
     setTimeout(()=>{ //hide the toast notification automatically after 5 seconds
         wrapper.classList.add("hide");
-    }, 5000);
+    }, 10000);
 
   })
   
@@ -141,10 +145,18 @@ export const addSubSectionData = (response) => {
  
       let template = `
          <ul 
+          data-name="${subsec?.name}"
+          data-belongs="${subsec.section}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+          data-pos="${subsec.position_id}"
+          data-idx="${subsec.id}"
+          data-root-parent="${subsec.id}"
+          
          
-         id="dynamic_subsection_${muu_counter}"  data-id="${
+         id="dynamic_subsection_${subsec.id}"  data-id="${
     "muu_" + muu_counter
-  }" class="fold card-box drop-zone-section root-sub-ul centerSubsection column-list-section-parade ${
+  }" class="fold subsections accordion-content hello-move-me drop-zone-section root-sub-ul view opened centerSubsection column-list-section-parade ${
     "muu_" + muu_counter
   } col-md-10 section-parent_${localStorage.getItem(
     "tracker"
@@ -152,70 +164,128 @@ export const addSubSectionData = (response) => {
     "s_tracker"
   )} " style="min-width:99%;width:99%;border-bottom:none;border-top:none;margin-left:10px"
 
-ondragenter="return dragEnterIntoSection(event)" 
-         ondrop="return dragDropLessonComponentToSubSection(event)" 
-         ondragover="return dragOverSection(event)"  
-         ondragleave="return dragLeaveLessonIntoSubsection(event)" 
+
   >
-     <h4 style="background:rgba(8,23,200); margin-right:10px;padding:10px">
+     <h4 class="card-box" style="background:#f6f6f6; margin-right:10px;padding:10px">
             
-              <span class=""  style="height:60px;border-left:3px solid black;margin-top:10px">
-               <span class="title_sub " data-th="Company name" style="font-size:20px;color:#fff">${
+              <span class=""  style="height:60px;margin-top:10px">
+        <span ><i class="fa fa-chevron-down " style="color:#000"></i></span>
+               <span id="title_sub_${subsec.id}" class="title_sub title-given export_title" data-th="Company name" style="font-size:20px;color:#000">${
                  subsec?.name + " " + subsec?.position_id  || "Subsection"
                }</span>
                 <span class="subsect" data-th="Customer no"></span>
                 <span data-th="Customer name"></span>
-                <span class="action" data-th="Customer nam"  style="float:right">
+                <span class="action card-box" style="float:right;background:#eaeaea;padding:4px;margin-top:-30px;border:2px solid #ccc" data-th="Customer nam"  >
        
        <a    href="#myModalLesson" role="button" data-toggle="modal"
-       style="margin-right:10px;color:#fff"
+       style="margin-right:10px;color:#000"
           data-id="${"muu_" + muu_counter}"
-            onclick='addlessonSection(this);setTargetSubsectionItem("${muu_counter}") '      
-          ><i class="fa fa-plus"></i></a>
-
-
-        <a style="margin-right:10px;color:#fff"
-            href="#myModalSubSectionEdit" role="button" data-toggle="modal"
-          data-id="${"muu_" + muu_counter}"
-
-            data-idx="${muu_counter}"
+          data-idx="${subsec.id}"
+           data-idx="${subsec.id}"
           data-name="${subsec?.name}"
           data-pos="${subsec?.position_id}"
           data-description="${subsec?.description}"
           data-parent-id="${subsec.section}"
           data-modal="myModalSubSectionEdit"
+           data-belongs="${subsec.section}"
 
-            onclick="injectToModal(this);"       
-          >
-                
-          <i class="fa fa-edit "></i>
-        </a>
+            onclick='addlessonSection(this);setTargetSubsectionItem("${muu_counter}") '      
+          ><i class="fa fa-plus"></i></a>
 
 
-        <a style="margin-right:10px;color:#fff"
-          data-extint="subsection"
+        <a style="margin-right:10px;color:#000"
+            href="#myModalSubSectionEdit" role="button" data-toggle="modal"
+          data-id="${"muu_" + muu_counter}"
 
-            data-idx="${muu_counter}"
+           data-idx="${subsec.id}"
           data-name="${subsec?.name}"
           data-pos="${subsec?.position_id}"
           data-description="${subsec?.description}"
           data-parent-id="${subsec.section}"
+          data-modal="myModalSubSectionEdit"
+           data-belongs="${subsec.section}"
+
+
+            onclick="injectToModal(this);"       
+          >
+                
+          <i class="fa fa-edit "  data-idx="${subsec.id}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+          data-modal="myModalSubSectionEdit"
+           data-belongs="${subsec.section}"
+></i>
+        </a>
+
+
+        <a style="margin-right:10px;color:#000"
+          data-extint="subsection"
+
+          data-idx="${subsec.id}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+           data-belongs="${subsec.section}"
 
           data-id="${"muu_" + muu_counter}"
            onclick="genericDelete(this)"        
           >
                 
-          <i class="fa fa-trash "></i>
+          <i class="fa fa-trash "  data-extint="subsection"
+
+          data-idx="${subsec.id}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+           data-belongs="${subsec.section}"
+></i>
         </a>
 
 
-         <a  class="drag-handle-list" style="margin-right:10px;color:#fff"
+        <a style="margin-right:10px;color:#000"
+          data-extint="subsection"
+
+           data-idx="${subsec.id}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+           data-belongs="${subsec.section}"
+
+          data-id="${"muu_" + muu_counter}"
+           onclick="replicateSubSection(this)"        
+          >
+                
+          <i class="fa fa-copy"></i>
+        </a>
+
+
+        
+
+
+         <a  class="drag-handle-list" style="margin-right:10px;color:#000"
           
-         
+          data-idx="${subsec.id}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+           data-belongs="${subsec.section}"
+
+          data-id="${"muu_" + muu_counter}"
                  
           >
 
-         <i class="fa fa-arrows "></i>
+         <i class="fa fa-arrows " data-idx="${subsec.id}"
+          data-name="${subsec?.name}"
+          data-pos="${subsec?.position_id}"
+          data-description="${subsec?.description}"
+          data-parent-id="${subsec.section}"
+           data-belongs="${subsec.section}"></i>
         </a>
 
 
@@ -224,12 +294,13 @@ ondragenter="return dragEnterIntoSection(event)"
 
          <a class="dropright dropright "  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                  
-                <i class="fa fa-ellipsis-v " style="color:#fff"></i>
+                <i class="fa fa-ellipsis-v " style="color:#000"></i>
              
         <ul class="dropdown-menu" style="margin-left:40px" >
 
   <li><a class="dropdown-item"   href="#myModalLesson" role="button" data-toggle="modal"
           data-id="${"muu_" + muu_counter}"
+          data-idx="${subsec.id}"
             onclick='addlessonSection(this);setTargetSubsectionItem("${muu_counter}") '      
           >Add</a></li>
 
@@ -237,11 +308,12 @@ ondragenter="return dragEnterIntoSection(event)"
 
                 <li><a class="dropdown-item"    href="#myModalSubSectionEdit" role="button" data-toggle="modal"
           data-id="${"muu_" + muu_counter}"
-           data-idx="${muu_counter}"
+           data-idx="${subsec.id}"
           data-name="${subsec?.name}"
           data-pos="${subsec?.position_id}"
           data-description="${subsec?.description}"
           data-parent-id="${subsec?.section}"
+          data-belongs="${subsec?.section}"
 
           data-modal="myModalSubSectionEdit"
             onclick="injectToModal(this)"       
@@ -254,18 +326,22 @@ ondragenter="return dragEnterIntoSection(event)"
 
                 <li><a class="dropdown-item" 
                  data-id="${"muu_" + muu_counter}"
-                  data-idx="${muu_counter}"
+                 data-idx="${subsec.id}"
           data-name="${subsec?.name}"
           data-pos="${subsec?.position_id}"
           data-description="${subsec?.description}"
            data-parent-id="${subsec?.section}"
+            data-belongs="${subsec.section}"
           data-modal="myModalSubSectionEdit"
                 onclick="replicateSubSection(this);localStorage.setItem('given_sid','dynamic_subsection_'+${muu_counter});localStorage.setItem('s_tracker',${muu_counter});"
 
-                >Replicate Section</a></li>
+                >Copy</a></li>
                 
            </ul>
          </a>
+         <br/>
+     <span style="font-size:12px;color:#000">Subsections (${subsec.position_id}) contains (${0}) Lessons </span>
+         
                 </span>
       </li>
 
@@ -327,29 +403,47 @@ export const addSectionData = (response) => {
   if(typeof response == "object" &&  response.hasOwnProperty("id")){
 
   templateData =`
-  <li id="${insertionId}" data-parent="${insertionId}" data-restriction="${
+  <li open id="${insertionId}" 
+  data-belongs="${section.course}"
+  data-name="${section.name}"
+  data-idx="${insertionId}"
+  data-root-parent="${insertionId}" 
+         
+          data-description="${section.description}"
+
+   data-parent="${insertionId}" data-restriction="${
     "miller_" + insertionId
   }"    data-id="${
     "miller_" + insertionId
-  }" id="dynamic_section_${insertionId}"  class="card-box root-li view tr-of-root opened col-md-12 ${
+  }" id="dynamic_section_${insertionId}"  class="hello-move-me sections  root-li view tr-of-root opened col-md-12 ${
     "miller_" + insertionId
-  } section-list" style=" margin-bottom:10px;background:#fff;border:2px solid #f5f5f5">
+  } section-list" >
 
-   <h4 style="background:rgba(8,23,200); margin-right:10px;padding:10px">
+   <h4 class="card-box" style="background:rgba(8,23,200);margin-bottom:30px; margin-right:10px;padding:10px; ">
    <a style="color:#fff"
+         data-belongs="${section.course}"
+         data-idx="${insertionId}"
+         data-name="${section.name}"
+          data-pos="${section.position_id}"
           data-id="${"miller_" + insertionId}"
+          data-root-parent="${insertionId}"
           onclick="localStorage.setItem('given_id','dynamic_section_'+'${insertionId}');localStorage.setItem('tracker','${insertionId}');showSetSubsection(this);"           
           >
-           <span ><i class="fa fa-chevron-down "></i></span>
+           <span class="content-entry"><i class="fa fa-chevron-down "></i></span>
     </a>
-     <span class="tits section__name first-child-of-td" style="font-size:20px;color:#fff"> ${
+     <span class="tits section__name title-given first-child-of-td export_title" style="font-size:20px;color:#fff"> ${
        section.name + " " + section.position_id  || "Section " + insertionId
      }</span>
-      <span class="per action" style="float:right">
+      <span class="per action card-box" style="float:right;background:rgba(8,23,200);padding:10px;margin-top:-50px;border-20px solid #ccc">
       <a style="margin-right:10px;color:#fff"
+                  
+         data-belongs="${section.course}"
+         data-name="${section.name}"
+          data-pos="${section.position_id}"
+          data-idx="${insertionId}"
+          data-root-parent="${insertionId}"
                    href="#myModalSubsection" role="button" data-toggle="modal"
-                   onclick="localStorage.setItem('given_id','dynamic_section_'+'${insertionId}');
-  localStorage.setItem('tracker','${insertionId}');"
+                   onclick='setTargetItem("${insertionId}")'
                   >
                 
                     <i class="fa fa-plus "></i>
@@ -364,6 +458,8 @@ export const addSectionData = (response) => {
           data-name="${section.name}"
           data-pos="${section.position_id}"
           data-description="${section.description}"
+          data-belongs="${section.course}"
+          data-root-parent="${insertionId}"
           data-modal="myModalEdit"
 
             onclick="injectToModal(this);localStorage.setItem('given_id','dynamic_section_'+'${insertionId}');localStorage.setItem('tracker','${insertionId}');"       
@@ -375,30 +471,61 @@ export const addSectionData = (response) => {
 
         <a style="margin-right:10px;color:#fff"
           data-extint="section"
-
+           data-belongs="${section.course}"
           data-idx="${insertionId}"
           data-name="${section.name}"
           data-pos="${section.position_id}"
           data-description="${section.description}"
           data-id="${"miller_" + insertionId}"
+          data-root-parent="${insertionId}"
            onclick="genericDelete(this)"        
           >
                 
           <i class="fa fa-trash "></i>
         </a>
 
-        
 
-         <a class="drag-handle" style="margin-right:10px;color:#fff"
+
+         <a class="" style="margin-right:10px;color:#fff"
+          data-extint="section"
+         data-belongs="${section.course}"
+          data-idx="${insertionId}"
+          data-name="${section.name}"
+          data-pos="${section.position_id}"
+          data-description="${section.description}"
+          data-id="${"miller_" + insertionId}"
+          data-root-parent="${insertionId}"
+           onclick="replicateSection(this)"
                         
           >
-         <i class="fa fa-arrows "></i>
+         <i class="fa fa-copy "></i>
+        </a>
+         <a class="drag-handle"  
+         data-belongs="${section.course}"
+         data-belongs="${section.course}"
+         data-idx="${insertionId}"
+
+          data-name="${section.name}"
+          data-pos="${section.position_id}"
+          data-description="${section.description}"
+          data-root-parent="${insertionId}"
+          
+
+
+          style="margin-right:10px;color:#fff">
+         <i class="fa fa-arrows "  data-belongs="${section.course}"
+         data-belongs="${section.course}"
+
+          data-name="${section.name}"
+          data-pos="${section.position_id}"
+          data-description="${section.description}"></i>
         </a>
 
-       
+        
+
 
         
-         <a class="dropright dropright "  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="dropright dropright "  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                  
                 <i class="fa fa-ellipsis-v " style="color:#fff"></i>
              
@@ -418,25 +545,11 @@ export const addSectionData = (response) => {
           data-pos="${section.position_id}"
           data-description="${section.description}"
           data-modal="myModalEdit"
+          data-belongs="${section.course}"
+          data-root-parent="${insertionId}"
 
             onclick="injectToModal(this);localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});"       
           >Edit </a></li>
-                <li><a class="dropdown-item" 
-                data-idx="${insertionId}"
-          data-name="${section.name}"
-          data-pos="${section.position_id}"
-          data-description="${section.description}"
-          data-parent-id="${section.id}"
-
-                 data-id="${"miller_" + insertionId}"
-                onclick="replicateSection(this);localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});"
-
-                >Replicate</a></li>
-                <li><a class="dropdown-item" 
-                href="#myModalExport" role="button" data-toggle="modal"
-          data-id="${
-            "miller_" + insertionId
-          }" onclick="exportSection();localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});" >Export </a></li>
                 
              
            </ul>
@@ -445,12 +558,16 @@ export const addSectionData = (response) => {
           <a style="margin-right:10px;color:#fff"
         
           data-id="${"miller_" + insertionId}"
+          data-belongs="${section.course}"
+          data-root-parent="${insertionId}"
           onclick="showSetSubsection(this);localStorage.setItem('given_id','dynamic_section_'+${insertionId});localStorage.setItem('tracker',${insertionId});"
                 
           >
 
-</a>
+</a><br/>
           
+<span style="font-size:12px;color:#fff">Section ${section.position_id} contains (${0}) Subsection</span>
+         
           
               
         </span>
@@ -475,44 +592,9 @@ export const addSectionData = (response) => {
   $("#js-parent").append(templateData); // spawn child to DOM
   // });
 
-  //FOR DRAGABLE EFFECT
-  //FOR DRAGABLE EFFECT
-
-  
-  var children = $("#js-parent").children.length;
-
-
-
-  if (children > 0) {
-    
-
-
-    /*sort the main sections that holds all subsection*/
-    /*can only move along root section or can only be replaced along root sections*/
-    // if (document.getElementById("js-parent")) {
-    //   var el = document.getElementById("js-parent");
-    //   var sortableSections = Sortable.create(el, {
-    //     group: "sections",
-    //     handle: ".drag-handle",
-    //   });
-    // }
-    
-    // /*sort sections subheader components*/
-    // /*can only move along sub section component and no where else*/
-    // if (document.querySelectorAll(".root-li")) {
-    //   var children = $(".root-li").children.length;
-    //   // alert(children)
-    //   var subsectionGroups = document.querySelectorAll(".root-li");
-    //   subsectionGroups.forEach(function (ele) {
-    //     Sortable.create(ele, {
-    //       group: "columns",
-    //       handle: ".drag-handle-list",
-    //     });
-    //   });
-    // }
-
-   }
   } //end if
+
+  return response;
 };
 
 
@@ -532,9 +614,17 @@ export const addLessonData = (response) => {
      
   let rndId = "dynamic_subsection_" + muu_counter + "_lesson_component"
   let templateLesson = ` 
-      <ul id="${rndId}"  data-id="${
-    "muu_" + muu_counter
-  }" class="reaper-${muu_counter} fold root-lesson-ul draggable dynamo_${localStorage.getItem("l_tracker")} card-box ${
+       <ul id="${rndId}"  data-id="${
+    "muu_" + muu_counter}"
+    
+          data-idx="${muu_counter}"
+          data-name="${lessons?.name}"
+          data-pos="${lessons?.position_id}"
+          data-description="${lessons?.description}"
+           data-parent-id="${lessons.subsection}"
+        
+          data-description="${lessons?.description}"
+     class="reaper-${muu_counter} lessons hello-move-me accordion-content fold root-lesson-ul view opened draggable dynamo_${localStorage.getItem("l_tracker")}  ${
     "muu_" + muu_counter
   } col-md-8   section-parent_${localStorage.getItem(
     "tracker"
@@ -545,19 +635,15 @@ export const addLessonData = (response) => {
   
    >
 
-  
-   
-      <div class="console" style="display:none">
-    <h4>CONSOLE:</h4>
-  </div>
         <li class="fold-content">
   
-    <h4 style="background:rgba(8,23,200); margin-right:10px;padding:10px">
-               <span class="title_sub " data-th="Company name" style="font-size:20px;color:#fff">${
+    <h4 style="background:rgba(8,20,200); margin-right:10px;padding:10px">
+  <span class="content-entry"><i class="fa fa-chevron-down " style="color:#fff"></i></span>
+               <span id="title_sub_${lessons.id}" class="title_sub title-given export_title" data-th="Company name" style="font-size:20px;color:#fff">${
                  lessons.name || "Lesson" }
                </span>
                 <span class="subsect" data-th="Customer no"></span>
-                <span class="action" data-th="Customer nam"  style="float:right">
+                <span class="action card-box" style="float:right;background:rgba(8,23,200);padding:10px;margin-top:-50px;border-20px solid #ccc" data-th="Customer nam"  >
 
 
 
@@ -605,15 +691,26 @@ export const addLessonData = (response) => {
         </a>
 
 
-         <a class="drag-handle-list-lessons" style="margin-right:10px;color:#fff"
+         <a
+          data-name="${lessons?.name}"
+        
+          data-description="${lessons?.description}" 
+
+         class="drag-handle-list-lessons" style="margin-right:10px;color:#fff"
           data-id="${"lmuu_" + muu_counter}"
+          data-idx="${muu_counter}"
           data-template="dynamic_subsection_${muu_counter}_lesson_component "
            
            onclick='setTargetLessonItem("${muu_counter}")'
                  
           >
 
-         <i class="fa fa-arrows "></i>
+         <i class="fa fa-arrows "
+            data-name="${lessons?.name}"
+        
+          data-description="${lessons?.description}"
+
+         ></i>
         </a>
          <a class="dropright dropright "  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-ellipsis-v " style="color:#fff"></i>
@@ -643,10 +740,11 @@ export const addLessonData = (response) => {
                  data-id="${"lmuu_" + muu_counter}"
                 onclick='setTargetLessonComponent("${muu_counter}")'
 
-                >Replicate Section</a></li>
+                >Copy</a></li>
                 
            </ul>
-         </a>
+         </a><br/>
+     <span style="font-size:12px;color:#fff">Lesson ${lessons.position_id} contains (0) modules </span>
          
 
 
@@ -675,9 +773,16 @@ export const getIdFromUrl = () =>{
 // alert(id); // 
 
  var full_url = document.URL; // Get current url
- var url_array = full_url.split('/') // Split the string into an array with / as separator
- var last_segment = url_array[url_array.length-1];  // Get the last part of the array (-1)
- return last_segment
+ // var url_array = full_url.split('/') // Split the string into an array with / as separator
+ // var last_segment = url_array[url_array.length-1];  // Get the last part of the array (-1)
+ // return last_segment
+
+ const filename = decodeURIComponent(new URL(full_url).pathname.split('/').pop());
+  if (!filename) {
+    swal("Error", "URL path with wrong course id"); // some default filename
+    return false
+  } 
+  return filename.replace(/^(.+?)(?:\.[^.]*)?$/, '$1');
 }       
                             //id       //link     //true or false
 export const getUrlParameters = (parameter, staticURL, decode) =>{
@@ -813,14 +918,14 @@ function obj2FormData(obj, formData = new FormData()){
     return formData;
 }
 
-/*the post handler action*/
-/*
- *@param url : description: http://apibase/createlink
- *@param form : jquery form element
- *@ Function createAnyResource: creates any resource via jquery formElement
- *@ example usage : createAnyResource("/lms/api/create/section", $("form")) // sweet!!!
- */
-export const createAnyResource = (mode="post",
+
+
+
+
+
+
+
+export const createAnyResource =  async (mode="post",
   parts = "/lms/api/create/course/",
   formEl,
   state ={} // optional
@@ -828,6 +933,10 @@ export const createAnyResource = (mode="post",
   var url = base_url + parts;
   var form = formEl[0];
   console.log(formEl.attr("id"))
+  console.log(formEl.html())
+  if(typeof formEl.attr("id") == "undefined"){
+    formEl.attr("id","create-course")
+  }
   // You need to use standard javascript object here
   var formData = new FormData(form);
   // Attach file only if the generic form contains (.* input[type="file"])
@@ -837,145 +946,136 @@ export const createAnyResource = (mode="post",
   //   formData.append("filename", $("input[type=file]")[0].files[0]); //
   // }
 
-
+  //inputs which are not affected by global states
 
 
   //if its course  creation form
-        if(formEl.attr("id")=="create-course" ){
-           //automatic method
-          // const formIk = document.querySelector(formEl.attr("id"))
-          // Array.from(formIk.elements).filter(e =>{ 
-           
-          //   if( localStorage.getItem( e.getAttribute("name") ) ){
-          //      formEl.find("#"+ e.getAttribute("name")).val(localStorage.getItem( e.getAttribute("name")))
-          //   }
-          // })
+   if(formEl.attr("id")=="create-course" ){
+      var formElements = new Array();
+      $("input, select, textarea").each(function(){
+          formElements.push($(this));
+      });
 
-          var formElements = new Array();
-          $("input, select, textarea").each(function(){
-              formElements.push($(this));
-          });
-
-
-    
-
-
-        let formEl = $("#create-course");
+      let formEl = $("#create-course");
      
-          formElements.filter(e =>{ 
-            var element = e;
-            var title = element.title;
-            var id = element.id;
-            var name = element.name;
-            var value = element.value;
-            var type = element.type;
-            var cls = element.className;
-            var tagName = element.tagName;
-            var options = [];
-            var hidden = [];
-            var formDetails = '';
+      formElements.filter(e =>{ 
+        var element = e;
+        var title = element.title;
+        var id = element.id;
+        var name = element.name;
+        var value = element.value;
+        var type = element.type;
+        var cls = element.className;
+        var tagName = element.tagName;
+        var options = [];
+        var hidden = [];
+        var formDetails = '';
 
-            // check if the data exist in local store
-            if( localStorage.getItem( e.attr("name") ) ){
-               console.log(e.attr("name"))
-               formEl.find("#"+ e.attr("name")).val(localStorage.getItem( e.attr("name")))
-               
-            }
-          })
-
-          //procedural method
-          // check for basic required fields validation requirements
-          // formEl.find("#course_name").val(localStorage.getItem("name"))  ;
-          // formEl.find("#course_code").val(localStorage.getItem("code"))  ;
-          // formEl.find("#author").val(localStorage.getItem("author")) ;
-          // formEl.find("#institution").val(localStorage.getItem("institution")) 
-          // //institutionId = institutionId.options[institutionId.selectedIndex].value;
-          
-
-          if (formEl.find("#author").val() == "-- Institutions --") {
-            //throw error
-            swal("Error!", "We could not find instructor", "error");
-            return false;
-          } else if (formEl.find("#course_name").val() == "" ){
-            swal("Error!", "Course name is required", "error");
-            return false;
-          } else if(  formEl.find("#course_code").val() == "" ){
-            swal("Error!", "Course code required", "error");
-            return false;
-          }else if(formEl.find("#institution").val() == "-- Institutions --")
-          {
-            swal("Sorry!", "The course must be attached to an institution it belongs to", "error");
-            return false;
-          }
+        // check if the data exist in local store
+        if( localStorage.getItem( e.attr("name") ) ){
+           console.log(e.attr("name"))
+           formEl.find("#"+ e.attr("name")).val(localStorage.getItem( e.attr("name")))
+           
         }
+      })
+
+
+      if (formEl.find("#author").val() == "-- Institutions --") {
+        //throw error
+        swal("Error!", "We could not find instructor", "error");
+        return false;
+      } else if (formEl.find("#course_name").val() == "" ){
+        swal("Error!", "Course name is required", "error");
+        return false;
+      } else if(  formEl.find("#course_code").val() == "" ){
+        swal("Error!", "Course code required", "error");
+        return false;
+      }else if(formEl.find("#institution").val() == "-- Institutions --")
+      {
+        swal("Sorry!", "The course must be attached to an institution it belongs to", "error");
+        return false;
+      }
+    }
 
 
        // else if its an update of the form for each tab run the following event
-	   if(formEl.attr("id")=="stepUpFormWithAI2"){ //or more
-          //loop thru the current state then update what we have by cfreateing the form value then append to the
-      		//dynamic invisible form element to be sent to database
-		     //ie. gen form data on fly not added to the dom itself. just a temp usage
-		       formEl = $("#stepUpFormWithAI2");
-			
-		if(state){
-           formEl = $("#stepUpFormWithAI2");
-		      	console.log(state)
-		  //recreate the form data with the state changed value by filling it with what was typed before
-          //url will be an update method if the resource exists
-		  let textEditors = [
-		    "learning_expectation",
-		    "description","prerequisite", 
-			"overview","curriculum"
-		  ];
-		  let new_form = $("<form id='quickform-update-onfly' method='patch' enctype='application/x-www-form-urlencoded'></form>")
-          for(var k in state){
-            console.log(k + " : " + state[k]) 
-			if(k=="card_image" || k=="intro_video"){
-				//for uploads handle this when agreed upon change made for video upload of intro_video bcus there is no where to upload files on backend
-				
-			}else if(k=="authoring_team"){
-				//now clone and append the jetpacks of all my collaborators
-				
-				
-				let template = `<input name="${k}" style='display:none' value="${state[k]}">`;
-			    new_form.append(template)
-				console.log(k,state[k])
+    if(formEl.attr("id")=="stepUpFormWithAI2" || typeof formEl.attr("id")== "undefined"){ //or more
+      //loop thru the current state then update what we have by cfreateing the form value then append to the
+      //dynamic invisible form element to be sent to database
+     //ie. gen form data on fly not added to the dom itself. just a temp usage
+     formEl = $("#stepUpFormWithAI2");
       
-				
-			}else{
-				let template = `<input name="${k}" style='display:none' value="${state[k]}">`;
-			    new_form.append(template)
-			}
-			
-			//for booleans checks
-			
-		  }
-		  formEl =    new_form;//$("#stepUpFormWithAI2"); // switch to a new fly form
-		  
-		  
-		 
-		}
-		 
-	   }
+    if(state){
+      formEl = $("#stepUpFormWithAI2");
+      console.log(state)
+       let tempVal = ""
+      //recreate the form data with the state changed value by filling it with what was typed before
+          //url will be an update method if the resource exists
+      let textEditors = [
+        "learning_expectation",
+        "description","prerequisite", 
+      "overview","curriculum"
+      ];
+      let new_form = $("<form id='quickform-update-onfly' method='patch' enctype='application/x-www-form-urlencoded'></form>")
+          for(var k in state){
+            console.log(k + " : " + state[k]+ " : " + localStorage.getItem(k)) 
+      if(k=="card_image" || k=="intro_video"){
+        //for uploads handle this when agreed upon change made for video upload of intro_video bcus there is no where to upload files on backend
+        
+      }else if(k=="authoring_team"){
+        //now clone and append the jetpacks of all my collaborators
+        
+        tempVal = localStorage.getItem(k)
+        let template = `<input name="${k}" style='display:none' value="${tempVal}">`;
+          new_form.append(template)
+        
+      } else if(k=="prerequisite"){
+         tempVal = localStorage.getItem(k)
+         alert(tempVal)
+         let fakeSelectOptions = []
+          // let templateOpt = `<select name="prerequisite" style='display:none' multiple>`;
+          //  fakeSelectOptions = [...fakeSelectOptions,state[k]]
+          //  fakeSelectOptions.forEach(opt =>{
+          //    templateOpt+=`<option selected value=${opt}>${opt}</option>`
+          //  })
+          //  templateOpt=`</select>`
+            tempVal = localStorage.getItem(k)
+        let template = `<input name="${k}" style='display:none' value="${[tempVal]}">`;
+      
+          new_form.append(template)
+
+       
+      
+        
+      }else{
+        tempVal = localStorage.getItem(k)
+        let template = `<input name="${k}" style='display:none' value="${tempVal}">`;
+          new_form.append(template)
+      }
+      
+      //for booleans checks
+      
+      }
+      formEl =    new_form;//$("#stepUpFormWithAI2"); // switch to a new fly form
+    }
+     
+     }
         
   
 
   if(formEl.attr("id")=="myModalMarkdownEditor-SELECT"){
-        document.getElementById("lesson-editor-id").value = localStorage.getItem("ls_tracker") 
-        formData.append("lesson", localStorage.getItem("ls_tracker"))
-        form = $("#"+ "myModalMarkdownEditor-SELECT")[0]  
+    document.getElementById("lesson-editor-id5").value = localStorage.getItem("l_tracker") 
+    formData.append("lesson", localStorage.getItem("ls_tracker"))
+    form = $("#"+ "myModalMarkdownEditor-SELECT")[0]  
   }else if(formEl.attr("id")=="myModalGenericForm-SELECT"){
-         document.getElementById("lesson-editor-id2").value = localStorage.getItem("ls_tracker") 
-        form = $("#"+ "myModalGenericForm-SELECT")[0]  
-        formData.append("lesson", localStorage.getItem("ls_tracker"))
+     document.getElementById("lesson-editor-id2").value = localStorage.getItem("l_tracker") 
+    form = $("#"+ "myModalGenericForm-SELECT")[0]  
+    formData.append("lesson", localStorage.getItem("ls_tracker"))
   }else {
     //problem and discussion
   }
         //no validation for now
   
-
-  // }
-  // }
   let data = null;
   let jsonData = {};
   let dataType =""
@@ -1046,420 +1146,1159 @@ export const createAnyResource = (mode="post",
     }
 
   }
-  
 
-  //switching between the mode cases
-  // if(formEl.attr("method") =="put"){
-  //     type = "PUT"
-  // }else if(mode.toLowerCase() !=="put"){
+  try{
 
-  //   if(mode.toLowerCase() !=="post" ){
-  //      type = "PATCH"
-  //   }else{
-  //      type = "POST"
-  //   }
-
-  // }
-  
-
-
-  
-
-
-
-    
-  
-   let httpRequestAjax = $.ajax({
-    url: url,
-    // method: "POST",
-    type:type,
-    // data:formData, //multipart form
-    // data: JSON.stringify(data), // if not multipart form
-    // contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+) multipart
-    // processData: false, // NEEDED, DON'T OMIT THIS  multipart
-    contentType:  contentType,   //"application/x-www-form-urlencoded; charset=UTF-8", //enc
-    data: data, //
-    // headers: {// multipart
-    //   'Accept': "application/json 'text/html; q=1.0, */*"  // let the backend accepts html element of the form data request instead of jsons
-    // },
+   let httpRequestAjax = await $.ajax({
+      url: url,
+      // method: "POST",
+      type:type,
+      contentType:  contentType,   //"application/x-www-form-urlencoded; charset=UTF-8", //enc
+      data: data, //
   });
 
-   
+   console.log(httpRequestAjax)
 
-  //make the post request
+   if(httpRequestAjax){
+     httpRequestAjax = JSON.parse(httpRequestAjax);
+   }
+
+   //below never gets called as it becomes packed with ajax catch(e)
+   //move all codes to abstractions
+
+  //only if success no ajax run time error that breaks
+  //run the application notification
+
+
+   //test run the whole creation update process now
+  if(formEl.attr("id")=="create-course" || formEl.attr("id")=="quickform-update-onfly"){
+     if(mode.toLowerCase() =="post"){
+        localStorage.setItem("name","")
+        localStorage.setItem("code","")
+        localStorage.setItem("author","")
+        localStorage.setItem("institution","")
+        toast.success("You successfully created a course");
+        showNotificationSuccess("success", "New Course Created", "You successfully created a course")
+       // swal("Congratulations", "You successfully created a course", "success");
+     }else{
+       toast.success("You successfully edited this course");
+       swal("Success", "Course Updated", "success");
+       showNotificationSuccess("success", "Course Updated", "Course has been sucessfully updated") 
+     }
+
+   }  
+
+
+   //more success request for post or patch
+
+  if(formEl.attr("id")=="create-course" || formEl.attr("id")=="quickform-update-onfly"){
+   if(mode.toLowerCase() =="post"){
+      localStorage.setItem("name","")
+      localStorage.setItem("code","")
+      localStorage.setItem("author","")
+      localStorage.setItem("institution","")
+      showNotificationSuccess("success", "New Course Created", "You successfully created a course")
+      window.location.href= process.env.PUBLIC_URL + "/course/continue/edit/"+ httpRequestAjax?.id
+     
+   }else{
+     toast.success("You successfully edited this course");
+     swal("Success", "Course Updated", "success");
+     showNotificationSuccess("success", "Course Updated", "Course has been sucessfully updated")
+   }
+
+  }
+
+
+
+  if(formEl.attr("id")=="addSectionForm"){
+   if(mode.toLowerCase() =="post"){
+     toast.success("You successfully created a section");
+    showNotificationSuccess("success", "Section Creation", "You successfully created a section")
+     // swal("Congratulations", "You successfully created a course", "success");
+   
+   }else{
+     toast.success("You successfully edited this course section");
+    showNotificationSuccess("success", "Section Updated", "You successfully edited this course section")
+   }
+  }
+
+
+
+  if(formEl.attr("id")=="addSubSectionForm"){
+   if(mode.toLowerCase() =="post"){
+     toast.success("You successfully created a sub section");
+     showNotificationSuccess("success", "Sub Section Creation", "You successfully created a sub set section. Click the dropdown arrow to view the subsection you added successfully") 
+     // swal("Congratulations", "You successfully created a course", "success");
+   }else{
+     toast.success("You successfully edited this course sub section");
+      showNotificationSuccess("success", "Sub Section Edit", "You successfully edited this sub section")
+   }
+  }
+
+
+  if(formEl.attr("id")=="addLessonSectionForm"){
+    if(mode.toLowerCase() =="post"){
+     toast.success("You successfully created a lesson section");
+     showNotificationSuccess("success", "Lesson Creation", "You successfully created a Lesson section. Toggle the dropdown arrow of the main section to see the list of lessons added")
+       // swal("Congratulations", "You successfully created a course", "success");
+     }else{
+       toast.success("You successfully edited this course lesson section");
+        showNotificationSuccess("success", "Lesson Update ", "You successfully updated the lesson")
+     
+     }
+  }
+
+  // alert.error("Failed to create the resource", "Error");
+
+
+
+  if(formEl.attr("id")=="myModalMarkdownEditor-SELECT" 
+    || formEl.attr("id")=="myModalGenericForm-SELECT"){
+    if(mode.toLowerCase() =="post"){
+     showNotificationSuccess("success", "Unit Created", "You successfully created a lesson unit or module")
+     }else{
+       showNotificationSuccess("success", "Unit Edited", "You successfully edited this lesson unit or module")  
+     }
+   }
+
+   //success with returned data
+
+  if( formEl.attr("id")=="stepUpFormWithAI2" ){
+    if(mode.toLowerCase() =="post" && !httpRequestAjax?.id){
+      return httpRequestAjax
+    }else if(mode.toLowerCase() =="patch" && !httpRequestAjax?.id){
+      return httpRequestAjax
+    }else{
+      console.table(httpRequestAjax) // console the error response
+      return httpRequestAjax
+    }
+  }
+
+
+
+  if(formEl.attr("id")=="addSectionForm"  ){
+    if(mode.toLowerCase() =="post" && !httpRequestAjax?.id){
+      // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+     swal("Some error occured","error") // console the error response
+     showNotificationSuccess("error", "Section Creation Error", "An error occured while creating the resource. refresh and try again.")
+   
+    }else if(mode.toLowerCase() =="patch" && !httpRequestAjax?.id){
+     // return dataObj.response.id
+     //update the change
+    }else{
+       return addSectionData(httpRequestAjax) //or
+       // return httpRequestAjax
+    }
+  }
+
+
+  if(formEl.attr("id") == "addSubSectionForm"  ){
+    if(mode.toLowerCase() =="post" && !httpRequestAjax?.id){
+      // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+     swal("Some error occured","error") // console the error response
+     showNotificationSuccess("error", "Sub Section Creation Error", "An error occured while creating the resource. refresh and try again.")
+   
+    }else if(mode.toLowerCase() =="patch" && !httpRequestAjax?.id){
+       // return dataObj.response.id
+    }else{
+       addSubSectionData(httpRequestAjax)
+         // return dataObj.response.id
+    }
+  }
+
+
+  //Lesson success returned data and notification
+
+  if(formEl.attr("id") == "addLessonSectionForm"  ){
+    if(mode.toLowerCase() =="post" && !httpRequestAjax?.id){
+      // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+      swal("Some error occured","error") // console the error response
+      showNotificationSuccess("error", "Lesson Creation Error", "An error occured while creating the resource. refresh and try again.")
+   
+    }else if(mode.toLowerCase() =="patch" && !httpRequestAjax?.id){
+       // return dataObj.response.id
+    }else{
+       addLessonData(httpRequestAjax)
+      //return dataObj.response.id
+    }
+  }
+
+
+  //finally for lesson components
+
+  if(formEl.attr("id")=="myModalMarkdownEditor-SELECT" 
+    || formEl.attr("id")=="myModalGenericForm-SELECT"  ||  formEl.attr("id")=="myModalMarkdownEditorEditMode-SELECT" 
+    || formEl.attr("id")=="myModalGenericFormEditMode-SELECT" ){
+     if(mode.toLowerCase() =="post" && !httpRequestAjax?.id){
+
+   
+      // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+      swal("Something went wrong","error") // console the error response
+      showNotificationSuccess("error", "Lesson Module Creation Error", "An error occured while creating the resource. refresh and try again.")
+      
+     }else if(mode.toLowerCase() =="patch" || mode.toLowerCase() =="put" && httpRequestAjax?.id ){
+        showNotificationSuccess("success", "Lesson Module Edit ", "The Module/course unit was saved successfully")
+
+        return httpRequestAjax
+     //fetch and update record seamlessly via ajax
+     }else if(mode.toLowerCase() =="patch" || mode.toLowerCase() =="put" && !httpRequestAjax?.id ){
+        showNotificationSuccess("success", "Lesson Module ", "The Module/ unit was not saved")
+
+        //return httpRequestAjax
+
+      }else{
+        // was implemented via another sequence
+        // addUnitSectionData(dataObj.response) 
+
+        return httpRequestAjax
+     }
+  }
+
+
+  // this  for creation
+
+  if(formEl.attr("id") == "myModalDiscussionForm-CREATESELECT"  ){
+     if(mode.toLowerCase() =="post" && !httpRequestAjax?.id){
+       // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+       swal("Some error occured","error") // console the error response
+       showNotificationSuccess("error", "Discussion Module Creation Error", "An error occured while creating the resource. refresh and try again.")
+   
+     }else if(mode.toLowerCase() =="patch" && !httpRequestAjax?.id){
+        // return dataObj.response.id
+     }else{
+     showNotificationSuccess("Success Created Resource", "Discussion Module Creation ", "You have created a discussion module. you can click to edit")
+     // addUnitSectionData(dataObj.response) // not yet implemented
+     //get the parent lesson id and append the created component for discussion
+     }
+  }
   
-let dataObj ={}
-  /*jquery always ajax method used instead of success and error*/
-  httpRequestAjax.always(function (data, textStatus, jqXHR) {
+
+  //myModalDiscussionForm-EDITSELECT for edit of discussion component
+  if(formEl.attr("id") == "myModalDiscussionForm-EDITSELECT"  ){
+    if(mode.toLowerCase() =="put"   && !httpRequestAjax?.id){
+      // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+      swal("Some error occured","error") // console the error response
+      showNotificationSuccess("error", "Discussion Module Creation Error", "An error occured while creating the resource. Refresh and try again.")
+     
+    }else if(mode.toLowerCase() =="patch" && !httpRequestAjax?.id){
+       // return dataObj.response.id
+       swal("Some error occured","error") // console the error response
+       showNotificationSuccess("error", "Discussion Module Creation Error", "An error occured while creating the resource. Refresh and try again.")
+     
+    }else{
+       showNotificationSuccess("Success", "Discussion Module Edited ", "You have successfully edited this discussion module.")
+       // addUnitSectionData(dataObj.response) // not yet implemented
+
+       //get the parent lesson id and append the created component for discussion
+    }
+  }
+
+
+  //problem create problemcomponent_form and edit form . no time for 2 forms for this component bcus its complex work
+
+  if(formEl.attr("id") == "problemcomponent_form"  ){
+    if(mode.toLowerCase() =="post" && !httpRequestAjax?.id){
+      // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+     swal("Some error occured","error") // console the error response
+     showNotificationSuccess("error", "Problem Module Creation Error", "An error occured while creating the resource. refresh and try again.")
+     
+    }else if(mode.toLowerCase() =="patch" && !httpRequestAjax?.id){
+       // return dataObj.response.id
+       showNotificationSuccess("error", "Problem Module Update Error", "An error occured while updating the resource. refresh and try again.")
+     
+    }else if (mode.toLowerCase() =="patch" && httpRequestAjax?.id){
+       // return dataObj.response.id
+       showNotificationSuccess("Success", "Update  for the problem unit was successful", "")
+     
+    } else{
+       showNotificationSuccess("Success", "Problem Module Creation successful", "You have created a problem module. you can click to edit")
+       // addUnitSectionData(dataObj.response) // not yet implemented
+        $("#openModal-about").css({opacity:0}).fadeOut("fast")
+        $("body").removeClass("modal-open").css({background:"#fff"});
+        $(".modalDialog").css({display:"none", "pointer-events": "auto"})
+        $(".modal").removeClass("show")
+
+        localStorage.setItem("back_step",7);
+        window.location.reload()
+       //get the parent lesson id and append the created component for discussion
+   }
+  }
+
+
+
+
+
+
+  //question create
+  
+  if(typeof formEl.attr("id")!== "undefined"  ){
+    if(formEl.attr("id").includes("magic-questence-qna-")){
+      if(mode.toLowerCase() =="post" && !httpRequestAjax){
+        // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+        swal("Some error occured","error") // console the error response
+        showNotificationSuccess("error", "Problem Module Creation Error", "An error occured while creating the resource. refresh and try again.")
+     
+      }else if(mode.toLowerCase() =="patch" && !httpRequestAjax?.id){
+         // return dataObj.response.id
+         showNotificationSuccess("error", "Problem Module Update Error", "An error occured while updating the resource. refresh and try again.")
+     
+      }else if (mode.toLowerCase() =="patch" && httpRequestAjax?.id){
+         // return dataObj.response.id
+         showNotificationSuccess("Success", "Update  for the problem unit was successful", "")
+         return httpRequestAjax
+      }else{
+       showNotificationSuccess("Success", "Question sets has been Creation successful", "You have created your questions in one click . You can click to edit")
+       // addUnitSectionData(dataObj.response) // not yet implemented
+        $("#slideout-questions").css({display:"none"}).fadeOut("fast")
+        $("body").removeClass("modal-open").css({background:"#fff"});
+        $(".modalDialog").css({display:"none", "pointer-events": "auto"})
+        $(".modal").removeClass("show")
+        return httpRequestAjax;
+
+        //localStorage.setItem("back_step",7);
+        //window.location.reload()
+       //get the parent lesson id and append the created component for discussion
+      }
+   }
+  }
+
+
+   if(httpRequestAjax?.id){
+    return httpRequestAjax
+   }else{
+    return false
+   }
+
+ 
+
+  }catch (e){
+    console.log(e)
+    if(formEl.attr("id")=="myModalGenericForm-SELECT" || formEl.attr("id")=="form-edit-lesson"){
+
+
+    //show error
+    showNotificationSuccess("error", "Error Notification",e)
     
-    console.log(textStatus)
-    if (textStatus != "success") {
-      jqXHR = data;
-      dataObj.data=  data;
-      console.log(data)
-      // alert.success("Success", "Created a resource");
-     
-      if(formEl.attr("id")=="create-course" || formEl.attr("id")=="stepUpFormWithAI2"){
-          if(mode.toLowerCase() =="post"){
-              swal("Sorry", "Failed to create the resource. Ensure to fill the required fields for course name, course code, institution and select an authoring team", "error");
-           }else{
-              swal("Sorry", "Failed to update changes on this resource", "error");
-           }
+
+    }else{
+
+      //list of errors fields
+      let errorBags = JSON.parse(e.responseText);
+    let errorList ="<ul>"
+    if(typeof errorBags == "object"){
+      for(let key in errorBags){
+        errorList+=`<li>${key} : ${errorBags[key]}</li>`
       }
-
-       if(formEl.attr("id")=="addSectionForm"){
-          if(mode.toLowerCase() =="post"){
-              swal("Sorry", "Failed to create the section", "error");
-           }else{
-              swal("Sorry", "Failed to update changes on this section", "error");
-           }
-      }
-
-      //edit section
-
-      
-      if(formEl.attr("id")=="form-edit-section"){
-          if(mode.toLowerCase() =="patch"){ // this is apatch
-              swal("Sorry", "Failed to update the section", "error");
-           }
-      }
-
-
-      //delete section
-
-      if(formEl.attr("id")=="form-delete-section"){
-          if(mode.toLowerCase() =="delete"){
-              swal("Sorry", "Failed to delete the section", "error");
-           }
-      }
-
-      //edit subsection
-
-      //delete subsection form-edit-subsection: form-edit-subsection
-
-      if(formEl.attr("id")=="form-edit-subsection"){
-          if(mode.toLowerCase() =="patch"){ // this is apatch
-              swal("Sorry", "Failed to update the section", "error");
-           }
-      }
-
-
-      //delete section
-
-      if(formEl.attr("id")=="form-delete-subsection"){
-          if(mode.toLowerCase() =="delete"){
-              swal("Sorry", "Failed to delete the section", "error");
-           }
-      }
-
-
-      if(formEl.attr("id")=="addLessonSectionForm"){
-          if(mode.toLowerCase() =="post"){
-              swal("Sorry", "Failed to create the Lesson Section . You can not add any component to the lesson", "error");
-           }else{
-              swal("Sorry", "Failed to update changes on this section", "error");
-           }
-      }
-
-      //edit lesson
-
-      //delete lessons
-
-      if(formEl.attr("id")=="form-edit-lesson"){
-          if(mode.toLowerCase() =="patch"){ // this is apatch
-              swal("Sorry", "Failed to update the lesson", "error");
-           }
-      }
-
-
-      //delete section
-
-      if(formEl.attr("id")=="form-delete-lesson"){
-          if(mode.toLowerCase() =="delete"){
-              swal("Sorry", "Failed to delete the lesson", "error");
-           }
-      }
-
-
-      //component creation
-      if(formEl.attr("id")=="myModalMarkdownEditor-SELECT" 
-            || formEl.attr("id")=="myModalGenericForm-SELECT" ){
-          if(mode.toLowerCase() =="post"){
-              swal("Sorry", "Failed to create the Lesson component . ", "error");
-           }else{
-              swal("Sorry", "Failed to update changes on this section", "error");
-           }
-      }
-
-    } else {
-
-       if(formEl.attr("id")=="create-course" || formEl.attr("id")=="quickform-update-onfly"){
-      
-           if(mode.toLowerCase() =="post"){
-              localStorage.setItem("name","")
-              localStorage.setItem("code","")
-              localStorage.setItem("author","")
-              localStorage.setItem("institution","")
-              toast.success("You successfully created a course");
-
-              showNotificationSuccess("success", "New Course Created", "You successfully created a course")
-
-                  
-             // swal("Congratulations", "You successfully created a course", "success");
-           }else{
-             toast.success("You successfully edited this course");
-             swal("Success", "Course Updated", "success");
-
-             showNotificationSuccess("success", "Course Updated", "Course has been sucessfully updated")
-              
-           }
-
-        }
-
-
-
-        if(formEl.attr("id")=="addSectionForm"){
-          if(mode.toLowerCase() =="post"){
-           toast.success("You successfully created a section");
-
-           showNotificationSuccess("success", "Section Creation", "You successfully created a section")
-             
-
-
-                  
-             // swal("Congratulations", "You successfully created a course", "success");
-           }else{
-             toast.success("You successfully edited this course section");
-
-            showNotificationSuccess("success", "Section Updated", "You successfully edited this course section")
-
-              
-           }
-      }
-
-
-
-      if(formEl.attr("id")=="addSubSectionForm"){
-          if(mode.toLowerCase() =="post"){
-           toast.success("You successfully created a sub section");
-
-           showNotificationSuccess("success", "Sub Section Creation", "You successfully created a sub set section")
-           
-                  
-             // swal("Congratulations", "You successfully created a course", "success");
-           }else{
-             toast.success("You successfully edited this course sub section");
-
-              showNotificationSuccess("success", "Sub Section Edit", "You successfully edited this sub section")
-           
-
-              
-           }
-      }
-
-
-      if(formEl.attr("id")=="addLessonSectionForm"){
-          if(mode.toLowerCase() =="post"){
-           toast.success("You successfully created a lesson section");
-
-           showNotificationSuccess("success", "Lesson Creation", "You successfully created a Lesson section")
-           
-                  
-             // swal("Congratulations", "You successfully created a course", "success");
-           }else{
-             toast.success("You successfully edited this course lesson section");
-              showNotificationSuccess("success", "Lesson Update ", "You successfully updated the lesson")
-           
-           }
-      }
-     
-      // alert.error("Failed to create the resource", "Error");
-
-      
-
-      if(formEl.attr("id")=="myModalMarkdownEditor-SELECT" 
-            || formEl.attr("id")=="myModalGenericForm-SELECT"){
-          if(mode.toLowerCase() =="post"){
-           //   swal("Congratulations", "You successfully created a unit for this lesson", "success");
-           // }else{
-           //   swal("Congratulations", "You successfully updated the unit for this lesson section of this course", "success");
-           // }
-           toast.success("You successfully created a unit section");
-
-           showNotificationSuccess("success", "Unit Created", "You successfully created a lesson unit or module")
-           
-                  
-             // swal("Congratulations", "You successfully created a course", "success");
-           }else{
-             toast.success("You successfully edited this course unit section");
-             showNotificationSuccess("success", "Unit Edited", "You successfully edited this lesson unit or module")
-            
-           }
-       }
+      errorList+="</ul>"
     }
-    var responseContentType = jqXHR.getResponseHeader("content-type") || "";
-    if (responseContentType.toLowerCase().indexOf("text/html") === 0) {
-      // do something awesome like animate success box
-      console.log(jqXHR.responseText, "text type");
+    //scroll to top
 
-       // dataObj.response = JSON.parse(jqXHR.responseText)
-//      console.log(dataObj.response, dataObj.response.id)
+    //show error
+    showNotificationSuccess("error", "Error Notification", errorList)
+    //catch the ajax error if it fails so the user can see his error narrowed from the old wildcards err
+    
 
-       // return  jqXHR.responseText
-
-    } else {
-      // console.log(jqXHR.responseJSON);
-      // console.log(JSON.parse(jqXHR.responseText), "here is the content");
-      dataObj.response = JSON.parse(jqXHR.responseText)
-
-      console.log(dataObj.response, dataObj.response.id)
-      if(formEl.attr("id")=="create-course" || formEl.attr("id")=="stepUpFormWithAI2" ){
-          if(mode.toLowerCase() =="post" && textStatus == "success"){
-             window.location.href= process.env.PUBLIC_URL + "/course/continue/edit/"+ dataObj.response.id
-            return dataObj.response.id
-          }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
-             return dataObj.response.id
-          }else{
-            console.table(jqXHR.responseText) // console the error response
-            return dataObj.response.id
-          }
-      }
+    }
+    
 
 
-
-      if(formEl.attr("id")=="addSectionForm"  ){
-          if(mode.toLowerCase() =="post" && textStatus != "success"){
-            // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
-           swal("Some error occured","error") // console the error response
-           showNotificationSuccess("error", "Section Creation Error", "An error occured while creating the resource. refresh and try again.")
-           
-          }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
-             // return dataObj.response.id
-             //update the change
-          }else{
-             addSectionData(dataObj.response)
-                 // return dataObj.response.id
-          }
-      }
-
-
-        if(formEl.attr("id") == "addSubSectionForm"  ){
-          if(mode.toLowerCase() =="post" && textStatus != "success"){
-            // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
-           swal("Some error occured","error") // console the error response
-           showNotificationSuccess("error", "Sub Section Creation Error", "An error occured while creating the resource. refresh and try again.")
-           
-          }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
-             // return dataObj.response.id
-          }else{
-             addSubSectionData(dataObj.response)
-                 // return dataObj.response.id
-          }
-        }
-
-
-        //discussion success error notification
-
-
-
-       if(formEl.attr("id") == "addLessonSectionForm"  ){
-          if(mode.toLowerCase() =="post" && textStatus != "success"){
-            // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
-           swal("Some error occured","error") // console the error response
-          showNotificationSuccess("error", "Lesson Creation Error", "An error occured while creating the resource. refresh and try again.")
-           
-          }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
-             // return dataObj.response.id
-          }else{
-             addLessonData(dataObj.response)
-            //return dataObj.response.id
-          }
-        }
-
-
-        //finally for lesson components
-
-        if(formEl.attr("id")=="myModalMarkdownEditor-SELECT" 
-            || formEl.attr("id")=="myModalGenericForm-SELECT"  ||  formEl.attr("id")=="myModalMarkdownEditorEditMode-SELECT" 
-            || formEl.attr("id")=="myModalGenericFormEditMode-SELECT" ){
-          if(mode.toLowerCase() =="post" && textStatus != "success"){
-
-            console.log(data, url)
-            // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
-           swal("Something went wrong","error") // console the error response
-           showNotificationSuccess("error", "Lesson Module Creation Error", "An error occured while creating the resource. refresh and try again.")
-           
-          }else if(mode.toLowerCase() =="patch" || mode.toLowerCase() =="put" && textStatus == "success"){
-              showNotificationSuccess("success", "Lesson Module Edit ", "The Module/course unit was saved successfully")
-          
-             return dataObj.response.id
-             //fetch and update record seamlessly via ajax
-          }else{
-            // was implemented via another sequence
-             // addUnitSectionData(dataObj.response) 
-
-                return dataObj.response.id
-          }
-        }
-
-
-        // this  for creation
-
-        if(formEl.attr("id") == "myModalDiscussionForm-CREATESELECT"  ){
-          if(mode.toLowerCase() =="post" && textStatus != "success"){
-            // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
-           swal("Some error occured","error") // console the error response
-           showNotificationSuccess("error", "Discussion Module Creation Error", "An error occured while creating the resource. refresh and try again.")
-           
-          }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
-             // return dataObj.response.id
-          }else{
-             showNotificationSuccess("Success Created Resource", "Discussion Module Creation ", "You have created a discussion module. you can click to edit")
-             // addUnitSectionData(dataObj.response) // not yet implemented
-
-             //get the parent lesson id and append the created component for discussion
-          }
-        }
-
-        //myModalDiscussionForm-EDITSELECT for edit of discussion component
-        if(formEl.attr("id") == "myModalDiscussionForm-EDITSELECT"  ){
-          if(mode.toLowerCase() =="put" && textStatus != "success"){
-            // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
-           swal("Some error occured","error") // console the error response
-           showNotificationSuccess("error", "Discussion Module Creation Error", "An error occured while creating the resource. Refresh and try again.")
-           
-          }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
-             // return dataObj.response.id
-             swal("Some error occured","error") // console the error response
-           showNotificationSuccess("error", "Discussion Module Creation Error", "An error occured while creating the resource. Refresh and try again.")
-           
-          }else{
-             showNotificationSuccess("Success", "Discussion Module Edited ", "You have successfully edited this discussion module.")
-             // addUnitSectionData(dataObj.response) // not yet implemented
-
-             //get the parent lesson id and append the created component for discussion
-          }
-        }
-
-
-
-
-
-
-      
+    //amplify error notification of the failed form making request
+      //1) if error  get the form request id and post the error to screen on modal
+  if (e) { // success occurs only if there is a returned id since we are dealing with just post put or patch
+    if(formEl.attr("id")=="create-course" || formEl.attr("id")=="stepUpFormWithAI2"){
+    if(mode.toLowerCase() =="post"){
+        swal("Sorry", "Failed to create the resource. Ensure to fill the required fields for course name, course code, institution and select an authoring team", "error");
+     }else{
+        swal("Sorry", "Failed to update changes on this resource", "error");
+     }
     }
 
-   
-  });
-   
-  return  dataObj?.response?.id
+    if(formEl.attr("id")=="addSectionForm"){
+    if(mode.toLowerCase() =="post"){
+        swal("Sorry", "Failed to create the section", "error");
+     }else{
+        swal("Sorry", "Failed to update changes on this section", "error");
+     }
+    }
 
-  
+    //edit section
+    if(formEl.attr("id")=="form-edit-section"){
+    if(mode.toLowerCase() =="patch"){ // this is apatch
+        swal("Sorry", "Failed to update the section", "error");
+     }
+    }
+    //delete section
+    if(formEl.attr("id")=="form-delete-section"){
+    if(mode.toLowerCase() =="delete"){
+        swal("Sorry", "Failed to delete the section", "error");
+     }
+    }
+    //edit subsection
+    //delete subsection form-edit-subsection: form-edit-subsection
+    if(formEl.attr("id")=="form-edit-subsection"){
+    if(mode.toLowerCase() =="patch"){ // this is apatch
+        swal("Sorry", "Failed to update the section", "error");
+     }
+    }
+    //delete section
+    if(formEl.attr("id")=="form-delete-subsection"){
+    if(mode.toLowerCase() =="delete"){
+        swal("Sorry", "Failed to delete the section", "error");
+     }
+    }
+    if(formEl.attr("id")=="addLessonSectionForm"){
+    if(mode.toLowerCase() =="post"){
+        swal("Sorry", "Failed to create the Lesson Section . You can not add any component to the lesson", "error");
+     }else{
+        swal("Sorry", "Failed to update changes on this section", "error");
+     }
+    }
+
+    //edit lesson
+    //delete lessons
+    if(formEl.attr("id")=="form-edit-lesson"){
+    if(mode.toLowerCase() =="patch"){ // this is apatch
+        swal("Sorry", "Failed to update the lesson", "error");
+     }
+    }
+    //delete section
+    if(formEl.attr("id")=="form-delete-lesson"){
+    if(mode.toLowerCase() =="delete"){
+        swal("Sorry", "Failed to delete the lesson", "error");
+     }
+    }
+    //component creation
+    if(formEl.attr("id")=="myModalMarkdownEditor-SELECT" 
+      || formEl.attr("id")=="myModalGenericForm-SELECT" ){
+    if(mode.toLowerCase() =="post"){
+        swal("Sorry", "Failed to create the Lesson component . ", "error");
+     }else{
+        swal("Sorry", "Failed to update changes on this section", "error");
+     }
+    }
+  }
+
+
+
+  }
+
+    
+
+  //refactoring codebase here for better code structure
+
+
+
 };
 
 
 
-/*api request*/
+
+
+/*the post handler action*/
+/*
+* make this an async await call to ensure response gets in when needed
+ *@param url : description: http://apibase/createlink
+ *@param form : jquery form element
+ *@ Function createAnyResource: creates any resource via jquery formElement
+ *@ example usage : createAnyResource("/lms/api/create/section", $("form")) // sweet!!!
+ */
+// export const createAnyResource = (mode="post",
+//   parts = "/lms/api/create/course/",
+//   formEl,
+//   state ={} // optional
+// ) => {
+//   var url = base_url + parts;
+//   var form = formEl[0];
+//   console.log(formEl.attr("id"))
+//   // You need to use standard javascript object here
+//   var formData = new FormData(form);
+//   // Attach file only if the generic form contains (.* input[type="file"])
+//   // if($('input[type=file]')[0].files[0].length > 0){
+//   // for(let i=0; i <= $('input[type=file]')[0].files[0].length; i++){
+//   // if(formEl.attr("id")=="stepUpFormWithAI" || formEl.attr("id")=="stepUpFormWithAI2"){
+//   //   formData.append("filename", $("input[type=file]")[0].files[0]); //
+//   // }
+
+
+
+
+//   //if its course  creation form
+//         if(formEl.attr("id")=="create-course" ){
+//            //automatic method
+//           // const formIk = document.querySelector(formEl.attr("id"))
+//           // Array.from(formIk.elements).filter(e =>{ 
+           
+//           //   if( localStorage.getItem( e.getAttribute("name") ) ){
+//           //      formEl.find("#"+ e.getAttribute("name")).val(localStorage.getItem( e.getAttribute("name")))
+//           //   }
+//           // })
+
+//           var formElements = new Array();
+//           $("input, select, textarea").each(function(){
+//               formElements.push($(this));
+//           });
+
+
+    
+
+
+//         let formEl = $("#create-course");
+     
+//           formElements.filter(e =>{ 
+//             var element = e;
+//             var title = element.title;
+//             var id = element.id;
+//             var name = element.name;
+//             var value = element.value;
+//             var type = element.type;
+//             var cls = element.className;
+//             var tagName = element.tagName;
+//             var options = [];
+//             var hidden = [];
+//             var formDetails = '';
+
+//             // check if the data exist in local store
+//             if( localStorage.getItem( e.attr("name") ) ){
+//                console.log(e.attr("name"))
+//                formEl.find("#"+ e.attr("name")).val(localStorage.getItem( e.attr("name")))
+               
+//             }
+//           })
+
+//           //procedural method
+//           // check for basic required fields validation requirements
+//           // formEl.find("#course_name").val(localStorage.getItem("name"))  ;
+//           // formEl.find("#course_code").val(localStorage.getItem("code"))  ;
+//           // formEl.find("#author").val(localStorage.getItem("author")) ;
+//           // formEl.find("#institution").val(localStorage.getItem("institution")) 
+//           // //institutionId = institutionId.options[institutionId.selectedIndex].value;
+          
+
+//           if (formEl.find("#author").val() == "-- Institutions --") {
+//             //throw error
+//             swal("Error!", "We could not find instructor", "error");
+//             return false;
+//           } else if (formEl.find("#course_name").val() == "" ){
+//             swal("Error!", "Course name is required", "error");
+//             return false;
+//           } else if(  formEl.find("#course_code").val() == "" ){
+//             swal("Error!", "Course code required", "error");
+//             return false;
+//           }else if(formEl.find("#institution").val() == "-- Institutions --")
+//           {
+//             swal("Sorry!", "The course must be attached to an institution it belongs to", "error");
+//             return false;
+//           }
+//         }
+
+
+//        // else if its an update of the form for each tab run the following event
+// 	   if(formEl.attr("id")=="stepUpFormWithAI2"){ //or more
+//           //loop thru the current state then update what we have by cfreateing the form value then append to the
+//       		//dynamic invisible form element to be sent to database
+// 		     //ie. gen form data on fly not added to the dom itself. just a temp usage
+// 		       formEl = $("#stepUpFormWithAI2");
+			
+// 		if(state){
+//            formEl = $("#stepUpFormWithAI2");
+// 		      	console.log(state)
+// 		  //recreate the form data with the state changed value by filling it with what was typed before
+//           //url will be an update method if the resource exists
+// 		  let textEditors = [
+// 		    "learning_expectation",
+// 		    "description","prerequisite", 
+// 			"overview","curriculum"
+// 		  ];
+// 		  let new_form = $("<form id='quickform-update-onfly' method='patch' enctype='application/x-www-form-urlencoded'></form>")
+//           for(var k in state){
+//             console.log(k + " : " + state[k]) 
+// 			if(k=="card_image" || k=="intro_video"){
+// 				//for uploads handle this when agreed upon change made for video upload of intro_video bcus there is no where to upload files on backend
+				
+// 			}else if(k=="authoring_team"){
+// 				//now clone and append the jetpacks of all my collaborators
+				
+				
+// 				let template = `<input name="${k}" style='display:none' value="${state[k]}">`;
+// 			    new_form.append(template)
+// 				console.log(k,state[k])
+      
+				
+// 			}else{
+// 				let template = `<input name="${k}" style='display:none' value="${state[k]}">`;
+// 			    new_form.append(template)
+// 			}
+			
+// 			//for booleans checks
+			
+// 		  }
+// 		  formEl =    new_form;//$("#stepUpFormWithAI2"); // switch to a new fly form
+		  
+		  
+		 
+// 		}
+		 
+// 	   }
+        
+  
+
+//   if(formEl.attr("id")=="myModalMarkdownEditor-SELECT"){
+//         document.getElementById("lesson-editor-id").value = localStorage.getItem("ls_tracker") 
+//         formData.append("lesson", localStorage.getItem("ls_tracker"))
+//         form = $("#"+ "myModalMarkdownEditor-SELECT")[0]  
+//   }else if(formEl.attr("id")=="myModalGenericForm-SELECT"){
+//          document.getElementById("lesson-editor-id2").value = localStorage.getItem("ls_tracker") 
+//         form = $("#"+ "myModalGenericForm-SELECT")[0]  
+//         formData.append("lesson", localStorage.getItem("ls_tracker"))
+//   }else {
+//     //problem and discussion
+//   }
+//         //no validation for now
+  
+
+//   // }
+//   // }
+//   let data = null;
+//   let jsonData = {};
+//   let dataType =""
+//   let lessonData = {};
+//   // in the future get the csrf token from the header after identity is established
+//   var csrftoken = window.drf.csrfToken;
+//   $.ajaxSetup({
+//     beforeSend: function (xhr, settings) {
+//       // xhr.setRequestHeader("Content-Type","application/json");
+//       // xhr.setRequestHeader("Accept","text/json");
+//       if (
+//         !csrfSafeMethod(settings.type) // && sameOrigin(settings.url)
+//       ) {
+//         // Send the token to same-origin, relative URLs only.
+//         // Send the token only if the method warrants CSRF protection
+//         // Using the CSRFToken value acquired earlier
+    
+         
+//         //if only file download is required or needed via backend to check for file upload
+//         // xhr.setRequestHeader("Content-Disposition", 'attachment; filename=' + form[0].files.name);
+//         xhr.overrideMimeType("multipart/form-data");
+
+//         xhr.setRequestHeader(window.drf.csrfHeaderName, csrftoken);
+//       }
+//     },
+//   });
+
+//   if (contentType) {
+//     if (contentType === "multipart/form-data") {
+//       //multipart/form-data
+//       if (!window.FormData) {
+//         alert("Your browser does not support AJAX multipart form submissions");
+//         return;
+//       }
+//       //this is needed in multipart/forms
+//       contentType = false;
+//       // console.log(form[0])
+//     } else {
+      
+//       //if its only lesson component, data sent has been trasformed above
+//       if(formEl.attr("id")=="myModalMarkdownEditor-SELECT" 
+//             || formEl.attr("id")=="myModalGenericForm-SELECT" 
+//              ){
+
+//         contentType ="application/x-www-form-urlencoded; charset=UTF-8";
+//         // dataType ="json";
+
+//         data = formEl.serialize();
+
+//       }else{
+//         contentType = "application/x-www-form-urlencoded; charset=UTF-8"
+//         data = formEl.serialize();
+//       }
+
+
+      
+//     }
+//   }
+
+//   console.log(data);
+//   let type = "POST"
+
+//   if(formEl.attr("method") == "put"|| formEl.attr("method") == "PUT"){
+//     type ="PUT"
+//   }else if(mode){
+//     if(mode.toLowerCase() !=="post" ){
+//        type = "PATCH"
+//     }
+
+//   }
+  
+
+    
+  
+//    let httpRequestAjax = $.ajax({
+//     url: url,
+//     // method: "POST",
+//     type:type,
+//     // data:formData, //multipart form
+//     // data: JSON.stringify(data), // if not multipart form
+//     // contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+) multipart
+//     // processData: false, // NEEDED, DON'T OMIT THIS  multipart
+//     contentType:  contentType,   //"application/x-www-form-urlencoded; charset=UTF-8", //enc
+//     data: data, //
+//     // headers: {// multipart
+//     //   'Accept': "application/json 'text/html; q=1.0, */*"  // let the backend accepts html element of the form data request instead of jsons
+//     // },
+//   });
+
+   
+
+//   //make the post request
+  
+// let dataObj ={}
+//   /*jquery always ajax method used instead of success and error*/
+//   httpRequestAjax.always(function (data, textStatus, jqXHR) {
+    
+//     console.log(textStatus)
+//     if (textStatus != "success") {
+//       jqXHR = data;
+//       dataObj.data=  data;
+//       console.log(data)
+//       // alert.success("Success", "Created a resource");
+     
+//       if(formEl.attr("id")=="create-course" || formEl.attr("id")=="stepUpFormWithAI2"){
+//           if(mode.toLowerCase() =="post"){
+//               swal("Sorry", "Failed to create the resource. Ensure to fill the required fields for course name, course code, institution and select an authoring team", "error");
+//            }else{
+//               swal("Sorry", "Failed to update changes on this resource", "error");
+//            }
+//       }
+
+//        if(formEl.attr("id")=="addSectionForm"){
+//           if(mode.toLowerCase() =="post"){
+//               swal("Sorry", "Failed to create the section", "error");
+//            }else{
+//               swal("Sorry", "Failed to update changes on this section", "error");
+//            }
+//       }
+
+//       //edit section
+
+      
+//       if(formEl.attr("id")=="form-edit-section"){
+//           if(mode.toLowerCase() =="patch"){ // this is apatch
+//               swal("Sorry", "Failed to update the section", "error");
+//            }
+//       }
+
+
+//       //delete section
+
+//       if(formEl.attr("id")=="form-delete-section"){
+//           if(mode.toLowerCase() =="delete"){
+//               swal("Sorry", "Failed to delete the section", "error");
+//            }
+//       }
+
+//       //edit subsection
+
+//       //delete subsection form-edit-subsection: form-edit-subsection
+
+//       if(formEl.attr("id")=="form-edit-subsection"){
+//           if(mode.toLowerCase() =="patch"){ // this is apatch
+//               swal("Sorry", "Failed to update the section", "error");
+//            }
+//       }
+
+
+//       //delete section
+
+//       if(formEl.attr("id")=="form-delete-subsection"){
+//           if(mode.toLowerCase() =="delete"){
+//               swal("Sorry", "Failed to delete the section", "error");
+//            }
+//       }
+
+
+//       if(formEl.attr("id")=="addLessonSectionForm"){
+//           if(mode.toLowerCase() =="post"){
+//               swal("Sorry", "Failed to create the Lesson Section . You can not add any component to the lesson", "error");
+//            }else{
+//               swal("Sorry", "Failed to update changes on this section", "error");
+//            }
+//       }
+
+//       //edit lesson
+
+//       //delete lessons
+
+//       if(formEl.attr("id")=="form-edit-lesson"){
+//           if(mode.toLowerCase() =="patch"){ // this is apatch
+//               swal("Sorry", "Failed to update the lesson", "error");
+//            }
+//       }
+
+
+//       //delete section
+
+//       if(formEl.attr("id")=="form-delete-lesson"){
+//           if(mode.toLowerCase() =="delete"){
+//               swal("Sorry", "Failed to delete the lesson", "error");
+//            }
+//       }
+
+
+//       //component creation
+//       if(formEl.attr("id")=="myModalMarkdownEditor-SELECT" 
+//             || formEl.attr("id")=="myModalGenericForm-SELECT" ){
+//           if(mode.toLowerCase() =="post"){
+//               swal("Sorry", "Failed to create the Lesson component . ", "error");
+//            }else{
+//               swal("Sorry", "Failed to update changes on this section", "error");
+//            }
+//       }
+
+//     } else {
+
+//        if(formEl.attr("id")=="create-course" || formEl.attr("id")=="quickform-update-onfly"){
+      
+//            if(mode.toLowerCase() =="post"){
+//               localStorage.setItem("name","")
+//               localStorage.setItem("code","")
+//               localStorage.setItem("author","")
+//               localStorage.setItem("institution","")
+//               toast.success("You successfully created a course");
+
+//               showNotificationSuccess("success", "New Course Created", "You successfully created a course")
+
+                  
+//              // swal("Congratulations", "You successfully created a course", "success");
+//            }else{
+//              toast.success("You successfully edited this course");
+//              swal("Success", "Course Updated", "success");
+
+//              showNotificationSuccess("success", "Course Updated", "Course has been sucessfully updated")
+              
+//            }
+
+//         }
+
+
+
+//         if(formEl.attr("id")=="addSectionForm"){
+//           if(mode.toLowerCase() =="post"){
+//            toast.success("You successfully created a section");
+
+//            showNotificationSuccess("success", "Section Creation", "You successfully created a section")
+             
+
+
+                  
+//              // swal("Congratulations", "You successfully created a course", "success");
+//            }else{
+//              toast.success("You successfully edited this course section");
+
+//             showNotificationSuccess("success", "Section Updated", "You successfully edited this course section")
+
+              
+//            }
+//       }
+
+
+
+//       if(formEl.attr("id")=="addSubSectionForm"){
+//           if(mode.toLowerCase() =="post"){
+//            toast.success("You successfully created a sub section");
+
+//            showNotificationSuccess("success", "Sub Section Creation", "You successfully created a sub set section")
+           
+                  
+//              // swal("Congratulations", "You successfully created a course", "success");
+//            }else{
+//              toast.success("You successfully edited this course sub section");
+
+//               showNotificationSuccess("success", "Sub Section Edit", "You successfully edited this sub section")
+           
+
+              
+//            }
+//       }
+
+
+//       if(formEl.attr("id")=="addLessonSectionForm"){
+//           if(mode.toLowerCase() =="post"){
+//            toast.success("You successfully created a lesson section");
+
+//            showNotificationSuccess("success", "Lesson Creation", "You successfully created a Lesson section")
+           
+                  
+//              // swal("Congratulations", "You successfully created a course", "success");
+//            }else{
+//              toast.success("You successfully edited this course lesson section");
+//               showNotificationSuccess("success", "Lesson Update ", "You successfully updated the lesson")
+           
+//            }
+//       }
+     
+//       // alert.error("Failed to create the resource", "Error");
+
+      
+
+//       if(formEl.attr("id")=="myModalMarkdownEditor-SELECT" 
+//             || formEl.attr("id")=="myModalGenericForm-SELECT"){
+//           if(mode.toLowerCase() =="post"){
+//            //   swal("Congratulations", "You successfully created a unit for this lesson", "success");
+//            // }else{
+//            //   swal("Congratulations", "You successfully updated the unit for this lesson section of this course", "success");
+//            // }
+//            toast.success("You successfully created a unit section");
+
+//            showNotificationSuccess("success", "Unit Created", "You successfully created a lesson unit or module")
+           
+                  
+//              // swal("Congratulations", "You successfully created a course", "success");
+//            }else{
+//              toast.success("You successfully edited this course unit section");
+//              showNotificationSuccess("success", "Unit Edited", "You successfully edited this lesson unit or module")
+            
+//            }
+//        }
+//     }
+//     var responseContentType = jqXHR.getResponseHeader("content-type") || "";
+//     if (responseContentType.toLowerCase().indexOf("text/html") === 0) {
+//       // do something awesome like animate success box
+//       console.log(jqXHR.responseText, "text type");
+
+//        // dataObj.response = JSON.parse(jqXHR.responseText)
+// //      console.log(dataObj.response, dataObj.response.id)
+
+//        // return  jqXHR.responseText
+
+//     } else {
+//       // console.log(jqXHR.responseJSON);
+//       // console.log(JSON.parse(jqXHR.responseText), "here is the content");
+//       dataObj.response = JSON.parse(jqXHR.responseText)
+
+//       console.log(dataObj.response, dataObj.response.id)
+//       if(formEl.attr("id")=="create-course" || formEl.attr("id")=="stepUpFormWithAI2" ){
+//           if(mode.toLowerCase() =="post" && textStatus == "success"){
+
+//              window.location.href= process.env.PUBLIC_URL + "/course/continue/edit/"+ dataObj.response.id
+//             return dataObj.response.id
+//           }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
+//              return dataObj.response.id
+//           }else{
+//             console.table(jqXHR.responseText) // console the error response
+//             return dataObj.response.id
+//           }
+//       }
+
+
+
+//       if(formEl.attr("id")=="addSectionForm"  ){
+//           if(mode.toLowerCase() =="post" && textStatus != "success"){
+//             // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+//            swal("Some error occured","error") // console the error response
+//            showNotificationSuccess("error", "Section Creation Error", "An error occured while creating the resource. refresh and try again.")
+           
+//           }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
+//              // return dataObj.response.id
+//              //update the change
+//           }else{
+//              addSectionData(dataObj.response)
+//                  // return dataObj.response.id
+//           }
+//       }
+
+
+//         if(formEl.attr("id") == "addSubSectionForm"  ){
+//           if(mode.toLowerCase() =="post" && textStatus != "success"){
+//             // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+//            swal("Some error occured","error") // console the error response
+//            showNotificationSuccess("error", "Sub Section Creation Error", "An error occured while creating the resource. refresh and try again.")
+           
+//           }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
+//              // return dataObj.response.id
+//           }else{
+//              addSubSectionData(dataObj.response)
+//                  // return dataObj.response.id
+//           }
+//         }
+
+
+//         //discussion success error notification
+
+
+
+//        if(formEl.attr("id") == "addLessonSectionForm"  ){
+//           if(mode.toLowerCase() =="post" && textStatus != "success"){
+//             // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+//            swal("Some error occured","error") // console the error response
+//           showNotificationSuccess("error", "Lesson Creation Error", "An error occured while creating the resource. refresh and try again.")
+           
+//           }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
+//              // return dataObj.response.id
+//           }else{
+//              addLessonData(dataObj.response)
+//             //return dataObj.response.id
+//           }
+//         }
+
+
+//         //finally for lesson components
+
+//         if(formEl.attr("id")=="myModalMarkdownEditor-SELECT" 
+//             || formEl.attr("id")=="myModalGenericForm-SELECT"  ||  formEl.attr("id")=="myModalMarkdownEditorEditMode-SELECT" 
+//             || formEl.attr("id")=="myModalGenericFormEditMode-SELECT" ){
+//           if(mode.toLowerCase() =="post" && textStatus != "success"){
+
+//             console.log(data, url)
+//             // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+//            swal("Something went wrong","error") // console the error response
+//            showNotificationSuccess("error", "Lesson Module Creation Error", "An error occured while creating the resource. refresh and try again.")
+           
+//           }else if(mode.toLowerCase() =="patch" || mode.toLowerCase() =="put" && textStatus == "success"){
+//               showNotificationSuccess("success", "Lesson Module Edit ", "The Module/course unit was saved successfully")
+          
+//              return dataObj.response.id
+//              //fetch and update record seamlessly via ajax
+//           }else{
+//             // was implemented via another sequence
+//              // addUnitSectionData(dataObj.response) 
+
+//                 return dataObj.response.id
+//           }
+//         }
+
+
+//         // this  for creation
+
+//         if(formEl.attr("id") == "myModalDiscussionForm-CREATESELECT"  ){
+//           if(mode.toLowerCase() =="post" && textStatus != "success"){
+//             // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+//            swal("Some error occured","error") // console the error response
+//            showNotificationSuccess("error", "Discussion Module Creation Error", "An error occured while creating the resource. refresh and try again.")
+           
+//           }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
+//              // return dataObj.response.id
+//           }else{
+//              showNotificationSuccess("Success Created Resource", "Discussion Module Creation ", "You have created a discussion module. you can click to edit")
+//              // addUnitSectionData(dataObj.response) // not yet implemented
+
+//              //get the parent lesson id and append the created component for discussion
+//           }
+//         }
+
+//         //myModalDiscussionForm-EDITSELECT for edit of discussion component
+//         if(formEl.attr("id") == "myModalDiscussionForm-EDITSELECT"  ){
+//           if(mode.toLowerCase() =="put" && textStatus != "success"){
+//             // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+//            swal("Some error occured","error") // console the error response
+//            showNotificationSuccess("error", "Discussion Module Creation Error", "An error occured while creating the resource. Refresh and try again.")
+           
+//           }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
+//              // return dataObj.response.id
+//              swal("Some error occured","error") // console the error response
+//            showNotificationSuccess("error", "Discussion Module Creation Error", "An error occured while creating the resource. Refresh and try again.")
+           
+//           }else{
+//              showNotificationSuccess("Success", "Discussion Module Edited ", "You have successfully edited this discussion module.")
+//              // addUnitSectionData(dataObj.response) // not yet implemented
+
+//              //get the parent lesson id and append the created component for discussion
+//           }
+//         }
+
+
+//         //problem create problemcomponent_form and edit form . no time for 2 forms for this component bcus its complex work
+
+//         if(formEl.attr("id") == "problemcomponent_form"  ){
+//           if(mode.toLowerCase() =="post" && textStatus != "success"){
+//             // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+//            swal("Some error occured","error") // console the error response
+//            showNotificationSuccess("error", "Problem Module Creation Error", "An error occured while creating the resource. refresh and try again.")
+           
+//           }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
+//              // return dataObj.response.id
+//              showNotificationSuccess("error", "Problem Module Update Error", "An error occured while updating the resource. refresh and try again.")
+           
+//           }else if (mode.toLowerCase() =="patch" && textStatus == "success"){
+//              // return dataObj.response.id
+//              showNotificationSuccess("Success", "Update  for the problem unit was successful", "")
+           
+//           }
+
+//           else{
+//              showNotificationSuccess("Success", "Problem Module Creation successful", "You have created a problem module. you can click to edit")
+//              // addUnitSectionData(dataObj.response) // not yet implemented
+//               $("#openModal-about").css({opacity:0}).fadeOut("fast")
+//               $("body").removeClass("modal-open").css({background:"#fff"});
+//               $(".modalDialog").css({display:"none", "pointer-events": "auto"})
+//               $(".modal").removeClass("show")
+
+//               localStorage.setItem("back_step",7);
+//               window.location.reload()
+//              //get the parent lesson id and append the created component for discussion
+//           }
+//         }
+
+
+
+
+
+
+//         //question create
+
+
+//         if(formEl.attr("id").includes("magic-questence-qna-")  ){
+//           if(mode.toLowerCase() =="post" && textStatus != "success"){
+//             // window.location.href= process.env.PUBLIC_URL + "/authoring/create/new/"+ dataObj.response.id
+//            swal("Some error occured","error") // console the error response
+//            showNotificationSuccess("error", "Problem Module Creation Error", "An error occured while creating the resource. refresh and try again.")
+           
+//           }else if(mode.toLowerCase() =="patch" && textStatus != "success"){
+//              // return dataObj.response.id
+//              showNotificationSuccess("error", "Problem Module Update Error", "An error occured while updating the resource. refresh and try again.")
+           
+//           }else if (mode.toLowerCase() =="patch" && textStatus == "success"){
+//              // return dataObj.response.id
+//              showNotificationSuccess("Success", "Update  for the problem unit was successful", "")
+           
+//           }
+
+//           else{
+//              showNotificationSuccess("Success", "Question sets has been Creation successful", "You have created your questions in one click . You can click to edit")
+//              // addUnitSectionData(dataObj.response) // not yet implemented
+//               $("#slideout-questions").css({display:"none"}).fadeOut("fast")
+//               $("body").removeClass("modal-open").css({background:"#fff"});
+//               $(".modalDialog").css({display:"none", "pointer-events": "auto"})
+//               $(".modal").removeClass("show")
+
+//               //localStorage.setItem("back_step",7);
+//               //window.location.reload()
+//              //get the parent lesson id and append the created component for discussion
+//           }
+//         }
+
+
+//         //question edit problem edit and discussion edit are last
+//         //but first make the createAnyResource function more powered u[p]
+
+
+
+
+
+
+      
+//     }
+
+   
+//   });
+   
+//   return  dataObj?.response?.id
+
+  
+// };
+
+
+
+/*api request: this gives a faster and lesser down time for speed response*/
 export const makeRequest = (url, method = "get", details) => {
   switch (method.toLowerCase()) {
     // case:"post":
@@ -1468,7 +2307,15 @@ export const makeRequest = (url, method = "get", details) => {
 
     //   break;
     case "get":
-      console.log("calling get");
+
+     //not necessary but good for nework coonection detection
+
+
+  
+
+          ///this is the real fetch if network is good
+
+          console.log("calling get");
       return fetch(url, {
         method: method.toLowerCase(),
         // credentials: "same-origin",
@@ -1478,6 +2325,8 @@ export const makeRequest = (url, method = "get", details) => {
           "Content-Type": "application/json",
         },
       });
+
+      
       break;
     default:
       console.log("calling get");
@@ -1496,8 +2345,8 @@ export const makeRequest = (url, method = "get", details) => {
 
 
 
-export const getCourses = async (limit = 800000, offset = 0) => {
-  let url = base_url + `/lms/api/courses/?limit=${limit}&offset=${offset}`;
+export const getGroups = async (limit = 800000, offset = 0) => {
+  let url = base_url + `/lms/api/gaps-groups/?limit=${limit}&offset=${offset}`;
   let request = makeRequest(url);
   return request
     .then(function (response) {
@@ -1508,13 +2357,41 @@ export const getCourses = async (limit = 800000, offset = 0) => {
         console.log("Data retrieved from lms:" + data);
         return data;
       }
-    });
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+    return false
+    })
+      
+};
+
+export const getCourses = async (limit = 800000, offset = 0) => {
+  let url = base_url + `/lms/api/courses/?limit=${limit}&offset=${offset}`;
+  let request = makeRequest(url);
+
+  console.log(request)
+  return request
+    .then(function (response) {
+      return response.json();
+    })
+    .then((data) => {
+      if (data) {
+        console.log("Data retrieved from lms:" + data);
+        return data;
+      }
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+      return false   
+    })
+      
 };
 
 
 
 export const getCourseData = async (id) => {
   let url = base_url + `/lms/api/course-content/${id}/`;
+  try{
+
+
   let request = makeRequest(url);
   return request
     .then(function (response) {
@@ -1525,7 +2402,13 @@ export const getCourseData = async (id) => {
         console.log("Data retrieved from lms:" + data);
         return data;
       }
-    });
+    }).catch(e=> {
+      showNotificationSuccess("Error","Could not fetch course data")
+    })
+  
+  }catch(e){
+    console.log("error: "+ e) 
+  }    
 };
 
 export const getInstitutionCourses = async (
@@ -1546,7 +2429,11 @@ export const getInstitutionCourses = async (
         console.log("Data retrieved from lms:" + data);
         return data;
       }
-    });
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+     return false
+    })
+      
 };
 
 export const getCourse = async (id) => {
@@ -1562,7 +2449,11 @@ export const getCourse = async (id) => {
         console.log("Data retrieved from lms:" + data);
         return data;
       }
-    });
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+     return false
+    })
+      
 };
 
 export const getSectionsOfCourseId = async (courseId) => {
@@ -1578,7 +2469,11 @@ export const getSectionsOfCourseId = async (courseId) => {
         console.log("Data retrieved from lms:" + data);
         return data;
       }
-    });
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+    return false
+    })
+      
 }
 
 
@@ -1597,7 +2492,11 @@ export const  getSubSectionsOfSectionId= async (sectionId) => {
         console.log("Data retrieved from lms:" + data);
         return data;
       }
-    });
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+      return false
+      })
+      
 }
 export const getLessonsOfSubsection= async (subsectionId) => {
   let url = base_url + `/lms/api/lessons/${subsectionId}/`;
@@ -1612,7 +2511,11 @@ export const getLessonsOfSubsection= async (subsectionId) => {
         console.log("Data retrieved from lms:" + data);
         return data;
       }
-    });
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+    return false
+    })
+      
 }
 export const getComponentsOfLessons = async (lessonId) => {
   let url = base_url + `/lms/api/lesson-html-components/${lessonId}`;
@@ -1625,7 +2528,11 @@ export const getComponentsOfLessons = async (lessonId) => {
     .then((data) => {
       // console.log(data)
       return data
-    });
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+      return false
+      })
+      
 }
 
 
@@ -1656,7 +2563,11 @@ export const getComponent = async (componentId, type) => {
     .then((data) => {
       // console.log(data)
       return data
-    });
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+       return false
+       })
+      
 }
 
 
@@ -1685,7 +2596,11 @@ export const getVideoComponentsOfLessons = async (lessonId) => {
     })
     .then((data) => {
        return data
-    });
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+       return false
+       })
+      
 }
 
 //awesome
@@ -1743,7 +2658,11 @@ export const getInstitutions = async (limit = 8000000, offset = 0) => {
         console.log("Data retrieved from lms:" + data);
         return data;
       }
-    });
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+       return false
+       })
+      
 };
 
 export const getInstitution = async (id) => {
@@ -1759,7 +2678,11 @@ export const getInstitution = async (id) => {
         console.log("Data retrieved from lms:" + data);
         return data;
       }
-    });
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+       return false
+       })
+      
 };
 
 export const getInstructorProfiles = async (limit = 8000000, offset = 0) => {
@@ -1774,7 +2697,11 @@ export const getInstructorProfiles = async (limit = 8000000, offset = 0) => {
         console.log("Data retrieved from lms:" + data);
         return data;
       }
-    });
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+       return false
+       })
+      
 };
 
 export const getInstructorProfile = async (id) => {
@@ -1789,7 +2716,11 @@ export const getInstructorProfile = async (id) => {
         console.log("Data retrieved from lms:" + data);
         return data;
       }
-    });
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+      return false
+       })
+      
 };
 
 /*future implementations create*/
@@ -1807,7 +2738,11 @@ export const createSection = async (details) => {
         console.log("Data retrieved from lms:" + data);
         return data;
       }
-    });
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+       return false
+       })
+      
 };
 
 export const createSubsection = async (details) => {
@@ -1822,7 +2757,11 @@ export const createSubsection = async (details) => {
         console.log("Data retrieved from lms:" + data);
         return data;
       }
-    });
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+    return false
+    })
+      
 };
 
 export const createLesson = async (details) => {
@@ -1837,7 +2776,10 @@ export const createLesson = async (details) => {
         console.log("Data retrieved from lms:" + data);
         return data;
       }
-    });
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+       })
+      
 };
 
 export const createInstitution = async (details) => {
@@ -1853,7 +2795,10 @@ export const createInstitution = async (details) => {
         console.log("Data retrieved from lms:" + data);
         return data;
       }
-    });
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+       })
+      
 };
 
 export const createGapsGroup = async (details) => {
@@ -1869,7 +2814,10 @@ export const createGapsGroup = async (details) => {
         console.log("Data retrieved from lms:" + data);
         return data;
       }
-    });
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+       })
+      
 };
 
 export const createUserProfile = async (details) => {
@@ -1885,7 +2833,10 @@ export const createUserProfile = async (details) => {
         console.log("Data retrieved from lms:" + data);
         return data;
       }
-    });
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+       })
+      
 };
 
 export const createStudentProfile = async (details) => {
@@ -1902,7 +2853,10 @@ export const createStudentProfile = async (details) => {
         console.log("Data retrieved from lms:" + data);
         return data;
       }
-    });
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+       })
+      
 };
 
 export const createAuthorProfile = async (details) => {
@@ -1918,7 +2872,10 @@ export const createAuthorProfile = async (details) => {
         console.log("Data retrieved from lms:" + data);
         return data;
       }
-    });
+    }).catch(e=>{
+         showNotificationSuccess("Network error","Please reconnect or reload the page")
+       })
+      
 };
 
 export class Alert {

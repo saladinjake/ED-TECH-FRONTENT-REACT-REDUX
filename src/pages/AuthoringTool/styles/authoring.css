@@ -18495,6 +18495,15 @@ input[type="text"]:focus + i:before {
   padding: 10px 0;
   font-size: 12px;
   border-bottom: 1px solid #fff;
+  
+
+  -webkit-user-select: none;
+        -webkit-touch-callout: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        color: #cc0000;
+        pointer-events: none;
 }
 
 
@@ -19000,3 +19009,69 @@ color: #000;
 #myBtn:hover {
   background-color: #555;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*slide out question box*/
+.container-questions {
+  margin-top: 20px;
+}
+
+#slideout-questions .btn{
+  padding: 10px;
+  background: #eaeaea;
+  border-radius: 40px;
+  margin-bottom: 10px;
+  margin-left:20px;
+}
+#slideout-questions {
+  background: #dbe2e9;
+  color: #333;
+  position: fixed;
+  top: 0;
+    right: -1490px;
+  width: 100%;
+  height: 100%;
+  margin-top: 10px;
+  -webkit-transition-duration: 0.3s;
+  -moz-transition-duration: 0.3s;
+  -o-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+}
+#slideout-questions form {
+  display: block;
+  padding: 20px;
+}
+#slideout-questions textarea {
+  display: block;
+  height: 100px;
+  margin-bottom: 6px;
+  width: 250px;
+}
+#slideout-questions.on {
+  right: 0;
+}
+
+
+/*disable hint area selection*/
+.unselectable, .hintareaview, .hint-region {
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        color: #cc0000;
+        pointer-events: none;
+      }

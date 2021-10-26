@@ -1397,10 +1397,18 @@ export const AddFormBox = () => {
     //fetch all the categories
     //fetch all the language
     //fetch
-    const res = await getCourses();
-    
-    setcourses(res.results);
+    try{
+      const res = await getCourses();
+      setcourses(res.results);
     console.log(res.results)
+
+    }catch(e){
+       showNotificationSuccess("Error",e)
+
+    }
+    
+    
+    
 
   },[]);
 

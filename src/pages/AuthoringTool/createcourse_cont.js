@@ -20,7 +20,7 @@ import loading_image from "assets/gifs/loading-buffering.gif";
 import $ from "jquery";
 import 'jquery-ui-bundle';
 import 'jquery-ui-bundle/jquery-ui.css';
-import HTMLForm from "./Editor";
+
 
 
 
@@ -69,10 +69,14 @@ import {
  addLessonData,
  DateFormatter,
  deleteApi, // find delete api
- getComponent
+ getComponent,
+ getGroups
 } from "services/authoring"
 
 import  { enableDragSortPositionUpdater } from "./reorder_positioning" 
+import HTMLForm from "./Editor";
+let allDefinitiveQuillObj;   
+
 
 /*the base url link*/
 let base_url = "http://gapslmsservices.herokuapp.com"; //process.env.REACT_APP_API_URL2
@@ -118,6 +122,128 @@ function scrollFunction(e) {
 function scrollToTop() {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
+}
+
+
+window.swapProblemDisplayBoard = function(el){
+  // ev.preventDefault()
+  let parent =  el.getAttribute("data-getitup")
+  //alert(parent)
+   $('#slideout-questions').toggleClass('on');
+   $("#slideout-questions").attr("problem_no_dey_finish", parent)
+
+
+}
+
+
+
+
+window.switchToEditProblemComponent = function(el){
+  $("#problemcomponent_form").css({display:"block"}).fadeOut("slow")
+  $(".markdown-editordisplay").css({display:"none"}).fadeIn("slow")
+   let form = $("#problemcomponent_form");
+   form.attr("method","PATCH")
+   
+   //SHOW EDIT BUTTON
+
+   //HIDE CREATE BUTTON
+   
+   //handle save edit
+}
+
+
+window.questionHelperNotification = function(e){
+  scrollToTop()
+  swal(`Notification`,
+     `Click on the Save All Questions to the top right
+      to save your question format.
+      You can reorder your questions 
+      by copying the entire block of tripple quotes
+      to the above or below the next 
+      line of the previous block of quotes.`);
+  $("#saveQuestionActions").css({display:"block"})
+   .fadeIn("slow")
+}
+
+function addNewQuestenceWahala(e){
+  e.preventDefault();
+  //get the headers injected to know the target lesson it should be attached
+  //the course id also has already been set on page initialization of the edit course triggered
+//  alert("save your problems by your self abeg")
+    let form = $("#problemcomponent_form");
+
+
+  let allowedHeaders =  document.getElementById("openModal-about")
+  let lessonMount = localStorage.getItem("l_tracker");
+  form.find("#problem_lesson").val(lessonMount);
+  if(localStorage.getItem("course_edit") && form.find("#problem_course").val()
+  !=="" || form.find("#problem_course").val()
+  !==null){
+    form.find("#problem_course").val(localStorage.getItem("course_edit"))
+
+  
+  }
+        
+
+  let urlBuild = "/lms/api/create/problem-component/"
+  let res = createAnyResource("POST",urlBuild,form) //expertise
+
+  //append it
+
+  //show animated widget added content
+   let Target = $(".dynamo_" + lessonMount);
+   
+   let T = allowedHeaders.getAttribute('data-basestation')
+   let markdownTemplate =  allowedHeaders.getAttribute("data-markdown") || "[pb_html]/[pb_discussions]";
+   let randId = uuid()
+    let Preview = document.querySelector(
+                  "#template-container > .pb-widget-preview-panel-generic-form"
+    );
+    let SClone = Preview.cloneNode(true);
+    let wrapWrapper = pbCreateNode("li", [
+        { class: "pb-placeholder-main col-md-12" },
+                            
+    ]);
+
+    wrapWrapper.appendChild(SClone)
+    wrapWrapper.setAttribute("id", randId )
+                    
+    let MainClone = wrapWrapper.cloneNode(true);
+    MainClone.id=randId            
+    MainClone.querySelector(".fa-edit").setAttribute("data-template", markdownTemplate)
+    MainClone.querySelector(".fa-edit").setAttribute("data-id",randId) //=randId //ref the curr main lesson box
+            
+             //edit view when clicked not saved
+    MainClone.querySelector(".fa-edit").addEventListener("click",(evv) =>{
+      const title =  $("#"+ MainClone.getAttribute("id")).find(".unit_title_place_holder-generic").html();
+      const body = $("#"+ MainClone.getAttribute("id")).find(".unit_content_place_holder-generic").html();
+      
+      $("#title-unit-b").val(title)
+      $("#title-unit2-b").val(body)
+      $("#edit-title").html("Editing Html component: "+ title)
+      document.getElementById("edit-title").setAttribute("data-parent", MainClone.id)
+                      
+    }) 
+
+
+  MainClone.querySelector(".fa-trash").addEventListener("click", (e) => {
+       handleWidgetRemove(e.target)
+  })
+
+       
+  MainClone.querySelector(".unit_title_place_holder-generic").innerHTML =   $("#title-unit").val()  //add validation for unit component
+  MainClone.querySelector(".unit_content_place_holder-generic").innerHTML  = $("#title-unit2").val() || "Edit this content"
+  Target.append(MainClone);
+
+  if(res){
+    console.log(res)
+    // if this shows then quily change the random id to the real id of the created response
+    swal("Success", "You have added a problem component")
+    scrollToTop()
+
+  }
+   $("#openModal-about").css({opacity:0}).fadeOut("fast")
+  
 }
 
 
@@ -527,7 +653,19 @@ let counter = 1;
 const addSectionContent = () => {
   let  form  = $("form#addSectionForm"); //here is the modal form to add section
   let url = "/lms/api/create/section/"
-  let sectionRes = createAnyResource('POST',url,form)
+  let sectionRes = createAnyResource('POST',url,form);
+  // if resource exists quickly add the new data here
+  //console.log(sectionRes)
+  // code deception
+  try{
+     if(sectionRes && sectionRes?.id){
+
+     }else{
+       //error
+     }
+  }catch(e){
+
+  }
 };
 
 const addSubSectionContent = (el) => {
@@ -537,6 +675,20 @@ const addSubSectionContent = (el) => {
   let  form  = $("form#addSubSectionForm"); //here is the modal form to add section
   let url = "/lms/api/create/subsection/"
   let sectionRes = createAnyResource('POST',url,form)
+
+  // if resource exists quickly add the new data here
+  //console.log(sectionRes)
+  // code deception
+
+  try{
+     if(sectionRes && sectionRes?.id){
+
+     }else{
+       //error
+     }
+  }catch(e){
+
+  }
 };
 
 let lesson_counter = 1;
@@ -559,9 +711,13 @@ const createLessonSection = (el) => {
 }
 
 
-const createLessonComponent = (url, form) => {
+const createLessonComponent = async (url, form) => {
 
-  let lessonRes = createAnyResource('POST',url,form);
+  //alert(localStorage.getItem("l_tracker"))
+  form.find("#lesson-editor-id").val(localStorage.getItem("l_tracker"))
+form.find("#lesson-editor-id2").val(localStorage.getItem("l_tracker"))
+
+  let lessonRes =await  createAnyResource('POST',url,form);
   //save to db
   console.log(lessonRes)
 
@@ -646,7 +802,8 @@ window.showComponentModal = (e) => {
   $(".pb-widget").each(function(){
      const chosen = $(this);
      chosen.click((e) =>{
-         alert("you selected this:"+ e.target.innerHTML)
+       console.log("remember to work on showComponentModal Fuction: i dont even know why i did it")
+         ///alert("you selected this:"+ e.target.innerHTML)
      })
   })
 }
@@ -667,6 +824,11 @@ window.showSetSubsection = function(el) {
 window.setTargetLessonComponent = (id) =>{
   localStorage.setItem("l_tracker",id);
   localStorage.setItem("parental", id)
+
+  //setTimeout(() =>{
+      $("#lesson-editor-id").val(localStorage.getItem("l_tracker"))
+  //},2000)
+
 }
 
 //todo : go back to problem component and fix the out put save and edit 
@@ -798,11 +960,7 @@ const editDiscussComponent = async () =>{
 window.LaunchEditBoxEvent = async (el) => {
   //SMART TYPE DETECTOR
 
-  //for lesson component of text, video and iframes only
-  $(".close").click((e)=>{
-    e.preventDefault()
-    $("#openModal-about").css({opacity:0}).fadeOut("fast")
-  })
+  
 
   const type = el.getAttribute("data-component_type");
   let formId = el.getAttribute("data-form") //myModalGenericForm-SELECT
@@ -824,6 +982,10 @@ window.LaunchEditBoxEvent = async (el) => {
   //                     parent-lessons-name
   //                     editor-html-type
   //                     description_discuss
+   $("#editor-html-name").val( componentDetail.name ||el.getAttribute("data-name"))
+   $("#editor-html-name2").val( componentDetail.name ||el.getAttribute("data-name"))
+   $("#editor-html-name3").val( componentDetail.name ||el.getAttribute("data-name"))
+    
     $("#name_discuss2").val( componentDetail.name ||el.getAttribute("data-name"))
      form.find("#component_id").val( componentDetail.id || el.getAttribute("data-idx")) //component id
      $("#parent-lessons-name2").val(componentDetail.lesson || el.getAttribute("data-parent")) //lesson id
@@ -833,9 +995,64 @@ window.LaunchEditBoxEvent = async (el) => {
       
 
     
+  }else if(form && type=="3"){
+
+    //transition in the form for problems
+
+
+
+
+    $("#editor-html-name").val( el.getAttribute("data-name"))
+
+     $("#editor-html-name").val( componentDetail.name ||el.getAttribute("data-name"))
+   $("#editor-html-name2").val( componentDetail.name ||el.getAttribute("data-name"))
+   $("#editor-html-name3").val( componentDetail.name ||el.getAttribute("data-name"))
+   
+  //   form.find("#editor-html-name").val(el.getAttribute("data-name")||  componentDetail.name )
+     form.find("#component_id").val( componentDetail.id || el.getAttribute("data-idx")) //component id
+     form.find("#lesson-editor-id").val(componentDetail.lesson || el.getAttribute("data-parent")) //lesson id
+   
+     form.find("#editor-html-description").val( componentDetail.description  || el.getAttribute("data-description"))
+     form.find("#editor-html-type").val(el.getAttribute("data-component_type"))
+     form.find("#editor-html-content-type").val( componentDetail.component_type || el.getAttribute("data-content_type"))
+     //form.find("div[placeholder='html_text']").html(componentDetail.html_text || el.getAttribute("data-html_text"))
+     //document.querySelector("div[placeholder='attributeValue']")
+     //form.find("#html_text").html(  componentDetail.html_text || el.getAttribute("data-html_text"))
+  
+      let key = "html_text"
+      let html = "An empty content";
+      $("#title-unit-edited").val($("#embedded_url_"+componentDetail.id).html() ) //lesson id
+   
+   
+     
+      key = "html_text"
+       html = $("#readmore_"+componentDetail.id).html() || "Place your content for editing with rich text editor";
+     
+     //alert(form.attr("id"))
+      $("#title-unit2").val($("#embedded_url_"+componentDetail.id).html() ) //lesson id
+   
+      myEditor = $('div[data-placeholder="'+key+'"]') // the editor itself
+          //myEditor = myEditor.children[0];
+      myEditor.html(html);
+    //lets get and fill the edit form and change title OF THE FORM TO EDITING LESSON NAME
+    $("#myModalMarkdownEditor").find("h5").html("Editing Component: "+ componentDetail.name)
+    
+
+
+     $("#editor-html-name").val( componentDetail.name ||el.getAttribute("data-name"))
+     form.find("#editor-html-name").val( componentDetail.name ||el.getAttribute("data-name"))
+    
+
+
   }else if(form){
     
-     form.find("#editor-html-name").val( componentDetail.name ||el.getAttribute("data-name"))
+     $("#editor-html-name").val( el.getAttribute("data-name"))
+
+     $("#editor-html-name").val( componentDetail.name ||el.getAttribute("data-name"))
+   $("#editor-html-name2").val( componentDetail.name ||el.getAttribute("data-name"))
+   $("#editor-html-name3").val( componentDetail.name ||el.getAttribute("data-name"))
+   
+  //   form.find("#editor-html-name").val(el.getAttribute("data-name")||  componentDetail.name )
      form.find("#component_id").val( componentDetail.id || el.getAttribute("data-idx")) //component id
      form.find("#lesson-editor-id").val(componentDetail.lesson || el.getAttribute("data-parent")) //lesson id
    
@@ -861,7 +1078,7 @@ window.LaunchEditBoxEvent = async (el) => {
        html = $("#readmore_"+componentDetail.id).html() || "Place your content for editing with rich text editor";
      
      }
-     alert(form.attr("id"))
+     //alert(form.attr("id"))
       $("#title-unit2").val($("#embedded_url_"+componentDetail.id).html() ) //lesson id
    
       myEditor = $('div[data-placeholder="'+key+'"]') // the editor itself
@@ -872,6 +1089,10 @@ window.LaunchEditBoxEvent = async (el) => {
     
 
 
+     $("#editor-html-name").val( componentDetail.name ||el.getAttribute("data-name"))
+     form.find("#editor-html-name").val( componentDetail.name ||el.getAttribute("data-name"))
+    
+
     
   }else{
     swal("Error", "API ACCESSED WRONGLY!!","ERROR")
@@ -881,15 +1102,18 @@ window.LaunchEditBoxEvent = async (el) => {
 
   // now handle when the button to save is clicked if its generic
     //generic refers to video or iframe
-    $("#save_new_insertion_component_generic-edit").click((e)=>{
+    $("#save_new_insertion_component_generic-edit").click(async (e)=>{
       e.preventDefault()
       console.log("click event happened on view")
+      let new_val = $("#editor-html-name3").val( )
+      $("#editor-html-name3").val(new_val )
+
 
       //make the patch request to the api to save editing...
       //switch the undisplayed html form text for html_* so data can be saved to it
       form.find("#video-descr").val(myEditor.html())
       //make the patch request to the api to save editing... when all is green
-      let res = createAnyResource("patch",urlBuild, form)
+      let res =await  createAnyResource("patch",urlBuild, form)
       console.log(res)
 
 
@@ -901,19 +1125,20 @@ window.LaunchEditBoxEvent = async (el) => {
     $("#save_new_insertion_component_htmleditor").css({display:"block"}) //show edit button
     $("#save_new_insertion_component").css({display:"none"}) // hide creat button
 
-    $("#save_new_insertion_component_htmleditor").click((e)=>{
+    $("#save_new_insertion_component_htmleditor").click(async (e)=>{
       e.preventDefault()
       //switch the undisplayed html form text for html_* so data can be saved to it
       form.find("#description").val(myEditor.html())
       //make the patch request to the api to save editing... when all is green
-      let res = createAnyResource("patch",urlBuild, form)
+      let res = await createAnyResource("patch",urlBuild, form)
+      console.log(res)
       scrollToTop()
     });
 
 
        //handle save for discussion component
 
-    $("#discuss-edit").click((e) =>{
+    $("#discuss-edit").click(async (e) =>{
       e.preventDefault()
        let keys ="discuss-note2"
       let myEditor = $('div[data-placeholder="'+keys+'"]')
@@ -921,7 +1146,8 @@ window.LaunchEditBoxEvent = async (el) => {
       //switch the undisplayed html form text for html_* so data can be saved to it
       form.find("#description_discuss").val(myEditor.html())
       //make the patch request to the api to save editing... when all is green
-      let res = createAnyResource("patch",urlBuild, form)
+      let res = await createAnyResource("patch",urlBuild, form)
+      console.log(res)
       scrollToTop()
       // let formResetWithProgrammableInputs = $("#myModalDiscussionForm-EDITSELECT");
       // if(form.find("#parent-lessons").val()!==""){
@@ -948,10 +1174,10 @@ const LaunchEditBoxEvent = async (el) =>{
     //SMART TYPE DETECTOR
 
   //for lesson component of text, video and iframes only
-  $(".close").click((e)=>{
-    e.preventDefault()
-    $("#openModal-about").css({opacity:0}).fadeOut("fast")
-  })
+  // $(".close").click((e)=>{
+  //   e.preventDefault()
+  //   $("#openModal-about").css({opacity:0}).fadeOut("fast")
+  // })
 
   const type = el.getAttribute("data-component_type");
   let form = $("#"+el.getAttribute("data-form")) //will be reset back to post after update
@@ -965,9 +1191,9 @@ const LaunchEditBoxEvent = async (el) =>{
   
   // form.attr("action", el.getAttribute("data-action-figure")) // this is not monolithic app
 
-  console.log( urlBuild)
+  //console.log( urlBuild)
   if(form){
-    
+    $("#editor-html-name").val(componentDetail.name)
      form.find("#editor-html-name").val( componentDetail.name ||el.getAttribute("data-name"))
      form.find("#component_id").val( componentDetail.id || el.getAttribute("data-idx")) //component id
      form.find("#lesson-editor-id").val(componentDetail.lesson || el.getAttribute("data-parent")) //lesson id
@@ -1215,7 +1441,7 @@ function clearConsole() {
 
 
 
-const  handleSaveComponentTextEditor =(e) => {
+const  handleSaveComponentTextEditor = async (e) => {
     let randId = uuid()
      let Target = $(".dynamo_" + localStorage.getItem("l_tracker")); //localStorage.getItem('ls_tracker');
     
@@ -1228,6 +1454,7 @@ const  handleSaveComponentTextEditor =(e) => {
       "#template-container > .pb-widget-preview-panel"
     );
 
+    
     let SClone = Preview.cloneNode(true)      
         
     let wrapWrapper = pbCreateNode("li", [
@@ -1235,85 +1462,319 @@ const  handleSaveComponentTextEditor =(e) => {
                      // { onclick:  () => { "openModal(this)" }
     ]);
 
-        wrapWrapper.appendChild(SClone)
-        wrapWrapper.setAttribute("id", randId )
-        let MainClone = wrapWrapper.cloneNode(true);
-        MainClone.id =randId
+  // wrapWrapper.appendChild(SClone)
+  // wrapWrapper.setAttribute("id", randId )
+  // let MainClone = wrapWrapper.cloneNode(true);
+  // MainClone.id =randId
 
 
-        //the form should keep track of the clone id when user dont reload page
-        let form = $("#myModalMarkdownEditor-SELECT")
-        form.attr("temp_id", randId)
-        form.attr("data-id", randId)
-        form.attr("data-idx", randId)
-        form.attr("data-parent-id", localStorage.getItem("l_tracker"))
-        form.attr("data-content_type",form.find("#editor-html-content-type").val())
-        form.attr("data-component_type",form.find("#editor-html-type").val())
-        form.attr("data-name",form.find("#editor-html-name").val())
-        form.attr("data-pos","1.0")
-        form.attr("data-description",form.find("#editor-html-description").val())
+  //the form should keep track of the clone id when user dont reload page
+  let form = $("#myModalMarkdownEditor-SELECT")
+  form.attr("temp_id", randId)
+  form.attr("data-id", randId)
+  form.attr("data-idx", randId)
+  form.attr("data-parent-id", localStorage.getItem("l_tracker"))
+  form.attr("data-content_type",form.find("#editor-html-content-type").val())
+  form.attr("data-component_type",form.find("#editor-html-type").val())
+  form.attr("data-name",form.find("#editor-html-name").val())
+  form.attr("data-pos","1.0")
+  form.attr("data-description",form.find("#editor-html-description").val())
+  $("#lesson-editor-id5").val(localStorage.getItem("l_tracker"))
+
+  //this was good back in the older days but i got bigger and smarter
+ //fall back attributes if it fails upon saving new data
+//   MainClone.querySelector(".fa-edit").setAttribute("data-id", randId)
+//   MainClone.querySelector(".fa-edit").setAttribute("data-parent-id", localStorage.getItem("l_tracker"))
+//   MainClone.querySelector(".fa-edit").setAttribute("data-content_type",$("#myModalMarkdownEditor-SELECT").find("#editor-html-content-type").val())
+//   MainClone.querySelector(".fa-edit").setAttribute("data-component_type",$("#myModalMarkdownEditor-SELECT").find("#editor-html-type").val())
+//   MainClone.querySelector(".fa-edit").setAttribute("data-name",$("#myModalMarkdownEditor-SELECT").find("#editor-html-name").val())
+//   MainClone.querySelector(".fa-edit").setAttribute("data-pos","1.0")
+//   MainClone.querySelector(".fa-edit").setAttribute("data-description",$("#myModalMarkdownEditor-SELECT").find("#editor-html-description").val())
+//   //fall back attributes if it fails upon saving new data
+//   MainClone.setAttribute("data-id", randId)
+//   MainClone.querySelector(".fa-edit").setAttribute("data-template",markdownTemplate)
+//   MainClone.querySelector(".fa-edit").setAttribute("data-id",randId) //ref the curr main lesson box
+//   MainClone.querySelector(".fa-edit").addEventListener("click",(es) =>{
+    //   document.getElementById(MainClone.id).setAttribute("data-parent",MainClone.id)
+    //     localStorage.setItem("edit_component", randId )
+    //     form.attr("method","patch")
+
+    // })
+
+//   // document.getElementById("myModalMarkdownEditorEditMode").querySelector(".visuell-view2")
+// $("#myModalMarkdownEditor-SELECT").find("#input-area4").val(
+//   localStorage.getItem("html_text_content")
+// )
+
+
+//   MainClone.querySelector(".fa-trash").addEventListener("click", (e) => {
+//        handleWidgetRemove(e.target)
+//   })
+//     MainClone.querySelector(".unit_title_place_holder").innerHTML= $("#editor-html-name").val()  /// _title   //no title initially for this comonent
+//     MainClone.querySelector(".unit_content_place_holder").innerHTML = localStorage.getItem("html_text_content")  //getTemplateType(markdownTemplate)        //$("#input-area").val()      //getTemplateType(markdownTemplate)           //$(".visuell-view").html() || "Edit this content"
+//     const markupBoard = document.getElementById("markup-template-content")
+
+   $("#lesson-editor-id").val(localStorage.getItem("l_tracker"))
+   form.find("#lesson-editor-id5").val(localStorage.getItem("l_tracker"))
+
+
+   let component =await  createLessonComponent(url,form) //save the component with feedback response
+   console.log(component)
+   //response is just the id
+  //  MainClone.querySelector(".fa-edit").setAttribute("data-id", component.id)
+  form.attr("temp_id", component.id)
+  form.attr("data-id",  component.id)
+  form.attr("data-idx",  component.id)
 
 
 
-
-       //fall back attributes if it fails upon saving new data
-        MainClone.querySelector(".fa-edit").setAttribute("data-id", randId)
-        MainClone.querySelector(".fa-edit").setAttribute("data-parent-id", localStorage.getItem("l_tracker"))
-        MainClone.querySelector(".fa-edit").setAttribute("data-content_type",$("#myModalMarkdownEditor-SELECT").find("#editor-html-content-type").val())
-        MainClone.querySelector(".fa-edit").setAttribute("data-component_type",$("#myModalMarkdownEditor-SELECT").find("#editor-html-type").val())
-        MainClone.querySelector(".fa-edit").setAttribute("data-name",$("#myModalMarkdownEditor-SELECT").find("#editor-html-name").val())
-        MainClone.querySelector(".fa-edit").setAttribute("data-pos","1.0")
-        MainClone.querySelector(".fa-edit").setAttribute("data-description",$("#myModalMarkdownEditor-SELECT").find("#editor-html-description").val())
+   
+   // localStorage.setItem("html_text_content", "")
+   //  markupBoard.innerHTML =markdownTemplate
+   //  $(".visuell-view").html(getTemplateType(markdownTemplate))
+   //  
 
 
-        //fall back attributes if it fails upon saving new data
 
-        MainClone.setAttribute("data-id", randId)
+   let playVideoEnabled = " ";
+  let launchPad ="#myModalMarkdownEditor"
+  let formType = ""
+  let actionBuilder = `/html-component/${component.id}/`
+  let Info = "IFRAME/VIDEO EDITABLE COMPONENT"
+  let readmoreInitialized = "none";
+  let enableLink ="none";
+  let textualData = "";
+  let questionTeplateButton = false
+
+  if(component.component_type ==1){
+    launchPad ="#myModalGenericFormEditorEditMode"
+    formType = "myModalGenericForm-SELECT"
+    actionBuilder = `/video-component/${component.id}/`
+  }else if(component.component_type ==2) {
+    launchPad ="#myModalMarkdownEditor"
+    Info = "HTML TEXT EDITABLE COMPONENT"
+    formType="myModalMarkdownEditor-SELECT"
+    actionBuilder = `/html-component/${component.id}/`
+  }else if(component.component_type ==3){
+    launchPad ="#openModal-about"
+    Info = "HTML PROBLEM COMPONENT"
+    formType = "myModalProblemForm-SELECT"
+    actionBuilder = `/problem-component/${component.id}/`
+    
+    questionTeplateButton =`<a role="button"
+    data-toggle="modal" 
+    style="cursor:pointer" data-self="${component.id}" 
+    data-append="${component.lesson}" 
+    data-getitup="${component.id}" 
+  onclick="window.event.preventDefault();swapProblemDisplayBoard(this)"  
+     href="" class="pull-right">
+       <i style="color:#000" data-self="${component.id}"  
+       data-getitup="${component.id}" 
+       class="fa fa-plus fa-2x">Add a question </i></a>`
+  
+
+  }else if(component.component_type ==4){
+    //not implemented the ui for this
+    launchPad ="#openModal-about2"
+    Info = "HTML DISCUSSION COMPONENT"
+    formType = "myModalDiscussionForm-SELECT"
+    actionBuilder = `/discussion-component/${component.id}/`
+    
 
 
-        MainClone.querySelector(".fa-edit").setAttribute("data-template",markdownTemplate)
-        MainClone.querySelector(".fa-edit").setAttribute("data-id",randId) //ref the curr main lesson box
-        MainClone.querySelector(".fa-edit").addEventListener("click",(es) =>{
-             document.getElementById(MainClone.id).setAttribute("data-parent",MainClone.id)
-                  // const extracts = $("#" + MainClone.getAttribute("id")).find(".unit_content_place_holder").html();
-                  // const editBoard = document.getElementById("myModalMarkdownEditorEditMode").querySelector(".visuell-view2");
-                  // editBoard.value = extracts;
-                  // const markupBoard = document.getElementById("markup-template-content")
-                  // markupBoard.innerHTML =markdownTemplate
-                  localStorage.setItem("edit_component", randId )
-                  form.attr("method","patch")
+  }
 
-        })
-
-        // document.getElementById("myModalMarkdownEditorEditMode").querySelector(".visuell-view2")
-      $("#myModalMarkdownEditor-SELECT").find("#input-area4").val(
-        localStorage.getItem("html_text_content")
-      )
-      
-
-        MainClone.querySelector(".fa-trash").addEventListener("click", (e) => {
-             handleWidgetRemove(e.target)
-        })
-      MainClone.querySelector(".unit_title_place_holder").innerHTML= $("#editor-html-name").val()  /// _title   //no title initially for this comonent
-      MainClone.querySelector(".unit_content_place_holder").innerHTML = localStorage.getItem("html_text_content")  //getTemplateType(markdownTemplate)        //$("#input-area").val()      //getTemplateType(markdownTemplate)           //$(".visuell-view").html() || "Edit this content"
-      const markupBoard = document.getElementById("markup-template-content")
+  if(component.embedded_url){
+    playVideoEnabled = `<a role="button"
+data-toggle="modal" href="#modalFullScreenPreviewIframeAndVideos" data-videolink="${component.embedded_url}" onclick="videoModalPreview(this)" style="cursor:pointer;padding:10px;border-radius:50%;color:#000"><i  class="fa fa-video-camera fa-2x"></i></a>`
+    enableLink ="block"
+  }
+ 
+  if(component?.html_text  || (component.component_type==4 &&  component.description)){
+    readmoreInitialized ="block"
+     textualData = component?.html_text || component.description
+  }
 
 
-     let res = createLessonComponent(url,form)
+let  tempComponent = `<ul data-id="${component.id}"
+  data-name="${component?.name}"
+       data-idx="${component.id}"
+  data-parent="${component.lesson_id}"
+  data-pos="${component.position_id}"
+  data-description="${component.description}"
+  data-component_type="${component.component_type}"
+  data-name="${component.name}"
+  data-content_type="${component.content_type}"
+  data-form="${formType}"
+  data-action-figure="${actionBuilder}"
+  data-append="${component.lesson}" 
+                data-getitup="${component.id}" 
+  
+  data-embedded_url="${component.embedded_url}"
+  data-embedded_url="${component.video_type}" 
+  class="hello-move-me components accordion-content pb-widget-preview-panel" id="${component.id}">
+    
+    
+      <div class="">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="">
+            
+      <div class="">
+        <div class=" col-md-12">
+           
 
-     console.log(res);
-     localStorage.setItem("html_text_content", "")
+
+        <div class="actions-set pull-right" >
+       
+
+          <span ><a href="${launchPad}"
+          data-name="${component?.name}"
+       data-idx="${component.id}"
+  data-parent="${component.lesson_id}"
+  data-pos="${component.position_id}"
+  data-description="${component.description}"
+  data-component_type="${component.component_type}"
+  data-name="${component.name}"
+  data-content_type="${component.content_type}"
+  data-embedded_url="${component.embedded_url}"
+  data-embedded_url="${component.video_type}"
+  data-form="${formType}"
+  data-action-figure="${actionBuilder}"
+  data-append="${component.lesson}" 
+                data-getitup="${component.id}" 
+
+      role="button"
+      data-toggle="modal">
+      <i onclick="LaunchEditBoxEvent(this)"
+       class="pb-handle-widget fa fa-edit fa-2x"
+
+        data-name="${component?.name}"
+       data-idx="${component.id}"
+  data-parent="${component.lesson_id}"
+  data-pos="${component.position_id}"
+  data-description="${component.description}"
+  data-component_type="${component.component_type}"
+  data-name="${component.name}"
+  data-content_type="${component.content_type}"
+  data-embedded_url="${component.embedded_url}"
+  data-embedded_url="${component.video_type}"
+  data-form="${formType}"
+  data-action-figure="${actionBuilder}"
+  data-append="${component.lesson}" 
+                data-getitup="${component.id}" 
 
 
-     
-     console.log($("#myModalMarkdownEditor-SELECT").find(".visuell-view").html())
-      markupBoard.innerHTML =markdownTemplate
-      $(".visuell-view").html(getTemplateType(markdownTemplate))
-     
+       ></i>
+       </a></span>
+                       
+          <span><i 
 
-      //MainClone.querySelector(".fa-edit")
-      // MainClone.querySelector(".fa-trash")
-      Target.append(MainClone);
+          data-name="${component?.name}"
+       data-idx="${component.id}"
+  data-parent="${component.lesson_id}"
+  data-pos="${component.position_id}"
+  data-description="${component.description}"
+  data-component_type="${component.component_type}"
+  data-name="${component.name}"
+  data-content_type="${component.content_type}"
+  data-embedded_url="${component.embedded_url}"
+  data-embedded_url="${component.video_type}"
+  data-form="${formType}"
+  data-action-figure="${actionBuilder}"
+  data-append="${component.lesson}" 
+                data-getitup="${component.id}" 
+
+
+          class="pb-remove fa fa-trash fa-2x" onclick="handleWidgetRemove(this)"></i></span>
+        
+           <span><a
+  data-name="${component?.name}"
+
+  data-description="${component?.description}" 
+
+ class="drag-handle-list-lessons" style="margin-right:10px;"
+ 
+       data-idx="${component.id}"
+  data-parent="${component.lesson_id}"
+  data-pos="${component.position_id}"
+  data-description="${component.description}"
+  data-component_type="${component.component_type}"
+  data-name="${component.name}"
+  data-content_type="${component.content_type}"
+  data-embedded_url="${component.embedded_url}"
+  data-embedded_url="${component.video_type}"
+  data-form="${formType}"
+  data-action-figure="${actionBuilder}"
+  data-append="${component.lesson}" 
+                data-getitup="${component.id}" 
+   
+ 
+         
+  >
+
+ <i class="fa fa-arrows fa-2x"
+    data-name="${component?.name}"
+       data-idx="${component.id}"
+  data-parent="${component.lesson_id}"
+  data-pos="${component.position_id}"
+  data-description="${component.description}"
+  data-component_type="${component.component_type}"
+  data-name="${component.name}"
+  data-content_type="${component.content_type}"
+  data-embedded_url="${component.embedded_url}"
+  data-embedded_url="${component.video_type}"
+  data-form="${formType}"
+  data-action-figure="${actionBuilder}"
+  data-append="${component.lesson}" 
+                data-getitup="${component.id}" 
+
+  
+
+
+ ></i>
+</a></span>
+        </div>
+        </div>
+        
+      </div>
+      <br/> <br/><br/><br/>
+    
+              <div class="col-md-12">
+              <h4
+          class="col-md-12"
+          
+        > <span class="compo-type" style="font-size:25px;color:#000">Component Type: ${Info}</span><br/><span style="font-size:25px;">Title</span><span style="font-size:25px;font-weight:bold;color:#000" class="unit_title_place_holder  title-given "> 
+             ${component.name}
+          </span>
+         </h4><br/>
+
+
+              <div id="readmore_${component.id}" style="display:${readmoreInitialized}"  class="readmore js-read-more" data-rm-words="70">
+                  ${textualData }
+              </div>
+
+                                      
+                <div data-append="${component.lesson}" 
+                data-getitup="${component.id}" class="content-section-from-input unit_content_place_holder">
+                   <p style={{display:${enableLink} }} id="embedded_url_${component.id}">${component?.embedded_url}</p>
+                   
+                  <p>${playVideoEnabled} ${ "Click the edit icon above to edit this unit" } ${ questionTeplateButton }</p>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+  </ul>`
+  Target.append(tempComponent);
+
+
+  //fall back if it fails on saving
+
+    
 
 
 }
@@ -1322,7 +1783,7 @@ const  handleSaveComponentTextEditor =(e) => {
 
 
 
-const  handleSaveComponentGenericForm = () => {
+const  handleSaveComponentGenericForm = async () => {
     let Target = $(".dynamo_" + localStorage.getItem("l_tracker"));
     let allowedHeaders =  document.getElementById("myModalGenericForm")
     let T = allowedHeaders.getAttribute('data-basestation')
@@ -1330,62 +1791,303 @@ const  handleSaveComponentGenericForm = () => {
     let url =  allowedHeaders.getAttribute("data-url")
 
 
-    let randId = uuid()
-    let Preview = document.querySelector(
-                  "#template-container > .pb-widget-preview-panel-generic-form"
-    );
+    // let randId = uuid()
+    // let Preview = document.querySelector(
+    //               "#template-container > .pb-widget-preview-panel-generic-form"
+    // );
 
-    let SClone = Preview.cloneNode(true);
-    let   wrapWrapper = pbCreateNode("li", [
-                                { class: "pb-placeholder-main col-md-12" },
-                             // { onclick:  () => { "openModal(this)" }
-    ]);
+    // let SClone = Preview.cloneNode(true);
+    // let   wrapWrapper = pbCreateNode("li", [
+    //                             { class: "pb-placeholder-main col-md-12" },
+    //                          // { onclick:  () => { "openModal(this)" }
+    // ]);
 
-    wrapWrapper.appendChild(SClone)
-    wrapWrapper.setAttribute("id", randId )
+    // wrapWrapper.appendChild(SClone)
+    // wrapWrapper.setAttribute("id", randId )
                     
-    let MainClone = wrapWrapper.cloneNode(true);
-                // MainClone.setAttribute("id", randId )
-    MainClone.id=randId
+    // let MainClone = wrapWrapper.cloneNode(true);
+    //             // MainClone.setAttribute("id", randId )
+    // MainClone.id=randId
                 
-    MainClone.querySelector(".fa-edit").setAttribute("data-template", markdownTemplate)
-    MainClone.querySelector(".fa-edit").setAttribute("data-id",randId) //=randId //ref the curr main lesson box
+    // MainClone.querySelector(".fa-edit").setAttribute("data-template", markdownTemplate)
+    // MainClone.querySelector(".fa-edit").setAttribute("data-id",randId) //=randId //ref the curr main lesson box
                 
-                 //edit view when clicked not saved
-    MainClone.querySelector(".fa-edit").addEventListener("click",(evv) =>{
-            // if(evv.target.dataset.template && evv.target.dataset.template !=="[pb_html][/pb_text]"){
-                      // alert(evv.target.parentNode)
-                const title =  $("#"+ MainClone.getAttribute("id")).find(".unit_title_place_holder-generic").html();
-                const body = $("#"+ MainClone.getAttribute("id")).find(".unit_content_place_holder-generic").html();
+    //              //edit view when clicked not saved
+    // MainClone.querySelector(".fa-edit").addEventListener("click",(evv) =>{
+    //         // if(evv.target.dataset.template && evv.target.dataset.template !=="[pb_html][/pb_text]"){
+    //                   // alert(evv.target.parentNode)
+    //             const title =  $("#"+ MainClone.getAttribute("id")).find(".unit_title_place_holder-generic").html();
+    //             const body = $("#"+ MainClone.getAttribute("id")).find(".unit_content_place_holder-generic").html();
                       
-                      // alert(title,body)  
-                      //then place these content in the header and frames
-                      // eg: EDITING COMPONENT - HTML IFRAME
-                      // eg src will display the iframe content 
-                      $(".iframe-boxer2").attr("src",body)
-                      $(".iframe-box").css("display","block")
-                      $("main-videosection").css({display:"block"})
-                      $("#title-unit-b").val(title)
-                      $("#title-unit2-b").val(body)
-                      $("#edit-title").html("Editing Html component: "+ title)
-                      document.getElementById("edit-title").setAttribute("data-parent", MainClone.id)
-                      // $("#edit-title").attr("data-parent"+ MainClone.getAttribute("id")) //attach this to know where to save
-                      $("#projector-view").attr("src",body)
+    //                   // alert(title,body)  
+    //                   //then place these content in the header and frames
+    //                   // eg: EDITING COMPONENT - HTML IFRAME
+    //                   // eg src will display the iframe content 
+    //                   $(".iframe-boxer2").attr("src",body)
+    //                   $(".iframe-box").css("display","block")
+    //                   $("main-videosection").css({display:"block"})
+    //                   $("#title-unit-b").val(title)
+    //                   $("#title-unit2-b").val(body)
+    //                   $("#edit-title").html("Editing Html component: "+ title)
+    //                   document.getElementById("edit-title").setAttribute("data-parent", MainClone.id)
+    //                   // $("#edit-title").attr("data-parent"+ MainClone.getAttribute("id")) //attach this to know where to save
+    //                   $("#projector-view").attr("src",body)
 
                      
-                    // }
-                }) 
+    //                 // }
+    //             }) 
 
 
-    MainClone.querySelector(".fa-trash").addEventListener("click", (e) => {
-             handleWidgetRemove(e.target)
-        })
+    // MainClone.querySelector(".fa-trash").addEventListener("click", (e) => {
+    //          handleWidgetRemove(e.target)
+    //     })
 
-    let res = createLessonComponent(url,$("#myModalGenericForm-SELECT"))
+    let component = await createLessonComponent(url,$("#myModalGenericForm-SELECT"))
 
-    MainClone.querySelector(".unit_title_place_holder-generic").innerHTML =   $("#title-unit").val()  //add validation for unit component
-    MainClone.querySelector(".unit_content_place_holder-generic").innerHTML  = $("#title-unit2").val() || "Edit this content"
-    Target.append(MainClone);
+    //MainClone.querySelector(".unit_title_place_holder-generic").innerHTML =   $("#title-unit").val()  //add validation for unit component
+    //MainClone.querySelector(".unit_content_place_holder-generic").innerHTML  = $("#title-unit2").val() || "Edit this content"
+    
+
+
+       let playVideoEnabled = " ";
+  let launchPad ="#myModalMarkdownEditor"
+  let formType = ""
+  let actionBuilder = `/html-component/${component.id}/`
+  let Info = "IFRAME/VIDEO EDITABLE COMPONENT"
+  let readmoreInitialized = "none";
+  let enableLink ="none";
+  let textualData = "";
+  let questionTeplateButton = false
+
+  if(component.component_type ==1){
+    launchPad ="#myModalGenericFormEditorEditMode"
+    formType = "myModalGenericForm-SELECT"
+    actionBuilder = `/video-component/${component.id}/`
+  }else if(component.component_type ==2) {
+    launchPad ="#myModalMarkdownEditor"
+    Info = "HTML TEXT EDITABLE COMPONENT"
+    formType="myModalMarkdownEditor-SELECT"
+    actionBuilder = `/html-component/${component.id}/`
+  }else if(component.component_type ==3){
+    launchPad ="#openModal-about"
+    Info = "HTML PROBLEM COMPONENT"
+    formType = "myModalProblemForm-SELECT"
+    actionBuilder = `/problem-component/${component.id}/`
+    
+    questionTeplateButton =`<a role="button"
+    data-toggle="modal" 
+    style="cursor:pointer" data-self="${component.id}" 
+    data-append="${component.lesson}" 
+    data-getitup="${component.id}" 
+  onclick="window.event.preventDefault();swapProblemDisplayBoard(this)"  
+     href="" class="pull-right">
+       <i style="color:#000" data-self="${component.id}"  
+       data-getitup="${component.id}" 
+       class="fa fa-plus fa-2x">Add a question </i></a>`
+  
+
+  }else if(component.component_type ==4){
+    //not implemented the ui for this
+    launchPad ="#openModal-about2"
+    Info = "HTML DISCUSSION COMPONENT"
+    formType = "myModalDiscussionForm-SELECT"
+    actionBuilder = `/discussion-component/${component.id}/`
+    
+
+
+  }
+
+  if(component.embedded_url){
+    playVideoEnabled = `<a role="button"
+data-toggle="modal" href="#modalFullScreenPreviewIframeAndVideos" data-videolink="${component.embedded_url}" onclick="videoModalPreview(this)" style="cursor:pointer;padding:10px;border-radius:50%;color:#000"><i  class="fa fa-video-camera fa-2x"></i></a>`
+    enableLink ="block"
+  }
+ 
+  if(component?.html_text  || (component.component_type==4 &&  component.description)){
+    readmoreInitialized ="block"
+     textualData = component?.html_text || component.description
+  }
+
+
+let  tempComponent = `<ul data-id="${component.id}"
+  data-name="${component?.name}"
+       data-idx="${component.id}"
+  data-parent="${component.lesson_id}"
+  data-pos="${component.position_id}"
+  data-description="${component.description}"
+  data-component_type="${component.component_type}"
+  data-name="${component.name}"
+  data-content_type="${component.content_type}"
+  data-form="${formType}"
+  data-action-figure="${actionBuilder}"
+  data-append="${component.lesson}" 
+                data-getitup="${component.id}" 
+  
+  data-embedded_url="${component.embedded_url}"
+  data-embedded_url="${component.video_type}" 
+  class="hello-move-me components accordion-content pb-widget-preview-panel" id="${component.id}">
+    
+    
+      <div class="">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="">
+            
+      <div class="">
+        <div class=" col-md-12">
+           
+
+
+        <div class="actions-set pull-right" >
+       
+
+          <span ><a href="${launchPad}"
+          data-name="${component?.name}"
+       data-idx="${component.id}"
+  data-parent="${component.lesson_id}"
+  data-pos="${component.position_id}"
+  data-description="${component.description}"
+  data-component_type="${component.component_type}"
+  data-name="${component.name}"
+  data-content_type="${component.content_type}"
+  data-embedded_url="${component.embedded_url}"
+  data-embedded_url="${component.video_type}"
+  data-form="${formType}"
+  data-action-figure="${actionBuilder}"
+  data-append="${component.lesson}" 
+                data-getitup="${component.id}" 
+
+      role="button"
+      data-toggle="modal">
+      <i onclick="LaunchEditBoxEvent(this)"
+       class="pb-handle-widget fa fa-edit fa-2x"
+
+        data-name="${component?.name}"
+       data-idx="${component.id}"
+  data-parent="${component.lesson_id}"
+  data-pos="${component.position_id}"
+  data-description="${component.description}"
+  data-component_type="${component.component_type}"
+  data-name="${component.name}"
+  data-content_type="${component.content_type}"
+  data-embedded_url="${component.embedded_url}"
+  data-embedded_url="${component.video_type}"
+  data-form="${formType}"
+  data-action-figure="${actionBuilder}"
+  data-append="${component.lesson}" 
+                data-getitup="${component.id}" 
+
+
+       ></i>
+       </a></span>
+                       
+          <span><i 
+
+          data-name="${component?.name}"
+       data-idx="${component.id}"
+  data-parent="${component.lesson_id}"
+  data-pos="${component.position_id}"
+  data-description="${component.description}"
+  data-component_type="${component.component_type}"
+  data-name="${component.name}"
+  data-content_type="${component.content_type}"
+  data-embedded_url="${component.embedded_url}"
+  data-embedded_url="${component.video_type}"
+  data-form="${formType}"
+  data-action-figure="${actionBuilder}"
+  data-append="${component.lesson}" 
+                data-getitup="${component.id}" 
+
+
+          class="pb-remove fa fa-trash fa-2x" onclick="handleWidgetRemove(this)"></i></span>
+        
+           <span><a
+  data-name="${component?.name}"
+
+  data-description="${component?.description}" 
+
+ class="drag-handle-list-lessons" style="margin-right:10px;"
+ 
+       data-idx="${component.id}"
+  data-parent="${component.lesson_id}"
+  data-pos="${component.position_id}"
+  data-description="${component.description}"
+  data-component_type="${component.component_type}"
+  data-name="${component.name}"
+  data-content_type="${component.content_type}"
+  data-embedded_url="${component.embedded_url}"
+  data-embedded_url="${component.video_type}"
+  data-form="${formType}"
+  data-action-figure="${actionBuilder}"
+  data-append="${component.lesson}" 
+                data-getitup="${component.id}" 
+   
+ 
+         
+  >
+
+ <i class="fa fa-arrows fa-2x"
+    data-name="${component?.name}"
+       data-idx="${component.id}"
+  data-parent="${component.lesson_id}"
+  data-pos="${component.position_id}"
+  data-description="${component.description}"
+  data-component_type="${component.component_type}"
+  data-name="${component.name}"
+  data-content_type="${component.content_type}"
+  data-embedded_url="${component.embedded_url}"
+  data-embedded_url="${component.video_type}"
+  data-form="${formType}"
+  data-action-figure="${actionBuilder}"
+  data-append="${component.lesson}" 
+                data-getitup="${component.id}" 
+
+  
+
+
+ ></i>
+</a></span>
+        </div>
+        </div>
+        
+      </div>
+      <br/> <br/><br/><br/>
+    
+              <div class="col-md-12">
+              <h4
+          class="col-md-12"
+          
+        > <span class="compo-type" style="font-size:25px;color:#000">Component Type: ${Info}</span><br/><span style="font-size:25px;">Title</span><span style="font-size:25px;font-weight:bold;color:#000" class="unit_title_place_holder  title-given "> 
+             ${component.name}
+          </span>
+         </h4><br/>
+
+
+              <div id="readmore_${component.id}" style="display:${readmoreInitialized}"  class="readmore js-read-more" data-rm-words="70">
+                  ${textualData }
+              </div>
+
+                                      
+                <div data-append="${component.lesson}" 
+                data-getitup="${component.id}" class="content-section-from-input unit_content_place_holder">
+                   <p style={{display:${enableLink} }} id="embedded_url_${component.id}">${component?.embedded_url}</p>
+                   
+                  <p>${playVideoEnabled} ${ "Click the edit icon above to edit this unit" } ${ questionTeplateButton }</p>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+  </ul>`
+  Target.append(tempComponent);
+
+
+
+
+    //Target.append(MainClone);
 
 
 
@@ -1396,6 +2098,9 @@ const  handleSaveComponentGenericForm = () => {
     // $("#save_new_insertion_component_generic-edit").on("click", () =>{
         let targetBase =  document.getElementById("edit-title").getAttribute("data-parent")
         //alert(targetBase)
+
+        //let ui sample
+
         $("#"+targetBase).find(".unit_title_place_holder-generic").html($("#title-unit-b").val())  //add validation for unit component
         $("#"+targetBase).find(".unit_content_place_holder-generic").html($("#title-unit2-b").val()) 
          $("#projector-view").attr("src",$("#title-unit2-b").val())        
@@ -1579,7 +2284,7 @@ export default class MasterForm extends React.Component {
         courses:[], //  getdata
         institutions:[],  //  getdata
         currentCourseId:"", //for tracking saved course currently working on
-        
+        groups:[],
       formErrors: {
         /*request form errors data*/
 
@@ -1670,8 +2375,7 @@ closeIcon = toast.querySelector(".close-icon");
       let imageUrl = ""
       //console.log(event.target.value);
 
-
-      if(name=="course_start_date_time" || 
+       if(name=="course_start_date_time" || 
         name =="course_end_date_time" || 
         name=="enrolment_start_date_time" ||
          name=="enrolment_end_date_time"){
@@ -1713,11 +2417,19 @@ closeIcon = toast.querySelector(".close-icon");
         );
         localStorage.setItem(name, value);
       
-      }else if(event.target.name == "card_image"){
+      }else if(event.target.name == "card_image" || event.target.name == "intro_video"){
         //handle image upload here
-        const fileUploader = document.getElementById('file-uploader');
-        const feedback = document.getElementById('feedback');
-        const progress = document.getElementById('progress');
+       // let fileUploader = document.getElementById('file-uploader');
+        let feedback = document.getElementById('feedback');
+        let progress = document.getElementById('progress');
+        let key="card_image"
+
+        if(event.target.name == "intro_video"){
+        //  fileUploader = document.getElementById('file-uploader2');
+           feedback = document.getElementById('feedback2');
+          progress = document.getElementById('progress2');
+          key="intro_video"
+        }
         const reader = new FileReader();
 
       //fileUploader.addEventListener('change', (event) => {
@@ -1766,7 +2478,7 @@ closeIcon = toast.querySelector(".close-icon");
                       //dynamically hooks state fields to current value
                     this.setState(
                           {
-                            card_image: imageUrl,
+                            [key]: imageUrl,
                           },
                           function () {
                             /*validation hooks*/
@@ -1781,7 +2493,8 @@ closeIcon = toast.querySelector(".close-icon");
                   }
                 })
                 .catch((error) => {
-                   toast.error("API KEY ***** FOR CLOUDINARY NOT SET. EITHER API KEY HAS EXHAUSTED ITS TRIAL PLAN");
+                  console.log(error)
+                  // toast.error("API KEY ***** FOR CLOUDINARY NOT SET. EITHER API KEY HAS EXHAUSTED ITS TRIAL PLAN");
                   throw error;
                   return false;
                 });
@@ -1790,6 +2503,43 @@ closeIcon = toast.querySelector(".close-icon");
           }
         });
       //});
+      }else if(event.target.name =="prerequisite"){
+        //pop and push activity
+        let testPre = localStorage.getItem("prerequisite")
+
+        localStorage.setItem(name, value)
+
+           this.setState({
+          ...this.state,
+          [event.target.name]: value,
+        });
+
+        // if(testPre=="" || typeof testPre=="undefined"){
+        //   let tmpValuex = []
+        //   localStorage.setItem("prerequisite",[])
+        //   localStorage.setItem(name, value)
+
+        //    this.setState({
+        //   ...this.state,
+        //   [event.target.name]: value,
+        // });
+        // }else{
+
+        //   let tmpValuey = localStorage.getItem("prerequisite");
+        //   tmpValuey =[...tmpValuey,value]
+
+
+
+        // localStorage.setItem(name, tmpValuey)
+
+        //    this.setState({
+        //   ...this.state,
+        //   [event.target.name]: tmpValuey,
+        // });
+
+
+        // }
+        
       }else{
 
 
@@ -1856,11 +2606,11 @@ closeIcon = toast.querySelector(".close-icon");
 
   // const [htmlPrerequisites, setHtmlPrerequisites] = useState("");
   handleHtmlPrerequisitesChange =(newValue) => {
-      localStorage.setItem("prerequisite", newValue);
-    this.setState({
-      ...this.state,
-      prerequisite: newValue
-    })
+    //   localStorage.setItem("prerequisite", newValue);
+    // this.setState({
+    //   ...this.state,
+    //   prerequisite: newValue
+    // })
   }
 
 
@@ -1886,6 +2636,15 @@ closeIcon = toast.querySelector(".close-icon");
     });
 
 
+  }
+
+  tabIterate(step){
+    //used without click event to navigate programatically 
+    //especially when a post is made to retrieve current step of user where
+    //he left off
+    this.setState({
+      currentStep: step,
+    });
   }
 
    /*next step*/
@@ -2019,8 +2778,8 @@ closeIcon = toast.querySelector(".close-icon");
               [name]: value,
             },
             function () {
-              /*validation hooks*/
-              this.validateField(name, value);
+              // /*validation hooks*/
+              // this.validateField(name, value);
             }
       );
 
@@ -2170,6 +2929,7 @@ closeIcon = toast.querySelector(".close-icon");
          await this.fetchContent()
        }catch(e){
          console.log("some error occured")
+         return false
        }
     })("run-logic-sequence")
      // let T = new  TinyMyceRender();
@@ -2186,65 +2946,26 @@ closeIcon = toast.querySelector(".close-icon");
 
 
 
-    $(document).ready(function(){
+    $(document).ready(function(ev){
+
+      //for lesson component of text, video and iframes only
+  $(".close").click((e)=>{
+    e.preventDefault()
+    $("#openModal-about").css({opacity:0}).fadeOut("fast")
+    $("body").removeClass("modal-open").css({background:"#fff"});
+    $(".modalDialog").css({display:"none", "pointer-events": "auto"})
+    $(".modal").removeClass("show")
+
+    localStorage.setItem("back_step",7);
+    window.location.reload()
+
+  })
 
 
-    //       let formEl = $("#create-course");
-     
-    //       formElements.filter(e =>{ 
-    //         var element = e;
-    //         var title = element.title;
-    //         var id = element.id;
-    //         var name = element.name;
-    //         var value = element.value;
-    //         var type = element.type;
-    //         var cls = element.className;
-    //         var tagName = element.tagName;
-    //         var options = [];
-    //         var hidden = [];
-    //         var formDetails = '';
-
-    //         // check if the data exist in local store
-    //         if( localStorage.getItem( e.attr("name") ) ){
-    //            console.log(e.attr("name"))
-    //            formEl.find("#"+ e.attr("name")).val(localStorage.getItem( e.attr("name")))
-    //         }
-    //       })
-
-
-    //   let el = null, vall ="";
-    // if(localStorage.getItem("course_start_date_time")){
-      
-    //   el = formEl.find("#"+ "course_start_date_time");
-    //   vall =localStorage.getItem("course_start_date_time")
-    //   el.attr("type", "text");
-    //   el.val(vall) 
-      
-    // }
-
-    // if(localStorage.getItem("course_end_date_time")){
-    //   el = formEl.find("#"+ "course_end_date_time");
-    //   vall =localStorage.getItem("course_end_date_time")
-    //   el.attr("type", "text");
-    //   el.val(vall) 
-    // }
-    // if(localStorage.getItem("enrolment_start_date_time")){
-    //    el = formEl.find("#"+ "enrolment_start_date_time");
-    //     vall =localStorage.getItem("enrolment_start_date_time")
-    //   el.attr("type", "text");
-    //   el.val(vall) 
-    // }
-
-    // if(localStorage.getItem("enrolment_end_date_time")){
-    //    el = formEl.find("#"+ "course_start_date_time");
-    //     vall =localStorage.getItem("course_start_date_time")
-    //   el.attr("type", "text");
-    //   el.val(vall) 
-    // }
 
 
      //call the problem component binder events handlers
-     thisClass.handleProblemComponent()
+     thisClass.handleProblemComponent(ev)
 
 
      //handle scroll bar to top event
@@ -2266,7 +2987,7 @@ closeIcon = toast.querySelector(".close-icon");
 
 
   //launch events for problem component
-  handleProblemComponent(){
+  handleProblemComponent(e){
       // -------------------------------------------
     let thisClass = this;
     // DEFAULT INPUT AND OUTPUT AREA
@@ -2274,7 +2995,12 @@ closeIcon = toast.querySelector(".close-icon");
     let outputArea = document.querySelector( '#output-areadisplay' );
     let previewMessage = document.querySelector( '.preview-messagedisplay' );
 
+    if(localStorage.getItem("back_step")){
+      //this.tabIterate(localStorage.getItem("back_step"))
+       localStorage.removeItem("back_step");
 
+       //refetch the data content to reorder dorm positioning
+    }
     // var regExp = /\(([^)]+)\)/;
     // var matches = regExp.exec("I expect five hundred dollars ($500).");
 
@@ -2358,30 +3084,31 @@ closeIcon = toast.querySelector(".close-icon");
          let syntax =``;
          switch (val){
             case "[pb_html]/[pb_multichoice]":
-             syntax = `"""\nExample Question here: who was made king of your country -sample question? \n
-      [x] option 1 and 2 are correct\n
-      [x]  option 1 and 2 are correct\n
-      []  Victor Victor Juwa\n
-      []  No one else but me  \n"""`
-              thisClass.insertText( textarea, syntax, "\nMultichoice:\n", 0, 0 )
+             syntax = `"""\n
+Who is the entrepreneur who created questence?\n
+[] Hon Engr. Kakasu\n
+[] Bishop Sodimu\n
+[x] Chief Engineer Sodimu Kayode\n
+[x] Chief Engineer Agamu Shagamu\n"""`
+              thisClass.insertText( textarea, syntax, " \n \n", 0, 0 )
               break;
             case "[pb_html]/[pb_checkbox]":
-             syntax = `"""\nExample Question here:   who was made king of your country -sample question? \n
-      [o] The right answer\n
-      []  Saladin Jake\n
-      []  Victor Victor Juwa\n
-      []  No one else but me\n"""`
-                thisClass.insertText( textarea, syntax, "\ncheckbox:\n" )
+             syntax = `"""\nWho is the owner of icst solution\n
+[x] Chief Engineer Sodimu Kayode\n
+[] Mr Kayode Adamu\n
+[] Mr Engr Samudu KODIMU\n 
+[] Hon Kayode Sodimu Engr Chief\n"""`
+                thisClass.insertText( textarea, syntax, " \n \n" )
               break;
             case "[pb_html]/[pb_input]":
              syntax = `"""\nExample Question here:  How Many Continents are in the world? \n
       [i] Your Answer\n"""`
-                thisClass.insertText( textarea, syntax, "\nInput:\n")
+                thisClass.insertText( textarea, syntax, "")
               break;
             case "[pb_html]/[pb_numeric]":
              syntax = `"""\nExample Question here : 2+ 2? \n
       [n] Your Answer\n"""`
-                thisClass.insertText( textarea, syntax, "\nNumeric:\n" )
+                thisClass.insertText( textarea, syntax, " \n \n" )
               break;
             case "[pb_html]/[pb_dropdown]":
              syntax = `"""\nExample Question here:  who was made king of your country -sample question? \n
@@ -2390,7 +3117,7 @@ closeIcon = toast.querySelector(".close-icon");
       [d]     Victor Victor Juwa\n
       [d][x]  The right Answer\n
       [HINT] someone with a mantle of leadership to rule the world\n"""`;
-             thisClass.insertText( textarea, syntax, "\ndropdown:\n")
+             thisClass.insertText( textarea, syntax, " \n \n")
 
 
 
@@ -2402,20 +3129,20 @@ closeIcon = toast.querySelector(".close-icon");
       [d][x]  The right answer\n
       []  No one else but me\n
       [HINT] someone with a mantle of leadership to rule the world\n"""`;
-             thisClass.insertText( textarea, syntax, "\ndropdown_feedback:\n" )
+             thisClass.insertText( textarea, syntax, " \n \n" )
 
               break;
             case "[pb_html]/[pb_numeric_feedback]":
                syntax = `"""\nExample Question here : 2+ 2? \n
       [n] Your Answer\n
       [HINT] A number in the range of 1 through 8 or more \n"""`
-                thisClass.insertText( textarea, syntax, "\nnumeric_feedback:\n" )
+                thisClass.insertText( textarea, syntax, "" )
               break;
             case "[pb_html]/[pb_input_feedback]":
                syntax = `"""\nHow Many Continents are in the world? \n
       [i] Your Answer\n
       [HINT] A number in the range of 1 -10\n"""`
-                thisClass.insertText( textarea, syntax, "\ninput_feedback:\n")
+                thisClass.insertText( textarea, syntax, " \n \n")
               
               break;
             case "[pb_html]/[pb_checkbox_feedback]":
@@ -2425,7 +3152,7 @@ closeIcon = toast.querySelector(".close-icon");
       []  Victor Victor Juwa\n
       []  No one else but me\n
       [HINT] someone with a mantle of leadership to rule the world\n"""`;
-             thisClass.insertText( textarea, syntax, "\ncheckbox_feedback:\n")
+             thisClass.insertText( textarea, syntax, " \n \n")
 
               break;
             case "[pb_html]/[pb_multichoice_feedback]":
@@ -2435,7 +3162,7 @@ closeIcon = toast.querySelector(".close-icon");
       []  Victor Victor Juwa\n
       []  No one else but me\n
       [HINT] someone with a mantle of leadership to rule the world\n"""`
-                  thisClass.insertText( textarea, syntax, "\nmultichoice_feedback:\n")
+                  thisClass.insertText( textarea, syntax, " \n \n")
               break;
             default:
               break;
@@ -2520,14 +3247,17 @@ closeIcon = toast.querySelector(".close-icon");
          // /[^\s"']+|"([^"]*)"|'([^']*)'/        #for single or double
 
          // /(?:"[^"\s]*"[^"]*)*("\S*\s[^"]*")/
-        const myRegexQuestionsFull = /(?:"[^"\s]*"[^"]*)*("\S*\s[^"]*")+/
-         
+        const myRegexQuestionsFull =  /((?:'|"){1,3})([^'"]+)\1/g      //  /(?:"[^"\s]*"[^"]*)*("\S*\s[^"]*")+/
+         //this is better: /((?:'|"){1,3})([^'"]+)\1/
 
          //  /^[^"]*(?:"(?:[^"\s]|[^"\s][^"]*[^"\s])?"[^"]*)*$/
 
          //  /"(.*?)(\w+)\b"/m
         const matchesFull = content.match(myRegexQuestionsFull)
-        console.log(matchesFull)
+       // console.log(matchesFull)
+
+        //for each questions and options
+        //array buff the questions
 
 
       //   var texto = 'Multichoice:""" Example Question here: who was made king f your country -sample question? [x] option 1 and 2 are correct [x]  option 1 and 2 are correct []  Victor Victor Juwa []  No one else but me """ ';
@@ -2562,267 +3292,357 @@ closeIcon = toast.querySelector(".close-icon");
 
         let dropdownWrapper = `<div class="field"><select>`
         //if 3 quotes for problem question
-         if(regex3quotes.test(content)){
+         if(myRegexQuestionsFull.test(content)){
             //match = content.match(regex3quotes)
             //console.log(match)
 
 
             // let myRegex = /(.*[\"]{3}(.*\s+)+[\"]{3})(.*\s+)+/gm;         +
-           const matches = content.match(myRegexQuestions)
-           console.log(matches)
+           const matches = matchesFull;
+         //  console.log(matches)
            let question= '';
            let objectives_component =[]
            let hintQuestion = ""
+           let  questionAndAnswersBatches =[];
+
+            //A BETTER WAY TO HANDLE THIS
+                    //EACH MATCHES CONTAINS [QUESTION STR, ...OPTIONS];
+                    //template
+        let optionsTemplateBatch = [
+         //{
+          //   rootQuestion:"",
+          //   correctAnswers:[],
+          //   htmlFormElements:[],
+          //   wrongAnswers:[],
+          //   tags:[], // for rendering
+          //   parentTag:"",
+          //   humanReadableTagName
+          // },...
+          ];
+        let templateRenderer="";
+
+
            matches.forEach( element => {
             
              if(element.match(/\"\"\"/)){
-              //console.log(element.replace(/\"\"\"/, ""))
+              //console.log(element.replace(/\"\"\"/, "")) 
+             // remove the tripple quotes above
+               element = element.replace(/\"\"\"/, "")
+              // join all strings relating to the question text 
+             // remove the tripple quotes below
               element = element.replace(/\"\"\"/, "")
-              // join all strings relating to the question text   
+              console.log(element)  
              }
               
              // this is the question
              if(!element.match(/.*[\[.*\]]/)){
                  question = question + ""+ element
-
+                 
+                  console.log(question)
               }
 
               //objective question of the component type or just what refers to the componet
-
               if(element.match(/[\[.*\]]/)){
                   if(element.match(/[\[x{0,1}\]]/)){
                     //this is multiselect -x || [x] with the answer
                     let eachMatches = element.match(/(.*\w[\[x{0}\].*\s\w+])+/gm) ///[\[x{0}\]]/
-                    console.log(eachMatches)
+                    console.log(eachMatches)   
 
-                    let targetsRegex = /\[.*?\]+/gm     //  /[\[x{0}*\]]+/gm // [x] or [] // alone
-                    let component_for_html_view =  element.match(/\[.*?\]+/gm) //
+                   
+                    //spreaded
+                    let rootQuestion ="",
+                    correctAnswers = [],
+                    wrongAnswers =[],
+                    tags =[],
+                    parentTag ="",
+                    htmlFormElements =[],
+                    selectRoot =`<select>`,
+                    humanReadableTagName ="multichoice";
 
 
-                    //var r= new RegExp(/\)[^\(]*\b(\w+)\b[^\)]*\(/g);
-                    //var res = mytext.match(r) ;
 
-                    console.log(component_for_html_view)
-
-                    let checkboxes = false;
-                    let multichoices = false;
-
-                    undecidedComponent = component_for_html_view.find(component =>{
-                        return component == "[]" 
-                    })
-
-                    
-
-                    //build the html equivalent
-                    component_for_html_view.forEach((component,index)=>{
-                        if(component=='[x]'){
-                          //this is multichoice
-                          console.log(component)
-                          multichoices = true
-
-                          htmlComponent.push(
-                            `<div class="field">
-                            <p for="five">${ eachMatches[index]}</p>
+                    eachMatches.forEach((entry, index) =>{
+                       let questionText = eachMatches[0];
+                       rootQuestion =questionText  //occurs only once in each iter
+                       if(index!==0){
+                        
+                       //lets quickly get the right and wrong answers now not later 
+                       //this is a faster approach
+                       //saladin jake!!! Author
+                       if(entry.includes("[x]")){ // multichoice mark up
+                        entry = entry.match(/[^\[\]]*$/)[0]
+                        entry = entry.replace(/^\s+|\s+$|\s+(?=\s)/g, "");
+                        //alert(entry)
+                        correctAnswers= [ ...correctAnswers,entry];
+                        tags = [...tags,"[x]"]
+                        parentTag ="[x]"
+                        humanReadableTagName="select-multiple"
+                        htmlFormElements = [...htmlFormElements,
+                           `   <div class="field">
+                            <p for="five">${entry}</p>
                             <input  type="checkbox" checked/></div>`
-                          )
+                        ];
+
+                       }else if(entry.includes("[o]")){ // check box mark up
+                        entry = entry.match(/[^\[\]]*$/)[0]
+                        entry = entry.replace(/^\s+|\s+$|\s+(?=\s)/g, "");
+                        
+                         correctAnswers= [...correctAnswers,entry];
+                        tags = [...tags,"[o]"]
+                        parentTag ="[o]" // occurs only once
+                        humanReadableTagName="radio"
+
+                        htmlFormElements = [...htmlFormElements,
+                           `   <div class="field">
+                            <p for="five">${entry}</p>
+                            <input  type="radio" checked/></div>`
+                        ];
+
+                       }else if(entry.includes("[d][x]")){ // dropdown checked
+                        entry = entry.match(/[^\[\]]*$/)[0] // just the question option without [] or [o]
+                        entry = entry.replace(/^\s+|\s+$|\s+(?=\s)/g, "");
+                        
+                         correctAnswers= [ ...correctAnswers,entry];
+                         tags = [...tags,"[d][x]"]
+                         parentTag ="[d][x]";
+                         selectRoot+=`<option>${entry}</option>`;
+                         htmlFormElements = [...htmlFormElements,selectRoot];
+                         humanReadableTagName="select"
+
+                       } else if (entry.includes("[d]")){ //dropdown unselected
+                        entry = entry.match(/[^\[\]]*$/)[0]
+                        entry = entry.replace(/^\s+|\s+$|\s+(?=\s)/g, "");
+                        
+                         wrongAnswers= [ ...wrongAnswers,entry];
+                         tags = [...tags,"[d]"]
+                         parentTag ="[d][x]"
+                         
 
 
-                          objectives_component.push( eachMatches[index])
-                        }  
+                       }else if (entry.includes("[n]")){ //text input numeric
+                        entry = entry.match(/[^\[\]]*$/)[0]
+                        entry = entry.replace(/^\s+|\s+$|\s+(?=\s)/g, "");
+                         
+
+                        correctAnswers= [ ...correctAnswers,entry];
+                        tags = [...tags,"[n]"]
+                        parentTag ="[n]"
+                        htmlFormElements = [...htmlFormElements,
+                           `   <div class="field">
+                            <input  type="number" value=${entry}/></div>`
+                        ];
+                        humanReadableTagName="text"
+                       }else if(entry.includes("[i]")){ //text input any
+                        entry = entry.match(/[^\[\]]*$/)[0]
+                        entry = entry.replace(/^\s+|\s+$|\s+(?=\s)/g, "");
+                        
+                        correctAnswers= [ ...correctAnswers,entry];
+                        tags = [...tags,"[i]"]
+                        parentTag ="[i]"
+                         htmlFormElements = [...htmlFormElements,
+                           `   <div class="field">
+                            <input  type="text" value=${entry}/></div>`
+                        ];
+                        humanReadableTagName="integer"
+                       }else if(entry.includes("[]")){ // wrong answers
+                        
+                        entry = entry.match(/[^\[\]]*$/)[0]
+                        entry = entry.replace(/^\s+|\s+$|\s+(?=\s)/g, "");
+                         wrongAnswers= [ ...wrongAnswers,entry];
+                         tags = [...tags,"[]"]
+                         //we cant accertain this now until the parent is known after loop
+                       }  
+
+                      } 
+                      //make the build template after loop
+                    
+
 
                     })
+                    optionsTemplateBatch = [...optionsTemplateBatch,{
+                      rootQuestion,
+                      correctAnswers,
+                      wrongAnswers,
+                      tags, // for rendering
+                      parentTag,
+                      htmlFormElements,
+                      humanReadableTagName
+                    }];
+
                     
-                     component_for_html_view.forEach((component,index)=>{
-                      if(component=='[o]'){
-                          //this is checkbox
-                          checkboxes = true
+                    console.log(optionsTemplateBatch)
+                     let accertainedGroupsOfWrongAnswers= []
+                     let parts = optionsTemplateBatch.htmlFormElements;
+                    if(optionsTemplateBatch.parentTag=="[x]" || optionsTemplateBatch.parentTag=="[o]"){
+                       //if they are multichoices or checkboxes
+                      optionsTemplateBatch.wrongAnswers.forEach(optionText =>{
+                         //batch the component up 
+                         if(optionsTemplateBatch.parentTag=="[x]"){
+                          accertainedGroupsOfWrongAnswers = [...accertainedGroupsOfWrongAnswers,
+                           `   <div class="field">
+                            <p for="five">${optionText}</p>
+                            <input  type="checkbox" checked/></div>`
+                        ];
 
-                          htmlComponent.push(
-                            `<div class="field"><p for="five">${ eachMatches[index]}</p><br/><input  type="radio" checked/></div>`
-                          )
 
-                           objectives_component.push( eachMatches[index])
-
-                      }
-
-                     })
-
-                    component_for_html_view.forEach((component,index)=>{
-                     if(component=='[i]'){
-                          //this input
-                          htmlComponent.push(
-                            ` <div class='field'>
-                             <p for="five">${ eachMatches[index]}</p> <br/><input  type="text" />
-                          
-                            </div>
-
-                            `
-                          )
-
-                           objectives_component.push( eachMatches[index])
-
-                     }
-                   })
-
-                     component_for_html_view.forEach((component,index)=>{
-
-                       if(component=='[n]'){
-                              //this is numeric input
-
-                              htmlComponent.push(
-                                ` <div class='field'><p for="five">${ eachMatches[index]}</p><input  type="number" checked/><div>`
-                              )
-
-                               objectives_component.push( eachMatches[index])
-
-                        }
-
-                  })
-                        // else if(component=='[d]' ){
-                        //    //this is dropdown
-                        //    dropdownWrapper +=`<option>${ eachMatches[index]}</option>`
-                        //     objectives_component.push( eachMatches[index])
-                           
-
-                        // }else if(component=='[d][x]'){
-                        //    dropdownWrapper +=`<option selected>${ eachMatches[index]}</option>`
-                        //     objectives_component.push( eachMatches[index])
-
-                        // }
-                    //})
-                    
-                    
-
-                    let undecidedGroups = component_for_html_view.filter(component =>{
-                      return component == '[]'
-                    }) ;
-
-                    console.log(undecidedGroups)
-                    let  gotMultichoices =component_for_html_view.find(component =>{
-                      return component == '[x]'
-                    }) ;
-
-                    let  gotCheckboxes =component_for_html_view.find(component =>{
-                      return component == '[o]'
-                    }) ;
-
-                    let  gotDropdown =component_for_html_view.find(component =>{
-                      return component == '[d]'
-                    }) ;
-
-                    if(gotMultichoices && undecidedGroups){
-                      //make them multi
-                      //do something with undecidedComponent ie. the text definition
-                       undecidedGroups.forEach((component,index)=>{
-                          htmlComponent.push(
-                               `<div class='field'><p for="five">${ eachMatches[index]}</p><input  type="checkbox" checked/></div>`
-                          )
-
-                           objectives_component.push( eachMatches[index])
-                         
-                       })
-                    }else if(gotCheckboxes  && undecidedGroups){
-                      //make them check
-                      undecidedGroups.forEach((component,index)=>{
-                       
-
-                        htmlComponent.push(
-                               `<div class='field'><p for="five">${ eachMatches[index]}</p><br/><input  type="radio" /></div>`
-                          )
-
-                           objectives_component.push( eachMatches[index])
-
+                         }else{
+                            accertainedGroupsOfWrongAnswers = [...accertainedGroupsOfWrongAnswers,
+                           `   <div class="field">
+                            <p for="five">${optionText}</p>
+                            <input  type="radio" checked/></div>`
+                        ];
+                         }
                       })
+
+                      parts = [...parts, ...accertainedGroupsOfWrongAnswers]
+                      optionsTemplateBatch.htmlFormElements = parts
+                    }else if (optionsTemplateBatch.parentTag=="[d][x]"){  //dealing with select dropdown
+                        let parts = optionsTemplateBatch.htmlFormElements;
+                        optionsTemplateBatch.wrongAnswers.forEach(optionText =>{
+                          
+                          parts+=`<option>${optionText}</option>`
+                        })
+                        parts+=`</select>`
+                        optionsTemplateBatch.htmlFormElements = [parts];
+
 
                     }
 
-                    // else if(gotDropdown && undecidedGroups){
-                    //   // make dropdown html
-                    //    undecidedGroups.forEach((component,index)=>{
-                    //       dropdownWrapper +=`<option >${ eachMatches[index]}</option>`
-
-                    //    })
-                    // }
-
-
-                    // if(dropdownWrapper.length> 14){
-                    //   dropdownWrapper+="</select></div>" 
-                    // htmlComponent.push(
-                    //      dropdownWrapper  
-                    //       )
-                    
-                    // }
-
-                    
 
                   }
-
-                  console.log(htmlComponent)
-
-                //  //strip out the hint section to enable you get the entire question
-                // if(element.match(/\[(HINT)\]/)){
-                //    hintQuestion =element
-                //    element = element.replace(/[\[.*\]]/,"")
-                //    console.log(hintQuestion)
-
-                //  }
-                 //objectives_component  objectives_component + "\n"+ element
-
-              }
-
-
-
-
-
+               }
+            }) // out of hell fire loop
+            console.log(optionsTemplateBatch) 
             
-            
-          } );
+
+              // show the preview here na work be this o!!!
+              //get all the html components and redraw the question and options
+              let jqueryMagicForms = [];
+              let defaultScoreSheet = 50 // passmark
+
+              //watch out for my version 2.0 . WHERE QUESTENCE WILL BE A KILLER APP
+              
+              optionsTemplateBatch.forEach(questenceAuthoringQuestionSeries => {
+                  //awesomeness
+                  const { 
+                    rootQuestion, 
+                    htmlFormElements, 
+                    correctAnswers, 
+                    wrongAnswers,
+                    humanReadableTagName
+                 } = questenceAuthoringQuestionSeries;
+                 templateRenderer+=`<h4>${rootQuestion}</h4>`;
+                 let formid =Math.random(9)*2000+ new Date().toString()
+                 let formm =`<form method="POST" id="magic-questence-qna-${formid}"></form>"`
+                 let magicHiddenForms = $(formm) // the auto processor for each questin to be saved
+                  //ABSTRACT THE URL POINT FOR NOW
+                  magicHiddenForms.attr("method","POST")
+                 //this is already in html so spit it out
+                 //generate all the form for each of the components questions regarding the fields below
+                  
+                  let text = `<input type="text" name="text" value="${rootQuestion}" />`
+                  let question_type = `<select name="question_type"><option  value="${humanReadableTagName}" />${humanReadableTagName}<option></select>`
+                  let correct_answer = [...correctAnswers]
+                  correct_answer =  `<textarea  name="correct_answer" value="" >${correct_answer.join(",")}</textarea>`
+                  let mark = `<input type="text" name="mark" value="${defaultScoreSheet}"  />`
+                  let allowedHeaders = $("#slideout-questions").attr("problem_no_dey_finish") //lol
+                  let choices = [...correctAnswers,...wrongAnswers];
+                  choices =  `<textarea name="choices" >${choices.join()}</textarea>` // by default all the questions are required
+                  let required=`<input type="text" name="required" checked />`
+                  //yes the problem component is just one parent trying to reach out to the children questions
+                  let problem = `<input type="text" name="problem" value=${allowedHeaders} />`
+                  magicHiddenForms.append(text);
+                  magicHiddenForms.append(question_type);
+                  magicHiddenForms.append(correct_answer);
+                  magicHiddenForms.append(mark);
+                  magicHiddenForms.append(choices)
+                  magicHiddenForms.append(problem);  //abrakadabra hehehehe!!!
+                  jqueryMagicForms = [...jqueryMagicForms,magicHiddenForms]
 
 
-
-            if(question && htmlComponent.length ){
-                let extractedQuestion =question
-
+                  // get the triggered problem component id to which it will be added from the injector instread of storage
+                  //this is a run time approach
 
 
-                //q & a build the ui jacket dynamically
-                templateStr += `<form class="problems-questions">
-                <br/><h4>${extractedQuestion}</h4><br/>
+                 htmlFormElements.forEach(questionAndAnserSeries => {
+                    templateRenderer+=questionAndAnserSeries
+                    templateRenderer+=`<hr/>` // space for next question
+                 });
+              })
 
-                `
-                htmlComponent.forEach(questionOption =>{
-                  templateStr+=questionOption
+               let rawTemplate = templateRenderer;
+               rawTemplate = rawTemplate.replace(/^\s+|\s+$|\s+(?=\s)/g, "");
+               let finalTemplatePreview =""
+                //q & a build the ui jacket dynamically for preview
+               finalTemplatePreview+=`<form class="problems-questions">
+                <br/><h4>${rawTemplate}</h4>
+                <div class='field form-actions'>
+                  <div style="background:green;cursor:pointer;color:#000" onclick="questionHelperNotification(event)"
+                   class="setMove button  btn btn-success pull-left" type='submit'>Done</div>
+
+                  
+                </div></form>
+                `;
+
+                $("#saveQuestionActions").click(()=>{
+                  //process the multiple enrolled question batched up after preview
+                  //also we build the hidden saving form so that when user decided to save
+                  //the record after preview everything is created at that instance
+                  //this is not the traditional way of saving one record at a time
+                  //all records are saved on click on the go
+                  // yes life is too short 
+                  //write better automated codes
+                  
+
+                  //for each form send the mail man to post
+                   let magicUrl = "/lms/api/create/question/"
+                  jqueryMagicForms.forEach((magicEffects) =>{
+                    console.log(magicEffects.html())
+                     //// make it happen TADA!!!
+                     let res = createAnyResource("POST",magicUrl,magicEffects);
+
+                  })
                 })
-                templateStr+=`<div class='field form-actions'>
-          <button class="setMove" type='submit'>Next</button>
-        </div></form>`
 
-                templateStr = templateStr.replace(/^\s+|\s+$|\s+(?=\s)/g, "");
-
-                
-                console.log(templateStr)
+               
 
                 
 
-            }
-
-            
-            const extractedText = templateStr
+                
+            console.log(finalTemplatePreview)
+            const extractedText = finalTemplatePreview
             content = content.replace(matchesFull[0], extractedText  );
-
             content = content.replace(/^\s+|\s+$|\s+(?=\s)/g, "");
+
+
+            // yes we are clean to save all the generated html build to db
+            //this is another journey to hell
+            //na serious work be this one o
+
+            //Logic of the question frontend workflow saving to db
+            //say you entered 100 questions and have previewed a button pops up 
+            //asking you to click done
+            // if you click done then a button shows to save changes
+            //only when you click save changes 
+            //will for each question and answer 
+                    // dynamically create 100 hidden forms on the fly
+                     // generate 100*7 input detail fields of the form
+                     //then submit the 100 question* 7 field data to database
+                     //this is a multiple submission process
+                     //END OF THE BIG QUESTION COMPONENT WAHALA CAUSED BY PROBLEM COMPONENT 
+
             
 
 
-        // Example: # Heading 1
-        if( h1.test( content ) ) {
-          const matches = content.match( h1 );
-          //console.log(matches)
-          matches.forEach( element => {
-            const extractedText = element.slice( 1 );
-            content = content.replace( element, '<h1>' + extractedText + '</h1>' );
-          } );
-        }
+            // Example: # Heading 1
+            if( h1.test( content ) ) {
+              const matches = content.match( h1 );
+              //console.log(matches)
+              matches.forEach( element => {
+                const extractedText = element.slice( 1 );
+                content = content.replace( element, '<h1>' + extractedText + '</h1>' );
+              } );
+            }
 
          }
         
@@ -3007,10 +3827,27 @@ closeIcon = toast.querySelector(".close-icon");
   fill(a){
   let lead = null;
   let authoring_team = []
-	let textEditors = ["learning_expectation","description", "prerequisite", "overview", "curriculum"]
+  let tmpPre =``
+	let textEditors = ["learning_expectation","description",  "overview", "curriculum"]
     for(var k in a){
 		console.log(k +" : "+ a[k])
-      if(k=="authoring_team" && a[k].length<=0){
+      if(k=="prerequisite"){
+         //display all the course ids
+         if(typeof a[k]=="Array"){
+               a[k].forEach(coursePrerequisites => {
+                  tmpPre=`<li class="preliminary_courses">Required Course ID :${coursePrerequisites}</li>`
+
+                  $("#preliminary_courses").append(tmpPre)
+               })
+               localStorage.setItem(k,a[k])
+         }else{
+            localStorage.setItem(k,[])
+
+         }
+        
+
+      }
+      else if(k=="authoring_team" && a[k].length<=0){
 
         if(a[k]==null){
             lead = a.author || localStorage.getItem("author")
@@ -3035,7 +3872,8 @@ closeIcon = toast.querySelector(".close-icon");
          
    }else {
 
-
+  
+         
               //check if name is part of a dropdown then select the dropdown or make it checked
           if($('select[name="'+k+'"]') && k!=="authoring_team"){
             if(a[k]==null){
@@ -3046,8 +3884,23 @@ closeIcon = toast.querySelector(".close-icon");
               localStorage.setItem(k,a[k])
               
             }
-            
-             $('select[name="'+k+'"]').attr('selected', $(this).text() == a[k]);
+
+
+            if(k=="entrance_exam_required"){
+                
+            // let valueSelector =`select option[value="${a[k]}"]`
+             //$('select[name="'+k+'"]').attr('selected', $(this).val() == a[k]);
+                      
+            }else{
+              $('select[name="'+k+'"]').attr('selected', $(this).text() == a[k]);
+        
+
+            }
+
+
+
+         
+           
           }
 
         
@@ -3090,14 +3943,24 @@ closeIcon = toast.querySelector(".close-icon");
     
  }
 
+ getCourseIdFromUrl(url) {
+  const hashIndex = url.indexOf('#')
+  url = hashIndex !== -1 ? url.substring(0, hashIndex) : url
+  return (url.split('/').pop() || '').replace(/[\?].*$/g, '')
+} 
 
  getAllFormElements = element => Array.from(element.elements).filter(tag =>  ["select", "textarea", "input"].includes(tag.tagName.toLowerCase()));
 
  fetchContent = async () => {
   $("#none-display").css({"opacity":0}).fadeOut("fast")
    let instId = this.state.institution
-   this.courseData = await this.courseDetailJson()
-   localStorage.setItem("course_edit",this.props.match.params.id);
+   try{
+    this.courseData = await this.courseDetailJson();
+
+
+   //ensure to get the course id real even if browser data has change url
+   let sanitizedId = this.getCourseIdFromUrl(this.props.match.params.id)
+   localStorage.setItem("course_edit",sanitizedId);
    //automated logic
     Promise.all(
       [
@@ -3105,42 +3968,60 @@ closeIcon = toast.querySelector(".close-icon");
         getCourses(),
         getInstitutions(),
         getInstructorProfiles(),
-        getCourse(this.props.match.params.id),
-        getSectionsOfCourseId(this.props.match.params.id),
+        getCourse(sanitizedId),
+        getSectionsOfCourseId(sanitizedId),
+        getGroups(),
         // getSubsectionsOfSectionId(secId)
       ].map((err) => err.catch(() => console.log( err)))
     )
       .then((res) => {
-        
 
-        console.log(res[4])
-        if(typeof (res[2].results) == "Array") {
-          // do nothing
-        }else{
-          // alert(typeof res[2].results )
-          // console.log(Array.from(res[4].results))
+        if(res && typeof res[0]!=="undefined" ){
 
-          this.setState({
-          languages: res[0].data.data, // from enrollments this is already an array
-          courses:  this.transformObject(res[1].results), //from lms  this needs to be reformed
-          institutions: this.transformObject(res[2].results), // reformation needed
-          instructors: this.transformObject(res[3].results),  // reformation needed
-          currentCourseId: res[4]?.id, //just an object
-          sections:res[4]?.results
-        })
-        //now dynamically fill in the form
-        this.fill(res[4]) 
 
-        $("#none-display").css({"opacity":1}).fadeIn("slow")		
+            
+
+            // console.log(typeof res[0])
+            // if(typeof ( res[2].results) == "Array") {
+            //   // do nothing
+            // }else{
+
+              // alert(typeof res[2].results )
+              // console.log(Array.from(res[4].results))
+
+              this.setState({
+              languages: res[0].data.data, // from enrollments this is already an array
+              courses:  this.transformObject(res[1].results), 
+              //from lms  this needs to be reformed
+              //the backend guy can not easily simplify data sent as response back to json he is sending python data dictionary as json can u imagine?? 
+              institutions: this.transformObject(res[2].results), // reformation needed
+              instructors: this.transformObject(res[3].results),  // reformation needed
+              currentCourseId: res[4]?.id, //just an object
+              sections:res[4]?.results,
+              groups: this.transformObject(res[5]?.results), //used in problem component
+            })
+            //now dynamically fill in the form
+            this.fill(res[4]) 
+
+            $("#none-display").css({"opacity":1}).fadeIn("slow")    
+//          }
+
       }
         
         // setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        return false
         // toast.error("Error Occured fetching data");
         // setLoading(false);
       });
+
+
+   }catch(e){
+    return false
+   }
+   
 
 
   }
@@ -3162,7 +4043,7 @@ closeIcon = toast.querySelector(".close-icon");
   }
 
 
-
++
   sorted_by_position_id = (arr) =>{
      return arr.sort((a, b) => {
        return a.position_id - b.position_id;
@@ -3172,17 +4053,31 @@ closeIcon = toast.querySelector(".close-icon");
 
   /*everything belonging to course*/
   courseDetailJson = async () => {
-   let BIG_JSON  = await getCourseData(this.props.match.params.id);
-   console.log(BIG_JSON)
-   let courseData = BIG_JSON.course_sections;
+    let BIG_JSON ={}
+    let courseData =null
+    try{
+       BIG_JSON  = await getCourseData(this.props.match.params.id);
+       console.log(BIG_JSON)
+          courseData = BIG_JSON.course_sections;
+       courseData = this.sorted_by_position_id(courseData) // sorts by position id
+
+   //resort sections by their position id before d*splay*n
+   
+       
+    }catch(e){
+       console.log(e)
+       return false
+    }
+
+   
+   
+
+   
+    
    let temp =``;
    let tempArr =[];
    let tempArrLessons = [];
-   courseData = this.sorted_by_position_id(courseData) // sorts by position id
-
-   console.log(courseData);
-
-   //resort sections by their position id before d*splay*n
+  
 
 
    // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
@@ -3650,7 +4545,7 @@ closeIcon = toast.querySelector(".close-icon");
           data-name="${lessons?.name}"
           data-pos="${lessons?.position_id}"
           data-description="${lessons?.description}"
-           data-parent-id="${lessons.subsection}"
+           data-parent-id="${lessons.sub_section}"
             onclick='showComponentModal(this);setTargetLessonComponent("${muu_counter}")'      
           ><i class="fa fa-plus "></i></a>
 
@@ -3662,7 +4557,7 @@ closeIcon = toast.querySelector(".close-icon");
           data-name="${lessons?.name}"
           data-pos="${lessons?.position_id}"
           data-description="${lessons?.description}"
-           data-parent-id="${lessons?.subsection}"
+           data-parent-id="${lessons?.sub_section}"
            data-modal="myModalEditLesson"
            
             onclick='injectToModal(this);setTargetLessonComponent("${muu_counter}")'       
@@ -3680,7 +4575,7 @@ closeIcon = toast.querySelector(".close-icon");
           data-name="${lessons?.name}"
           data-pos="${lessons?.position_id}"
           data-description="${lessons?.description}"
-           data-parent-id="${lessons?.subsection}"
+           data-parent-id="${lessons?.sub_section}"
            onclick="genericDelete(this)"        
           >
                 
@@ -3718,7 +4613,7 @@ closeIcon = toast.querySelector(".close-icon");
           data-name="${lessons?.name}"
           data-pos="${lessons?.position_id}"
           data-description="${lessons?.description}"
-           data-parent-id="${lessons?.subsection}"
+           data-parent-id="${lessons?.sub_section}"
 
            data-modal="myModalEditLesson"
            onclick='injectToModal(this);setTargetLessonComponent("${muu_counter}")'       
@@ -3771,6 +4666,8 @@ closeIcon = toast.querySelector(".close-icon");
                       let readmoreInitialized = "none";
                       let enableLink ="none";
                       let textualData = "";
+                      let questionTeplateButton = false
+
                       if(component.component_type ==1){
                         launchPad ="#myModalGenericFormEditorEditMode"
                         form = "myModalGenericForm-SELECT"
@@ -3785,12 +4682,28 @@ closeIcon = toast.querySelector(".close-icon");
                         Info = "HTML PROBLEM COMPONENT"
                         form = "myModalProblemForm-SELECT"
                         actionBuilder = `/problem-component/${component.id}/`
+                        
+                        questionTeplateButton =`<a role="button"
+                        data-toggle="modal" 
+                        style="cursor:pointer" data-self="${component.id}" 
+                        data-append="${component.lesson}" 
+                        data-getitup="${component.id}" 
+                      onclick="window.event.preventDefault();swapProblemDisplayBoard(this)"  
+                         href="" class="pull-right">
+                           <i style="color:#000" data-self="${component.id}"  
+                           data-getitup="${component.id}" 
+                           class="fa fa-plus fa-2x">Add a question </i></a>`
+                      
+
                       }else if(component.component_type ==4){
                         //not implemented the ui for this
                         launchPad ="#openModal-about2"
                         Info = "HTML DISCUSSION COMPONENT"
                         form = "myModalDiscussionForm-SELECT"
                         actionBuilder = `/discussion-component/${component.id}/`
+                        
+
+
                       }
 
                       if(component.embedded_url){
@@ -3803,6 +4716,8 @@ closeIcon = toast.querySelector(".close-icon");
                         readmoreInitialized ="block"
                          textualData = component?.html_text || component.description
                       }
+
+                      if(component?.component_type){}
 
                       //if component is  problem or discussion
 
@@ -3818,6 +4733,8 @@ closeIcon = toast.querySelector(".close-icon");
           data-content_type="${component.content_type}"
           data-form="${form}"
           data-action-figure="${actionBuilder}"
+          data-append="${component.lesson}" 
+                        data-getitup="${component.id}" 
           
           data-embedded_url="${component.embedded_url}"
           data-embedded_url="${component.video_type}" 
@@ -3850,6 +4767,8 @@ closeIcon = toast.querySelector(".close-icon");
           data-embedded_url="${component.video_type}"
           data-form="${form}"
           data-action-figure="${actionBuilder}"
+          data-append="${component.lesson}" 
+                        data-getitup="${component.id}" 
 
               role="button"
               data-toggle="modal">
@@ -3868,6 +4787,8 @@ closeIcon = toast.querySelector(".close-icon");
           data-embedded_url="${component.video_type}"
           data-form="${form}"
           data-action-figure="${actionBuilder}"
+          data-append="${component.lesson}" 
+                        data-getitup="${component.id}" 
 
 
                ></i>
@@ -3887,6 +4808,8 @@ closeIcon = toast.querySelector(".close-icon");
           data-embedded_url="${component.video_type}"
           data-form="${form}"
           data-action-figure="${actionBuilder}"
+          data-append="${component.lesson}" 
+                        data-getitup="${component.id}" 
 
 
                   class="pb-remove fa fa-trash fa-2x" onclick="handleWidgetRemove(this)"></i></span>
@@ -3909,6 +4832,8 @@ closeIcon = toast.querySelector(".close-icon");
           data-embedded_url="${component.video_type}"
           data-form="${form}"
           data-action-figure="${actionBuilder}"
+          data-append="${component.lesson}" 
+                        data-getitup="${component.id}" 
            
          
                  
@@ -3927,6 +4852,8 @@ closeIcon = toast.querySelector(".close-icon");
           data-embedded_url="${component.video_type}"
           data-form="${form}"
           data-action-figure="${actionBuilder}"
+          data-append="${component.lesson}" 
+                        data-getitup="${component.id}" 
 
           
         
@@ -3953,10 +4880,11 @@ closeIcon = toast.querySelector(".close-icon");
                       </div>
 
                                               
-                        <div class="content-section-from-input unit_content_place_holder">
+                        <div data-append="${component.lesson}" 
+                        data-getitup="${component.id}" class="content-section-from-input unit_content_place_holder">
                            <p style={{display:${enableLink} }} id="embedded_url_${component.id}">${component?.embedded_url}</p>
                            
-                          <p>${playVideoEnabled} ${    "Click the edit icon above to edit this unit" }</p>
+                          <p>${playVideoEnabled} ${    "Click the edit icon above to edit this unit" } ${ questionTeplateButton }</p>
                         </div>
 
                       </div>
@@ -4088,6 +5016,16 @@ closeIcon = toast.querySelector(".close-icon");
         replace(/%(?:7C|60|5E)/g, unescape);
 }
 
+getFilename(url) {
+  const filename = decodeURIComponent(new URL(url).pathname.split('/').pop());
+  if (!filename) return 'dummy.jpg'; // some default filename
+  return filename;
+}
+
+filenameWithoutExtension(filename) {
+  return filename.replace(/^(.+?)(?:\.[^.]*)?$/, '$1');
+}
+
 
 
 
@@ -4101,29 +5039,95 @@ closeIcon = toast.querySelector(".close-icon");
      let step = parseInt(curr)
 	  let stateData = {...this.state};
 
+    let dummyImg = new Image();
+    dummyImg.src ="noimage.jpg" 
+
     //prevent sql injection here for any input data
+    let cover_img = new File([
+      this.filenameWithoutExtension(
+        this.getFilename("http://tqfe.org/public/assets/images/course-1.jpg")
+      )], 
+      this.getFilename("http://tqfe.org/public/assets/images/course-1.jpg")
+    ); //a dummy image
+    let videoFile = new File([
+      this.filenameWithoutExtension(
+        this.getFilename("http://tqfe.org/public/assets/images/course-1.mp4")
+      )], 
+      this.getFilename("http://tqfe.org/public/assets/images/course-1.mp4")
+   ); // a dummy file
+    if(localStorage.getItem("card_image")){
+      let domFile = localStorage.getItem("card_image");
+
+      if(domFile.length>0){
+         cover_img = new File([
+      this.filenameWithoutExtension(
+        this.getFilename(domFile)
+      )], 
+      this.getFilename(domFile)
+    )
+
+      }
+     
+    }else{
+      cover_img = cover_img
+    }
+
+    
+    if(localStorage.getItem("intro_video")){
+      let domVideo = localStorage.getItem("intro_video")
+      if(domVideo.length>0){
+        cover_img = new File([
+          this.filenameWithoutExtension(
+            this.getFilename(domVideo)
+          )], 
+          this.getFilename(domVideo)
+       )
+
+      }
+      
+    }else{
+      videoFile = videoFile
+    }
+    //alot of processing is done here
+
+    //before submitting this check if user has tried to hack the db
+    //using sql injection detection technique
+    //check if xsl attack occurs in all input
+    //you just cant trust anu
+    [
+      "course_start_date_time",
+      "course_end_date_time",
+      "enrolment_start_date_time",
+      "enrolment_end_date_time"
+    ].forEach(field =>{
+      if(this.state[field].length >0){
+        localStorage.setItem(field,this.state[field] )
+      }
+    })
+    
 
 	  stateData = {
 		  
         name: localStorage.getItem("name") || "",
-        code:  localStorage.getItem("code") || "",
+        code: localStorage.getItem("code") || "",
         run: localStorage.getItem("run") || "",
-        //card_image:  localStorage.getItem("card_image")|| "",
-        intro_video: localStorage.getItem("intro_video") || "",
-        description: localStorage.getItem("description") || "",
-        overview: localStorage.getItem("overview") || "",
+        card_image: cover_img,
+        intro_video: videoFile,
+        description:localStorage.getItem("description") || "",
+        overview:  localStorage.getItem("overview") || "",
         learning_expectation: localStorage.getItem("learning_expectation") || "",
         curriculum: localStorage.getItem("curriculum") || "",
         level: localStorage.getItem("level") || 1,  //int
         enrolment_type: localStorage.getItem("enrolment_type") || 1,
         entrance_exam_required: localStorage.getItem("entrance_exam_required") || false, 
         cost: localStorage.getItem("cost") || 0.00,  //float
-        //auditing: true,
+        auditing: true,
+        prerequisite:localStorage.getItem("prerequisite")|| [],
         course_pacing: localStorage.getItem("course_pacing") || 1, //int
-        course_start_date_time: localStorage.getItem("course_start_date_time") || "2021-08-26T17:13:00+01:00",  //2021-08-26T17:13:00+01:00
-        course_end_date_time: localStorage.getItem("course_end_date_time") || "2021-08-26T17:13:00+01:00",
-        enrolment_start_date_time: localStorage.getItem("enrolment_start_date_time") || "2021-08-26T17:13:00+01:00",
-        enrolment_end_date_time: localStorage.getItem("enrolment_end_date_time") || "2021-08-26T17:13:00+01:00",
+        course_start_date_time: this.state.course_start_date_time || localStorage.getItem("course_start_date_time") || "2021-08-26T17:13:00+01:00",  //2021-08-26T17:13:00+01:00
+        course_end_date_time: this.state.course_end_date_time || localStorage.getItem("course_end_date_time") || "2021-08-26T17:13:00+01:00",
+        enrolment_start_date_time: this.state.enrolment_start_date_time|| localStorage.getItem("enrolment_start_date_time") || "2021-08-26T17:13:00+01:00",
+        enrolment_end_date_time: this.state.enrolment_end_date_time|| localStorage.getItem("enrolment_end_date_time") || "2021-08-26T17:13:00+01:00",
         course_language: localStorage.getItem("course_language") || 1,
         requirement_hours_per_week: localStorage.getItem("requirement_hours_per_week") || 1, //int
         requirement_no_of_week: localStorage.getItem("requirement_no_of_week") || 1,  //int
@@ -4177,7 +5181,7 @@ closeIcon = toast.querySelector(".close-icon");
 
 
   render() {
-    const {institutions, languages, instructors, courses } = this.state;
+    const {institutions, languages, instructors, courses,groups, currentCourseId } = this.state;
     
     return (
       <Fragment>
@@ -4549,7 +5553,7 @@ closeIcon = toast.querySelector(".close-icon");
                     description:this.handleHtmlDescriptionChange,
                     overview: this.handleHtmlCourseOverViewChange,
                     learning_expectation: this.handleHtmlOutComeChange,
-                    prerequisite: this.handleHtmlPrerequisitesChange,
+                    //prerequisite: this.handleHtmlPrerequisitesChange,
                     curriculum: this.handleHtmlCurriculumChange
                   
                         }}
@@ -4567,11 +5571,14 @@ closeIcon = toast.querySelector(".close-icon");
                         institutions={institutions} 
                         languages={languages}
                         instructors={instructors} 
+                        groups={groups}
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
+                        currentCourseId={this.state.currentCourseId}
                       />
 
                       <Step3
+                      currentCourseId={this.state.currentCourseId}
                       stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
@@ -4584,6 +5591,7 @@ closeIcon = toast.querySelector(".close-icon");
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
                         stateAction={this.handleChangeTextEditor}
+                        groups={this.state.groups}
                       />
 
                       <Step4
@@ -4599,6 +5607,8 @@ closeIcon = toast.querySelector(".close-icon");
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
                         stateAction={this.handleChangeTextEditor}
+                        currentCourseId={this.state.currentCourseId}
+                       groups={this.state.groups}
                       />
 
                       <Step2
@@ -4606,6 +5616,7 @@ closeIcon = toast.querySelector(".close-icon");
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
                         handleChange={this.handleInputChange}
+                          groups={this.state.groups}
                         stateAction={this.handleChangeTextEditor}
                         errorPasswordClass={this.errorClass(
                           this.state.formErrors.password
@@ -4624,9 +5635,11 @@ closeIcon = toast.querySelector(".close-icon");
                         instructors={instructors} 
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
+                        currentCourseId={this.state.currentCourseId}
                       />
 
                       <Step5
+                        groups={this.state.groups}
                       stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
@@ -4639,6 +5652,7 @@ closeIcon = toast.querySelector(".close-icon");
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
                         stateAction={this.handleChangeTextEditor}
+                        currentCourseId={this.state.currentCourseId}
                       />
 
                       <Step6
@@ -4654,6 +5668,8 @@ closeIcon = toast.querySelector(".close-icon");
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
                         stateAction={this.handleChangeTextEditor}
+                        currentCourseId={this.state.currentCourseId}
+                        groups={this.state.groups}
                       />
                       <Step7
                         currentStep={this.state.currentStep}
@@ -4667,9 +5683,12 @@ closeIcon = toast.querySelector(".close-icon");
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
                         stateAction={this.handleChangeTextEditor}
+                        currentCourseId={this.state.currentCourseId}
+                        groups={this.state.groups}
                       />
 
                       <Step8
+                        groups={groups}
                       stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
@@ -4682,6 +5701,7 @@ closeIcon = toast.querySelector(".close-icon");
                         courses={courses}
                         saveAndContinue={this.saveAndContinue}
                         stateAction={this.handleChangeTextEditor}
+                        currentCourseId={this.state.currentCourseId}
                       />
 
                       <br />
@@ -4735,25 +5755,371 @@ closeIcon = toast.querySelector(".close-icon");
 		
     {/*this is the work bench for problem component question and answer authoring builder*/}
 
-      <div  style={{ marginTop: "20px" }}
+      <div  style={{ marginTop: "60px" }}
           class="modal fade"
           id="openModal-about"
           tabindex="-1"
           role="dialog"
           aria-hidden="true">
       <div>
-      <div class="modal-header">
-        <h3>Problem Component Section</h3>
-      </div>
-         <a href="#close" title="Close" class="close">X</a>
-         
-        <div class="parallax-view-reset col-md-12">
-  <input type="checkbox" id="menu-toggle" class="hidden" />
-  <label for="menu-toggle" class="woosh">
-  Toggle Hint 
-  </label>
+      <br/>
 
-  <div id="style-5" class="menu-section-reset scrollbar col-md-3">
+      <div class="modal-header">
+        <h3 style={{color:"#000"}}>Problem Component Section</h3>
+      </div>
+         <a href="#"  title="Close" class="close" data-dismiss="modal"
+                  aria-label="Close">X</a>
+         
+        <div class="col-md-12">
+              
+
+  <div >
+    <div >
+      <div class="row">
+        <div class="col-md-12">
+
+
+      {/*first display the problem creation form before the question addition form*/}
+
+<br/><br/><br/>
+         <form style={{height:"500px",overflowY:"scroll",overflowX:"hidden",margin:"0px",padding:"20px",background:"#fff"}} class="form-horizontal" method="post" enctype="application/x-www-form-urlencoded" id="problemcomponent_form" novalidate="">
+  
+    <fieldset class="module aligned">
+      <div class="form-group col-md-12 fl-left field-lesson" style={{display:"none"}}>
+        <div>
+          <p class="required" for="id_lesson">Lesson:</p>
+
+          <div class="related-widget-wrapper">
+            <input class="form-control" id="lesson" name="lesson" id="problem_lesson"  type="hidden" />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row field-position_id" style={{display:"none"}}>
+        <div class="form-group col-md-12 fl-left">
+          <p for="id_position_id">Position id:</p>
+
+          <input
+            type="text"
+            name="position_id"
+            class="vTextField form-control"
+            maxlength="150"
+            id="problem_position_id"
+          />
+        </div>
+      </div>
+
+
+      <div class="form-row field-course" style={{display:"none"}}>
+        <div class="form-group col-md-12 fl-left">
+          <p for="id_course">Course:</p><br/><br/>
+          <input 
+          class="form-control"
+           type="hidden" id="problem_course" 
+           name="course"
+           
+
+            />
+
+                  </div>
+      </div>
+
+
+      <div class="form-row field-component_type" style={{display:"none"}}>
+        <div class="form-group col-md-12 fl-left">
+          <p class="required" for="id_component_type"
+            >Component type:</p
+          ><br/><br/>
+
+          <select class="form-control" name="component_type" id="problem_component_type">
+            
+
+            <option value="3" selected>Problem</option>
+
+            
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row field-name">
+        <div class="form-group col-md-12 fl-left">
+          <p for="id_name">Name:</p><br/><br/>
+
+          <input
+            type="text"
+            name="name"
+            class="vTextField form-control"
+            maxlength="150"
+            id="problem_name"
+          />
+        </div>
+      </div>
+
+
+
+      <div class="form-row field-description">
+        <div class="form-group col-md-12 fl-left">
+          <p for="id_description">Description:</p><br/><br/>
+
+          <input
+            type="text"
+            name="description"
+            class="vTextField form-control"
+            maxlength="150"
+            id="problem_description"
+          />
+        </div>
+      </div>
+
+
+
+      <div class="form-row field-assessment_type">
+        <div class="form-group col-md-12 fl-left">
+          <p class="required" for="id_assessment_type"
+            >Assessment type:</p
+          ><br/><br/>
+
+          <select class="form-control" name="assessment_type" 
+          id="problem_assessment_type">
+            <option value="1" selected="">Assignment</option>
+
+            <option value="2">Continuous Assessment</option>
+
+            <option value="3">Final Examination.</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row field-assessment_weight">
+        <div class="form-group col-md-12 fl-left">
+          <p for="id_assessment_weight">Assessment weight:</p>
+<br/><br/>
+          <input
+            type="number"
+            name="assessment_weight"
+            value="0.0"
+            step="any"
+            class="form-control"
+            id="problem_assessment_weight"
+          />
+        </div>
+      </div>
+
+      <div class="form-row field-assessment_attainable_score">
+        <div class="form-group col-md-12 fl-left">
+          <p for="id_assessment_attainable_score"
+            >Assessment attainable score:</p
+          ><br/><br/>
+
+          <input
+            type="number"
+            name="assessment_attainable_score"
+            value="0.0"
+            step="any"
+            class="form-control"
+            id="problem_assessment_attainable_score"
+          />
+        </div>
+      </div>
+
+      <div class="form-row field-show_answers">
+        <div class="form-group col-md-12 fl-left">
+        <p class="vCheckboxLabel" for="problem_show_answers"
+            >Show answers</p
+          >
+          <input
+           class="form-control"
+            type="checkbox"
+            name="show_answers"
+            id="problem_show_answers"
+          /><br/><br/>
+        </div>
+      </div>
+
+      <div class="form-row field-due_date">
+        <div class="form-group col-md-12 fl-left">
+          <p for="id_due_date_0">Due date:</p>
+<br/><br/>
+          <p class="form-group col-md-12 fl-left">  
+            Date:</p>
+            <input
+              type="text"
+              name="due_date_0"
+              class="vDateField"
+              size="10"
+              id="problem_due_date_0"
+            />
+          
+
+
+            <p class="form-group col-md-12 fl-left">
+            Time:  </p>
+            <input
+              type="text"
+              name="due_date_1"
+              class="vTimeField"
+              size="8"
+              id="problem_due_date_1"
+            />
+
+           
+        
+        </div>
+      </div>
+
+      <div class="form-row field-is_timed">
+        <div class="form-group col-md-6 fl-left">
+          <input type="checkbox" name="is_timed" id="id_is_timed" />
+          <p
+            class="vCheckboxLabel"
+            for="id_is_timed"
+            >Is timed</p
+          ><br/><br/>
+        </div>
+      </div>
+
+      <div class="form-row field-timed_duration">
+        <div class="form-group col-md-12 fl-left">
+          <p for="id_timed_duration">Timed duration:</p><br/><br/>
+
+          <input
+            type="number"
+            name="timed_duration"
+            value="0.0"
+            step="any"
+            id="id_timed_duration"
+            class="form-control"
+          />
+        </div>
+      </div>
+
+      <div class="form-row field-no_of_possible_attempts">
+        <div class="form-group col-md-12 fl-left">
+          <p class="required" for="id_no_of_possible_attempts"
+            >No of possible attempts:</p
+          ><br/><br/>
+
+          <input
+            type="number"
+            name="no_of_possible_attempts"
+            value="1"
+            class="vIntegerField form-control"
+            required=""
+            id="problem_no_of_possible_attempts"
+          />
+        </div>
+      </div>
+
+
+      <div class="form-row field-group_passed">
+        <div class="form-group col-md-12 fl-left">
+          <p for="id_group_passed">Group passed:</p><br/><br/>
+
+          <div class="related-widget-wrapper">
+            <select class="form-control" name="group_passed" id="id_group_passed">
+              <option value="" selected="">---------</option>
+
+              {groups && groups.map(group =>{
+                return (
+                    <option value={group.id}>{group.name}</option>
+                )
+              })}
+            </select>
+            </div>
+             <br/><br/>
+                <button 
+                onClick={(e) => {addNewQuestenceWahala(e)}}
+                class="btn btn-primary" style={{width:"100%",textAlign:"center"}}>
+                  Create Problem utility component
+                </button>
+               <br/><br/><br/><br/>
+            </div>
+            </div>
+
+
+    </fieldset>
+</form>
+
+
+   
+
+
+
+        </div>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+       </div>
+   </div>
+
+   </div>
+
+
+
+
+{/*question creation panel*/}
+   <div class="container-questions">
+  
+  
+
+  <div id="slideout-questions">
+  <br/><br/><br/><br/>
+
+  <button type="button" onClick={ () =>{
+
+  $('#slideout-questions').toggleClass('on');
+
+  }}class="btn btn-default">Close</button>
+  
+
+
+
+
+
+    <form style={{display:"none"}}>
+  {/*magically updated form from regex entry markdown board*/}
+      
+
+      
+
+
+      <input class="btn btn-primary" type="submit" value="Post feedback"></input>
+    </form>
+
+
+
+
+  {/*hint parallax area*/}
+
+
+  <div class="parallax-view-reset col-md-12">
+              
+
+  <div class="content-section-reset col-md-12">
+    <div class="container-section-reset">
+
+  <input type="checkbox" id="menu-toggle" class="hidden" />
+              <label for="menu-toggle" class="woosh">
+              Toggle Hint 
+              </label>
+
+    <div id="saveQuestionActions" 
+    style={{cursor:"pointer",color:"#fff",display:"none",
+    background:"rgba(8,23,200)"}} 
+      class="setMove button  btn btn-success pull-right"
+      >Save All Questions</div>
+
+
+            {/*hint area*/}
+
+  <div id="style-5" class="menu-section-reset hintareaview scrollbar col-md-3">
    <div class="divBlockHint">
     <h2 class="hint-region fixed-set">Hints</h2>
     <p class="hint-region white-board">
@@ -4970,99 +6336,82 @@ closeIcon = toast.querySelector(".close-icon");
       </div>
      
   </div>
-  <div class="content-section-reset col-md-12">
-    <div class="container-section-reset">
-      <div class="row">
-        <div class="col-md-12">
 
+
+
+
+
+
+
+           {/*only displays when you have created the problem that will embed the questions*/}
         
-          <div id="markdown-editordisplay">
+          <div id="markdown-editordisplay" >
 
 
-  <div class="toolbardisplay">
-    <div class="group">
-      <button id="heading1"><i class="fa fa-header" aria-hidden="true"></i>1</button>
-      <button id="heading2"><i class="fa fa-header" aria-hidden="true"></i>2</button>
-      <button id="heading3"><i class="fa fa-header" aria-hidden="true"></i>3</button>
-    </div>
-    <div class="group">
-      <button id="bold"><i class="fa fa-bold" aria-hidden="true"></i></button>
-      <button id="italic"><i class="fa fa-italic" aria-hidden="true"></i></button>
-    </div>
-    <div class="group">
-      <button id="link"><i class="fa fa-link" aria-hidden="true"></i></button>
-      <button id="list-ul"><i class="fa fa-list-ul" aria-hidden="true"></i></button>
-      <button id="list-ol"><i class="fa fa-list-ol" aria-hidden="true"></i></button>
-      <button id="token" style={{display:"none"}}></button>
-      
-      <div class="select-dropdown">
-        <select id="sub-selection">
-          <option >--  Click here to select a question type   ---</option>
-          <option data-markdown="[pb_html]/[pb_multichoice]" value="1">Multi Choice</option>
-          <option data-markdown="[pb_html]/[pb_checkbox]" value="2">Checkboxes</option>
-          <option data-markdown="[pb_html]/[pb_numeric]" value="3">Numerical Inputs</option>
-            <option data-markdown="[pb_html]/[pb_input]" value="4">Text Inputs</option>
-            <option data-markdown="[pb_html]/[pb_dropdown]" value="5">Dropdown</option>
-          
+                <div class="toolbardisplay">
+                  <div class="group">
+                    <button id="heading1"><i class="fa fa-header" aria-hidden="true"></i>1</button>
+                    <button id="heading2"><i class="fa fa-header" aria-hidden="true"></i>2</button>
+                    <button id="heading3"><i class="fa fa-header" aria-hidden="true"></i>3</button>
+                  </div>
+                    <div class="group">
+                      <button id="bold"><i class="fa fa-bold" aria-hidden="true"></i></button>
+                      <button id="italic"><i class="fa fa-italic" aria-hidden="true"></i></button>
+                    </div>
+                  <div class="group">
+                    <button id="link"><i class="fa fa-link" aria-hidden="true"></i></button>
+                    <button id="list-ul"><i class="fa fa-list-ul" aria-hidden="true"></i></button>
+                    <button id="list-ol"><i class="fa fa-list-ol" aria-hidden="true"></i></button>
+                    <button id="token" style={{display:"none"}}></button>
+                    
+                        <div class="select-dropdown">
+                          <select id="sub-selection">
+                            <option >--  Click here to select a question type   ---</option>
+                            <option data-markdown="[pb_html]/[pb_multichoice]" value="1">Multi Choice</option>
+                            <option data-markdown="[pb_html]/[pb_checkbox]" value="2">Checkboxes</option>
+                            <option data-markdown="[pb_html]/[pb_numeric]" value="3">Numerical Inputs</option>
+                              <option data-markdown="[pb_html]/[pb_input]" value="4">Text Inputs</option>
+                              <option data-markdown="[pb_html]/[pb_dropdown]" value="5">Dropdown</option>
+                            
 
-             <option data-markdown="[pb_html]/[pb_multichoice_feedback]" value="7">Multi Choice + Hints And Feedback</option>
-          <option data-markdown="[pb_html]/[pb_checkbox_feedback]" value="8">Checkboxes + Hints And Feedback</option>
-          <option data-markdown="[pb_html]/[pb_numeric_feedback]" value="9">Numerical Inputs + Hints And Feedback</option>
-            <option data-markdown="[pb_html]/[pb_input_feedback]" value="10">Text Inputs + Hints And Feedback</option>
-            <option data-markdown="[pb_html]/[pb_dropdown_feedback]" value="11">Dropdown + Hints And Feedback</option>
-          
-        </select>
-      </div>
-    </div>
-    <button id="previewdisplay">Preview</button>
+                               <option data-markdown="[pb_html]/[pb_multichoice_feedback]" value="7">Multi Choice + Hints And Feedback</option>
+                            <option data-markdown="[pb_html]/[pb_checkbox_feedback]" value="8">Checkboxes + Hints And Feedback</option>
+                            <option data-markdown="[pb_html]/[pb_numeric_feedback]" value="9">Numerical Inputs + Hints And Feedback</option>
+                              <option data-markdown="[pb_html]/[pb_input_feedback]" value="10">Text Inputs + Hints And Feedback</option>
+                              <option data-markdown="[pb_html]/[pb_dropdown_feedback]" value="11">Dropdown + Hints And Feedback</option>
+                            
+                          </select>
+                        </div>
+                    </div>
+                   <button id="previewdisplay">Preview</button>
+               </div>
+                <div id="input-outputdisplay">
+                  <textarea id="input-areadisplay" rows="30" cols="50"></textarea>
+                  <div id="output-areadisplay"></div>
+                  <p class="preview-messagedisplay">Preview Mode</p>
+                </div>
+
+
+                 
+                 
+          </div>
+
+
+
+
+          {/*end work area*/}
+
+
+
+    </div>  </div>  </div>
+
+
   </div>
-  <div id="input-outputdisplay">
-    <textarea id="input-areadisplay" rows="30" cols="50"></textarea>
-    <div id="output-areadisplay"></div>
-    <p class="preview-messagedisplay">Preview Mode</p>
-  </div>
-</div>
-
-        </div>
+  {/*end slide out panel form*/}
+</div>{/*end slideout container*/}
 
 
-    </div>
-  </div>
-</div>
-
-
-
-
-{/*action floating buttons*/}
-
-<div id="container-floating">
-  <div class="nd4 nds"><img class="reminder" />
-    <p class="letter" title="save">S</p>
-  </div>
-  
-  <div class="nd3 nds">
-  <img class="reminder" src="//ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/1x/ic_reminders_speeddial_white_24dp.png" />
-  </div>
-  
-  <div class="nd1 nds">
-    <p class="letter" title="cancel">X</p>
-  </div>
-
-  <div id="floating-button">
-    <p class="plus">+</p>
-    <img class="edit" src="https://ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/1x/bt_compose2_1x.png" />
-  </div>
-</div>
-
-
-
-       </div>
-   </div>
-
-   </div>
-
-
-{/*Always make component for problems avaialable on code run*/}
+{/*Always make component for problems and questions avaialable on code run*/}
       </Fragment>
     );
   }
@@ -5094,7 +6443,7 @@ class Step1 extends React.Component {
       sdescription = localStorage.getItem("description") || this.props.stateInitial.description || ""
     }
     if(localStorage.getItem("prerequisite")){
-      sprerequisite = localStorage.getItem("prerequisite") ||  this.props.stateInitial.prerequisite || ""
+      sprerequisite = localStorage.getItem("prerequisite") ||  this.props.stateInitial.prerequisite || []
     }
     if(localStorage.getItem("learning_expectation")){
       slearning_expectation = localStorage.getItem("learning_expectation") ||  this.props.stateInitial.learning_expectation || ""
@@ -5169,7 +6518,7 @@ class Step1 extends React.Component {
 	
 	
 	//check if data is fetched from db then make changes to localstorage
-	let textEditors = ["learning_expectation","description", "prerequisite", "overview", "curriculum"]
+	let textEditors = ["learning_expectation","description", "overview", "curriculum"]
     for(var k in prestate){
       
 	  //check if k is a rich text editor content
@@ -5532,8 +6881,8 @@ class Step1 extends React.Component {
                       id="name"
                       name="name"
                       placeholder="Enter course title"
-                       maxlength="150"
-                      value={this.props.course_name || this.state.name}
+                      maxlength="150"
+                      value={ this.props.name}
                      onChange={this.props.handleChange}
                     />
                      <label
@@ -5555,14 +6904,11 @@ class Step1 extends React.Component {
                     <select
                       style={{ position: "relative", zIndex: "1" }}
                       class="form-control select2 select2-hidden-accessible"
-                      data-toggle="select2"
-                      id="institution"
-                      name="institution"
-                      
-                    
-                      
+                       data-toggle="select2"
+                       id="institution"
+                       name="institution"
                        value={this.state.institution }
-                     onChange={this.props.handleChange}
+                       onChange={this.props.handleChange}
                     >
 
 
@@ -5694,10 +7040,13 @@ class Step1 extends React.Component {
                     for="short_description"
                   >
                     Course Short description
-                  </label><span></span>
+                  </label>
+                  <span>*Not more than 250 characters</span>
 
                      <HTMLForm
+                      
                         title="description"
+                        maxlength="250"
 
                         placeholder={"description"}
                         value={this.state.description || ""}
@@ -5768,7 +7117,7 @@ class Step1 extends React.Component {
                       id="curriculum"
                        style={{display:"none"}}
                       className="form-control"
-                      placeholder="Short description"
+                      placeholder="curriculum"
                        value={this.state.curriculum}
                      
                     ></textarea>
@@ -5918,37 +7267,71 @@ class Step1 extends React.Component {
 
 
 
-                <div className="form-group col-md-6 fl-left">
-                  
-                  <div className="">
-                    <input
-                      style={{ position: "relative", zIndex: "1" }}
-                      type="text"
-                      className="form-control"
-                      id="intro_video"
-                      name="intro_video"
-                      placeholder="You tube url"
-                       value={this.props.intro_video}
-                     onChange={this.props.handleChange}
-                    />
+                 <div className="form-group col-md-6 fl-left">
 
-                    <label
-                    className="col-md-12 col-form-label"
-                    for="course_title"
-                  >
-                    video url<span className="required">*</span>{" "}
-                  </label>
-                  </div>
-                </div>
+                    <div class="file-drop-area col-md-12" style={{background: "#f5f5f5",
+  padding: "10px 0 10px 0", margin:"20px"}}>
+                      <span class="fake-btn">Choose Video File (mp4 only)</span>
+                      <span class="file-msg"></span>
+                      <input id="intro_video" name="intro_video" class="file-input" type="file" multiple   accept="video/mp4"
+                               value={this.props.intro_video}
+                               onChange={this.props.handleChange} />
+
+                                 <div id="feedback2" style={{display:"none"}}>
+    
+  </div>
+  
+  <label  id="progress-label" for="progress" style={{display:"none"}}></label>
+  <progress id="progress2" value="0" max="100" style={{display:"none"}}> </progress>
+                    </div>
+
+                    
+
+                
+
+</div>
+
+
+
+
+
+
+
+ <div className="form-group col-md-6 fl-left">
+
+                    <div class="file-drop-area col-md-12" style={{background: "#f5f5f5",
+  padding: "10px 0 10px 0", margin:"20px"}}>
+                      <span class="fake-btn">Choose Image Files (.jpg/.png/.gif)</span>
+                      <span class="file-msg"></span>
+                      <input id="card_image" name="card_image" class="file-input" type="file" multiple   accept="image/*"
+                               value={this.props.card_image}
+                               onChange={this.props.handleChange} />
+
+                                 <div id="feedback" style={{display:"none"}}>
+    
+  </div>
+  
+  <label  id="progress-label" for="progress" style={{display:"none"}}></label>
+  <progress id="progress" value="0" max="100" style={{display:"none"}}> </progress>
+                    </div>
+
+                    
+</div>
+
+
+                
+
+
+
 
 
 
 
 
         
-                <div class="form-group  mb-3 col-md-12 fl-left">
+                <div class="form-group  mb-3 col-md-6 fl-left">
                  
-                  <div class="co" data-select2-id="94">
+                  <div class="pull-right " data-select2-id="94">
                   <label class="col-md-12 col-form-label" for="level">
                      Auditing
                   </label>
@@ -5971,35 +7354,6 @@ class Step1 extends React.Component {
 
 
 
-
-
-
- <div className="form-group col-md-12 fl-left">
-
-                    <div class="file-drop-area col-md-12" style={{background: "#f5f5f5",
-  padding: "40px 0 20px 0", margin:"20px"}}>
-                      <span class="fake-btn">Choose files</span>
-                      <span class="file-msg"></span>
-                      <input id="card_image" name="card_image" class="file-input" type="file" multiple   accept="image/*"
-                               value={this.props.card_image}
-                               onChange={this.props.handleChange} />
-
-                                 <div id="feedback" style={{display:"none"}}>
-    
-  </div>
-  
-  <label  id="progress-label" for="progress" style={{display:"none"}}></label>
-  <progress id="progress" value="0" max="100" style={{display:"none"}}> </progress>
-                    </div>
-
-                    
-
-                
-
-</div>
-
-
-                
 
 
 
@@ -6044,24 +7398,7 @@ class Step1 extends React.Component {
         <br />
         <br />
         <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
+       
       </React.Fragment>
     );
   }
@@ -6109,13 +7446,14 @@ class Step5 extends React.Component {
  
     return (
       <React.Fragment>
-        <div className="tab-pane card-box schedules-form" id="outcomes">
+        <div className="tab-pane card-box schedules-form " id="outcomes">
           <div className="row justify-content-center">
             <div className="col-md-12">
               <div className="form-group col-md-6 fl-left">
                
                 <div className="">
                   <input
+                    style={{padding:"22px"}}
                     type="text"
                     className="form-control"
                     id="course_title2"
@@ -6131,31 +7469,54 @@ class Step5 extends React.Component {
                 </div>
               </div>
 
-              {/*<div class="form-group  col-md-6 fl-left">
+              <div class="form-group  col-md-6 fl-left">
                 
                 <div class="" data-select2-id="94">
                   <select
                     class="form-control select2 select2-hidden-accessible"
                     data-toggle="select2"
-                    name="level"
-                    id="level"
+                    name="grade"
+                    id="grade"
                     data-select2-id="level"
                     tabindex="-1"
                     aria-hidden="true"
                   >
-                    <option value="beginner" data-select2-id="4">
+                    <option value="1" data-select2-id="4">
                       20-50%
                     </option>
-                    <option value="advanced" data-select2-id="95">
+                    <option value="2" data-select2-id="95">
                       50-70%
                     </option>
-                    <option value="intermediate" data-select2-id="96">
+                    <option value="3" data-select2-id="96">
                       90%
                     </option>
+                    <option value="4" data-select2-id="96">
+                      A+
+                    </option>
+                    <option value="5" data-select2-id="96">
+                      B++
+                    </option>
+                    <option value="6" data-select2-id="96">
+                      B-
+                    </option>
+                    <option value="6" data-select2-id="96">
+                      B++
+                    </option>
+                    <option value="7" data-select2-id="96">
+                      C
+                    </option>
+                    <option value="8" data-select2-id="96">
+                      D
+                    </option>
+                    <option value="9" data-select2-id="96">
+                      E
+                    </option>
+                    
+                    
                   </select>
 
                   <label class="col-md-12 col-form-label" for="level">
-                  Grade
+                  Grading (Benchmark for passmark)
                 </label>
                 </div>
               </div>
@@ -6166,8 +7527,8 @@ class Step5 extends React.Component {
                   <select
                     class="form-control select2 select2-hidden-accessible"
                     data-toggle="select2"
-                    name="level"
-                    id="level"
+                    name="assignment"
+                    id="assignment"
                     data-select2-id="level"
                     tabindex="-1"
                     aria-hidden="true"
@@ -6183,7 +7544,7 @@ class Step5 extends React.Component {
                   Assignment/Exam Type
                 </label>
                 </div>
-              </div>*/}
+              </div>
 
              
             </div>
@@ -6213,6 +7574,9 @@ class Step3 extends React.Component {
 			//set this to date time when undo is clicked
        
 		$("input[name='"+ name +"']").attr("type","datetime-local")
+    $("input[name='"+ name +"']").focus() // trigger state change to be awear
+    $("input[name='"+ name +"']").change() // trigger state change to be awear
+     
       }
       
   }
@@ -6242,7 +7606,7 @@ class Step3 extends React.Component {
                     name="course_start_date_time"
                     placeholder="Enter course title"
                     required=""
-                     value={this.state.course_start_date_time}
+                     value={this.props.course_start_date_time}
                      onChange={this.props.handleChange}
                   />
 				  
@@ -6285,7 +7649,7 @@ class Step3 extends React.Component {
                     name="enrolment_start_date_time"
                     placeholder="Enter course title"
                     required=""
-                     value={this.state.enrolment_start_date_time}
+                     value={this.props.enrolment_start_date_time}
                      onChange={this.props.handleChange}
                   />
 				  
@@ -6306,7 +7670,7 @@ class Step3 extends React.Component {
                     name="enrolment_end_date_time"
                     placeholder="Enter course title"
                     required=""
-                     value={this.state.enrolment_end_date_time}
+                     value={this.props.enrolment_end_date_time}
                      onChange={this.props.handleChange}
                   />
 				  
@@ -6358,6 +7722,8 @@ class Step3 extends React.Component {
                     name="requirement_hours_per_week"
                     placeholder="Enter course title"
                     required=""
+                    value={this.props.requirement_hours_per_week}
+                    onChange={this.props.handleChange}
                   />
                 </div>
               </div>
@@ -6374,6 +7740,8 @@ class Step3 extends React.Component {
                     name="requirement_no_of_week"
                     placeholder="Enter course title"
                     required=""
+                    value={this.props.requirement_no_of_week}
+                    onChange={this.props.handleChange}
                   />
                 </div>
               </div>
@@ -6394,8 +7762,12 @@ class Step3 extends React.Component {
                     name="prerequisite"
                     placeholder="Enter course title"
                     required=""
+                    value={this.props.prerequisite}
+                    onChange={this.props.handleChange}
+
                   />
                 </div>
+                <ul id="preliminary_courses"></ul>
               </div>
 
             
@@ -6414,7 +7786,7 @@ class Step3 extends React.Component {
                     data-select2-id="level"
                     tabindex="-1"
                     aria-hidden="true"
-                     value={this.props.name}
+                     value={this.props.course_pacing}
                      onChange={this.props.handleChange}
                   >
                     <option value="1" data-select2-id="4">
@@ -6543,9 +7915,17 @@ class Step4 extends React.Component {
 	 //avoid expensive api calls
 	 if(localStorage.getItem("author")){
 		 let instructorId = localStorage.getItem("author")
-		 let lead_guy = await getInstructorProfile(instructorId)
-		 console.log(lead_guy)
-		 return lead_guy
+     try{
+       let lead_guy = await getInstructorProfile(instructorId)
+     console.log(lead_guy)
+     return lead_guy
+
+     }catch(e){
+      console.log("Could not fetch record due to  error:"+ e)
+
+
+     }
+		
 	 }else{
 		 //add a team lead error here
 		 
@@ -6772,7 +8152,7 @@ class Step4 extends React.Component {
 					<main class="mdl-layout__content">
             
                    <div id="collabo-guys" class="content-grid mdl-grid portfolio-max-width">
-				   {this.runLoopSlideShow()}
+				   {/*this.runLoopSlideShow()*/}
 
 				   
                      </div>
@@ -7156,9 +8536,15 @@ const saveMarkdownEditContent = () => {
         // })
 
 
-        $(".iframe-box").css({
-          display:"block"
-        })
+        // $(".iframe-box").css({
+        //   display:"none"
+        // })
+
+        allowedHeaders =  document.querySelector("form#myModalGenericForm-SELECT")
+        allowedHeaders.setAttribute('data-basestation', ".dynamo_" + localStorage.getItem("l_tracker"))
+        allowedHeaders.setAttribute("data-markdown", TemplateType)
+        allowedHeaders.setAttribute("external_source","enabled")
+        
 
 
 
@@ -7177,10 +8563,14 @@ const saveMarkdownEditContent = () => {
         $("#openModal-about").css({opacity:1})
 
         //problem creation form box
+
+        //actually this is for the reinitialization of creating question
+        // after the problem component has been created or existed
         allowedHeaders =  document.getElementById("openModal-about")
         allowedHeaders.setAttribute('data-basestation', ".dynamo_" + localStorage.getItem("l_tracker"))
         allowedHeaders.setAttribute("data-markdown", TemplateType)
-        allowedHeaders.setAttribute("data-url","/lms/api/create/problem-component/");
+        allowedHeaders.setAttribute("data-url","/lms/api/create/question/");
+        $("#problemcomponent_form").css({display:"block"}).fadeIn("slow")
 
         //lauch headers
         break;
@@ -7290,12 +8680,7 @@ const saveMarkdownEditContent = () => {
         return false;
     }
 
-  // if(TemplateType =="[pb_html][/pb_iframe]" || TemplateType =="[pb_html][/pb_video]"
-  //    || TemplateType =="[pb_html][/pb_broadcasting]" || TemplateType == "[pb_html][/pb_google_meet]"
-  //    || TemplateType == "[pb_html][/pb_confrencing]" ||  TemplateType == "[pb_html][/pb_vimeo]"  ||  TemplateType == "[pb_html][/pb_you_tube]"
-  //    ){
-          // alert("its generic")   
-       // }
+   
      
   };
 
@@ -7331,11 +8716,7 @@ const saveMarkdownEditContent = () => {
 
     }
 
-     //no longer using tiny myce editor because it would require payment for premium usage
-     // let T = new  TinyMyceRender();
-     // T.render("")
-
-    
+     
   }
 
 
@@ -7396,6 +8777,7 @@ const saveMarkdownEditContent = () => {
   if (props.currentStep !== 6) {
     return null;
   }
+  let groupOwner = props.groups
 
   return (
     <React.Fragment>
@@ -7493,6 +8875,37 @@ const saveMarkdownEditContent = () => {
                       <label>Section ID</label>
                       <input  name="course" type="text" class="form-control" id="sec_course_id" value={getIdFromUrl()} />
                     </div>
+
+
+                    <div class="form-group" style={{display:"none"}} >
+                      <label>Release Date</label>
+                      <input  name="release_date" type="datetime-local" class="form-control" id="release_date" />
+                    </div>
+
+
+                    <select class="form-control" name="group_passed" id="id_group_passed">
+                      <option value="" selected="">-----SELECT A VISIBLE GROUP----</option>
+
+                      {groupOwner && groupOwner.map(group =>{
+                        return (
+                            <option value={group.id}>{group.name}</option>
+                        )
+                      })}
+                    </select>
+
+
+                    <div class="form-group" style={{display:"none"}} >
+                      <label>Publication Status</label>
+                     <select class="form-control" name="publication_status">
+                          <option value="1">Draft (Never Published)</option>
+                          <option value="2">Published and Live</option>
+                          <option value="3">Draft Unpublished Changes</option>
+                          <option value="4">Visible to Staff Only</option>
+                  </select>
+                    </div>
+
+
+
 
                     <div class="form-group">
                       <label>Overview</label>
@@ -8566,24 +9979,24 @@ const saveMarkdownEditContent = () => {
                     <form id="myModalGenericForm-SELECT" enctype="application/x-www-form-urlencoded">
                       <div class="form-group root-block">
                         <label class="change-title" >Name</label>
-                        <input type="text" class="form-control" id="editor-html-name" name="name"/>
+                        <input type="text" class="form-control nameit" id="editor-html-name" name="name"/>
                       </div>
 
 
                       <div class="form-group root-block" >
                         
-                        <input type="hidden" name="lesson" class="form-control" id="lesson-editor-id2"  />
+                        <input type="hidden" name="lesson" class="form-control lessonit" id="lesson-editor-id2"  />
                       </div>
 
 
                       <div class="form-group root-block" >
                         <label class="change-title">Description</label>
-                        <input type="text" name="description" class="form-control" id="editor-html-description" />
+                        <textarea type="text" name="description" class="form-control" id="editor-html-description" ></textarea>
                       </div>
 
                       <div class="form-group root-block" style={{display:"none"}}>
                         <label class="change-title">Content Type </label>
-                        <select id="editor-html-type" class="form-control" name="component_type">
+                        <select id="editor-html-type" class="form-control component_typeit" name="component_type">
                              <option value="1" selected>Video</option>   
                                <option value="2">HTML</option>
                              
@@ -8592,7 +10005,7 @@ const saveMarkdownEditContent = () => {
                       </div>
 
                       <div class="form-group" style={{display:"none"}}>
-                       <select class="form-control" id="editor-html-content-type" name="content_type">
+                       <select class="form-control content_typeit" id="editor-html-content-type" name="content_type">
                           
                                 <option value="1" selected>I-Frame</option> 
                                 <option value="3">HYBRID</option>
@@ -8601,7 +10014,7 @@ const saveMarkdownEditContent = () => {
 
 
                       <div class="form-group root-block2" >
-                        <label class="change-title2">Embedded url link</label>
+                        <label class="change-title2 embedded_urlit">Embedded url link</label>
                         <input onInput={(e) =>{
                             //if its iframe component
                             let board = document.querySelector("#projector-view")
@@ -8688,7 +10101,7 @@ const saveMarkdownEditContent = () => {
 
 
       <div
-          style={{ marginTop: "-20px" }}
+          style={{ marginTop: "-80px" }}
           class="modal fade"
           id="modalFullScreenPreviewIframeAndVideos"
           tabindex="-1"
@@ -9096,15 +10509,15 @@ const saveMarkdownEditContent = () => {
 
           <div class="form-group root-block">
                         <label class="change-title" >Name</label>
-                        <input type="text" class="form-control" id="editor-html-name" name="name"/>
+                        <input type="text" class="form-control" id="editor-html-name2" name="name"/>
                       </div>
 
 
-                      <div class="form-group root-block" >
-                      <input type="hidden" name="component_id" class="form-control" id="component_id"  />
+                      <div class="form-group root-block"  style={{display:"none"}}>
+                      <input type="text" name="component_id" class="form-control" id="component_id"  />
   
                         
-                        <input type="hidden" name="lesson" class="form-control" id="lesson-editor-id"  />
+                        <input type="text" name="lesson" class="form-control" id="lesson-editor-id5"  />
                       </div>
 
 
@@ -9292,7 +10705,7 @@ const saveMarkdownEditContent = () => {
                     <form id="myModalGenericForm-SELECT" enctype="application/x-www-form-urlencoded">
                       <div class="form-group root-block">
                         <label class="change-title" >Name</label>
-                        <input type="text" class="form-control" id="editor-html-name" name="name"/>
+                        <input type="text" class="form-control" id="editor-html-name3" name="name"/>
                       </div>
 
 
@@ -9617,43 +11030,183 @@ const saveMarkdownEditContent = () => {
 
 
 
+         
 
 
 
 
-
-
-          <div class="pb-widget-preview-panel">
+<ul id="" data-id=""
+          data-name=""
+               data-idx=""
+          data-parent=""
+          data-pos=""
+          data-description=""
+          data-component_type=""
+          data-name=""
+          data-content_type=""
+          data-form=""
+          data-action-figure=""
+          data-append="" 
+          data-getitup="" 
+          
+          data-embedded_url=""
+          data-embedded_url="" 
+          class="hello-move-me components accordion-content pb-widget-preview-panel" >
             
             
-              <div class="container">
+              <div class="">
                 <div class="row">
-                  <div class="col-md-10">
-                    <div class="panel-xx panel-dark">
+                  <div class="col-md-12">
+                    <div class="">
                     
-              <div class="panel-heading-xx">
-                <span
-                  class="panel-title unit_title_place_holder"
-                  style={{ float: "left",  marginLeft: "10px" }}
-                >
-                  
-                </span>
-                <div class="actions-set">
-                  <span><a href="#myModalMarkdownEditorEditMode"
-              role="button"
-              data-toggle="modal"><i
-               onclick="LaunchEditBoxEvent(this)"
+              <div class="">
+                <div class=" col-md-12">
+                   
 
-               class="pb-handle-widget fa fa-edit fa-2x"></i></a></span>
+
+                <div class="actions-set pull-right" >
+               
+
+                  <span ><a href="#myModalMarkdownEditorEditMode"
+                  data-name=""
+               data-idx=""
+          data-parent=""
+          data-pos=""
+          data-description=""
+          data-component_type=""
+          data-name=""
+          data-content_type=""
+          data-form=""
+          data-action-figure=""
+          data-append="" 
+          data-getitup="" 
+          
+          data-embedded_url=""
+          data-embedded_url="" 
+          
+
+              role="button"
+              data-toggle="modal">
+              <i onclick="LaunchEditBoxEvent(this)"
+               class="pb-handle-widget fa fa-edit fa-2x"
+
+                data-name=""
+               data-idx=""
+          data-parent=""
+          data-pos=""
+          data-description=""
+          data-component_type=""
+          data-name=""
+          data-content_type=""
+          data-form=""
+          data-action-figure=""
+          data-append="" 
+          data-getitup="" 
+          
+          data-embedded_url=""
+          data-embedded_url=""  
+
+
+               ></i>
+               </a></span>
                                
-                  <span><i class="pb-remove fa fa-trash fa-2x" onclick="handleWidgetRemove(this)"></i></span>
+                  <span><i 
+
+                  data-name=""
+               data-idx=""
+          data-parent=""
+          data-pos=""
+          data-description=""
+          data-component_type=""
+          data-name=""
+          data-content_type=""
+          data-form=""
+          data-action-figure=""
+          data-append="" 
+          data-getitup="" 
+          
+          data-embedded_url=""
+          data-embedded_url="" 
+
+
+                  class="pb-remove fa fa-trash fa-2x" onClick={(e) =>{ handleWidgetRemove(e.target)}}></i></span>
+                
+                   <span><a
+          data-name="${component?.name}"
+        
+          data-description="" 
+
+         class="drag-handle-list-lessons" style={{marginRight:"10px"}}
+         
+              data-name=""
+               data-idx=""
+          data-parent=""
+          data-pos=""
+          data-description=""
+          data-component_type=""
+          data-name=""
+          data-content_type=""
+          data-form=""
+          data-action-figure=""
+          data-append="" 
+          data-getitup="" 
+          
+          data-embedded_url=""
+          data-embedded_url="" 
+           
+         
+                 
+          >
+
+         <i class="fa fa-arrows fa-2x"
+            data-name=""
+               data-idx=""
+          data-parent=""
+          data-pos=""
+          data-description=""
+          data-component_type=""
+          data-name=""
+          data-content_type=""
+          data-form=""
+          data-action-figure=""
+          data-append="" 
+          data-getitup="" 
+          
+          data-embedded_url=""
+          data-embedded_url=""  
+
+          
+        
+
+         ></i>
+        </a></span>
                 </div>
+                </div>
+                
               </div>
+              <br/> <br/><br/><br/>
             
-                      <div class="panel-body-xx ">
-                        
-                        <div class="content-section-from-input unit_content_place_holder">
-                          Edit this section
+                      <div class="col-md-12">
+                      <h4
+                  class="col-md-12"
+                  
+                > <span class="compo-type" style={{fontSize:"25px"}}>Component Type: </span><br/>
+                <span style={{fontSize:"25px"}}>Title</span>
+                <span style={{fontSize:"25px",fontWeight:"bold",color:"#000"}} class=" unit_title_place_holder  title-given "> 
+                  </span>
+                 </h4><br/>
+
+
+                      <div id="readmore_" style={{display:"block"}}  class="readmore js-read-more" data-rm-words="70">
+                          dummy content
+                      </div>
+
+                                              
+                        <div data-append="" 
+                        data-getitup="" class="content-section-from-input unit_content_place_holder">
+                           <p style={{display:"block"}}  id="embedded_url_"></p>
+                           
+                          <p>Video section ${    "Click the edit icon above to edit this unit" } Question section</p>
                         </div>
 
                       </div>
@@ -9662,7 +11215,7 @@ const saveMarkdownEditContent = () => {
                 </div>
               </div>
           
-          </div>
+          </ul>
 
 
 
@@ -9902,6 +11455,35 @@ window.exportSection = (el) => {
 //handle state positioning
 
 class Step6 extends React.Component {
+  constructor(){
+     super()
+
+     
+    let id = this.cleanUpExtension(
+       this.cleanUpId(window.location.href)
+      )
+    // alert(id)
+     this.state = {
+      groups:[],
+      name_group:"",
+      members:[],
+      course: id ,
+      group_type:""
+
+     }
+     this.handleSave = this.saveGroupAddition.bind(this)
+  }
+
+  cleanUpId(url) {
+  const filename = decodeURIComponent(new URL(url).pathname.split('/').pop());
+  if (!filename) return swal('No Course ID', "A course unique id is needed"); // some default filename
+  return filename;
+}
+
+cleanUpExtension(filename) {
+  return filename.replace(/^(.+?)(?:\.[^.]*)?$/, '$1');
+}
+
   showAdvancedSettings(e){
 	  e.preventDefault();
 	
@@ -9911,16 +11493,56 @@ class Step6 extends React.Component {
 	  $("#slideeffect").fadeIn("slow")
 	   $("#slideeffect").css({width:"80%"})
   }
+
+  handleChange(e){
+    const {name,value} = e.target;
+
+    if(e.target.name=="name"){
+      let tag =`input[name='${name}']`
+      $("#group-make").find(tag).val(value)
+    }else{
+      let tag =`input[name='${name}']`
+       $("#group-make").find(tag).val(value) 
+    }
+    
+  }
   
   closeAdvancedSettingsPanel(e){
 	  e.preventDefault()
 	  $("#slideeffect").fadeOut("slow")
 	  $("#slideeffect").css({width:"0px"})
   }
+
+  async componentDidMount(){
+    try{
+      let res = await getGroups();
+      this.setState({
+        groups: Array.from(res.results)
+      })
+    }catch(e){
+      swal("Error", "Probably a network error : " + e)
+    }
+
+    $("#add-group").click((e)=>{
+      e.preventDefault()
+      this.handleSave(e)
+    })
+   
+  }
+
+  saveGroupAddition(e){
+    //alert("called")
+    let buildUrl = "/lms/api/create/gaps-group"
+    let res = createAnyResource("POST",buildUrl,$("#group-make"))
+  }
   render() {
     if (this.props.currentStep !== 4) {
       return null;
     }
+
+    const { groups,course } = this.state
+    const {instructors } = this.props
+    
     return (
       <React.Fragment>
         {" "}
@@ -9930,133 +11552,13 @@ class Step6 extends React.Component {
 
 
 
-            
 
-
-
-            <div class="group-add-form">
-
-
-
-
-                <div className=" form-group col-md-6 fl-left">
-                        <div className="col-md-10  fl-left author">
-                        <label>Group Name</label>
-                           <input
-                            type="text"
-                            placeholder={"Add a new member to group by email"}
-                              
-                            className="form-control fl-left"
-                            id="member-inset"
-                            name="name"
-                            disabled
-                          />
-
-                      </div>
-                </div>
-
-               <div className=" form-group col-md-6 fl-left">
-                        <div className="col-md-10  fl-left author">
-                          <input
-                            type="text"
-                            placeholder={"Add a new member to group by email"}
-                              
-                            className="form-control fl-left"
-                            id="member-inset"
-                            name="member"
-                            disabled
-                          />
-                        </div>
-                         <div class="col-md-2  fl-left">
-                            <button
-                              type="button"
-
-                            
-                              className="small text-white"
-
-
-                                onClick={(e) => {
-                                  e.preventDefault()
-                
-                          swal({
-                            text: 'Search for a student or instructor to add to the group by name/email/ phone number. e.g. "saladin jake ".',
-                            content: "input",
-                            button: {
-                            text: "Search!",
-                            closeModal: false,
-                            },
-                          })
-                          .then(name => {
-                            if (!name) {
-
-                             return swal("No instructor email/name was entered!");
-                                
-                            }
-                            
-                            if(name){    
-                                 return swal("Success!", "The Instructor was found", "Success");
-                                  
-                             }else{
-
-                                
-                                  swal("Error", "We could not find instructor", "error");
-                        
-                                  swal.stopLoading();
-                                 return swal.close();
-                            
-
-                             }
-                          })
-                          
-                           
-                          
-
-                    }}
-
-                            >
-                              <i style={{marginTop:"-20px"}} class="fa fa-undo fa-2x"></i>
-                            </button>
-                            </div>
-
-                        <br />
-                        <br />
-                        <label class="col-md-12 col-form-label" for="level">
-                    Member<span className="required">*</span></label>
-                </div>
-
-
-
-                <div className=" form-group col-md-12 fl-left">
-                        <div className="col-md-10  fl-left author">
-                          <select>
-                            <option value="1">Student</option>
-                             <option value="2">Readers</option>{/*this is not part of the first iteration of the contract*/}
-                              <option value="3">Authors</option>
-                          </select>
-
-                      </div>
-                </div>
-
-
-                <div className=" form-group col-md-6 fl-left">
-                        <div className="col-md-10  fl-left author">
-                          <input type="hidden" name="course"  id="group_course_id"/>
-
-                      </div>
-                </div>
-
-
-                         <div class="toggleslider pull-left"><a href="" onClick={(e)=>{}}>Create New group</a></div>
-
-            </div>
-			
-			
-			
 			{/*here is what you can manage*/}
 			
 			<div class="col-md-12 configurations">
+      <br/><br/><br/>
 <div class="toggleslider"><a href="" onClick={(e)=>{this.showAdvancedSettings(e)}}>Advanced Settings</a></div>
-            <div class="toggleslider"><a href="" onClick={(e)=>{}}>Add new user to group</a></div>
+    
    
 
   <div class="pull-left col-md-6">
@@ -10070,18 +11572,22 @@ class Step6 extends React.Component {
             <thead>
                 <tr>
                     <th class="name-col">Course General Settings</th>
-                    <th>Can Edit</th>
-                    <th>Can Delete</th>
-                    <th>Can Read</th>
-                    <th>Can Create</th>
-                    <th>5</th>
-                    <th>6</th>
+                    <th>Enrollable</th>
+                    <th>Discussable</th>
+                    <th>Viewable</th>
+                    <th>LMS(CONFIGURATION)</th>
+                    <th>Can ETC</th>
+                    <th>ETC...</th>
                     <th class="missed-col">Revert</th>
                 </tr>
             </thead>
             <tbody>
+              {groups && groups.map(group =>{
+                return (
+                    
+              
                 <tr class="student">
-                    <td class="name-col">Free Course Enrolled Learners Group</td>
+                    <td class="name-col">{group.name}</td>
                     <td class="attend-col"><input type="checkbox" /></td>
                     <td class="attend-col"><input type="checkbox" /></td>
                     <td class="attend-col"><input type="checkbox" /></td>
@@ -10090,61 +11596,215 @@ class Step6 extends React.Component {
                     <td class="attend-col"><input type="checkbox" /></td>
                   
                     <td class="attend-col"><input type="checkbox" /></td>
-             <td class="missed-col">Undo Previledges</td>
+              
+             <td style={{cursor:"pointer"}} class="missed-col" data-id={group.id}>Save Changes</td>
               </tr>
-                <tr class="student">
-                        <td class="name-col">Paid Enrolled Learners</td>
-                     <td class="attend-col"><input type="checkbox" /></td>
-                    <td class="attend-col"><input type="checkbox" /></td>
-                    <td class="attend-col"><input type="checkbox" /></td>
-                    <td class="attend-col"><input type="checkbox" /></td>
-                  
-                    <td class="attend-col"><input type="checkbox" /></td>
-                  
-                    <td class="attend-col"><input type="checkbox" /></td>
-             <td class="missed-col">Undo Previledges</td>
-                </tr>
-                <tr class="student">
-                    <td class="name-col">Premium Members</td>
-                     
-                <td class="attend-col"><input type="checkbox" /></td>
-                    <td class="attend-col"><input type="checkbox" /></td>
-                    <td class="attend-col"><input type="checkbox" /></td>
-                    <td class="attend-col"><input type="checkbox" /></td>
-                  
-                    <td class="attend-col"><input type="checkbox" /></td>
-                  
-                    <td class="attend-col"><input type="checkbox" /></td>
-             <td class="missed-col">Undo Previledges</td>
-                </tr>
-                <tr class="student">
-                    <td class="name-col">Subscribers Group</td>
-                     <td class="attend-col"><input type="checkbox" /></td>
-                    <td class="attend-col"><input type="checkbox" /></td>
-                    <td class="attend-col"><input type="checkbox" /></td>
-                    <td class="attend-col"><input type="checkbox" /></td>
-                  
-                    <td class="attend-col"><input type="checkbox" /></td>
-                  
-                    <td class="attend-col"><input type="checkbox" /></td>
-             <td class="missed-col">Undo Previledges</td>
-                </tr>
-                <tr class="student">
-                    <td class="name-col">MultiNational Learning Group</td>
-                      
-                     <td class="attend-col"><input type="checkbox" /></td>
-                    <td class="attend-col"><input type="checkbox" /></td>
-                    <td class="attend-col"><input type="checkbox" /></td>
-                    <td class="attend-col"><input type="checkbox" /></td>
-                  
-                    <td class="attend-col"><input type="checkbox" /></td>
-                  
-                    <td class="attend-col"><input type="checkbox" /></td>
-             <td class="missed-col">Undo Previledges</td>
-                </tr>
+               )
+            })}
+                
             </tbody>
         </table>
+         <br/><br/><br/><br/>
+         
+         <form id="group-make" method="POST" novalidate>
 
+         <div className=" form-group col-md-6 fl-left">
+                        <div className="col-md-10  fl-left author">
+                        <label>Group Type</label>
+                          <select onChange={this.handleChange} name="group_type" class="form-control">
+                            <option value="1">Student</option>
+                             <option value="2">Readers</option>{/*this is not part of the first iteration of the contract*/}
+                              <option value="3">Authors</option>
+                          </select>
+
+                      </div>
+                </div>
+                
+                <div className=" form-group col-md-6 fl-left">
+                        <div className="col-md-10  fl-left ">
+                        <label>Group Name</label>
+                           <input
+                            type="text"
+                            placeholder={"Add a new member to group by email"}
+                            onChange={this.handleChange}
+                            className="form-control fl-left"
+                            id="member-inset"
+                            name="name"
+                            
+                          />
+
+                           <input
+                            type="hidden"
+                            placeholder={"Add a new member to group by email"}
+                           
+                            className="form-control fl-left"
+                            id="course"
+                            name="course"
+                            value={course}
+                            
+                          />
+
+                      </div>
+                </div>
+
+               <div className=" form-group col-md-6 fl-left">
+                        <div className="col-md-10  fl-left groupmember">
+                         <label class="col-md-12 col-form-label" for="level">
+                    Add Members<span className="required">*</span></label>
+                          <input
+                            type="text"
+                            placeholder={"Add a new member to group by email"}
+                             
+                            className="form-control fl-left"
+                            id="member-inset"
+                            name="member"
+                            disabled
+                            
+                          />
+                        </div>
+                         <div class="col-md-2  fl-left">
+                            <button
+                              type="button"
+
+                            
+                              className="small text-white"
+
+
+                                onClick={ () => {
+              let values = this.props.instructors            
+
+              swal({
+                text: 'Search for an instructor by email/ phone number. e.g. "saladinjake@company.com ".',
+                content: "input",
+                button: {
+                text: "Search!",
+                closeModal: false,
+                },
+              })
+              .then(name => {
+                if (!name)  return swal("No instructor email or phone entered was entered!");
+                  // check if user existed in our initial fetch 
+                  // do not make another api request 
+                  //this saves pull request
+
+                     
+                  //TODO: if no collaborators selected 
+                  //LET THE LOGGED IN OR LEAD INSTRUCTOR BE APPENDED AS A COLLABORATOR
+
+                let targetInstructor = instructors.find(instructor => {
+                    console.log(instructor)
+                    return (instructor?.profile?.name === name) ||  (instructor?.profile?.email === name) || (instructor?.profile?.phone_number === name)
+                })
+               
+                  if(targetInstructor){
+                     let collaborators =  $("#collabo-members")
+                      
+                     let newGuy = $(`
+                      <div class="col-lg-3 col-md-3 col-sm-6">
+                      <a href="#">
+                        <div className="">
+                          <i className="fa fa-trash fa-2x text-pink"></i>
+                          <p
+                            className="m-0 text-dark-x counter font-600-x"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "12px",
+                            }}
+
+                          >
+                            ${targetInstructor?.profile?.first_name} - ${targetInstructor?.profile?.email}
+                          </p>
+                          <div
+                            className="text-muted-x m-t-5-x"
+                            style={{
+                              fontFamily: "Open Sans",
+                              color: "#000",
+                              fontSize: "14px",
+                            }}
+                            onclick="alert('test delete operation')"
+
+                            data-id=${targetInstructor?.profile?.id}
+                          >
+                            Remove
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                     `)
+                     
+                    collaborators.append(newGuy.html())
+                  
+
+                     // now let js do the dynamic selection of the hidden authoring_team select form fields
+                    const { name, id, email, phone_number} = targetInstructor?.profile
+                     values.push({
+                      id,name, email, phone_number
+                     })
+
+                     this.setState({members: values})
+
+                      $('select[name=members]').val(this.state.members) // all collaborators as listArray
+      
+                     return swal("Success!", "The Instructor was found", "Success");
+
+                 }else{
+
+                    
+                      swal("Oh noes!", "We could not find instructor", "error");
+            
+                      swal.stopLoading();
+                     return swal.close();
+                
+
+                 }
+              })
+             
+                 
+                           
+                          
+
+      }}
+
+
+
+                            >
+                              <i style={{marginTop:"-20px"}} class="fa fa-undo fa-2x"></i>
+                            </button>
+                            </div>
+
+                       <select name="members[]" multiple  style={{display:"none"}}>
+                      {this.state.members.length > 0  && this.state.members.map(instructor => {
+                          return (
+                             <option value={instructor.id}>{instructor.name}</option>
+                          )
+                      })}
+                </select>
+                <ul id="collabo-members"></ul>
+                       
+                </div>
+
+
+
+                
+
+
+
+              </form>
+
+
+
+                <div className=" form-group col-md-6 fl-left">
+                        <div className="col-md-10  fl-left">
+                          <a 
+                          class="btn btn-danger pull-left" 
+                          id="add-group"
+                          href="#"
+
+                         >Create New group</a>
+
+                      </div>
+                </div>
 
   </div>
 
@@ -10155,12 +11815,16 @@ class Step6 extends React.Component {
 
   
   <div class="slideeffect" id="slideeffect">
-  <p class="closeslide" ><a onClick={(e)=>{this.closeAdvancedSettingsPanel(e)}} href="">X</a></p>
+  
+  <br/><br/><br/><br/><br/><br/>
    
-    
       
   <div class="pull-left col-md-6">
+  <p class="closeslide pull-left" ><a onClick={(e)=>{this.closeAdvancedSettingsPanel(e)}} href="">X</a></p>
+  
 <h1 class=" ">Advanced Settings</h1>
+ 
+
     <p>Configuration settings for specific course features</p>
   </div>
   

@@ -965,6 +965,15 @@ export default class MasterForm extends React.Component {
     // return null;
   }
 
+  clearItems(list) {
+    for (const item of list) {
+      localStorage.removeItem(item, "");
+    }
+  }
+
+
+
+
   
   componentDidMount(){
     (async (trigger) =>{
@@ -974,7 +983,7 @@ export default class MasterForm extends React.Component {
          console.log("some error occured")
        }
     })("run-logic-sequence")
-    localStorage.clear();
+    
 
 
     var formElements = new Array();
@@ -986,28 +995,28 @@ export default class MasterForm extends React.Component {
     
 
 
-        let formEl = $("#create-course");
-     
-          formElements.filter(e =>{ 
-            var element = e;
-            var title = element.title;
-            var id = element.id;
-            var name = element.name;
-            var value = element.value;
-            var type = element.type;
-            var cls = element.className;
-            var tagName = element.tagName;
-            var options = [];
-            var hidden = [];
-            var formDetails = '';
+  let formEl = $("#create-course");
 
-            // check if the data exist in local store
-            if( localStorage.getItem( e.attr("name") ) ){
-               console.log(e.attr("name"))
-               formEl.find("#"+ e.attr("name")).val(localStorage.getItem( e.attr("name")))
-               let classAttr = `ql-editor[data-placeholder=${e.attr("name")}]`        
-            }
-          })
+    formElements.filter(e =>{ 
+      var element = e;
+      var title = element.title;
+      var id = element.id;
+      var name = element.name;
+      var value = element.value;
+      var type = element.type;
+      var cls = element.className;
+      var tagName = element.tagName;
+      var options = [];
+      var hidden = [];
+      var formDetails = '';
+
+      // check if the data exist in local store
+      if( localStorage.getItem( e.attr("name") ) ){
+         console.log(e.attr("name"))
+         formEl.find("#"+ e.attr("name")).val(localStorage.getItem( e.attr("name")))
+         let classAttr = `ql-editor[data-placeholder=${e.attr("name")}]`        
+      }
+    })
 
 
   }
@@ -1033,6 +1042,17 @@ export default class MasterForm extends React.Component {
 
  fetchContent = async () => {
    //automated logic
+   const itemsToRemove = ['name', 
+                       'author', 
+                       'description', 
+                       'code', 
+                       'institution', 
+                       'overview',
+                       'prerequisite',
+                       'outcomes'
+    ];
+    this.clearItems(itemsToRemove)
+       
     Promise.all(
       [
         getLanguages(),
@@ -1042,6 +1062,9 @@ export default class MasterForm extends React.Component {
       ].map((err) => err.catch(() => console.log( err)))
     )
       .then((res) => {
+
+        
+
         
 
         console.log(res[2].results)
@@ -1092,12 +1115,12 @@ export default class MasterForm extends React.Component {
   }
 
 
-  saveOrUpdateData =  ( type, mode="", url, data) => {
+  saveOrUpdateData = async ( type, mode="", url, data) => {
     //after api call to update or create
     switch(mode){
       case "CREATE_MODE": // this is only done once when the app is launched to create new course
         //call the create handler to api with form data
-        let newCourseRes =  createAnyResource("POST",url, data)
+        let newCourseRes = await createAnyResource("POST",url, data)
         console.log("success creating new course", newCourseRes)  
         break;
       
@@ -1142,13 +1165,23 @@ export default class MasterForm extends React.Component {
 
   
    /*implements save and continue logic*/
-  saveAndContinue = (e) =>{
+  saveAndContinue =  (e) =>{
     const {currentCourseId } = this.state;
     let curr = this.state.currentStep;
     this.persistData("mode","CREATE_MODE")
     let url=   "/lms/api/create/course/"
            //this is a create action
-    this.saveOrUpdateData("create", 'CREATE_MODE', url, $("form#create-course") )
+    try{
+    let result = this.saveOrUpdateData("create", 'CREATE_MODE', url, $("form#create-course") )
+    
+    if(result?.id){
+
+    }else{
+
+    }
+    }catch (e){
+
+    }
     
   }
 
@@ -1159,7 +1192,7 @@ export default class MasterForm extends React.Component {
     return (
       <Fragment>
         <NavBar />
-        <br/><br/><br/><br/><br/><br/>
+       
 
         <div className="row" id="container-fullscreen">
           <div className="col-md-12">
@@ -1232,7 +1265,7 @@ export default class MasterForm extends React.Component {
 
                   
 
-                    <br/><br /><br />
+                    <br/>
 
 
 
@@ -1895,7 +1928,7 @@ class Step1 extends React.Component {
                       id="author"
                       name="author"
                       placeholder="Enter course code"
-                      value="097cd2bb-ae72-48e4-9a4d-1ebd2c05be03"
+                      value=""
                      
                     />
                   </div>
@@ -1985,6 +2018,7 @@ class Step1 extends React.Component {
                          <div class="col-md-2  fl-left">
                             <button
                               type="button"
+                              style={{padding:"10px",width:"80px"}}
 
                             
                               className="small text-white"

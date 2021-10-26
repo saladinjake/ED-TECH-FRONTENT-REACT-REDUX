@@ -54,15 +54,7 @@ class Tmobile extends React.Component {
       }
     }
 
-    try {
-      let res = await getCategories();
-
-      this.setState({ categories: [...res.data.data] });
-      console.log(this.state.categories);
-    } catch (err) {
-      console.log(err);
-      toast.error("Error occured fetching notifications");
-    }
+   
     // setLoading(false);
 
     $(document).ready(function () {
@@ -264,47 +256,18 @@ class Tmobile extends React.Component {
             <nav className="navik-menu menu-caret submenu-top-border submenu-scale">
               <ul className="list-unstyled">
                 <li>
-                  <Link to={process.env.PUBLIC_URL + "/courses"}>
-                    Courses And Programmes{" "}
+                  <Link to={process.env.PUBLIC_URL + "/"}>
+                    Course List{" "}
                   </Link>
                 </li>
 
                 <li className="current-menu got-sub-menu-dynamic ripper">
                   <a href="#" className="menu-is-closed">
                     {" "}
-                    By Category
+                    Back to enrollment
                   </a>
                   <ul className="list-unstyled show-me">
-                    {this.state.categories.length > 0 &&
-                      this.state.categories.map((item, i) => {
-                        return (
-                          <Fragment>
-                            <li className="got-sub-menu-child no-ripper ">
-                              <Link
-                                className=" "
-                                to={`${process.env.PUBLIC_URL}/courses/category/${item.id}`}
-                              >
-                                {item.name}
-                              </Link>
-
-                              {item.subcategories.length > 0 &&
-                                item.subcategories.map((cat, i) => {
-                                  return (
-                                    <ul className="list-unstyled show-me">
-                                      <li>
-                                        <a
-                                          href={`${process.env.PUBLIC_URL}/courses/category/${cat.id}`}
-                                        >
-                                          {cat.name}
-                                        </a>
-                                      </li>
-                                    </ul>
-                                  );
-                                })}
-                            </li>
-                          </Fragment>
-                        );
-                      })}
+                    
 
                     {/*<li><a href="#">Dropdown menu</a>
                                   <ul  className="list-unstyled">
@@ -316,85 +279,8 @@ class Tmobile extends React.Component {
                               </li>*/}
                   </ul>
                 </li>
-                <li className="got-sub-menu">
-                  <a href="#">By Program</a>
-                  <ul
-                    className="list-unstyled"
-                    style={{ fontFamily: "Open Sans" }}
-                  >
-                    {PROGRAM_LINK.length > 0 &&
-                      PROGRAM_LINK.map((item) => {
-                        return (
-                          <li style={{ fontFamily: "Open Sans" }}>
-                            <a
-                              style={{
-                                color: "#000",
-
-                                fontFamily: "Open Sans",
-                                color: "#000",
-
-                                zIndex: "25",
-                              }}
-                              className=" "
-                              href={`${process.env.PUBLIC_URL}/institute/${item.id}`}
-                            >
-                              {item.name}
-                            </a>
-                          </li>
-                        );
-                      })}
-                  </ul>
-                </li>
-                <li class="got-sub-menu">
-                  <a href="#">For Institutions</a>
-                  <ul className="list-unstyled">
-                    <li>
-                      <Link
-                        style={{
-                          fontFamily: "Open Sans",
-                          color: "#000",
-
-                          zIndex: "25",
-                        }}
-                        className=""
-                        to={process.env.PUBLIC_URL + "/schools"}
-                      >
-                        For Schools
-                      </Link>
-                    </li>
-
-                    <li>
-                      <Link
-                        style={{
-                          fontFamily: "Open Sans",
-                          color: "#000",
-
-                          zIndex: "25",
-                        }}
-                        className=""
-                        to={process.env.PUBLIC_URL + "/business"}
-                      >
-                        For Businesses
-                      </Link>
-                    </li>
-
-                    <li>
-                      <Link
-                        style={{
-                          fontFamily: "Open Sans",
-                          color: "#000",
-
-                          zIndex: "25",
-                        }}
-                        className=""
-                        to={process.env.PUBLIC_URL + "/government"}
-                      >
-                        For Government
-                      </Link>
-                    </li>
-                  </ul>
-                </li>
-
+                
+                
                 <li>
                   <div className="search__form">
                     <input
