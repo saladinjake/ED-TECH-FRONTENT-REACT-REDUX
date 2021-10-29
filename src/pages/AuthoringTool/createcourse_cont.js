@@ -99,6 +99,31 @@ const collapsibleEffect = () =>{
 }
 
 
+const TabbyFy =() => {
+  (function() {
+      // Super cheap selector engine
+      var $ = function(selector, context) {
+          return [].slice.call( (context || document).querySelectorAll(selector) )
+      }
+
+      $('.responsive-tabs').forEach(function(tabs) {
+          // Store active tab
+          var active = $('dt', tabs)[0]
+
+          // Click handler
+          tabs.addEventListener('click', function(e) {
+              if ( e.target.nodeName.toLowerCase() === 'dt' ) {
+                  active.classList.remove('active')
+
+                  e.target.classList.add('active')    
+                  active = e.target
+              }
+          })
+      })
+  }())
+
+}
+
 
 
 //Get the button  eg <button  id="myBtn" title="Go to top">Top</button>
@@ -2978,6 +3003,8 @@ closeIcon = toast.querySelector(".close-icon");
 
 
     })
+
+    TabbyFy()
     
 
   
@@ -4991,7 +5018,7 @@ Who is the entrepreneur who created questence?\n
     //when data is saved response should return the course id as well in the response
     try{
        (async () =>{
-         let course = await getCourses(id)
+         let course = await getCourse(id)
          console.log(course)
          //check for data saved from previous step and porpulate the fields  :
        })()
@@ -5162,7 +5189,7 @@ filenameWithoutExtension(filename) {
         enrolment_type: localStorage.getItem("enrolment_type") || 1,
         entrance_exam_required: localStorage.getItem("entrance_exam_required") || false, 
         cost: localStorage.getItem("cost") || 0.00,  //float
-        auditing: true,
+        auditing: new Boolean(localStorage.getItem("auditing")) || true,
         prerequisite:pre,
         course_pacing: localStorage.getItem("course_pacing") || 1, //int
         course_start_date_time: this.state.course_start_date_time || localStorage.getItem("course_start_date_time") || "2021-08-26T17:13:00+01:00",  //2021-08-26T17:13:00+01:00
@@ -5355,8 +5382,8 @@ filenameWithoutExtension(filename) {
           <div className="col-md-12">
             <div className="card">
               <div className="card-body" >
-                <div id="make-fixed-on-fullscreen" >
-                  <h4>
+                <div id="make-fixed-on-fullscreen " >
+                  <h4 class="hidden-sm hidden-xs">
                     <a
                       style={{ marginRight: "3px", color:"#fff" }}
                       href={"#"}
@@ -5410,6 +5437,203 @@ filenameWithoutExtension(filename) {
                     
                   </h4>
                   <br /><br />
+
+
+
+
+
+<h1>Course Edit</h1>
+
+<dl class="responsive-tabs">
+  <dt class="active"  onClick={async (e) => {
+                            this.goToStep(e, 1);
+                            await  this.fetchContent()
+                             // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                             //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
+
+                                                   
+                        }}>Basic</dt>
+  <dd>
+      <h2>Course Basics</h2><br/>
+      <input type="hidden" name="csrfmiddlewaretoken" value={getCookie("csrfmiddlewaretoken")} />
+                      <Step1
+                        currentStep={this.state.currentStep}
+                        finishedClicked={this.state.finishedClicked}
+                        handleChange={this.handleInputChange}
+                        stateInitial={this.state}
+            autoUpdateFilledData={this.autoUpdateFilledData}
+                        
+                        
+                        actions={
+                          {
+                    stateAction:this.handleChangeTextEditor,
+                    description:this.handleHtmlDescriptionChange,
+                    overview: this.handleHtmlCourseOverViewChange,
+                    learning_expectation: this.handleHtmlOutComeChange,
+                    //prerequisite: this.handleHtmlPrerequisitesChange,
+                    curriculum: this.handleHtmlCurriculumChange
+                  
+                        }}
+                        
+                        errorEmailClass={this.errorClass(
+                          this.state.formErrors.course_language
+                        )}
+                        email={this.state.email}
+                        errorEmail={this.state.formErrors.email}
+                        errorUsernameClass={this.errorClass(
+                          this.state.formErrors.username
+                        )}
+                        username={this.state.username}
+                        errorUsername={this.state.formErrors.username}
+                        institutions={institutions} 
+                        languages={languages}
+                        instructors={instructors} 
+                        groups={groups}
+                        courses={courses}
+                        saveAndContinue={this.saveAndContinue}
+                        currentCourseId={this.state.currentCourseId}
+                      />
+  </dd>
+
+  <dt>Schedules</dt>
+  <dd       onClick={async (e) => {
+                            this.goToStep(e, 2);
+                            await  this.fetchContent()
+                        }}
+>
+      <h2>Course Scheduling</h2><br/>
+     
+
+     <Step3
+                      currentCourseId={this.state.currentCourseId}
+                      stateInitial={this.state}
+                        currentStep={this.state.currentStep}
+                        finishedClicked={this.state.finishedClicked}
+                        handleChange={this.handleInputChange}
+                        comment={this.state.comment}
+                        canSubmit={this.state.canSubmit}
+                        institutions={institutions} 
+                        languages={languages}
+                        instructors={instructors} 
+                        courses={courses}
+                        saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
+                        groups={this.state.groups}
+                      />
+
+
+
+      </dd>
+
+  <dt  onClick={ async (e) => {
+                          await  this.fetchContent()
+                          this.goToStep(e, 3);
+                          // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                          //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
+
+                           
+                        }}>Grading</dt>
+  <dd>
+      <h2>Grading</h2><br/>
+       <Step5
+                        groups={this.state.groups}
+                      stateInitial={this.state}
+                        currentStep={this.state.currentStep}
+                        finishedClicked={this.state.finishedClicked}
+                        handleChange={this.handleInputChange}
+                        comment={this.state.comment}
+                        canSubmit={this.state.canSubmit}
+                        institutions={institutions} 
+                        languages={languages}
+                        instructors={instructors} 
+                        courses={courses}
+                        saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
+                        currentCourseId={this.state.currentCourseId}
+                      />
+      
+  </dd>
+
+  <dt  onClick={async (e) => {
+                            this.goToStep(e, 4);
+                            await  this.fetchContent()
+                             // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                             //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
+
+                                                   
+                        }}>Group Config</dt>
+  <dd>
+     
+      <Step6
+                      stateInitial={this.state}
+                        currentStep={this.state.currentStep}
+                        finishedClicked={this.state.finishedClicked}
+                        handleChange={this.handleInputChange}
+                        comment={this.state.comment}
+                        canSubmit={this.state.canSubmit}
+                        institutions={institutions} 
+                        languages={languages}
+                        instructors={instructors} 
+                        courses={courses}
+                        saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
+                        currentCourseId={this.state.currentCourseId}
+                        groups={this.state.groups}
+                      />
+  </dd>
+    
+    
+     
+     <dt   onClick={async (e) => {
+                            this.goToStep(e, 5);
+                           
+                             // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                             //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
+
+                                                   
+                        }}>Authoring Team</dt>
+     <dd>
+ <h2>Authoring Team</h2><br/>
+         <Step4
+                      stateInitial={this.state}
+                        currentStep={this.state.currentStep}
+                        finishedClicked={this.state.finishedClicked}
+                        handleChange={this.handleInputChange}
+                        comment={this.state.comment}
+                        canSubmit={this.state.canSubmit}
+                        institutions={institutions} 
+                        languages={languages}
+                        instructors={instructors} 
+                        courses={courses}
+                        saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
+                        currentCourseId={this.state.currentCourseId}
+                       groups={this.state.groups}
+                      />
+
+     </dd>
+     <dt >Resource</dt>
+     <dd></dd>
+     <dt onClick={ async(e) => {
+                          this.goToStep(e, 6);
+                          await  this.fetchContent()
+                                 
+                          // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                          //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
+
+                          $("#js-parent").html("")
+                          await this.courseDetailJson()
+                        }}>Content</dt>
+     <dd></dd>
+</dl>
+
+
+
 				  
 				  
 
@@ -5418,111 +5642,15 @@ filenameWithoutExtension(filename) {
                       className="col-md-12 nav nav-pills nav-justified form-wizard-header mb-3"
                       style={{ background: "#f6f6f6", height: "45px" }}
                     >
-                      <a
-
-                      onClick={async (e) => {
-                            this.goToStep(e, 1);
-                            await  this.fetchContent()
-                             // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                             //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+                      
 
 
-                                                   
-                        }}
-                        
-                        href="#basic"
-                        data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2 "
-                      >
-                        <i className="fa fa-edit mr-1"></i>
-                        <span className="d-none d-sm-inline">Basic</span>
-                      </a>
+                
 
-
-                      <a
-                        style={{display:"none"}}
-                      onClick={async (e) => {
-                            this.goToStep(e, 1);
-                            await  this.fetchContent()
-                             // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                             //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
-
-
-                          
-                        }}
-                        
-                        href="#basic"
-                        data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2 "
-                      >
-                        <i className="fa fa-edit mr-1"></i>
-                        <span className="d-none d-sm-inline">Basic</span>
-                      </a>
-
-
-                      <a
-                      onClick={async (e) => {
-                            this.goToStep(e, 2);
-                            await  this.fetchContent()
-                        }}
-
-                        href="#basic"  className="nav-link rounded-0 pt-2 pb-2 " data-toggle="tab"
-                         
-                      >
-                        <i className="fa fa-edit mr-1"></i>
-                        <span className="d-none d-sm-inline">Schedules</span>
-                      </a>
-
-
-                      <a
-                        onClick={ async (e) => {
-                          await  this.fetchContent()
-                          this.goToStep(e, 3);
-                          // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                          //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
-
-
-                           
-                        }}
-                        href="#requirements"
-                        data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2 "
-                      >
-                        <i className="fa fa-bell mr-1"></i>
-                        <span className="d-none d-sm-inline">Grading</span>
-                      </a>
-
-                      <a
-                        onClick={async (e) => {
-                            this.goToStep(e, 4);
-                            await  this.fetchContent()
-                             // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                             //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
-
-
-                                                   
-                        }}
-                        href="#seo"
-                        data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2 "
-                      >
-                        <i className="fa fa-tag mr-1"></i>
-                        <span className="d-none d-sm-inline">
-                           Group Config
-                        </span>
-                      </a>
                       
 
                       <a
-                        onClick={async (e) => {
-                            this.goToStep(e, 5);
-                           
-                             // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                             //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
-
-
-                                                   
-                        }}
+                       
                         href="#pricing"
                         data-toggle="tab"
                         className="nav-link rounded-0 pt-2 pb-2 "
@@ -5551,25 +5679,6 @@ filenameWithoutExtension(filename) {
                         <span className="d-none d-sm-inline">Resource</span>
                       </a>
 
-                      <a
-                        onClick={ async(e) => {
-                          this.goToStep(e, 6);
-                          await  this.fetchContent()
-                                 
-                          // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                          //     setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
-
-
-                          $("#js-parent").html("")
-                          await this.courseDetailJson()
-                        }}
-                        href="#media"
-                        data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2 "
-                      >
-                        <i className="fa fa-menu mr-1"></i>
-                        <span className="d-none d-sm-inline">Content</span>
-                      </a>
 
                       <a
                         onClick={(e) => {
@@ -5603,79 +5712,9 @@ filenameWithoutExtension(filename) {
                       enctype="application/x-www-form-urlencoded"
                     >
                       {/*<CSRFToken /> Ready to django into the server*/}
-                      <input type="hidden" name="csrfmiddlewaretoken" value={getCookie("csrfmiddlewaretoken")} />
-                      <Step1
-                        currentStep={this.state.currentStep}
-                        finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleInputChange}
-                        stateInitial={this.state}
-						autoUpdateFilledData={this.autoUpdateFilledData}
-                        
-                        
-                        actions={
-                          {
-                    stateAction:this.handleChangeTextEditor,
-                    description:this.handleHtmlDescriptionChange,
-                    overview: this.handleHtmlCourseOverViewChange,
-                    learning_expectation: this.handleHtmlOutComeChange,
-                    //prerequisite: this.handleHtmlPrerequisitesChange,
-                    curriculum: this.handleHtmlCurriculumChange
-                  
-                        }}
-                        
-                        errorEmailClass={this.errorClass(
-                          this.state.formErrors.course_language
-                        )}
-                        email={this.state.email}
-                        errorEmail={this.state.formErrors.email}
-                        errorUsernameClass={this.errorClass(
-                          this.state.formErrors.username
-                        )}
-                        username={this.state.username}
-                        errorUsername={this.state.formErrors.username}
-                        institutions={institutions} 
-                        languages={languages}
-                        instructors={instructors} 
-                        groups={groups}
-                        courses={courses}
-                        saveAndContinue={this.saveAndContinue}
-                        currentCourseId={this.state.currentCourseId}
-                      />
-
-                      <Step3
-                      currentCourseId={this.state.currentCourseId}
-                      stateInitial={this.state}
-                        currentStep={this.state.currentStep}
-                        finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleInputChange}
-                        comment={this.state.comment}
-                        canSubmit={this.state.canSubmit}
-                        institutions={institutions} 
-                        languages={languages}
-                        instructors={instructors} 
-                        courses={courses}
-                        saveAndContinue={this.saveAndContinue}
-                        stateAction={this.handleChangeTextEditor}
-                        groups={this.state.groups}
-                      />
-
-                      <Step4
-                      stateInitial={this.state}
-                        currentStep={this.state.currentStep}
-                        finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleInputChange}
-                        comment={this.state.comment}
-                        canSubmit={this.state.canSubmit}
-                        institutions={institutions} 
-                        languages={languages}
-                        instructors={instructors} 
-                        courses={courses}
-                        saveAndContinue={this.saveAndContinue}
-                        stateAction={this.handleChangeTextEditor}
-                        currentCourseId={this.state.currentCourseId}
-                       groups={this.state.groups}
-                      />
-
+                      
+                      
+                     
                       <Step2
                       stateInitial={this.state}
                         currentStep={this.state.currentStep}
@@ -5703,39 +5742,8 @@ filenameWithoutExtension(filename) {
                         currentCourseId={this.state.currentCourseId}
                       />
 
-                      <Step5
-                        groups={this.state.groups}
-                      stateInitial={this.state}
-                        currentStep={this.state.currentStep}
-                        finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleInputChange}
-                        comment={this.state.comment}
-                        canSubmit={this.state.canSubmit}
-                        institutions={institutions} 
-                        languages={languages}
-                        instructors={instructors} 
-                        courses={courses}
-                        saveAndContinue={this.saveAndContinue}
-                        stateAction={this.handleChangeTextEditor}
-                        currentCourseId={this.state.currentCourseId}
-                      />
-
-                      <Step6
-                      stateInitial={this.state}
-                        currentStep={this.state.currentStep}
-                        finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleInputChange}
-                        comment={this.state.comment}
-                        canSubmit={this.state.canSubmit}
-                        institutions={institutions} 
-                        languages={languages}
-                        instructors={instructors} 
-                        courses={courses}
-                        saveAndContinue={this.saveAndContinue}
-                        stateAction={this.handleChangeTextEditor}
-                        currentCourseId={this.state.currentCourseId}
-                        groups={this.state.groups}
-                      />
+                     
+                      
                       <Step7
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
@@ -6604,6 +6612,19 @@ class Step1 extends React.Component {
   }
 
 
+  async componentDidMount(){
+    let { author } = this.state;
+    if(author?.length>0){
+       let Instructor = await getInstructorProfile(author)
+       console.log(Instructor)
+       if(Instructor){
+         $("#author-name").val(Instructor.profile.first_name+ "  " + Instructor.profile.last_name)
+       }
+    }
+
+  }
+
+
   
 
 
@@ -6616,7 +6637,7 @@ class Step1 extends React.Component {
       return null;
     }
     const {institutions, languages, instructors, courses } = this.props
-    
+    const {lead } = this.state
 
     return (
       <React.Fragment>
@@ -7004,7 +7025,19 @@ class Step1 extends React.Component {
 
                 <div className=" form-group col-md-6 fl-left">
                         <div className="col-md-10  fl-left author">
+                        <input
+                        
+                            type="text"
+                            placeholder={"Add Team Lead"}
+                              
+                            className="form-control fl-left"
+                            id="author-name"
+                            name="author-name"
+                            disabled
+                          />
+
                           <input
+                           style={{display:"none"}}
                             type="text"
                             placeholder={"Add Team Lead"}
                               
@@ -7050,8 +7083,9 @@ class Step1 extends React.Component {
                                 $("#author-inset").val(targetInstructor?.profile?.email)
                                 this.setState({author:targetInstructor?.profile?.email})
                                 localStorage.setItem("author",targetInstructor?.profile?.id)
+                                $("#author-name").val(targetInstructor?.profile?.first_name+ "  "+ targetInstructor?.profile?.last_name )
                                 
-                                 return swal("Success!", "The Instructor was found", "Success");
+                                return swal("Success!", "The Instructor was found", "Success");
                                   
                              }else{
 
@@ -7086,10 +7120,11 @@ class Step1 extends React.Component {
 
                 <div className="form-group col-md-6 fl-left">
                      <label className="col-md-12 col-form-label" for="description">
-                    Prerequisites (Enter the unique ID of the prerequisite course)
+                    Prerequisites (select one or more prerequisite course)
                   </label>
 
                 <div className="">
+                  {/*
                   <input
                     type="text"
                     className="form-control"
@@ -7100,7 +7135,17 @@ class Step1 extends React.Component {
                     value={this.props.prerequisite}
                     onChange={this.props.handleChange}
 
-                  />
+                  />*/}
+                  <select style={{height:"300px",fontSize:"12px"}} class="form-control"   name="prerequisite[]" value={this.props.prerequisite}
+                    onChange={this.props.handleChange} multiple={true}>
+                       {
+                        courses && courses.map(course =>{
+                          return (
+                             <option style={{fontSize:"12px"}} value={course.id}>{course.name}</option>
+                          )
+                        })
+                       }
+                    </select>
                 </div>
                 <ul id="preliminary_courses"></ul>
               </div>
@@ -7108,24 +7153,23 @@ class Step1 extends React.Component {
 
                               <div class="form-group  mb-3 col-md-6 fl-left">
                  
-                  <div class="pull-right " data-select2-id="94">
-                  <label class="col-md-12 col-form-label" for="level">
+                  <div class="" data-select2-id="94">
+                  <label class="col-md-12 col-form-label" >
                      Auditing
                   </label>
-                    <input
-                      style={{ position: "relative", zIndex: "1",padding:"10px" }}
-                      type="checkbox"
-                      className=""
+                    <select
+                      style={{ position: "relative", zIndex: "99999",padding:"10px" }}
+                      
+                      className="form-control"
                       id="auditing"
                       name="auditing"
                       
                        value={this.props.auditing}
                      onChange={this.props.handleChange}
-                    />
-
-
-
-                     
+                    >
+                       <option value="true">True</option>
+                       <option value="false">False</option>
+                    </select>
                   </div>
                 </div>
 
@@ -7500,9 +7544,6 @@ class Step1 extends React.Component {
     );
   }
 
-  componentDidMount(){
-
-  }
 }
 
 
@@ -7543,8 +7584,8 @@ class Step5 extends React.Component {
  
     return (
       <React.Fragment>
-        <div className="tab-pane card-box schedules-form " id="outcomes">
-          <div className="row justify-content-center">
+        <div className="tab-pane-x card-box schedules-form " id="outcomes">
+          <div className="">
             <div className="col-md-12">
               <div className="form-group col-md-6 fl-left">
                
@@ -7681,13 +7722,13 @@ class Step3 extends React.Component {
   render() {
     const {institutions, languages, instructors, courses } = this.props
  
-    if (this.props.currentStep !== 2) {
-      return null;
-    }
+    // if (this.props.currentStep !== 2) {
+    //   return null;
+    // }
     return (
       <React.Fragment>
 	   <form id="schedules-form" className="required-form" action="#"  method="PATCH"  enctype="application/x-www-form-urlencoded">
-        <div className="tab-pane" id="requirements">
+        <div className="tab-pane-x" id="requirements">
           <div className="row card-box">
             <div className="col-md-12">
             
@@ -8053,14 +8094,14 @@ class Step4 extends React.Component {
   render() {
     const { instructors } = this.props;
 	
-    if (this.props.currentStep !== 5) {
-      return null;
-    }
+    // if (this.props.currentStep !== 5) {
+    //   return null;
+    // }
     return (
       <React.Fragment>
         {" "}
-        <div className="tab-pane schedules-form" id="pricing">
-          <div className="row card-box">
+        <div className="tab-pane-x schedules-form" id="pricing">
+          <div className="">
             <div className="col-md-12">
               
 
@@ -11622,9 +11663,9 @@ cleanUpExtension(filename) {
     let res = createAnyResource("POST",buildUrl,$("#group-make"))
   }
   render() {
-    if (this.props.currentStep !== 4) {
-      return null;
-    }
+    // if (this.props.currentStep !== 4) {
+    //   return null;
+    // }
 
     const { groups,course } = this.state
     const {instructors } = this.props
@@ -11632,7 +11673,7 @@ cleanUpExtension(filename) {
     return (
       <React.Fragment>
         {" "}
-        <div className="tab-pane" id="seo">
+        <div className="tab-pane-x" id="seo">
           <div className="row">
             <div className="col-md-12"> 
 

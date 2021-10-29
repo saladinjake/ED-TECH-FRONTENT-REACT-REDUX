@@ -19075,3 +19075,75 @@ color: #000;
         color: #cc0000;
         pointer-events: none;
       }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.responsive-tabs {
+    }
+    .responsive-tabs dt {
+        padding: 0.5em;
+        cursor: pointer;
+        }
+    .responsive-tabs dt ~ dt {
+        border-top: 1px solid #457b9d;
+        }
+    .responsive-tabs .active {
+        background-color: rgba(8,23,200);
+        color: #fff;
+        }
+    .responsive-tabs dd {
+        display: none;
+        margin-left: 0;
+        padding: 0.5em;
+        }
+    .responsive-tabs .active + dd {
+        display: block;
+        }
+    .responsive-tabs img {
+        max-width: 100%;
+        }
+
+@media only screen and (min-width: 768px) {
+
+    .responsive-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        }
+        .responsive-tabs dt {
+            flex-grow: 1;
+            border-bottom: 1px solid rgba(8,23,200);
+            text-align: center;
+            }
+        .responsive-tabs dt ~ dt {
+            border-top: 0;
+            }
+        .responsive-tabs dd {
+            order: 2;
+            }
+
+}
+
