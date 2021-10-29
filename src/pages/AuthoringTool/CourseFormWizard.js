@@ -778,12 +778,37 @@ export default class MasterForm extends React.Component {
     this._next = this._next.bind(this);
     this._prev = this._prev.bind(this);
   }
+
+
+  handleInputOverride = (event) =>{
+
+
+     // if(event.target.name="code"){
+        var input = event.target;
+        var start = input.selectionStart;
+        var end = input.selectionEnd;
+        input.value = input.value.toLocaleUpperCase();
+        input.setSelectionRange(start, end);
+
+      //}
+
+
+
+      let { name, value } = event.target;
+      localStorage.setItem(name,value)
+
+      this.setState({
+        ...this.state,
+        [event.target.name]: event.target.value,
+      });
+  }
   
 
    handleInputChange = (event) => {
     
       let { name, value } = event.target;
       localStorage.setItem(name,value)
+
       this.setState({
         ...this.state,
         [event.target.name]: event.target.value,
@@ -969,6 +994,7 @@ export default class MasterForm extends React.Component {
     for (const item of list) {
       localStorage.removeItem(item, "");
     }
+    localStorage.clear()
   }
 
 
@@ -976,6 +1002,8 @@ export default class MasterForm extends React.Component {
 
   
   componentDidMount(){
+    
+
     (async (trigger) =>{
        try{
          await this.fetchContent()
@@ -984,7 +1012,7 @@ export default class MasterForm extends React.Component {
        }
     })("run-logic-sequence")
     
-
+   $("label").css({color:"#000"})
 
     var formElements = new Array();
     $("input, select, textarea").each(function(){
@@ -1264,184 +1292,33 @@ export default class MasterForm extends React.Component {
                 
 
                   
-
-                    <br/>
-
-
-
-                  <div className="col-md-12">
-                    <ul
-                      className="nav nav-pills nav-justified form-wizard-header mb-3"
-                      style={{ background: "#f6f6f6", height: "45px" }}
-                    >
-                      <a
-                        onClick={ async (e) => {
-                          this.goToStep(e, 1);
-
-
-                              //hide all input and text area or select or option
-                              $("#create-course").show().fadeIn("slow")
-
-                              //show authoringbox only
-                              $("#hidden-on-reveal").hide().fadeOut("fast")
-
-
-                            await  this.fetchContent()
-                             $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
-
-
-                        //   setTimeout(()=> {
-                        //     let T = new  TinyMyce();
-                        //   T.render("")
-                        // },3000)
-
-                        }}
-                        href="#basic"
-                        data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2 "
-                      >
-                        <i className="fa fa-pen mr-1"></i>
-                        <span className="d-none d-sm-inline">Basic</span>
-                      </a>
-
-                      <a
-                        onClick={(e) => {
-                          $(e.target.parentElement).css({background:"#fff"})
-                          swal("Sorry!!", "You need to fill out the required fields marked asterisk (*)", "error");
-                        
-                        }}
-                        href="#outcomes"
-                        data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2"
-                         disabled={true}
-                      >
-                        <i className="fa fa-camera mr-1"></i>
-                        <span className="d-none d-sm-inline">Schedules</span>
-                      </a>
-
-                      <a
-                        onClick={(e) => {
-                          $(e.target.parentElement).css({background:"#fff"})
-                          swal("Sorry", "You need to fill out the required fields marked asterisk (*)", "error");
-                        
-                        }}
-                         disabled
-                        href="#requirements"
-                        data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2"
-                      >
-                        <i className="fa fa-bell mr-1"></i>
-                        <span className="d-none d-sm-inline">Grading</span>
-                      </a>
-
-                  {/*    <a
-                        onClick={(e) => {
-                          $(e.target.parentElement).css({background:"#fff"})
-                          swal("Sorry", "You need to fill out the required fields marked asterisk (*)", "error");
-                        
-                        }}
-                        href="#seo"
-                        data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2"
-                         disabled
-                      >
-                        <i className="fa fa-tag mr-1"></i>
-                        <span className="d-none d-sm-inline">
-                          Learners Group
-                        </span>
-                      </a>
-                      */}
-
-                      <a
-                        onClick={ async (e) => {
-                          // $(e.target.parentElement).css({background:"#fff"})
-                          // swal("WOOPS!", "You need to fill out the required fields marked asterisk (*)", "error");
-                           
-
-                           this.goToStep(e, 1); //5
-                            await  this.fetchContent()
-                             $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                              setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
-
-                              
-                              // setTimeout(()=> {
-                              //   let T = new  TinyMyce();
-                              // T.render("")
-
-                            // },3000)
-
-                              //hide all input and text area or select or option
-                              $("#create-course").hide().fadeOut("fast")
-
-                              //show authoringbox only
-                              $("#hidden-on-reveal").show().fadeIn("slow")
-
-                        }}
-                        href="#pricing"
-                        data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2"
-                         
-                      >
-                        <i className="fa fa-currency mr-1"></i>
-                        <span className="d-none d-sm-inline">
-                          Authoring Team
-                        </span>
-                      </a>
-
-                      <a
-                        onClick={(e) => {
-                          $(e.target.parentElement).css({background:"#fff"})
-                          swal("Sorry!!!", "You need to fill out the required fields marked asterisk (*)", "error");
-                          
-                        }}
-                        href="#resource"
-                        data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2"
-                         disabled
-                      >
-                        <i className="fa fa-currency mr-1"></i>
-                        <span className="d-none d-sm-inline">Resource</span>
-                      </a>
-
-                      <a
-                        onClick={(e) => {
-                          $(e.target.parentElement).css({background:"#fff"})
-                          swal("Sorry!!!", "You need to fill out the required fields marked asterisk (*)", "error");
-                        
-                        }}
-                        href="#media"
-                        data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2"
-                         disabled
-                      >
-                        <i className="fa fa-video mr-1"></i>
-                        <span className="d-none d-sm-inline">Content</span>
-                      </a>
-
-                      <a
-                        onClick={(e) => {
-                          $(e.target.parentElement).css({background:"#fff"})
-                          $(e.target).css({color:"#333"})
-                          swal("Sorry!!!", "You need to fill out the required fields marked asterisk (*)", "error");
-                        
-                        }}
-                        href="#finish"
-                        data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2"
-                        disabled
-                      >
-                        <i className="fa fa-checkbox mr-1"></i>
-                        <span className="d-none d-sm-inline">Process</span>
-                      </a>
-                    </ul>
-                  </div>
                 </div>
 
 
 
                 <div className="row">
                   <div className="col-md-12">
+
+
+
+
+
+
+
+
+<dl class="responsive-tabs">
+  <dt class="active"  onClick={async (e) => {
+                            this.goToStep(e, 1);
+                            await  this.fetchContent()
+                             // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                             //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
+
+                                                   
+                        }}>Basic</dt>
+  <dd>
+      <h2>Course Basics</h2><br/>
+      
                     <form
                       id="stepUpFormWithAI"
                       className="required-form"
@@ -1459,6 +1336,7 @@ export default class MasterForm extends React.Component {
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
                         handleChange={this.handleChange}
+                        camelOverride={this.handleInputOverride}
                         stateInitial={this.state}
                         
                         
@@ -1493,6 +1371,88 @@ export default class MasterForm extends React.Component {
                       
                      
                     </form>
+                      </dd>
+
+  <dt onClick={(e) => {
+                          $(e.target.parentElement).css({background:"#fff"})
+                          $(e.target).css({color:"#333"})
+                          swal("Sorry!!!", "You need to fill out the required fields marked asterisk (*)", "error");
+                        
+                        }}>Schedules</dt>
+  <dd        
+>
+      <h2>Course Scheduling</h2><br/>
+     
+
+
+
+      </dd>
+
+  <dt  onClick={(e) => {
+                          $(e.target.parentElement).css({background:"#fff"})
+                          $(e.target).css({color:"#333"})
+                          swal("Sorry!!!", "You need to fill out the required fields marked asterisk (*)", "error");
+                        
+                        }}>Grading</dt>
+  <dd>
+      <h2>Grading</h2><br/>
+       
+      
+  </dd>
+
+  <dt  onClick={(e) => {
+                          $(e.target.parentElement).css({background:"#fff"})
+                          $(e.target).css({color:"#333"})
+                          swal("Sorry!!!", "You need to fill out the required fields marked asterisk (*)", "error");
+                        
+                        }}>Group Config</dt>
+  <dd>
+     
+  </dd>
+    
+    
+     
+     <dt   
+                        onClick={ async (e) => {
+                          $(e.target.parentElement).css({background:"#fff"})
+                          swal("WOOPS!", "You need to fill out the required fields marked asterisk (*)", "error");
+                           
+
+                           //this.goToStep(e, 1); 
+
+                        }}>Authoring Team</dt>
+     <dd>
+ <h2>Authoring Team</h2><br/>
+         
+
+     </dd>
+     <dt onClick={(e) => {
+                          $(e.target.parentElement).css({background:"#fff"})
+                          $(e.target).css({color:"#333"})
+                          swal("Sorry!!!", "You need to fill out the required fields marked asterisk (*)", "error");
+                        
+                        }}
+                       >Resource</dt>
+     <dd>
+       <h2>Files and Media Resources</h2><br/>
+        
+
+     </dd>
+     <dt onClick={(e) => {
+                          $(e.target.parentElement).css({background:"#fff"})
+                          $(e.target).css({color:"#333"})
+                          swal("Sorry!!!", "You need to fill out the required fields marked asterisk (*)", "error");
+                        
+                        }}>Content</dt>
+     <dd>
+
+     </dd>
+</dl>
+
+
+
+
+
 
 
 
@@ -1905,10 +1865,11 @@ class Step1 extends React.Component {
                       name="code"
                       placeholder="Enter course code"
                       value={this.props.code}
-                     onChange={this.props.handleChange}
+                     onChange={this.props.camelOverride}
                      maxlength="10"
                     />
                     <label
+                    style={{display:"block"}}
                     className="col-md-12 col-form-label"
                     for="course_title"
                   >
@@ -1946,9 +1907,10 @@ class Step1 extends React.Component {
                       placeholder="Enter course title"
                     maxlength="150"
                       value={this.props.course_name}
-                     onChange={this.props.handleChange}
+                     onChange={this.props.camelOverride}
                     />
                      <label
+                     style={{display:"block"}}
                     className="col-md-12 col-form-label"
                     for="course_title"
                   >
@@ -1985,7 +1947,7 @@ class Step1 extends React.Component {
                         {institutions &&
                           institutions.map((language, i) => {
                             return (
-                              <option key={i} value={language.id}>
+                              <option style={{fontSize:"16px"}} key={i} value={language.id}>
                                 {language.name}
                               </option>
                             );
@@ -1994,7 +1956,7 @@ class Step1 extends React.Component {
 
                     </select>
 
-                     <label class="col-md-12 col-form-label" for="level">
+                     <label style={{display:"block"}} class="col-md-12 col-form-label" for="level">
                     Institution <span className="required">*</span>
                   </label>
                   </div>

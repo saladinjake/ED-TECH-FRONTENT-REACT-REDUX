@@ -2379,6 +2379,32 @@ export default class MasterForm extends React.Component {
         );  
 	  }
   }
+
+
+
+  handleInputOverride = (event) =>{
+
+
+     // if(event.target.name="code"){
+        var input = event.target;
+        var start = input.selectionStart;
+        var end = input.selectionEnd;
+        input.value = input.value.toLocaleUpperCase();
+        input.setSelectionRange(start, end);
+
+      //}
+
+
+
+      let { name, value } = event.target;
+      localStorage.setItem(name,value)
+
+      this.setState({
+        ...this.state,
+        [event.target.name]: event.target.value,
+      });
+  }
+  
   
   
 
@@ -2528,43 +2554,6 @@ closeIcon = toast.querySelector(".close-icon");
           }
         });
       //});
-      }else if(event.target.name =="prerequisite"){
-        //pop and push activity
-        let testPre = localStorage.getItem("prerequisite")
-
-        localStorage.setItem(name, value)
-
-           this.setState({
-          ...this.state,
-          [event.target.name]: value,
-        });
-
-        // if(testPre=="" || typeof testPre=="undefined"){
-        //   let tmpValuex = []
-        //   localStorage.setItem("prerequisite",[])
-        //   localStorage.setItem(name, value)
-
-        //    this.setState({
-        //   ...this.state,
-        //   [event.target.name]: value,
-        // });
-        // }else{
-
-        //   let tmpValuey = localStorage.getItem("prerequisite");
-        //   tmpValuey =[...tmpValuey,value]
-
-
-
-        // localStorage.setItem(name, tmpValuey)
-
-        //    this.setState({
-        //   ...this.state,
-        //   [event.target.name]: tmpValuey,
-        // });
-
-
-        // }
-        
       }else{
 
 
@@ -2630,12 +2619,39 @@ closeIcon = toast.querySelector(".close-icon");
   }
 
   // const [htmlPrerequisites, setHtmlPrerequisites] = useState("");
-  handleHtmlPrerequisitesChange =(newValue) => {
-    //   localStorage.setItem("prerequisite", newValue);
-    // this.setState({
-    //   ...this.state,
-    //   prerequisite: newValue
-    // })
+  handleHtmlPrerequisitesChange =(event) => {
+   //if(event.target.name =="prerequisite"){
+     const {name,value} = event.target
+        //pop and push activity
+        alert(name+ " with value pair: "+value)
+        console.log(name+ " with value pair: "+value)
+     let tempstore = localStorage.getItem("prerequisite")
+
+     if(tempstore?.match(/[\[\.*\]]/)){
+       let temp_prerequisite = JSON.parse(tempstore)
+       temp_prerequisite = [...temp_prerequisite, value]
+       localStorage.setItem("prerequisite",JSON.stringify(temp_prerequisite))
+       //stateData.prerequisite = temp_prerequisite  ;
+      }else{
+          if(tempstore.length > 0){
+          let prerequisite =[localStorage.getItem("prerequisite"), value] //just the lead author
+            localStorage.setItem("prerequisite",JSON.stringify(prerequisite))
+          }else{
+            let prerequisite =[value] //just the lead author
+            localStorage.setItem("prerequisite",JSON.stringify(prerequisite))
+          }         
+      }
+
+
+
+
+      this.setState({
+      ...this.state,
+      "prerequisite": localStorage.getItem("prerequisite")
+    })
+
+        
+     // }
   }
 
 
@@ -2948,6 +2964,7 @@ closeIcon = toast.querySelector(".close-icon");
 
   
   componentDidMount(){
+
    
     (async (trigger) =>{
        try{
@@ -2957,6 +2974,8 @@ closeIcon = toast.querySelector(".close-icon");
          return false
        }
     })("run-logic-sequence")
+
+    $("label").css({color:"#000"})
      // let T = new  TinyMyceRender();
      // T.render("")
   var formElements = new Array();
@@ -3859,22 +3878,9 @@ Who is the entrepreneur who created questence?\n
     for(var k in a){
 		console.log(k +" : "+ a[k])
       if(k=="prerequisite"){
-         //display all the course ids
-         // if(typeof a[k]=="Array"){
-         //       a[k].forEach(coursePrerequisites => {
-         //          tmpPre=`<li class="preliminary_courses">Required Course ID :${coursePrerequisites}</li>`
-
-         //          $("#preliminary_courses").append(tmpPre)
-         //       })
-         //       localStorage.setItem(k,a[k])
-         // }else{
-         //    localStorage.setItem(k,[])
-
-         // }
+         
          localStorage.setItem(k,a[k])
-         tmpPre=`<li class="preliminary_courses">Required Course ID :${a[k]}</li>`
-          $('input[name="'+k+'"]').val(a[k]);
-          $("#preliminary_courses").append(tmpPre)
+        
           
         
 
@@ -3904,6 +3910,22 @@ Who is the entrepreneur who created questence?\n
          
    }else {
 
+
+
+        if(k=="auditing"){
+              if(a[k]==true || a[k]=="true"){
+                 // let valueSelector =`select option[value="${a[k]}"]`
+                 $('select[name="'+k+'"] option').attr('selected', $(this).text().toLowerCase() == a[k].toString());
+                 //document.querySelectorAll('select[name="'+k+'"] option[value=valueB]')[1].text
+              }else{
+                 // let valueSelector =`select option[value="${a[k]}"]`
+                 $('select[name="'+k+'"] option').attr('selected', $(this).text().toLowerCase() == "false");
+           
+              }
+                
+                      
+        }
+
   
          
               //check if name is part of a dropdown then select the dropdown or make it checked
@@ -3919,13 +3941,25 @@ Who is the entrepreneur who created questence?\n
 
 
             if(k=="entrance_exam_required"){
-              if(a[k]==true){
+              if(a[k]==true || a[k]=="true"){
                  // let valueSelector =`select option[value="${a[k]}"]`
-             $('select[name="'+k+'"] option').attr('selected', $(this).text().toLowerCase() == a[k]);
+               $('select[name="'+k+'"] option').attr('selected', $(this).text().toLowerCase() == a[k].toString());
              //document.querySelectorAll('select[name="'+k+'"] option[value=valueB]')[1].text
               }else{
                  // let valueSelector =`select option[value="${a[k]}"]`
-               $('select[name="'+k+'"] option').attr('selected', $(this).text().toLowerCase() == a[k]);
+               $('select[name="'+k+'"] option').attr('selected', $(this).text().toLowerCase() == "false");
+           
+              }
+                
+                      
+            }else if(k=="auditing"){
+              if(a[k]==true || a[k]=="true"){
+                 // let valueSelector =`select option[value="${a[k]}"]`
+                 $('select[name="'+k+'"] option').attr('selected', $(this).text().toLowerCase() == a[k].toString());
+                 //document.querySelectorAll('select[name="'+k+'"] option[value=valueB]')[1].text
+              }else{
+                 // let valueSelector =`select option[value="${a[k]}"]`
+                 $('select[name="'+k+'"] option').attr('selected', $(this).text().toLowerCase() == "false");
            
               }
                 
@@ -3999,7 +4033,25 @@ Who is the entrepreneur who created questence?\n
               }
                 
                       
-            }
+        }
+
+
+
+
+        // if(k=="auditing"){
+        //       if(a[k]==true || a[k]=="True" || a[k]=="true"){
+        //          // let valueSelector =`select option[value="${a[k]}"]`
+        //      $('select[name="'+k+'"] option').attr('selected', $(this).text().toLowerCase() == a[k].toString());
+        //      //document.querySelectorAll('select[name="'+k+'"] option[value=valueB]')[1].text
+        //       //document.querySelector('select[name="'+k+'"]').selectedIndex = "2";
+        //       }else{
+        //          // let valueSelector =`select option[value="${a[k]}"]`
+        //       $('select[name="'+k+'"] option').attr('selected', $(this).text().toLowerCase() == "false");
+        //         //document.querySelector('select[name="'+k+'"]').selectedIndex = "1";
+        //       }
+                
+                      
+        //}
       
     }
 
@@ -4015,11 +4067,13 @@ Who is the entrepreneur who created questence?\n
  getAllFormElements = element => Array.from(element.elements).filter(tag =>  ["select", "textarea", "input"].includes(tag.tagName.toLowerCase()));
 
  fetchContent = async () => {
+
   $("#none-display").css({"opacity":0}).fadeOut("fast")
    let instId = this.state.institution
+   let author =""
    try{
     this.courseData = await this.courseDetailJson();
-
+   
 
    //ensure to get the course id real even if browser data has change url
    let sanitizedId = this.getCourseIdFromUrl(this.props.match.params.id)
@@ -4081,6 +4135,8 @@ Who is the entrepreneur who created questence?\n
       });
 
 
+
+
    }catch(e){
     return false
    }
@@ -4125,7 +4181,50 @@ Who is the entrepreneur who created questence?\n
        courseData = this.sorted_by_position_id(courseData) // sorts by position id
 
    //resort sections by their position id before d*splay*n
+
+
+
+  let  author = BIG_JSON?.author
+  let institution = BIG_JSON?.institution
+  let prerequisite = BIG_JSON?.prerequisite
+ 
+  //fill the author field form once 
+  if(author?.length>0){
+     try{
+      let Instructor = await getInstructorProfile(author)
+       console.log(Instructor)
+       
+       if(Instructor){
+         $("#author-name").val(Instructor.profile.first_name+ "  " + Instructor.profile.last_name)
+       }
+
+     }catch(e){
+
+     }
+       
+   }
+
+
+   //get institution by name tag
+   if(institution?.length> 0){
+   // alert("here was true")
+    let selectTepInst =`option[value=${institution}]`
+     $(selectTepInst).prop("selected",true)
+  
+   }
    
+   
+   //IF REGEX MATCHES AN ARRAY OF PREREQUISITES THEN LOOP THE SELECTED ONES
+
+     
+     if(prerequisite?.length> 0 &&  prerequisite?.match(/[\[\.*\]]/)){
+      alert(true)
+       let temp_prerequisite = JSON.parse(prerequisite)
+       for(var i=0; i< temp_prerequisite.length; i++){
+        $('#prerequisite option[value="'+temp_prerequisite[i]+'"]').attr("selected", "selected")
+        .css({background:"rgba(8,23,200)", color:"#fff"})
+       }
+     }
        
     }catch(e){
        console.log(e)
@@ -5172,7 +5271,13 @@ filenameWithoutExtension(filename) {
     if(localStorage.getItem("prerequisite").length>0){
       pre = localStorage.getItem("prerequisite")
     }
+    let audit = true
     
+    if (localStorage.getItem("auditing") == true){
+    
+    }else{
+      audit = false
+    }
 
 	  stateData = {
 		  
@@ -5189,8 +5294,8 @@ filenameWithoutExtension(filename) {
         enrolment_type: localStorage.getItem("enrolment_type") || 1,
         entrance_exam_required: localStorage.getItem("entrance_exam_required") || false, 
         cost: localStorage.getItem("cost") || 0.00,  //float
-        auditing: new Boolean(localStorage.getItem("auditing")) || true,
-        prerequisite:pre,
+        auditing: audit,
+        prerequisite:[],
         course_pacing: localStorage.getItem("course_pacing") || 1, //int
         course_start_date_time: this.state.course_start_date_time || localStorage.getItem("course_start_date_time") || "2021-08-26T17:13:00+01:00",  //2021-08-26T17:13:00+01:00
         course_end_date_time: this.state.course_end_date_time || localStorage.getItem("course_end_date_time") || "2021-08-26T17:13:00+01:00",
@@ -5213,19 +5318,11 @@ filenameWithoutExtension(filename) {
 
 
   let tempstore = localStorage.getItem("authoring_team")
-
   if(tempstore?.match(/[\[\.*\]]/)){
-   
-  
-     console.log(tempstore)
      let temp_auth = JSON.parse(tempstore)
      temp_auth = [...temp_auth]
      localStorage.setItem("authoring_team",JSON.stringify(temp_auth))
     stateData.authoring_team = temp_auth  ;
-  
-
-             
-            
   }else{
       if(localStorage.getItem("authoring_team").length > 0){
         stateData.authoring_team =[localStorage.getItem("author")] //just the lead author
@@ -5234,12 +5331,21 @@ filenameWithoutExtension(filename) {
         stateData.authoring_team =[localStorage.getItem("author")] //just the lead author
         localStorage.setItem("authoring_team",JSON.stringify(stateData.authoring_team))
      
-      }
-           
+      }         
   }
           
 
-
+  //for pre requisite
+  let temppre = localStorage.getItem("prerequisite")
+  if(temppre?.match(/[\[\.*\]]/)){
+     let temp_temppre = JSON.parse(temppre)
+     temp_temppre = [...temp_temppre]
+     localStorage.setItem("prerequisite",JSON.stringify(temp_temppre))
+    stateData.prerequisite = temp_temppre  ;
+  }else{
+      stateData.prerequisite = []
+      localStorage.setItem("prerequisite",JSON.stringify([]))        
+  }
     
     
 	  
@@ -5461,6 +5567,7 @@ filenameWithoutExtension(filename) {
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
                         handleChange={this.handleInputChange}
+                        camelCase={this.handleInputOverride}
                         stateInitial={this.state}
             autoUpdateFilledData={this.autoUpdateFilledData}
                         
@@ -5471,7 +5578,7 @@ filenameWithoutExtension(filename) {
                     description:this.handleHtmlDescriptionChange,
                     overview: this.handleHtmlCourseOverViewChange,
                     learning_expectation: this.handleHtmlOutComeChange,
-                    //prerequisite: this.handleHtmlPrerequisitesChange,
+                    handlePrerequisite: this.handleHtmlPrerequisitesChange,
                     curriculum: this.handleHtmlCurriculumChange
                   
                         }}
@@ -5496,11 +5603,11 @@ filenameWithoutExtension(filename) {
                       />
   </dd>
 
-  <dt>Schedules</dt>
-  <dd       onClick={async (e) => {
+  <dt onClick={async (e) => {
                             this.goToStep(e, 2);
                             await  this.fetchContent()
-                        }}
+                        }}>Schedules</dt>
+  <dd       
 >
       <h2>Course Scheduling</h2><br/>
      
@@ -5595,7 +5702,7 @@ filenameWithoutExtension(filename) {
 
 
                                                    
-                        }}>Authoring Team</dt>
+      }}>Authoring Team</dt>
      <dd>
  <h2>Authoring Team</h2><br/>
          <Step4
@@ -5616,8 +5723,36 @@ filenameWithoutExtension(filename) {
                       />
 
      </dd>
-     <dt >Resource</dt>
-     <dd></dd>
+     <dt onClick={async (e) => {
+                            this.goToStep(e, 8);
+                            await  this.fetchContent()
+                             // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+                             //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
+
+
+                                                   
+                        }}
+                       >Resource</dt>
+     <dd>
+       <h2>Files and Media Resources</h2><br/>
+        <Step8
+                        groups={groups}
+                      stateInitial={this.state}
+                        currentStep={this.state.currentStep}
+                        finishedClicked={this.state.finishedClicked}
+                        handleChange={this.handleInputChange}
+                        comment={this.state.comment}
+                        canSubmit={this.state.canSubmit}
+                        institutions={institutions} 
+                        languages={languages}
+                        instructors={instructors} 
+                        courses={courses}
+                        saveAndContinue={this.saveAndContinue}
+                        stateAction={this.handleChangeTextEditor}
+                        currentCourseId={this.state.currentCourseId}
+                      />
+
+     </dd>
      <dt onClick={ async(e) => {
                           this.goToStep(e, 6);
                           await  this.fetchContent()
@@ -5629,93 +5764,8 @@ filenameWithoutExtension(filename) {
                           $("#js-parent").html("")
                           await this.courseDetailJson()
                         }}>Content</dt>
-     <dd></dd>
-</dl>
-
-
-
-				  
-				  
-
-                  <div className="col-md-12">
-                    <ul
-                      className="col-md-12 nav nav-pills nav-justified form-wizard-header mb-3"
-                      style={{ background: "#f6f6f6", height: "45px" }}
-                    >
-                      
-
-
-                
-
-                      
-
-                      <a
-                       
-                        href="#pricing"
-                        data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2 "
-                      >
-                        <i className="fa fa-users mr-1"></i>
-                        <span className="d-none d-sm-inline">
-                          Authoring Team
-                        </span>
-                      </a>
-
-                      <a
-                       onClick={async (e) => {
-                            this.goToStep(e, 8);
-                            await  this.fetchContent()
-                             // $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
-                             //  setTimeout(removeLoader,2000); //wait for page load PLUS two seconds.
-
-
-                                                   
-                        }}
-                        href="#resource"
-                        data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2 "
-                      >
-                        <i className="fa fa-file mr-1"></i>
-                        <span className="d-none d-sm-inline">Resource</span>
-                      </a>
-
-
-                      <a
-                        onClick={(e) => {
-                          this.goToStep(e, 7);
-                          
-                           
-
-                         
-                        }}
-                        href="#finish"
-                        data-toggle="tab"
-                        className="nav-link rounded-0 pt-2 pb-2 "
-                      >
-                        <i className="fa fa-checkbox mr-1"></i>
-                        <span className="d-none d-sm-inline">Process</span>
-                      </a>
-                    </ul>
-                  </div>
-                </div>
-
-
-
-                <div className="row">
-                  <div className="col-md-12">
-                    <form
-                      
-                      action="#" 
-                      method="PATCH" 
-                       novalidate
-                      // enctype="multipart/form-data"
-                      enctype="application/x-www-form-urlencoded"
-                    >
-                      {/*<CSRFToken /> Ready to django into the server*/}
-                      
-                      
-                     
-                      <Step2
+     <dd>
+<Step2
                       stateInitial={this.state}
                         currentStep={this.state.currentStep}
                         finishedClicked={this.state.finishedClicked}
@@ -5742,44 +5792,21 @@ filenameWithoutExtension(filename) {
                         currentCourseId={this.state.currentCourseId}
                       />
 
-                     
-                      
-                      <Step7
-                        currentStep={this.state.currentStep}
-                        finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleInputChange}
-                        comment={this.state.comment}
-                        canSubmit={this.state.canSubmit}
-                        institutions={institutions} 
-                        languages={languages}
-                        instructors={instructors} 
-                        courses={courses}
-                        saveAndContinue={this.saveAndContinue}
-                        stateAction={this.handleChangeTextEditor}
-                        currentCourseId={this.state.currentCourseId}
-                        groups={this.state.groups}
-                      />
+     </dd>
+</dl>
 
-                      <Step8
-                        groups={groups}
-                      stateInitial={this.state}
-                        currentStep={this.state.currentStep}
-                        finishedClicked={this.state.finishedClicked}
-                        handleChange={this.handleInputChange}
-                        comment={this.state.comment}
-                        canSubmit={this.state.canSubmit}
-                        institutions={institutions} 
-                        languages={languages}
-                        instructors={instructors} 
-                        courses={courses}
-                        saveAndContinue={this.saveAndContinue}
-                        stateAction={this.handleChangeTextEditor}
-                        currentCourseId={this.state.currentCourseId}
-                      />
 
-                      <br />
-                      <br />
-                    </form>
+
+				  
+				  
+
+                                 </div>
+
+
+
+                <div className="row">
+                  <div className="col-md-12">
+                    
 
 
 
@@ -6929,7 +6956,7 @@ class Step1 extends React.Component {
                       maxlength="10"
                       placeholder="Enter course code"
                       value={this.props.code}
-                     onChange={this.props.handleChange}
+                     onChange={this.props.camelCase}
                     />  <i class="fa fa-edit " aria-hidden="true"></i>
                     <label
                     className="col-md-12 col-form-label"
@@ -6969,7 +6996,7 @@ class Step1 extends React.Component {
                       placeholder="Enter course title"
                       maxlength="150"
                       value={ this.props.name}
-                     onChange={this.props.handleChange}
+                     onChange={this.props.camelCase}
                     />
                      <label
                     className="col-md-12 col-form-label"
@@ -7118,7 +7145,7 @@ class Step1 extends React.Component {
 
 
 
-                <div className="form-group col-md-6 fl-left">
+                <div className="form-group col-md-12 fl-left">
                      <label className="col-md-12 col-form-label" for="description">
                     Prerequisites (select one or more prerequisite course)
                   </label>
@@ -7136,8 +7163,10 @@ class Step1 extends React.Component {
                     onChange={this.props.handleChange}
 
                   />*/}
-                  <select style={{height:"300px",fontSize:"12px"}} class="form-control"   name="prerequisite[]" value={this.props.prerequisite}
-                    onChange={this.props.handleChange} multiple={true}>
+                  <select id="prerequisite" style={{height:"250px",fontSize:"12px"}} class="form-control" 
+                    name="prerequisite" value={this.props.prerequisite}
+                    onChange={this.props.actions.handlePrerequisite
+                     } multiple={true}>
                        {
                         courses && courses.map(course =>{
                           return (
@@ -7151,7 +7180,7 @@ class Step1 extends React.Component {
               </div>
 
 
-                              <div class="form-group  mb-3 col-md-6 fl-left">
+                              <div class="form-group  mb-3 col-md-6 fl-left" style={{display:"none"}}>
                  
                   <div class="" data-select2-id="94">
                   <label class="col-md-12 col-form-label" >
@@ -7163,11 +7192,11 @@ class Step1 extends React.Component {
                       className="form-control"
                       id="auditing"
                       name="auditing"
-                      
+                      onChange={this.props.handleChange}
                        value={this.props.auditing}
-                     onChange={this.props.handleChange}
+                      
                     >
-                       <option value="true">True</option>
+                       <option value="true" selected>True</option>
                        <option value="false">False</option>
                     </select>
                   </div>
@@ -7433,9 +7462,9 @@ class Step1 extends React.Component {
 
                  <div className="form-group col-md-6 fl-left">
 
-                    <div class="file-drop-area col-md-12" style={{background: "#f5f5f5",
+                    <div class="file-drop-area col-md-12" style={{background: "#ffff",
   padding: "10px 0 10px 0", margin:"20px"}}>
-                      <span class="fake-btn">Choose Video File (mp4 only)</span>
+                      <span class="fake-btn" style={{color:"#000",margin:"10px"}}>Choose Video File (mp4 only)</span>
                       <span class="file-msg"></span>
                       <input id="intro_video" name="intro_video" class="file-input" type="file" multiple   accept="video/mp4"
                                value={this.props.intro_video}
@@ -7463,9 +7492,9 @@ class Step1 extends React.Component {
 
  <div className="form-group col-md-6 fl-left">
 
-                    <div class="file-drop-area col-md-12" style={{background: "#f5f5f5",
+                    <div class="file-drop-area col-md-12" style={{background: "#fff",
   padding: "10px 0 10px 0", margin:"20px"}}>
-                      <span class="fake-btn">Choose Image Files (.jpg/.png/.gif)</span>
+                      <span class="fake-btn" style={{color:"#000",margin:"10px"}}>Choose Image Files (.jpg/.png/.gif)</span>
                       <span class="file-msg"></span>
                       <input id="card_image" name="card_image" class="file-input" type="file" multiple   accept="image/*"
                                value={this.props.card_image}
@@ -7584,7 +7613,15 @@ class Step5 extends React.Component {
  
     return (
       <React.Fragment>
-        <div className="tab-pane-x card-box schedules-form " id="outcomes">
+       <div className="tab-content b-0 mb-0" >
+          <div className="tab-pane active" >
+            <div className="row">
+              <div className="col-md-12 card-box">
+
+     
+     <form id="schedules-formx" className="required-form" action="#"  method="PATCH"  enctype="application/x-www-form-urlencoded">
+        
+        <div className="" id="outcomes">
           <div className="">
             <div className="col-md-12">
               <div className="form-group col-md-6 fl-left">
@@ -7687,7 +7724,11 @@ class Step5 extends React.Component {
              
             </div>
           </div>
+            
         </div>
+
+</form>
+        </div></div></div></div>
       </React.Fragment>
     );
   }
@@ -7727,6 +7768,12 @@ class Step3 extends React.Component {
     // }
     return (
       <React.Fragment>
+        <div className="tab-content b-0 mb-0" >
+          <div className="tab-pane active" >
+            <div className="row">
+              <div className="col-md-12 card-box">
+
+      <div >
 	   <form id="schedules-form" className="required-form" action="#"  method="PATCH"  enctype="application/x-www-form-urlencoded">
         <div className="tab-pane-x" id="requirements">
           <div className="row card-box">
@@ -7919,6 +7966,12 @@ class Step3 extends React.Component {
           </div>
         </div>
 		</form>
+    </div>
+
+      </div>
+        </div>
+          </div>
+            </div>
       </React.Fragment>
     );
   }
@@ -8099,8 +8152,12 @@ class Step4 extends React.Component {
     // }
     return (
       <React.Fragment>
-        {" "}
-        <div className="tab-pane-x schedules-form" id="pricing">
+         <div className="tab-content b-0 mb-0" >
+          <div className="tab-pane active" >
+            <div className="row">
+              <div className="col-md-12 card-box">
+
+        <div className="tab-pane-x schedules-form " id="pricing">
           <div className="">
             <div className="col-md-12">
               
@@ -8363,6 +8420,12 @@ class Step4 extends React.Component {
 
             </div>
           </div>
+        </div>
+
+
+        </div>
+        </div>
+        </div>
         </div>
       </React.Fragment>
     );
@@ -8908,6 +8971,9 @@ const saveMarkdownEditContent = () => {
 
   return (
     <React.Fragment>
+
+  
+
       <div className="tab-pane schedules-form" id="media">
         <div className="row">
           <div className="col-md-12">
@@ -11673,6 +11739,11 @@ cleanUpExtension(filename) {
     return (
       <React.Fragment>
         {" "}
+         <div className="tab-content b-0 mb-0" >
+          <div className="tab-pane active" >
+            <div className="row">
+              <div className="col-md-12 card-box">
+
         <div className="tab-pane-x" id="seo">
           <div className="row">
             <div className="col-md-12"> 
@@ -12063,6 +12134,8 @@ cleanUpExtension(filename) {
             </div>
 		  </div>
         </div>
+
+        </div></div></div></div>
       </React.Fragment>
     );
   }
@@ -12159,7 +12232,13 @@ class Step8 extends React.Component {
     }
     return (
       <React.Fragment>
-        <div className="tab-pane" id="resource">
+
+       <div className="tab-content b-0 mb-0" >
+          <div className="tab-pane active" >
+            <div className="row">
+              <div className="col-md-12 card-box">
+
+        <div className="" id="resource">
           <div className="row">
             <div className="col-12">
               <div className="text-center">
@@ -12197,6 +12276,8 @@ class Step8 extends React.Component {
             </div>
           </div>
         </div>
+
+        </div></div></div></div>
       </React.Fragment>
     );
   }

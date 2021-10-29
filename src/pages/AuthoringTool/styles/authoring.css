@@ -19119,9 +19119,13 @@ color: #000;
         display: none;
         margin-left: 0;
         padding: 0.5em;
+        width: 100%;
+        max-width: 100%;
         }
     .responsive-tabs .active + dd {
         display: block;
+        width: 100%;
+        max-width: 100%;
         }
     .responsive-tabs img {
         max-width: 100%;
@@ -19143,6 +19147,7 @@ color: #000;
             }
         .responsive-tabs dd {
             order: 2;
+            max-width: 100%;
             }
 
 }
