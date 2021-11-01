@@ -8101,34 +8101,34 @@ class Step4 extends React.Component {
 		  
 		  if(leadDetail){
 		  leadDetail = leadDetail.profile
-		  let teamleadTemplate =`<div style="background:#f6f6f6;padding:20px" id="cardbox card" class="card1 animate-slide-out ">
+		  let teamleadTemplate =`<div style="background:#f6f6f6;padding:20px;display:block" id="card-box" class="fl-left col-md-6">
                     <div class="mdl-card__media">
                             <div class="article-image-purple">
                                 <div class="mdl-card__title">
-                                    <h4 class="mdl-card__title-text title-text--white">Team Lead: ${leadDetail.first_name} ${leadDetail.last_name}</h4>
+                                    <h4 class="mdl-card__title-text ">Team Lead: ${leadDetail.first_name} ${leadDetail.last_name}</h4>
                                <hr/>
 							   </div>
 								
                             </div>
                     </div>
                     <div class="mdl-card__supporting-text">
-                        <!-- TAG Chips -->
+                      
                         <span class="mdl-chip">
-                        <span class="mdl-chip__text"  data-filter=".mdl-card" data-filter-tag="a">Contact Detail</span>
+                        <span style={{color:"#000"}} class="mdl-chip__text"  data-filter=".mdl-card" data-filter-tag="a">Contact Detail</span>
                         </span><br/>
                         <span class="mdl-chip">
-                        <span class="mdl-chip__text" data-filter=".mdl-card" data-filter-tag="e">Email: ${leadDetail.email}</span>
+                        <span style={{color:"#000"}} class="mdl-chip__text" data-filter=".mdl-card" data-filter-tag="e">Email: ${leadDetail.email}</span>
                         </span><br/>
                         <span class="mdl-chip">
-                        <span class="mdl-chip__text" data-filter=".mdl-card" data-filter-tag="g">Phone ${leadDetail.phone_number}</span>
+                        <span style={{color:"#000"}} class="mdl-chip__text" data-filter=".mdl-card" data-filter-tag="g">Phone ${leadDetail.phone_number}</span>
                         </span><br/>
                     </div>
                     <div class="mdl-card__supporting-text">
                         Title :
                     </div>
-                    <div class="mdl-card__actions mdl-card--border pagination">
+                    <!--<div class="mdl-card__actions mdl-card--border pagination">
                         <a id="nextLead" onclick="alert('event bubbles'); ${this.nextInstructor()}" class="next btn-next mdl-button btn-default" style="color:#fff">NEXT</a>
-                    </div>
+                    </div>-->
                 </div>
               `
 			  
@@ -8243,6 +8243,7 @@ class Step4 extends React.Component {
                 <div className="col col-md-12 collaboratorlist-append">
                   <input
                     type="text"
+                    style={{padding:"22px"}}
                     className="form-control col-md-10 fl-left"
                     id="collaboratorslist"
                     name="collaboratorslist"
@@ -8412,7 +8413,7 @@ class Step4 extends React.Component {
 				  </main>
 				  
 				  <div id="teamleadInstall" style={{opacity:"0"}}>
-					    <h5>Add Team Lead</h5>
+					    <h5 >Add Team Lead</h5>
 						{/*action event to add a team lead if he was not added or removed by mistake*/}
 						<hr/>
 					</div>
