@@ -157,7 +157,7 @@ const NavBar = () => {
         </Navbar>
       </header>
       <header className="py-3 border-bottom d-none d-md-flex shadow-sm">
-        <Navbar expand="lg">
+        <Navbar expand="lg" style={{ width: "100%" }}>
           <Container fluid>
             <Navbar.Brand href="#home">
               <img
