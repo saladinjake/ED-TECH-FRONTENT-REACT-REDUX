@@ -7592,6 +7592,17 @@ class Step5 extends React.Component {
     };
   }
 
+  componentDidMount(){
+    $('select').change(function(){
+     if($('select option:selected').text() == "Define your score value"){
+          $(this).after("<label>Enter your Grade Definition<input></input></label>");
+     }
+     else{
+          $('label').remove();
+     }
+    });
+  }
+
   handleShareholderNameChange = (idx) => (evt) => {
     const newShareholders = this.state.shareholders.map((shareholder, sidx) => {
       if (idx !== sidx) return shareholder;
@@ -7627,12 +7638,113 @@ class Step5 extends React.Component {
               <div className="col-md-12 card-box">
 
      
-     <form id="schedules-formx" className="required-form" action="#"  method="PATCH"  enctype="application/x-www-form-urlencoded">
+     <form id="schedules-formx" className="required-form schedules-form" action="#"  method="PATCH"  enctype="application/x-www-form-urlencoded">
         
         <div className="" id="outcomes">
           <div className="">
             <div className="col-md-12">
-              <div className="form-group col-md-6 fl-left">
+              
+
+
+
+
+
+<div class="form-group  col-md-6 fl-left">
+              
+                <div class="" data-select2-id="94">
+
+              <p>Select benchmark for an excellent score</p>
+<select  class="form-control select2 select2-hidden-accessible"
+                    data-toggle="select2">
+  <option>- Please select a grade value - </option>
+  <option>90-100%</option>
+  <option>95-100%</option>
+  <option>85%</option>
+  <option>A++</option>
+  <option>A+</option>
+  <option>B+</option>
+  <option>B++</option>
+  <option>Define your score value</option>
+</select>
+
+
+</div>
+
+</div>
+
+
+
+
+
+<div class="form-group  col-md-6 fl-left">
+              
+                <div class="" data-select2-id="94">
+<p>Select a bench mark for a very good score</p>
+<select  class="form-control select2 select2-hidden-accessible"
+                    data-toggle="select2">
+  <option>- Please select a grade value - </option>
+  <option>84-89%</option>
+  <option>79%-83%</option>
+  <option>70%-78%</option>
+  <option>B-</option>
+  <option>C+</option>
+   <option>Define your score value</option>
+
+</select>
+</div>
+</div>
+
+
+<div class="form-group  col-md-6 fl-left">
+              
+                <div class="" data-select2-id="94">
+<p>Select Bench mark for a fair pass mark</p>
+<select  class="form-control select2 select2-hidden-accessible"
+                    data-toggle="select2">
+  <option>- Please select a grade value - </option>
+  <option>60-69%</option>
+  <option>60%-65%</option>
+  <option>65%-69%</option>
+  <option>C</option>
+  <option>D</option>
+  <option>E</option>
+  <option>P</option>
+   <option>Define your score value</option>
+</select>
+</div>
+</div>
+
+
+
+
+<div class="form-group  col-md-6 fl-left">
+              
+                <div class="" data-select2-id="94">
+
+<p>Select Bench mark for a failure</p>
+<select  class="form-control select2 select2-hidden-accessible"
+                    data-toggle="select2">
+  <option>- Please select a grade value - </option>
+  <option>0-69%</option>
+  <option>0%-50%</option>
+  <option>0%-40%</option>
+  <option>0-30%</option>
+  <option>F</option>
+  <option>E</option>
+  <option>D</option>
+   <option>Define your score value</option>
+</select>
+
+</div>
+</div>
+
+
+
+<div className="form-group col-md-6 fl-left">
+               <p className="col-md-12 col-form-label" for="course_title">
+                  Grace period after deadline for registration in weeks{" "}
+                  <span className="required">*</span>{" "}
+                </p>
                
                 <div className="">
                   <input
@@ -7645,68 +7757,18 @@ class Step5 extends React.Component {
                     required=""
 
                   />
-                   <label className="col-md-12 col-form-label" for="course_title">
-                  Grace period after deadline in weeks{" "}
-                  <span className="required">*</span>{" "}
-                </label>
+                  
                 </div>
               </div>
+
+              
 
               <div class="form-group  col-md-6 fl-left">
                 
                 <div class="" data-select2-id="94">
-                  <select
-                    class="form-control select2 select2-hidden-accessible"
-                    data-toggle="select2"
-                    name="grade"
-                    id="grade"
-                    data-select2-id="level"
-                    tabindex="-1"
-                    aria-hidden="true"
-                  >
-                    <option value="1" data-select2-id="4">
-                      20-50%
-                    </option>
-                    <option value="2" data-select2-id="95">
-                      50-70%
-                    </option>
-                    <option value="3" data-select2-id="96">
-                      90%
-                    </option>
-                    <option value="4" data-select2-id="96">
-                      A+
-                    </option>
-                    <option value="5" data-select2-id="96">
-                      B++
-                    </option>
-                    <option value="6" data-select2-id="96">
-                      B-
-                    </option>
-                    <option value="6" data-select2-id="96">
-                      B++
-                    </option>
-                    <option value="7" data-select2-id="96">
-                      C
-                    </option>
-                    <option value="8" data-select2-id="96">
-                      D
-                    </option>
-                    <option value="9" data-select2-id="96">
-                      E
-                    </option>
-                    
-                    
-                  </select>
-
-                  <label class="col-md-12 col-form-label" for="level">
-                  Grading (Benchmark for passmark)
-                </label>
-                </div>
-              </div>
-
-              <div class="form-group  col-md-6 fl-left">
-                
-                <div class="" data-select2-id="94">
+                <p class="col-md-12 col-form-label" for="level">
+                  Assignment/Exam Type
+                </p>
                   <select
                     class="form-control select2 select2-hidden-accessible"
                     data-toggle="select2"
@@ -7723,9 +7785,7 @@ class Step5 extends React.Component {
                       Certificate issued
                     </option>
                   </select>
-                  <label class="col-md-12 col-form-label" for="level">
-                  Assignment/Exam Type
-                </label>
+                  
                 </div>
               </div>
 
@@ -11746,7 +11806,7 @@ cleanUpExtension(filename) {
     
     return (
       <React.Fragment>
-        {" "}
+        {/*
          <div className="tab-content b-0 mb-0" >
           <div className="tab-pane active" >
             <div className="row">
@@ -11759,7 +11819,7 @@ cleanUpExtension(filename) {
 
 
 
-			{/*here is what you can manage*/}
+			
 			
 			<div class="col-md-12 configurations">
       <br/><br/><br/>
@@ -11819,7 +11879,7 @@ cleanUpExtension(filename) {
                         <label>Group Type</label>
                           <select onChange={this.handleChange} name="group_type" class="form-control">
                             <option value="1">Student</option>
-                             <option value="2">Readers</option>{/*this is not part of the first iteration of the contract*/}
+                             <option value="2">Readers</option>
                               <option value="3">Authors</option>
                           </select>
 
@@ -12125,25 +12185,12 @@ cleanUpExtension(filename) {
 </div>
 
 
-
-
-
-
-
-
-
-
-
-			
-			
-			
-			{/*ends work here*/}
             
             </div>
 		  </div>
         </div>
 
-        </div></div></div></div>
+        </div></div></div></div> */}
       </React.Fragment>
     );
   }
