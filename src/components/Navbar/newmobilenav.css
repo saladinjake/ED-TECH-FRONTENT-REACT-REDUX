@@ -27,9 +27,10 @@ Default settings
   -moz-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  margin-bottom: -78px;
+  /*margin-bottom: -78px;*/
   /* width: 100%;
   min-width: 100%;*/
+  
 }
 
 .navik-header ul {

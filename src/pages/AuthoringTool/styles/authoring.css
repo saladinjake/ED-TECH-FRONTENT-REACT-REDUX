@@ -14984,7 +14984,7 @@ div.dt-button-info h2 {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #f9f9f9;
-  background: rgba(8,23,200);
+  background: #eaeaea;
 }
 
 .modal-tab {
@@ -14997,8 +14997,8 @@ div.dt-button-info h2 {
   font-size: 1rem;
   transition: all 200ms ease-in-out;
  /* color: #33333380;*/
-  background: rgba(8,23,200);
-  color: #fff;
+  /*background: rgba(8,23,200);*/
+  color: #000;
 }
 
 .tab-icon {
@@ -15042,8 +15042,8 @@ div.dt-button-info h2 {
 .pb-widget {
   position: relative;
   background: #f9f9f9;
-  /*background: rgba(8,23,200);
-*/
+  background: rgba(8,23,200);
+
   width: 30%;
   display: flex;
   align-items: center;
@@ -15065,7 +15065,8 @@ div.dt-button-info h2 {
 }
 
 .pb-widget i {
-  color: #33333380;
+ /* color: #33333380;*/
+ color: #fff;
   font-size: 2rem;
   transition: all 200ms ease-in-out;
   padding: 5px 0;
@@ -15081,7 +15082,7 @@ div.dt-button-info h2 {
 
 .pb-widget span {
   font-size: 1rem;
-  color: #000;
+  color: #fff;
 }
 
 .pb-widget span,
@@ -17357,17 +17358,17 @@ border-left: 4px solid #eaeaea;
 
 
 .schedules-form input{
-	  padding:22px;
+    padding:22px;
 }
 
 
 .schedules-form select {
-	height:50px;
-	 padding:10px;
+  height:50px;
+   padding:10px;
 }
 .schedules-form select option{
-	font-size:40px;
-	height:40px;
+  font-size:40px;
+  height:40px;
 }
 
 
@@ -17390,17 +17391,17 @@ border-left: 4px solid #eaeaea;
 
 
 #schedules-form input{
-	  padding:22px;
+    padding:22px;
 }
 
 
 #schedules-form select {
-	height:50px;
-	 padding:10px;
+  height:50px;
+   padding:10px;
 }
 #schedules-form select option{
-	font-size:40px;
-	height:40px;
+  font-size:40px;
+  height:40px;
 }
 
 
@@ -17417,17 +17418,17 @@ border-left: 4px solid #eaeaea;
 
 
 #stepUpFormWithAI2 input{
-	  padding:22px;
+    padding:22px;
 }
 
 
 #stepUpFormWithAI2 select {
-	height:50px;
-	 padding:10px;
+  height:50px;
+   padding:10px;
 }
 #stepUpFormWithAI2 select option{
-	font-size:40px;
-	height:40px;
+  font-size:40px;
+  height:40px;
 }
 
 
@@ -17452,17 +17453,17 @@ border-left: 4px solid #eaeaea;
 
 
 #stepUpFormWithAI input{
-	  padding:22px;
+    padding:22px;
 }
 
 
 #stepUpFormWithAI select {
-	height:50px;
-	 padding:10px;
+  height:50px;
+   padding:10px;
 }
 #stepUpFormWithAI select option{
-	font-size:40px;
-	height:40px;
+  font-size:40px;
+  height:40px;
 }
 
 
@@ -17519,8 +17520,8 @@ nav.action-figure{
     -webkit-transition:all 200ms ease-in;
     -o-transition:all 200ms ease-in;
     transition:all 200ms ease-in;
-	
-	 -webkit-transition: border-color 0.15s ease-in-out,
+  
+   -webkit-transition: border-color 0.15s ease-in-out,
     -webkit-box-shadow 0.15s ease-in-out;
   transition: border-color 0.15s ease-in-out,
     -webkit-box-shadow 0.15s ease-in-out;
@@ -17537,9 +17538,9 @@ nav.action-figure ul{
    background:#ffff;
     overflow:hidden;
     border-right: 4px solid rgba(8,23,200);
-	
-	
-	 -webkit-transition: border-color 0.15s ease-in-out,
+  
+  
+   -webkit-transition: border-color 0.15s ease-in-out,
     -webkit-box-shadow 0.15s ease-in-out;
   transition: border-color 0.15s ease-in-out,
     -webkit-box-shadow 0.15s ease-in-out;
@@ -17578,8 +17579,8 @@ input.menu-xtrigger ~ label{
     font-size:14px;
     
     position:absolute;
-    top:20px;
-    right:40px;
+    top:90px;
+    left:40px;
     -moz-transition:all 200ms ease-in;
     -webkit-transition:all 200ms ease-in;
     -o-transition:all 200ms ease-in;
@@ -17906,15 +17907,15 @@ fl-rightside{
 
 
 .mdl-layout__content{
-	width:100%;
-	
+  width:100%;
+  
 }
 
 
 
 .card1,.card2{
-	
-	
+  
+  
 }
 
 
@@ -18494,6 +18495,15 @@ input[type="text"]:focus + i:before {
   padding: 10px 0;
   font-size: 12px;
   border-bottom: 1px solid #fff;
+  
+
+  -webkit-user-select: none;
+        -webkit-touch-callout: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        color: #cc0000;
+        pointer-events: none;
 }
 
 
@@ -18999,3 +19009,146 @@ color: #000;
 #myBtn:hover {
   background-color: #555;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*slide out question box*/
+.container-questions {
+  margin-top: 20px;
+}
+
+#slideout-questions .btn{
+  padding: 10px;
+  background: #eaeaea;
+  border-radius: 40px;
+  margin-bottom: 10px;
+  margin-left:20px;
+}
+#slideout-questions {
+  background: #dbe2e9;
+  color: #333;
+  position: fixed;
+  top: 0;
+    right: -1490px;
+  width: 100%;
+  height: 100%;
+  margin-top: 10px;
+  -webkit-transition-duration: 0.3s;
+  -moz-transition-duration: 0.3s;
+  -o-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+}
+#slideout-questions form {
+  display: block;
+  padding: 20px;
+}
+#slideout-questions textarea {
+  display: block;
+  height: 100px;
+  margin-bottom: 6px;
+  width: 250px;
+}
+#slideout-questions.on {
+  right: 0;
+}
+
+
+/*disable hint area selection*/
+.unselectable, .hintareaview, .hint-region {
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        color: #cc0000;
+        pointer-events: none;
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.responsive-tabs {
+    }
+    .responsive-tabs dt {
+        padding: 0.5em;
+        cursor: pointer;
+        }
+    .responsive-tabs dt ~ dt {
+        border-top: 1px solid #457b9d;
+        }
+    .responsive-tabs .active {
+        background-color: rgba(8,23,200);
+        color: #fff;
+        }
+    .responsive-tabs dd {
+        display: none;
+        margin-left: 0;
+        padding: 0.5em;
+        width: 100%;
+        max-width: 100%;
+        }
+    .responsive-tabs .active + dd {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        }
+    .responsive-tabs img {
+        max-width: 100%;
+        }
+
+@media only screen and (min-width: 768px) {
+
+    .responsive-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        }
+        .responsive-tabs dt {
+            flex-grow: 1;
+            border-bottom: 1px solid rgba(8,23,200);
+            text-align: center;
+            }
+        .responsive-tabs dt ~ dt {
+            border-top: 0;
+            }
+        .responsive-tabs dd {
+            order: 2;
+            max-width: 100%;
+            }
+
+}
+

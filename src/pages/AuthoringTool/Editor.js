@@ -8,7 +8,17 @@ import "./editor.css";
 
 import $ from "jquery";
 
-// export default HtmlEditor
+let quilloBJ ;;
+
+const isWhitespace = (char) => {
+  const whiteSpaceRegex = /\s/;
+  return typeof char === 'string' && whiteSpaceRegex.test(char);
+};
+const whiteSpaceRegex = /\s/;
+
+// export default HtmlEditor for all html editing fields
+//one single editor class that replicates 
+//distinguishing features
 class Editor extends React.Component {
   constructor(props) {
     super(props);
@@ -16,11 +26,119 @@ class Editor extends React.Component {
       editorHtml: this.props.placeholder || "Edit this content" || "", 
       theme: "snow" };
     this.handleChange = this.handleChange.bind(this);
+    
   }
 
   handleChange(html) {
+    console.log(html)
+    
+
+    if(quilloBJ){
+      let editor = quilloBJ.getEditor()
+      console.log(editor)
+      // //link copy to click board
+      // editor.clipboard.addMatcher(Node.TEXT_NODE, function(node, delta) {
+      //     var regex = /https?:\/\/[^\s]+/g;
+      //     if(typeof(node.data) !== 'string') return;
+      //     var matches = node.data.match(regex);
+
+      //     if(matches && matches.length > 0) {
+      //       var ops = [];
+      //       var str = node.data;
+      //       matches.forEach(function(match) {
+      //         var split = str.split(match);
+      //         var beforeLink = split.shift();
+      //         ops.push({ insert: beforeLink });
+      //         ops.push({ insert: match, attributes: { link: match } });
+      //         str = split.join(match);
+      //       });
+      //       ops.push({ insert: str });
+      //       delta.ops = ops;
+      //     }
+
+      //     return delta;
+      //   });
+
+
+
+      // //convert img links to actual images
+      // editor.clipboard.addMatcher(Node.TEXT_NODE, function(node, delta) {
+      //     var regex = /https?:\/\/[^\s]+/g;
+      //         if(typeof(node.data) !== 'string') return;
+      //             var matches = node.data.match(regex);
+
+      //             if(matches && matches.length > 0) {
+      //                 var ops = [];
+      //                 var str = node.data;
+
+      //                 matches.forEach(function(match) {
+      //                      var split = str.split(match);
+      //                      if(match.match(/\.(png|jpg|jpeg|gif)$/)!=null){
+      //                          var beforeLink = split.shift();                     
+      //                          ops.push({ insert: beforeLink });
+      //                          ops.push({ insert:{image: match}, attributes: { link: match } 
+      //                       });
+
+      //                     str = split.join(match);                    
+      //                     } else { //if link is not an image
+      //                         var beforeLink = split.shift();
+      //                         ops.push({ insert: beforeLink });                        
+      //                         ops.push({ insert: match, attributes: { link: match } 
+      //                     }); 
+      //                         str = split.join(match);
+      //                     }                                                     
+      //     });
+      //                 ops.push({ insert: str });
+      //                 delta.ops = ops;
+      //              }                   
+      //     return delta;
+      // });
+
+
+
+         // when user types a link url
+         // Autolink URLs when typing
+        // quilloBJ.on('editor-change', function(delta, oldDelta, source) {
+        //   var regex = /https?:\/\/[^\s]+$/;
+        //   if(delta.ops.length === 2 && delta.ops[0].retain && isWhitespace(delta.ops[1].insert)) {
+        //     var endRetain = delta.ops[0].retain;
+        //     var text = quilloBJ.getText().substr(0, endRetain);
+        //     var match = text.match(regex);
+
+        //     if(match !== null) {
+        //       var url = match[0];
+
+        //       var ops = [];
+        //       if(endRetain > url.length) {
+        //         ops.push({ retain: endRetain - url.length });
+        //       }
+
+        //       ops = ops.concat([
+        //         { delete: url.length },
+        //         { insert: url, attributes: { link: url } }
+        //       ]);
+
+        //       quilloBJ.updateContents({
+        //         ops: ops
+        //       });
+        //     }
+        //   }
+        // });
+
+
+    }
+
+
+    // if(this.props.maxlength){
+    //   if(this.html.length> this.props.maxlength){
+    //     alert("error")
+    //   }
+    // }
     this.setState({ editorHtml: html });
     this.props.action(html);
+
+
+    localStorage.setItem(this.props.placeholder,html)
 
     this.props.stateAction(this.props.placeholder, html);
   }
@@ -63,28 +181,29 @@ class Editor extends React.Component {
             const formData = new FormData();
 
             formData.append("file", file);
+            let fakeQuill = quilloBJ.getEditor()
 
             // Save current cursor state
-            const range = this.quill.getSelection(true);
+            const range = quilloBJ.getSelection(true);
 
             // Insert temporary loading placeholder image
-            this.quill.insertEmbed(range.index, 'image', `${window.location.origin}/public/images/loaders/placeholder.gif`);
+            fakeQuill.insertEmbed(range.index, 'image', `${window.location.origin}/public/images/loaders/placeholder.gif`);
 
             // Move cursor to right side of image (easier to continue typing)
-            this.quill.setSelection(range.index + 1);
+            fakeQuill.setSelection(range.index + 1);
 			
 			//save the image to the api end point resource
 
             const res = await postNewsImageToCloudinaryApi(formData); // API post, returns image location as string e.g. 'http://www.example.com/images/foo.png'
 
             // Remove placeholder image
-            this.quill.deleteText(range.index, 1);
+            fakeQuill.deleteText(range.index, 1);
 
             // Insert uploaded image
             // this.quill.insertEmbed(range.index, 'image', res.body.image);
-			if(res){
-			this.quill.insertEmbed(range.index, 'image', res);	
-			}
+			      if(res){
+			        fakeQuill.insertEmbed(range.index, 'image', res);	
+			      }
             
         };
     }
@@ -100,7 +219,46 @@ class Editor extends React.Component {
           {/*<button className="md-trigger button-preview" data-modal="modal-12">Live Edit Preview</button>*/}
         </div>
         <ReactQuill
+        ref={(el) => {  
+                quilloBJ = el;  
+          }}
           theme={this.state.theme}
+
+          modules={{  
+               toolbar:{
+                container: [
+                  [
+                    { header: "1" },
+                    { header: "2" },
+                  { header: [3, 4, 5, 6] },
+                   
+                    { font: [] },
+                  ],
+                  [{ size: [] }],
+                  ["bold", "italic", "underline", "strike", "blockquote"],
+                  [
+                    { list: "ordered" },
+                    { list: "bullet" },
+                    { indent: "-1" },
+                    { indent: "+1" },
+                  ],
+                  ["link", "image", "video"],
+                  ["clean"],
+                ["codeblock"]
+                
+                ],
+              },
+                clipboard: {
+                  // toggle to add extra line breaks when pasting HTML:
+                  matchVisual: false,
+                },
+                
+                handlers: {
+                  image: this.imageHandler
+                },
+  
+                table: true  
+              }}  
           onChange={(e) => {
             this.handleChange(e);
           }}
@@ -179,39 +337,39 @@ async function postNewsImageToCloudinaryApi(formData){
  * Quill modules to attach to editor
  * See https://quilljs.com/docs/modules/ for complete options
  */
-Editor.modules = {
-  toolbar: [
-    [
-      { header: "1" },
-      { header: "2" },
-	  { header: [3, 4, 5, 6] },
+//Editor.modules = {
+ //  toolbar: [
+ //    [
+ //      { header: "1" },
+ //      { header: "2" },
+	//   { header: [3, 4, 5, 6] },
      
-      { font: [] },
-    ],
-    [{ size: [] }],
-    ["bold", "italic", "underline", "strike", "blockquote"],
-    [
-      { list: "ordered" },
-      { list: "bullet" },
-      { indent: "-1" },
-      { indent: "+1" },
-    ],
-    ["link", "image", "video"],
-    ["clean"],
-	["codeblock"]
+ //      { font: [] },
+ //    ],
+ //    [{ size: [] }],
+ //    ["bold", "italic", "underline", "strike", "blockquote"],
+ //    [
+ //      { list: "ordered" },
+ //      { list: "bullet" },
+ //      { indent: "-1" },
+ //      { indent: "+1" },
+ //    ],
+ //    ["link", "image", "video"],
+ //    ["clean"],
+	// ["codeblock"]
 	
-  ],
-  clipboard: {
-    // toggle to add extra line breaks when pasting HTML:
-    matchVisual: false,
-  },
+ //  ],
+ //  clipboard: {
+ //    // toggle to add extra line breaks when pasting HTML:
+ //    matchVisual: false,
+ //  },
   
-  //handlers: {
-                    //image: this.imageHandler
-    //},
+ //  handlers: {
+ //    image: this.imageHandler
+ //  },
   
  
-};
+//};
 /*
  * Quill editor formats
  * See https://quilljs.com/docs/formats/
