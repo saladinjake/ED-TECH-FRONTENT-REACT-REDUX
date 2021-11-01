@@ -1008,7 +1008,7 @@ export const createAnyResource =  async (mode="post",
      //ie. gen form data on fly not added to the dom itself. just a temp usage
     // formEl = $("#stepUpFormWithAI2");
       new_form = $("<form id='quickform-update-onfly' method='patch' enctype='application/x-www-form-urlencoded'></form>")
-     
+      let selectedPre, selectedAuth;
     if(state){
               //formEl = $("#stepUpFormWithAI2");
               console.log(state)
@@ -1051,14 +1051,27 @@ export const createAnyResource =  async (mode="post",
                   //  templateOpt=`</select>`
                   // new_form.append(templateOpt)
 
+                  let selectedAuth = JSON.parse(tempVal)
+                  $.each(selectedAuth, function(i, v){
+                        var input = $("<input>").attr({"type":"hidden","name":"authoring_team[]"}).val(v);
+                        new_form.append(input);    
+                    });
+                    // if (selected.length > 0)
+                    // {
+                    //     // $('#test').prop('action','/process/p_screenshots_download2.php');
+                    //    // new_form.prop('method','POST');
+                    //     return;
+                    // }
 
-                   let temp = `<select name="authoring_team[]" value="${[JSON.parse(tempVal)]}" multiple></select>`
-                  new_form.append(temp)
+
+                   //let temp = `<select name="authoring_team[]" value="${}" multiple></select>`
+                  //new_form.append(temp)
 
                   console.log(tempVal+ "authoring_team")
                 
 
                   }else{
+
 
                   }
                   
@@ -1068,7 +1081,8 @@ export const createAnyResource =  async (mode="post",
                 console.log(tempVal+ "prerequisites")
               // let template = `<input name="prerequisite[]" style='display:none' value='${JSON.parse(tempVal)}'>`;
                   
-                  // if(tempVal.match(/[\[.*\]]/)){
+                  if(tempVal.match(/[\[.*\]]/)){
+                    alert("multiple prerequisite")
                   
                   // let templateOpt2 = `<select name="prerequisite[]" style='display:none' multiple>`;
                   //  let fakeSelectOptions = JSON.parse(tempVal) 
@@ -1078,13 +1092,35 @@ export const createAnyResource =  async (mode="post",
                   //  })
                   //  templateOpt2=`</select>`
 
-                  let temp = `<input name="prerequisite[]" value="${[...JSON.parse(tempVal)]}" multiple></select>`
-                  new_form.append(temp)
+                  // let temp = `<input name="prerequisite[]" value="${[...JSON.parse(tempVal)]}" multiple></select>`
+                  // new_form.append(temp)
+                  var input = $("select").attr({"type":"hidden","name":"prerequisite[]"}).val([...JSON.parse(tempVal)])
+                     
+
+                   //  selectedPre = JSON.parse(tempVal)
+                   // $.each(selectedPre, function(i, v){
+                   //    // console.log(v)
+                   //    input.append("<option></option>").attr({"selected":true}).val(v)
+                              
+                   // });
+                    new_form.append(input);
 
 
-                 // }else{
+                 }else{
+                  alert("single course")
+                  selectedPre = JSON.parse(tempVal)
+                  tempVal = localStorage.getItem("authoring_team")
+                   if(tempVal.length>2){
+                    var input = $("<input>").attr({"type":"hidden","name":"prerequisite[]"}).val([...selectedPre]);
+                    new_form.append(input);
 
-                 // }
+                   }else{
+                    alert("empty")
+                    var input = $("<select></select>").attr({"type":"hidden","name":"prerequisite[]"}).val([]);
+                        new_form.append(input);
+                   }
+
+                 }
 
                
               

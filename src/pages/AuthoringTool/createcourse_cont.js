@@ -8101,34 +8101,25 @@ class Step4 extends React.Component {
 		  
 		  if(leadDetail){
 		  leadDetail = leadDetail.profile
-		  let teamleadTemplate =`<div style="background:#f6f6f6;padding:20px;display:block" id="card-box" class="fl-left col-md-6">
-                    <div class="mdl-card__media">
-                            <div class="article-image-purple">
-                                <div class="mdl-card__title">
-                                    <h4 class="mdl-card__title-text ">Team Lead: ${leadDetail.first_name} ${leadDetail.last_name}</h4>
-                               <hr/>
-							   </div>
-								
-                            </div>
-                    </div>
-                    <div class="mdl-card__supporting-text">
+		  let teamleadTemplate =`<div style="background:#rgba(8,23,200);padding:20px;display:block" id="" class="fl-left col-md-6">
+                    
+                    <div class="">
                       
                         <span class="mdl-chip">
-                        <span style={{color:"#000"}} class="mdl-chip__text"  data-filter=".mdl-card" data-filter-tag="a">Contact Detail</span>
+                        <span style={{color:"#000"}}  data-filter=".mdl-card" data-filter-tag="a">Contact Detail</span>
+                        </span><br/>
+                         <span class="mdl-chip">
+                        <span style={{color:"#000"}}  data-filter=".mdl-card" data-filter-tag="e">Full Name: ${leadDetail.first_name} ${leadDetail.last_name}</span>
                         </span><br/>
                         <span class="mdl-chip">
-                        <span style={{color:"#000"}} class="mdl-chip__text" data-filter=".mdl-card" data-filter-tag="e">Email: ${leadDetail.email}</span>
+                        <span style={{color:"#000"}}  data-filter=".mdl-card" data-filter-tag="e">Email: ${leadDetail.email}</span>
                         </span><br/>
                         <span class="mdl-chip">
-                        <span style={{color:"#000"}} class="mdl-chip__text" data-filter=".mdl-card" data-filter-tag="g">Phone ${leadDetail.phone_number}</span>
+                        <span style={{color:"#000"}}  data-filter=".mdl-card" data-filter-tag="g">Phone ${leadDetail.phone_number}</span>
                         </span><br/>
                     </div>
-                    <div class="mdl-card__supporting-text">
-                        Title :
-                    </div>
-                    <!--<div class="mdl-card__actions mdl-card--border pagination">
-                        <a id="nextLead" onclick="alert('event bubbles'); ${this.nextInstructor()}" class="next btn-next mdl-button btn-default" style="color:#fff">NEXT</a>
-                    </div>-->
+                    
+                    
                 </div>
               `
 			  
@@ -8399,7 +8390,7 @@ class Step4 extends React.Component {
 
 
                 <div  className="col-md-6 fl-left">
-				    <h4>Course Team</h4><hr/>
+				    <h4 style={{color:"#000"}}>Course Team</h4><hr/>
 					
 					
 					<main class="mdl-layout__content">
