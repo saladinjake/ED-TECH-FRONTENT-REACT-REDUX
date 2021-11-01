@@ -22,7 +22,6 @@ import "./responsive.css";
 import "./app.css";
 import "./pre-style.css";
 import Notification from "./Toaster";
-
 import AuthoringDashboard from "./pages/AuthoringTool/dashboard";
 import AuthoringCourseList from "./pages/AuthoringTool/courselist";
 import AuthorForm from "./pages/AuthoringTool/createcourse";
@@ -32,11 +31,8 @@ import AuthorPayments from "./pages/AuthoringTool/Payments";
 import AuthorPaymentSetting from "./pages/AuthoringTool/Paymentsettings";
 import AuthorProfileSetting from "./pages/AuthoringTool/ProfilePage";
 
- import AuthoringPreview from "./pages/AuthoringTool/preview"
-
-
+import AuthoringPreview from "./pages/AuthoringTool/preview"
 import $ from "jquery";
-
 import {
   createAnyResource
 } from "services/authoring"
@@ -69,14 +65,7 @@ const testAjaxificationPostX = async (mode="POST",url,form) => {
     }catch(e){
       alert("You only get better if you try harder")
       console.log(e)
-    }
-
-
-
-
-   
-   
-   
+    }   
 }
 
 

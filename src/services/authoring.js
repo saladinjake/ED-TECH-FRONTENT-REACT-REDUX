@@ -995,12 +995,14 @@ export const createAnyResource =  async (mode="post",
         swal("Sorry!", "The course must be attached to an institution it belongs to", "error");
         return false;
       }
-    }
+  }//course create if ends
 
 
 //alert(formEl.attr("id"))
-       // else if its an update of the form for each tab run the following event
-    if(formEl.attr("id")=="stepUpFormWithAI2" || typeof formEl.attr("id")=="undefined"){ //or more
+ if(formEl.attr("id")=="create-course" ){
+
+ }       // else if its an update of the form for each tab run the following event
+ else if(formEl.attr("id")=="stepUpFormWithAI2" ||  state.hasOwnProperty("author")){ //or more
       //loop thru the current state then update what we have by cfreateing the form value then append to the
       //dynamic invisible form element to be sent to database
      //ie. gen form data on fly not added to the dom itself. just a temp usage
@@ -1008,77 +1010,110 @@ export const createAnyResource =  async (mode="post",
       new_form = $("<form id='quickform-update-onfly' method='patch' enctype='application/x-www-form-urlencoded'></form>")
      
     if(state){
-      //formEl = $("#stepUpFormWithAI2");
-      console.log(state)
-       let tempVal = ""
-      //recreate the form data with the state changed value by filling it with what was typed before
-          //url will be an update method if the resource exists
-      let textEditors = [
-        "learning_expectation",
-        "description","prerequisite", 
-      "overview","curriculum"
-      ];
-          for(var k in state){
-            console.log(k + " : "   + localStorage.getItem(k)) 
-      if(k=="card_image" || k=="intro_video"){
-        //for uploads handle this when agreed upon change made for video upload of intro_video bcus there is no where to upload files on backend
-        
-      }else if(k=="authoring_team"){
-        //now clone and append the jetpacks of all my collaborators
-        
-        tempVal = localStorage.getItem(k)
-       // let template = `<input name="${k}" style='display:none' value="${JSON.parse(tempVal)}">`;
-          
-          let templateOpt = `<select name="authoring_team[]" style='display:none' multiple>`;
-           let fakeSelectOptions = JSON.parse(tempVal) 
-           fakeSelectOptions.forEach(opt =>{
-             templateOpt+=`<option selected value=${opt}>${opt}</option>`
-           })
-           templateOpt=`</select>`
-          new_form.append(templateOpt)
-        
-      } else if(k=="prerequisite" || k=="prerequisite[]"){
-         
-        tempVal = localStorage.getItem(k)
-       // let template = `<input name="${k}" style='display:none' value="${JSON.parse(tempVal)}">`;
-          
-          let templateOpt2 = `<select name="prerequisite[]" style='display:none' multiple>`;
-           let fakeSelectOptions = JSON.parse(tempVal) 
-           fakeSelectOptions.forEach(opt =>{
-             templateOpt2+=`<option selected value=${opt}>${opt}</option>`
-           })
-           templateOpt2=`</select>`
-          new_form.append(templateOpt2)
+              //formEl = $("#stepUpFormWithAI2");
+              console.log(state)
+               let tempVal = ""
+              //recreate the form data with the state changed value by filling it with what was typed before
+                  //url will be an update method if the resource exists
+              let textEditors = [
+                "learning_expectation",
+                "description","prerequisite", 
+              "overview","curriculum"
+              ];
 
 
-          let templateOpt23 = `<select name="prerequisite" style='display:none' multiple>`;
-           let fakeSelectOptions2 = JSON.parse(tempVal) 
-           fakeSelectOptions2.forEach(opt =>{
-             templateOpt23+=`<option selected value=${opt}>${opt}</option>`
-           })
-           templateOpt23=`</select>`
-          new_form.append(templateOpt23)
+              let arrayForm = Object.entries(state);
+              console.log(arrayForm)
 
-       
-      
-        
-      }else{
-        tempVal = localStorage.getItem(k)
-        let template = `<input name="${k}" style='display:none' value="${tempVal}">`;
-          new_form.append(template)
-      }
+              // arrayForm.forEach(keyPairs =>{
+              //  console.log(keyPairs[0] + " : "   + keyPairs[1]) 
+              //    // if(keyPairs[0]==){
+
+              //    // }
+              // })
+    for(var k in state){
+            // console.log(k + " : "   + localStorage.getItem(k)) 
+              if(k=="card_image" || k=="intro_video"){
+                //for uploads handle this when agreed upon change made for video upload of intro_video bcus there is no where to upload files on backend
+                
+              }else if(k=="authoring_team"){
+                //now clone and append the jetpacks of all my collaborators
+                
+                tempVal = localStorage.getItem("authoring_team")
+               // let template = `<input name="${k}" style='display:none' value="${JSON.parse(tempVal)}">`;
+                  
+                  if(tempVal.match(/[\[.*\]]/)){
+                  //   let templateOpt = `<select name="authoring_team[]" style='display:none' multiple>`;
+                  //  let fakeSelectOptions = JSON.parse(tempVal) 
+                  //  fakeSelectOptions.forEach(opt =>{
+                  //    templateOpt+=`<option selected value="${opt}">${opt}</option>`
+                  //  })
+                  //  templateOpt=`</select>`
+                  // new_form.append(templateOpt)
+
+
+                   let temp = `<select name="authoring_team[]" value="${[JSON.parse(tempVal)]}" multiple></select>`
+                  new_form.append(temp)
+
+                  console.log(tempVal+ "authoring_team")
+                
+
+                  }else{
+
+                  }
+                  
+              }else if(k=="prerequisite" ){
+                 
+                tempVal = localStorage.getItem("prerequisite")
+                console.log(tempVal+ "prerequisites")
+              // let template = `<input name="prerequisite[]" style='display:none' value='${JSON.parse(tempVal)}'>`;
+                  
+                  // if(tempVal.match(/[\[.*\]]/)){
+                  
+                  // let templateOpt2 = `<select name="prerequisite[]" style='display:none' multiple>`;
+                  //  let fakeSelectOptions = JSON.parse(tempVal) 
+                  //  fakeSelectOptions.forEach(opt =>{
+                  //   console.log(opt)
+                  //    templateOpt2+=`<option selected value="${opt}">${opt}</option>`
+                  //  })
+                  //  templateOpt2=`</select>`
+
+                  let temp = `<input name="prerequisite[]" value="${[...JSON.parse(tempVal)]}" multiple></select>`
+                  new_form.append(temp)
+
+
+                 // }else{
+
+                 // }
+
+               
+              
+                
+              }
+
+
+              else if( (k!=="prerequisite") || (k!=="authoring_team") ||  (k!=="card_image") || (k!=="intro_video")){
+                tempVal = localStorage.getItem(k)
+                let template = `<input name="${k}" style='display:none' value="${tempVal}">`;
+                  new_form.append(template)
+              }
       
       //for booleans checks
       
-      }
+      }//end for
       formEl =    new_form;//$("#stepUpFormWithAI2"); // switch to a new fly form
-    }
+    } //end inner if
      
+  } //end outer if
+
+   if(formEl.attr("id")=="create-course" ){
+      formEl = formEl
   }
 
-
-  if(new_form!==null || typeof new_form!=="undefined"){
+  else if(formEl.attr("id")!=="create-course"  && state.hasOwnProperty("author")){
    formEl =    new_form;//$("#stepUpFormWithAI2");
+
+   //alert(formEl.html())
   }else{
 
 
@@ -1137,9 +1172,10 @@ export const createAnyResource =  async (mode="post",
     } else {
 
 
-
-      if(new_form!==null){
-        data = new_form.serialize()
+       if(formEl.attr("id")=="create-course" ){
+            data = formEl.serialize()
+       }else if(formEl.attr("id")!=="create-course"  && state.hasOwnProperty("author")){
+        data = formEl.serialize()
         //alert("works out")
       }else{
 

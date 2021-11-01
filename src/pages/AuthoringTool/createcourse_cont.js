@@ -2623,8 +2623,8 @@ closeIcon = toast.querySelector(".close-icon");
    //if(event.target.name =="prerequisite"){
      const {name,value} = event.target
         //pop and push activity
-        alert(name+ " with value pair: "+value)
-        console.log(name+ " with value pair: "+value)
+       // alert(name+ " with value pair: "+value)
+        //console.log(name+ " with value pair: "+value)
      let tempstore = localStorage.getItem("prerequisite")
 
      if(tempstore?.match(/[\[\.*\]]/)){
@@ -2968,6 +2968,8 @@ closeIcon = toast.querySelector(".close-icon");
    
     (async (trigger) =>{
        try{
+         $("body").append(`<div style="" id="loadingDiv"><div class="LockOn" >Loading...</div></div>`);
+    
          await this.fetchContent()
        }catch(e){
          console.log("some error occured")
@@ -3024,7 +3026,8 @@ closeIcon = toast.querySelector(".close-icon");
     })
 
     TabbyFy()
-    
+    setTimeout(removeLoader,10000); //wait for page load PLUS two seconds.
+   
 
   
 
@@ -3871,6 +3874,8 @@ Who is the entrepreneur who created questence?\n
 
   //fill form data automatically if the course exists
   fill(a){
+
+   
   let lead = null;
   let authoring_team = []
   let tmpPre =``
@@ -4055,7 +4060,7 @@ Who is the entrepreneur who created questence?\n
       
     }
 
-    
+    $(".display-board").css({display:"block"})
  }
 
  getCourseIdFromUrl(url) {
@@ -5319,6 +5324,7 @@ filenameWithoutExtension(filename) {
 
   let tempstore = localStorage.getItem("authoring_team")
   if(tempstore?.match(/[\[\.*\]]/)){
+    alert(true)
      let temp_auth = JSON.parse(tempstore)
      temp_auth = [...temp_auth]
      localStorage.setItem("authoring_team",JSON.stringify(temp_auth))
@@ -5338,11 +5344,13 @@ filenameWithoutExtension(filename) {
   //for pre requisite
   let temppre = localStorage.getItem("prerequisite")
   if(temppre?.match(/[\[\.*\]]/)){
+    //alert(true)
      let temp_temppre = JSON.parse(temppre)
      temp_temppre = [...temp_temppre]
      localStorage.setItem("prerequisite",JSON.stringify(temp_temppre))
     stateData.prerequisite = temp_temppre  ;
   }else{
+      //alert("dont match any regex")
       stateData.prerequisite = []
       localStorage.setItem("prerequisite",JSON.stringify([]))        
   }
@@ -5389,7 +5397,7 @@ filenameWithoutExtension(filename) {
 		
 		
 		
-		<div class="wrapper-loop">
+		<div class="wrapper-loop display-board" style={{display:"none"}}>
 
     <input className="menu-xtrigger" type="checkbox" id="navigation" />
                     <label for="navigation">
@@ -6996,7 +7004,7 @@ class Step1 extends React.Component {
                       placeholder="Enter course title"
                       maxlength="150"
                       value={ this.props.name}
-                     onChange={this.props.camelCase}
+                     onChange={this.props.handleChange}
                     />
                      <label
                     className="col-md-12 col-form-label"
@@ -7795,7 +7803,7 @@ class Step3 extends React.Component {
                      onChange={this.props.handleChange}
                   />
 				  
-				  	<div data-for="course_start_date_time" class="col-md-2 fl-left undo" onClick={(e)=>{ this.bindUndo(e)}}><i class="fa fa-undo"></i>Change</div>
+				  	<div data-for="course_start_date_time" class="col-md-2 fl-left undo" onClick={(e)=>{ this.bindUndo(e)}}><i class="fa fa-plus"></i>Add</div>
                  
                 </div>
               </div>
@@ -7816,7 +7824,7 @@ class Step3 extends React.Component {
                      onChange={this.props.handleChange}
                   />
 				  
-				  	<div data-for="course_end_date_time" class="col-md-2 fl-left undo" onClick={(e)=>{ this.bindUndo(e)}}><i class="fa fa-undo"></i>Change</div>
+				  	<div data-for="course_end_date_time" class="col-md-2 fl-left undo" onClick={(e)=>{ this.bindUndo(e)}}><i class="fa fa-plus"></i>Add</div>
                  
                 </div>
               </div>
@@ -7838,7 +7846,7 @@ class Step3 extends React.Component {
                      onChange={this.props.handleChange}
                   />
 				  
-				  	<div data-for="enrolment_start_date_time" class="col-md-2 fl-left undo" onClick={(e)=>{ this.bindUndo(e)}}><i class="fa fa-undo"></i> Change</div>
+				  	<div data-for="enrolment_start_date_time" class="col-md-2 fl-left undo" onClick={(e)=>{ this.bindUndo(e)}}><i class="fa fa-plus"></i> Add</div>
                  
                 </div>
               </div>
@@ -7859,7 +7867,7 @@ class Step3 extends React.Component {
                      onChange={this.props.handleChange}
                   />
 				  
-				  	<div data-for="enrolment_end_date_time" onClick={(e)=>{ this.bindUndo(e)}} class="col-md-2 fl-left undo"><i class="fa fa-undo"></i> Change</div>
+				  	<div data-for="enrolment_end_date_time" onClick={(e)=>{ this.bindUndo(e)}} class="col-md-2 fl-left undo"><i class="fa fa-plus"></i> Add</div>
                  
                 </div>
               </div>

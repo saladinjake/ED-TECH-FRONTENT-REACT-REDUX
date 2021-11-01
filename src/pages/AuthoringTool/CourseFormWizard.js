@@ -1907,7 +1907,7 @@ class Step1 extends React.Component {
                       placeholder="Enter course title"
                     maxlength="150"
                       value={this.props.course_name}
-                     onChange={this.props.camelOverride}
+                     onChange={this.props.handleChange}
                     />
                      <label
                      style={{display:"block"}}
