@@ -89,9 +89,10 @@
 }
 
 .tab-content-below {
-  height: 2000px;
+  /*height: 2000px;
   position: relative;
-  top: 20px;
+  top: 20px;*/
+  height: auto;
 }
 
 .tab-content ul li {
@@ -122,15 +123,15 @@ p.authorText {
 
 /* Font Definitions */
 @font-face {
-  font-family: Calibri;
+ /* font-family: Calibri;*/
   panose-1: 5 0 0 0 0 0 0 0 0 0;
 }
 @font-face {
-  font-family: "Calibri";
+ /* font-family: "Calibri";*/
   panose-1: 2 4 5 3 5 4 6 3 2 4;
 }
 @font-face {
-  font-family: Calibri;
+  /*font-family: Calibri;*/
   panose-1: 2 15 5 2 2 2 4 3 2 4;
 }
 /* Style Definitions */
@@ -143,7 +144,7 @@ div.MsoNormal {
   margin-left: 0in;
   line-height: 107%;
   font-size: 11pt;
-  font-family: "Calibri", sans-serif;
+ /* font-family: "Calibri", sans-serif;*/
 }
 p.MsoFooter,
 li.MsoFooter,
@@ -151,7 +152,7 @@ div.MsoFooter {
   mso-style-link: "Footer Char";
   margin: 0in;
   font-size: 11pt;
-  font-family: "Calibri", sans-serif;
+  /*font-family: "Calibri", sans-serif;*/
 }
 .blok-body a:link,
 span.MsoHyperlink {
@@ -163,7 +164,7 @@ span.FooterChar {
   mso-style-link: Footer;
 }
 .MsoChpDefault {
-  font-family: "Calibri", sans-serif;
+/*  font-family: "Calibri", sans-serif;*/
 }
 .MsoPapDefault {
   margin-bottom: 8pt;

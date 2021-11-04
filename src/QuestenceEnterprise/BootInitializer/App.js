@@ -121,7 +121,7 @@ const App = () => {
 
         <Route
           exact
-          path={`${process.env.PUBLIC_URL + "/honor"}`}
+          path={`${process.env.PUBLIC_URL + "/honour-code"}`}
           component={Honor}
         />
 
@@ -153,6 +153,12 @@ const App = () => {
           exact
           path={`${process.env.PUBLIC_URL + "/careers"}`}
           component={CareersPage}
+        />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/help-center"}`}
+          component={HelpCenter}
         />
 
 

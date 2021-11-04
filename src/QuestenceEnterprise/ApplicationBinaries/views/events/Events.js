@@ -6,7 +6,7 @@ import { Container, Row, Col } from "react-bootstrap";
 
 
 import $ from "jquery";
-import NavBar from "../../components/shared/Navbar";
+import NavBar from "../../components/shared/NavBar";
 
 import Footer from "../../components/shared/Footer";
 import { Styles } from "./styles/event.js";
@@ -116,7 +116,11 @@ class Events extends Component {
           </section>
 
           {/* Footer 2 */}
-          <Footer />
+         <div className="my-auto border-top bg-green">
+                <div className="container">
+                        <Footer />
+                </div>
+            </div>
         </div>
       </Styles>
     );

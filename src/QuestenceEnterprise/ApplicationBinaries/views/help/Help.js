@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import "./help.css";
-import NavBar from "../../components/shared/Navbar";
+import NavBar from "../../components/shared/NavBar";
 
 import Footer from "../../components/shared/Footer";
 import $ from "jquery";
@@ -83,16 +83,7 @@ const HelpArea = () => {
         <br />
         <br />
         <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
+      
         <div className="modal-help">
           <div className="close-help">
             <button
@@ -107,7 +98,12 @@ const HelpArea = () => {
         </div>
       </div>
 
-      <Footer />
+      
+          <div className="my-auto border-top bg-green">
+                <div className="container">
+                        <Footer />
+                </div>
+            </div>
     </Fragment>
   );
 };

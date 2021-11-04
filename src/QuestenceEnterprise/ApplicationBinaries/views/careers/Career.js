@@ -3,7 +3,7 @@ import "./career.css";
 
 import $ from "jquery";
 
-import NavBar from "../../components/shared/Navbar";
+import NavBar from "../../components/shared/NavBar";
 
 import Footer from "../../components/shared/Footer";
 import CareerQuestence from "../../components/CareerQuestence";
@@ -22,7 +22,11 @@ const JobSection = () => {
       <NavBar />
       <CareerQuestence />
 
-      <Footer />
+      <div className="my-auto border-top bg-green">
+                <div className="container">
+                        <Footer />
+                </div>
+            </div>
     </Fragment>
   );
 };

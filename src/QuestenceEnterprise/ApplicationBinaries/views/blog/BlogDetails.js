@@ -7,7 +7,7 @@ import CommentForm from "./components/CommentForm";
 
 import { Styles } from "./styles/blogDetails.js";
 import $ from "jquery";
-import NavBar from "../../components/shared/Navbar";
+import NavBar from "../../components/shared/NavBar";
 
 import Footer from "../../components/shared/Footer";
 class BlogDetails extends Component {
@@ -286,8 +286,12 @@ class BlogDetails extends Component {
             </Container>
           </section>
 
-          {/* Footer 2 */}
-          <Footer />
+         
+           <div className="my-auto border-top bg-green">
+                <div className="container">
+                         <Footer/>
+                </div>
+            </div>
         </div>
       </Styles>
     );

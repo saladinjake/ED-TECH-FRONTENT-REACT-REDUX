@@ -2,46 +2,17 @@ import React, { useEffect, Fragment } from "react";
 import $ from "jquery";
 import "./tabber.css";
 
-import NavBar from "../../components/shared/Navbar";
+import NavBar from "../../components/shared/NavBar";
 
 import Footer from "../../components/shared/Footer";
 
 const TermsAndConditions = () => {
-  useEffect(() => {
-    $(".footer p , .footer span").each(function () {
-      $(this).css({ color: "#fff" });
-    });
-
-    $("body").css({ background: "#fff", display: "none" });
-
-    setTimeout(() => {
-      $("body").css({ background: "#fff", display: "block" });
-    }, 3000);
-
-    // $(".tab-menu a").click(function (e) {
-    //   e.preventDefault();
-    //   $(this).css({ color: "#fff" });
-    //   $(".tab-menu a")
-    //     .parents()
-    //     .each(function () {
-    //       $(this).removeClass("visited-now");
-    //       $(this).css({ color: "#000" });
-    //     });
-    //   $(this).parent().addClass("visited-now");
-
-    //   // $(this).parent().css({background:"rgba(8,23,200)", color:"#fff"})
-
-    //   $(this).tab("show");
-    // });
-  });
+  
 
   return (
     <Fragment>
       <NavBar />
-      <br />
-      <br />
-      <br />
-      <br />
+     
 
       <section
         className="blok sidebar-nav container"
@@ -109,7 +80,7 @@ const TermsAndConditions = () => {
                 id="terms-of-use"
               >
                 <iframe
-                  style={{ width: "100%", height: "9000px", border: "none" }}
+                  style={{ width: "100%", height: "5700px", border: "none" }}
                   src={process.env.PUBLIC_URL + "/tos.html"}
                 />
               </div>
@@ -118,15 +89,13 @@ const TermsAndConditions = () => {
         </div>
       </section>
 
-      <div className="shown">
-        <div style={{ clear: "both" }} id="resetFooter"></div>
-        <Footer />
-      </div>
+      
 
-      <div className="hide" style={{ position: "absolute", bottom: "-4000px" }}>
-        <Footer />
-        <div style={{ clear: "both" }}></div>
-      </div>
+     <div className="my-auto border-top bg-green">
+                <div className="container">
+                        <Footer />
+                </div>
+            </div>
     </Fragment>
   );
 };

@@ -103,7 +103,11 @@ class BlogClassic extends Component {
           </section>
 
           {/* Footer 2 */}
-          <Footer />
+           <div className="my-auto border-top bg-green">
+                <div className="container">
+                         <Footer />
+                </div>
+            </div>
         </div>
       </Styles>
     );

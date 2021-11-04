@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Row, Col } from "react-bootstrap";
 
 import RecentBlog from "./RecentPost";
-
+import CourseTag from "./CourseTag";
 
 class BlogSidebar extends Component {
   render() {
