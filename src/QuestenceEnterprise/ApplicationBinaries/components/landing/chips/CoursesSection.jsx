@@ -1,8 +1,34 @@
-import React from 'react';
+import React, { useState,useEffect } from 'react';
 import CourseCard from './CourseCard';
 import Slider from "react-slick";
 
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+
+
+import toast from "react-hot-toast";
+import { getCourses, getFeaturedCourses } from "../../../api/enrollment_services/courses.services";
+
 const CoursesSection = () => {
+    const [coursesFeatured, setCourses] = useState([])
+
+    useEffect(() => {
+    (async function loadContent() {
+      try {
+      const response = await getFeaturedCourses();
+      setCourses([...response.data.data.courses])
+     
+    } catch (err) {
+      toast.error("Error occured fetching notifications");
+    }
+
+      // setLoading(false);
+    })();
+
+
+    // eslint-disable-next-line
+  }, []);
+
     var settings = {
         dots: true,
         arrows: true,
@@ -48,17 +74,19 @@ const CoursesSection = () => {
                 <div className="row mb-3">
                     <h4 className="subheading-1 col">Featured Courses</h4>
                     <div className="col">
-                        <a href="" className="btn btn-solid-teal border-radius-50 float-end px-3 text-14">See all courses <i className="bi bi-chevron-right"></i></a>
+                        <a href={`${process.env.PUBLIC_URL}/courses/`} className="btn btn-solid-teal border-radius-50 float-end px-3 text-14">See all courses <i className="bi bi-chevron-right"></i></a>
                     </div>
                 </div>
                 {/* <div className="row"> */}
                     <Slider {...settings} className="row">
-                        <CourseCard />
-                        <CourseCard />
-                        <CourseCard />
-                        <CourseCard />
-                        <CourseCard />
-                        <CourseCard />
+                    {coursesFeatured.length > 0 && coursesFeatured.map(course =>{
+                       return(
+                         <CourseCard detail={course}/>
+                       ) 
+                    })
+                        
+                    }
+                        
                     </Slider>
                 {/* </div> */}
             </div>
@@ -66,4 +94,11 @@ const CoursesSection = () => {
      );
 }
  
-export default CoursesSection;
+
+
+
+CoursesSection.propTypes = {};
+
+const mapStateToProps = (state) => ({});
+
+export default connect(mapStateToProps, {})(CoursesSection);

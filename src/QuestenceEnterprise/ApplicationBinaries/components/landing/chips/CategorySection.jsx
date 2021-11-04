@@ -1,8 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect }  from 'react';
 import CategoryCard from './CategoryCard';
 import Slider from "react-slick";
 
+import { 
+  getCategories
+} from "../../../api/enrollment_services/category.services";
+
+import toast from "react-hot-toast";
 const CategorySection = () => {
+
+
+  const [categories, setInfo] = useState([]);
+ 
+  
+  
+
+   useEffect(() => {
+    (async function loadContent() {
+      try {
+        let res = await getCategories();
+
+        setInfo([...res.data.data]);
+       
+      } catch (err) {
+        toast.error("Error occured fetching notifications");
+      }
+      // setLoading(false);
+    })();
+
+ // eslint-disable-next-line
+  }, []);
     var settings = {
         dots: true,
         arrows: true,
@@ -50,10 +77,22 @@ const CategorySection = () => {
                 </div>
                 <div className="row">
                     <Slider {...settings} className="row">
-                        <CategoryCard />
-                        <CategoryCard />
-                        <CategoryCard />
-                        <CategoryCard />
+                    {categories.length > 0 && categories.map(category => {
+                        
+                        let subcategories =[];
+                        if(category?.subcategories && category?.subcategories.length> 0){
+                           subcategories = category?.subcategories
+                        }
+                        return (
+                          <CategoryCard 
+                          name={category.name}
+                          subcategories={subcategories}
+                          />
+                        )
+                    })
+                        
+                    }
+                       
                     </Slider>
                 </div>
             </div>

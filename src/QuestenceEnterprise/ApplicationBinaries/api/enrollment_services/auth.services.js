@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import axios from "services/axiosConfig";
-import lmsAxios from "services/axiosAuthoring";
+import axios from "./api_config/axios.config";
+
 
 export const loginUser = async (details) => {
   let request = axios.post("auth/login", details);
@@ -63,15 +63,6 @@ export const registerInstructor = async (details) => {
 *
 */
 
-// X-CSRFToken:"somegibber"
-export const loginUserToLMS = async (details) => {
-  let request = lmsAxios.post("/user/v1/account/login_session", details);
-  return request.then((response) => {
-    if (response.status === 200) {
-      return response && response;
-    }
-  });
-};
 
 /*
 *{

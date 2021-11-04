@@ -2,6 +2,11 @@ import React from 'react';
 import ProfessionalExamCard from './ProfessionalExamCard';
 import Slider from "react-slick";
 
+import { 
+
+  PROGRAM_LINK 
+} from "../../shared/data";
+
 const ProfessionalBodySection = () => {
     var settings = {
         dots: true,
@@ -50,10 +55,13 @@ levels of interactivity and convenience.</p>
                 </div>
                 <div className="row mx-2">
                     <Slider {...settings} className="row">
-                        <ProfessionalExamCard imgUrl="/nim 1.png"/>
-                        <ProfessionalExamCard imgUrl="/cipm.png"/>
-                        <ProfessionalExamCard imgUrl="/citn.png"/>
-                        <ProfessionalExamCard imgUrl="/ican.png"/>
+
+                      {  PROGRAM_LINK.length > 0 && PROGRAM_LINK.map(item=>{
+                           return (<ProfessionalExamCard id={item.id} name={item.name} imgUrl={item.logo}/>)
+                      })
+                     }
+                        
+                        
                     </Slider>
                 </div>
             </div>

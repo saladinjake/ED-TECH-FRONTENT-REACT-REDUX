@@ -25,25 +25,25 @@ const Footer = () => {
             <div className="col">
                 <h5>Pages</h5>
                 <ul className="nav flex-column">
-                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-white">About Us</a></li>
-                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-white">Blog</a></li>
-                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-white">Careers</a></li>
+                    <li className="nav-item mb-2"><a href={`${process.env.PUBLIC_URL}/about-us`} className="nav-link p-0 text-white">About Us</a></li>
+                    <li className="nav-item mb-2"><a href={`${process.env.PUBLIC_URL}/blogs`} className="nav-link p-0 text-white">Blog</a></li>
+                    <li className="nav-item mb-2"><a href={`${process.env.PUBLIC_URL}/careers`} className="nav-link p-0 text-white">Careers</a></li>
                 </ul>
             </div>
 
             <div className="col">
                 <h5>Connect</h5>
                 <ul className="nav flex-column">
-                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-white">Contact Us</a></li>
+                    <li className="nav-item mb-2"><a href={`${process.env.PUBLIC_URL}/contact-us`} className="nav-link p-0 text-white">Contact Us</a></li>
                 </ul>
             </div>
 
             <div className="col">
                 <h5>Legal</h5>
                 <ul className="nav flex-column">
-                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-white">Terms of Service</a></li>
-                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-white">Honor Code</a></li>
-                    <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-white">Privacy Policy</a></li>
+                    <li className="nav-item mb-2"><a href={`${process.env.PUBLIC_URL}/terms`} className="nav-link p-0 text-white">Terms of Service</a></li>
+                    <li className="nav-item mb-2"><a href={`${process.env.PUBLIC_URL}/honour-code`} className="nav-link p-0 text-white">Honor Code</a></li>
+                    <li className="nav-item mb-2"><a href={`${process.env.PUBLIC_URL}/privacy`} className="nav-link p-0 text-white">Privacy Policy</a></li>
                 </ul>
             </div>
         </footer>
@@ -65,9 +65,9 @@ const Footer = () => {
          <div className="col-md-2 col-sm-12 offset-md-1 mt-3">
          <h5 className="fw-bold">Pages</h5>
          <ul className="nav flex-column">
-            <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-white">About Us</a></li>
-            <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-white">Blog</a></li>
-            <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-white">Careers</a></li>
+            <li className="nav-item mb-2"><a href={`${process.env.PUBLIC_URL}/about-us`} className="nav-link p-0 text-white">About Us</a></li>
+            <li className="nav-item mb-2"><a href={`${process.env.PUBLIC_URL}/blogs`} className="nav-link p-0 text-white">Blog</a></li>
+            <li className="nav-item mb-2"><a href={`${process.env.PUBLIC_URL}/careers`} className="nav-link p-0 text-white">Careers</a></li>
             
          </ul>
          </div>
@@ -75,16 +75,16 @@ const Footer = () => {
          <div className="col-md-2 col-sm-12 mt-3">
          <h5 className="fw-bold">Connect</h5>
          <ul className="nav flex-column">
-            <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-white">Contact Us</a></li>
+            <li className="nav-item mb-2"><a href={`${process.env.PUBLIC_URL}/contact-us`} className="nav-link p-0 text-white">Contact Us</a></li>
          </ul>
          </div>
 
          <div className="col-md-2 col-sm-12 mt-3">
          <h5 className="fw-bold">Legal</h5>
             <ul className="nav flex-column">
-                <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-white">Terms of Service</a></li>
-                <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-white">Honor Code</a></li>
-                <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-white">Privacy Policy</a></li>
+                <li className="nav-item mb-2"><a href={`${process.env.PUBLIC_URL}/terms`} className="nav-link p-0 text-white">Terms of Service</a></li>
+                <li className="nav-item mb-2"><a href={`${process.env.PUBLIC_URL}/honour-code`} className="nav-link p-0 text-white">Honor Code</a></li>
+                <li className="nav-item mb-2"><a href={`${process.env.PUBLIC_URL}/privacy`}  className="nav-link p-0 text-white">Privacy Policy</a></li>
                 
             </ul>
             <p className="text-white mt-3">© 2021 Questence. All rights reserved.</p>

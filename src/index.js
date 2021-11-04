@@ -15,7 +15,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const ROOT_INJECTOR = "root";
+const ROOT_INJECTOR = "root_questence_inlet_spa";
 
 ReactDOM.render(
   <React.StrictMode>

@@ -1,0 +1,704 @@
+.signin-box-move-mobile-helper,
+.signin-box-move-desktop-helper {
+  display: none;
+}
+/*
+menu code was here
+*/
+
+.sign-in-box > .btn {
+  padding: 11px 12px;
+  font-size: 15px;
+  border-radius: 2px;
+  line-height: 1.35135;
+  font-weight: 600;
+  margin-left: 5px !important;
+  border-radius: 2px !important;
+}
+.sign-in-box .btn-sign-in {
+  color: #686f7a;
+  background-color: #fff;
+  border: 1px solid #505763;
+}
+.sign-in-box .btn-sign-in:hover,
+.sign-in-box .btn-sign-in:focus {
+  background-color: #f2f3f5;
+}
+.sign-in-box .btn-sign-up {
+  color: #fff;
+  background-color: #ec5252;
+  border: 1px solid #ec5252;
+}
+.sign-in-box .btn-sign-up:hover,
+.sign-in-box .btn-sign-up:focus {
+  background-color: #992337;
+  border-color: #992337;
+}
+
+.sign-in-box .modal-dialog {
+  max-width: 400px;
+}
+.sign-in-modal .modal-title {
+  color: #29303b;
+  font-weight: 700;
+  font-size: 15px;
+}
+.sign-in-modal .close {
+  font-size: 2rem;
+  padding: 0.5rem 1rem;
+}
+.sign-in-modal .modal-header {
+  border-bottom: 1px solid rgba(41, 48, 59, 0.1);
+  background-color: #f2f3f5;
+}
+.sign-in-modal .modal-header,
+.sign-in-modal .modal-body {
+  padding: 20px 25px;
+}
+
+.sign-in-modal .social-btn {
+  box-shadow: 0 2px 2px 0 rgba(41, 48, 59, 0.24),
+    0 0 2px 0 rgba(41, 48, 59, 0.12);
+  border-radius: 2px;
+  margin-bottom: 10px;
+  padding: 0 20px 0 0;
+  font-size: 16px;
+  font-weight: 700;
+  background-color: #fff;
+}
+.sign-in-modal .social-btn a {
+  display: block;
+}
+.sign-in-modal .icon {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: 400;
+  margin-right: 10px;
+  padding: 15px 0 15px 5px;
+  text-align: center;
+  width: 50px;
+}
+.sign-in-modal .icon.google-icon {
+  /*background: url(../img/icons/google_icon.svg) no-repeat 50%;
+    background-size: 24px;
+    color: #fff;
+    color: rgba(0, 0, 0, 0);*/
+}
+
+.sign-in-modal .social-btn.fb-sign-up {
+  background-color: #1a538a;
+}
+.sign-in-modal .social-btn.fb-sign-up a {
+  color: #fff;
+}
+.sign-in-modal .social-btn.google-sign-up a {
+  color: #686f7a;
+}
+.sign-in-modal .sign-in-separator {
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 10px;
+  padding-top: 3px;
+  position: relative;
+}
+.sign-in-modal .sign-in-separator:after,
+.sign-in-modal .sign-in-separator:before {
+  position: absolute;
+  height: 1px;
+  background-color: #dedfe0;
+  content: "";
+  top: 10px;
+  width: calc(50% - 20px);
+}
+.sign-in-modal .sign-in-separator:before {
+  left: 0;
+}
+.sign-in-modal .sign-in-separator:after {
+  right: 0;
+}
+.sign-in-modal .input-group {
+  margin-bottom: 10px;
+  position: relative;
+}
+.sign-in-modal .input-group .input-field-icon {
+  position: absolute;
+  top: 15px;
+  height: 20px;
+  width: 20px;
+  text-align: center;
+  line-height: 20px;
+  z-index: 10;
+  left: 10px;
+  color: #dedfe0;
+  font-size: 18px;
+}
+.sign-in-modal .input-group .form-control {
+  border-radius: 5px;
+  color: #29303b;
+  font-size: 18px;
+  height: auto;
+  padding: 11px 10px 12px 40px;
+  background-color: #fff;
+  border: 1px solid #cacbcc;
+}
+.sign-in-modal .input-group .form-control:focus {
+  border-color: #76c5d6;
+}
+
+.sign-in-modal .deal-checkbox {
+  margin-bottom: 10px;
+  font-size: 15px;
+  cursor: pointer;
+}
+.sign-in-modal .custom-checkbox .custom-control-label::before {
+  border-radius: 1px;
+  border: 1px solid #cacbcc;
+  background-color: transparent;
+}
+.sign-in-modal .custom-control-input:hover ~ .custom-control-label::before,
+.sign-in-modal .custom-control-input:focus ~ .custom-control-label::before {
+  box-shadow: 0 0 0 0px #fff, 0 0 0 0 rgba(0, 123, 255, 0.25);
+  border-color: #007791;
+}
+.sign-in-modal
+  .custom-checkbox
+  .custom-control-input:checked
+  ~ .custom-control-label::before {
+  background-color: #007791;
+  border-color: #007791;
+}
+.sign-in-modal form button[type="submit"] {
+  color: #fff;
+  background-color: #ec5252;
+  border-color: #ec5252;
+  font-size: 16px;
+  font-weight: 700;
+  height: 50px;
+  width: 100%;
+  padding: 11px 12px;
+  border-radius: 2px;
+}
+.sign-in-modal form button[type="submit"]:hover,
+.sign-in-modal form button[type="submit"]:focus {
+  background-color: #521822 !important;
+  border-color: #521822 !important;
+}
+.sign-in-modal .forgot-pass {
+  text-align: center;
+  font-size: 15px;
+}
+.sign-in-modal .agreement-text {
+  text-align: center;
+  font-size: 10px;
+  margin: 10px 0;
+}
+.sign-in-modal .account-have {
+  text-align: center;
+  font-size: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #dedfe0;
+}
+.sign-in-modal .account-have a {
+  font-weight: 700;
+}
+.sign-in-modal .forgot-email.form-control {
+  font-size: 16px;
+  padding: 10px 12px;
+  border-radius: 2px;
+}
+.sign-in-modal .forgot-pass-btn {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 15px;
+}
+.sign-in-modal .forgot-pass-btn .btn {
+  width: auto;
+  height: auto;
+  padding: 11px 12px;
+  font-size: 15px;
+}
+.sign-in-modal .forgot-pass-btn span {
+  margin: 0 5px;
+}
+.sign-in-modal .forgot-recaptcha {
+  margin: 25px 0 15px;
+}
+
+
+
+
+
+
+
+
+.overlay,
+.overlay2,
+.overlay3 {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  display: none;
+  z-index: 1000;
+  overflow: scroll;
+}
+
+.overlay__modal,
+.overlay__modal2,
+.overlay__modal3 {
+  position: absolute;
+  max-width: 600px;
+  height: 600px;
+  width: 100%;
+  padding: 20px;
+  background: #fafafa;
+  display: block;
+  z-index: 2000;
+  /*top: 50%;
+            left: 50%;*/
+  top: 120px;
+  left: 50%;
+  transform: translate(-50%, -20%);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*auth box styling*/
+form.form ul.topics {
+   padding-top: 10px;
+}
+ form.form ul.topics li {
+   display: flex;
+   padding: 0;
+   width: 100%;
+}
+ form.form ul.topics li span {
+   font-size: 13px;
+   color: #555;
+   text-transform: capitalize;
+   font-weight: 400;
+   border-bottom: 1px solid #eee;
+}
+ form.form ul.topics li button {
+   background-color: red;
+   width: 2rem;
+   height: 2rem;
+}
+ .login-page .login-area {
+   padding: 70px 0;
+}
+ .login-page .login-area .login-box {
+   max-width: 500px;
+   background: #fafafa;
+   margin: auto;
+   margin-top: -60px;
+   padding: 25px 30px 35px;
+   height: 490px;
+}
+ .login-page .login-area .login-box .login-title h3 {
+   color: #000;
+   text-transform: uppercase;
+   font-weight: 600;
+   padding-bottom: 10px;
+   margin-bottom: 20px;
+   position: relative;
+}
+ @media (max-width: 575px) {
+   .login-page .login-area .login-box .login-title h3 {
+     font-size: 20px;
+  }
+}
+ .login-page .login-area .login-box form.form p.form-control {
+   padding: 0;
+   width: auto;
+   height: auto;
+   background: #fafafa;
+   border: none;
+   margin-bottom: 28px;
+   position: relative;
+   display: flex;
+   flex-direction: column;
+}
+ .login-page .login-area .login-box form.form p.form-control label {
+   font-size: 15px;
+   color: #000;
+   font-weight: 500;
+   text-align: left;
+}
+ .login-page .login-area .login-box form.form p.form-control label i {
+   font-size: 10px;
+   color: #000;
+}
+ @media (max-width: 575px) {
+   .login-page .login-area .login-box form.form p.form-control label {
+     font-size: 14px;
+  }
+}
+ .login-page .login-area .login-box form.form p.form-control input {
+   width: 100%;
+   height: 48px;
+   background-color: #fafafa fff;
+   font-size: 14px;
+   padding: 15px 20px;
+   color: #000;
+   border: 1px solid #eaeaea;
+   border-radius: 5px;
+}
+ .login-page .login-area .login-box form.form p.form-control input::placeholder {
+   font-size: 14px;
+   font-style: italic;
+}
+ @media (max-width: 575px) {
+   .login-page .login-area .login-box form.form p.form-control input::placeholder {
+     font-size: 13px;
+  }
+}
+ .login-page .login-area .login-box form.form p.form-control input:focus {
+   border-color: #eaeaea;
+}
+ @media (max-width: 575px) {
+   .login-page .login-area .login-box form.form p.form-control input {
+     height: 40px;
+  }
+}
+ .login-page .login-area .login-box form.form p.form-control span {
+   color: red;
+   font-weight: 300;
+   position: absolute;
+   bottom: -20px;
+   left: 0;
+   visibility: visible;
+}
+ .login-page .login-area .login-box form.form p.form-control.success input {
+   border: 2px solid #eaeaea;
+}
+ .login-page .login-area .login-box form.form p.form-control.success::before {
+   position: absolute;
+   content: "\f058";
+   font-family: "Line Awesome Free";
+   font-size: 24px;
+   color: #eaeaea;
+   font-weight: 900;
+   top: 34px;
+   right: 10px;
+}
+ .login-page .login-area .login-box form.form p.form-control.error input {
+   border: 2px solid red;
+}
+ .login-page .login-area .login-box form.form p.form-control.error::before {
+   position: absolute;
+   content: "\f06a";
+   font-family: "Line Awesome Free";
+   font-size: 24px;
+   color: red;
+   font-weight: 900;
+   top: 34px;
+   right: 10px;
+}
+ .login-page .login-area .login-box form.form p.form-control.error span {
+   visibility: visible;
+}
+ .login-page .login-area .login-box form.form button {
+   font-size: 16px;
+   color: #fafafa;
+   background: #eaeaea;
+   width: 100%;
+   height: 48px;
+   font-weight: 500;
+   border: none;
+   border-radius: 5px;
+   text-transform: uppercase;
+   margin-bottom: 20px;
+}
+ .login-page .login-area .login-box form.form button:hover {
+   background: #eaeaea;
+}
+ .login-page .login-area .login-box form.form button:hover i {
+   color: #fafafa fff;
+}
+ @media (max-width: 575px) {
+   .login-page .login-area .login-box form.form button {
+     font-size: 15px;
+     height: 40px;
+  }
+}
+ .login-page .login-area .login-box form.form .save-forget-password {
+   margin-bottom: 15px;
+}
+ .login-page .login-area .login-box form.form .save-forget-password .save-passowrd label {
+   font-size: 14px;
+   color: #000;
+   display: block;
+   font-weight: 500;
+   margin-bottom: 0;
+   cursor: pointer;
+}
+ .login-page .login-area .login-box form.form .save-forget-password .save-passowrd label input[type="checkbox"] {
+   border: 2px solid #eaeaea;
+   appearance: none;
+   width: 18px;
+   height: 18px;
+   cursor: pointer;
+   margin-right: 6px;
+   position: relative;
+   top: 4px;
+}
+ .login-page .login-area .login-box form.form .save-forget-password .save-passowrd label input[type="checkbox"]:focus {
+   outline: none;
+}
+ .login-page .login-area .login-box form.form .save-forget-password .save-passowrd label input[type="checkbox"]:checked {
+   background-color: #eaeaea;
+   border-color: #eaeaea;
+}
+ .login-page .login-area .login-box form.form .save-forget-password .forget-password {
+   margin-top: 3px;
+}
+ .login-page .login-area .login-box form.form .save-forget-password .forget-password a {
+   font-size: 14px;
+   color: #000;
+   font-weight: 500;
+}
+ .login-page .login-area .login-box form.form .save-forget-password .forget-password a:hover {
+   text-decoration: underline;
+}
+ .login-page .login-area .login-box form.form .not_account-btn {
+   margin-bottom: 20px;
+   padding-bottom: 20px;
+}
+ .login-page .login-area .login-box form.form .not_account-btn p {
+   font-size: 14px;
+   color: #000;
+}
+ .login-page .login-area .login-box form.form .not_account-btn p a {
+   font-size: 14px;
+   color: #eaeaea;
+   font-weight: 500;
+}
+ .login-page .login-area .login-box form.form .not_account-btn p a:hover {
+   text-decoration: underline;
+}
+ .login-page .login-area .login-box form.form .social-login p {
+   font-size: 14px;
+   color: #000;
+   margin-bottom: 15px;
+}
+ .login-page .login-area .login-box form.form .social-login ul li a {
+   font-size: 14px;
+   color: #fafafa fff;
+   display: inline-block;
+   width: 110px;
+   height: 40px;
+   border-radius: 30px;
+   padding-top: 10px;
+}
+ .login-page .login-area .login-box form.form .social-login ul li a i {
+   margin-right: 3px;
+}
+ .login-page .login-area .login-box form.form .social-login ul li a:hover {
+   background: #eaeaea !important;
+}
+ .login-page .login-area .login-box form.form .social-login ul li:nth-child(1) a {
+   background: #db4437;
+}
+ .login-page .login-area .login-box form.form .social-login ul li:nth-child(2) a {
+   background: #4267b2;
+}
+ .login-page .login-area .login-box form.form .social-login ul li:nth-child(3) a {
+   background: #1da1f2;
+}
+ @media (max-width: 767px) {
+   .login-page .login-area {
+     padding: 30px 0;
+  }
+}
+ .registration-page .registration-area {
+   padding: 70px 0;
+}
+ .registration-page .registration-area .registration-box {
+   background: #fafafa;
+   max-width: 100%;
+   margin: auto;
+}
+ .registration-page .registration-area .registration-box.instructorregister {
+   max-width: 100%;
+}
+ .registration-page .registration-area .registration-box.instructorregister .row {
+   margin: 0;
+   justify-content: space-between;
+}
+ .registration-page .registration-area .registration-box .registration-title h3 {
+   text-transform: uppercase;
+   font-weight: 600;
+   padding-bottom: 10px;
+   margin-bottom: 20px;
+   position: relative;
+}
+ .registration-page .registration-area .registration-box .registration-title h3:before {
+   position: absolute;
+   content: "";
+  /* background: ${
+    colors.gr_bg2
+  }
+  ;
+  */
+   width: 50px;
+   height: 2px;
+   bottom: 0;
+   left: 50%;
+   margin-left: -25px;
+}
+ @media (max-width: 575px) {
+   .registration-page .registration-area .registration-box .registration-title h3 {
+     font-size: 20px;
+  }
+}
+ .registration-page .registration-area .registration-box form.form p.form-control {
+   padding: 0;
+   width: auto;
+   height: auto;
+   background: #fafafa;
+   border: none;
+   margin-bottom: 28px;
+   position: relative;
+   display: flex;
+   flex-direction: column;
+}
+ .registration-page .registration-area .registration-box form.form p.form-control label {
+   font-size: 15px;
+   font-weight: 500;
+   text-align: left;
+}
+ .registration-page .registration-area .registration-box form.form p.form-control label i {
+   font-size: 10px;
+}
+ @media (max-width: 575px) {
+   .registration-page .registration-area .registration-box form.form p.form-control label {
+     font-size: 14px;
+  }
+}
+ .registration-page .registration-area .registration-box form.form p.form-control input, .registration-page .registration-area .registration-box form.form p.form-control textarea {
+   width: 100%;
+   height: 48px;
+   background-color: #fafafa fff;
+   font-size: 14px;
+   padding: 15px 20px;
+   border-radius: 5px;
+}
+ .registration-page .registration-area .registration-box form.form p.form-control input::placeholder, .registration-page .registration-area .registration-box form.form p.form-control textarea::placeholder {
+   font-size: 14px;
+   font-style: italic;
+}
+ @media (max-width: 575px) {
+   .registration-page .registration-area .registration-box form.form p.form-control input::placeholder, .registration-page .registration-area .registration-box form.form p.form-control textarea::placeholder {
+     font-size: 13px;
+  }
+}
+ @media (max-width: 575px) {
+   .registration-page .registration-area .registration-box form.form p.form-control input, .registration-page .registration-area .registration-box form.form p.form-control textarea {
+     height: 40px;
+  }
+}
+ .registration-page .registration-area .registration-box form.form p.form-control select {
+   background: #fafafa;
+   border: none;
+   outline: none;
+   cursor: pointer;
+   width: 100%;
+   padding: 10px;
+   width: 100%;
+   height: auto;
+   display: inline-block;
+}
+ .registration-page .registration-area .registration-box form.form p.form-control select:-moz-focusring {
+   color: #fafafa;
+   text-shadow: 0 0 0 #000;
+}
+ .registration-page .registration-area .registration-box form.form p.form-control select:-webkit-focusring {
+   color: #fafafa;
+   text-shadow: 0 0 0 #000;
+}
+ .registration-page .registration-area .registration-box form.form p.form-control select option {
+   padding: 1rem;
+   background-color: #fafafa;
+   cursor: pointer;
+}
+ .registration-page .registration-area .registration-box form.form p.form-control span {
+   font-weight: 300;
+   position: absolute;
+   bottom: -20px;
+   left: 0;
+   visibility: visible;
+}
+ .registration-page .registration-area .registration-box form.form p.form-control.success::before {
+   position: absolute;
+   content: "\f058";
+   font-family: "Line Awesome Free";
+   font-size: 24px;
+   font-weight: 900;
+   top: 34px;
+   right: 10px;
+}
+ .registration-page .registration-area .registration-box form.form p.form-control.error::before {
+   position: absolute;
+   content: "\f06a";
+   font-family: "Line Awesome Free";
+   font-size: 24px;
+   font-weight: 900;
+   top: 34px;
+   right: 10px;
+}
+ .registration-page .registration-area .registration-box form.form p.form-control.error span {
+   visibility: visible;
+}
+ .registration-page .registration-area .registration-box form.form button {
+   font-size: 16px;
+   color: #fafafa;
+   width: 100%;
+   height: 48px;
+   font-weight: 500;
+   border: none;
+   border-radius: 5px;
+   text-transform: uppercase;
+   margin-bottom: 20px;
+}
+ .registration-page .registration-area .registration-box form.form button:hover i {
+   color: #fafafa fff;
+}
+ @media (max-width: 575px) {
+   .registration-page .registration-area .registration-box form.form button {
+     font-size: 15px;
+     height: 40px;
+  }
+}
+ .registration-page .registration-area .registration-box .have_account-btn p {
+   font-size: 14px;
+}
+ .registration-page .registration-area .registration-box .have_account-btn p a {
+   font-size: 14px;
+   font-weight: 500;
+}
+ .registration-page .registration-area .registration-box .have_account-btn p a:hover {
+   text-decoration: underline;
+}
+ @media (max-width: 767px) {
+   .registration-page .registration-area {
+     padding: 30px 0;
+  }
+}
+ 

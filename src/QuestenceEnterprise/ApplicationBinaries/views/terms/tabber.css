@@ -1,0 +1,186 @@
+/* make sidebar nav vertical */
+@media (min-width: 768px) {
+  .tabs-left {
+  }
+  .sidebar-nav .navbar .navbar-collapse {
+    padding: 0;
+    max-height: none;
+  }
+  .sidebar-nav ul {
+    float: none;
+    display: block;
+  }
+  .sidebar-nav li {
+    float: none;
+    display: block;
+    border-bottom: 1px solid #f6f6f6;
+    height: 40px;
+
+    color: #000;
+    width: 90%;
+  }
+
+  .trigger-nav {
+    margin-top: -10px;
+  }
+
+  .trigger-nav li:hover {
+    background: rgba(8, 23, 200);
+    /* color: #fff;*/
+  }
+
+  .trigger-nav li {
+    /*background: rgba(8,23,200);*/
+    color: #fff;
+  }
+
+  .trigger-nav li a {
+    color: #000;
+  }
+
+  .sidebar-nav li:hover a {
+    color: #fff;
+  }
+
+  .sidebar-nav li:hover a:active {
+    /*color: #fff;*/
+  }
+
+  .sidebar-nav li:hover a {
+    /* color: #000;*/
+  }
+
+  .trigger-nav li a {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin: 10px;
+    margin-top: 40px;
+    text-align: left;
+    /* color: #000;*/
+
+    font-size: 16px;
+    font-weight: 300;
+  }
+
+  .sidebar-nav li a {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    /*margin: 20px;*/
+    /*margin-top: 40px;*/
+    text-align: left;
+    /*color: #000;*/
+
+    /* font-weight: 300;*/
+  }
+
+  .visited-now {
+  }
+
+  .trigger-nav li:hover a {
+    color: #fff;
+  }
+}
+
+.tab-content p {
+  /* color: #000;*/
+
+  font-weight: normal;
+  margin: 10px;
+}
+
+.tab-content-below {
+  height: 2000px;
+  position: relative;
+  top: 20px;
+}
+
+.tab-content ul li {
+  border: none;
+}
+
+.tab-content ul li:hover {
+  background: #fff;
+  /* color: #000;*/
+}
+
+.tab-content ul li:hover a {
+  background: #fff;
+  /*color: #000;*/
+}
+
+.linkage ul li {
+  color: rgba(8, 23, 200);
+}
+
+p.authorText {
+  margin-left: 10px;
+}
+
+.native-right {
+  margin-top: -40px;
+}
+
+/* Font Definitions */
+@font-face {
+  font-family: Calibri;
+  panose-1: 5 0 0 0 0 0 0 0 0 0;
+}
+@font-face {
+  font-family: "Calibri";
+  panose-1: 2 4 5 3 5 4 6 3 2 4;
+}
+@font-face {
+  font-family: Calibri;
+  panose-1: 2 15 5 2 2 2 4 3 2 4;
+}
+/* Style Definitions */
+p.MsoNormal,
+li.MsoNormal,
+div.MsoNormal {
+  margin-top: 0in;
+  margin-right: 0in;
+  margin-bottom: 8pt;
+  margin-left: 0in;
+  line-height: 107%;
+  font-size: 11pt;
+  font-family: "Calibri", sans-serif;
+}
+p.MsoFooter,
+li.MsoFooter,
+div.MsoFooter {
+  mso-style-link: "Footer Char";
+  margin: 0in;
+  font-size: 11pt;
+  font-family: "Calibri", sans-serif;
+}
+.blok-body a:link,
+span.MsoHyperlink {
+  color: blue;
+  text-decoration: underline;
+}
+span.FooterChar {
+  mso-style-name: "Footer Char";
+  mso-style-link: Footer;
+}
+.MsoChpDefault {
+  font-family: "Calibri", sans-serif;
+}
+.MsoPapDefault {
+  margin-bottom: 8pt;
+  line-height: 107%;
+}
+/* Page Definitions */
+@page WordSection1 {
+  size: 595.3pt 841.9pt;
+  margin: 0.5in 0.5in 0.5in 0.5in;
+}
+div.WordSection1 {
+  page: WordSection1;
+}
+/* List Definitions */
+.blok-body ol {
+  margin-bottom: 0in;
+}
+.blok-body ul {
+  margin-bottom: 0in;
+}

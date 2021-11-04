@@ -15,8 +15,8 @@ const HeroUnit = () => {
                                 <a class="btn btn-solid-teal border-radius-50 d-block btn-sm px-4">Sign Up</a>
                             </div> */}
                             <div className="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                                <a className="btn btn btn-outline-light border-radius-50 btn-sm px-4 gap-3">Log In</a>
-                                <a type="button" className="btn btn-solid-teal border-radius-50 btn-sm px-4">Sign Up</a>
+                                <a className="btn btn btn-outline-light border-radius-50 btn-sm px-4 gap-3 modal-link">Log In</a>
+                                <a type="button" className="btn btn-solid-teal border-radius-50 btn-sm px-4 modal-link2">Sign Up</a>
                             </div>
                         </div>
                     </div>

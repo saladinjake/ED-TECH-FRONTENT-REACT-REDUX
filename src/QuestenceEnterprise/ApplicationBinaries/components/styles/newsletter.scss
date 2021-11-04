@@ -1,0 +1,107 @@
+@import "../../styles/abstract/base";
+
+.newsletter {
+  padding: 5rem 6rem;
+  margin: 5rem 7rem;
+  background-image: linear-gradient(106.1deg, #01265b 36.05%, #063d8d 61.2%);
+  background: linear-gradient(106.1deg, #01265b 36.05%, #063d8d 61.2%);
+  border-radius: 40px;
+
+  @media only screen and (min-width: 106rem) {
+    margin: 8rem 30rem;
+  }
+
+  @include respond(tab-port) {
+    margin: 3rem;
+    padding: 5rem;
+  }
+
+  @include respond(misc1) {
+    margin: 2rem;
+    padding: 3rem;
+  }
+
+  h4 {
+    @include fontBold(3.5rem, 4.5rem, $white);
+    width: 80%;
+
+    @include respond(misc1) {
+      width: 100%;
+      @include fontBold(2rem, 3rem, $white);
+      text-align: center;
+    }
+
+    @include respond(phone) {
+      @include fontBold(1.5rem, 2rem, $white);
+    }
+  }
+
+  h2 {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 2.5rem;
+    line-height: 4.5rem;
+    color: #fff;
+
+    @include respond(phone) {
+      font-size: 2rem;
+      line-height: 2.5rem;
+      text-align: center;
+    }
+
+    span {
+      color: #de863e;
+    }
+  }
+
+  .d-flex {
+    @include respond(misc1) {
+      flex-direction: column;
+    }
+  }
+
+  .form__group {
+    input {
+      background: transparent;
+      border: none;
+      outline: none;
+      transition: all 0.2s;
+      border: 1px solid #d0f4ff;
+      border-radius: 4px;
+      width: 25rem;
+      @include fontNormal(1rem, 1.5rem, $white);
+
+      padding: 1rem 1.5rem;
+      margin-right: 2rem;
+
+      @include respond(misc1) {
+        margin: 0;
+        margin-bottom: 1.5rem;
+        width: 100%;
+      }
+
+      &:focus {
+        outline: none;
+
+        &:invalid {
+          border-bottom: 1px solid rgb(46, 37, 34);
+        }
+      }
+
+      &::-webkit-input-placeholder {
+        padding: 1rem 1.5rem;
+        @include fontNormal(1rem, 1.5rem, $white);
+      }
+    }
+  }
+
+  button {
+    @include btnGeneric;
+    @include flexCenter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.2rem;
+    color: #01265b;
+    padding: 1rem 1.5rem;
+  }
+}

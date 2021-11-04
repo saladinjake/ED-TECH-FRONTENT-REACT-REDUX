@@ -9,7 +9,7 @@ import {
 } from "./types";
 
 import $ from "jquery";
-import { getCourses } from "services/course";
+import { getCourses } from "../../api/enrollment_services/courses.services";
 
 export const fetchCourses = () => async (dispatch) => {
   try {
