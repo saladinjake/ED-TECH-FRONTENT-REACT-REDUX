@@ -1,16 +1,15 @@
 import React, { useEffect, Fragment } from "react";
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-import NavBar from "components/Navbar";
-import Footer from "../../components/Footer";
-import { BreadcrumbBox } from "../../components/common/Breadcrumb";
+import NavBar from "../../components/shared/NavBar";
+import Footer from "../../components/shared/Footer";
 import { Styles } from "./styles/cart.js";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { removeFromWishList } from "actions/wishListActions";
+import { removeFromWishList } from "../../redux/actions/wishlist.action";
 
-import { getWishlist } from "services/wishlist";
+import { getWishlist } from "../../api/enrollment_services/wishlist.services";
 import "./empty.css";
 
 const WishList = (props) => {

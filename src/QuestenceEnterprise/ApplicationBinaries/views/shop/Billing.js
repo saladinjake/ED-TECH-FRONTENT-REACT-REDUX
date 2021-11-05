@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import NavBar from "components/Navbar";
+import NavBar from "../../components/shared/NavBar";
 import BillingBox from "../../components/BillingBox";
-import Footer from "../../components/Footer";
+import Footer from "../../components/shared/Footer";
 
 class Billing extends Component {
   render() {

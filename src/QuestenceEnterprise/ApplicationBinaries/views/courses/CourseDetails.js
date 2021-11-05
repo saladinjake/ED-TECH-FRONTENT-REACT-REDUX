@@ -1,30 +1,33 @@
 import React, { useEffect, useState, Fragment } from "react";
 import { Container, Row, Col, Tab, Nav } from "react-bootstrap";
-import NavBar from "components/Navbar";
-import Footer from "../../components/Footer";
+import NavBar from "../../components/shared/NavBar";
+import Footer from "../../components/shared/Footer";
 import { BreadcrumbBox } from "../../components/common/Breadcrumb";
 import { Styles } from "./styles/course.js";
 import moment from "moment";
 import { Link } from "react-router-dom";
 
-import Loader from "components/Loader/Loader";
-import { getCourse, getCourses } from "services/course";
+import Loader from "../../components/Loader/Loader";
+import { getCourse, getCourses } from "../../api/enrollment_services/courses.services";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { fetchCourses, addToCart } from "actions/cartActions";
-import { getAuthProfile } from "services/learner.js";
+
+import { getAuthProfile } from "../../api/enrollment_services/learner.services";
 import toast from "react-hot-toast";
-// import { useHistory, useLocation } from "react-router-dom";
-import { addToWishList } from "actions/wishListActions";
+
+
+import { fetchCourses, addToCart } from "../../redux/actions/cart.action";
+import { addToWishList } from "../../redux/actions/wishlist.action";
+
 import "./relatedcoursesmodal.css";
 import $ from "jquery";
 
 import "./playvideo.scss";
 
-import NewEditForm from "../account/NewEditForm";
+import NewEditForm from "../miniauthoring/NewEditForm";
 
-import { enrollCourses } from "services/enrollment.js";
+import { enrollCourses } from "../../api/enrollment_services/enrollment.services";
 
 const CourseDetails = ({
   history,

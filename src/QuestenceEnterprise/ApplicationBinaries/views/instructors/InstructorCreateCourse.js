@@ -4,7 +4,7 @@ import {
   getLanguages,
   getCategories,
   getCertificates,
-} from "services/course";
+} from "../../api/enrollment_services/course.services";
 import toast from "react-hot-toast";
 
 class FileUploadComponent extends Component {

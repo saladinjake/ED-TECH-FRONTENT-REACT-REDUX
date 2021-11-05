@@ -150,27 +150,27 @@ export const INSTRUCTORLINKS = [
     link: "/instructor-account/reset",
   },
 
-  // {
-  //   name: "Accomplishment",
-  //   link: "#",
-  // },
-
-  // {
-  //   name: "Subscriptions",
-  //   link: "#",
-  // },
-  // {
-  //   name: "Purchase History",
-  //   link: "#",
-  // },
+  {
+    name: "Accomplishment",
+    link: "#",
+  },
 
   {
-    name: "Help",
+    name: "Subscriptions",
     link: "#",
   },
   {
-    name: "Billing",
+    name: "Purchase History",
     link: "#",
+  },
+
+  {
+    name: "Help",
+    link: "",
+  },
+  {
+    name: "Billing",
+    link: "",
   },
 ];
 
@@ -230,3 +230,5 @@ export const PROGRAM_LINK = [
   },
 
 ];
+
+

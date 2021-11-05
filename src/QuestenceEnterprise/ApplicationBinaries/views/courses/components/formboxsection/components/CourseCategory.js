@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Styles } from "../styles/courseCategory.js";
-import { getCategories } from "services/category";
+import { getCategories } from "../../../../../api/enrollment_services/category.services";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";

@@ -8,7 +8,8 @@ import { logOut } from "../../redux/actions/auth.action";
 import { 
   CATEGORIES,
  PACES, AUTHLINKS,
-  PROGRAM_LINK 
+  PROGRAM_LINK,
+  INSTRUCTORLINKS,
 } from "./data";
 import { 
   getCategories
@@ -17,6 +18,7 @@ import toast from "react-hot-toast";
 import { useQuery } from "../../helpers/hooks/useQuery.js";
 import AuthWindow from "./modules/authentication";
 import $ from "jquery";
+import { Dropdown } from "react-bootstrap"
 
 
 import {
@@ -79,6 +81,7 @@ const NavBar = ({
   const  SecondHalf =[...PROGRAM_LINK.slice(setDivision,TotalPrograms)];
 
   console.log(FirstHalf,SecondHalf)
+  const [userRole, setUserRole] = useState(user_roles)
 
 
 
@@ -534,6 +537,14 @@ const NavBar = ({
                       id="reset-btn"></i>
                 </div>
               </form>
+              
+
+
+
+
+
+          {!isAuthenticated ? (
+            <Fragment>
               <div className="text-end">
                 <a
                      id="login_form"
@@ -546,6 +557,58 @@ const NavBar = ({
                         href="#"
                         id="register_form" className="modal-link2 btn btn-solid-teal btn-sm btn-rounded">Sign Up</a>
               </div>
+            </Fragment>
+          ) : (
+            <Fragment>
+
+
+            <NavDropdown
+                  title={`${user?.first_name} ${user?.last_name}`}
+                  id="collasible-nav-dropdown"
+                >
+
+                 <span style={{display: !userRole.includes("Instructor")?"block":"none"}}>
+                {AUTHLINKS.length > 0  &&   
+                      AUTHLINKS.map((item, i) => {
+                       if(!userRole.includes("Instructor")){
+                        return (
+                          <NavDropdown.Item href={`${item.link}`}>
+                                                {item.name}
+                         </NavDropdown.Item>
+                        );
+                      }
+                })}
+                </span>
+                  
+                  
+             
+             
+                <span style={{display: !!userRole.includes("Instructor")?"block":"none"}}>
+                  {INSTRUCTORLINKS.length > 0 &&  
+                    INSTRUCTORLINKS.map((item, i) => {
+                     if(userRole.includes("Instructor")){
+                       return (
+
+
+                         <NavDropdown.Item href={`${item.link}`}>
+                                                {item.name}
+                          </NavDropdown.Item>
+                       
+                      );
+
+                     }
+                    })}
+                    </span>
+
+                    <NavDropdown.Item href={process.env.PUBLIC_URL + "/cart"}>
+                           <i class="fafa-shopping-cart"> Cart</i>
+                         </NavDropdown.Item>
+                      <NavDropdown.Item onClick={handleLogout} href={process.env.PUBLIC_URL + "#"}>
+                          Logout
+                    </NavDropdown.Item>
+                </NavDropdown> 
+            </Fragment>
+          )}
             </Navbar.Collapse>
           </Container>
         </Navbar>

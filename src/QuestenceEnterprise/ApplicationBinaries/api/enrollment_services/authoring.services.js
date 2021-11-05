@@ -3,16 +3,16 @@ import httpRequest from "./api_config/axios.config";
 import qs from "qs";
 import Sortable from "sortablejs/modular/sortable.complete.esm.js"; 
 
-/*magicican victor jake dibs*/
+/*magician victor jake dibs*/
 
-import loading_image from "assets/gifs/loading-buffering.gif";
+// import loading_image from "assets/gifs/loading-buffering.gif";
 import $ from "jquery";
 import 'jquery-ui-bundle';
 import 'jquery-ui-bundle/jquery-ui.css';
 import toast from "react-hot-toast";
 
 
-import { getLanguages } from "services/language";
+import { getLanguages } from "./language.services";
 import axios from "axios"
 import swal from "sweetalert"
 let base_url = "http://gapslmsservices.herokuapp.com"; //process.env.REACT_APP_API_URL2

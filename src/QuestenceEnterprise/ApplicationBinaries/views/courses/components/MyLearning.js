@@ -1,8 +1,8 @@
 import React from "react";
-import Navbar from "components/Navbar";
+import Navbar from "../../../components/shared/NavBar";
 
 import MyLearningContainer from "./tabsection/Tab";
-import Footer from "components/Footer";
+import Footer from "../../../components/shared/Footer";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";

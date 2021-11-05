@@ -1,28 +1,27 @@
 import React, { useState, useEffect, Fragment, useMemo } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import InstructorNavBar from "components/Navbar/InstructorNavbar";
-import { BreadcrumbBox } from "../../components/common/Breadcrumb";
-import Footer from "components/Footer";
+import InstructorNavBar from "../../components/shared/NavBar";
+import Footer from "../../components/shared/Footer";
 import { Styles } from "./styles/account.js";
 import { useHistory } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Formik } from "formik";
 import PropTypes from "prop-types";
-import { updateInstructorProfile } from "services/profile";
-import { getCountries } from "services/country";
-import { getLanguages } from "services/language";
-import { getIndustries } from "services/industry";
-import { getInstructorProfile } from "services/profile";
-import { learnerSchema } from "helper/validations";
+import { getCountries } from "../../api/enrollment_services/country.services";
+import { getLanguages } from "../../api/enrollment_services/language.services";
+import { getIndustries } from "../../api/enrollment_services/industry.services";
+import { getInstructorProfile, updateInstructorProfile } from "../../api/enrollment_services/profile.services";
+import { learnerSchema } from "../../helpers/validations";
 import {
   Degrees,
   EducationLevel,
   EmploymentStatus,
   ExperienceLevel,
   MaritalStatus,
-} from "helper/data";
+} from "../../helpers/data";
 
-import Loader from "components/Loader/Loader";
+
+import Loader from "../../components/Loader/Loader";
 import { connect } from "react-redux";
 import "./instructor.css";
 import $ from "jquery";

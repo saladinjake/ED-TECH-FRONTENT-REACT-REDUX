@@ -1,0 +1,166 @@
+<!-- Latest compiled and minified CSS -->
+<link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+/>
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="./worksheet.css" />
+
+<main>
+  <header>
+    <h6>Questence logo here</h6>
+    <nav>
+      <a href="#">link here</a>
+      <a href="#">link here</a>
+      <a href="#">link here</a>
+      <a href="#">link here</a>
+    </nav>
+  </header>
+</main>
+
+<div id="wrap">
+  <div id="left">This is the left window</div>
+  <div id="right">
+    This is the right window
+
+    <div class="demo">
+      <div role="tabpanel">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs nav-justified nav-tabs-dropdown" role="tablist">
+          <li role="presentation" class="active">
+            <a href="#home" aria-controls="home" role="tab" data-toggle="tab"
+              >Lesson</a
+            >
+          </li>
+          <li role="presentation">
+            <a
+              href="#profile"
+              aria-controls="profile"
+              role="tab"
+              data-toggle="tab"
+              >Transcript</a
+            >
+          </li>
+          <li role="presentation">
+            <a
+              href="#messages"
+              aria-controls="messages"
+              role="tab"
+              data-toggle="tab"
+              >Live</a
+            >
+          </li>
+          <li role="presentation">
+            <a
+              href="#settings"
+              aria-controls="settings"
+              role="tab"
+              data-toggle="tab"
+              >Notifications</a
+            >
+          </li>
+
+          <li role="presentation">
+            <a
+              href="#notifications"
+              aria-controls="notifications"
+              role="tab"
+              data-toggle="tab"
+              >Forums</a
+            >
+          </li>
+          <li role="presentation">
+            <a href="#note" aria-controls="note" role="tab" data-toggle="tab"
+              >Note</a
+            >
+          </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="home">
+            Lesson Content...
+          </div>
+          <div role="tabpanel" class="tab-pane" id="profile">
+            Transcript content...
+          </div>
+          <div role="tabpanel" class="tab-pane" id="messages">
+            Live lessons content...
+          </div>
+          <div role="tabpanel" class="tab-pane" id="settings">
+            Notification content...
+          </div>
+
+          <div role="tabpanel" class="tab-pane" id="notifications">
+            Forums content ...
+          </div>
+          <div role="tabpanel" class="tab-pane" id="note">Notes content...</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="handle"></div>
+  </div>
+</div>
+
+<script>
+  const left = document.getElementById("left");
+  const right = document.getElementById("right");
+  const handle = document.getElementById("handle");
+  const wrap = document.getElementById("wrap");
+  const winWidth = window.innerWidth;
+  const winHeight = window.innerHeight;
+
+  document.addEventListener("DOMContentLoaded", function (event) {
+    left.style.width = winWidth / 2 + "px";
+    right.style.width = winWidth / 2 + "px";
+    handle.style.top = winHeight / 2 - 35 + "px";
+
+    rStartWidth = parseInt(window.getComputedStyle(right).width, 10);
+    handle.style.right = rStartWidth - 4 + "px";
+
+    handle.addEventListener("mousedown", setup, false);
+  });
+
+  let StartX, rStartWidth, lStartWidth;
+
+  function setup(event) {
+    StartX = event.clientX;
+    rStartWidth = parseInt(window.getComputedStyle(right).width, 10);
+    lStartWidth = parseInt(window.getComputedStyle(left).width, 10);
+
+    document.documentElement.addEventListener("mousemove", drag, false);
+    document.documentElement.addEventListener("mouseup", destroy, false);
+  }
+
+  function drag(event) {
+    (wrap.style.gridTemplateAreas =
+      lStartWidth + event.clientX - StartX + "px"),
+      rStartWidth - event.clientX + StartX + "px";
+    right.style.width = rStartWidth - event.clientX + StartX + "px";
+    left.style.width = lStartWidth + event.clientX - StartX + "px";
+    handle.style.right = rStartWidth - event.clientX + StartX - 4 + "px";
+  }
+
+  function destroy(e) {
+    document.documentElement.removeEventListener("mousemove", drag, false);
+    document.documentElement.removeEventListener("mouseup", destroy, false);
+  }
+
+  //navs
+
+  //open and close tab menu
+  $(".nav-tabs-dropdown")
+    .on("click", "li:not('.active') a", function (event) {
+      $(this).closest("ul").removeClass("open");
+    })
+    .on("click", "li.active a", function (event) {
+      $(this).closest("ul").toggleClass("open");
+    });
+</script>

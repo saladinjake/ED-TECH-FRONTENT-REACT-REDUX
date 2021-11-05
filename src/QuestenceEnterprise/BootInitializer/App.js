@@ -43,10 +43,30 @@ import ResetPassword from "../ApplicationBinaries/views/accounts/ResetPassword";
 import ChangeCredentials from "../ApplicationBinaries/views/accounts/LoggedOutChangePassword";
 import Checkout from "../ApplicationBinaries/views/checkout/Checkout";
 import Cart from "../ApplicationBinaries/views/shop/Cart";
+import WishLists from "../ApplicationBinaries/views/shop/Wishlist";
+import Billing from "../ApplicationBinaries/views/shop/Billing";
 import LearnerProfiler from "../ApplicationBinaries/views/profile/LearnerProfile";
 import InstructorProfiler from "../ApplicationBinaries/views/profile/InstructorProfile";
 import UpdateLearner from "../ApplicationBinaries/views/profile/UpdateLearner";
 import UpdateInstructor from "../ApplicationBinaries/views/profile/UpdateInstructor";
+import WorkBench from "../ApplicationBinaries/views/workbench/WorkSheet";
+import Purchases from "../ApplicationBinaries/views/purchases/Purchases";
+
+import CreateCourseForm from "../ApplicationBinaries/views/miniauthoring/CreateCourseForm";
+import EditCourseForm from "../ApplicationBinaries/views/miniauthoring/NewEditForm";
+import InstructorDashboard from "../ApplicationBinaries/views/instructors/InstructorDashboard";
+import NewInstructorDashboard from "../ApplicationBinaries/views/dashboardInstructor/MyDashboard";
+import InstructorCourses from "../ApplicationBinaries/views/instructors/InstructorCourses";
+import InstructorNotifications from "../ApplicationBinaries/views/instructors/InstructorNotifications";
+import InstructorPendingCourses from "../ApplicationBinaries/views/instructors/InstructorPendingCourses";
+import InstructorDeclinedCourses from "../ApplicationBinaries/views/instructors/InstructorDeclinedCourses";
+import MyInstructorCourses from "../ApplicationBinaries/views/instructorAuthoredCourses/MyLearning";
+import MylearningDashboard from "../ApplicationBinaries/views/courses/components/MyLearning";
+import OverViewPane from "../ApplicationBinaries/views/dashboard/MyDashboard";
+import NewNotifications from "../ApplicationBinaries/views/mynotifications/Notifications";
+import NewInstructorNotifications from "../ApplicationBinaries/views/mynotifications/NewInstructorNotification";
+import CourseDetails from "../ApplicationBinaries/views/courses/CourseDetails";
+import CoursePreview from "../ApplicationBinaries/views/courses/CoursePreview";
 /*higer ordered components middlewares*/
 import LearnersRoute from "../ApplicationBinaries/middlewares/LearnersRoute";
 import InstructorsRoute from "../ApplicationBinaries/middlewares/InstructorsRoute";
@@ -55,14 +75,14 @@ import PublicRoute from "../ApplicationBinaries/middlewares/PublicRoute";
 
 
 
-
+import Notification from "../ApplicationBinaries/helpers/Toaster";
 
 const App = () => {
 {/*router outlets:components entry point*/}
    return (
 
    <Router history={history}>  
-       {/*<Notification />*/}
+       <Notification />
        <Switch>
          <Route
           exact
@@ -187,9 +207,6 @@ const App = () => {
           path={`${process.env.PUBLIC_URL + "/help-center"}`}
           component={HelpCenter}
         />
-
-
-
          <LearnersRoute
           path={`${process.env.PUBLIC_URL + "/learner/accounts"}`}
           component={ResetPassword}
@@ -216,7 +233,138 @@ const App = () => {
         path={`${process.env.PUBLIC_URL + "/cart"}`} 
         component={Cart}
          />
+        <Route
+          path={`${process.env.PUBLIC_URL + "/payment/callback"}`}
+          component={Checkout}
+        />
+        <LearnersRoute
+          exact
+          path={`${process.env.PUBLIC_URL + "/learner/profile/update"}`}
+          component={UpdateLearner}
+        />
+        <LearnersRoute
+          exact
+          path={`${process.env.PUBLIC_URL + "/learner/profile"}`}
+          component={LearnerProfiler}
+        />
 
+        <InstructorsRoute
+          exact
+          path="/instructor-pages/profile"
+          component={InstructorProfiler}
+        />
+        
+        
+        <InstructorsRoute
+          exact
+          path={`${
+            process.env.PUBLIC_URL + "/instructor-detail/profile/update"
+          }`}
+          component={UpdateInstructor}
+        />
+
+        <LearnersRoute exact path="/billing" component={Billing} />
+
+         <LearnersRoute
+          path={`${process.env.PUBLIC_URL + "/learner/wishlists"}`}
+          component={WishLists}
+        />
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/learning/workbench/:id"}`}
+          component={WorkBench}
+        />
+
+
+        <InstructorsRoute
+          exact
+          path="/instructor-pages/dashboard"
+          component={NewInstructorDashboard}
+        />
+
+      
+        
+
+        <InstructorsRoute
+          exact
+          path="/instructor-pages/mycourses"
+          component={MyInstructorCourses}
+        />
+        
+
+        <InstructorsRoute
+          exact
+          path={`${process.env.PUBLIC_URL + "/instructor-pages/notifications"}`}
+          component={NewInstructorNotifications}
+        />
+
+        
+
+       
+
+        <InstructorsRoute
+          exact
+          path={`${process.env.PUBLIC_URL + "/instructor-pages/course/create"}`}
+          component={CreateCourseForm}
+        />
+
+        <InstructorsRoute
+          exact
+          path={`${
+            process.env.PUBLIC_URL + "/instructor-pages/course/pending"
+          }`}
+          component={InstructorPendingCourses}
+        />
+        <InstructorsRoute
+          exact
+          path={`${
+            process.env.PUBLIC_URL + "/instructor-pages/course/declined"
+          }`}
+          component={InstructorDeclinedCourses}
+        />
+        <LearnersRoute
+          exact
+          path="/mycourses"
+          component={MylearningDashboard}
+        />
+        <LearnersRoute
+          exact
+          path="/notifications"
+          component={NewNotifications}
+        />
+        <LearnersRoute
+          path={`${process.env.PUBLIC_URL + "/dashboard"}`}
+          component={OverViewPane}
+        />
+        
+
+
+
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/courses/:id"}`}
+          component={CourseDetails}
+        />
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/courses/:id/:slug"}`}
+          component={CourseDetails}
+        />
+         <InstructorsRoute
+          exact
+          path={`${process.env.PUBLIC_URL + "/course-preview/:id"}`}
+          component={CoursePreview}
+        />
+
+        
+
+      
+
+        
+
+        
 
 
         

@@ -1,5 +1,5 @@
 import React from "react";
-import UploadService from "services/uploads";
+import UploadService from "../../api/enrollment_services/uploads.services";
 import toast from "react-hot-toast";
 
 class ImageUpload extends React.Component {

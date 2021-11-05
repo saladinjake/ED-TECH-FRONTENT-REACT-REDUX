@@ -11,13 +11,13 @@ import MyCourses from "./MyCourses.js";
 import { useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { fetchCourses } from "actions/coursesActions";
-import Loader from "components/Loader/Loader";
-import { useQuery } from "hooks/useQuery.js";
+import { fetchCourses } from "../../../../redux/actions/courses.action";
+import Loader from "../../../../components/Loader/Loader";
+import { useQuery } from "../../../../helpers/hooks/useQuery.js";
 
 import toast from "react-hot-toast";
 
-import { getEnrolledCourse } from "services/enrollment";
+import { getEnrolledCourse } from "../../../../api/enrollment_services/enrollment.services";
 // import SortTest from "./SortTest";
 
 // function dateToYMD(date) {
