@@ -1,11 +1,19 @@
+/*
+*
+*
+*
+*
+*
+*
+*
+*
+*/
 import React, { useEffect } from "react";
 import './App.css';
 /*Import requirements and configuration files*/
 import history from "../ApplicationBinaries/helpers/history";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"; 
 //import Notification from "./Toaster";
- 
-
 /*import components and pages*/
 import HomeScreen from '../ApplicationBinaries/views/HomeScreen';
 import Contact from "../ApplicationBinaries/views/contact/Contact";
@@ -28,6 +36,25 @@ import Events from "../ApplicationBinaries/views/events/Events";
 import EventsDetails from "../ApplicationBinaries/views/events/EventsDetails";
 import CareersPage from "../ApplicationBinaries/views/careers/Career";
 import HelpCenter from "../ApplicationBinaries/views/help/Help";
+import PageNotFound from "../ApplicationBinaries/views/404/PageNotFound";
+/*login and registration pages have been changed to modal so there are no pages links to them*/
+/*find the login registration in the shared folder of the components root folder called authentication module*/
+import ResetPassword from "../ApplicationBinaries/views/accounts/ResetPassword";
+import ChangeCredentials from "../ApplicationBinaries/views/accounts/LoggedOutChangePassword";
+import Checkout from "../ApplicationBinaries/views/checkout/Checkout";
+import Cart from "../ApplicationBinaries/views/shop/Cart";
+import LearnerProfiler from "../ApplicationBinaries/views/profile/LearnerProfile";
+import InstructorProfiler from "../ApplicationBinaries/views/profile/InstructorProfile";
+import UpdateLearner from "../ApplicationBinaries/views/profile/UpdateLearner";
+import UpdateInstructor from "../ApplicationBinaries/views/profile/UpdateInstructor";
+/*higer ordered components middlewares*/
+import LearnersRoute from "../ApplicationBinaries/middlewares/LearnersRoute";
+import InstructorsRoute from "../ApplicationBinaries/middlewares/InstructorsRoute";
+import AuthenticatedRoute from "../ApplicationBinaries/middlewares/AuthenticatedRoute";
+import PublicRoute from "../ApplicationBinaries/middlewares/PublicRoute";
+
+
+
 
 
 const App = () => {
@@ -162,8 +189,40 @@ const App = () => {
         />
 
 
+
+         <LearnersRoute
+          path={`${process.env.PUBLIC_URL + "/learner/accounts"}`}
+          component={ResetPassword}
+        />
+        <InstructorsRoute
+          path={`${process.env.PUBLIC_URL + "/instructor-account/reset"}`}
+          component={ResetPassword}
+        />
+        <PublicRoute
+          exact
+          path={`${process.env.PUBLIC_URL + "/password/reset/:id"}`}
+          component={ChangeCredentials}
+        />
+
+
+
+        <Route
+          exact
+          path={`${process.env.PUBLIC_URL + "/checkout"}`}
+          component={Checkout}
+        />
+
+         <Route 
+        path={`${process.env.PUBLIC_URL + "/cart"}`} 
+        component={Cart}
+         />
+
+
+
         
 
+
+       <Route component={PageNotFound} />
       </Switch>
    </Router>
    )
