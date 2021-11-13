@@ -1,9 +1,7 @@
-import './App.css';
-import LandingScreen from './screens/LandingScreen';
+import "./App.css";
+import AppNavigator from "./navigation/AppNavigator";
 function App() {
-  return (
-    <LandingScreen />
-  );
+  return <AppNavigator />;
 }
 
 export default App;
