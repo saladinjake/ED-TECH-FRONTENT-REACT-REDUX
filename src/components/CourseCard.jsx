@@ -10,7 +10,7 @@ const CourseCard = ({
   return (
     // <div className="">
     <div className="m-2 card border-radius-20 shadow-sm">
-      <img src="/course-1.png" className="card-img-top" alt="..." />
+      <img src="/course-1.png" className="card-img-top" alt="Course" />
       <div className="col-4 offset-8 bottom-left-radius-20 fw-bold text-center p-2 bg-grey text-white">
         {coursePrice}
       </div>

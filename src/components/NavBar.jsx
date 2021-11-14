@@ -181,7 +181,7 @@ const NavBar = () => {
                       onMouseLeave={() => setCategoriesShow(false)}
                     >
                       <div
-                        className="row p-3 "
+                        className="row p-3 course-category-scroll"
                         style={{
                           width: "60vw",
                           height: "60vh",

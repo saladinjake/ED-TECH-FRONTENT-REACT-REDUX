@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Nav, Tab } from "react-bootstrap";
 import TextCard from "./TextCard";
+import InstructorCard from "./InstructorCard";
 
 const CourseDetail = () => {
   const [activeKey, setActiveKey] = useState("home");
@@ -22,7 +23,7 @@ const CourseDetail = () => {
                   <Nav.Link eventKey="curriculum">Curriculum</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Nav.Link eventKey="/instructors">Instructors</Nav.Link>
+                  <Nav.Link eventKey="instructors">Instructors</Nav.Link>
                 </Nav.Item>
               </Nav>
             </div>
@@ -67,6 +68,28 @@ const CourseDetail = () => {
                     <p>Week 4: Pulling It All Together.</p>"
                     />
                   </div>
+                </div>
+              </Tab.Pane>
+              <Tab.Pane eventKey="instructors">
+                <div className="row mt-3">
+                  <InstructorCard
+                    authorName="Deepali Bagati"
+                    authorPosition="Vice President"
+                    authorCompany="Inclusive Leadership Intiative Catalyst"
+                    authorImage="/instructor.png"
+                  />
+                  <InstructorCard
+                    authorName="Emily Troiano"
+                    authorPosition="Senior Instructor"
+                    authorCompany="Information Centre Catalyst"
+                    authorImage="/instructor-2.png"
+                  />
+                  <InstructorCard
+                    authorName="Deepali Bagati"
+                    authorPosition="Vice President"
+                    authorCompany="Inclusive Leadership Intiative Catalyst"
+                    authorImage="/instructor-3.png"
+                  />
                 </div>
               </Tab.Pane>
             </Tab.Content>
