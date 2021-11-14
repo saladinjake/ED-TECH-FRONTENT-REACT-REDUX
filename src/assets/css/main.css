@@ -438,3 +438,12 @@ p {
   border-radius: 10px;
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
 }
+
+.fill-available {
+  width: -webkit-fill-available;
+  width: -moz-available;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}

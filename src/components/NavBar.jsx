@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
+import {
+  Navbar,
+  Container,
+  Nav,
+  NavDropdown,
+  Modal,
+  Button,
+} from "react-bootstrap";
 
 const NavBar = () => {
   const [firstShow, setFirstShow] = useState();
@@ -7,6 +14,20 @@ const NavBar = () => {
   const [thirdShow, setThirdShow] = useState();
   const [fourthShow, setFourthShow] = useState();
   const [categoriesShow, setCategoriesShow] = useState();
+  const [loginModalShow, setLoginModalShow] = useState(false);
+  const [regModalShow, setRegModalShow] = useState(false);
+
+  const handleLoginModalClose = () => setLoginModalShow(false);
+  const handleLoginModalShow = () => {
+    setLoginModalShow(true);
+    setRegModalShow(false);
+  };
+
+  const handleRegModalClose = () => setRegModalShow(false);
+  const handleRegModalShow = () => {
+    setRegModalShow(true);
+    setLoginModalShow(false);
+  };
   return (
     <>
       <header className="py-3 border-bottom d-md-none shadow-sm">
@@ -634,37 +655,199 @@ const NavBar = () => {
                     For Governments
                   </NavDropdown.Item>
                 </NavDropdown>
-                {/* <NavDropdown
-                  title="Partnerships"
-                  id="basic-nav-dropdown"
-                  show={fourthShow}
-                  onMouseEnter={() => setFourthShow(true)}
-                  onMouseLeave={() => setFourthShow(false)}
-                >
-                  <NavDropdown.Item href="#action/3.1">
-                    For School
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.1">
-                    For Business
-                  </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.1">
-                    For Government
-                  </NavDropdown.Item>
-                </NavDropdown> */}
               </Nav>
               <form className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
                 {/* <input type="search" className="form-control" placeholder="Search..." aria-label="Search" /> */}
                 <i className="bi bi-search"></i>
               </form>
               <div className="text-end">
-                <a className="btn btn-outline-dark btn-sm me-2 btn-rounded">
+                <a
+                  className="btn btn-outline-dark btn-sm me-2 btn-rounded"
+                  onClick={handleLoginModalShow}
+                >
                   Log In
                 </a>
-                <a className="btn btn-solid-teal btn-sm btn-rounded">Sign Up</a>
+                <a
+                  className="btn btn-solid-teal btn-sm btn-rounded"
+                  onClick={handleRegModalShow}
+                >
+                  Sign Up
+                </a>
               </div>
             </Navbar.Collapse>
           </Container>
         </Navbar>
+
+        <Modal
+          show={regModalShow}
+          onHide={handleRegModalClose}
+          className="border-0"
+        >
+          <Modal.Header
+            size="lg"
+            closeButton
+            className="border-0"
+          ></Modal.Header>
+          <Modal.Body className="border-0">
+            <div className="col-md-12 px-3">
+              <img
+                src="/Questence-logo.png"
+                style={{ height: "25px" }}
+                alt="Logo"
+                className="mx-auto d-block mb-3"
+              />
+              <h5 className="text-uppercase text-center fw-bold my-2">
+                Registration
+              </h5>
+              <div className="row">
+                <div class="mb-3 col-md-6">
+                  <label for="exampleFormControlInput1" class="form-label">
+                    First Name
+                  </label>
+                  <input
+                    type="email"
+                    className="border-radius-15 form-control"
+                    id="exampleFormControlInput1"
+                    placeholder="First name"
+                  />
+                </div>
+                <div class="mb-3 col-md-6">
+                  <label for="exampleFormControlInput1" class="form-label">
+                    Last Name
+                  </label>
+                  <input
+                    type="email"
+                    className="border-radius-15 form-control"
+                    id="exampleFormControlInput1"
+                    placeholder="Last name"
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div class="mb-3 col-md-6">
+                  <label for="exampleFormControlInput1" class="form-label">
+                    Email address
+                  </label>
+                  <input
+                    type="email"
+                    className="border-radius-15 form-control"
+                    id="exampleFormControlInput1"
+                    placeholder="name@example.com"
+                  />
+                </div>
+                <div class="mb-3 col-md-6">
+                  <label for="exampleFormControlInput1" class="form-label">
+                    Phone Number
+                  </label>
+                  <input
+                    type="text"
+                    className="border-radius-15 form-control"
+                    id="exampleFormControlInput1"
+                    placeholder="Enter your phone number"
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div class="mb-3 col-md-6">
+                  <label for="exampleFormControlInput1" className="form-label">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    className="border-radius-15 form-control"
+                    id="exampleFormControlInput1"
+                    placeholder="Password"
+                  />
+                </div>
+                <div class="mb-3 col-md-6">
+                  <label for="exampleFormControlInput1" className="form-label">
+                    Confirm Password
+                  </label>
+                  <input
+                    type="password"
+                    className="border-radius-15 form-control"
+                    id="exampleFormControlInput1"
+                    placeholder="Password"
+                  />
+                </div>
+              </div>
+              <div class="mb-3">
+                <button className="btn btn-solid-teal w-100 border-radius-15">
+                  Register
+                </button>
+              </div>
+            </div>
+          </Modal.Body>
+          <Modal.Footer className="bg-teal border-0">
+            <div className="text-center text-13 fill-available">
+              Already have an account ?{" "}
+              <span
+                className="fw-bold cursor-pointer"
+                onClick={handleLoginModalShow}
+              >
+                Sign in
+              </span>
+            </div>
+          </Modal.Footer>
+        </Modal>
+        <Modal
+          show={loginModalShow}
+          onHide={handleLoginModalClose}
+          className="border-0"
+        >
+          <Modal.Header closeButton className="border-0"></Modal.Header>
+          <Modal.Body className="border-0">
+            <div className="col-md-8 mx-auto">
+              <img
+                src="/Questence-logo.png"
+                style={{ height: "25px" }}
+                alt="Logo"
+                className="mx-auto d-block mb-3"
+              />
+              <h5 className="text-uppercase text-center fw-bold my-2">
+                Log In
+              </h5>
+              <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">
+                  Email address
+                </label>
+                <input
+                  type="email"
+                  className="border-radius-15 form-control"
+                  id="exampleFormControlInput1"
+                  placeholder="name@example.com"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="exampleFormControlInput1" className="form-label">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  className="border-radius-15 form-control"
+                  id="exampleFormControlInput1"
+                  placeholder="name@example.com"
+                />
+              </div>
+              <div class="mb-3">
+                <button className="btn btn-solid-teal w-100 border-radius-15">
+                  Log In
+                </button>
+              </div>
+            </div>
+          </Modal.Body>
+          <Modal.Footer className="bg-teal border-0">
+            <div className="text-center text-13 fill-available">
+              Dont have an account yet?{" "}
+              <span
+                className="fw-bold cursor-pointer"
+                onClick={handleRegModalShow}
+              >
+                Sign up
+              </span>
+            </div>
+          </Modal.Footer>
+        </Modal>
       </header>
     </>
   );
