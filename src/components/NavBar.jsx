@@ -16,6 +16,7 @@ const NavBar = () => {
   const [categoriesShow, setCategoriesShow] = useState();
   const [loginModalShow, setLoginModalShow] = useState(false);
   const [regModalShow, setRegModalShow] = useState(false);
+  const [forgotModalShow, setForgotModalShow] = useState(false);
 
   const handleLoginModalClose = () => setLoginModalShow(false);
   const handleLoginModalShow = () => {
@@ -28,6 +29,14 @@ const NavBar = () => {
     setRegModalShow(true);
     setLoginModalShow(false);
   };
+
+  const handleForgotModalClose = () => setForgotModalShow(false);
+  const handleForgotModalShow = () => {
+    setRegModalShow(false);
+    setLoginModalShow(false);
+    setForgotModalShow(true);
+  };
+
   return (
     <>
       <header className="py-3 border-bottom d-md-none shadow-sm">
@@ -834,6 +843,14 @@ const NavBar = () => {
                   Log In
                 </button>
               </div>
+              <div class="mb-3">
+                <p
+                  className="text-center cursor-pointer"
+                  onClick={handleForgotModalShow}
+                >
+                  Forgot password
+                </p>
+              </div>
             </div>
           </Modal.Body>
           <Modal.Footer className="bg-teal border-0">
@@ -847,6 +864,49 @@ const NavBar = () => {
               </span>
             </div>
           </Modal.Footer>
+        </Modal>
+        <Modal
+          show={forgotModalShow}
+          onHide={handleForgotModalClose}
+          className="border-0"
+        >
+          <Modal.Header closeButton className="border-0"></Modal.Header>
+          <Modal.Body className="border-0">
+            <div className="col-md-8 mx-auto">
+              <img
+                src="/Questence-logo.png"
+                style={{ height: "25px" }}
+                alt="Logo"
+                className="mx-auto d-block mb-3"
+              />
+              <h5 className="text-uppercase text-center fw-bold my-2">
+                Forgot Password
+              </h5>
+              <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">
+                  Email address
+                </label>
+                <input
+                  type="email"
+                  className="border-radius-15 form-control"
+                  id="exampleFormControlInput1"
+                  placeholder="name@example.com"
+                />
+              </div>
+
+              <div class="mb-3">
+                <button className="btn btn-solid-teal w-100 border-radius-15">
+                  Send Password Reset Request
+                </button>
+              </div>
+              <p
+                className="text-center cursor-pointer"
+                onClick={handleLoginModalShow}
+              >
+                Remember My Password?{" "}
+              </p>
+            </div>
+          </Modal.Body>
         </Modal>
       </header>
     </>

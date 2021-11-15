@@ -52,7 +52,7 @@ const CourseDetail = () => {
                   </div>
                   <div style={{ marginTop: "20px" }}>
                     <h5 className="text-light-green">Course Prerequisites</h5>
-                    <TextCard content="None" />
+                    <TextCard content="<p>None</p>" />
                   </div>
                 </div>
               </Tab.Pane>
