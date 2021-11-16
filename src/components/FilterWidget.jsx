@@ -259,17 +259,17 @@ const FilterWidget = () => {
               </p>
               <Collapse in={open}>
                 <div>
-                  {course_category[0].sub_courses.map((ele) => (
+                  {course_category[0].sub_courses.map((ele, index) => (
                     <div className="form-check" key={ele.key}>
                       <input
                         className="form-check-input"
                         type="checkbox"
                         value=""
-                        id="flexCheckDefault"
+                        id={"flexCheckDefault" + index}
                       />
                       <label
                         className="form-check-label ml-2"
-                        for="flexCheckDefault"
+                        for={"flexCheckDefault" + index}
                       >
                         {ele.sub_course_title}
                       </label>
