@@ -8,11 +8,16 @@ import "bootstrap/dist/css/bootstrap.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+
+import { Provider as Provisioner }  from "react-redux";
+import QuestenceReduxStore from "./redux/store";
+
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+     {/*REDUX STATE ENHANCER*/}
+    <Provisioner store={QuestenceReduxStore}>
+       <App />
+    </Provisioner>
   </React.StrictMode>,
   document.getElementById("root")
 );

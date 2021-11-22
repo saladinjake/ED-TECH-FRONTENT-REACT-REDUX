@@ -1,26 +1,137 @@
-import React from "react";
+import React,{ useState, useEffect} from "react";
+// import { addToWishlist } from "../api/wishlist.services";
+import { connect } from "react-redux";
+import { addToCart, fetchCourses } from "../redux/actions/cart.action";
+import toast from "react-hot-toast"
+import PropTypes from "prop-types";
+import $ from "jquery";
+
+
+
+import { addToWishList } from "../redux/actions/wishlist.action";
+import moment from "moment";
+
+import { enrollCourses } from "../api/enrollment.services";
+
 
 const HorizontalCourseCard = ({
   courseTitle,
   courseDesc,
+  courseAuthorCompany,
+  courseAuthor,
+  coursePrice,
+  courseId,
+  key,
+  courseImage,
   learningStyle,
   learningLang,
   learningLevel,
-  courseAuthor,
-  coursePrice,
+
+
+
+  history,
+    match,
+    auth: { isAuthenticated, user },
+    cart: { cart },
+    wishList: { wishList },
+    addToCart,
+    addToWishList,
+    fetchCourses,
+
 }) => {
+
+
+
+// eslint-disable-next-line
+  const [status, setStatus] = useState("init");
+  const [loading, setLoading] = useState(true);
+  // const [acloading, setAcLoading] = useState(false);
+  // const [enrolledCourses, setEnrolledCourses] = useState([]);
+
+  // useEffect(() => {
+  //   (async function loadContent() {
+  //     await fetchCourses();
+
+  //     // const lastLocation = useLocation();
+  //   })();
+  //   // eslint-disable-next-line
+  // }, []);
+
+  const addToMyWishList = async (e,id,courseTitle) => {
+    e.preventDefault()
+    setStatus("loading");
+    if(!isAuthenticated){
+      toast.error("Authentication is required. Please Login to continue.")
+     return false
+    }
+    try {
+      await addToWishList(id);
+      setStatus("Course Added to wishlist");
+      toast.success("Course Added to wishlist");
+    } catch (err) {
+      setStatus("Could not add course to wish list");
+      toast.error(
+          `Could not add the course  ` + courseTitle+" to wish list"
+        );
+    }
+    setLoading(false);
+  };
+
+  const handleAddToCart = async (e, courseId,price,courseTitle) => {
+    e.preventDefault();
+    if(!isAuthenticated){
+      toast.error("Authentication is required. Please Login to continue.")
+     return false
+    }
+    if (parseInt(price) <= 0) {
+      //automaitcally enroll
+      let payload = [];
+      let newObj = {};
+      newObj.user_id = user?.id;
+      newObj.course_id = courseId;
+      payload.push(newObj);
+
+      try {
+        await enrollCourses({
+          enrollments: payload,
+        });
+        toast.success(`Free Course enrolled succesfully`);
+
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 2000);
+      } catch (err) {
+        toast.error(
+          `Could not enroll you in for the free course: ` + courseTitle
+        );
+      }
+    } else {
+      let paidCourseId = courseId;
+      addToCart(paidCourseId);
+    }
+  };
+
+  function removeTags(str) {
+    if(str.match(/(<([^>]+)>)/ig))
+      return str.replace( /(<([^>]+)>)/ig, '');
+    else 
+      return str
+ }
+
   return (
     <>
-      <div className="container d-none d-md-flex">
+      <div key={key} className="container d-none d-md-flex">
         <div className="card mb-5 border-radius-20 border mt-5">
           <div className="row g-0">
-            <div className="col-md-5">
-              <img
-                src="/course.png"
+            <div className="col-md-5" style={{backgroundImage: `url(${courseImage})`,backgroundSize:"cover",backgroundRepeat:"no-repeat"}}>
+              
+              {/*<img
+                src={courseImage}
                 className="img-fluid rounded-start-20"
                 alt="..."
-                style={{ width: "100%" }}
-              />
+                style={{ width: "100%",height:"100%" }}
+              />*/}
+              
             </div>
             <div className="col-md-7 border-radius-20 d-flex align-items-center">
               <div className="card-body px-4">
@@ -33,23 +144,26 @@ const HorizontalCourseCard = ({
                 <h4 className="fw-bold text-14 text-light-green ">
                   {courseAuthor}
                 </h4>
-                <p className="card-text text-14">{courseDesc}</p>
+                <p className="card-text text-14">{removeTags(courseDesc)}</p>
                 <div className="row border-top pt-4">
                   <p className="col text-12">{learningStyle}</p>
                   <p className="col text-12">{learningLang}</p>
                   <p className="col text-12">{learningLevel} </p>
                   <a
-                    href=""
+                      onClick={(e)=> {addToMyWishList(e,courseId,courseTitle)}}
                     className="col mx-3 pt-1 btn btn-sm border-radius-50 btn-solid-warning"
                   >
                     Wishlist
                   </a>
                   <a
                     href=""
+                     onClick={(e)=> {handleAddToCart(e,courseId,coursePrice,courseTitle)}}
                     className="col btn mx-3 pt-1 btn-sm border-radius-50 btn-solid-light-green"
                   >
                     Buy
                   </a>
+
+                
                 </div>
               </div>
             </div>
@@ -86,4 +200,23 @@ const HorizontalCourseCard = ({
   );
 };
 
-export default HorizontalCourseCard;
+
+
+
+HorizontalCourseCard.propTypes = {
+  cart: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
+  addToCart: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  cart: state.cart,
+  auth: state.auth,
+  wishList: state.wishList,
+});
+
+export default connect(mapStateToProps, {
+  addToCart,
+  fetchCourses,
+  addToWishList,
+})(HorizontalCourseCard);

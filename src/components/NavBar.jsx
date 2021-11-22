@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Navbar,
   Container,
@@ -7,16 +7,125 @@ import {
   Modal,
   Button,
 } from "react-bootstrap";
+import * as Yup from "yup";
+import toast from "react-hot-toast";
+import { Formik } from "formik";
+import {
+  useHistory, //useLocation
+} from "react-router-dom"
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { login, logOut, setPrevPath } from "../redux/actions/auth.action";
 
-const NavBar = () => {
+import { loginUser,registerLearner,loginUserForgotPassword } from "../api/auth.services";
+
+
+const AUTHLINKS = [
+  {
+    name: "Dashboard",
+    link: "/dashboard",
+    clickHandler: (callback)=>{
+        return callback
+    }
+  },
+  {
+    name: "My Learning",
+    link: "/mycourses",
+    clickHandler: (callback)=>{
+        return callback
+    }
+  },
+  {
+    name: "Wishlist",
+    link: "/learner/wishlists",
+    clickHandler: (callback)=>{
+        return callback
+    }
+  },
+
+  {
+    name: "Notifications",
+    link: "/notifications",
+    clickHandler: (callback)=>{
+        return callback
+    }
+  },
+  {
+    name: "Account Settings",
+    link: "/learner/accounts",
+    clickHandler: (callback)=>{
+        return callback
+    }
+  },
+
+  
+  {
+    name: "Profile",
+    link: "/learner/profile",
+    clickHandler: (callback)=>{
+        return callback
+    }
+  },
+
+  {
+    name:"Logout",
+    link:"/",
+    clickHandler: (callback)=>{
+        return callback
+    }
+  }
+  
+];
+
+const INSTRUCTORLINKS = [
+ 
+  {
+    name: "Profile",
+    link: "/instructor-pages/profile",
+    clickHandler: (callback)=>{
+        return callback
+    }
+  },
+  {
+    name: "Authored Courses",
+    link: "/instructor-pages/mycourses",
+    clickHandler: (callback)=>{
+        return callback
+    }
+  },
+  
+  
+
+  
+
+  {
+    name: "Account Settings",
+    link: "/instructor-account/reset",
+  },
+
+];
+
+
+const NavBar = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setPrevPath ,cart: { cart } }) => {
+  /*menu and modal toggles*/
+ 
+ 
   const [firstShow, setFirstShow] = useState();
   const [secondShow, setSecondShow] = useState();
   const [thirdShow, setThirdShow] = useState();
   const [fourthShow, setFourthShow] = useState();
+  const [fifthShow, setfifthShow] = useState();
   const [categoriesShow, setCategoriesShow] = useState();
   const [loginModalShow, setLoginModalShow] = useState(false);
   const [regModalShow, setRegModalShow] = useState(false);
   const [forgotModalShow, setForgotModalShow] = useState(false);
+
+  let AuthLinks = [].concat([...AUTHLINKS])
+
+
+  if(user.roles[0].name=="Instructor"){
+    AuthLinks.concat([...INSTRUCTORLINKS])
+  }
 
   const handleLoginModalClose = () => setLoginModalShow(false);
   const handleLoginModalShow = () => {
@@ -37,6 +146,229 @@ const NavBar = () => {
     setForgotModalShow(true);
   };
 
+
+  /*functionality feature login signup forget pass*/
+  let history = useHistory();
+  
+
+  console.log(history);
+  var pattern2 = /[?redirectTo=]/;
+  console.log(pattern2.test(history?.location?.search));
+
+  const [loading, setLoading] = useState(false);
+  const initialValues = { email: "", password: "" };
+  const initialRegValues = {
+    email: "",
+    password: "",
+    first_name: "",
+    last_name: "",
+    phone_number: "",
+    password_confirmation: "",
+    password:""
+  };
+
+  useEffect(() => {
+    if (history.location.state?.from) {
+      setPrevPath(history.location.state?.from);
+    } else {
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  
+  const handleSubmit = async (values, { setSubmitting }) => {
+   
+
+   
+       setLoading(true);
+    try {
+    
+      const res = await loginUser(values);
+      toast.success("Login Successful");
+      login(res.data);
+      console.log(prevPath);
+      const pattern = /[?redirectTo=]+/g;
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+
+
+      setSubmitting(false);
+    } catch (err) {
+      toast.error(err?.response?.data?.message);
+      logOut();
+      setSubmitting(false);
+       setLoading(false);
+    }
+    setLoading(false);
+
+
+    
+  };
+
+
+
+//register
+
+const prevalidate = (setSubmitting)=>{
+    let validated = false;
+    let gmail_regex =/[a-zA-Z0-9]+\.[a-zA-Z0-9]+@gmail\.com/
+    let email_regex =/^(?:(?!.*?[.]{2})[a-zA-Z0-9](?:[a-zA-Z0-9.+!%-]{1,64}|)|\"[a-zA-Z0-9.+!% -]{1,64}\")@[a-zA-Z0-9][a-zA-Z0-9.-]+(.[a-z]{2,}|.[0-9]{1,})$/
+    let passwordRegex = new RegExp("^(?=.*[A-Za-z])(?=.*[0-9])(?=.{8,})");
+    const initial = {
+        email: document.getElementById("ee").value,
+        password: document.getElementById("pp").value,
+        first_name: document.getElementById("ff").value,
+        last_name: document.getElementById("ll").value,
+        phone_number: document.getElementById("ph").value,
+        password_confirmation: document.getElementById("ppc").value,
+      }
+      let showErrorOnce = false
+
+      console.log(initial)
+
+      Object.keys(initial).forEach(keys=>{
+        console.log(keys)
+         if(initial[keys].length<=0){
+           showErrorOnce =true 
+           if(showErrorOnce){
+             showErrorOnce=false
+             toast.error("Please fill out the blank fields")
+             setSubmitting(false);
+              setLoading(false);
+             return false
+           }
+          
+         }
+         //validate email
+         if(keys=="email"){
+           if(!initial[keys].match(email_regex)){
+            showErrorOnce =true 
+             if(showErrorOnce){
+               showErrorOnce=false
+               toast.error(`Invalid Email \n must start with alphanumeric char
+can only have alphanumeric and @._-% char\n
+cannot have 2 consecutives . exept for quoted string\n
+char before @ can only be alphanumeric and ._-%, exept for quoted string\n
+must have @ in the middle\n
+need to have at least 1 . in the domain part\n
+cannot have double - in the domain part\n
+can only have alphanumeric and .- char in the domain part`)
+               setSubmitting(false);
+                setLoading(false);
+               return false
+            }
+           }
+         }
+
+         //check password match
+         if(keys=="password"){
+            if(initial[keys]!=initial["password_confirmation"]){
+               showErrorOnce =true 
+               if(showErrorOnce){
+                 showErrorOnce=false
+                 toast.error("Password do not match")
+                 setSubmitting(false);
+                 setLoading(false);
+                 return false
+               }
+           }
+
+
+           if(!initial[keys].match(passwordRegex)){
+               showErrorOnce =true 
+               if(showErrorOnce){
+                 showErrorOnce=false
+                 toast.error("Please use a strong password . Password should contain One capital letter, and atleast a minimum of 8 alphanumeric digits and other symbols ")
+                 setSubmitting(false);
+                 setLoading(false);
+                 return false
+               }
+           }
+         }
+      })
+
+      return true
+  }
+
+
+
+  const handleSubmitRegistration = async  (values, { setSubmitting }) => {
+   
+ 
+   if(prevalidate(setSubmitting)){
+       setLoading(true);
+      try {
+        
+        await registerLearner(values);
+        toast.success("We have sent a verification mail to your email.");
+        setTimeout(() => {
+          // history.push("/");
+          window.location.reload();
+        }, 2000);
+        setSubmitting(false);
+      } catch (err) {
+        // console.log(
+        //   err?.response?.data?.errors?.email[0] || err?.response?.data?.message
+        // );
+        toast.error( err?.response?.data?.errors?.email[0] || err?.response?.data?.message);
+        setSubmitting(false);
+
+      }
+      setLoading(false);
+
+    }
+  };
+
+
+
+  //password reset email
+  const handleSubmitPasswordForgot = async (values, { setSubmitting }) => {
+    setLoading(true);
+    try {
+      const res = await loginUserForgotPassword(values);
+      console.log(res.data);
+      toast.success("An email has been sent");
+      document.getElementById("msg-box").style.display = "block";
+      document.getElementById("msg-box").style.color = "green";
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+      // login(res.data);
+
+      // if (res) {
+      //   history.push("/reset/password");
+      // } else {
+      //   history.push("/register");
+      // }
+
+      setSubmitting(false);
+    } catch (err) {
+      toast.error(err?.response?.data?.message);
+
+      logOut();
+      setSubmitting(false);
+    }
+    setLoading(false);
+  };
+
+
+  //search form and reset and logout
+   
+
+
+
+  const handleLogout = async () => {
+    await logOut();
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
+  };
+
+  
+
+
   return (
     <>
       <header className="py-3 border-bottom d-md-none shadow-sm">
@@ -53,37 +385,37 @@ const NavBar = () => {
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="me-auto">
                 <NavDropdown title="Courses" id="collasible-nav-dropdown">
-                  <NavDropdown.Item href="#action/3.1">
+                  <NavDropdown.Item href="/categories/">
                     Languages
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.1">
+                  <NavDropdown.Item href="/categories/">
                     Health Care
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.1">
+                  <NavDropdown.Item href="/categories/">
                     Mathematics
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.1">
+                  <NavDropdown.Item href="/categories/">
                     Physical Sciences
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.1">
+                  <NavDropdown.Item href="/categories/">
                     Arts & Humanities
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.1">
+                  <NavDropdown.Item href="/categories/">
                     Office Productivity
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.1">
+                  <NavDropdown.Item href="/categories/">
                     Technology Engineering
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.1">
+                  <NavDropdown.Item href="/categories/">
                     Law & Social Sciences
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.1">
+                  <NavDropdown.Item href="/categories/">
                     Computer Science & Information
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.1">
+                  <NavDropdown.Item href="/categories/">
                     Business & Operations Management
                   </NavDropdown.Item>
-                  <NavDropdown.Item href="#action/3.1">Others</NavDropdown.Item>
+                  <NavDropdown.Item href="/categories/">Others</NavDropdown.Item>
                 </NavDropdown>
                 <NavDropdown title="Programs" id="collasible-nav-dropdown">
                   <NavDropdown.Item
@@ -198,7 +530,7 @@ const NavBar = () => {
                   onMouseEnter={() => setFirstShow(true)}
                   onMouseLeave={() => setFirstShow(false)}
                 >
-                  <NavDropdown.Item href="#action/3.1" className="px-4">
+                  <NavDropdown.Item href="./courses" className="px-4">
                     All Courses
                   </NavDropdown.Item>
                   <NavDropdown.Item href="#action/3.2">
@@ -666,11 +998,42 @@ const NavBar = () => {
                 </NavDropdown>
               </Nav>
               <form className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                {/* <input type="search" className="form-control" placeholder="Search..." aria-label="Search" /> */}
-                <i className="bi bi-search"></i>
+                {/*<input id="search" onKeyPress={handleKeyPress} type="search" className="form-control align-search" placeholder="Search..." aria-label="Search" /> */}
+                 <i   className="bi bi-search "></i>
+      
               </form>
               <div className="text-end">
-                <a
+
+
+              {isAuthenticated? (
+                  <>
+
+                  <NavDropdown
+                  title={"Logged in as "+ user?.first_name+ user?.last_name}
+                  id="basic-nav-dropdownx"
+                  show={thirdShow}
+                  onMouseEnter={() => setfifthShow(true)}
+                  onMouseLeave={() => setfifthShow(false)}
+                >
+
+                {AuthLinks.length && AuthLinks.map(links_authorized=>{
+                    return (
+                      <NavDropdown.Item href="#action/3.1">
+                    {links_authorized.name}
+                  </NavDropdown.Item>
+                      )
+                })}
+                  
+                 
+                </NavDropdown>
+
+
+                  </>
+
+                ):(
+
+                 <>
+                   <a
                   className="btn btn-outline-dark btn-sm me-2 btn-rounded"
                   onClick={handleLoginModalShow}
                 >
@@ -682,6 +1045,15 @@ const NavBar = () => {
                 >
                   Sign Up
                 </a>
+
+                 </>
+
+
+
+                )}
+              
+              
+               
               </div>
             </Navbar.Collapse>
           </Container>
@@ -698,6 +1070,7 @@ const NavBar = () => {
             className="border-0"
           ></Modal.Header>
           <Modal.Body className="border-0">
+               
             <div className="col-md-12 px-3">
               <img
                 src="/Questence-logo.png"
@@ -708,84 +1081,170 @@ const NavBar = () => {
               <h5 className="text-uppercase text-center fw-bold my-2">
                 Registration
               </h5>
+
+
+               <Formik
+                    initialValues={initialValues}
+                    validationSchema={LoginSchema}
+                    onSubmit={handleSubmitRegistration}
+                  >
+                    {({
+                      values,
+                      errors,
+                      touched,
+                      handleChange,
+                      handleBlur,
+                      handleSubmit,
+                      isSubmitting,
+                    }) => (
+
+                     <form
+                          id="form_reg"
+                          className="form"
+                          onSubmit={handleSubmit}
+                        >
               <div className="row">
-                <div class="mb-3 col-md-6">
-                  <label for="exampleFormControlInput1" class="form-label">
+
+
+
+                <div className="mb-3 col-md-6">
+                  <label for="exampleFormControlInput1" className="form-label">
                     First Name
                   </label>
-                  <input
-                    type="email"
-                    className="border-radius-15 form-control"
-                    id="exampleFormControlInput1"
-                    placeholder="First name"
-                  />
-                </div>
-                <div class="mb-3 col-md-6">
-                  <label for="exampleFormControlInput1" class="form-label">
-                    Last Name
-                  </label>
-                  <input
-                    type="email"
-                    className="border-radius-15 form-control"
-                    id="exampleFormControlInput1"
-                    placeholder="Last name"
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div class="mb-3 col-md-6">
-                  <label for="exampleFormControlInput1" class="form-label">
-                    Email address
-                  </label>
-                  <input
-                    type="email"
-                    className="border-radius-15 form-control"
-                    id="exampleFormControlInput1"
-                    placeholder="name@example.com"
-                  />
-                </div>
-                <div class="mb-3 col-md-6">
-                  <label for="exampleFormControlInput1" class="form-label">
-                    Phone Number
-                  </label>
+                    <span className="login_input-msg">
+                              {errors.first_name && touched.first_name && errors.first_name}
+                            </span>
                   <input
                     type="text"
                     className="border-radius-15 form-control"
-                    id="exampleFormControlInput1"
-                    placeholder="Enter your phone number"
+                    id="ff"
+                    placeholder="First name"
+                    name="first_name"
+                    onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.first_name}
+                  />
+                </div>
+                <div className="mb-3 col-md-6">
+                  <label for="exampleFormControlInput1" className="form-label">
+                    Last Name
+                  </label>
+                    <span className="login_input-msg">
+                              {errors.last_name && touched.last_name && errors.last_name}
+                    </span>
+                  <input
+                    type="text"
+                    className="border-radius-15 form-control"
+                    id="ll"
+                    placeholder="Last name"
+                    name="last_name"
+                    onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.last_name}
                   />
                 </div>
               </div>
               <div className="row">
-                <div class="mb-3 col-md-6">
+
+                <div className="mb-3 col-md-6">
+                  <label for="exampleFormControlInput1" className="form-label">
+                    Email address
+                  </label>
+                    <span className="login_input-msg">
+                              {errors.email && touched.email && errors.email}
+                            </span>
+                  <input
+                    type="email"
+                    className="border-radius-15 form-control"
+                    id="ee"
+                    placeholder="name@example.com"
+                    name="email"
+                    onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.email}
+                  />
+                </div>
+                <div className="mb-3 col-md-6">
+                  <label for="exampleFormControlInput1" className="form-label">
+                    Phone Number
+                  </label>
+                    <span className="login_input-msg">
+                              {errors.phone_number && touched.phone_number && errors.phone_number}
+                            </span>
+                  <input
+                    type="text"
+                    className="border-radius-15 form-control"
+                    id="ph"
+                    placeholder="Enter your phone number"
+                    name="phone_number"
+                    onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.phone_number}
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="mb-3 col-md-6">
                   <label for="exampleFormControlInput1" className="form-label">
                     Password
                   </label>
+                   <span className="login_input-msg">
+                              {errors.password &&
+                                touched.password &&
+                                errors.password}
+                            </span>
                   <input
                     type="password"
                     className="border-radius-15 form-control"
-                    id="exampleFormControlInput1"
+                    id="pp"
                     placeholder="Password"
+                    name="password"
+                    onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.password}
                   />
                 </div>
-                <div class="mb-3 col-md-6">
+                <div className="mb-3 col-md-6">
                   <label for="exampleFormControlInput1" className="form-label">
                     Confirm Password
                   </label>
+                   <span className="login_input-msg">
+                              {errors.password_confirmation &&
+                                touched.password_confirmation&&
+                                errors.password_confirmation}
+                            </span>
                   <input
                     type="password"
                     className="border-radius-15 form-control"
-                    id="exampleFormControlInput1"
+                    id="ppc"
                     placeholder="Password"
+                    name="password_confirmation"
+                    onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.password_confirmation}
                   />
                 </div>
               </div>
-              <div class="mb-3">
-                <button className="btn btn-solid-teal w-100 border-radius-15">
-                  Register
+              <div className="mb-3">
+                <button type="submit"  className="btn btn-solid-teal w-100 border-radius-15" disabled={isSubmitting}>
+                  
+                        {loading ? (
+                          <div className="spinner-border" role="status">
+                            <span className="sr-only"></span>
+                          </div>
+                        ) : (
+                          "Register"
+                        )}
                 </button>
               </div>
+
+              </form>
+             )}
+              </Formik>
+              
+             
             </div>
+            
           </Modal.Body>
           <Modal.Footer className="bg-teal border-0">
             <div className="text-center text-13 fill-available">
@@ -816,34 +1275,83 @@ const NavBar = () => {
               <h5 className="text-uppercase text-center fw-bold my-2">
                 Log In
               </h5>
-              <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">
+               <Formik
+                    initialValues={initialValues}
+                    validationSchema={LoginSchema}
+                    onSubmit={handleSubmit}
+                  >
+                    {({
+                      values,
+                      errors,
+                      touched,
+                      handleChange,
+                      handleBlur,
+                      handleSubmit,
+                      isSubmitting,
+                    }) => (
+
+                     <form
+                          id="form_login"
+                          className="form"
+                          onSubmit={handleSubmit}
+                        >
+              <div className="mb-3">
+                <label for="exampleFormControlInput1" className="form-label">
                   Email address
                 </label>
+                   <span className="login_input-msg">
+                              {errors.email && touched.email && errors.email}
+                            </span>
                 <input
                   type="email"
                   className="border-radius-15 form-control"
-                  id="exampleFormControlInput1"
+              
                   placeholder="name@example.com"
+                   id="email"
+                  name="email"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.email}
                 />
+
               </div>
-              <div class="mb-3">
+              <div className="mb-3">
                 <label for="exampleFormControlInput1" className="form-label">
                   Password
                 </label>
+                <span className="login_input-msg">
+                              {errors.password &&
+                                touched.password &&
+                                errors.password}
+                            </span>
                 <input
                   type="password"
                   className="border-radius-15 form-control"
                   id="exampleFormControlInput1"
-                  placeholder="name@example.com"
-                />
+                  placeholder="********"
+                 id="password"
+                              name="password"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.password}
+                            />
+                            
               </div>
-              <div class="mb-3">
-                <button className="btn btn-solid-teal w-100 border-radius-15">
-                  Log In
+              <div className="mb-3">
+                <button type="submit"  className="btn btn-solid-teal w-100 border-radius-15" disabled={isSubmitting}>
+                            {loading ? (
+                              <div className="spinner-border" role="status">
+                                <span className="sr-only"></span>
+                              </div>
+                            ) : (
+                              "Log In"
+                            )}
+                  
                 </button>
+
+                
               </div>
-              <div class="mb-3">
+              <div className="mb-3">
                 <p
                   className="text-center cursor-pointer"
                   onClick={handleForgotModalShow}
@@ -851,6 +1359,9 @@ const NavBar = () => {
                   Forgot password
                 </p>
               </div>
+                 </form>
+                )}
+                  </Formik>
             </div>
           </Modal.Body>
           <Modal.Footer className="bg-teal border-0">
@@ -872,6 +1383,7 @@ const NavBar = () => {
         >
           <Modal.Header closeButton className="border-0"></Modal.Header>
           <Modal.Body className="border-0">
+        
             <div className="col-md-8 mx-auto">
               <img
                 src="/Questence-logo.png"
@@ -882,22 +1394,62 @@ const NavBar = () => {
               <h5 className="text-uppercase text-center fw-bold my-2">
                 Forgot Password
               </h5>
-              <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">
+
+               <Formik
+                    initialValues={initialValues}
+                    validationSchema={ResetSchema}
+                    onSubmit={handleSubmitPasswordForgot}
+                  >
+                    {({
+                      values,
+                      errors,
+                      touched,
+                      handleChange,
+                      handleBlur,
+                      handleSubmit,
+                      isSubmitting,
+                    }) => (
+
+                      <form
+                          id="form_login"
+                          className="form"
+                          onSubmit={handleSubmit}
+                        >
+              
+              <div className="mb-3">
+                <label for="exampleFormControlInput1" className="form-label">
                   Email address
                 </label>
+                <div id="msg-box" style={{ display: "none" }}>
+                          An Email has been Sent
+                        </div>
+
+                         <span className="login_input-msg">
+                              {errors.email && touched.email && errors.email}
+                            </span>
                 <input
-                  type="email"
-                  className="border-radius-15 form-control"
-                  id="exampleFormControlInput1"
-                  placeholder="name@example.com"
-                />
+                              type="email"
+                              placeholder="Email here"
+                              id="email"
+                              name="email"
+                              onChange={handleChange}
+                              onBlur={handleBlur}
+                              value={values.email}
+                              class="form-control"
+                            />
+                           
               </div>
 
-              <div class="mb-3">
-                <button className="btn btn-solid-teal w-100 border-radius-15">
-                  Send Password Reset Request
-                </button>
+              <div className="mb-3">
+                <button className="btn btn-solid-teal w-100 border-radius-15" disabled={isSubmitting}>
+                            {loading ? (
+                              <div className="spinner-border" role="status">
+                                <span className="sr-only"></span>
+                              </div>
+                            ) : (
+                              "Send Password Reset Request"
+                            )}
+                              </button>
               </div>
               <p
                 className="text-center cursor-pointer"
@@ -905,7 +1457,14 @@ const NavBar = () => {
               >
                 Remember My Password?{" "}
               </p>
+
+              </form>
+              
+                    )}
+                  </Formik>
+             
             </div>
+
           </Modal.Body>
         </Modal>
       </header>
@@ -913,4 +1472,86 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+NavBar.propTypes = {
+  auth: PropTypes.object.isRequired,
+  login: PropTypes.func.isRequired,
+  logOut: PropTypes.func.isRequired,
+  setPrevPath: PropTypes.func.isRequired,
+   cart: PropTypes.object.isRequired,
+};
+
+
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+   cart: state.cart,
+});
+
+export default connect(mapStateToProps, {
+  login,
+  setPrevPath,
+  logOut,
+})(NavBar);
+
+const LoginSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("Invalid email")
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  password: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+});
+
+
+
+var passwordRegex = new RegExp(
+  "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
+);
+//var passwordRegex = new RegExp("^(?=.*[A-Za-z])(?=.*[0-9])(?=.{8,})");
+
+const RegisterSchema = Yup.object().shape({
+  first_name: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("First Name Required"),
+  last_name: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Last Name Required"),
+  email: Yup.string()
+    .email("Invalid email")
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Valid Email Required"),
+  password: Yup.string()
+    .min(8, "Minimum of eight characters!")
+    .max(50, "Too Long!")
+    .required("Required")
+    .matches(
+      passwordRegex,
+      "Password must contain One letter, One Number with a minimum of eight characters"
+    ),
+  password_confirmation: Yup.string().oneOf(
+    [Yup.ref("password"), null],
+    "Passwords must match"
+  ),
+  phone_number: Yup.number()
+    .required("Required")
+    .positive("No negative number")
+    .integer(),
+});
+
+
+
+
+const ResetSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("Invalid email")
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+ 
+});

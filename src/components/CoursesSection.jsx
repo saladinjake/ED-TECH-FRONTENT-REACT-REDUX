@@ -1,9 +1,40 @@
-import React from "react";
+import React, { useState,useEffect, Fragment} from "react";
 import CourseCard from "./CourseCard";
 import Slider from "react-slick";
 import { Link } from "react-router-dom";
+import { getFeaturedCourses } from "../api/courses.services" 
+import toast from "react-hot-toast"
+
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import Loader from "../components/Loader";
 
 const CoursesSection = () => {
+
+  const [isLoading,setLoading] = useState(false);
+  const [topCourses,setTopCourses] = useState([])
+
+  useEffect(()=>{
+    
+
+     async function fetchData() {
+
+      setLoading(true)
+      try{
+        const responseTopCourse = await getFeaturedCourses() 
+    
+        setTopCourses([...responseTopCourse.data.data.courses])
+
+      }catch(e){
+        toast.error(`Some error occured. Please check your internet connection and try again`)
+
+      }
+      setLoading(false)
+   
+     }
+      fetchData();
+
+  }, [])
   var settings = {
     dots: true,
     arrows: true,
@@ -55,40 +86,64 @@ const CoursesSection = () => {
           </div>
         </div>
         {/* <div className="row"> */}
-        <Slider {...settings} className="row">
-          <CourseCard
-            courseTitle="MITX-LAUNCHX"
-            courseDesc="Becoming An Entrepreneur"
-            courseAuthorCompany="Amazon Service"
-            courseAuthor="Martin Caulpepper"
-            coursePrice="N10, 000"
-          />
-          <CourseCard
-            courseTitle="MANDARIN-MX901X"
-            courseDesc="Mandarin Chinese Essentials"
-            courseAuthorCompany="Eragon Tech"
-            courseAuthor="Estella Chen"
-            coursePrice="N12, 000"
-          />
-          <CourseCard
-            courseTitle="CALTECHX-EC1011X"
-            courseDesc="Principles Of Economics With Charles Devant and Melvin Minsky"
-            courseAuthorCompany="Aerosol Groups"
-            courseAuthor="Antonio Rangel"
-            coursePrice="N13, 000"
-          />
-          <CourseCard
-            courseTitle="IBM-PV0101EN"
-            courseDesc="Python Basics For Data"
-            courseAuthorCompany="IBM"
-            courseAuthor="Joseph Santarcangelo"
-            coursePrice="N20, 000"
-          />
-        </Slider>
+      
+            <>
+            {isLoading ? (
+              <Loader width={"100"} />
+            ) : (
+                <Slider {...settings} className="row">
+
+                     {topCourses.length && topCourses.map((featured,index)=>{
+            
+              return (
+                 <CourseCard
+                 key={index+ "_" + Math.random()*90}
+                courseTitle={featured.course.course_code}
+                courseDesc={featured?.course?.course_description}
+                courseAuthorCompany={featured?.course?.instructor?.instructor_profile?.current_employer_designation}
+                courseAuthor={featured?.course?.instructor?.first_name+ " " + featured?.course?.instructor?.last_name}
+                coursePrice={featured?.course?.price}
+                courseId={featured?.course?.id}
+                courseImage={featured?.course?.course_cover_image}
+              />
+
+              )
+             
+
+            })
+             
+             }
+
+
+                </Slider>
+
+
+
+            ) }
+            </>
+         
+             
+
+          
+       
+
+
+
+        
+      
         {/* </div> */}
       </div>
     </>
   );
 };
 
-export default CoursesSection;
+
+
+
+
+
+CoursesSection.propTypes = {};
+
+const mapStateToProps = (state) => ({});
+
+export default connect(mapStateToProps, {})(CoursesSection);

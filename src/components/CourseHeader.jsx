@@ -1,7 +1,14 @@
 import React from "react";
 import ReactPlayer from "react-player";
 
-const CourseHeader = ({ pageTitle, bgClass, subHeading, introVideoUrl }) => {
+  function removeTags(str) {
+    if(str.match(/(<([^>]+)>)/ig))
+      return str.replace( /(<([^>]+)>)/ig, '');
+    else 
+      return str
+ }
+
+const CourseHeader = ({ pageTitle, bgClass, subHeading, introVideoUrl,by,language }) => {
   return (
     <>
       <div
@@ -13,7 +20,7 @@ const CourseHeader = ({ pageTitle, bgClass, subHeading, introVideoUrl }) => {
               <h1 className="heading-lg fw-bold lh-1 mb-4 text-white">
                 {pageTitle}
               </h1>
-              <p className="text-14 text-white">{subHeading}</p>
+              <p className="text-14 text-white">{removeTags(subHeading)}</p>
               <div className="row d-none d-md-flex">
                 <div className="col">
                   <span className="bg-teal inherit py-2 px-4 rounded">
@@ -48,21 +55,21 @@ const CourseHeader = ({ pageTitle, bgClass, subHeading, introVideoUrl }) => {
               </div>
               <div className="row mt-4 fw-bold d-none d-md-flex">
                 <div className="col-md-5 col-sm-12 text-14 text-white border-end ">
-                  A course by Deepali Bagati
+                 A course by {by}
                 </div>
                 <div className="col-md-3 col-sm-12 text-14 text-white border-end text-center">
                   Last updated
                 </div>
                 <div className="col-md-4 col-sm-12 text-14 text-white text-center">
-                  English
+                  {language}
                 </div>
               </div>
               <div className="row mt-4 fw-bold d-flex d-md-none">
                 <div className="col-sm-12 text-14 text-white">
-                  A course by Deepali Bagati
+             A course by {by}
                 </div>
                 <div className="col-sm-12 text-14 text-white">Last updated</div>
-                <div className="col-sm-12 text-14 text-white ">English</div>
+                <div className="col-sm-12 text-14 text-white ">{language}</div>
               </div>
             </div>
             <div className="col-lg-4 offset-lg-2  d-flex flex-column">

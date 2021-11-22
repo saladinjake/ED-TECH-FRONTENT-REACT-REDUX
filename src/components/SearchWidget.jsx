@@ -1,6 +1,11 @@
 import React from "react";
 
-const SearchWidget = () => {
+const SearchWidget = ({actionTrigger}) => {
+
+ const  handleSearch = (e) =>{
+   actionTrigger(e)
+  };
+
   return (
     <div className="container">
       <div className="row pt-4 pb-2 mx-auto">
@@ -12,11 +17,13 @@ const SearchWidget = () => {
               placeholder=""
               aria-label="Example text with button addon"
               aria-describedby="button-addon1"
+              id="search"
             />
             <button
               className="btn btn-secondary"
               type="button"
-              id="button-addon1"
+              id="search-btn"
+              onClick={(e)=>{ handleSearch(e)}}
             >
               Search
             </button>
