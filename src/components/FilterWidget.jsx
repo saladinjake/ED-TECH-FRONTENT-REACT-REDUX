@@ -1,22 +1,21 @@
 import React, { useState } from "react";
 import { Collapse } from "react-bootstrap";
 
+const querySearch = () => {
+  const queryString = window.location.search;
+  const parameters = new URLSearchParams(queryString);
+  return parameters;
+};
+let searchVal = querySearch();
+searchVal = searchVal.get("search");
 
- const querySearch = () => {
-    const queryString = window.location.search;
-    const parameters = new URLSearchParams(queryString);
-    return parameters;
-  };
-  let searchVal = querySearch()
-  searchVal =  searchVal.get("search")
+const reRouteTo = (e) => {
+  e.preventDefault();
+  let el = e.target;
 
-  const reRouteTo =(e) =>{
-      e.preventDefault()
-    let el = e.target;
-
-    const searchLink = el.getAttribute("data-link")
-   return window.location.href=process.env.PUBLIC_URL+ searchLink
-  }
+  const searchLink = el.getAttribute("data-link");
+  return (window.location.href = process.env.PUBLIC_URL + searchLink);
+};
 
 const course_category = [
   {
@@ -245,7 +244,7 @@ const course_category = [
   },
 ];
 
-const FilterWidget = ({addRemoveCheckedList}) => {
+const FilterWidget = ({ addRemoveCheckedList }) => {
   const [open, setOpen] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
@@ -255,8 +254,6 @@ const FilterWidget = ({addRemoveCheckedList}) => {
   const [open6, setOpen6] = useState(false);
   const [open7, setOpen7] = useState(false);
   const [open8, setOpen8] = useState(false);
-
-
 
   return (
     // <div className="container">
@@ -285,12 +282,14 @@ const FilterWidget = ({addRemoveCheckedList}) => {
                         type="checkbox"
                         value={ele.sub_course_title}
                         id={"flexCheckDefaultA" + index}
-                        onChange={(e)=>{addRemoveCheckedList(e)}}
+                        onChange={(e) => {
+                          addRemoveCheckedList(e);
+                        }}
                         data-checked="no"
                         data-parent={course_category[0].course_category_title}
                       />
                       <label
-                        className="form-check-label ml-2"
+                        className="form-check-label ml-2 text-13"
                         for={"flexCheckDefault" + index}
                       >
                         {ele.sub_course_title}
@@ -312,19 +311,21 @@ const FilterWidget = ({addRemoveCheckedList}) => {
               </p>
               <Collapse in={open1}>
                 <div>
-                  {course_category[1].sub_courses.map((ele,index) => (
+                  {course_category[1].sub_courses.map((ele, index) => (
                     <div className="form-check" key={ele.key}>
                       <input
                         className="form-check-input"
                         type="checkbox"
                         value={ele.sub_course_title}
-                       id={"flexCheckDefaultB" + index}
-                       data-checked="no"
-                       data-parent={course_category[1].course_category_title}
-                        onChange={(e)=>{addRemoveCheckedList(e)}}
+                        id={"flexCheckDefaultB" + index}
+                        data-checked="no"
+                        data-parent={course_category[1].course_category_title}
+                        onChange={(e) => {
+                          addRemoveCheckedList(e);
+                        }}
                       />
                       <label
-                        className="form-check-label ml-2"
+                        className="form-check-label ml-2 text-13"
                         for="flexCheckDefault"
                       >
                         {ele.sub_course_title}
@@ -346,7 +347,7 @@ const FilterWidget = ({addRemoveCheckedList}) => {
               </p>
               <Collapse in={open2}>
                 <div>
-                  {course_category[2].sub_courses.map((ele,index) => (
+                  {course_category[2].sub_courses.map((ele, index) => (
                     <div className="form-check" key={ele.key}>
                       <input
                         className="form-check-input"
@@ -355,10 +356,12 @@ const FilterWidget = ({addRemoveCheckedList}) => {
                         id={"flexCheckDefaultC" + index}
                         data-checked="no"
                         data-parent={course_category[2].course_category_title}
-                        onChange={(e)=>{addRemoveCheckedList(e)}}
+                        onChange={(e) => {
+                          addRemoveCheckedList(e);
+                        }}
                       />
                       <label
-                        className="form-check-label ml-2"
+                        className="form-check-label ml-2 text-13"
                         for="flexCheckDefault"
                       >
                         {ele.sub_course_title}
@@ -380,7 +383,7 @@ const FilterWidget = ({addRemoveCheckedList}) => {
               </p>
               <Collapse in={open3}>
                 <div>
-                  {course_category[3].sub_courses.map((ele,index) => (
+                  {course_category[3].sub_courses.map((ele, index) => (
                     <div className="form-check" key={ele.key}>
                       <input
                         className="form-check-input"
@@ -389,10 +392,12 @@ const FilterWidget = ({addRemoveCheckedList}) => {
                         id={"flexCheckDefaultD" + index}
                         data-checked="no"
                         data-parent={course_category[3].course_category_title}
-                        onChange={(e)=>{addRemoveCheckedList(e)}}
+                        onChange={(e) => {
+                          addRemoveCheckedList(e);
+                        }}
                       />
                       <label
-                        className="form-check-label ml-2"
+                        className="form-check-label ml-2 text-13"
                         for="flexCheckDefault"
                       >
                         {ele.sub_course_title}
@@ -414,7 +419,7 @@ const FilterWidget = ({addRemoveCheckedList}) => {
               </p>
               <Collapse in={open4}>
                 <div>
-                  {course_category[4].sub_courses.map((ele,index) => (
+                  {course_category[4].sub_courses.map((ele, index) => (
                     <div className="form-check" key={ele.key}>
                       <input
                         className="form-check-input"
@@ -423,10 +428,12 @@ const FilterWidget = ({addRemoveCheckedList}) => {
                         id={"flexCheckDefaultE" + index}
                         data-checked="no"
                         data-parent={course_category[4].course_category_title}
-                        onChange={(e)=>{addRemoveCheckedList(e)}}
+                        onChange={(e) => {
+                          addRemoveCheckedList(e);
+                        }}
                       />
                       <label
-                        className="form-check-label ml-2"
+                        className="form-check-label ml-2 text-13"
                         for="flexCheckDefault"
                       >
                         {ele.sub_course_title}
@@ -448,7 +455,7 @@ const FilterWidget = ({addRemoveCheckedList}) => {
               </p>
               <Collapse in={open5}>
                 <div>
-                  {course_category[5].sub_courses.map((ele,index) => (
+                  {course_category[5].sub_courses.map((ele, index) => (
                     <div className="form-check" key={ele.key}>
                       <input
                         className="form-check-input"
@@ -457,10 +464,12 @@ const FilterWidget = ({addRemoveCheckedList}) => {
                         id={"flexCheckDefaultF" + index}
                         data-checked="no"
                         data-parent={course_category[5].course_category_title}
-                        onChange={(e)=>{addRemoveCheckedList(e)}}
+                        onChange={(e) => {
+                          addRemoveCheckedList(e);
+                        }}
                       />
                       <label
-                        className="form-check-label ml-2"
+                        className="form-check-label ml-2 text-13"
                         for="flexCheckDefault"
                       >
                         {ele.sub_course_title}
@@ -482,7 +491,7 @@ const FilterWidget = ({addRemoveCheckedList}) => {
               </p>
               <Collapse in={open6}>
                 <div>
-                  {course_category[6].sub_courses.map((ele,index) => (
+                  {course_category[6].sub_courses.map((ele, index) => (
                     <div className="form-check" key={ele.key}>
                       <input
                         className="form-check-input"
@@ -491,10 +500,12 @@ const FilterWidget = ({addRemoveCheckedList}) => {
                         id={"flexCheckDefaultG" + index}
                         data-checked="no"
                         data-parent={course_category[6].course_category_title}
-                        onChange={(e)=>{addRemoveCheckedList(e)}}
+                        onChange={(e) => {
+                          addRemoveCheckedList(e);
+                        }}
                       />
                       <label
-                        className="form-check-label ml-2"
+                        className="form-check-label ml-2 text-13"
                         for="flexCheckDefault"
                       >
                         {ele.sub_course_title}
@@ -516,7 +527,7 @@ const FilterWidget = ({addRemoveCheckedList}) => {
               </p>
               <Collapse in={open7}>
                 <div>
-                  {course_category[7].sub_courses.map((ele,index) => (
+                  {course_category[7].sub_courses.map((ele, index) => (
                     <div className="form-check" key={ele.key}>
                       <input
                         className="form-check-input"
@@ -525,10 +536,12 @@ const FilterWidget = ({addRemoveCheckedList}) => {
                         id={"flexCheckDefaultH" + index}
                         data-checked="no"
                         data-parent={course_category[7].course_category_title}
-                        onChange={(e)=>{addRemoveCheckedList(e)}}
+                        onChange={(e) => {
+                          addRemoveCheckedList(e);
+                        }}
                       />
                       <label
-                        className="form-check-label ml-2"
+                        className="form-check-label ml-2 text-13"
                         for="flexCheckDefault"
                       >
                         {ele.sub_course_title}
@@ -547,8 +560,8 @@ const FilterWidget = ({addRemoveCheckedList}) => {
                 type="checkbox"
                 value=""
                 id="flexCheckDefaultLed"
-                 onClick={(e)=>{
-                  reRouteTo(e)
+                onClick={(e) => {
+                  reRouteTo(e);
                 }}
                 data-link={`/courses?method=pace&search=${searchVal}&filter=course&applied_search=cp&search_result=leadership_learner`} //
               />
@@ -565,8 +578,8 @@ const FilterWidget = ({addRemoveCheckedList}) => {
                 type="checkbox"
                 value=""
                 id="flexCheckDefaultSelf"
-                 onClick={(e)=>{
-                  reRouteTo(e)
+                onClick={(e) => {
+                  reRouteTo(e);
                 }}
                 data-link={`/courses?method=pace&search=${searchVal}&filter=course&applied_search=cp&search_result=self`} //leadership_learner
               />
@@ -586,11 +599,10 @@ const FilterWidget = ({addRemoveCheckedList}) => {
                 type="radio"
                 value="All"
                 id="flexCheckDefaultAll"
-                onClick={(e)=>{
-                  reRouteTo(e)
+                onClick={(e) => {
+                  reRouteTo(e);
                 }}
-               data-link={`/courses?method=fee&search=${searchVal}&filter=course&applied_search=fee&chosen=All`}
-              
+                data-link={`/courses?method=fee&search=${searchVal}&filter=course&applied_search=fee&chosen=All`}
               />
               <label
                 className="form-check-label ml-2 text-13"
@@ -605,8 +617,8 @@ const FilterWidget = ({addRemoveCheckedList}) => {
                 type="radio"
                 value="Free"
                 id="flexCheckDefaultFree"
-                onClick={(e)=>{
-                  reRouteTo(e)
+                onClick={(e) => {
+                  reRouteTo(e);
                 }}
                 data-link={`/courses?method=fee&search=${searchVal}&filter=course&applied_search=fee&bonus=free_course_offering&chosen=Free`}
               />
@@ -623,8 +635,8 @@ const FilterWidget = ({addRemoveCheckedList}) => {
                 type="radio"
                 value="Paid"
                 id="flexCheckDefaultPaid"
-                onClick={(e)=>{
-                  reRouteTo(e)
+                onClick={(e) => {
+                  reRouteTo(e);
                 }}
                 data-link={`/courses?method=fee&search=${searchVal}&filter=course&applied_search=fee&bonus=payment_required&chosen=Paid`}
               />

@@ -33,6 +33,10 @@
   color: #fff !important;
 }
 
+.bg-orange {
+  background: #fa8334 !important;
+  color: #fff !important;
+}
 .bg-dark-grey {
   background: #555555 !important;
   color: #fff !important;
@@ -117,9 +121,18 @@
   border-top-left-radius: 50px !important;
 }
 
+.border-radius-30 {
+  border-radius: 30px !important;
+}
+
+.border-radius-40 {
+  border-radius: 40px !important;
+}
+
 .border-radius-50 {
   border-radius: 50px !important;
 }
+
 .border-radius-10 {
   border-radius: 10px !important;
 }
@@ -163,6 +176,10 @@
 
 .questence-nuggets-left-border {
   border-left: solid 10px #fff;
+}
+
+.border-bottom-width-2 {
+  border-bottom-width: 2px !important;
 }
 
 h1,
@@ -439,6 +456,13 @@ p {
   height: 2px;
 }
 
+.height-300px {
+  height: 300px;
+}
+
+.height-419px {
+  height: 419px;
+}
 .mt-n-0-4 {
   margin-top: -0.4px;
 }
@@ -464,4 +488,44 @@ p {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+/* CSS Ring */
+.outer {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  position: relative;
+  background-color: #ffffff;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.inner {
+  position: absolute;
+  width: 70%;
+  height: 70%;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #333333 0%, #555555 100%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.5s ease-out;
+}
+
+.outer:hover .inner {
+  width: 90%;
+  height: 90%;
+}
+
+.top-40 {
+  top: 40%;
+}
+
+.start-40 {
+  left: 40%;
+}
+
+.p-12px {
+  padding: 12px;
 }

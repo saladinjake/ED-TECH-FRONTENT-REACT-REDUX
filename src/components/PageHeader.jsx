@@ -1,6 +1,6 @@
 import React from "react";
 
-const PageHeader = ({ pageTitle, bgClass }) => {
+const PageHeader = ({ pageTitle, bgClass, textPosition = "text-center" }) => {
   return (
     <>
       <div
@@ -11,8 +11,18 @@ const PageHeader = ({ pageTitle, bgClass }) => {
       >
         <div className="container">
           <div className="row pb-0 pe-lg-0 pt-lg-5 rounded-3">
-            <div className="col-lg-6 offset-lg-3 p-3 p-lg-5 pt-lg-3 d-flex flex-column">
-              <h1 className="heading-lg text-center fw-bold lh-1 mb-4 text-white">
+            <div
+              className={
+                textPosition == "text-start"
+                  ? "col-lg-12 p-3 p-lg-5 pt-lg-3 d-flex flex-column"
+                  : "col-lg-6 offset-lg-3 p-3 p-lg-5 pt-lg-3 d-flex flex-column"
+              }
+            >
+              <h1
+                className={
+                  textPosition + " heading-lg fw-bold lh-1 mb-4 text-white"
+                }
+              >
                 {pageTitle}
               </h1>
             </div>
