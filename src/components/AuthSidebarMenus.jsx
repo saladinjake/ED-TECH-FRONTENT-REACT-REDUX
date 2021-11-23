@@ -10,33 +10,33 @@ const AuthSidebarMenus = () => {
             <Link
               className="nav-link text-white inherit active"
               aria-current="page"
-              to="#"
+              to={process.env.PUBLIC_URL+"/mylearning?search_menu=all&optimize=true&max_range=1000"}
             >
               All Courses
             </Link>
           </li>
           <li className="nav-item py-2">
-            <Link className="nav-link text-white" to="#">
+            <Link className="nav-link text-white" to={process.env.PUBLIC_URL+"/mylearning?search_menu=active&optimize=true&max_range=1000"}>
               Active Courses
             </Link>
           </li>
           <li className="nav-item py-2">
-            <Link className="nav-link text-white" to="#">
+            <Link className="nav-link text-white" to={process.env.PUBLIC_URL+"/mylearning?search_menu=upcoming&optimize=true&max_range=1000"}>
               Upcoming Courses
             </Link>
           </li>
           <li className="nav-item py-2">
-            <Link className="nav-link text-white" to="#">
+            <Link className="nav-link text-white" to={process.env.PUBLIC_URL+"/mylearning?search_menu=completed&optimize=true&max_range=1000"}>
               Completed Courses
             </Link>
           </li>
           <li className="nav-item py-2">
-            <Link className="nav-link text-white" to="#">
+            <Link className="nav-link text-white" to={process.env.PUBLIC_URL+"/mylearning?search_menu=expired&optimize=true&max_range=1000"}>
               Expired Courses
             </Link>
           </li>
           <li className="nav-item py-2">
-            <Link className="nav-link text-white" to="#">
+            <Link className="nav-link text-white" to={process.env.PUBLIC_URL+"/mylearning?search_menu=accomplished&optimize=true&max_range=1000"}>
               Accomplishment
             </Link>
           </li>

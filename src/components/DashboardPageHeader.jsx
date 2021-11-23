@@ -6,6 +6,9 @@ const DashboardPageHeader = ({
   welcomeSubtitle,
   btnTitle,
   bgClass,
+  wishList,
+  activeCourses,
+  upcomingCourses
 }) => {
   return (
     <>
@@ -27,7 +30,7 @@ const DashboardPageHeader = ({
             <div className="col-lg-6 p-3 p-lg-5 pt-lg-2 d-flex flex-column">
               <h5 className="text-white">{welcomeSubtitle}</h5>
               <Link
-                to="/courses"
+                to="/mylearning"
                 className="inherit btn-solid-teal btn mt-2 border-radius-20"
               >
                 {btnTitle}
@@ -39,14 +42,39 @@ const DashboardPageHeader = ({
                   <h4 className="fw-bold text-white text-18 border-bottom pb-3 border-bottom-width-2">
                     Active Courses
                   </h4>
-                  <p className="text-white">No courses</p>
+                 <>
+              {activeCourses.length > 0 && activeCourses.map(coursePackage =>{
+                return(
+                   <p className="text-white">{coursePackage.course.course_name}</p>    
+                )
+              })}
+              </>
+             <>
+              {activeCourses.length==0 ? ( <p className="text-white">No courses</p>): ( 
+                  <p className="text-white"></p>
+                )}
+              </>
                 </div>
                 <div className="col-md-12 bg-green-gradient border-radius-15 p-4 mt-3">
                   <h4 className="fw-bolder text-white text-18 pb-3 border-bottom-width-2">
                     Upcoming courses
+                              <>
+              {upcomingCourses.length > 0 && upcomingCourses.map(coursePackage =>{
+                return(
+                  
                     <Link to="" className="text-white float-end">
-                      <i class="bi bi-plus size-2rem "></i>
+                       <p className="text-white">{coursePackage.course.course_name}<i class="bi bi-plus size-2rem "></i></p>    
+                
                     </Link>
+                  )
+              })}
+              </>
+             <>
+              {upcomingCourses.length==0 ? ( <p className="text-white">No courses</p>): ( 
+                  <p className="text-white"></p>
+                )}
+              </>
+       
                   </h4>
                 </div>
               </div>
@@ -58,7 +86,18 @@ const DashboardPageHeader = ({
               <h4 className="fw-bold text-white text-18 border-bottom pb-3 border-bottom-width-2">
                 Active Courses
               </h4>
-              <p className="text-white">No courses</p>
+              <>
+              {activeCourses.length > 0 && activeCourses.map(coursePackage =>{
+                return(
+                   <p className="text-white">{coursePackage.course.course_name}</p>    
+                )
+              })}
+              </>
+             <>
+              {activeCourses.length==0 ? ( <p className="text-white">No courses</p>): ( 
+                  <p className="text-white"></p>
+                )}
+              </>
             </div>
             <div className="col-md-12 bg-green-gradient border-radius-15 p-4 mt-3">
               <h4 className="fw-bolder text-white text-18 pb-3 border-bottom-width-2">

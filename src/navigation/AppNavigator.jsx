@@ -19,6 +19,11 @@ import {
   Redirect,
 } from "react-router-dom";
 
+/*Gate Keepers*/
+import AuthenticatedRoute from "../adhocs/AuthenticatedRoutes"
+import InstructorsRoute from "../adhocs/AuthenticatedRoutes"
+import LearnersRoute from "../adhocs/AuthenticatedRoutes"
+
 const AppNavigator = () => {
   return (
     <Router history={history}>
@@ -34,13 +39,20 @@ const AppNavigator = () => {
           render={(props) => <DigitalOnlineLearningScreen {...props} />}
         />
         <Route
-          path="/my-learning"
+          path="/mylearning"
           render={(props) => <MyLearning {...props} />}
         />
         <Route
           path="/dashboard"
-          render={(props) => <DashboardScreen {...props} />}
+          render={(props) => <InstructorsRoute
+          {...props}
+          exact
+          path="/dashboard"
+          component={DashboardScreen}
+        />}
         />
+
+
         <Route
           path="/contact-us"
           render={(props) => <ContactUsScreen {...props} />}

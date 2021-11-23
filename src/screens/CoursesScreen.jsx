@@ -27,12 +27,6 @@ const querySearch = () => {
 
 
 
-
-
-
-
-
-
 class CoursesScreen extends React.Component{
   constructor(props){
     super(props)
@@ -119,10 +113,12 @@ class CoursesScreen extends React.Component{
     const query = querySearch()
      const searchFrom = query.get("applied_search")
      
-    if(query.get("search")!==null  ){
+    if(query.get("search")!==null  || query.get("search_menu")!==null ){
       //const pathname = location.patname;
        searchField.value=query.get("search");
-       
+       if(searchField==""){
+          searchField =  query.get("search_menu")
+       }
        //swictch from the search type
        switch(searchFrom){ //applied search key
 
@@ -130,6 +126,8 @@ class CoursesScreen extends React.Component{
          this.handleCategoryFilter()
            break;
          case "sb": // search button box input entered
+       
+       
            this.handleFilteredSearchInput(searchField.value) //update state change based on search
            break;
          case "fb": //filter buton checklists of categories and sub categories
@@ -142,13 +140,40 @@ class CoursesScreen extends React.Component{
            break;  //paid courses
        
          default:
-                //search input btn search
-           this.handleFilteredSearchInput(searchField.value) //update state change based on search input
+           if(query.get("search_menu")=="menu_mapper" 
+              && query.get("nested_filter_id")){
+             if(query.get("nested_filter_id") &&                
+                 Number.isInteger(query.get("nested_filter_id")) 
+                ){
+                 this._runMenuSearchCategoryFilter()
+                 break
+             }else{
+               
+               this._runMenuSearchCategoryFilter()
+                break
+             }
+           }else{
+              //search input btn search
+              this.handleFilteredSearchInput(searchField.value) //update state change based on search input
            break;
+
+           }
+           
        }
     }
 
   }
+
+  getUrlVars() {
+    var url = window.location.href,
+        vars = {};
+    url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
+         key = decodeURIComponent(key);
+         value = decodeURIComponent(value);
+         vars[key] = value;
+    });
+    return vars;
+}
 
   componentDidMount = async() =>{   
       //return clean state of the course list
@@ -172,20 +197,25 @@ class CoursesScreen extends React.Component{
   handleFilteredSearchInput =(searchKey)=>{
     //...searching for the course 
     const { cleanSlate } = this.state;
-    
+
+    let queriedSearch =  querySearch().get("search")
+    console.log(queriedSearch)
+    console.log(this.getUrlVars())
     let filter = cleanSlate.filter((course) => {
-    return (course.course_name
-      .toLowerCase()
-      .includes(searchKey.toLowerCase()) || course.category.name
-      .toLowerCase()
-      .includes(searchKey.toLowerCase()) )  &&
-       parseInt(course.status) === 1;
+      //console.log(course.course_name)
+      return (course.course_name.toLowerCase().indexOf(queriedSearch.toLowerCase()) !== -1
+       &&
+      parseInt(course.status) === 1);
     })
+
+    //console.log(filter)
     this.setState({
       ...this.state,
       cleanSlate:filter,
       updateDomTrigger: Math.random()*50 + Math.random()*3*99 //domrerendering...
     })
+
+   // this.handleFilteredSearchInput(searchKey)
   }
 
   
@@ -196,17 +226,47 @@ class CoursesScreen extends React.Component{
 
 
   handleCategoryFilter = async () =>{
-     let courseCat = await getCategories();
-     console.log(courseCat.data.data)
+    alert("called")
     const query = querySearch()
-    if (query.get("applied_search") === "mc"){ //if coming from a top menu header link
+    if (query.get("applied_search") === "mc" ){ //if coming from a top menu header link
       //get all the query parameters and check them to preset a ui exp to the user to know the outcome of the filters selected
+    
       this._runUpdateCategoryFilter()
     }else{
       this._runUpdateCategoryFilter() //or if called from a button clicked
     }
-    alert("wild search called")
+    
   };
+
+  _runMenuSearchCategoryFilter(){
+
+    const query = querySearch()
+    if (query.get("search_menu") === "menu_mapper" && (query.get("nested_filter_id")!==null || query.get("nested_filter")!=="")){ //if coming from a top menu header link
+    
+      const { cleanSlate,batchedCategoriesFilter } = this.state;
+      const courses = cleanSlate;
+      const searchCategory = query.get("nested_filter_id")
+      let filter = cleanSlate.filter((course) => {
+      return (searchCategory == course.category.id
+         )  &&
+         parseInt(course.status) === 1;
+      })
+      this.setState({
+        ...this.state,
+        cleanSlate:filter,
+        updateDomTrigger: Math.random()*50 + Math.random()*3*99 //domrerendering...
+      })
+
+   }else{
+      this.setState({
+        ...this.state,
+        
+        updateDomTrigger: Math.random()*50 + Math.random()*3*99 //domrerendering...
+      })
+   }
+    
+  }
+
 
   _runUpdateCategoryFilter = () =>{
     const { cleanSlate,batchedCategoriesFilter } = this.state;
@@ -460,7 +520,7 @@ class CoursesScreen extends React.Component{
                       return(
                          <div className="col-md-4">
                       <CourseCard
-                          key={index+ "_" + Math.random()*90}
+                          key={index+ "_urieure_juew3" + Math.random()*1*90}
                 courseTitle={course.course_code}
                 courseDesc={course?.course_description}
                 courseAuthorCompany={course?.instructor?.instructor_profile?.current_employer_designation}

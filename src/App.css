@@ -44,3 +44,8 @@ transform: translate(40%,-20%);
 
 
 
+
+
+.hidden {
+  display: none;
+}
