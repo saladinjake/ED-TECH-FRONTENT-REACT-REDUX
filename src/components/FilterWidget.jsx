@@ -17,10 +17,14 @@ const reRouteTo = (e) => {
   return (window.location.href = process.env.PUBLIC_URL + searchLink);
 };
 
+
+
+
 const course_category = [
   {
     key: 1,
     course_category_title: "Arts & Humanities",
+    data_namegroup:"arts",
     sub_courses: [
       {
         key: 1,
@@ -63,6 +67,7 @@ const course_category = [
   {
     key: 2,
     course_category_title: "Business And Operations Management",
+     data_namegroup:"business",
     sub_courses: [
       {
         key: 1,
@@ -105,6 +110,7 @@ const course_category = [
   {
     key: 3,
     course_category_title: "Engineering",
+     data_namegroup:"engineering",
     sub_courses: [
       {
         key: 1,
@@ -131,6 +137,7 @@ const course_category = [
   {
     key: 4,
     course_category_title: "Physical Sciences ",
+     data_namegroup:"physical",
     sub_courses: [
       {
         key: 1,
@@ -157,6 +164,7 @@ const course_category = [
   {
     key: 5,
     course_category_title: "Mathematics ",
+     data_namegroup:"mathematics",
     sub_courses: [
       {
         key: 1,
@@ -175,6 +183,7 @@ const course_category = [
   {
     key: 6,
     course_category_title: "Computer Schience & Information Technology",
+     data_namegroup:"computer",
     sub_courses: [
       {
         key: 1,
@@ -201,6 +210,7 @@ const course_category = [
   {
     key: 7,
     course_category_title: "Law & Social Sciences",
+     data_namegroup:"law",
     sub_courses: [
       {
         key: 1,
@@ -219,6 +229,7 @@ const course_category = [
   {
     key: 8,
     course_category_title: "Health Care",
+     data_namegroup:"health",
     sub_courses: [
       {
         key: 1,
@@ -285,6 +296,7 @@ const FilterWidget = ({ addRemoveCheckedList }) => {
                         onChange={(e) => {
                           addRemoveCheckedList(e);
                         }}
+                        data-namegroup={course_category[0].data_namegroup}
                         data-checked="no"
                         data-parent={course_category[0].course_category_title}
                       />
@@ -319,6 +331,7 @@ const FilterWidget = ({ addRemoveCheckedList }) => {
                         value={ele.sub_course_title}
                         id={"flexCheckDefaultB" + index}
                         data-checked="no"
+                        data-namegroup={course_category[1].data_namegroup}
                         data-parent={course_category[1].course_category_title}
                         onChange={(e) => {
                           addRemoveCheckedList(e);
@@ -354,6 +367,7 @@ const FilterWidget = ({ addRemoveCheckedList }) => {
                         type="checkbox"
                         value={ele.sub_course_title}
                         id={"flexCheckDefaultC" + index}
+                        data-namegroup={course_category[2].data_namegroup}
                         data-checked="no"
                         data-parent={course_category[2].course_category_title}
                         onChange={(e) => {
@@ -391,6 +405,7 @@ const FilterWidget = ({ addRemoveCheckedList }) => {
                         value={ele.sub_course_title}
                         id={"flexCheckDefaultD" + index}
                         data-checked="no"
+                        data-namegroup={course_category[3].data_namegroup}
                         data-parent={course_category[3].course_category_title}
                         onChange={(e) => {
                           addRemoveCheckedList(e);
@@ -427,6 +442,7 @@ const FilterWidget = ({ addRemoveCheckedList }) => {
                         value={ele.sub_course_title}
                         id={"flexCheckDefaultE" + index}
                         data-checked="no"
+                        data-namegroup={course_category[4].data_namegroup}
                         data-parent={course_category[4].course_category_title}
                         onChange={(e) => {
                           addRemoveCheckedList(e);
@@ -463,6 +479,7 @@ const FilterWidget = ({ addRemoveCheckedList }) => {
                         value={ele.sub_course_title}
                         id={"flexCheckDefaultF" + index}
                         data-checked="no"
+                        data-namegroup={course_category[5].data_namegroup}
                         data-parent={course_category[5].course_category_title}
                         onChange={(e) => {
                           addRemoveCheckedList(e);
@@ -498,6 +515,7 @@ const FilterWidget = ({ addRemoveCheckedList }) => {
                         type="checkbox"
                         value={ele.sub_course_title}
                         id={"flexCheckDefaultG" + index}
+                        data-namegroup={course_category[6].data_namegroup}
                         data-checked="no"
                         data-parent={course_category[6].course_category_title}
                         onChange={(e) => {
@@ -535,6 +553,7 @@ const FilterWidget = ({ addRemoveCheckedList }) => {
                         value={ele.sub_course_title}
                         id={"flexCheckDefaultH" + index}
                         data-checked="no"
+                        data-namegroup={course_category[7].data_namegroup}
                         data-parent={course_category[7].course_category_title}
                         onChange={(e) => {
                           addRemoveCheckedList(e);

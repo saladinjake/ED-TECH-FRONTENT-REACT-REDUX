@@ -1,6 +1,8 @@
 import React from "react";
 const SortWidget = ({ onHandleSort ,onFilterCateoriesSearch}) => {
 
+ 
+
   const querySearch = () => {
     const queryString = window.location.search;
     const parameters = new URLSearchParams(queryString);
@@ -20,6 +22,7 @@ const SortWidget = ({ onHandleSort ,onFilterCateoriesSearch}) => {
 
   const handleFilterSearch = (e) => {
      e.preventDefault()
+     //change this to reroute to page
   }
 
   const handleReset = (e) => {

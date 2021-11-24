@@ -352,7 +352,7 @@ can only have alphanumeric and .- char in the domain part`);
                   <NavDropdown.Item
                     href={
                       process.env.PUBLIC_URL +
-                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=11"
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=11&nested_search_parent=languages"
                     }
                   >
                     Languages
@@ -360,7 +360,7 @@ can only have alphanumeric and .- char in the domain part`);
                   <NavDropdown.Item
                     href={
                       process.env.PUBLIC_URL +
-                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=5"
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=5&nested_search_parent=health"
                     }
                   >
                     Health Care
@@ -368,7 +368,7 @@ can only have alphanumeric and .- char in the domain part`);
                   <NavDropdown.Item
                     href={
                       process.env.PUBLIC_URL +
-                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=39"
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=39&nested_search_parent=mathematics"
                     }
                   >
                     Mathematics
@@ -376,7 +376,7 @@ can only have alphanumeric and .- char in the domain part`);
                   <NavDropdown.Item
                     href={
                       process.env.PUBLIC_URL +
-                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=12"
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=12&nested_search_parent=physical"
                     }
                   >
                     Physical Sciences
@@ -384,7 +384,7 @@ can only have alphanumeric and .- char in the domain part`);
                   <NavDropdown.Item
                     href={
                       process.env.PUBLIC_URL +
-                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
                     }
                   >
                     Arts & Humanities
@@ -392,7 +392,7 @@ can only have alphanumeric and .- char in the domain part`);
                   <NavDropdown.Item
                     href={
                       process.env.PUBLIC_URL +
-                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=4"
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=4&nested_search_parent=office"
                     }
                   >
                     Office Productivity
@@ -400,7 +400,7 @@ can only have alphanumeric and .- char in the domain part`);
                   <NavDropdown.Item
                     href={
                       process.env.PUBLIC_URL +
-                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=8"
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=8&nested_search_parent=engineering"
                     }
                   >
                     Technology Engineering
@@ -408,7 +408,7 @@ can only have alphanumeric and .- char in the domain part`);
                   <NavDropdown.Item
                     href={
                       process.env.PUBLIC_URL +
-                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=9"
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=9&nested_search_parent=law"
                     }
                   >
                     Law & Social Sciences
@@ -416,7 +416,7 @@ can only have alphanumeric and .- char in the domain part`);
                   <NavDropdown.Item
                     href={
                       process.env.PUBLIC_URL +
-                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=1"
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=1&nested_search_parent=computer"
                     }
                   >
                     Computer Science & Information
@@ -424,7 +424,7 @@ can only have alphanumeric and .- char in the domain part`);
                   <NavDropdown.Item
                     href={
                       process.env.PUBLIC_URL +
-                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=2"
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
                     }
                   >
                     Business & Operations Management
@@ -432,7 +432,7 @@ can only have alphanumeric and .- char in the domain part`);
                   <NavDropdown.Item
                     href={
                       process.env.PUBLIC_URL +
-                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=6"
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=6&nested_search_parent=others"
                     }
                   >
                     Others
@@ -611,7 +611,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
                             }
                             className="fw-bold"
                           >
@@ -620,7 +620,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
                             }
                             className="whitespace"
                           >
@@ -629,7 +629,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
                             }
                             className="whitespace"
                           >
@@ -638,7 +638,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
                             }
                             className="whitespace"
                           >
@@ -647,7 +647,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
                             }
                             className="whitespace"
                           >
@@ -656,7 +656,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
                             }
                             className="whitespace"
                           >
@@ -665,7 +665,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
                             }
                             className="whitespace"
                           >
@@ -674,7 +674,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
                             }
                             className="whitespace"
                           >
@@ -683,7 +683,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
                             }
                             className="whitespace"
                           >
@@ -692,7 +692,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
                             }
                             className="whitespace"
                           >
@@ -704,7 +704,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
                             }
                             className="fw-bold whitespace"
                           >
@@ -713,7 +713,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
                             }
                             className="whitespace"
                           >
@@ -722,7 +722,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
                             }
                             className="whitespace"
                           >
@@ -731,7 +731,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
                             }
                             className="whitespace"
                           >
@@ -740,7 +740,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
                             }
                             className="whitespace"
                           >
@@ -749,7 +749,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
                             }
                             className="whitespace"
                           >
@@ -758,7 +758,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
                             }
                             className="whitespace"
                           >
@@ -767,7 +767,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
                             }
                             className="whitespace"
                           >
@@ -776,7 +776,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
                             }
                             className="whitespace"
                           >
@@ -785,7 +785,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
                             }
                             className="whitespace"
                           >
@@ -794,7 +794,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
                             }
                             className="whitespace"
                           >
@@ -805,7 +805,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=8"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=8&nested_search_parent=engineering"
                             }
                             className="fw-bold whitespace"
                           >
@@ -814,7 +814,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=8"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=8&nested_search_parent=engineering"
                             }
                             className="whitespace"
                           >
@@ -823,7 +823,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=8"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=8&nested_search_parent=engineering"
                             }
                             className="whitespace"
                           >
@@ -832,7 +832,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=8"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=8&nested_search_parent=engineering"
                             }
                             className="whitespace"
                           >
@@ -841,7 +841,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=8"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=8&nested_search_parent=engineering"
                             }
                             className="whitespace"
                           >
@@ -850,7 +850,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=8"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=8&nested_search_parent=engineering"
                             }
                             className="whitespace"
                           >
@@ -862,7 +862,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=12"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=12&nested_search_parent=physical"
                             }
                             className="fw-bold whitespace"
                           >
@@ -871,7 +871,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=12"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=12&nested_search_parent=physical"
                             }
                             className="whitespace"
                           >
@@ -880,7 +880,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=12"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=12&nested_search_parent=physical"
                             }
                             className="whitespace"
                           >
@@ -889,7 +889,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=12"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=12&nested_search_parent=physical"
                             }
                             className="whitespace"
                           >
@@ -898,7 +898,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=12"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=12&nested_search_parent=physical"
                             }
                             className="whitespace"
                           >
@@ -907,7 +907,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=12"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=12&nested_search_parent=physical"
                             }
                             className="whitespace"
                           >
@@ -919,7 +919,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=1"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=1&nested_search_parent=computer"
                             }
                             className="fw-bold whitespace"
                           >
@@ -928,7 +928,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=1"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=1&nested_search_parent=computer"
                             }
                             className="whitespace"
                           >
@@ -937,7 +937,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=1"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=1&nested_search_parent=computer"
                             }
                             className="whitespace"
                           >
@@ -946,7 +946,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=1"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=1&nested_search_parent=computer"
                             }
                             className="whitespace"
                           >
@@ -955,7 +955,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=1"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=1&nested_search_parent=computer"
                             }
                             className="whitespace"
                           >
@@ -964,7 +964,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=1"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=1&nested_search_parent=computer"
                             }
                             className="whitespace"
                           >
@@ -975,7 +975,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=9"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=9&nested_search_parent=law"
                             }
                             className="fw-bold whitespace"
                           >
@@ -984,7 +984,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=9"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=9&nested_search_parent=law"
                             }
                             className="whitespace"
                           >
@@ -993,7 +993,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=9"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=9&nested_search_parent=law"
                             }
                             className="whitespace"
                           >
@@ -1002,7 +1002,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=9"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=9&nested_search_parent=law"
                             }
                             className="whitespace"
                           >
@@ -1014,7 +1014,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=5"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=5&nested_search_parent=health"
                             }
                             className="fw-bold whitespace"
                           >
@@ -1023,7 +1023,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=5"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=5&nested_search_parent=health"
                             }
                             className="whitespace"
                           >
@@ -1032,7 +1032,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=5"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=5&nested_search_parent=health"
                             }
                             className="whitespace"
                           >
@@ -1041,7 +1041,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=5"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=5&nested_search_parent=health"
                             }
                             className="whitespace"
                           >
@@ -1050,7 +1050,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=5"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=5&nested_search_parent=health"
                             }
                             className="whitespace"
                           >
@@ -1059,7 +1059,7 @@ can only have alphanumeric and .- char in the domain part`);
                           <NavDropdown.Item
                             href={
                               process.env.PUBLIC_URL +
-                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=5"
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=5&nested_search_parent=health"
                             }
                             className="whitespace"
                           >
@@ -1081,20 +1081,10 @@ can only have alphanumeric and .- char in the domain part`);
                       onMouseEnter={() => setFourthShow(true)}
                       onMouseLeave={() => setFourthShow(false)}
                     >
-                      <NavDropdown.Item
-                        href={
-                          process.env.PUBLIC_URL +
-                          "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
-                        }
-                      >
+                      <NavDropdown.Item href={process.env.PUBLIC_URL + "#"}>
                         Instructor Led
                       </NavDropdown.Item>
-                      <NavDropdown.Item
-                        href={
-                          process.env.PUBLIC_URL +
-                          "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
-                        }
-                      >
+                      <NavDropdown.Item href={process.env.PUBLIC_URL + "#"}>
                         Self Paced
                       </NavDropdown.Item>
                     </NavDropdown>
