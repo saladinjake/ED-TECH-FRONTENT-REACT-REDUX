@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import SortWidget from "./SortWidget";
 import HorizontalCourseCard from "./HorizontalCourseCard";
 import CourseCard from "./CourseCard";
-
 const CoursesWithSortWidget = ({ filteredCourses}) => {
   const [sortType, setSortType] = useState("grid");
   const handleSort = (sortType) => {
@@ -17,17 +16,22 @@ const CoursesWithSortWidget = ({ filteredCourses}) => {
             <div className="mb-5">
               {sortType === "fullWidth" && (
                 <>
-                {filteredCourses.length>0  && filteredCourses.map(course =>{
+                {filteredCourses.length>0  && filteredCourses.map((course,index) =>{
+                  
                     return (
-                        <HorizontalCourseCard
-                    courseHeading="Becoming a Successful Leader (Inclusive Leadership Training)"
-                    courseAuthor="Deepali Bagati"
-                    courseDesc="Become a successful leader by learning 21st-century leadership skills and applying concepts to th"
-                    learningStyle="Self Paced"
-                    learningLang="English"
-                    learningLevel="Level"
-                    coursePrice="N20, 000"
-                  />
+                       <HorizontalCourseCard
+                          key={index+ "_" + Math.random()*90}
+                courseTitle={course?.course?.course_code}
+                courseDesc={course?.course?.course_description}
+                courseAuthorCompany={course?.course?.instructor?.instructor_profile?.current_employer_designation}
+                courseAuthor={course?.course?.instructor?.first_name+ " " + course?.course?.instructor?.last_name}
+                coursePrice={course?.course?.price}
+                courseId={course?.course?.id}
+                courseImage={course?.course?.course_cover_image}
+                learningLang={course?.course?.language?.english}
+                learningStyle={course?.course?.learning_style}
+                learningLevel={course?.course?.level}
+                      />
 
                       )
                 })}
@@ -37,15 +41,31 @@ const CoursesWithSortWidget = ({ filteredCourses}) => {
               {sortType === "grid" && (
                 <>
                   <div className="row">
-                    <div className="col-md-4">
+                 
+
+
+
+                    <>
+                    {filteredCourses.length>0  && filteredCourses.map( (course,index) =>{
+               
+                    return (
+                        <div className="col-md-4">
                       <CourseCard
-                        courseTitle="Becoming a Successful Leader (Inclusive Leadership Training)"
-                        courseDesc="Become a successful leader by learning 21st-century leadership skills and applying concepts to th"
-                        courseAuthorCompany="IBM"
-                        courseAuthor="Deepali Bagati"
-                        coursePrice="N20, 000"
-                      />
+                 key={index+ "_" + Math.random()*90}
+                courseDesc={course?.course?.course_description}
+                courseAuthorCompany={course?.course?.instructor?.instructor_profile?.current_employer_designation}
+                courseAuthor={course?.course?.instructor?.first_name+ " " + course?.course?.instructor?.last_name}
+                coursePrice={course?.course?.price}
+                courseId={course?.course?.id}
+                courseImage={course?.course?.course_cover_image}
+              />
                     </div>
+
+                      )
+                })}
+                  
+                </>
+              
                     
                   </div>
                 </>

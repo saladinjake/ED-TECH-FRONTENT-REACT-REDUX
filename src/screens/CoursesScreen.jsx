@@ -175,6 +175,8 @@ class CoursesScreen extends React.Component{
     return vars;
 }
 
+
+
   componentDidMount = async() =>{   
       //return clean state of the course list
     try{

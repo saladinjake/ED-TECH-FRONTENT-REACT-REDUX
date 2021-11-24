@@ -39,21 +39,6 @@ const AppNavigator = () => {
           render={(props) => <DigitalOnlineLearningScreen {...props} />}
         />
         <Route
-          path="/mylearning"
-          render={(props) => <MyLearning {...props} />}
-        />
-        <Route
-          path="/dashboard"
-          render={(props) => <InstructorsRoute
-          {...props}
-          exact
-          path="/dashboard"
-          component={DashboardScreen}
-        />}
-        />
-
-
-        <Route
           path="/contact-us"
           render={(props) => <ContactUsScreen {...props} />}
         />
@@ -62,6 +47,23 @@ const AppNavigator = () => {
           path="/courses"
           render={(props) => <CoursesScreen {...props} />}
         />
+        <Route
+          path="/mylearning"
+          render={(props) => <MyLearning {...props} />}
+        />
+      {/*both user and instructors use same dash board*/}
+        <Route
+          path="/dashboard"
+          render={(props) => <AuthenticatedRoute
+          {...props}
+          exact
+          path="/dashboard"
+          component={DashboardScreen}
+        />}
+        />
+
+
+        
         <Route path="/" render={(props) => <Landing {...props} />} />
         <Redirect to="/" />
       </Switch>

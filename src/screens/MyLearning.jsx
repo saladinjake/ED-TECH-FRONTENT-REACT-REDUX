@@ -5,6 +5,9 @@ import PageHeader from "../components/PageHeader";
 import AuthSidebarMenus from "../components/AuthSidebarMenus";
 import CoursesWithSortWidget from "../components/CoursesWithSortWidget";
 import { getAuthProfile } from "../api/learner.services";
+
+import Loader from "../components/Loader"
+
 const querySearch = () => {
   const queryString = window.location.search;
   const parameters = new URLSearchParams(queryString);
@@ -40,15 +43,13 @@ class MyLearning extends React.Component{
    this.setState({
       ...this.state,
       cleanSlate: [...courses_data],
-      loading:false
+      loading:false,
+      updateDomTrigger:Math.random()*10+ Math.random()*40*5,
     })
   }
 
-  handleActiveCoursesFilter = async () => {
+  handleActiveCoursesFilter = ( allcoursesFetched) => {
 
-    let courseRes = await getAuthProfile();
-    let enrolledCourses = courseRes.data.data;
-    let allcoursesFetched = enrolledCourses;
         /*Active courses*/
     let activecoursesFetched = allcoursesFetched.filter((course) => {
       var requestedDateToStart = new Date(course.course.start_date);
@@ -59,12 +60,8 @@ class MyLearning extends React.Component{
   }
 
 
-  handleCompletedCoursesFilter = async () => {
+  handleCompletedCoursesFilter =  (allcoursesFetched) => {
 
-    let courseRes = await getAuthProfile();
-    let enrolledCourses = courseRes.data.data;
-    let allcoursesFetched = enrolledCourses;
-  
 
     const allcourses =allcoursesFetched.filter((course) => {
         course["set_status"] = "Completed";
@@ -73,12 +70,8 @@ class MyLearning extends React.Component{
     this.refreshCoursesState(allcourses)
   }
 
-  handleUpcomingCoursesFilter = async () => {
+  handleUpcomingCoursesFilter =  (allcoursesFetched) => {
     
-    let courseRes = await getAuthProfile();
-    let enrolledCourses = courseRes.data.data;
-    let allcoursesFetched = enrolledCourses;
-
     /*upcoming courses*/
     const upcomingcoursesBatch = allcoursesFetched.filter((course) => {
         console.log(course.course.start_date);
@@ -91,70 +84,82 @@ class MyLearning extends React.Component{
     this.refreshCoursesState(upcomingcoursesBatch)
   }
 
-  handleExpiredCoursesFilter = async () => {
-    const allcourses =allcourses.filter((course) => {
+  handleExpiredCoursesFilter =  (allcoursesFetched) => {
+    const allcourses =allcoursesFetched.filter((course) => {
       course["set_status"] = "Exipred";
       return parseInt(course.status) === "Expired"     
     })
      this.refreshCoursesState(allcourses)
   }
 
-  handleAllCoursesFilter = async () => {
+  handleAllCoursesFilter = (allcoursesFetched) => {
    
-    let courseRes = await getAuthProfile();
-    let enrolledCourses = courseRes.data.data;
-    let allcoursesFetched = enrolledCourses;
-
-    this.refreshCoursesState(allcoursesFetched)
+    this.refreshCoursesState([...allcoursesFetched])
   }
 
-  handleAccomplishedCoursesFilter = async  () => {
-    const allcourses =allcourses.filter((course) => {
+  handleAccomplishedCoursesFilter =   (allcoursesFetched) => {
+    const allcourses =allcoursesFetched.filter((course) => {
       course["set_status"] = "Accomplished";
       return parseInt(course.status) === 1      
     })
      this.refreshCoursesState(allcourses)
   }
 
-  runSearchEngineQuery = () =>{
+  runSearchEngineQuery = (allMycourses) =>{
      
     //if a search is made in the url
     const query = querySearch()
-     
-    if(query.get("search_menu")!==null ){
-      
+    const allowedTags = query.get("search_menu")
+    
        //swictch from the search type
-       switch(query.get("search_menu")){ //applied search key
-
+    switch(allowedTags){ //applied search key
          case "active": //menu clicked category search
-         this.handleCategoryFilter()
+         this.handleActiveCoursesFilter(allMycourses)
            break;
          case "upcoming": // search button box input entered
-       
-       
-           this.handleUpcomingCoursesFilter() //update state change based on search
+           this.handleUpcomingCoursesFilter(allMycourses) //update state change based on search
            break;
          case "completed": //filter buton checklists of categories and sub categories
-           
-         alert("called specific")
-           this.handleCompletedCoursesFilter()
+           this.handleCompletedCoursesFilter(allMycourses)
            break;
          case "expired": //course pacing filter search
-           this.handleExpiredCoursesFilter()
+           this.handleExpiredCoursesFilter(allMycourses)
            break;
          case "all":
-           this.handleAllCoursesFilter() //if user enters a course name and tries to check if course entered is free
+           this.handleAllCoursesFilter(allMycourses) //if user enters a course name and tries to check if course entered is free
            break;  //paid courses
-       
          default:
-            alert("called")
-            this.handleAllCoursesFilter()       
+            this.handleAllCoursesFilter(allMycourses)       
             break
            
-       }
+    }
+    
+
+    //switch navlink clicked to active
+    let finderLink =`a[data-nameval="${allowedTags}"]`
+    if(document.querySelector(finderLink)){
+      const element = document.querySelector(finderLink);
+      this.addActiveClassToSideMenu(element)
+    }else{
+      //render all search or no search or no courses info
     }
 
   }
+
+
+   addActiveClassToSideMenu = (element) =>{
+    let queriedClass = document.querySelectorAll(".induct");
+     queriedClass =  Array.from(queriedClass);
+     queriedClass.forEach(navLink=>{
+       navLink.classList.remove("active")
+     })
+    //queriedClass.classList.remove("active")//other clicked links needs to be deactivated from active
+    element.classList.add("active")
+    
+  }
+
+  
+
 
   getUrlVars() {
     var url = window.location.href,
@@ -174,21 +179,28 @@ class MyLearning extends React.Component{
         //console.log(this.props)
          const query = querySearch()
           const searchField = document.getElementById("search")
-        let allcourses  = await getAuthProfile() // thus fixes the slow fetch . imagine if user had to wait so long
-        this.refreshCoursesState([...allcourses.data.data])
+        let allMycourses  = await getAuthProfile() // thus fixes the slow fetch . imagine if user had to wait so long
+        allMycourses = [...allMycourses.data.data]
+        this.refreshCoursesState(allMycourses)
          
         /*search hooker*/
-        this.runSearchEngineQuery() 
+        this.runSearchEngineQuery(allMycourses) 
     }catch(e){
          console.log(e)
    }
+  }
+
+  searchRerender = () =>{
+    const { cleanSlate } = this.state;
+      /*search hooker*/
+        this.runSearchEngineQuery(cleanSlate) 
   }
 
 
 
  
   render = () => {
-    const { cleanSlate,updateDomTrigger } = this.state;
+    const { cleanSlate,updateDomTrigger, loading } = this.state;
   return (
     <>
       <NavBar auth={false} />
@@ -203,9 +215,17 @@ class MyLearning extends React.Component{
             <AuthSidebarMenus />
           </div>
           <div className="col-md-9 pt-5">
-            <CoursesWithSortWidget 
-              filteredCourses={cleanSlate}
-            />
+
+              <>{loading==true ? (
+                    <Loader width="100"/>
+                ) : (
+
+                   <CoursesWithSortWidget 
+                    filteredCourses={cleanSlate}
+                   />
+
+                )}</>
+          
           </div>
         </div>
       </div>
