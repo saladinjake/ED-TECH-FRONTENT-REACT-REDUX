@@ -460,11 +460,23 @@ p {
   height: 300px;
 }
 
+.height-370px {
+  height: 370px;
+}
+
 .height-419px {
   height: 419px;
 }
 .mt-n-0-4 {
   margin-top: -0.4px;
+}
+
+.mt-n-0-5 {
+  margin-top: -0.5px;
+}
+
+.mt-n-0-9 {
+  margin-top: -0.9px;
 }
 
 .course-category-scroll::-webkit-scrollbar {

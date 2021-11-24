@@ -9,6 +9,7 @@ import ContactUsScreen from "../screens/ContactUsScreen";
 import DigitalOnlineLearningScreen from "../screens/DigitalOnlineLearningScreen";
 import DashboardScreen from "../screens/DashboardScreen";
 import MyLearning from "../screens/MyLearning";
+import CartScreen from "../screens/CartScreen";
 
 /*Import requirements and configuration files*/
 import history from "../helpers/history";
@@ -20,9 +21,9 @@ import {
 } from "react-router-dom";
 
 /*Gate Keepers*/
-import AuthenticatedRoute from "../adhocs/AuthenticatedRoutes"
-import InstructorsRoute from "../adhocs/AuthenticatedRoutes"
-import LearnersRoute from "../adhocs/AuthenticatedRoutes"
+import AuthenticatedRoute from "../adhocs/AuthenticatedRoutes";
+import InstructorsRoute from "../adhocs/AuthenticatedRoutes";
+import LearnersRoute from "../adhocs/AuthenticatedRoutes";
 
 const AppNavigator = () => {
   return (
@@ -38,6 +39,7 @@ const AppNavigator = () => {
           path="/digital-online-learning"
           render={(props) => <DigitalOnlineLearningScreen {...props} />}
         />
+        <Route path="/cart" render={(props) => <CartScreen {...props} />} />
         <Route
           path="/contact-us"
           render={(props) => <ContactUsScreen {...props} />}
@@ -51,19 +53,19 @@ const AppNavigator = () => {
           path="/mylearning"
           render={(props) => <MyLearning {...props} />}
         />
-      {/*both user and instructors use same dash board*/}
+        {/*both user and instructors use same dash board*/}
         <Route
           path="/dashboard"
-          render={(props) => <AuthenticatedRoute
-          {...props}
-          exact
-          path="/dashboard"
-          component={DashboardScreen}
-        />}
+          render={(props) => (
+            <AuthenticatedRoute
+              {...props}
+              exact
+              path="/dashboard"
+              component={DashboardScreen}
+            />
+          )}
         />
 
-
-        
         <Route path="/" render={(props) => <Landing {...props} />} />
         <Redirect to="/" />
       </Switch>
