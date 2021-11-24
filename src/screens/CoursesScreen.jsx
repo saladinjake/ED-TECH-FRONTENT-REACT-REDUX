@@ -18,6 +18,7 @@ import { useQuery } from "../helpers/hooks/useQuery.js";
 import { useHistory } from "react-router-dom";
 import { getCourses } from "../api/courses.services";
 import { getCategories } from "../api/category.services";
+import $ from "jquery"
 
 const querySearch = () => {
   const queryString = window.location.search;
@@ -38,11 +39,22 @@ class CoursesScreen extends React.Component{
       loading:true,
       updateDomTrigger: Math.random()*40,
       batchedCategoriesFilter:[],
-      wildSearch:[]
+      wildSearch:[],
+      selectedFilteredCategories:[]
     }
+
+   
+    this.urlWithParams = new URL(window.location.origin+"/courses");
   }
 
 
+
+
+
+  buildUrl = (key,val) => {
+   this.urlWithParams.searchParams.append(key, val);
+   return this.urlWithParams //we need .href after all build
+  }
 
 
   //search form and reset and logout
@@ -106,6 +118,8 @@ class CoursesScreen extends React.Component{
     return allcourses;
   }
 
+  
+
   runSearchEngineQuery = () =>{
      const searchField = document.getElementById("search")
 
@@ -126,8 +140,6 @@ class CoursesScreen extends React.Component{
          this.handleCategoryFilter()
            break;
          case "sb": // search button box input entered
-       
-       
            this.handleFilteredSearchInput(searchField.value) //update state change based on search
            break;
          case "fb": //filter buton checklists of categories and sub categories
@@ -138,7 +150,6 @@ class CoursesScreen extends React.Component{
          case "fee":
            this.handlePriceFilter(searchField.value) //if user enters a course name and tries to check if course entered is free
            break;  //paid courses
-       
          default:
            if(query.get("search_menu")=="menu_mapper" 
               && query.get("nested_filter_id")){
@@ -161,6 +172,9 @@ class CoursesScreen extends React.Component{
            
        }
     }
+
+
+   
 
   }
 
@@ -228,7 +242,7 @@ class CoursesScreen extends React.Component{
 
 
   handleCategoryFilter = async () =>{
-    alert("called")
+    //alert("called")
     const query = querySearch()
     if (query.get("applied_search") === "mc" ){ //if coming from a top menu header link
       //get all the query parameters and check them to preset a ui exp to the user to know the outcome of the filters selected
@@ -266,7 +280,48 @@ class CoursesScreen extends React.Component{
         updateDomTrigger: Math.random()*50 + Math.random()*3*99 //domrerendering...
       })
    }
+
+
+
+    //ensure the right boxes are checked
+    //switch navlink clicked to active
+
+    //document.addEventListener("DOMContentLoaded", ()=>{
+       const groupSearchFilterName =query.get("nested_search_parent")
+       let finderLink =`input[data-namegroup="${groupSearchFilterName}"]`
+        if(document.querySelectorAll(finderLink)){
+          console.log(document.querySelectorAll(finderLink))
+          const elements = document.querySelectorAll(finderLink);
+          this.checkAllSelectedCategoryGroupOnSideMenu(elements)
+        }else{
+          //render all search or no search or no courses info
+        }
+   // })
+      
+ 
+   
+
+
     
+  }
+
+  checkAllSelectedCategoryGroupOnSideMenu = (elements) =>{
+  
+   
+     elements.forEach(checkbox=>{
+       //
+       checkbox.checked=true
+   
+
+     })
+     //drop parent down
+    
+  }
+
+  _removeDuplicates =(arr)=>{
+    const ids = arr.map(o => o.id)
+    const filtered = arr.filter(({id}, index) => !ids.includes(id, index + 1))
+    return filtered
   }
 
 
@@ -277,7 +332,8 @@ class CoursesScreen extends React.Component{
      let results = [];
      let FinalOutput =[]
       //if a search is made in the url
-      batchedCategoriesFilter.forEach(checkList =>{
+    const cleanedCategories = this._removeDuplicates(batchedCategoriesFilter)
+      cleanedCategories.forEach(checkList =>{
            //alert(checkList.givenElement.getAttribute("data-parent"))
         results = cleanSlate.filter((course) => {
          let parent_category =checkList.givenElement.getAttribute("data-parent")
