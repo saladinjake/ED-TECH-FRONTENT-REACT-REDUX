@@ -10,10 +10,10 @@ import { getCourse, getCourses } from "../api/courses.services";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { fetchCourses, addToCart } from "../redux/actions/cart.action";
+
 import { getAuthProfile } from "../api/learner.services";
 import toast from "react-hot-toast";
-// import { useHistory, useLocation } from "react-router-dom";
+import { addToCart, fetchCourses } from "../redux/actions/cart.action";
 import { addToWishList } from "../redux/actions/wishlist.action";
 
 import $ from "jquery";
@@ -49,31 +49,15 @@ const CourseScreen = ({
   const [loading, setLoading] = useState(true);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [relatedCourses, setRelatedCourses] = useState([]);
-
+  const [appReady,setAppReady] = useState(false)
   const [editClicked, setEditClicked] = useState(false);
 
   const handleAddToCart = async (e, courseId,price,courseName) => {
     e.preventDefault();
     if (price <= 0) {
-      //automaitcally enroll
-      let payload = [];
-      let newObj = {};
-      newObj.user_id = user?.id;
-      newObj.course_id =courseId;
-      payload.push(newObj);
-
-      try {
-        await enrollCourses({
-          enrollments: payload,
-        });
-        toast.success(`Courses enrolled succesfully`);
-
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 2000);
-      } catch (err) {
-        toast.error(`Could not enroll for free course` + courseName);
-      }
+       let paidCourseId = courseId;
+      addToCart(courseId);
+      
     } else {
       let paidCourseId = courseId;
       addToCart(courseId);
@@ -99,8 +83,10 @@ const CourseScreen = ({
 
   useEffect(() => {
     (async function loadContent() {
+      setAppReady(false)
       await init()
       await fetchCourses()
+
 
       // const lastLocation = useLocation();
     })();
@@ -123,6 +109,7 @@ const CourseScreen = ({
           );
         }
         setLoading(false);
+        setAppReady(true)
       }
     })();
     // eslint-disable-next-line

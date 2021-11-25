@@ -12,14 +12,15 @@ import SearchWidget from "../components/SearchWidget";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import {  logOut, setPrevPath } from "../redux/actions/auth.action";
-import { fetchCourses } from "../redux/actions/courses.action";
+
 import Loader from "../components/Loader";
 import { useQuery } from "../helpers/hooks/useQuery.js";
 import { useHistory } from "react-router-dom";
 import { getCourses } from "../api/courses.services";
 import { getCategories } from "../api/category.services";
 import $ from "jquery"
-
+import { addToCart, fetchCourses } from "../redux/actions/cart.action";
+import { addToWishList } from "../redux/actions/wishlist.action";
 const querySearch = () => {
   const queryString = window.location.search;
   const parameters = new URLSearchParams(queryString);
@@ -122,11 +123,9 @@ class CoursesScreen extends React.Component{
 
   runSearchEngineQuery = () =>{
      const searchField = document.getElementById("search")
-
     //if a search is made in the url
     const query = querySearch()
      const searchFrom = query.get("applied_search")
-     
     if(query.get("search")!==null  || query.get("search_menu")!==null ){
       //const pathname = location.patname;
        searchField.value=query.get("search");
@@ -194,7 +193,7 @@ class CoursesScreen extends React.Component{
   componentDidMount = async() =>{   
       //return clean state of the course list
     try{
-        //await this.props.fetchCourses() // causes memory leak and slows loading dont use this
+        await this.props.fetchCourses() // causes memory leak and slows loading dont use this
         //console.log(this.props)
          const query = querySearch()
           const searchField = document.getElementById("search")
@@ -284,35 +283,22 @@ class CoursesScreen extends React.Component{
 
 
     //ensure the right boxes are checked
-    //switch navlink clicked to active
-
-    //document.addEventListener("DOMContentLoaded", ()=>{
-       const groupSearchFilterName =query.get("nested_search_parent")
-       let finderLink =`input[data-namegroup="${groupSearchFilterName}"]`
-        if(document.querySelectorAll(finderLink)){
-          console.log(document.querySelectorAll(finderLink))
-          const elements = document.querySelectorAll(finderLink);
-          this.checkAllSelectedCategoryGroupOnSideMenu(elements)
-        }else{
-          //render all search or no search or no courses info
-        }
-   // })
-      
- 
-   
-
-
+  
+ const groupSearchFilterName =query.get("nested_search_parent")
+ let finderLink =`input[data-namegroup="${groupSearchFilterName}"]`
+  if(document.querySelectorAll(finderLink)){
+    console.log(document.querySelectorAll(finderLink))
+    const elements = document.querySelectorAll(finderLink);
+    this.checkAllSelectedCategoryGroupOnSideMenu(elements)
+  }else{
+    //render all search or no search or no courses info
+  }
     
   }
 
   checkAllSelectedCategoryGroupOnSideMenu = (elements) =>{
-  
-   
      elements.forEach(checkbox=>{
-       //
        checkbox.checked=true
-   
-
      })
      //drop parent down
     
@@ -455,12 +441,10 @@ class CoursesScreen extends React.Component{
    
 
     if (catId > 0) {
-      
-       
-        let filtered=  courses.filter((course) => {
-            return parseInt(course.category_id) === catId &&
-                   parseInt(course.status) === 1 ;
-          })
+        let filtered =  courses.filter((course) => {
+          return parseInt(course.category_id) === catId &&
+                parseInt(course.status) === 1 ;
+      })
         
     } 
 
@@ -626,16 +610,24 @@ class CoursesScreen extends React.Component{
 
 
 
-// export default CourseGrid;
+
+
+
 CoursesScreen.propTypes = {
-  course: PropTypes.object.isRequired,
+   course: PropTypes.object.isRequired,
   fetchCourses: PropTypes.func.isRequired,
+  addToCart: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  course: state.course,
+  cart: state.cart,
+  auth: state.auth,
+  wishList: state.wishList,
+    course: state.course,
 });
 
 export default connect(mapStateToProps, {
+  addToCart,
   fetchCourses,
+  addToWishList,
 })(CoursesScreen);

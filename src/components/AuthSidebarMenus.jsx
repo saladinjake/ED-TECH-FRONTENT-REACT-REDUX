@@ -12,7 +12,7 @@ const AuthSidebarMenus = () => {
         <ul className="nav flex-column pills-link col-md-10 text-center offset-md-1">
           <li className="nav-item py-2">
             <a  
-              className="nav-link text-white inherit  induct"
+              className="nav-link text-white inherit active induct"
               aria-current="page"
               href={process.env.PUBLIC_URL+"/mylearning?search_menu=all&optimize=true&max_range=1000"}
              data-nameval="all"

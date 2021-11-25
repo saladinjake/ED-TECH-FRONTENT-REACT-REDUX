@@ -3,20 +3,21 @@ import { useHistory } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import PageHeader from "../components/PageHeader";
-import CartDetail from "../components/CartDetail";
+import WishListDetail from "../components/WishlistDetail";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { removeFromCart, fetchCourses , 
  //getCart
 } from "../redux/actions/cart.action";
+import {getWishlist,deleteWishlist,addToWishlist} from "../api/wishlist.services"
 
 
-const CartScreen = ({
+const WishListScreen = ({
   auth: { isAuthenticated },
-  cart: { cart, total },
-  removeFromCart,
-  fetchCourses
+//  cart: { cart, total },
+ // removeFromCart,
+  //fetchCourses
 }) => {
     //api cart not implemented. assumes a run time event when 
   //user might not actually proceed to buy the course
@@ -39,33 +40,33 @@ const CartScreen = ({
     <>
       <NavBar />
       <PageHeader
-        pageTitle="Shopping Cart"
+        pageTitle="WishList"
         bgClass="courses-banner-bg"
         textPosition="text-start"
       />
-      <CartDetail />
+      <WishListDetail />
 
       <Footer />
     </>
   );
 };
 
-CartScreen.propTypes = {
+WishListScreen.propTypes = {
   auth: PropTypes.object.isRequired,
-  cart: PropTypes.object.isRequired,
-  removeFromCart: PropTypes.func.isRequired,
+ // cart: PropTypes.object.isRequired,
+ // removeFromCart: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  cart: state.cart,
+  //cart: state.cart,
   auth: state.auth,
-  wishList: state.wishList,
+  //wishList: state.wishList,
     course: state.course,
 });
 
 export default connect(mapStateToProps, {
-  removeFromCart,
-  fetchCourses,
+  //removeFromCart,
+ // fetchCourses,
 
-})(CartScreen);
+})(WishListScreen);
 

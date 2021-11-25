@@ -6,6 +6,7 @@ import {
   ADD_QUANTITY,
   SUB_QUANTITY,
   CLEAR_CART,
+  GET_CART
 } from "./types";
 
 import $ from "jquery";
@@ -14,6 +15,8 @@ import { getCourses } from "../../api/courses.services";
 export const fetchCourses = () => async (dispatch) => {
   try {
     const res = await getCourses();
+
+    ///console.log(res.data.data.courses)
     dispatch({
       type: GET_COURSES,
       payload: res.data.data.courses,
@@ -61,3 +64,10 @@ export const clearCart = () => async (dispatch) => {
     type: CLEAR_CART,
   });
 };
+
+
+// export const getCart  = () => async (dispatch) =>{
+//    dispatch({
+//     type: GET_CART
+//    })
+// }

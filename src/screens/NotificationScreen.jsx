@@ -5,7 +5,7 @@ import DashboardPageHeader from "../components/DashboardPageHeader";
 import QuickMenus from "../components/QuickMenus";
 import CoursesSection from "../components/CoursesSection";
 import Notifications from "../components/Notifications";
-
+import PageHeader from "../components/PageHeader";
 
 import { getLearnerInfo } from "../api/dashboard.services";
 
@@ -116,24 +116,13 @@ const DashbaordScreen = ({ auth: { user } }) => {
   return (
     <>
       <NavBar />
-      <DashboardPageHeader
-        welcomeTitle={`Hey, ${user.first_name}  ${user.last_name}`}
-        welcomeSubtitle="Welcome back to your questense dashboard.
-        You can continue your learning path by exploring 
-        our pages"
-        btnTitle="Explore my courses"
+     
+  <PageHeader
+        pageTitle="Notifications"
         bgClass="courses-banner-bg"
-        
-        activeCourses={coursesActive}
-        upcomingCourses={upcomingcourses}
-        completedCourses={[]}
+        textPosition="text-start"
       />
-      <QuickMenus 
-       profileUrl={urlLink}
-       profilePercent={30}
-      />
-      <CoursesSection />
-      <Notifications notifications={notifications} limit={8}/>
+      <Notifications notifications={notifications} />
       <Footer />
     </>
   );

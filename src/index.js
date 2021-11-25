@@ -10,13 +10,17 @@ import "slick-carousel/slick/slick-theme.css";
 
 
 import { Provider as Provisioner }  from "react-redux";
-import QuestenceReduxStore from "./redux/store";
+import QuestenceReduxStore,{ persister } from "./redux/store";
+
+//import { PersistGate } from 'redux-persist/integration/react';
 
 ReactDOM.render(
   <React.StrictMode>
      {/*REDUX STATE ENHANCER*/}
     <Provisioner store={QuestenceReduxStore}>
-       <App />
+    
+          <App />
+    
     </Provisioner>
   </React.StrictMode>,
   document.getElementById("root")

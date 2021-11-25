@@ -27,6 +27,7 @@ export const CLEAR_CART = "CLEAR_CART";
 export const REMOVE_FROM_CART = "REMOVE_FROM_CART";
 export const ADD_QUANTITY = "ADD_QUANTITY";
 export const SUB_QUANTITY = "SUB_QUANTITY";
+export const GET_CART= "GET_CART";
 //Path
 export const SET_PATH = "SET_PATH";
 

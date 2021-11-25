@@ -27,16 +27,21 @@ function LongTimeAgo(date) {
   return value + " " + unit + " " + direction;
 }
 
-const Notifications = ({notifications}) => {
+const Notifications = ({notifications, limits}) => {
+  let listNotifications = notifications
+  if(Number.isInteger(limits) ){
+    listNotifications = notifications.slice(0, limits);
+  }
   return (
     <>
       <div className="container">
         <div className="row">
           <div className="col-md-12">
+          <br/>
             <h4>Notifications</h4>
           </div>
 
-            {notifications.length > 0 && notifications.slice(0,5).map((item, i) => {
+            {notifications.length > 0 && listNotifications.map((item, i) => {
                         let notifier = "fa user";
                         if (
                           item.data.notification_type === "Course Enrollment"

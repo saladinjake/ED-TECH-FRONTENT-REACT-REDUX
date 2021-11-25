@@ -3,13 +3,14 @@ import React,{ useState, useEffect} from "react";
 // import { addToWishlist } from "../api/wishlist.services";
 import { connect } from "react-redux";
 import { addToCart, fetchCourses } from "../redux/actions/cart.action";
+//import { addToWishList } from "../redux/actions/wishlist.action";
 import toast from "react-hot-toast"
 import PropTypes from "prop-types";
 import $ from "jquery";
 
 
+import { addToWishlist } from "../api/wishlist.services"
 
-import { addToWishList } from "../redux/actions/wishlist.action";
 import moment from "moment";
 
 import { enrollCourses } from "../api/enrollment.services";
@@ -31,7 +32,7 @@ const CourseCard = ({
     cart: { cart },
     wishList: { wishList },
     addToCart,
-    addToWishList,
+    //addToWishList,
     fetchCourses,
 }) => {
 
@@ -60,10 +61,11 @@ const CourseCard = ({
      return false
     }
     try {
-      await addToWishList(id);
+      await addToWishlist({id}); //sync with database not local storage any more
       setStatus("Course Added to wishlist");
       toast.success("Course Added to wishlist");
     } catch (err) {
+      alert(err)
       setStatus("Could not add course to wish list");
       toast.error(
           `Could not add the course  ` + courseTitle+" to wish list"
@@ -79,30 +81,12 @@ const CourseCard = ({
      return false
     }
     if (parseInt(price) <= 0) {
-      //automaitcally enroll
-      let payload = [];
-      let newObj = {};
-      newObj.user_id = user?.id;
-      newObj.course_id = courseId;
-      payload.push(newObj);
-
-      try {
-        await enrollCourses({
-          enrollments: payload,
-        });
-        toast.success(`Free Course enrolled succesfully`);
-
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 2000);
-      } catch (err) {
-        toast.error(
-          `Could not enroll you in for the free course: ` + courseTitle
-        );
-      }
+      let paidCourseId = courseId;
+      await addToCart(paidCourseId);
+      
     } else {
       let paidCourseId = courseId;
-      addToCart(paidCourseId);
+      await addToCart(paidCourseId);
     }
   };
 
@@ -135,19 +119,19 @@ const CourseCard = ({
         <div className="row border-top pt-2">
           <a
             href={`${process.env.PUBLIC_URL}/course-detail/${courseId}`}
-            className="border-end text-center text-11 fw-bold text-decoration-none text-danger col q-text-link"
+            className="fake-cursor border-end text-center text-11 fw-bold text-decoration-none text-danger col q-text-link"
           >
             Details
           </a>
           <span
               onClick={(e)=> {addToMyWishList(e,courseId,courseTitle)}}
-            className="border-end text-center text-11 fw-bold text-decoration-none text-warning col q-text-link"
+            className="fake-cursor border-end text-center text-11 fw-bold text-decoration-none text-warning col q-text-link"
           >
             Wishlist
           </span>
           <span
             onClick={(e)=> {handleAddToCart(e,courseId,coursePrice,courseTitle)}}
-            className="text-center fw-bold text-11 text-decoration-none text-success col q-text-link"
+            className="fake-cursor text-center fw-bold text-11 text-decoration-none text-success col q-text-link"
           >
             Buy
           </span>
@@ -173,5 +157,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   addToCart,
   fetchCourses,
-  addToWishList,
+  //addToWishList, //this is redux add to wishlist not synced with db
 })(CourseCard);
