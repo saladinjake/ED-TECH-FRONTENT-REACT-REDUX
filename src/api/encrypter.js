@@ -9,17 +9,35 @@
 import AES from "crypto-js/aes";
 import Utf8 from "crypto-js/enc-utf8";
 import dotenv from "dotenv";
-
-
 dotenv.config();
 
-export class CartEncrypter{
-  //fake name is : giffy_image_*
-    hasCartDataBeenTamperedWith =() =>{
 
+/*user can only have one cart*/
+export class ShoppingCartEncrypted{
+  //fake name is : giffy_image_*
+  constructor(User){
+    this.signature ="https://questence.org"
+    this.key = process.env.PUBLIC_KEY_ENCRYPTER_1
+    this.finalSignature = `${this.signature}_${this.key}`;
+    this.redFlag = true;
+    this.SecurityBot = new  ARTIFICIAL_INTELLIGENCE_BOT();
+    this.userOnline =User.getInstance()  // one to one relationship
+  }
+
+
+  static getInstance() {
+    if (!User.instance) {
+      User.instance=new User('','lastname');
+    }
+    return User.instance;
+  }
+    hasCartDataBeenTamperedWith =(cart) =>{
+       if(this.isIllegalCart(cart)){
+         this.SecurityBot.getCurrentUser()
+       }
     }
 
-    isIllegalCart =() => {}
+    isIllegalCart =(cart) => {}
 
     /*cart encryption decryption*/
      EncryptCart = (value)=> 
@@ -72,6 +90,38 @@ export class CartEncrypter{
           
     }
    
+}
+
+
+/*there are no two users with the same userid*/
+
+class User {
+
+  constructor(uniqueEmail,uniqueTokenAccess) {
+    this.emailField=uniqueEmail;
+    this.tokenField=uniqueTokenAccess;
+
+    if(!this.emailField && !this.tokenField){
+      User.die("You cant access questence illegally")
+    }
+    this.shoppingCart = ShoppingCartEncrypted.getInstance() // you only have one shopping cart 
+    User.instance=this;
+  }
+
+  getMyCredentials =() =>{}
+  isAuthenticated =() => {}
+  isPreviledged =() => {}
+
+  static getInstance() {
+    if (!User.instance) {
+      User.instance=new User('','');
+    }
+    return User.instance;
+  }
+
+  static die = (msg="try another move") =>{
+     throw new Error(msg)
+  }
 }
 
 export class UserCredentialEncrypter{
