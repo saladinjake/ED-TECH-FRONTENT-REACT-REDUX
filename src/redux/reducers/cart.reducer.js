@@ -28,12 +28,18 @@ const initialState = {
   
 };
 
+ const cartReset =() =>{
+  const flatcart =[]
+   localStorage.setItem(
+        "giffy_image_*",
+        EncryptCart(JSON.stringify(flatcart))
+      );
+ }
 
-
-// const applyGetCart = (state, action) => ({
-//   ...state,
-//   cart: action.payload
-// });
+const applyGetCart = (state, action) => ({
+  ...state,
+  cart: action.payload
+});
 
 
 
@@ -90,29 +96,41 @@ export default (state = initialState, action) => {
       };
     }
     case REMOVE_FROM_CART:
-    
-      let itemToRemove = state.cart.find((item) => action.payload === item.id);
-      let newCart = state.cart.filter((item) => action.payload !== item.id);
-      console.log(newCart)
+       //using state
+      // let itemToRemove = state.cart.find((item) => action.payload === item.id);
+      // let newCart = state.cart.filter((item) => action.payload !== item.id);
+      // console.log(newCart)
 
-      let newTotal = state.total - itemToRemove.price * itemToRemove.quantity;
-      toast.success(`Course removed from cart`);
-      const flatcart = state.cart;
+      // let newTotal = state.total - itemToRemove.price * itemToRemove.quantity;
+      // toast.success(`Course removed from cart`);
+      // const flatcart = state.cart;
+      // localStorage.setItem(
+      //   "giffy_image_*",
+      //   EncryptCart(JSON.stringify(flatcart))
+      // );
+
+  //write hot scripts that makes wonders saladin jake!!!
+      //using storage
+      let newCart = JSON.parse(DecryptCart(localStorage.getItem("giffy_image_*")));
+      //manipulate the state
+      let itemToRemove = newCart.flat().find((item) => action.payload === item.id);
+       newCart = newCart.filter((item) => action.payload !== item.id);
+      // console.log(newCart)
+
+      //change encrypted store data
       localStorage.setItem(
         "giffy_image_*",
-        EncryptCart(JSON.stringify(flatcart))
+        EncryptCart(JSON.stringify(newCart.flat()))
       );
-
+      const flatcart = newCart.flat()
       return {
         ...state,
-        cart: [...newCart],
-        total: newTotal
-     
+        cart: [...flatcart], //for human consumption
       };
     case ADD_QUANTITY:
       let addedItem = state.cart.flat().find((item) => item.id === action.payload);
       addedItem.quantity += 1;
-      newTotal = state.total + addedItem.price;
+      let newTotal = state.total + addedItem.price;
       return {
         ...state,
       
@@ -138,10 +156,8 @@ export default (state = initialState, action) => {
       }
     case CLEAR_CART:
       toast.success(`Cart Cleared`);
-      localStorage.setItem(
-        "giffy_image_*",
-        EncryptCart(JSON.stringify([]))
-      );
+     
+      cartReset()
   
       return {
         ...state,
@@ -149,8 +165,8 @@ export default (state = initialState, action) => {
         total: state.total
       };
 
-    // case GET_CART:
-    //    return applyGetCart
+    case GET_CART:
+       return applyGetCart
     default:
       return state;
   }

@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { removeFromCart, fetchCourses , 
  //getCart
 } from "../redux/actions/cart.action";
-import {getWishlist,deleteWishlist,addToWishlist} from "../api/wishlist.services"
+import { getWishlist, deleteWishlist, addToWishlist} from "../api/wishlist.services"
 
 
 const WishListScreen = ({
@@ -29,9 +29,7 @@ const WishListScreen = ({
        if (!isAuthenticated) {
          history.push("/login", { from: history.location.pathname });
        }
-       // await fetchCourses();
-  
-      // const lastLocation = useLocation();
+     
     })();
     // eslint-disable-next-line
   }, []);
@@ -53,20 +51,17 @@ const WishListScreen = ({
 
 WishListScreen.propTypes = {
   auth: PropTypes.object.isRequired,
- // cart: PropTypes.object.isRequired,
- // removeFromCart: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  //cart: state.cart,
+ 
   auth: state.auth,
-  //wishList: state.wishList,
+
     course: state.course,
 });
 
 export default connect(mapStateToProps, {
-  //removeFromCart,
- // fetchCourses,
+
 
 })(WishListScreen);
 

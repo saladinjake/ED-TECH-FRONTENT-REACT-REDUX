@@ -165,8 +165,51 @@ const CartDetail  = ({
    }
   }
 
-  total = getTotalFromDecryptedCart(cart);
+  const filterOutAlreadyEnrolledCourses = async () =>{
+   /*this is a temporary fix of the bug*/
+   //this takes state into considerationwith redux
+   
+
+//just do localstorage with encrypted store
+    if(localStorage.getItem("giffy_image_*")) {
+      cart =JSON.parse( 
+          DecryptCart(localStorage.getItem("giffy_image_*"))
+          );
+    }else{
+      cartReset() //reset localstore encrypted cart
+    }
+
+   //bring back the cart to plain array data
+    const shoppingCart = cart.length> 0? cart: 
+         JSON.parse( 
+          DecryptCart(localStorage.getItem("giffy_image_*"))
+    );
+    //mycart
+    cart =shoppingCart
+
+    let res = await getAuthProfile(); // faster experience for an expensive request
+    let enrolledCourses = res.data.data;
+    let courseEnrolledIds = enrolledCourses.map((course) => course.course.id);
+    const cleanedUpCart = cart.flat().filter(coursePackage => !courseEnrolledIds.includes(coursePackage.id));
+   console.log(cleanedUpCart)
+   return cleanedUpCart
+ }
+
+
   //alert(total.price)
+
+
+    useEffect(() => {
+    (async function loadContent() {
+       if (!isAuthenticated) {
+         history.push("/login", { from: history.location.pathname });
+       }
+      cart = await filterOutAlreadyEnrolledCourses() 
+    })();
+    // eslint-disable-next-line
+  }, []);
+
+
    
 
   useEffect(() => {
@@ -177,7 +220,7 @@ const CartDetail  = ({
   }, []);
 
   
-
+ 
 
 
 
@@ -206,10 +249,10 @@ const CartDetail  = ({
   const enrollStudentToPaidCourses = async () => {
     setLoading(true);
      //cart is already available in redux state
-      // cart = cart.length> 0? cart: 
-      //    JSON.parse( 
-      //     DecryptCart(localStorage.getItem("giffy_image_*"))
-      //     )
+      cart = cart.length> 0? cart: 
+         JSON.parse( 
+          DecryptCart(localStorage.getItem("giffy_image_*"))
+          )
     if(cart.length> 0){
       const freeCourses = cart.filter(course=>{
         return course.price <= 0
@@ -372,24 +415,16 @@ const CartDetail  = ({
  
 
 
-  useEffect(() => {
-    (async function loadContent() {
-       if (!isAuthenticated) {
-         history.push("/login", { from: history.location.pathname });
-       }
-//        await fetchCourses() // get all courses
 
-      // const lastLocation = useLocation();
-    })();
-    // eslint-disable-next-line
-  }, []);
 
 
   const removeItemFromCart = async (id) => {
     console.log("func recived", id);
     await removeFromCart(id);
   };
+ 
 
+   total = getTotalFromDecryptedCart(cart);
   return (
     <>
       <div className="container">
@@ -458,7 +493,7 @@ const CartDetail  = ({
               <tr>
 
                 {loading==true ? (<Loader width="100"/>):(<td className="product-subtotal">
-                  <span className="subtotal">No items in wishlist</span>
+                  <span className="subtotal">No items in cart</span>
                 </td>)}
                 
               </tr>

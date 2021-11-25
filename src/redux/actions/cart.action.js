@@ -11,6 +11,7 @@ import {
 
 import $ from "jquery";
 import { getCourses } from "../../api/courses.services";
+import { DecryptCart, EncryptCart} from "../../api/encrypter"
 
 export const fetchCourses = () => async (dispatch) => {
   try {
@@ -38,6 +39,8 @@ export const addToCart = (id) => async (dispatch) => {
 };
 
 export const removeFromCart = (id) => async (dispatch) => {
+  //manual removal logic for storage cart
+
   dispatch({
     type: REMOVE_FROM_CART,
     payload: id,

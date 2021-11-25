@@ -8,11 +8,11 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
 // whitelist and blacklist are properties of react redux which allows user to select which reducer needs to be persisted and which not to
-// const persistConfig = {
-//   key: 'cart',
-//   storage,
-//   whitelist: ['cart'],
-// };
+const persistConfig = {
+  key: 'cart',
+  storage,
+  whitelist: ['cart'],
+};
  //persist the state
 
 const initialState = {};
@@ -30,9 +30,7 @@ const middlewareArr = [thunk,logger];
 // );
 
 /*with persistence*/
-//const pReducer = persistReducer(persistConfig, rootReducer);
-
-
+const pReducer = persistReducer(persistConfig, rootReducer);
 
 const QuestenceReduxStore= createStore(rootReducer,
    initialState, 
@@ -41,7 +39,7 @@ const QuestenceReduxStore= createStore(rootReducer,
   )
 
    );
-//const persistor = persistStore(QuestenceReduxStore);
+const persistor = persistStore(QuestenceReduxStore);
 
 
 

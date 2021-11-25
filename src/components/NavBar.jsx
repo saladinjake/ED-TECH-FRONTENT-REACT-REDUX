@@ -521,10 +521,55 @@ can only have alphanumeric and .- char in the domain part`)
                 </div>
               </form>
               <div className="">
-                <a className="btn btn-outline-dark btn-sm me-2 btn-rounded">
+
+
+               {isAuthenticated? (
+                  <>
+
+                  <NavDropdown
+                  title={ user?.first_name+ " "+ user?.last_name}
+                  id="basic-nav-dropdownx"
+                  show={fifthShow}
+                  onMouseEnter={() => setfifthShow(true)}
+                  onMouseLeave={() => setfifthShow(false)}
+                   className="btn text-white btn-sm me-2 "
+                >
+
+                {AuthLinks.length && AuthLinks.map(links_authorized=>{
+                    return (
+                      <NavDropdown.Item href={process.env.PUBLIC_URL+ links_authorized.link}
+                            >
+                    {links_authorized.name}
+                  </NavDropdown.Item>
+                      )
+                })}
+                  
+
+                  <NavDropdown.Item href="#" onClick={handleLogout}
+                            >
+                    Log out
+                  </NavDropdown.Item>
+                 
+                </NavDropdown>
+
+
+                  </>
+
+                ):(
+
+                 <>
+                   <a className="btn btn-outline-dark btn-sm me-2 btn-rounded">
                   Log In
                 </a>
                 <a className="btn btn-solid-teal btn-sm btn-rounded">Sign Up</a>
+
+                 </>
+
+
+
+                )}
+              
+                
               </div>
             </Navbar.Collapse>
           </Container>
@@ -1079,11 +1124,12 @@ can only have alphanumeric and .- char in the domain part`)
                   <>
 
                   <NavDropdown
-                  title={ user?.first_name+ ""+ user?.last_name}
+                  title={ user?.first_name+ " "+ user?.last_name}
                   id="basic-nav-dropdownx"
                   show={fifthShow}
                   onMouseEnter={() => setfifthShow(true)}
                   onMouseLeave={() => setfifthShow(false)}
+                   className="btn text-white btn-outline-light btn-sm me-2 btn-rounded "
                 >
 
                 {AuthLinks.length && AuthLinks.map(links_authorized=>{
