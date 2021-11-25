@@ -89,7 +89,56 @@ export class TextToBinaryBitsEncrypter{
 }
 
 export class TextFilesEncryption{
+   encryptMyCodeFile= (file) => {
+     /*hide this decription algorithm in a server that will
+      * respond to the request and ship in code files
+      *to this route folder and trigger a function call to initiate the process
+      * the regex will eventually remove comments from the below code from this code via the api service
+      * DO NOT CHANGE THIS LINES BELOW
+     */
 
+     /****code template by default is commented out****/
+     //const codeFiles = this.scanCodeFiles("/") // root directory
+     //const whiteList =["src/"];
+     //const blackLists =[".git","node_modules","public"]
+     /*
+     *  codeFiles.forEach(file=>{
+         this.encryptIt(file)
+        })
+     *
+     *
+     *
+     /
+   }
+
+   decryptMyCodeFile = (file) => {
+     /*hide this decription algorithm in a server that will
+      * respond to the request and ship in code files
+      *to this route folder and trigger a function call to initiate the process
+      * the regex will eventually remove comments from the below code from this code via the api service
+      * DO NOT CHANGE THIS LINES BELOW
+     */
+
+     /****code template by default is commented out****/
+     //const codeFiles = this.scanCodeFiles("/") // root directory
+     //const whiteList =["src/"];
+     //const blackLists =[".git","node_modules","public"]
+     /*
+     *  codeFiles.forEach(file=>{
+         this.decryptIt(file)
+        })
+     *
+     *
+     *
+     /
+
+
+    /****code template by default is commented out ends****/
+
+   }
+
+   decryptIt =(__FILE__) =>{}
+   encryptIt =(__FILE__) =>{}
 }
 
 export class AHackerWasHere{
@@ -108,6 +157,9 @@ export class ARTIFICIAL_INTELLIGENCE_BOT{
   safeMode =() => {}
   defenceMode =() => {}
 }
+
+
+
 
 
 
