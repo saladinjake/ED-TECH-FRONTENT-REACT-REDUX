@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import SortWidget from "./SortWidget";
-import HorizontalCourseCard from "./HorizontalCourseCard";
-import CourseCard from "./CourseCard";
+import SortWidget from "./SortWidgetMyLearning";
+import HorizontalCourseCard from "./EnrolledHorizontalCourseCard";
+import CourseCard from "./EnrolledCourseCard";
 const CoursesWithSortWidget = ({ filteredCourses}) => {
   const [sortType, setSortType] = useState("grid");
   const handleSort = (sortType) => {
@@ -52,6 +52,7 @@ const CoursesWithSortWidget = ({ filteredCourses}) => {
                         <div className="col-md-4">
                       <CourseCard
                  key={index+ "_" + Math.random()*90}
+                 courseTitle={course?.course?.course_code}
                 courseDesc={course?.course?.course_description}
                 courseAuthorCompany={course?.course?.instructor?.instructor_profile?.current_employer_designation}
                 courseAuthor={course?.course?.instructor?.first_name+ " " + course?.course?.instructor?.last_name}

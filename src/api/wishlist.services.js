@@ -20,11 +20,7 @@ export const addToWishlist = async (data) => {
 };
 
 export const deleteWishlist = async (wishlistId) => {
-  let request = axios.delete(`wishlists/${wishlistId}/delete`,{
-     data:{
-         _method:"DELETE"
-        },
-  });
+  let request = axios.delete(`wishlists/${wishlistId}/delete`);
   return request.then((response) => {
     if (response.status === 200) {
       return response && response;

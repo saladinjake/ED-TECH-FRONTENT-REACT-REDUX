@@ -105,6 +105,30 @@ class MyLearning extends React.Component{
      this.refreshCoursesState(allcourses)
   }
 
+  handleCurrentRedrawFilter = (allMycourses,searchId) =>{
+    let searchdata = allMycourses
+     switch(searchId){
+        case "free_course_offering":
+         searchdata = searchdata.filter(course=> course.course.price<=0)
+         break;
+        case "naming_convention":
+         searchdata = searchdata.sort((a,b)=> b.course.course_name - a.course.course_name)
+         break;
+        case "payment_required":
+         searchdata = searchdata.filter(course=>course.course.price>0)
+         break;
+        case "led_by_instructor":
+         searchdata = searchdata.filter(course=>course.course.learning_style == "Instructor Paced" )
+         break
+        case "self":
+         searchdata = searchdata.filter(course=>course.course.learning_style == "Self Paced" )
+         break;
+
+     }
+
+      this.refreshCoursesState(searchdata)
+  }
+
   runSearchEngineQuery = (allMycourses) =>{
      
     //if a search is made in the url
@@ -113,6 +137,14 @@ class MyLearning extends React.Component{
     
        //swictch from the search type
     switch(allowedTags){ //applied search key
+
+         case "free_course_offering": //filter buton checklists of categories and sub categories 
+         case "payment_required": //course pacing filter search
+         case "self":
+         case "led_by_instructor":
+         case "naming_convention":
+           this.handleCurrentRedrawFilter(allMycourses,allowedTags) //if user enters a course name and tries to check if course entered is free
+           break; 
          case "active": //menu clicked category search
          this.handleActiveCoursesFilter(allMycourses)
            break;
@@ -128,6 +160,9 @@ class MyLearning extends React.Component{
          case "all":
            this.handleAllCoursesFilter(allMycourses) //if user enters a course name and tries to check if course entered is free
            break;  //paid courses
+
+         
+
          default:
             this.handleAllCoursesFilter(allMycourses)       
             break
