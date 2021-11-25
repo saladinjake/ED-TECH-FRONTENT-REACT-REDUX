@@ -27,17 +27,44 @@ export class ShoppingCartEncrypted{
 
   static getInstance() {
     if (!User.instance) {
-      User.instance=new User('','lastname');
+      User.instance=new User('','');
     }
     return User.instance;
   }
     hasCartDataBeenTamperedWith =(cart) =>{
        if(this.isIllegalCart(cart)){
-         this.SecurityBot.getCurrentUser()
+         this.SecurityBot.getCurrentUser(User)
+          .banUser()
+          .notifyAdmin()
+          .initiateSelfDefence()// continously loops to determine user activity or persistence
+          
        }
     }
 
-    isIllegalCart =(cart) => {}
+    isIllegalCart =(cart) => {
+        const decryptedCartString = this.DecryptCart(cart);
+        if(this.cartWasInflatedOrDeflated(decryptedCartString)){
+            return true
+        }else{
+            return false
+        }
+    }
+
+    cartWasInflatedOrDeflated =(decryptedCartString) =>{
+        const validated = this.analyseCartOriginality(decryptedCartString);
+        if(!validated){
+            return true
+        }else{
+            return false
+        }
+    }
+
+    analyseCartOriginality =async (decryptedCartString) => {
+        /*check if the price of the course has been inflated or deflated by the user*/
+        /*also check if the digital decrypted data is of same signature*/
+       //stopped here today 25/11/2021
+      
+    }
 
     /*cart encryption decryption*/
      EncryptCart = (value)=> 
@@ -114,18 +141,24 @@ class User {
 
   static getInstance() {
     if (!User.instance) {
-      User.instance=new User('','');
+      User.instance=new User(User.getEmail(),User.getToken());
     }
     return User.instance;
+  }
+
+  static getEmail(){
+
+  }
+
+  static getToken(){
+
   }
 
   static die = (msg="try another move") =>{
      throw new Error(msg)
   }
-}
 
-export class UserCredentialEncrypter{
-  /*each of these calls will present unique algorithm for encryption and decrytion*/
+    /*each of these calls will present unique algorithm for encryption and decrytion*/
   encodeUserData =() =>{
     //fake name_key : y3i4&^http://
   }
@@ -133,6 +166,7 @@ export class UserCredentialEncrypter{
   encodeRolesAndPreviledges =() =>{}
   encodeAccessToken = () => {}
 }
+
 
 export class TextToBinaryBitsEncrypter{
 
@@ -198,6 +232,7 @@ export class AHackerWasHere{
 }
 
 export class ARTIFICIAL_INTELLIGENCE_BOT{
+  constructor(){}
   lockOnTargetMachine =() =>{}
   isGoodGuy =() =>{}
   isEnemy =() => {}
@@ -206,6 +241,8 @@ export class ARTIFICIAL_INTELLIGENCE_BOT{
   redFlag =() => {}
   safeMode =() => {}
   defenceMode =() => {}
+  initiateSelfDefence =() =>{}
+  launchPad =(ARTIFICIAL_INTELLIGENCE_BOT) =>{}
 }
 
 
