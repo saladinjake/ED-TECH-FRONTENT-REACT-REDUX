@@ -1,0 +1,6 @@
+class LoggerServiceObserver{
+	observer(){
+
+	}
+	notifier(){}
+}
