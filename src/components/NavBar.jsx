@@ -12,106 +12,103 @@ import toast from "react-hot-toast";
 import { Formik } from "formik";
 import {
   useHistory, //useLocation
-} from "react-router-dom"
+} from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { login, logOut, setPrevPath } from "../redux/actions/auth.action";
 
-import { loginUser,registerLearner,loginUserForgotPassword } from "../api/auth.services";
-
+import {
+  loginUser,
+  registerLearner,
+  loginUserForgotPassword,
+} from "../api/auth.services";
 
 const AUTHLINKS = [
   {
     name: "Dashboard",
     link: "/dashboard",
-    clickHandler: (callback)=>{
-        return callback
-    }
+    clickHandler: (callback) => {
+      return callback;
+    },
   },
   {
     name: "My Learning",
     link: "/mylearning",
-    clickHandler: (callback)=>{
-        return callback
-    }
+    clickHandler: (callback) => {
+      return callback;
+    },
   },
   {
     name: "Wishlist",
     link: "/learner/wishlists",
-    clickHandler: (callback)=>{
-        return callback
-    }
+    clickHandler: (callback) => {
+      return callback;
+    },
   },
 
   {
     name: "Cart",
     link: "/cart",
-    clickHandler: (callback)=>{
-        return callback
-    }
+    clickHandler: (callback) => {
+      return callback;
+    },
   },
 
   {
     name: "Notifications",
     link: "/notifications",
-    clickHandler: (callback)=>{
-        return callback
-    }
+    clickHandler: (callback) => {
+      return callback;
+    },
   },
   {
     name: "Account Settings",
     link: "/learner/accounts",
-    clickHandler: (callback)=>{
-        return callback
-    }
+    clickHandler: (callback) => {
+      return callback;
+    },
   },
 
-  
   {
     name: "Profile",
     link: "/learner/profile",
-    clickHandler: (callback)=>{
-        return callback
-    }
+    clickHandler: (callback) => {
+      return callback;
+    },
   },
-
-  
-  
 ];
 
 const INSTRUCTORLINKS = [
- 
   {
     name: "Profile",
     link: "/instructor-pages/profile",
-    clickHandler: (callback)=>{
-        return callback
-    }
+    clickHandler: (callback) => {
+      return callback;
+    },
   },
   {
     name: "Authored Courses",
     link: "/instructor-pages/mycourses",
-    clickHandler: (callback)=>{
-        return callback
-    }
+    clickHandler: (callback) => {
+      return callback;
+    },
   },
-  
-  
-
-  
 
   {
     name: "Account Settings",
     link: "/instructor-account/reset",
   },
-
 ];
 
-
-const NavBar = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setPrevPath ,cart: { cart } }) => {
+const NavBar = ({
+  auth: { isAuthenticated, user, prevPath },
+  login,
+  logOut,
+  setPrevPath,
+  cart: { cart },
+}) => {
   /*menu and modal toggles*/
- 
- 
+
   const [firstShow, setFirstShow] = useState();
   const [secondShow, setSecondShow] = useState();
   const [thirdShow, setThirdShow] = useState();
@@ -122,8 +119,7 @@ const NavBar = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setP
   const [regModalShow, setRegModalShow] = useState(false);
   const [forgotModalShow, setForgotModalShow] = useState(false);
 
-  let AuthLinks = [].concat([...AUTHLINKS])
-
+  let AuthLinks = [].concat([...AUTHLINKS]);
 
   // if(user.roles[0].name=="Instructor"){
   //   AuthLinks.concat([...INSTRUCTORLINKS])
@@ -148,10 +144,8 @@ const NavBar = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setP
     setForgotModalShow(true);
   };
 
-
   /*functionality feature login signup forget pass*/
   let history = useHistory();
-  
 
   console.log(history);
   var pattern2 = /[?redirectTo=]/;
@@ -166,7 +160,7 @@ const NavBar = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setP
     last_name: "",
     phone_number: "",
     password_confirmation: "",
-    password:""
+    password: "",
   };
 
   useEffect(() => {
@@ -177,14 +171,9 @@ const NavBar = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setP
     // eslint-disable-next-line
   }, []);
 
-  
   const handleSubmit = async (values, { setSubmitting }) => {
-   
-
-   
-       setLoading(true);
+    setLoading(true);
     try {
-    
       const res = await loginUser(values);
       toast.success("Login Successful");
       login(res.data);
@@ -195,114 +184,104 @@ const NavBar = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setP
         window.location.reload();
       }, 2000);
 
-
       setSubmitting(false);
     } catch (err) {
       toast.error(err?.response?.data?.message);
       logOut();
       setSubmitting(false);
-       setLoading(false);
+      setLoading(false);
     }
     setLoading(false);
-
-
-    
   };
 
+  //register
 
-
-//register
-
-const prevalidate = (setSubmitting)=>{
+  const prevalidate = (setSubmitting) => {
     let validated = false;
-    let gmail_regex =/[a-zA-Z0-9]\.[a-zA-Z0-9]@gmail\.com/
-    let email_regex =/^(?:(?!.*?[.]{2})[a-zA-Z0-9](?:[a-zA-Z0-9.!%-]{1,64}|)|\"[a-zA-Z0-9.!% -]{1,64}\")@[a-zA-Z0-9][a-zA-Z0-9.-](.[a-z]{2,}|.[0-9]{1,})$/
+    let gmail_regex = /[a-zA-Z0-9]\.[a-zA-Z0-9]@gmail\.com/;
+    let email_regex =
+      /^(?:(?!.*?[.]{2})[a-zA-Z0-9](?:[a-zA-Z0-9.!%-]{1,64}|)|\"[a-zA-Z0-9.!% -]{1,64}\")@[a-zA-Z0-9][a-zA-Z0-9.-](.[a-z]{2,}|.[0-9]{1,})$/;
     let passwordRegex = new RegExp("^(?=.*[A-Za-z])(?=.*[0-9])(?=.{8,})");
     const initial = {
-        email: document.getElementById("ee").value,
-        password: document.getElementById("pp").value,
-        first_name: document.getElementById("ff").value,
-        last_name: document.getElementById("ll").value,
-        phone_number: document.getElementById("ph").value,
-        password_confirmation: document.getElementById("ppc").value,
+      email: document.getElementById("ee").value,
+      password: document.getElementById("pp").value,
+      first_name: document.getElementById("ff").value,
+      last_name: document.getElementById("ll").value,
+      phone_number: document.getElementById("ph").value,
+      password_confirmation: document.getElementById("ppc").value,
+    };
+    let showErrorOnce = false;
+
+    console.log(initial);
+
+    Object.keys(initial).forEach((keys) => {
+      console.log(keys);
+      if (initial[keys].length <= 0) {
+        showErrorOnce = true;
+        if (showErrorOnce) {
+          showErrorOnce = false;
+          toast.error("Please fill out the blank fields");
+          setSubmitting(false);
+          setLoading(false);
+          return false;
+        }
       }
-      let showErrorOnce = false
-
-      console.log(initial)
-
-      Object.keys(initial).forEach(keys=>{
-        console.log(keys)
-         if(initial[keys].length<=0){
-           showErrorOnce =true 
-           if(showErrorOnce){
-             showErrorOnce=false
-             toast.error("Please fill out the blank fields")
-             setSubmitting(false);
-              setLoading(false);
-             return false
-           }
-          
-         }
-         //validate email
-         if(keys=="email"){
-           if(!initial[keys].match(email_regex)){
-            showErrorOnce =true 
-             if(showErrorOnce){
-               showErrorOnce=false
-               toast.error(`Invalid Email \n must start with alphanumeric char
+      //validate email
+      if (keys == "email") {
+        if (!initial[keys].match(email_regex)) {
+          showErrorOnce = true;
+          if (showErrorOnce) {
+            showErrorOnce = false;
+            toast.error(`Invalid Email \n must start with alphanumeric char
 can only have alphanumeric and @._-% char\n
 cannot have 2 consecutives . exept for quoted string\n
 char before @ can only be alphanumeric and ._-%, exept for quoted string\n
 must have @ in the middle\n
 need to have at least 1 . in the domain part\n
 cannot have double - in the domain part\n
-can only have alphanumeric and .- char in the domain part`)
-               setSubmitting(false);
-                setLoading(false);
-               return false
-            }
-           }
-         }
+can only have alphanumeric and .- char in the domain part`);
+            setSubmitting(false);
+            setLoading(false);
+            return false;
+          }
+        }
+      }
 
-         //check password match
-         if(keys=="password"){
-            if(initial[keys]!=initial["password_confirmation"]){
-               showErrorOnce =true 
-               if(showErrorOnce){
-                 showErrorOnce=false
-                 toast.error("Password do not match")
-                 setSubmitting(false);
-                 setLoading(false);
-                 return false
-               }
-           }
+      //check password match
+      if (keys == "password") {
+        if (initial[keys] != initial["password_confirmation"]) {
+          showErrorOnce = true;
+          if (showErrorOnce) {
+            showErrorOnce = false;
+            toast.error("Password do not match");
+            setSubmitting(false);
+            setLoading(false);
+            return false;
+          }
+        }
 
+        if (!initial[keys].match(passwordRegex)) {
+          showErrorOnce = true;
+          if (showErrorOnce) {
+            showErrorOnce = false;
+            toast.error(
+              "Please use a strong password . Password should contain One capital letter, and atleast a minimum of 8 alphanumeric digits and other symbols "
+            );
+            setSubmitting(false);
+            setLoading(false);
+            return false;
+          }
+        }
+      }
+    });
 
-           if(!initial[keys].match(passwordRegex)){
-               showErrorOnce =true 
-               if(showErrorOnce){
-                 showErrorOnce=false
-                 toast.error("Please use a strong password . Password should contain One capital letter, and atleast a minimum of 8 alphanumeric digits and other symbols ")
-                 setSubmitting(false);
-                 setLoading(false);
-                 return false
-               }
-           }
-         }
-      })
+    return true;
+  };
 
-      return true
-  }
-
-
-
-  const handleSubmitRegistration = async  (values, { setSubmitting }) => {
-   
- 
-   if(prevalidate(setSubmitting)){
-       setLoading(true);
+  const handleSubmitRegistration = async (values, { setSubmitting }) => {
+    if (prevalidate(setSubmitting)) {
+      setLoading(true);
       try {
-        
         await registerLearner(values);
         toast.success("We have sent a verification mail to your email.");
         setTimeout(() => {
@@ -314,16 +293,14 @@ can only have alphanumeric and .- char in the domain part`)
         // console.log(
         //   err?.response?.data?.errors?.email[0] || err?.response?.data?.message
         // );
-        toast.error( err?.response?.data?.errors?.email[0] || err?.response?.data?.message);
+        toast.error(
+          err?.response?.data?.errors?.email[0] || err?.response?.data?.message
+        );
         setSubmitting(false);
-
       }
       setLoading(false);
-
     }
   };
-
-
 
   //password reset email
   const handleSubmitPasswordForgot = async (values, { setSubmitting }) => {
@@ -355,11 +332,7 @@ can only have alphanumeric and .- char in the domain part`)
     setLoading(false);
   };
 
-
   //search form and reset and logout
-   
-
-
 
   const handleLogout = async () => {
     await logOut();
@@ -367,9 +340,6 @@ can only have alphanumeric and .- char in the domain part`)
       window.location.reload();
     }, 2000);
   };
-
-  
-
 
   return (
     <>
@@ -387,53 +357,101 @@ can only have alphanumeric and .- char in the domain part`)
             <Navbar.Collapse id="responsive-navbar-nav">
               <Nav className="me-auto">
                 <NavDropdown title="Courses" id="collasible-nav-dropdown">
-                  <NavDropdown.Item href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=11&nested_search_parent=languages"}
-                    >
+                  <NavDropdown.Item
+                    href={
+                      process.env.PUBLIC_URL +
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=11&nested_search_parent=languages"
+                    }
+                  >
                     Languages
                   </NavDropdown.Item>
-                  <NavDropdown.Item href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=5&nested_search_parent=health"}
-                    >
+                  <NavDropdown.Item
+                    href={
+                      process.env.PUBLIC_URL +
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=5&nested_search_parent=health"
+                    }
+                  >
                     Health Care
                   </NavDropdown.Item>
-                  <NavDropdown.Item href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=39&nested_search_parent=mathematics"}
-                    >
+                  <NavDropdown.Item
+                    href={
+                      process.env.PUBLIC_URL +
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=39&nested_search_parent=mathematics"
+                    }
+                  >
                     Mathematics
                   </NavDropdown.Item>
-                  <NavDropdown.Item href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=12&nested_search_parent=physical"}
-                    >
+                  <NavDropdown.Item
+                    href={
+                      process.env.PUBLIC_URL +
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=12&nested_search_parent=physical"
+                    }
+                  >
                     Physical Sciences
                   </NavDropdown.Item>
-                  <NavDropdown.Item href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"}
-                    >
+                  <NavDropdown.Item
+                    href={
+                      process.env.PUBLIC_URL +
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
+                    }
+                  >
                     Arts & Humanities
                   </NavDropdown.Item>
-                  <NavDropdown.Item href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=4&nested_search_parent=office"}
-                    >
+                  <NavDropdown.Item
+                    href={
+                      process.env.PUBLIC_URL +
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=4&nested_search_parent=office"
+                    }
+                  >
                     Office Productivity
                   </NavDropdown.Item>
-                  <NavDropdown.Item href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=8&nested_search_parent=engineering"}
-                    >
+                  <NavDropdown.Item
+                    href={
+                      process.env.PUBLIC_URL +
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=8&nested_search_parent=engineering"
+                    }
+                  >
                     Technology Engineering
                   </NavDropdown.Item>
-                  <NavDropdown.Item href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=9&nested_search_parent=law"}
-                    >
+                  <NavDropdown.Item
+                    href={
+                      process.env.PUBLIC_URL +
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=9&nested_search_parent=law"
+                    }
+                  >
                     Law & Social Sciences
                   </NavDropdown.Item>
-                  <NavDropdown.Item href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=1&nested_search_parent=computer"}
-                    >
+                  <NavDropdown.Item
+                    href={
+                      process.env.PUBLIC_URL +
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=1&nested_search_parent=computer"
+                    }
+                  >
                     Computer Science & Information
                   </NavDropdown.Item>
-                  <NavDropdown.Item href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"}
-                    >
+                  <NavDropdown.Item
+                    href={
+                      process.env.PUBLIC_URL +
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
+                    }
+                  >
                     Business & Operations Management
                   </NavDropdown.Item>
-                  <NavDropdown.Item href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=6&nested_search_parent=others"}
-                    >Others</NavDropdown.Item>
+                  <NavDropdown.Item
+                    href={
+                      process.env.PUBLIC_URL +
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=6&nested_search_parent=others"
+                    }
+                  >
+                    Others
+                  </NavDropdown.Item>
                 </NavDropdown>
                 <NavDropdown title="Programs" id="collasible-nav-dropdown">
                   <NavDropdown.Item
-                    href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"}
-                            
+                    href={
+                      process.env.PUBLIC_URL +
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                    }
                     style={{ whiteSpace: "initial", width: "300px" }}
                   >
                     Nigeria Institute Of Management
@@ -457,8 +475,10 @@ can only have alphanumeric and .- char in the domain part`)
                     Institute Of Chattered Accountant Of Nigeria
                   </NavDropdown.Item>
                   <NavDropdown.Item
-                    href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"}
-                            
+                    href={
+                      process.env.PUBLIC_URL +
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                    }
                     style={{ whiteSpace: "initial", width: "300px" }}
                   >
                     Institute Of Chattered Secretaries And Administrators Of
@@ -481,30 +501,54 @@ can only have alphanumeric and .- char in the domain part`)
                   title="Learning Pathway"
                   id="collasible-nav-dropdown"
                 >
-                  <NavDropdown.Item href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"}
-                            >
+                  <NavDropdown.Item
+                    href={
+                      process.env.PUBLIC_URL +
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                    }
+                  >
                     Self-Paced
                   </NavDropdown.Item>
-                  <NavDropdown.Item href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"}
-                            >
+                  <NavDropdown.Item
+                    href={
+                      process.env.PUBLIC_URL +
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                    }
+                  >
                     Instructor Led
                   </NavDropdown.Item>
-                  <NavDropdown.Item href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"}
-                            >
+                  <NavDropdown.Item
+                    href={
+                      process.env.PUBLIC_URL +
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                    }
+                  >
                     By Training Partner
                   </NavDropdown.Item>
                 </NavDropdown>
                 <NavDropdown title="Partnership" id="basic-nav-dropdown">
-                  <NavDropdown.Item href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"}
-                            >
+                  <NavDropdown.Item
+                    href={
+                      process.env.PUBLIC_URL +
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                    }
+                  >
                     For School
                   </NavDropdown.Item>
-                  <NavDropdown.Item href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"}
-                            >
+                  <NavDropdown.Item
+                    href={
+                      process.env.PUBLIC_URL +
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                    }
+                  >
                     For Business
                   </NavDropdown.Item>
-                  <NavDropdown.Item href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"}
-                            >
+                  <NavDropdown.Item
+                    href={
+                      process.env.PUBLIC_URL +
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                    }
+                  >
                     For Government
                   </NavDropdown.Item>
                 </NavDropdown>
@@ -521,55 +565,44 @@ can only have alphanumeric and .- char in the domain part`)
                 </div>
               </form>
               <div className="">
-
-
-               {isAuthenticated? (
+                {isAuthenticated ? (
                   <>
-
-                  <NavDropdown
-                  title={ user?.first_name+ " "+ user?.last_name}
-                  id="basic-nav-dropdownx"
-                  show={fifthShow}
-                  onMouseEnter={() => setfifthShow(true)}
-                  onMouseLeave={() => setfifthShow(false)}
-                   className="btn text-white btn-sm me-2 "
-                >
-
-                {AuthLinks.length && AuthLinks.map(links_authorized=>{
-                    return (
-                      <NavDropdown.Item href={process.env.PUBLIC_URL+ links_authorized.link}
+                    <NavDropdown
+                      title={user?.first_name + " " + user?.last_name}
+                      id="basic-nav-dropdownx"
+                      show={fifthShow}
+                      onMouseEnter={() => setfifthShow(true)}
+                      onMouseLeave={() => setfifthShow(false)}
+                      className="btn text-white btn-sm me-2 "
+                    >
+                      {AuthLinks.length &&
+                        AuthLinks.map((links_authorized) => {
+                          return (
+                            <NavDropdown.Item
+                              href={
+                                process.env.PUBLIC_URL + links_authorized.link
+                              }
                             >
-                    {links_authorized.name}
-                  </NavDropdown.Item>
-                      )
-                })}
-                  
+                              {links_authorized.name}
+                            </NavDropdown.Item>
+                          );
+                        })}
 
-                  <NavDropdown.Item href="#" onClick={handleLogout}
-                            >
-                    Log out
-                  </NavDropdown.Item>
-                 
-                </NavDropdown>
-
-
+                      <NavDropdown.Item href="#" onClick={handleLogout}>
+                        Log out
+                      </NavDropdown.Item>
+                    </NavDropdown>
                   </>
-
-                ):(
-
-                 <>
-                   <a className="btn btn-outline-dark btn-sm me-2 btn-rounded">
-                  Log In
-                </a>
-                <a className="btn btn-solid-teal btn-sm btn-rounded">Sign Up</a>
-
-                 </>
-
-
-
+                ) : (
+                  <>
+                    <a className="btn btn-outline-dark btn-sm me-2 btn-rounded">
+                      Log In
+                    </a>
+                    <a className="btn btn-solid-teal btn-sm btn-rounded">
+                      Sign Up
+                    </a>
+                  </>
                 )}
-              
-                
               </div>
             </Navbar.Collapse>
           </Container>
@@ -618,70 +651,91 @@ can only have alphanumeric and .- char in the domain part`)
                       >
                         <div className="col-md-4 border-end">
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"}
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
+                            }
                             className="fw-bold"
                           >
                             Arts & Humanities
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
+                            }
                             className="whitespace"
                           >
                             Education
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
+                            }
                             className="whitespace"
                           >
                             History
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
+                            }
                             className="whitespace"
                           >
                             Politics
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
+                            }
                             className="whitespace"
                           >
                             Sociology
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
+                            }
                             className="whitespace"
                           >
                             Geography
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
+                            }
                             className="whitespace"
                           >
                             Law
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
+                            }
                             className="whitespace"
                           >
                             Psychology
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
+                            }
                             className="whitespace"
                           >
                             Media And Journalism
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=10&nested_search_parent=arts"
+                            }
                             className="whitespace"
                           >
                             Architecture
@@ -690,77 +744,100 @@ can only have alphanumeric and .- char in the domain part`)
                             <hr className="dropdown-divider" />
                           </li>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"}
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
+                            }
                             className="fw-bold whitespace"
                           >
                             Business And Operations Management
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
+                            }
                             className="whitespace"
                           >
                             Human Resources Administration
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
+                            }
                             className="whitespace"
                           >
                             Leadership And Management
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
+                            }
                             className="whitespace"
                           >
                             Finance And Banking
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
+                            }
                             className="whitespace"
                           >
                             Accounting
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
+                            }
                             className="whitespace"
                           >
                             Business Process Management
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
+                            }
                             className="whitespace"
                           >
                             Service Management
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
+                            }
                             className="whitespace"
                           >
                             Supply Chain Management
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
+                            }
                             className="whitespace"
                           >
                             Sales And Marketing Management
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
+                            }
                             className="whitespace"
                           >
                             Risk Management
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=2&nested_search_parent=business"
+                            }
                             className="whitespace"
                           >
                             Customer Service
@@ -768,38 +845,55 @@ can only have alphanumeric and .- char in the domain part`)
                         </div>
                         <div className="col-md-4 border-end">
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=8&nested_search_parent=engineering"}
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=8&nested_search_parent=engineering"
+                            }
                             className="fw-bold whitespace"
                           >
                             Engineering
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=8&nested_search_parent=engineering"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=8&nested_search_parent=engineering"
+                            }
                             className="whitespace"
                           >
                             Computer Engineering
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=8&nested_search_parent=engineering"}
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=8&nested_search_parent=engineering"
+                            }
                             className="whitespace"
                           >
                             Electrical Engineering
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=8&nested_search_parent=engineering"}
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=8&nested_search_parent=engineering"
+                            }
                             className="whitespace"
                           >
                             Mechanical Engineering
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=8&nested_search_parent=engineering"}
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=8&nested_search_parent=engineering"
+                            }
                             className="whitespace"
                           >
                             Chemical Engineering
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=8&nested_search_parent=engineering"}
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=8&nested_search_parent=engineering"
+                            }
                             className="whitespace"
                           >
                             Civil Engineering
@@ -808,43 +902,55 @@ can only have alphanumeric and .- char in the domain part`)
                             <hr className="dropdown-divider" />
                           </li>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=12&nested_search_parent=physical"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=12&nested_search_parent=physical"
+                            }
                             className="fw-bold whitespace"
                           >
                             Physical Sciences
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=12&nested_search_parent=physical"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=12&nested_search_parent=physical"
+                            }
                             className="whitespace"
                           >
                             Biology
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=12&nested_search_parent=physical"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=12&nested_search_parent=physical"
+                            }
                             className="whitespace"
                           >
                             Physics
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=12&nested_search_parent=physical"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=12&nested_search_parent=physical"
+                            }
                             className="whitespace"
                           >
                             Chemistry
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=12&nested_search_parent=physical"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=12&nested_search_parent=physical"
+                            }
                             className="whitespace"
                           >
                             Environmental Studies
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=12&nested_search_parent=physical"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=12&nested_search_parent=physical"
+                            }
                             className="whitespace"
                           >
                             Agricultural Science
@@ -853,43 +959,55 @@ can only have alphanumeric and .- char in the domain part`)
                             <hr className="dropdown-divider" />
                           </li>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=1&nested_search_parent=computer"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=1&nested_search_parent=computer"
+                            }
                             className="fw-bold whitespace"
                           >
                             Computer Schience & Information Technology
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=1&nested_search_parent=computer"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=1&nested_search_parent=computer"
+                            }
                             className="whitespace"
                           >
                             Computer Science
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=1&nested_search_parent=computer"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=1&nested_search_parent=computer"
+                            }
                             className="whitespace"
                           >
                             Network And Security
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=1&nested_search_parent=computer"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=1&nested_search_parent=computer"
+                            }
                             className="whitespace"
                           >
                             Software Development
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=1&nested_search_parent=computer"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=1&nested_search_parent=computer"
+                            }
                             className="whitespace"
                           >
                             Digital Marketing
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=1&nested_search_parent=computer"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=1&nested_search_parent=computer"
+                            }
                             className="whitespace"
                           >
                             IT Management
@@ -897,29 +1015,37 @@ can only have alphanumeric and .- char in the domain part`)
                         </div>
                         <div className="col-md-4 border-end">
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=9&nested_search_parent=law"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=9&nested_search_parent=law"
+                            }
                             className="fw-bold whitespace"
                           >
                             Law & Social Sciences
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=9&nested_search_parent=law"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=9&nested_search_parent=law"
+                            }
                             className="whitespace"
                           >
                             Economics
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=9&nested_search_parent=law"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=9&nested_search_parent=law"
+                            }
                             className="whitespace"
                           >
                             Law
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=9&nested_search_parent=law"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=9&nested_search_parent=law"
+                            }
                             className="whitespace"
                           >
                             Psychology
@@ -928,43 +1054,55 @@ can only have alphanumeric and .- char in the domain part`)
                             <hr className="dropdown-divider" />
                           </li>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=5&nested_search_parent=health"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=5&nested_search_parent=health"
+                            }
                             className="fw-bold whitespace"
                           >
                             Health Care
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=5&nested_search_parent=health"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=5&nested_search_parent=health"
+                            }
                             className="whitespace"
                           >
                             Nursing
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=5&nested_search_parent=health"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=5&nested_search_parent=health"
+                            }
                             className="whitespace"
                           >
                             Disease And Disorders
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=5&nested_search_parent=health"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=5&nested_search_parent=health"
+                            }
                             className="whitespace"
                           >
                             Nutrition
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=5&nested_search_parent=health"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=5&nested_search_parent=health"
+                            }
                             className="whitespace"
                           >
                             Caregiving
                           </NavDropdown.Item>
                           <NavDropdown.Item
-                            href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=5&nested_search_parent=health"}
-                            
+                            href={
+                              process.env.PUBLIC_URL +
+                              "/courses/category/?search_menu=menu_mapper&nested_filter_id=5&nested_search_parent=health"
+                            }
                             className="whitespace"
                           >
                             Pharmacology
@@ -985,12 +1123,10 @@ can only have alphanumeric and .- char in the domain part`)
                       onMouseEnter={() => setFourthShow(true)}
                       onMouseLeave={() => setFourthShow(false)}
                     >
-                      <NavDropdown.Item href={process.env.PUBLIC_URL+ "#"}
-                            >
+                      <NavDropdown.Item href={process.env.PUBLIC_URL + "#"}>
                         Instructor Led
                       </NavDropdown.Item>
-                      <NavDropdown.Item href={process.env.PUBLIC_URL+ "#"}
-                            >
+                      <NavDropdown.Item href={process.env.PUBLIC_URL + "#"}>
                         Self Paced
                       </NavDropdown.Item>
                     </NavDropdown>
@@ -1008,8 +1144,12 @@ can only have alphanumeric and .- char in the domain part`)
                     style={{ width: "50vw" }}
                   >
                     <div className="col border-end">
-                      <NavDropdown.Item href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"}
-                            >
+                      <NavDropdown.Item
+                        href={
+                          process.env.PUBLIC_URL +
+                          "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                        }
+                      >
                         NIM: Nigerian Institute of Management
                       </NavDropdown.Item>
                       <NavDropdown.Item href="#action/3.2">
@@ -1024,8 +1164,10 @@ can only have alphanumeric and .- char in the domain part`)
                     </div>
                     <div className="col">
                       <NavDropdown.Item
-                        href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"}
-                            
+                        href={
+                          process.env.PUBLIC_URL +
+                          "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                        }
                         style={{ whiteSpace: "initial" }}
                       >
                         ICSAN - Institute of Chartered Secretaries and
@@ -1043,8 +1185,10 @@ can only have alphanumeric and .- char in the domain part`)
                   <div className="row d-md-none">
                     <div className="col-sm-12">
                       <NavDropdown.Item
-                        href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"}
-                            
+                        href={
+                          process.env.PUBLIC_URL +
+                          "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                        }
                         style={{ whiteSpace: "initial", paddingBottom: "10px" }}
                       >
                         NIM: Nigerian Institute of Management
@@ -1070,8 +1214,10 @@ can only have alphanumeric and .- char in the domain part`)
                     </div>
                     <div className="col-sm-12">
                       <NavDropdown.Item
-                        href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"}
-                            
+                        href={
+                          process.env.PUBLIC_URL +
+                          "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                        }
                         style={{ whiteSpace: "initial", paddingBottom: "50px" }}
                       >
                         ICSAN - Institute of Chartered Secretaries and
@@ -1100,8 +1246,12 @@ can only have alphanumeric and .- char in the domain part`)
                   onMouseEnter={() => setThirdShow(true)}
                   onMouseLeave={() => setThirdShow(false)}
                 >
-                  <NavDropdown.Item href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"}
-                            >
+                  <NavDropdown.Item
+                    href={
+                      process.env.PUBLIC_URL +
+                      "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"
+                    }
+                  >
                     For Schools
                   </NavDropdown.Item>
                   <NavDropdown.Item href="#action/3.2">
@@ -1114,68 +1264,53 @@ can only have alphanumeric and .- char in the domain part`)
               </Nav>
               <form className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
                 {/*<input id="search" onKeyPress={handleKeyPress} type="search" className="form-control align-search" placeholder="Search..." aria-label="Search" /> */}
-                 <i   className="bi bi-search "></i>
-      
+                <i className="bi bi-search "></i>
               </form>
               <div className="text-end">
-
-
-              {isAuthenticated? (
+                {isAuthenticated ? (
                   <>
-
-                  <NavDropdown
-                  title={ user?.first_name+ " "+ user?.last_name}
-                  id="basic-nav-dropdownx"
-                  show={fifthShow}
-                  onMouseEnter={() => setfifthShow(true)}
-                  onMouseLeave={() => setfifthShow(false)}
-                   className="btn text-white btn-outline-light btn-sm me-2 btn-rounded "
-                >
-
-                {AuthLinks.length && AuthLinks.map(links_authorized=>{
-                    return (
-                      <NavDropdown.Item href={process.env.PUBLIC_URL+ links_authorized.link}
+                    <NavDropdown
+                      title={user?.first_name + " " + user?.last_name}
+                      id="basic-nav-dropdownx"
+                      show={fifthShow}
+                      onMouseEnter={() => setfifthShow(true)}
+                      onMouseLeave={() => setfifthShow(false)}
+                      className="btn text-white btn-outline-light btn-sm me-2 btn-rounded "
+                    >
+                      {AuthLinks.length &&
+                        AuthLinks.map((links_authorized) => {
+                          return (
+                            <NavDropdown.Item
+                              href={
+                                process.env.PUBLIC_URL + links_authorized.link
+                              }
                             >
-                    {links_authorized.name}
-                  </NavDropdown.Item>
-                      )
-                })}
-                  
+                              {links_authorized.name}
+                            </NavDropdown.Item>
+                          );
+                        })}
 
-                  <NavDropdown.Item href="#" onClick={handleLogout}
-                            >
-                    Log out
-                  </NavDropdown.Item>
-                 
-                </NavDropdown>
-
-
+                      <NavDropdown.Item href="#" onClick={handleLogout}>
+                        Log out
+                      </NavDropdown.Item>
+                    </NavDropdown>
                   </>
-
-                ):(
-
-                 <>
-                   <a
-                  className="btn btn-outline-dark btn-sm me-2 btn-rounded"
-                  onClick={handleLoginModalShow}
-                >
-                  Log In
-                </a>
-                <a
-                  className="btn btn-solid-teal btn-sm btn-rounded"
-                  onClick={handleRegModalShow}
-                >
-                  Sign Up
-                </a>
-
-                 </>
-
-
-
+                ) : (
+                  <>
+                    <a
+                      className="btn btn-outline-dark btn-sm me-2 btn-rounded"
+                      onClick={handleLoginModalShow}
+                    >
+                      Log In
+                    </a>
+                    <a
+                      className="btn btn-solid-teal btn-sm btn-rounded"
+                      onClick={handleRegModalShow}
+                    >
+                      Sign Up
+                    </a>
+                  </>
                 )}
-              
-              
-               
               </div>
             </Navbar.Collapse>
           </Container>
@@ -1192,7 +1327,6 @@ can only have alphanumeric and .- char in the domain part`)
             className="border-0"
           ></Modal.Header>
           <Modal.Body className="border-0">
-               
             <div className="col-md-12 px-3">
               <img
                 src="/Questence-logo.png"
@@ -1204,152 +1338,169 @@ can only have alphanumeric and .- char in the domain part`)
                 Registration
               </h5>
 
-
-               <Formik
-                    initialValues={initialValues}
-                    validationSchema={LoginSchema}
-                    onSubmit={handleSubmitRegistration}
-                  >
-                    {({
-                      values,
-                      errors,
-                      touched,
-                      handleChange,
-                      handleBlur,
-                      handleSubmit,
-                      isSubmitting,
-                    }) => (
-
-                     <form
-                          id="form_reg"
-                          className="form"
-                          onSubmit={handleSubmit}
+              <Formik
+                initialValues={initialValues}
+                validationSchema={LoginSchema}
+                onSubmit={handleSubmitRegistration}
+              >
+                {({
+                  values,
+                  errors,
+                  touched,
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  isSubmitting,
+                }) => (
+                  <form id="form_reg" className="form" onSubmit={handleSubmit}>
+                    <div className="row">
+                      <div className="mb-3 col-md-6">
+                        <label
+                          for="exampleFormControlInput1"
+                          className="form-label"
                         >
-              <div className="row">
-
-
-
-                <div className="mb-3 col-md-6">
-                  <label for="exampleFormControlInput1" className="form-label">
-                    First Name
-                  </label>
-                    <span className="login_input-msg">
-                              {errors.first_name && touched.first_name && errors.first_name}
-                            </span>
-                  <input
-                    type="text"
-                    className="border-radius-15 form-control"
-                    id="ff"
-                    placeholder="First name"
-                    name="first_name"
-                    onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.first_name}
-                  />
-                </div>
-                <div className="mb-3 col-md-6">
-                  <label for="exampleFormControlInput1" className="form-label">
-                    Last Name
-                  </label>
-                    <span className="login_input-msg">
-                              {errors.last_name && touched.last_name && errors.last_name}
-                    </span>
-                  <input
-                    type="text"
-                    className="border-radius-15 form-control"
-                    id="ll"
-                    placeholder="Last name"
-                    name="last_name"
-                    onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.last_name}
-                  />
-                </div>
-              </div>
-              <div className="row">
-
-                <div className="mb-3 col-md-6">
-                  <label for="exampleFormControlInput1" className="form-label">
-                    Email address
-                  </label>
-                    <span className="login_input-msg">
-                              {errors.email && touched.email && errors.email}
-                            </span>
-                  <input
-                    type="email"
-                    className="border-radius-15 form-control"
-                    id="ee"
-                    placeholder="name@example.com"
-                    name="email"
-                    onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.email}
-                  />
-                </div>
-                <div className="mb-3 col-md-6">
-                  <label for="exampleFormControlInput1" className="form-label">
-                    Phone Number
-                  </label>
-                    <span className="login_input-msg">
-                              {errors.phone_number && touched.phone_number && errors.phone_number}
-                            </span>
-                  <input
-                    type="text"
-                    className="border-radius-15 form-control"
-                    id="ph"
-                    placeholder="Enter your phone number"
-                    name="phone_number"
-                    onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.phone_number}
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="mb-3 col-md-6">
-                  <label for="exampleFormControlInput1" className="form-label">
-                    Password
-                  </label>
-                   <span className="login_input-msg">
-                              {errors.password &&
-                                touched.password &&
-                                errors.password}
-                            </span>
-                  <input
-                    type="password"
-                    className="border-radius-15 form-control"
-                    id="pp"
-                    placeholder="Password"
-                    name="password"
-                    onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.password}
-                  />
-                </div>
-                <div className="mb-3 col-md-6">
-                  <label for="exampleFormControlInput1" className="form-label">
-                    Confirm Password
-                  </label>
-                   <span className="login_input-msg">
-                              {errors.password_confirmation &&
-                                touched.password_confirmation&&
-                                errors.password_confirmation}
-                            </span>
-                  <input
-                    type="password"
-                    className="border-radius-15 form-control"
-                    id="ppc"
-                    placeholder="Password"
-                    name="password_confirmation"
-                    onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.password_confirmation}
-                  />
-                </div>
-              </div>
-              <div className="mb-3">
-                <button type="submit"  className="btn btn-solid-teal w-100 border-radius-15" disabled={isSubmitting}>
-                  
+                          First Name
+                        </label>
+                        <span className="login_input-msg">
+                          {errors.first_name &&
+                            touched.first_name &&
+                            errors.first_name}
+                        </span>
+                        <input
+                          type="text"
+                          className="border-radius-15 form-control"
+                          id="ff"
+                          placeholder="First name"
+                          name="first_name"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.first_name}
+                        />
+                      </div>
+                      <div className="mb-3 col-md-6">
+                        <label
+                          for="exampleFormControlInput1"
+                          className="form-label"
+                        >
+                          Last Name
+                        </label>
+                        <span className="login_input-msg">
+                          {errors.last_name &&
+                            touched.last_name &&
+                            errors.last_name}
+                        </span>
+                        <input
+                          type="text"
+                          className="border-radius-15 form-control"
+                          id="ll"
+                          placeholder="Last name"
+                          name="last_name"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.last_name}
+                        />
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="mb-3 col-md-6">
+                        <label
+                          for="exampleFormControlInput1"
+                          className="form-label"
+                        >
+                          Email address
+                        </label>
+                        <span className="login_input-msg">
+                          {errors.email && touched.email && errors.email}
+                        </span>
+                        <input
+                          type="email"
+                          className="border-radius-15 form-control"
+                          id="ee"
+                          placeholder="name@example.com"
+                          name="email"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.email}
+                        />
+                      </div>
+                      <div className="mb-3 col-md-6">
+                        <label
+                          for="exampleFormControlInput1"
+                          className="form-label"
+                        >
+                          Phone Number
+                        </label>
+                        <span className="login_input-msg">
+                          {errors.phone_number &&
+                            touched.phone_number &&
+                            errors.phone_number}
+                        </span>
+                        <input
+                          type="text"
+                          className="border-radius-15 form-control"
+                          id="ph"
+                          placeholder="Enter your phone number"
+                          name="phone_number"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.phone_number}
+                        />
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="mb-3 col-md-6">
+                        <label
+                          for="exampleFormControlInput1"
+                          className="form-label"
+                        >
+                          Password
+                        </label>
+                        <span className="login_input-msg">
+                          {errors.password &&
+                            touched.password &&
+                            errors.password}
+                        </span>
+                        <input
+                          type="password"
+                          className="border-radius-15 form-control"
+                          id="pp"
+                          placeholder="Password"
+                          name="password"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.password}
+                        />
+                      </div>
+                      <div className="mb-3 col-md-6">
+                        <label
+                          for="exampleFormControlInput1"
+                          className="form-label"
+                        >
+                          Confirm Password
+                        </label>
+                        <span className="login_input-msg">
+                          {errors.password_confirmation &&
+                            touched.password_confirmation &&
+                            errors.password_confirmation}
+                        </span>
+                        <input
+                          type="password"
+                          className="border-radius-15 form-control"
+                          id="ppc"
+                          placeholder="Password"
+                          name="password_confirmation"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          value={values.password_confirmation}
+                        />
+                      </div>
+                    </div>
+                    <div className="mb-3">
+                      <button
+                        type="submit"
+                        className="btn btn-solid-teal w-100 border-radius-15"
+                        disabled={isSubmitting}
+                      >
                         {loading ? (
                           <div className="spinner-border" role="status">
                             <span className="sr-only"></span>
@@ -1357,16 +1508,12 @@ can only have alphanumeric and .- char in the domain part`)
                         ) : (
                           "Register"
                         )}
-                </button>
-              </div>
-
-              </form>
-             )}
+                      </button>
+                    </div>
+                  </form>
+                )}
               </Formik>
-              
-             
             </div>
-            
           </Modal.Body>
           <Modal.Footer className="bg-teal border-0">
             <div className="text-center text-13 fill-available">
@@ -1397,93 +1544,94 @@ can only have alphanumeric and .- char in the domain part`)
               <h5 className="text-uppercase text-center fw-bold my-2">
                 Log In
               </h5>
-               <Formik
-                    initialValues={initialValues}
-                    validationSchema={LoginSchema}
+              <Formik
+                initialValues={initialValues}
+                validationSchema={LoginSchema}
+                onSubmit={handleSubmit}
+              >
+                {({
+                  values,
+                  errors,
+                  touched,
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  isSubmitting,
+                }) => (
+                  <form
+                    id="form_login"
+                    className="form"
                     onSubmit={handleSubmit}
                   >
-                    {({
-                      values,
-                      errors,
-                      touched,
-                      handleChange,
-                      handleBlur,
-                      handleSubmit,
-                      isSubmitting,
-                    }) => (
-
-                     <form
-                          id="form_login"
-                          className="form"
-                          onSubmit={handleSubmit}
-                        >
-              <div className="mb-3">
-                <label for="exampleFormControlInput1" className="form-label">
-                  Email address
-                </label>
-                   <span className="login_input-msg">
-                              {errors.email && touched.email && errors.email}
-                            </span>
-                <input
-                  type="email"
-                  className="border-radius-15 form-control"
-              
-                  placeholder="name@example.com"
-                   id="email"
-                  name="email"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.email}
-                />
-
-              </div>
-              <div className="mb-3">
-                <label for="exampleFormControlInput1" className="form-label">
-                  Password
-                </label>
-                <span className="login_input-msg">
-                              {errors.password &&
-                                touched.password &&
-                                errors.password}
-                            </span>
-                <input
-                  type="password"
-                  className="border-radius-15 form-control"
-                  id="exampleFormControlInput1"
-                  placeholder="********"
-                 id="password"
-                              name="password"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.password}
-                            />
-                            
-              </div>
-              <div className="mb-3">
-                <button type="submit"  className="btn btn-solid-teal w-100 border-radius-15" disabled={isSubmitting}>
-                            {loading ? (
-                              <div className="spinner-border" role="status">
-                                <span className="sr-only"></span>
-                              </div>
-                            ) : (
-                              "Log In"
-                            )}
-                  
-                </button>
-
-                
-              </div>
-              <div className="mb-3">
-                <p
-                  className="text-center cursor-pointer"
-                  onClick={handleForgotModalShow}
-                >
-                  Forgot password
-                </p>
-              </div>
-                 </form>
+                    <div className="mb-3">
+                      <label
+                        for="exampleFormControlInput1"
+                        className="form-label"
+                      >
+                        Email address
+                      </label>
+                      <span className="login_input-msg">
+                        {errors.email && touched.email && errors.email}
+                      </span>
+                      <input
+                        type="email"
+                        className="border-radius-15 form-control"
+                        placeholder="name@example.com"
+                        id="email"
+                        name="email"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.email}
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label
+                        for="exampleFormControlInput1"
+                        className="form-label"
+                      >
+                        Password
+                      </label>
+                      <span className="login_input-msg">
+                        {errors.password && touched.password && errors.password}
+                      </span>
+                      <input
+                        type="password"
+                        className="border-radius-15 form-control"
+                        id="exampleFormControlInput1"
+                        placeholder="********"
+                        id="password"
+                        name="password"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.password}
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <button
+                        type="submit"
+                        className="btn btn-solid-teal w-100 border-radius-15"
+                        disabled={isSubmitting}
+                      >
+                        {loading ? (
+                          <div className="spinner-border" role="status">
+                            <span className="sr-only"></span>
+                          </div>
+                        ) : (
+                          "Log In"
+                        )}
+                      </button>
+                    </div>
+                    <div className="mb-3">
+                      <p
+                        className="text-center cursor-pointer"
+                        onClick={handleForgotModalShow}
+                      >
+                        Forgot password
+                      </p>
+                    </div>
+                  </form>
                 )}
-                  </Formik>
+              </Formik>
             </div>
           </Modal.Body>
           <Modal.Footer className="bg-teal border-0">
@@ -1505,7 +1653,6 @@ can only have alphanumeric and .- char in the domain part`)
         >
           <Modal.Header closeButton className="border-0"></Modal.Header>
           <Modal.Body className="border-0">
-        
             <div className="col-md-8 mx-auto">
               <img
                 src="/Questence-logo.png"
@@ -1517,76 +1664,75 @@ can only have alphanumeric and .- char in the domain part`)
                 Forgot Password
               </h5>
 
-               <Formik
-                    initialValues={initialValues}
-                    validationSchema={ResetSchema}
-                    onSubmit={handleSubmitPasswordForgot}
-                  >
-                    {({
-                      values,
-                      errors,
-                      touched,
-                      handleChange,
-                      handleBlur,
-                      handleSubmit,
-                      isSubmitting,
-                    }) => (
-
-                      <form
-                          id="form_login"
-                          className="form"
-                          onSubmit={handleSubmit}
-                        >
-              
-              <div className="mb-3">
-                <label for="exampleFormControlInput1" className="form-label">
-                  Email address
-                </label>
-                <div id="msg-box" style={{ display: "none" }}>
-                          An Email has been Sent
-                        </div>
-
-                         <span className="login_input-msg">
-                              {errors.email && touched.email && errors.email}
-                            </span>
-                <input
-                              type="email"
-                              placeholder="Email here"
-                              id="email"
-                              name="email"
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.email}
-                              class="form-control"
-                            />
-                           
-              </div>
-
-              <div className="mb-3">
-                <button className="btn btn-solid-teal w-100 border-radius-15" disabled={isSubmitting}>
-                            {loading ? (
-                              <div className="spinner-border" role="status">
-                                <span className="sr-only"></span>
-                              </div>
-                            ) : (
-                              "Send Password Reset Request"
-                            )}
-                              </button>
-              </div>
-              <p
-                className="text-center cursor-pointer"
-                onClick={handleLoginModalShow}
+              <Formik
+                initialValues={initialValues}
+                validationSchema={ResetSchema}
+                onSubmit={handleSubmitPasswordForgot}
               >
-                Remember My Password?{" "}
-              </p>
+                {({
+                  values,
+                  errors,
+                  touched,
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  isSubmitting,
+                }) => (
+                  <form
+                    id="form_login"
+                    className="form"
+                    onSubmit={handleSubmit}
+                  >
+                    <div className="mb-3">
+                      <label
+                        for="exampleFormControlInput1"
+                        className="form-label"
+                      >
+                        Email address
+                      </label>
+                      <div id="msg-box" style={{ display: "none" }}>
+                        An Email has been Sent
+                      </div>
 
-              </form>
-              
-                    )}
-                  </Formik>
-             
+                      <span className="login_input-msg">
+                        {errors.email && touched.email && errors.email}
+                      </span>
+                      <input
+                        type="email"
+                        placeholder="Email here"
+                        id="email"
+                        name="email"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.email}
+                        class="form-control"
+                      />
+                    </div>
+
+                    <div className="mb-3">
+                      <button
+                        className="btn btn-solid-teal w-100 border-radius-15"
+                        disabled={isSubmitting}
+                      >
+                        {loading ? (
+                          <div className="spinner-border" role="status">
+                            <span className="sr-only"></span>
+                          </div>
+                        ) : (
+                          "Send Password Reset Request"
+                        )}
+                      </button>
+                    </div>
+                    <p
+                      className="text-center cursor-pointer"
+                      onClick={handleLoginModalShow}
+                    >
+                      Remember My Password?{" "}
+                    </p>
+                  </form>
+                )}
+              </Formik>
             </div>
-
           </Modal.Body>
         </Modal>
       </header>
@@ -1599,14 +1745,12 @@ NavBar.propTypes = {
   login: PropTypes.func.isRequired,
   logOut: PropTypes.func.isRequired,
   setPrevPath: PropTypes.func.isRequired,
-   cart: PropTypes.object.isRequired,
+  cart: PropTypes.object.isRequired,
 };
-
-
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-   cart: state.cart,
+  cart: state.cart,
 });
 
 export default connect(mapStateToProps, {
@@ -1626,8 +1770,6 @@ const LoginSchema = Yup.object().shape({
     .max(50, "Too Long!")
     .required("Required"),
 });
-
-
 
 var passwordRegex = new RegExp(
   "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})"
@@ -1666,14 +1808,10 @@ const RegisterSchema = Yup.object().shape({
     .integer(),
 });
 
-
-
-
 const ResetSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email")
     .min(2, "Too Short!")
     .max(50, "Too Long!")
     .required("Required"),
- 
 });
