@@ -1,0 +1,19 @@
+{
+ "LOGIN_ATTEMPTS":5,
+ "LEVEL_MODES":["dev",
+ 	            "production",
+ 	            "maintenance",
+ 	            "staging",
+ 	            "debug"
+ ],
+ "LEVEL_MODE":"dev",
+ "SLEEP_MODES":["NEVER",
+			 	"1hrs",
+			 	"45mins",
+			 	"30mins",
+			 	"15min",
+			 	"1min"
+ ],
+ "SLEEP_MODE":"NEVER",
+
+}
