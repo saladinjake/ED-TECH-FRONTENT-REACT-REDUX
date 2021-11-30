@@ -140,7 +140,7 @@ const HorizontalCourseCard = ({
                   {coursePrice}
                 </div>
                 <h3 className="fw-bold text-18 text-light-green  mt-4">
-                  { courseName /**removeTags(courseDesc)*/}
+                  {courseName /**removeTags(courseDesc)*/}
                 </h3>
                 <h4 className="fw-bold text-14 text-light-green ">
                   {courseAuthor}
