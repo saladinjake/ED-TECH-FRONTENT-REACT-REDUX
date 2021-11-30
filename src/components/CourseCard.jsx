@@ -16,7 +16,8 @@ import moment from "moment";
 import { enrollCourses } from "../api/enrollment.services";
 
 const CourseCard = ({
-  courseTitle,
+  courseCode,
+  courseName,
   courseDesc,
   courseAuthorCompany,
   courseAuthor,
@@ -106,12 +107,12 @@ const CourseCard = ({
 
       <div className="card-body">
         <h5 className="card-title text-11 fw-bold text-light-green shorten-text-1l">
-          {courseTitle}
+          {courseCode}
         </h5>
         <h6  className="card-subtitle text-light-green shorten-text-2l title-height-35 mb-3"
          
         >
-         {removeTags(courseDesc)}
+         { courseName /**removeTags(courseDesc)*/}
         </h6>
         <p className="text-14 shorten-text-1l m-0">{courseAuthorCompany}</p>
         <p className="text-14 shorten-text-1l">{courseAuthor}</p>
@@ -124,13 +125,13 @@ const CourseCard = ({
             Details
           </a>
           <span
-              onClick={(e)=> {addToMyWishList(e,courseId,courseTitle)}}
+              onClick={(e)=> {addToMyWishList(e,courseId,courseName)}}
             className="fake-cursor border-end text-center text-11 fw-bold text-decoration-none text-warning col q-text-link"
           >
             Wishlist
           </span>
           <span
-            onClick={(e)=> {handleAddToCart(e,courseId,coursePrice,courseTitle)}}
+            onClick={(e)=> {handleAddToCart(e,courseId,coursePrice,courseName)}}
             className="fake-cursor text-center fw-bold text-11 text-decoration-none text-success col q-text-link"
           >
             Buy

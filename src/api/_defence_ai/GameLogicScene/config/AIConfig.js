@@ -48,13 +48,13 @@ class AIConfig{
    
   }
 
-  parse(val){
+  parse(valu){
     return this.stringify(valu, (key, val) =>{
       return (typeof val ==='function') ? val.toString().replace(/\t|\n/g, ''): val
     })
   }
 
-  stringify(val){
+  stringify(valu){
     return this.stringify(valu, (key,val)=>{
        if(typeof val === 'string'){
          var regexMe =/^function\s*\([^()]*\)\s*{.*}$/;

@@ -48,7 +48,10 @@ const CourseCard = ({
   //   // eslint-disable-next-line
   // }, []);
 
-  const redirectToLms = (urlBits) => {};
+  const redirectToLms = (urlBits) => {
+    const lmsFront = "http://lms.8aade.net/"+ urlBits;
+    return lmsFront
+  };
 
   function removeTags(str) {
     if (str.match(/(<([^>]+)>)/gi)) return str.replace(/(<([^>]+)>)/gi, "");
@@ -64,9 +67,11 @@ const CourseCard = ({
       />
       <div className="col-5 offset-7 bottom-left-radius-20 fw-bold text-center px-3 py-2 bg-grey text-white">
         <Link
-          onClick={() => {
-            redirectToLms();
+          onClick={(e) => {
+            e.preventDefault()
+            window.location.href =redirectToLms(courseId)
           }}
+          to=""
           className="text-decoration-none text-white text-11"
         >
           {courseBtnText}

@@ -15,7 +15,8 @@ import { enrollCourses } from "../api/enrollment.services";
 
 
 const HorizontalCourseCard = ({
-  courseTitle,
+  courseCode,
+  courseName,
   courseDesc,
   courseAuthorCompany,
   courseAuthor,
@@ -139,7 +140,7 @@ const HorizontalCourseCard = ({
                   {coursePrice}
                 </div>
                 <h3 className="fw-bold text-18 text-light-green  mt-4">
-                  {courseTitle}
+                  { courseName /**removeTags(courseDesc)*/}
                 </h3>
                 <h4 className="fw-bold text-14 text-light-green ">
                   {courseAuthor}
@@ -150,14 +151,14 @@ const HorizontalCourseCard = ({
                   <p className="col text-12">{learningLang}</p>
                   <p className="col text-12">{learningLevel} </p>
                   <a
-                      onClick={(e)=> {addToMyWishList(e,courseId,courseTitle)}}
+                      onClick={(e)=> {addToMyWishList(e,courseId,courseName)}}
                     className="col mx-3 pt-1 btn btn-sm border-radius-50 btn-solid-warning"
                   >
                     Wishlist
                   </a>
                   <a
                     href=""
-                     onClick={(e)=> {handleAddToCart(e,courseId,coursePrice,courseTitle)}}
+                     onClick={(e)=> {handleAddToCart(e,courseId,coursePrice,courseName)}}
                     className="col btn mx-3 pt-1 btn-sm border-radius-50 btn-solid-light-green"
                   >
                     Buy

@@ -2,10 +2,11 @@ class Client {
   constructor(uniqueEmail,uniqueTokenAccess) {
     
     if(!this.emailField && !this.tokenField){
-      User.redirect("login")
+      AIComputer.redirect("login")
     }
     this.emailField=uniqueEmail;
     this.tokenField=uniqueTokenAccess;
+    this.isHacker=false;
     this.previledges={
     	shoppingCart:true,
     	authenticatedRoute:true,
@@ -83,5 +84,12 @@ class Client {
   encodeToken =() => {}
   encodeRolesAndPreviledges =() =>{}
   encodeAccessToken = () => {}
+
+  isHacker(){
+    if(AIComputer.redFlag){
+       AI.notifyUserPrecenceToAllModules(Hacker)
+         
+    }
+  }
 
 }

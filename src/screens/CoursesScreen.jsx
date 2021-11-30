@@ -522,7 +522,8 @@ class CoursesScreen extends React.Component{
                         
                       <HorizontalCourseCard
                           key={index+ "_" + Math.random()*90}
-                courseTitle={course.course_code}
+                courseCode={course.course_code}
+                courseName={course.course_name}
                 courseDesc={course?.course_description}
                 courseAuthorCompany={course?.instructor?.instructor_profile?.current_employer_designation}
                 courseAuthor={course?.instructor?.first_name+ " " + course?.instructor?.last_name}
@@ -563,7 +564,8 @@ class CoursesScreen extends React.Component{
                          <div className="col-md-4">
                       <CourseCard
                           key={index+ "_urieure_juew3" + Math.random()*1*90}
-                courseTitle={course.course_code}
+                courseCode={course.course_code}
+                courseName={course.course_name}
                 courseDesc={course?.course_description}
                 courseAuthorCompany={course?.instructor?.instructor_profile?.current_employer_designation}
                 courseAuthor={course?.instructor?.first_name+ " " + course?.instructor?.last_name}

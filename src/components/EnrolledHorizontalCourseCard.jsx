@@ -48,7 +48,10 @@ const HorizontalCourseCard = ({
     else return str;
   }
 
-  const redirectToLms = (urlBits) => {};
+  const redirectToLms = (urlBits) => {
+    const lmsFront = "http://lms.8aade.net/"+ urlBits
+    return lmsFront
+  };
 
   return (
     <>
@@ -127,9 +130,11 @@ const HorizontalCourseCard = ({
                   >
                     <Link
                       // to={courseBtnLink}
-                      onClick={() => {
-                        redirectToLms();
-                      }}
+                     onClick={(e) => {
+            e.preventDefault()
+            window.location.href =redirectToLms(courseId)
+          }}
+          to=""
                       className="text-decoration-none text-white text-11"
                     >
                       {courseBtnText}

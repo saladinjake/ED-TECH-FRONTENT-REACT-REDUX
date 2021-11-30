@@ -29,7 +29,7 @@ export class DIANA extends Computer{
   	}
   }
   isEnemy =() => {
-    if(this.config.getCurrentUserLoggedInAttemps() >5){
+    if( this.redFlag){
       Diana.getInstance("logger").notifyScreen("You have been blocked. Try again after 5mins.")
            .checkUserPersistence(function(trial){
             
