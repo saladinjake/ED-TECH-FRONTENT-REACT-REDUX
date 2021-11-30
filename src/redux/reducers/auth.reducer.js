@@ -28,6 +28,8 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_SUCCESS:
+
+    //all this should be encrypted so its not just plain
       localStorage.setItem("access_token", action.payload.access_token);
       localStorage.setItem("token", action.payload.access_token);
       localStorage.setItem("user", JSON.stringify(action.payload.user));
@@ -35,6 +37,12 @@ export default (state = initialState, action) => {
         "user_roles",
         JSON.stringify(action.payload.user_roles)
       );
+      localStorage.setItem(
+        "lms_token",
+        JSON.stringify(action.payload.lms_token)
+      );
+
+      // set the lms token to cookies
       return {
         ...state,
         loading: false,
@@ -52,7 +60,9 @@ export default (state = initialState, action) => {
       localStorage.removeItem("user");
       localStorage.removeItem("user_roles");
       localStorage.removeItem("cart");
+       localStorage.removeItem("giffy_image_*")
       localStorage.removeItem("total");
+      localStorage.removeItem("lms_token");
 
       return {
         ...state,

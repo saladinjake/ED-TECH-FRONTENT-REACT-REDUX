@@ -163,32 +163,45 @@ can only have alphanumeric and .- char in the domain part`)
   }
 
   const handleSubmit = async (values, { setSubmitting }) => {
-   
-
-   
        setLoading(true);
-    try {
-    
-      const res = await loginUser(values);
-      toast.success("Login Successful");
-      login(res.data);
-      console.log(prevPath);
-      const pattern = /[?redirectTo=]+/g;
+       console.log(values.email,values.password)
 
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
+       var formdata = new FormData();
+       formdata.append("email", values.email);
+       formdata.append("password", values.password);
+
+        var requestOptions = {
+          method: 'POST',
+          body: formdata,
+          redirect: 'follow'
+        };
+
+        fetch("http://gapslmsservices.herokuapp.com/profile-resource/api/lms-enrollment/login/", requestOptions)
+          .then(response => response.json())
+          .then(result => {
+            console.log(result);
+            login(result);//without sso login(result.data);
+
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
 
 
-      setSubmitting(false);
-    } catch (err) {
-      toast.error(err?.response?.data?.message);
-      logOut();
-      setSubmitting(false);
-       setLoading(false);
-    }
-    setLoading(false);
+            toast.success("Login Successful");
 
+          })
+          .catch(error => { 
+            //console.log('error', error)
+
+
+            toast.error(error);
+            logOut();
+            setSubmitting(false);
+             setLoading(false);
+
+
+          });
+          setLoading(false);
 
     
   };
