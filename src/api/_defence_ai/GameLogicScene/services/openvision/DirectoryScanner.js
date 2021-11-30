@@ -25,7 +25,7 @@ export class DirectoryScanner{
 
 	scanCodeFiles(){
 		var allfiles = {};
-		this.readFiles('dirname/', (filename, content)=> {
+		this.readFiles('src/', (filename, content)=> {
 		   data[filename] = content;
 		},
 		 (err)=> {

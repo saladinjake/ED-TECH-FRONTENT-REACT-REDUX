@@ -2,53 +2,7 @@
 export default class QuestenceObfuscate{
 
   constructor(){
-    this.allowedHost = [{
-      host_type: "dev",
-      host_port:"9999",
-      code_developer:"saladinjake",
-      host_origin:"http://localhost:9999",
-      host_signature:"A_signature_key_with_the_backend_server_api",
-      user_token:"",
-      user_data:[]
-    },
-
-    {
-       host_type: "staging",
-      host_port:"9999",
-      code_developer:"tobi",
-      host_origin:"http://localhost:9999",
-      host_signature:"A_signature_key_with_the_backend_server_api",
-      user_token:"",
-      user_data:[]
-    },
-
-    {
-       host_type: "production",
-      host_port:"",
-      code_developer:"Chief Kayode Sodimu",
-      host_origin:"https://questence.org",
-      host_signature:"A_signature_key_with_the_backend_server_api",
-      user_token:"",
-      user_data:[]
-    },
-
-    {
-
-       host_type: "production",
-      host_port:"",
-      code_developer:"Nil",
-      /**is client confirmed will be true only if credentials are true*/
-       isClientConfirmed: false,
-      /*is client is allowed true for guest pages*/
-      isClient:true, // FOR ANY OTHER CLIENTEL BROWSING THE SYSTEM
-      host_origin:"https://questence.org",
-      host_signature:"A_signature_key_with_the_backend_server_api",
-      user_token:"",
-      user_data:[]
-    },
-
-
-    ]
+    this.allowedHost = Config.getItem("ALLOWED_HOST")
   }
 
 

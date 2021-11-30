@@ -35,9 +35,6 @@ export class HTMLDomManager{
 
 
     // encode(decode) html text into html entity// var entity = '&#39640;&#32423;&#31243;&#24207;&#35774;&#35745;';
-	// var str = '高级程序设计';
-	// console.log(decodeHtmlEntity(entity) === str);
-	// console.log(encodeHtmlEntity(str) === entity);
 	decodeHtmlEntity = function(str) {
 	  return str.replace(/&#(\d+);/g, function(match, dec) {
 	    return String.fromCharCode(dec);
@@ -51,6 +48,50 @@ export class HTMLDomManager{
 	  }
 	  return buf.join('');
 	};
+
+
+
+  decodeHTMLEntities (str) {
+    // this prevents any overhead from creating the object each time
+    var element = document.createElement('div');
+    if(str && typeof str === 'string') {
+      // strip script/html tags
+      str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
+      str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+      element.innerHTML = str;
+      str = element.textContent;
+      element.textContent = '';
+    }
+
+    return str;
+  }
+
+
+  badAttemptsNotifyAI(){
+
+  }
+
+
+  sanitize(input){
+
+    var tagsToReplace = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;'
+    };
+    return input.replace(/[&<>]/g, function(tag) {
+        return tagsToReplace[tag] || tag;
+    });
+
+  }
+
+  encodeUrl(baseUrl,partsQuery){
+  	var url = baseUrl +"/?data=" + encodeURIComponent(partsQuery)
+  }
+
+  escapeData(data){
+  	return encodeURIComponent(data)
+  }
 
 
 }

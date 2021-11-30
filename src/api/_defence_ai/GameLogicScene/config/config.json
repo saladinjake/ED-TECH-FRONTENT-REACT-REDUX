@@ -1,19 +1,66 @@
 {
  "LOGIN_ATTEMPTS":5,
- "LEVEL_MODES":["dev",
- 	            "production",
- 	            "maintenance",
- 	            "staging",
- 	            "debug"
+ "LEVEL_MODES":[
+    "dev",
+    "production",
+    "maintenance",
+    "staging",
+    "debug"
  ],
  "LEVEL_MODE":"dev",
- "SLEEP_MODES":["NEVER",
-			 	"1hrs",
-			 	"45mins",
-			 	"30mins",
-			 	"15min",
-			 	"1min"
+ "SLEEP_MODES":[
+    "NEVER",
+ 	"1hrs",
+ 	"45mins",
+ 	"30mins",
+ 	"15min",
+ 	"1min"
  ],
  "SLEEP_MODE":"NEVER",
+ "ALLOWED_HOST":[{
+      "host_type": "dev",
+      "host_port":"9999",
+      "code_developer":"saladinjake",
+      "host_origin":"http://localhost:9999",
+      "host_signature":"A_signature_key_with_the_backend_server_api",
+      "user_token":"",
+      "user_data":[]
+    },
+
+    {
+       "host_type": "staging",
+      "host_port":"9999",
+      "code_developer":"tobi",
+      "host_origin":"http://localhost:9999",
+      "host_signature":"A_signature_key_with_the_backend_server_api",
+      "user_token":"",
+      "user_data":[]
+    },
+
+    {
+       "host_type": "production",
+      "host_port":"",
+      "code_developer":"Chief Kayode Sodimu",
+      "host_origin":"https://questence.org",
+      "host_signature":"A_signature_key_with_the_backend_server_api",
+      "user_token":"",
+      "user_data":[]
+    },
+
+    {
+
+       "host_type": "production",
+      "host_port":"",
+      "code_developer":"Nil",
+       "isClientConfirmed": false,
+      "isClient":true, 
+      "host_origin":"https://questence.org",
+      "host_signature":"A_signature_key_with_the_backend_server_api",
+      "user_token":"",
+      "user_data":[]
+    },
+
+
+    ]
 
 }

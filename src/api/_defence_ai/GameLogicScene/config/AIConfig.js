@@ -19,24 +19,17 @@ class AIConfig{
     try {
 
       const data = fs.readFileSync('./config.json', 'utf8');
-
       // parse JSON string to JSON object
       const initialConfig = JSON.parse(data);
-
-      
       Object.keys(initialConfig).forEach(key => {
           AIConfig.setItem(key, initialConfig[key])
       });
-
     } catch (err) {
-
         console.log(`Error reading file from disk: ${err}`);
     }
-
   }
 
   updateConfigStore(key, value){
-    // read the file
     try {
       //feedin data
       const data = fs.readFileSync('./config.json', 'utf8');
@@ -45,7 +38,7 @@ class AIConfig{
       //added data
       initialConfig[key] =value;
       // convert JSON object to a string
-      const newData = JSON.stringify(initialConfig, null, 4);
+      let newData = JSON.stringify(initialConfig, null, 4);
       // write file to disk
       fs.writeFileSync('./config.json', newData, 'utf8');
       console.log(`File is written successfully!`);
@@ -55,17 +48,16 @@ class AIConfig{
    
   }
 
-  parse(valu){
+  parse(val){
     return this.stringify(valu, (key, val) =>{
       return (typeof val ==='function') ? val.toString().replace(/\t|\n/g, ''): val
     })
   }
 
-  stringify(valu){
+  stringify(val){
     return this.stringify(valu, (key,val)=>{
        if(typeof val === 'string'){
          var regexMe =/^function\s*\([^()]*\)\s*{.*}$/;
-
           if (regexMe.exec(val) !==null){
             return eval('key =' + val)
           }else{
