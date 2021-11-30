@@ -14,11 +14,11 @@ export class DIANA extends Computer{
   	super()
   	this.engage = true;
   	this.redFlag =false;
+   
   	this.falseAlarm = true; //never always trust a user  online
   }
-  lockOnTargetMachine =() =>{
-    //get ipaddress of the machine logging or logged in
-  }
+
+
   isGoodGuy =(User) =>{
   	if(User.isAuthenticated()){ //doesnt mean he is good
       Diana.notifyUserPrecenceToAllModules(User.getCredentials())
@@ -65,9 +65,10 @@ export class DIANA extends Computer{
   	if(this.enngage==true){
       super.start()
   	}
-  	this.sleep()
-
-  	
+  	this.sleep()	
   }
+
+
+  
 }
 

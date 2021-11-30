@@ -37,6 +37,9 @@ export default class QuestenceObfuscate{
        host_type: "production",
       host_port:"",
       code_developer:"Nil",
+      /**is client confirmed will be true only if credentials are true*/
+       isClientConfirmed: false,
+      /*is client is allowed true for guest pages*/
       isClient:true, // FOR ANY OTHER CLIENTEL BROWSING THE SYSTEM
       host_origin:"https://questence.org",
       host_signature:"A_signature_key_with_the_backend_server_api",

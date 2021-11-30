@@ -13,6 +13,11 @@ class Client {
     	//guess the right word to grant u admin access heheh!!! 
     };
     this.isAuthenticated = false;
+    /**is client confirmed will be true only if credentials are true*/
+    this.isClientConfirmed: false;
+      /*is client is allowed true for guest pages*/
+    this.isClient:true; // FOR ANY OTHER CLIENTEL BROWSING THE SYSTEM
+      
 
     this.shoppingCart = ShoppingCartEncrypted.getInstance() || []// you only have one shopping cart 
     User.instance=this;
