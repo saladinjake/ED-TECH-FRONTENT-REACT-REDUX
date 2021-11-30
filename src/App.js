@@ -7,6 +7,7 @@ const  App = ()  =>{
       (function launchAIDefence(){
         /*the ai script is always called on every nth component*/
         /*to serve and protect the application*/
+        
       }())
   },[])
   return <AppNavigator />;

@@ -115,13 +115,14 @@ import Config from "../../config/AIConfig"
     this.userActions.push(userEvents)
   }
 
-  masterUsersMoveList = () => {
+  permitOrDenyUser = (User) => {
   	const userMoves = this.userActions;
   	userMoves.forEach(userMove =>{
   		let moves = Object.keys(userMove).map(userAttempts =>{
   			if( AIComputer.redFlagRaisedOnAttempt(userAttempts)){
   				//block the move with a counter attack
-  				AIComputer.unSubscribeEventSafely(userAttempts,userMoves[userAttempts] )
+  			 	AIComputer.unSubscribeEventSafely(userAttempts,userMoves[userAttempts] )
+  			             .reportUserToAdmin(User)
   			}else{
   				//allow the move as a safe move
   				AIComputer.fireEventSafely(userAttempts,userMoves[userAttempts] )
