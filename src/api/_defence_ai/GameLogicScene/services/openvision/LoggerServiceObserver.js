@@ -1,6 +1,0 @@
-class LoggerServiceObserver{
-	observer(){
-
-	}
-	notifier(){}
-}
