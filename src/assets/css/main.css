@@ -471,6 +471,14 @@ p {
   margin-top: -0.4px;
 }
 
+.mt-n-0-1 {
+  margin-top: -0.1px;
+}
+
+.mb-4-2 {
+  margin-bottom: 3.2rem;
+}
+
 .mt-n-0-5 {
   margin-top: -0.5px;
 }

@@ -12,6 +12,8 @@ import MyLearning from "../screens/MyLearning";
 import CartScreen from "../screens/CartScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import WishListScreen from "../screens/WishListScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+
 /*Import requirements and configuration files*/
 import history from "../helpers/history";
 import {
@@ -41,7 +43,6 @@ const AppNavigator = () => {
           render={(props) => <DigitalOnlineLearningScreen {...props} />}
         />
 
-
         <Route
           path="/cart"
           render={(props) => (
@@ -50,6 +51,17 @@ const AppNavigator = () => {
               exact
               path="/cart"
               component={CartScreen}
+            />
+          )}
+        />
+        <Route
+          path="/learner/profile"
+          render={(props) => (
+            <AuthenticatedRoute
+              {...props}
+              exact
+              path="/learner/profile"
+              component={ProfileScreen}
             />
           )}
         />

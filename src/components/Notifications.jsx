@@ -27,45 +27,42 @@ function LongTimeAgo(date) {
   return value + " " + unit + " " + direction;
 }
 
-const Notifications = ({notifications, limits}) => {
-  let listNotifications = notifications
-  if(Number.isInteger(limits) ){
+const Notifications = ({ notifications, limits }) => {
+  let listNotifications = notifications;
+  if (Number.isInteger(limits)) {
     listNotifications = notifications.slice(0, limits);
   }
   return (
     <>
       <div className="container">
         <div className="row">
-          <div className="col-md-12">
-          <br/>
-            <h4>Notifications</h4>
-          </div>
+          <ul className="list-group col-md-12 mb-5 height-419px overflow-scroll">
+            {notifications.length > 0 &&
+              listNotifications.map((item, i) => {
+                let notifier = "fa user";
+                if (item.data.notification_type === "Course Enrollment") {
+                  notifier = "fa  fa-book";
+                } else if (item.data.notification_type === "Course Payment") {
+                  notifier = "fa  fa-shopping-cart";
+                } else {
+                  notifier = "fa  fa-user";
+                }
+                return (
+                  <li class="list-group-item" key={i}>
+                    <NotificationCard
+                      abbr="NT"
+                      notificationTitle={item.data.message}
+                      notificationDate={LongTimeAgo(new Date(item.created_at))}
+                      icon={notifier}
+                    />
+                  </li>
+                );
+              })}
 
-            {notifications.length > 0 && listNotifications.map((item, i) => {
-                        let notifier = "fa user";
-                        if (
-                          item.data.notification_type === "Course Enrollment"
-                        ) {
-                          notifier = "fa  fa-book";
-                        } else if (
-                          item.data.notification_type === "Course Payment"
-                        ) {
-                          notifier = "fa  fa-shopping-cart";
-                        } else {
-                          notifier = "fa  fa-user";
-                        }
-          return (
-          <NotificationCard
-            abbr="NT"
-            notificationTitle={ item.data.message}
-            notificationDate={ LongTimeAgo(new Date(item.created_at))}
-            icon={notifier}
-          />
-          )
-
-        })}
-        
-        
+            {notifications.length < 1 && (
+              <h5 className="text-center">You have no notifications</h5>
+            )}
+          </ul>
         </div>
       </div>
     </>
