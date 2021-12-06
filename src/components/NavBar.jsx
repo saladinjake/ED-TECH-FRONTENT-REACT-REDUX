@@ -200,7 +200,7 @@ const NavBar = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setP
           .then(response => response.json())
           .then(result => {
             console.log(result);
-            login(result);//without sso login(result.data);
+            login(result);    //without sso login(result.data);
 
             setTimeout(() => {
               window.location.reload();
@@ -213,8 +213,12 @@ const NavBar = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setP
           .catch(error => { 
             //console.log('error', error)
 
-
-            toast.error(error);
+          if(error){
+            toast.error(error)
+          }else{
+            toast.error('Invalid credentials. User dont exists')
+          }
+        
             logOut();
             setSubmitting(false);
              setLoading(false);
@@ -266,14 +270,7 @@ const prevalidate = (setSubmitting)=>{
             showErrorOnce =true 
              if(showErrorOnce){
                showErrorOnce=false
-               toast.error(`Invalid Email \n must start with alphanumeric char
-can only have alphanumeric and @._-% char\n
-cannot have 2 consecutives . exept for quoted string\n
-char before @ can only be alphanumeric and ._-%, exept for quoted string\n
-must have @ in the middle\n
-need to have at least 1 . in the domain part\n
-cannot have double - in the domain part\n
-can only have alphanumeric and .- char in the domain part`)
+               toast.error(`Please ensure to use a valid email`)
                setSubmitting(false);
                 setLoading(false);
                return false

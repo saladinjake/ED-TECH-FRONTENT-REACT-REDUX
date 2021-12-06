@@ -7,20 +7,14 @@ import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-
 import { Provider as Provisioner }  from "react-redux";
 import QuestenceReduxStore,{ persister } from "./redux/store";
-
 //import { PersistGate } from 'redux-persist/integration/react';
-
 ReactDOM.render(
   <React.StrictMode>
      {/*REDUX STATE ENHANCER*/}
     <Provisioner store={QuestenceReduxStore}>
-    
           <App />
-    
     </Provisioner>
   </React.StrictMode>,
   document.getElementById("root")
