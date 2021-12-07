@@ -18,12 +18,17 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { login, logOut, setPrevPath } from "../redux/actions/auth.action";
 
+
+
 import { loginUser,registerLearner,
   loginUserForgotPassword,
   
    } from "../api/auth.services";
 
-
+   export const BASE_URL =
+   process.env.NODE_ENV === "development"
+     ?  "http://gapslmsservices.herokuapp.com"  
+     : "https://gapslmsservices.herokuapp.com"
 const AUTHLINKS = [
   {
     name: "Dashboard",
@@ -196,23 +201,17 @@ const NavBar = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setP
           redirect: 'follow'
         };
 
-        fetch("http://gapslmsservices.herokuapp.com/profile-resource/api/lms-enrollment/login/", requestOptions)
+        fetch(`${BASE_URL}/profile-resource/api/lms-enrollment/login/`, requestOptions)
           .then(response => response.json())
           .then(result => {
-            console.log(result);
             login(result);    //without sso login(result.data);
-
             setTimeout(() => {
               window.location.reload();
             }, 2000);
-
-
             toast.success("Login Successful");
-
           })
           .catch(error => { 
             //console.log('error', error)
-
           if(error){
             toast.error(error)
           }else{
@@ -572,10 +571,18 @@ const prevalidate = (setSubmitting)=>{
                 ):(
 
                  <>
-                   <a className="btn btn-outline-dark btn-sm me-2 btn-rounded">
+                   <a
+                  className="btn btn-outline-dark btn-sm me-2 btn-rounded"
+                  onClick={handleLoginModalShow}
+                >
                   Log In
                 </a>
-                <a className="btn btn-solid-teal btn-sm btn-rounded">Sign Up</a>
+                <a
+                  className="btn btn-solid-teal btn-sm btn-rounded"
+                  onClick={handleRegModalShow}
+                >
+                  Sign Up
+                </a>
 
                  </>
 
