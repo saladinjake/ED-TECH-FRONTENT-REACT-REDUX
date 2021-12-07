@@ -12,6 +12,7 @@ import CategorySection from "../components/CategorySection";
 import ReverseHorizontalCard from "../components/ReverseHorizontalCard";
 import ProfessionalBodySection from "../components/ProfessionalBodySection";
 
+console.log("Local storage" + localStorage.getItem("lms_token"));
 const Landing = () => {
   return (
     <>

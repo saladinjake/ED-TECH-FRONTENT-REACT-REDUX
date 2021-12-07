@@ -49,8 +49,10 @@ const CourseCard = ({
   // }, []);
 
   const redirectToLms = (urlBits) => {
-    const lmsFront = "http://lms.8aade.net/"+ urlBits;
-    return lmsFront
+    //const lmsFront = "http://lms.8aade.net/fd3a6e73-e95b-4199-990b-553f15218276"+ urlBits;
+    const lmsFront =
+      "http://lms.8aade.net/fd3a6e73-e95b-4199-990b-553f15218276";
+    return lmsFront;
   };
 
   function removeTags(str) {
@@ -68,8 +70,8 @@ const CourseCard = ({
       <div className="col-5 offset-7 bottom-left-radius-20 fw-bold text-center px-3 py-2 bg-grey text-white">
         <Link
           onClick={(e) => {
-            e.preventDefault()
-            window.location.href =redirectToLms(courseId)
+            e.preventDefault();
+            window.location.href = redirectToLms(courseId);
           }}
           to=""
           className="text-decoration-none text-white text-11"

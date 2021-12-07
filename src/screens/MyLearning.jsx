@@ -5,6 +5,7 @@ import PageHeader from "../components/PageHeader";
 import AuthSidebarMenus from "../components/AuthSidebarMenus";
 import CoursesWithSortWidget from "../components/CoursesWithSortWidget";
 import { getAuthProfile } from "../api/learner.services";
+import CourseCard from "../components/EnrolledCourseCard";
 
 import Loader from "../components/Loader";
 
@@ -229,6 +230,22 @@ class MyLearning extends React.Component {
             </div>
             <div className="col-md-9 pt-5">
               <>
+                <div className="row">
+                  <div className="col-md-4">
+                    <CourseCard
+                      courseTitle="Entrepreneurship in Emerging Economies - Test course"
+                      courseDesc="Explore how entrepreneurship and innovation tackle complex social problems in emerging economies."
+                      courseAuthorCompany=""
+                      courseAuthor="Jamz Dollar"
+                      coursePrice="1000"
+                      courseId="fd3a6e73-e95b-4199-990b-553f15218276"
+                      courseImage=""
+                      courseBtnText="View Course"
+                      courseRating="4"
+                      courseCompletion="40"
+                    />
+                  </div>
+                </div>
                 {loading == true ? (
                   <Loader width="100" />
                 ) : (
