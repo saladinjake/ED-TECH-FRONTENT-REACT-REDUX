@@ -18,12 +18,17 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { login, logOut, setPrevPath } from "../redux/actions/auth.action";
 
+
+
 import { loginUser,registerLearner,
   loginUserForgotPassword,
   
    } from "../api/auth.services";
 
-
+   export const BASE_URL =
+   process.env.NODE_ENV === "development"
+     ?  "http://gapslmsservices.herokuapp.com"  
+     : "https://gapslmsservices.herokuapp.com"
 const AUTHLINKS = [
   {
     name: "Dashboard",
@@ -196,25 +201,23 @@ const NavBar = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setP
           redirect: 'follow'
         };
 
-        fetch("http://gapslmsservices.herokuapp.com/profile-resource/api/lms-enrollment/login/", requestOptions)
+        fetch(`${BASE_URL}/profile-resource/api/lms-enrollment/login/`, requestOptions)
           .then(response => response.json())
           .then(result => {
-            console.log(result);
-            login(result);//without sso login(result.data);
-
+            login(result);    //without sso login(result.data);
             setTimeout(() => {
               window.location.reload();
             }, 2000);
-
-
             toast.success("Login Successful");
-
           })
           .catch(error => { 
             //console.log('error', error)
-
-
-            toast.error(error);
+          if(error){
+            toast.error(error)
+          }else{
+            toast.error('Invalid credentials. User dont exists')
+          }
+        
             logOut();
             setSubmitting(false);
              setLoading(false);
@@ -266,14 +269,7 @@ const prevalidate = (setSubmitting)=>{
             showErrorOnce =true 
              if(showErrorOnce){
                showErrorOnce=false
-               toast.error(`Invalid Email \n must start with alphanumeric char
-can only have alphanumeric and @._-% char\n
-cannot have 2 consecutives . exept for quoted string\n
-char before @ can only be alphanumeric and ._-%, exept for quoted string\n
-must have @ in the middle\n
-need to have at least 1 . in the domain part\n
-cannot have double - in the domain part\n
-can only have alphanumeric and .- char in the domain part`)
+               toast.error(`Please ensure to use a valid email`)
                setSubmitting(false);
                 setLoading(false);
                return false
@@ -575,10 +571,18 @@ can only have alphanumeric and .- char in the domain part`)
                 ):(
 
                  <>
-                   <a className="btn btn-outline-dark btn-sm me-2 btn-rounded">
+                   <a
+                  className="btn btn-outline-dark btn-sm me-2 btn-rounded"
+                  onClick={handleLoginModalShow}
+                >
                   Log In
                 </a>
-                <a className="btn btn-solid-teal btn-sm btn-rounded">Sign Up</a>
+                <a
+                  className="btn btn-solid-teal btn-sm btn-rounded"
+                  onClick={handleRegModalShow}
+                >
+                  Sign Up
+                </a>
 
                  </>
 

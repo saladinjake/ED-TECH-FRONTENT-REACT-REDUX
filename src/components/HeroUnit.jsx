@@ -19,7 +19,10 @@ import { login, logOut, setPrevPath } from "../redux/actions/auth.action";
 
 import { loginUser,registerLearner,loginUserForgotPassword } from "../api/auth.services";
 
-
+export const BASE_URL =
+  process.env.NODE_ENV === "development"
+    ?  "http://gapslmsservices.herokuapp.com"  
+    : "https://gapslmsservices.herokuapp.com"
 
 const HeroUnit = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setPrevPath  }) => {
 
@@ -176,7 +179,7 @@ can only have alphanumeric and .- char in the domain part`)
           redirect: 'follow'
         };
 
-        fetch("http://gapslmsservices.herokuapp.com/profile-resource/api/lms-enrollment/login/", requestOptions)
+        fetch(`${BASE_URL}/profile-resource/api/lms-enrollment/login/`, requestOptions)
           .then(response => response.json())
           .then(result => {
             console.log(result);
