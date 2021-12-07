@@ -19,10 +19,7 @@ import { login, logOut, setPrevPath } from "../redux/actions/auth.action";
 
 import { loginUser,registerLearner,loginUserForgotPassword } from "../api/auth.services";
 
-export const BASE_URL =
-  process.env.NODE_ENV === "development"
-    ?  "http://gapslmsservices.herokuapp.com"  
-    : "https://gapslmsservices.herokuapp.com"
+import { BASE_URL } from "../api/api_config/constants";
 
 const HeroUnit = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setPrevPath  }) => {
 

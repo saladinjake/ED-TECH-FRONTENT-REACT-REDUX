@@ -25,10 +25,10 @@ import { loginUser,registerLearner,
   
    } from "../api/auth.services";
 
-   export const BASE_URL =
-   process.env.NODE_ENV === "development"
-     ?  "http://gapslmsservices.herokuapp.com"  
-     : "https://gapslmsservices.herokuapp.com"
+
+import { BASE_URL } from "../api/api_config/constants";
+
+
 const AUTHLINKS = [
   {
     name: "Dashboard",
