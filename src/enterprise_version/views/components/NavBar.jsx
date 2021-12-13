@@ -1029,33 +1029,33 @@ const prevalidate = (setSubmitting)=>{
                     style={{ width: "50vw" }}
                   >
                     <div className="col border-end">
-                      <NavDropdown.Item href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"}
+                      <NavDropdown.Item href={process.env.PUBLIC_URL+ "/program-detail/3"}
                             >
                         NIM: Nigerian Institute of Management
                       </NavDropdown.Item>
-                      <NavDropdown.Item href="#action/3.2">
+                      <NavDropdown.Item href={process.env.PUBLIC_URL+ "/program-detail/2"}>
                         ICAN: Institute of Chartered Accountants
                       </NavDropdown.Item>
-                      <NavDropdown.Item href="#action/3.3">
+                      <NavDropdown.Item href={process.env.PUBLIC_URL+ "/program-detail/4"}>
                         CITN: Chartered Institute of Taxation of Nigeria
                       </NavDropdown.Item>
-                      <NavDropdown.Item href="#action/3.3">
+                      <NavDropdown.Item href={process.env.PUBLIC_URL+ "/program-detail/8"}>
                         Chartered Institute of Bankers of Nigeria
                       </NavDropdown.Item>
                     </div>
                     <div className="col">
                       <NavDropdown.Item
-                        href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"}
+                        href={process.env.PUBLIC_URL+ "/program-detail/6"}
                             
                         style={{ whiteSpace: "initial" }}
                       >
                         ICSAN - Institute of Chartered Secretaries and
                         Administrators of Nigeria
                       </NavDropdown.Item>
-                      <NavDropdown.Item href="#action/3.2">
+                      <NavDropdown.Item href={process.env.PUBLIC_URL+ "/program-detail/5"}>
                         Association Of Accountants of Nigeria
                       </NavDropdown.Item>
-                      <NavDropdown.Item href="#action/3.3">
+                      <NavDropdown.Item href={process.env.PUBLIC_URL+ "/program-detail/1"}>
                         CIPM: Chartered Institute of Personnel Management of
                         Nigeria
                       </NavDropdown.Item>
@@ -1064,26 +1064,26 @@ const prevalidate = (setSubmitting)=>{
                   <div className="row d-md-none">
                     <div className="col-sm-12">
                       <NavDropdown.Item
-                        href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"}
+                        href={process.env.PUBLIC_URL+ "/program-detail/3"}
                             
                         style={{ whiteSpace: "initial", paddingBottom: "10px" }}
                       >
                         NIM: Nigerian Institute of Management
                       </NavDropdown.Item>
                       <NavDropdown.Item
-                        href="#action/3.2"
+                        href={process.env.PUBLIC_URL+ "/program-detail/6"}
                         style={{ whiteSpace: "initial", paddingBottom: "50px" }}
                       >
                         ICAN: Institute of Chartered Accountants
                       </NavDropdown.Item>
                       <NavDropdown.Item
-                        href="#action/3.3"
+                        href={process.env.PUBLIC_URL+ "/program-detail/4"}
                         style={{ whiteSpace: "initial", paddingBottom: "10px" }}
                       >
                         CITN: Chartered Institute of Taxation of Nigeria
                       </NavDropdown.Item>
                       <NavDropdown.Item
-                        href="#action/3.3"
+                        href={process.env.PUBLIC_URL+ "/program-detail/8"}
                         style={{ whiteSpace: "initial", paddingBottom: "50px" }}
                       >
                         Chartered Institute of Bankers of Nigeria
@@ -1091,7 +1091,7 @@ const prevalidate = (setSubmitting)=>{
                     </div>
                     <div className="col-sm-12">
                       <NavDropdown.Item
-                        href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"}
+                        href={process.env.PUBLIC_URL+ "/program-detail/6"}
                             
                         style={{ whiteSpace: "initial", paddingBottom: "50px" }}
                       >
@@ -1099,13 +1099,13 @@ const prevalidate = (setSubmitting)=>{
                         Administrators of Nigeria
                       </NavDropdown.Item>
                       <NavDropdown.Item
-                        href="#action/3.2"
+                        href={process.env.PUBLIC_URL+ "/program-detail/5"}
                         style={{ whiteSpace: "initial", paddingBottom: "50px" }}
                       >
                         Association Of Accountants of Nigeria
                       </NavDropdown.Item>
                       <NavDropdown.Item
-                        href="#action/3.3"
+                        href={process.env.PUBLIC_URL+ "/program-detail/1"}
                         style={{ whiteSpace: "initial", paddingBottom: "50px" }}
                       >
                         CIPM: Chartered Institute of Personnel Management of
