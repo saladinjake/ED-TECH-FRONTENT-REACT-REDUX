@@ -1,7 +1,6 @@
 import React,{useEffect } from "react"
 import "./App.css";
-import AppNavigator from "./navigation/AppNavigator";
-//import DIANA from "./api/_defence_ai/AI_launchpad"
+import AppNavigator from "./enterprise_version/core/navigation/AppNavigator";
 const  App = ()  =>{
   useEffect(()=>{
       (function launchAIDefence(){
