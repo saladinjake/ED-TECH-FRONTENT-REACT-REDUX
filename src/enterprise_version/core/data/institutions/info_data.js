@@ -46,6 +46,120 @@ Group and early-bird registration discounts are available. Contact Questence for
 
       about_program: [
         "These sessions will help you succeed the CITN series of exams and qualifying you as a chartered Taxation professional.",
+      
+
+        `CITN`,
+`Coordinator - MacTheo Consultants (Theophilus Olufemi - 0813 821 4124)`,
+`COURSES `,
+
+`Foundation 1`,
+`Course	Tentative Instructor
+`,
+`PRINCIPLES OF TAXATION 
+`,	
+`ACCOUNTING 
+`,	
+`GENERAL PRINCIPLES OF LAW 	
+`,
+`ECONOMICS	
+`,
+
+`Professional Taxation I
+`,
+`Course	Tentative Instructor
+`,
+`QUANTITATIVE TECHNIQUES
+`,	
+`REVENUE LAW	
+`,
+`INCOME TAXATION	
+`,
+`INDIRECT TAXATION	
+`,
+
+`Professional Taxation II
+`,
+`Course	Tentative Instructor
+`,
+`TAXATION OF E-COMMERCE	
+`,
+`STRATEGY, RISK AND ETHICS
+`,	
+`TAX AUDIT AND INVESTIGATION
+`,	
+`INTERNATIONAL TAXATION	
+`,
+
+
+`Professional Taxation III
+`,
+`Course	Tentative Instructor
+`,
+`IL, GAS TAXATION	
+`,
+`SOLID MINERALS TAXATION	
+`,
+`TAX MANAGEMENT	
+`,
+`PRACTICAL CASE STUDIES IN TAXATION	
+`,
+
+
+
+
+
+`ICAN Courses
+`,
+`Tentative Coordinator – MacTheo Consulting
+`,
+
+`FOUNDATION LEVEL
+`,
+
+`Code	Course	Tentative Instructor
+`,
+`A1	TAXATION (TAX)	
+`,
+`A2	BUSINESS, MANAGEMENT AND FINANCE (BMF)
+`,	
+`A3	FINANCIAL ACCOUNTING (FA)	
+`,
+`A4	MANAGEMENT INFORMATION (MI)	
+`,
+`A5	BUSINESS LAW (BL)
+`,	
+
+
+`SKILLS LEVEL
+`,
+
+`Code	Course	Tentative Instructor
+`,
+`B1	FINANCIAL REPORTING (FR)
+`,	
+`B2.	AUDIT AND ASSURANCE (AA)	
+`,
+`B3	CORPORATE STRATEGIC MANAGEMENT AND ETHICS (CSME) 	
+`,
+`B4.	PERFORMANCE MANAGEMENT (PM)	
+`,
+`F5	PUBLIC SECTOR ACCOUNTING AND FINANCE  (PSAF)
+`,	
+
+
+`PROFESSIONAL LEVEL
+`,
+
+`	Course	Tentative Instructor
+`,
+`C1	CORPORATE REPORTING (CR)	
+`,
+`C2	ADVANCED AUDIT AND ASSURANCE (AAA)	
+`,
+`C3	STRATEGIC FINANCIAL MANAGEMENT (SFM)`,
+`C4	ADVANCED TAXATION (ATAX)`,	
+
+      
       ],
 
       courses: [
@@ -3065,6 +3179,66 @@ Group and early-bird registration discounts are available. Contact Questence for
         "The CIPM certification is necessary for a career in Human Resources.",
 
         "These sessions will aid your passing the CIPM series of exams and qualifying you as a chartered Human Resource Manager.",
+      
+      
+      
+        `CIPM Courses
+Mr. Ade Ajayi of Exitum Consulting (0706 727 4770) will be the Faculty Lead for CIPM`,
+`FOUNDATION I`,
+`Course	Tentative Instructor`,
+`Introduction to Management	`,
+`Writing and Communication Skills	`,
+`Introduction to Economics`,	
+`Introduction to Accounting	`,
+`Fundamentals of Psychology & Sociology	`,
+
+``,
+`FOUNDATION II`,
+`Course	Tentative Instructor`,
+`Introduction to Human Resource Management`	,
+`Nigerian Business Environment`	,
+`Business Law	`,
+`Computer Application and Management Information System	`,
+`Elements of Politics and the Nigerian Legal System`	,
+`Introduction to Human Resource Management	`,
+
+``,
+`INTERMEDIATE I`,
+`Course	Tentative Instructor`,
+`Business Administration	`,
+`Advanced Economics	`,
+`Accounting and Finance for Managers`	,
+`Business Statistics and Social Research Methods`	,
+`Business Administration	`,
+
+
+``,
+`INTERMEDIATE II`,
+`Course	Tentative Instructor`,
+`Learning and Development`	,
+`Public Administration	`,
+`Workforce Planning and Strategies`	,
+`Comparative Management and Administration`	,
+`Learning and Development`	,
+
+`PROFESSIONAL I`,
+`Course	Tentative Instructor`,
+`perations Research`	,
+`rganisational Behaviour and Performance`	,
+`Insurance and Pensions Management`	,
+`Advanced Human Resource Management I	`,
+`Presentation Skills	`,
+
+`PROFESSIONAL II`,
+`Course	Tentative Instructor`,
+`Nigerian Labour Law`	,
+`Advanced Employment Relations`,	
+`Advanced Human Resource Management II`,	
+`Labour Market Analysis`,	
+`Nigerian Labour Law`	,
+
+
+
       ],
 
       courses: [
@@ -3448,6 +3622,103 @@ Group and early-bird registration discounts are available. Contact Questence for
         "If your dream is to become a chartered accountant, this is absolutely for you!.",
         "These sessions will aid your passing the ICAN series of exams and qualifying you as a chartered accountant. With is on your profile you almost immediately become a much sough-after professional.",
         "The firm foundation you receive here, will go a long way in achieving your long-term career goals in the accountancy profession.",
+      
+        `Set your accounting career on a sound foot. Master the skills necessary for a successful career with a certification from ICAN.`,
+        `The Institute of Chartered Accountants of Nigeria is a professional accountancy body in Nigeria. It is one of the two professional accountancy associations
+         with regulatory authority in Nigeria. ICAN’s pathway comprises 14 courses across three levels.`,
+        `Your ICAN certification will also let you`,
+        `Hone your entrepreneurial skills with a foundation in Economics, Marketing and Business Law.`,
+        `Gain global recognition as an accountant`,
+        `Access exciting career opportunities in every sector of business and finance.`,
+        
+       `FOUNDATION LEVEL`,
+        
+        `Taxation `,
+        
+        `(Total Course Duration 42 Hours)`,
+        
+        `As a professional accountant, you must understand taxation principles and laws. 
+        This Taxation course emphasises basic knowledge and application of tax legislations 
+        relating to individuals and corporate entities in simple situations.`, 
+        `By the end of the course, you will be able to explain tax consequences of activities 
+        of individuals and corporate entities`,
+        
+       ` The Taxation Course for ICAN comprises 21 topics namely;`,
+        
+       ` oIntroduction to Taxation`,
+        `Tax Administration in Nigeria `,
+        `Revised National Tax Policy `,
+        `Management of Taxation in Nigeria `,
+        `Basis of Assessments`,
+        `Capital Allowance`,
+        `Loss Relief`,
+        `Value Added Tax`,
+        `Luxury Tax`,
+        `Customs and Excise Duties`,
+        `Land Use Charge`,
+        `Withholding Tax `,
+        `Taxation of Investment Income `,
+        `Personal Income Tax – General Introduction `,
+        `Taxation of Employees `,
+        `Adjustment of Trading Profit `,
+        `Taxation of Partnership `,
+        `Taxation of Income from Estate, Trust and Settlement `,
+        `Taxation of Companies `,
+        `Accounting for Taxes `,
+        `Taxation of Specialised Businesses `,
+        `Stamp Duties`,
+        
+        
+        `Business, Management and Finance`,
+        
+        `This course provides a foundation for business professionals. 
+        This subject revolves around a basic understanding of the purpose, objectives 
+        of businesses; issues of business ethics, governance, corporate social responsibility
+         and sustainability.`,
+        
+       ` Financial Accounting`,
+        
+        `This course equips accounting professionals with knowledge of the essential 
+        framework of assumptions that underpin reliable reporting and the requisite skills 
+        to compile reliable financial statements for sole traders, partnerships, companies
+         and not-for-profit entities.`,
+        
+        `Management Information`,
+        
+        `This course explores the vital role accountants play in management, 
+        especially in management decision-making. Management information deals with 
+        the production of useful information to support the management decision-making process.`,
+        
+        `Business Law`,
+        
+        `As an accountant, you need a strong background in company law and laws
+         relevant to public sector entities. In addition, all business professionals
+          also need knowledge of how laws affect them personally, and in their employment, 
+          and business activities.`,
+        
+        `SKILLS LEVEL`,
+        
+        `Financial Reporting`,
+        `Audit And Assurance`,
+        `Corporate Strategic Management and Ethics `,
+        `Performance Management`,
+        `Public Sector Accounting and Finance`,
+        
+        
+        `PROFESSIONAL LEVEL`,
+        
+        `Corporate Reporting`,
+        `Advanced Audit and Assurance`,
+        `Strategic Financial Management`,
+        `Advanced Taxation
+        `,
+        
+        
+        
+        
+        
+      
+      
       ],
       courses: [
         {
@@ -3703,6 +3974,305 @@ Group and early-bird registration discounts are available. Contact Questence for
       ],
       about_program: [
         `Let Questence help you along your path to certification. Our courses bring the NIM syllabus to life and make passing your examinations a lot easier.`,
+      
+
+
+        `Tentative Coordinator: Dr Babatunde Akinsanya
+        `,
+
+        `FOUNDATION CERTIFICATE IN MARKETING – PART 1
+        `,
+        `Principles of Marketing 
+        `,
+        `Principles of Selling
+        `,
+        `Economics and Commercial Studies
+        `,
+        `Business Communications Objectives
+        `,
+        `Elements of Statistics
+        `,
+        `Information Technology
+        `,
+        `Management for Marketing Objectives
+        `,
+
+        `FOUNDATION CERTIFICATE IN MARKETING – PART 2
+        `,
+        `Principles of Accounting
+        `,
+        `Business Law
+        `,
+        `Practice of Marketing
+        `,
+        `Business Environment
+        `,
+
+        `INTERMEDIATE STAGE - GRADUATE DIPLOMA IN MARKETING - PART I 
+        `,
+        `Quantitative Business Analysis
+        `,
+        `Consumer Behaviour and Competition
+        `,
+        `Industrial and Agricultural Marketing
+        `,
+        `Marketing Research
+        `,
+ 
+
+
+
+
+
+
+
+
+
+        `ATSWA Courses
+        `,
+
+        `Facilitators
+        `,
+        `Moshood Alabi
+        `,
+        `Isaac Lambo
+        `,
+        `Abdulahi Sulaimon
+        `,
+
+        `Part 1
+        `,
+        `Basic Accounting Processes and Systems
+        `,
+        `Economics
+        `,
+        `Business Law
+        `,
+        `Communication Skills
+        `,
+
+
+        `Part 2
+        `,
+        `Principles and Practice of Financial Accounting
+        `,
+        `Public Sector Accounting
+        `,
+        `Quantitative Analysis
+        `,
+        `Information Technology
+        `,
+
+        `Part 3
+        `,
+        `Principles of Auditing
+        `,
+        `Cost Accounting
+        `,
+        `Preparing Tax Computations and Returns
+        `,
+
+
+        `Management
+        `,
+
+
+
+        `The Accounting Technicians Scheme West Africa (ATSWA)
+The ATSWA programme is designed to produce middle level Accounting Technicians within 
+the West African sub-region.
+The program provides a recognised qualification for the accounting and auditing staff 
+and helps meet the demand for middle level accounting personnel in the economy. 
+The ATSWA curriculum comprises 3 parts and each part consists of four (4) subjects.
+`,
+
+`PART 1 (ATS 1)
+`,
+
+`Basic Accounting Processes and Systems
+`,
+
+`The course aims to develop an appreciation of the role of accounting information, as well
+ as technical proficiency in the use of double entry accounting techniques. 
+ `,
+
+`Economics 
+`,
+
+`The course aims to develop knowledge and understanding of basic principles and practice 
+of economics required of an accounting technician to function efficiently and effectively as a 
+member of an organization in a dynamic and competitive global economy.
+`,
+
+`Business Law 
+`,
+
+`Business Law examines candidates’ knowledge and understanding of the legal environment 
+in which organisations in general and the accountancy profession in particular operate; 
+as well as the legal implications of business relationships and the relevance of legal rules
+ to business sector, commerce and industry.
+ `,
+
+`Communication Skills
+`,
+
+`This course examines the use of those aspects of the English Language (both oral and written)
+ that ensure effective business communication.
+ `,
+
+
+
+
+`PART 2 (ATS 2)
+`,
+
+`Principles and Practice of Financial Accounting
+`,
+ 
+`This course aims to develop knowledge and understanding of principles and concepts of
+ Financial Accounting and the ability to apply the principles learned for the preparation 
+ of financial accounts.
+ `,
+`Public Sector Accounting 
+`,
+`This course takes a look at Government Accounting (at the three – tiers: Federal,
+   State and Local Governments)
+   `,
+
+`Quantitative Analysis
+`,
+`This course aims to build a sound foundation in Quantitative Techniques which will
+ assist understanding and competence in business decision-making processes
+  that are encountered in practice. 
+  `,
+
+`Information Technology
+`,
+`The course explores the role of information and communication
+`, 
+`technology in an organization with special reference to the accounting function.
+`,
+
+`PART 3 (ATS 3)
+`,
+
+`Cost Accounting
+`,
+`Cost Accounting explores the principles, methods and techniques of cost accounting. 
+`,
+
+`Principles of Auditing
+`,
+`The course examines the regulatory frameworks, ethical issues, risks and processes
+ involved in an assurance environment.
+
+ `,
+`Preparing Tax Computations and Returns
+`,
+`The aims of this paper are to examine the meaning of taxation and various aspects of tax system.
+`,
+
+`Management
+`,
+`Here, we examine business and non- business organisations as well as the managerial knowledge, 
+attitude and skills required to achieve efficient and effective operations.
+`,
+
+
+
+
+
+`Entreneurship
+`,
+`Tentative Facilitators
+`,
+`Dr. Ayo Ajayi
+`,
+`Dr Femi Mosaku-Johnson
+`,
+`Ayo Emakhiome
+`,
+`Bolaji Shote
+`,
+`Boye Adefila
+`,
+
+`The Entrepreneurial Academy
+`,
+`The Questence’s Business Entrepreneurship Module presents an immersive experience
+ where learners are introduced foundational leadership necessary 
+ for starting a new business, advancing in their current company or joining a brand-new business.
+ `,
+`Learners will gain an understanding of the processes involved in the actual establishment of an 
+entrepreneurial venture. They will also learn leadership and venture-vetting skills. 
+`,
+`The learners will be taught to:
+`,
+`think just like a founder or C-level executive,
+`, 
+`identify potential socially innovative opportunities, 
+`,
+`prepare business plans
+`,
+`deal with legal issues. 
+`,
+
+`They will also have the opportunity to network with industry leaders.
+`,
+
+`Courses within the programme will include 
+`,
+
+`1.Creating a compelling value proposition – and pitching it.
+`,
+`2.Evaluating the market 
+`,
+`3.Assessing the opportunity.
+`,
+`4.Building your team
+`,
+`5.Beating the competition.
+`,
+`6.Defining your go-to-market strategy
+`,
+`7.Designing a profitable business model.
+`,
+`8.Innovation and Design Thinking
+`,
+`9.Identifying drivers of growth, 
+`,
+`10.Making financial projections
+`,
+`11.Risk Management for entrepreneurs 
+`,
+`12.Digital Marketing
+`,
+`13.Principles of Management
+`,
+`14.Accounting for SMEs
+`,
+`15.Economics
+`,
+`16.Operations Management
+`,
+`17.Business Communications
+`,
+`18.Taxation
+`,
+`19.Business Law for SMEs
+`,
+`20.HR for non-HR entrepreneurs
+`,
+`21.Creative Problem Solving for Entrepreneurs
+`,
+`22.Generating Ideas
+`,
+
+`23.Negotiation
+
+
+ `,     
+      
       ],
       courses: [
         {
@@ -3906,7 +4476,7 @@ Onboarding`,
                 `First Aid
 	
 `,
-                `Observation`,
+                `bservation`,
               ],
               outcomes: [
                 `You will learn to recognise risks and hazards in the workplace and plan against them.`,
