@@ -51,50 +51,7 @@ const AppNavigator = () => {
           path="/course-detail/:id"
           render={(props) => <CourseScreen {...props} />}
         />
-        <Route
-          path="/about"
-          render={(props) => <AboutScreen {...props} />}
-        />
-
-        <Route
-          path="/schools"
-          render={(props) => <BusinessAndSchools pageTitle={"Questence For Schools"} {...props} />}
-        />
-
-         <Route
-          path="/government"
-          render={(props) => <BusinessAndSchools pageTitle={"Questence For Government"} {...props} />}
-        />
-
-        <Route
-          path="/business"
-          render={(props) => <BusinessAndSchools pageTitle={"Questence For Business"}  {...props} />}
-        />
-         
-         <Route
-          path="/blogs"
-          render={(props) => <DigitalOnlineLearningScreen {...props} />}
-        />
-        <Route
-          path="/careers"
-          render={(props) => <CareerScreen {...props} />}
-        />
-        <Route
-          path="/honour-code"
-          render={(props) => <HonorCodeScreen {...props} />}
-        />
-        <Route
-          path="/privacy"
-          render={(props) => <PrivacyScreen {...props} />}
-        />
-        <Route
-          path="/terms-of-service"
-          render={(props) => <TosScreen {...props} />}
-        />
-        <Route
-          path="/digital-online-learning"
-          render={(props) => <DigitalOnlineLearningScreen {...props} />}
-        />
+        
         <Route
           path="/cart"
           render={(props) => (

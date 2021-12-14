@@ -123,18 +123,18 @@ const Footer = () => {
               <h5 className="fw-bold">Pages</h5>
               <ul className="nav flex-column">
                 <li className="nav-item mb-2">
-                  <a href={process.env.PUBLIC_URL+"/about"} className="nav-link p-0 text-white">
+                  <a href={process.env.PUBLIC_URL+""} className="nav-link p-0 text-white">
                     About Us
                   </a>
                 </li>
                 <li className="nav-item mb-2">
-                  <a href={process.env.PUBLIC_URL+"/blogs"} className="nav-link p-0 text-white">
+                  <a href={process.env.PUBLIC_URL+""} className="nav-link p-0 text-white">
                     Blog
                   </a>
                 </li>
               
                 <li className="nav-item mb-2">
-                  <a href={process.env.PUBLIC_URL+"/careers"} className="nav-link p-0 text-white">
+                  <a href={process.env.PUBLIC_URL+""} className="nav-link p-0 text-white">
                     Careers
                   </a>
                 </li>
@@ -156,17 +156,17 @@ const Footer = () => {
               <h5 className="fw-bold">Legal</h5>
               <ul className="nav flex-column">
                 <li className="nav-item mb-2">
-                  <a href={process.env.PUBLIC_URL+"/terms-of-service"} className="nav-link p-0 text-white">
+                  <a href={process.env.PUBLIC_URL+""} className="nav-link p-0 text-white">
                     Terms of Service
                   </a>
                 </li>
                 <li className="nav-item mb-2">
-                  <a href={process.env.PUBLIC_URL+"/honour-code"} className="nav-link p-0 text-white">
+                  <a href={process.env.PUBLIC_URL+""} className="nav-link p-0 text-white">
                     Honor Code
                   </a>
                 </li>
                 <li className="nav-item mb-2">
-                  <a href={process.env.PUBLIC_URL+"/privacy"} className="nav-link p-0 text-white">
+                  <a href={process.env.PUBLIC_URL+""} className="nav-link p-0 text-white">
                     Privacy Policy
                   </a>
                 </li>

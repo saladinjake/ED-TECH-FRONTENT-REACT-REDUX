@@ -575,6 +575,7 @@ The course aims to impart knowledge of tax computations, provisioning, adjustmen
       id: "5",
       institution: "Association Of Accountants of Nigeria",
       intro: ``,
+      fullname:"Association Of Accountants of Nigeria",
       hero_image:
         process.env.PUBLIC_URL + "/assets/images/institutions/anan.jpg",
       enroll_plan: [
@@ -2387,6 +2388,7 @@ Group and early-bird registration discounts are available. Contact Questence for
       institution: `ICSAN - Institute of Chartered Secretaries and  Administrators of Nigeria`,
       intro: `Institute of Chartered Secretaries and  Administrators of Nigeria`,
       hero_image: ``,
+      fullname:`Institute of Chartered Secretaries and  Administrators of Nigeria`,
       enroll_plan: [
         `You can enrol for this course as a standalone or as part of your certification pathway.
 Group and early-bird registration discounts are available. Contact Questence for details`,
@@ -2641,6 +2643,7 @@ Group and early-bird registration discounts are available. Contact Questence for
     {
       id: `8`,
       institution: `Chartered Institute of Bankers of Nigeria`,
+      fullname:`Chartered Institute of Bankers of Nigeria`,
       intro: `
 Your journey to a successful banking career can begin with Questence `,
       hero_image:
@@ -3404,11 +3407,7 @@ Group and early-bird registration discounts are available. Contact Questence for
       intro:
         `Institute of Chartered Accountants of Nigeria
         Set your accounting career on a sound foot. Master the skills necessary for a successful career with a certification from ICAN.
-        The Institute of Chartered Accountants of Nigeria is a professional accountancy body in Nigeria. It is one of the two professional accountancy associations with regulatory authority in Nigeria. ICAN’s pathway comprises 14 courses across three levels.
-        Your ICAN certification will also let you
-        Hone your entrepreneurial skills with a foundation in Economics, Marketing and Business Law.
-        Gain global recognition as an accountant
-        Access exciting career opportunities in every sector of business and finance.`,
+    `,
       hero_image:
         process.env.PUBLIC_URL + "/assets/images/institutions/ican.jpg",
       enroll_plan: [

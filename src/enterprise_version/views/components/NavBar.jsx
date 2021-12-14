@@ -444,51 +444,47 @@ const prevalidate = (setSubmitting)=>{
                     >Others</NavDropdown.Item>
                 </NavDropdown>
                 <NavDropdown title="Programs" id="collasible-nav-dropdown">
-                  <NavDropdown.Item
-                    href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"}
+                  
+                  
+                <NavDropdown.Item   style={{ whiteSpace: "initial", width: "300px" }}
+                href={process.env.PUBLIC_URL+ "/program-detail/3"}
+                            >
+                        NIM: Nigerian Institute of Management
+                      </NavDropdown.Item>
+                      <NavDropdown.Item   style={{ whiteSpace: "initial", width: "300px" }}
+                   href={process.env.PUBLIC_URL+ "/program-detail/2"}>
+                        ICAN: Institute of Chartered Accountants
+                      </NavDropdown.Item>
+                      <NavDropdown.Item   style={{ whiteSpace: "initial", width: "300px" }}
+                 href={process.env.PUBLIC_URL+ "/program-detail/4"}>
+                        CITN: Chartered Institute of Taxation of Nigeria
+                      </NavDropdown.Item>
+                      <NavDropdown.Item   style={{ whiteSpace: "initial", width: "300px" }}
+                 href={process.env.PUBLIC_URL+ "/program-detail/8"}>
+                        Chartered Institute of Bankers of Nigeria
+                      </NavDropdown.Item>
+
+
+                      <NavDropdown.Item
+                        href={process.env.PUBLIC_URL+ "/program-detail/6"}
                             
-                    style={{ whiteSpace: "initial", width: "300px" }}
-                  >
-                    Nigeria Institute Of Management
-                  </NavDropdown.Item>
-                  <NavDropdown.Item
-                    href="#action/3.2"
-                    style={{ whiteSpace: "initial", width: "300px" }}
-                  >
-                    Chattered Institute Of Taxation Of Nigeria
-                  </NavDropdown.Item>
-                  <NavDropdown.Item
-                    href="#action/3.3"
-                    style={{ whiteSpace: "initial", width: "300px" }}
-                  >
-                    Chattered Institute Of Bankers Of Nigeria
-                  </NavDropdown.Item>
-                  <NavDropdown.Item
-                    href="#action/3.3"
-                    style={{ whiteSpace: "initial", width: "300px" }}
-                  >
-                    Institute Of Chattered Accountant Of Nigeria
-                  </NavDropdown.Item>
-                  <NavDropdown.Item
-                    href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=10"}
-                            
-                    style={{ whiteSpace: "initial", width: "300px" }}
-                  >
-                    Institute Of Chattered Secretaries And Administrators Of
-                    Nigeria
-                  </NavDropdown.Item>
-                  <NavDropdown.Item
-                    href="#action/3.2"
-                    style={{ whiteSpace: "initial", width: "300px" }}
-                  >
-                    Association Of National Accountant Of Nigeria
-                  </NavDropdown.Item>
-                  <NavDropdown.Item
-                    href="#action/3.3"
-                    style={{ whiteSpace: "initial", width: "300px" }}
-                  >
-                    Chattered Institute Of Personel Management Of Nigeria
-                  </NavDropdown.Item>
+                        style={{ whiteSpace: "initial", width: "300px" }}
+                        >
+                    
+                        ICSAN - Institute of Chartered Secretaries and
+                        Administrators of Nigeria
+                      </NavDropdown.Item>
+                      <NavDropdown.Item   style={{ whiteSpace: "initial", width: "300px" }}
+                   href={process.env.PUBLIC_URL+ "/program-detail/5"}>
+                        Association Of Accountants of Nigeria
+                      </NavDropdown.Item>
+                      <NavDropdown.Item    style={{ whiteSpace: "initial", width: "300px" }}
+                  href={process.env.PUBLIC_URL+ "/program-detail/1"}>
+                        CIPM: Chartered Institute of Personnel Management of
+                        Nigeria
+                      </NavDropdown.Item>
+                  
+                  
                 </NavDropdown>
                 <NavDropdown
                   title="Learning Pathway"
@@ -1042,6 +1038,9 @@ const prevalidate = (setSubmitting)=>{
                       <NavDropdown.Item href={process.env.PUBLIC_URL+ "/program-detail/8"}>
                         Chartered Institute of Bankers of Nigeria
                       </NavDropdown.Item>
+
+
+                      
                     </div>
                     <div className="col">
                       <NavDropdown.Item

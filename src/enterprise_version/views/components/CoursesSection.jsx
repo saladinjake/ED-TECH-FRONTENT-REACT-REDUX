@@ -94,17 +94,18 @@ const CoursesSection = () => {
                 <Slider {...settings} className="row">
 
                      {topCourses.length && topCourses.map((featured,index)=>{
-            
+                console.log(featured)
               return (
                  <CourseCard
-                 key={index+ "_" + Math.random()*90}
-                courseTitle={featured.course.course_code}
-                courseDesc={featured?.course?.course_description}
-                courseAuthorCompany={featured?.course?.instructor?.instructor_profile?.current_employer_designation}
-                courseAuthor={featured?.course?.instructor?.first_name+ " " + featured?.course?.instructor?.last_name}
-                coursePrice={featured?.course?.price}
-                courseId={featured?.course?.id}
-                courseImage={featured?.course?.course_cover_image}
+                 key={index+ "_urieure_juew3" + Math.random()*1*90}
+                 courseCode={featured?.course.course_code}
+                 courseName={featured?.course.course_name}
+                 courseDesc={featured?.course?.course_description}
+                 courseAuthorCompany={featured?.course?.instructor?.instructor_profile?.current_employer_designation}
+                 courseAuthor={featured?.course?.instructor?.first_name+ " " + featured?.course?.instructor?.last_name}
+                 coursePrice={featured?.course?.price}
+                 courseId={featured?.course?.id}
+                 courseImage={featured?.course?.course_cover_image}
               />
 
               )

@@ -86,7 +86,7 @@ const CourseDetails = ({
   <NavBar />
 
 <CourseHeader
-            pageTitle= {coursedetails?.institution}
+            pageTitle= {coursedetails?.fullname }
             subHeading={coursedetails?.intro}
             bgClass={"courses-banner-bg"}
             introVideoUrl={""}
@@ -112,7 +112,7 @@ const CourseDetails = ({
                   <Nav.Link eventKey="home">Overview</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Nav.Link eventKey="curriculum">Curriculum</Nav.Link>
+                  <Nav.Link eventKey="curriculum">Courses</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
                   <Nav.Link eventKey="instructors">Instructors</Nav.Link>
@@ -145,66 +145,12 @@ const CourseDetails = ({
               <Tab.Pane eventKey="curriculum">
                 <div className="py-4">
                   <div>
-                    <h5 className="text-light-green">Course Curriculum</h5>
+                    <h5 className="text-light-green">Courses </h5>
 
                     <div >
                     
                         
-                    {coursedetails?.courses?.length > 0 &&
-                                        coursedetails?.courses?.map(
-                                          (data, i) => {
-                                            return (
-                                              <Fragment>
-                                               
-
-                                                <Col md="12">
-                                                     <hr />
-                                                </Col>
-
-                                                <Col md="12" key={i} style={{}}>
-                                                 
-                                                        <Fragment>
-                                                          <Link to={process.env.PUBLIC_URL+`/programs/${givenId}/courses/${data?.title}`}>
-                                                            <div className="">
-                                                              <div
-                                                               
-                                                                className="box-title profile-description"
-                                                                id="profile-description"
-                                                              >
-                                                                <h6
-                                                                 
-                                                                >
-                                                                  {data?.title}
-                                                                </h6>
-
-                                                                <div
-                                                                  className={
-                                                                    "text show-more-height a-little-more-text " +
-                                                                    " a-little-more-text-" +i
-                                                                  }
-                                                                >
-                                                               
-
-                                                                </div>
-                                                              </div>
-                                                            </div>
-
-                                                               </Link>
-
-                                                          <hr
-                                                            style={{
-                                                              clear: "both",
-                                                            }}
-                                                          />
-                                                        </Fragment>
-                                                     
-
-                                          
-                                                </Col>
-                                              </Fragment>
-                                            );
-                                          }
-                                        )}
+                    
                                 
                   </div>
                   
@@ -216,7 +162,7 @@ const CourseDetails = ({
                 <div className="row mt-3">
 
                 <div style={{ marginTop: "20px" }}>
-                    <h5 className="text-light-green">Course Prerequisites</h5>
+                    <h5 className="text-light-green">Instructors</h5>
              
                   </div>
                  
