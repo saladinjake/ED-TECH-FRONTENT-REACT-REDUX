@@ -5,7 +5,7 @@ import { addToCart, fetchCourses } from "../../core/redux/actions/cart.action";
 import toast from "react-hot-toast";
 import PropTypes from "prop-types";
 import $ from "jquery";
-
+import { Base64 } from 'js-base64';
 import { Link } from "react-router-dom";
 
 import { addToWishList } from "../../core/redux/actions/wishlist.action";
@@ -80,20 +80,10 @@ const HorizontalCourseCard = ({
   const redirectToLms = (urlBits) => {
     if(localStorage.getItem("lms_token")){
       const lms_token =  JSON.parse(localStorage.getItem("lms_token"));
-      console.log(lms_token)
-      var encrypted = CryptoJS.AES.encrypt(lms_token, PRIVATE_KEY_ENCRYPTER_1);
-      var encrypted2 = CryptoJS.AES.encrypt(lms_token, PRIVATE_KEY_ENCRYPTER_2);
-      //var decrypted = CryptoJS.AES.decrypt(encrypted, PRIVATE_KEY_ENCRYPTER_1);
-     // var decrypted2 = CryptoJS.AES.decrypt(encrypted2, PRIVATE_KEY_ENCRYPTER_2);
-       //console.log(encrypted.toString()=== encrypted2.toString());
-// console.log(decrypted.toString());
-     //console.log(decrypted.toString(CryptoJS.enc.Utf8)===decrypted2.toString(CryptoJS.enc.Utf8));
-
-      urlBits+=`&token=${encrypted.toString()}&enroute=${encrypted2}` 
   
-      console.log(urlBits); //34feb914c099df25794bf9ccb85bea72
-  
-      const lmsFront = MICROSERVICE_FRONT1+ urlBits;
+       let encrypted = Base64.encodeURI(lms_token)); 
+      urlBits =`fd3a6e73-e95b-4199-990b-553f15218276/?token=${encrypted}`;
+      const lmsFront = MICROSERVICE_FRONT1 + urlBits;
       return lmsFront
 
     }else{

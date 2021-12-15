@@ -138,6 +138,57 @@ const CourseDetails = ({
                                                 );
                                               }
                                             )}
+
+
+
+<h5 className="text-light-green"> Objectives</h5>
+{coursedetails?.objectives?.map(
+                                              (paragraph) => {
+                                                return (
+                                                  <p
+                                                    style={{
+                                                      color: "#000",
+                                                      fontSize: "14px",
+                                                    }}
+                                                  >
+                                                    {paragraph}
+                                                  </p>
+                                                );
+                                              }
+                                            )}
+
+<h5 className="text-light-green">List of Levels</h5>
+{coursedetails?.list_of_levels?.map(
+                                              (paragraph) => {
+                                                return (
+                                                  <p
+                                                    style={{
+                                                      color: "#000",
+                                                      fontSize: "14px",
+                                                    }}
+                                                  >
+                                                    {paragraph}
+                                                  </p>
+                                                );
+                                              }
+                                            )}
+
+<h5 className="text-light-green">Program Prerequisites</h5>
+
+{coursedetails?.prerequisites?.map(
+                                              (paragraph) => {
+                                                return (
+                                                  <p
+                                                    style={{
+                                                      color: "#000",
+                                                      fontSize: "14px",
+                                                    }}
+                                                  >
+                                                    {paragraph}
+                                                  </p>
+                                                );
+                                              }
+                                            )}
                   </div>
                   
                 </div>
@@ -148,9 +199,14 @@ const CourseDetails = ({
                     <h5 className="text-light-green">Courses </h5>
 
                     <div >
-                    
-                        
-                    
+
+
+
+
+
+
+                
+
                                 
                   </div>
                   

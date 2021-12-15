@@ -72,7 +72,7 @@ const CourseDetail = ({ courseId,
               <Tab.Pane eventKey="instructors">
                 <div className="row mt-3">
 
-                 {instructors.length && instructors.map(instructor =>{
+                 {instructors?.length && instructors?.map(instructor =>{
                     return (
 
                         <InstructorCard

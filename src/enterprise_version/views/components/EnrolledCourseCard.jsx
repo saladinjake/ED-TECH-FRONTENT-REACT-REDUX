@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 import $ from "jquery";
 import { addToWishlist } from "../../api/wishlist.services";
 import moment from "moment";
-
+import { Base64 } from 'js-base64';
 import { enrollCourses } from "../../api/enrollment.services";
 import  {  MICROSERVICE_FRONT1, PRIVATE_KEY_ENCRYPTER_1 , PRIVATE_KEY_ENCRYPTER_2 } from "../../api/api_config/constants"
 
@@ -75,22 +75,13 @@ const CourseCard = ({
     }
   }
 
+  
   const redirectToLms = (urlBits) => {
     if(localStorage.getItem("lms_token")){
       const lms_token =  JSON.parse(localStorage.getItem("lms_token"));
-      console.log(lms_token)
-      var encrypted = CryptoJS.AES.encrypt(lms_token, PRIVATE_KEY_ENCRYPTER_1);
-      var encrypted2 = CryptoJS.AES.encrypt(lms_token, PRIVATE_KEY_ENCRYPTER_2);
-      var decrypted = CryptoJS.AES.decrypt(encrypted, PRIVATE_KEY_ENCRYPTER_1);
-     var decrypted2 = CryptoJS.AES.decrypt(encrypted2, PRIVATE_KEY_ENCRYPTER_2);
-       console.log(encrypted.toString()=== encrypted2.toString());// this wont return true except u use the below
-console.log(decrypted.toString());
-     console.log(decrypted.toString(CryptoJS.enc.Utf8)===decrypted2.toString(CryptoJS.enc.Utf8));// this returns true
-
-      urlBits =`fd3a6e73-e95b-4199-990b-553f15218276/?token=${encrypted.toString()}`;
   
-      console.log(urlBits); //34feb914c099df25794bf9ccb85bea72
-  
+       let encrypted = Base64.encodeURI(lms_token)); 
+      urlBits =`fd3a6e73-e95b-4199-990b-553f15218276/?token=${encrypted}`;
       const lmsFront = MICROSERVICE_FRONT1 + urlBits;
       return lmsFront
 
