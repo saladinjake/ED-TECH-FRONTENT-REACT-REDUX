@@ -75,6 +75,36 @@ const CourseCard = ({
     }
   }
 
+
+
+  function LmsUrlParameter() {
+    var url = window.location.href,
+    retObject = {},
+    retArr = [],
+    parameters;
+    if (url.indexOf('?') === -1) {
+        return null;
+    }
+    url = url.split('?')[1];
+    parameters = url.split('&');
+    for (var i = 0; i < parameters.length; i++) {
+        retObject[parameters[i].split('=')[0]] = parameters[i].split('=')[1];
+        retArr.push(parameters[i].split('=')[1])
+    }
+    //return retObject;
+    return retArr;
+  }
+
+  function makeRandomId(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+
   
   const redirectToLms = (urlBits) => {
     if(localStorage.getItem("lms_token")){
@@ -82,7 +112,7 @@ const CourseCard = ({
   
        let encrypted = Base64.encodeURI(lms_token); 
        let user_id =  JSON.parse(localStorage.getItem("lms_user_profile_id"));
-      urlBits =`fd3a6e73-e95b-4199-990b-553f15218276/?course_findings=${encrypted}&reloaded_data=${user_id}`;
+      urlBits =`fd3a6e73-e95b-4199-990b-553f15218276/?${makeRandomId(10)}=${encrypted}&${makeRandomId(15)}=${user_id}`;
       const lmsFront = MICROSERVICE_FRONT1 + urlBits;
       return lmsFront
 

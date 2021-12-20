@@ -207,9 +207,9 @@ const NavBar = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setP
           .then(result => {
             login(result);    //without sso login(result.data);
             console.log(result)
-            // setTimeout(() => {
-            //   window.location.reload();
-            // }, 2000);
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
             toast.success("Login Successful");
           })
           .catch(error => { 
