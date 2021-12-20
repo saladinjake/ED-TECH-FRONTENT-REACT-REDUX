@@ -332,10 +332,19 @@ const prevalidate = (setSubmitting)=>{
           if(err?.response?.data?.errors?.phone_number[0]){
             toast.error(err?.response?.data?.errors?.phone_number[0])
           }
-
-
+  
+  
           if(err?.response?.data?.errors?.email[0]){
             toast.error(err?.response?.data?.errors?.email[0])
+          }
+  
+  
+          if(err?.response?.data?.errors?.password[0]){
+            toast.error(err?.response?.data?.errors?.password[0])
+          }
+  
+          if(err?.response?.data?.errors){
+            toast.error("Could not complete your sign up registration")
           }
 
          // return toast.error( err?.response?.data?.errors?.email[0] );
