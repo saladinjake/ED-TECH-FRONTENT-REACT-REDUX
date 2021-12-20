@@ -33,6 +33,9 @@ export default (state = initialState, action) => {
       localStorage.setItem("access_token", action.payload.access_token);
       localStorage.setItem("token", action.payload.access_token);
       localStorage.setItem("user", JSON.stringify(action.payload.user));
+      localStorage.setItem("lms_user_profile_id", JSON.stringify(action.payload.lms_user_profile_id));
+
+      
       localStorage.setItem(
         "user_roles",
         JSON.stringify(action.payload.user_roles)
