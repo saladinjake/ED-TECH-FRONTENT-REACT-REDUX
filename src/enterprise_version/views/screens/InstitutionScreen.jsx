@@ -6,7 +6,7 @@ import Datas from "../../core/data/institutions/info_data";
 
 import { Container, Row, Col, Tab, Nav} from "react-bootstrap";
 import TextCard from "../components/TextCard";
- import CourseHeader from "../components/CourseHeader";
+ import CourseHeader from "../components/ProgramHeader";
 // import toast from "react-hot-toast"
 
 
@@ -101,7 +101,7 @@ const CourseDetails = ({
 <Tab.Container id="left-tabs-example" defaultActiveKey="home">
       <div className="container">
         <div className="row">
-          <div className="col-md-12">
+          <div className="col-md-8">
             <div className="mt-n-0-4 bg-teal pills-link col-md-8 px-3 py-2 bottom-left-radius-15 bottom-right-radius-15">
               <Nav
                 variant="pills"
@@ -123,15 +123,12 @@ const CourseDetails = ({
               <Tab.Pane eventKey="home">
                 <div className="py-4">
                   <div >
-                    <h5 className="text-light-green">Course Overview</h5>
+                    <h5 className="text-light-green">Programme Overview</h5>
                     {coursedetails?.about_program?.map(
                                               (paragraph) => {
                                                 return (
                                                   <p
-                                                    style={{
-                                                      color: "#000",
-                                                      fontSize: "14px",
-                                                    }}
+                                                   
                                                   >
                                                     {paragraph}
                                                   </p>
@@ -141,15 +138,12 @@ const CourseDetails = ({
 
 
 
-<h5 className="text-light-green"> Objectives</h5>
+<p>Objectives</p>
 {coursedetails?.objectives?.map(
                                               (paragraph) => {
                                                 return (
                                                   <p
-                                                    style={{
-                                                      color: "#000",
-                                                      fontSize: "14px",
-                                                    }}
+                                                   
                                                   >
                                                     {paragraph}
                                                   </p>
@@ -157,37 +151,40 @@ const CourseDetails = ({
                                               }
                                             )}
 
-<h5 className="text-light-green">List of Levels</h5>
+
+<h5 className="text-light-green">List Of Courses</h5>
+
 {coursedetails?.list_of_levels?.map(
-                                              (paragraph) => {
+                                              (paragraph, index) => {
+                                                 let  padded = index!==0 ? "10px" : "0px"
                                                 return (
                                                   <p
-                                                    style={{
-                                                      color: "#000",
-                                                      fontSize: "14px",
-                                                    }}
+                                                   style={{
+                                                     marginLeft:padded,
+                                                   }}
                                                   >
-                                                    {paragraph}
+                                                   { index!==0  /*&& "(" + index + ")"*/} {paragraph}
                                                   </p>
                                                 );
                                               }
                                             )}
 
-<h5 className="text-light-green">Program Prerequisites</h5>
 
+
+<h5 className="text-light-green">Programme Prerequisites</h5>
 {coursedetails?.prerequisites?.map(
-                                              (paragraph) => {
-                                                return (
-                                                  <p
-                                                    style={{
-                                                      color: "#000",
-                                                      fontSize: "14px",
-                                                    }}
-                                                  >
-                                                    {paragraph}
-                                                  </p>
-                                                );
-                                              }
+                                              (paragraph, index) => {
+                                                let  padded = "10px" 
+                                               return (
+                                                 <p
+                                                  style={{
+                                                    marginLeft:padded,
+                                                  }}
+                                                 >
+                                                  {  "(" + (index+1) + ")"} {paragraph}
+                                                 </p>
+                                               );
+                                             }
                                             )}
                   </div>
                   
@@ -199,15 +196,7 @@ const CourseDetails = ({
                     <h5 className="text-light-green">Courses </h5>
 
                     <div >
-
-
-
-
-
-
-                
-
-                                
+            
                   </div>
                   
                    
@@ -226,6 +215,23 @@ const CourseDetails = ({
                 </div>
               </Tab.Pane>
             </Tab.Content>
+          </div>
+
+
+          <div className="col-md-4 col-sm-12">
+            {/* <h5 className="mt-n-0-4 bg-dark-grey float-end px-3 py-2 bottom-left-radius-15 bottom-right-radius-15">
+             
+            </h5> */}
+            <div className="row mt-5">
+              <div className="col-md-5 offset-md-7">
+                <hr className="height-2px" />
+
+
+
+                
+               
+              </div>
+            </div>
           </div>
           
         </div>

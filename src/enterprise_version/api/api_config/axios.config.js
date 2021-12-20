@@ -9,7 +9,7 @@ axios.defaults.headers.common["Content-Type"] =
 axios.defaults.headers.common["Content-Type"] = "multipart/form-data";
 axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-//axios.defaults.headers.common['Access-Control-Allow-Origin']= "*";
+//axios.defaults.headers.common['Access-Control-Allow-Origin']= "*"; //less secured
 //axios.defaults.headers.common['Access-Control-Allow-Methods']= 'GET,PUT,POST,DELETE,PATCH,OPTIONS';
 
 

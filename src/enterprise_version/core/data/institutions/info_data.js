@@ -6,12 +6,37 @@ let data = {
       id: "4",
       institution: "CITN",
       fullname: "Chartered Institute Of Taxation Of Nigeria",
-      intro: `Let us provide the knowledge and skills needed to become a professional tax practitioner in Nigeria.`,
+      intro: `The Chartered Institute of Taxation of Nigeria is charged with the responsibility, among others, of determining what standards of knowledge and skills are to be attained by persons seeking to become professional Tax Practitioners or Administrators.`,
       hero_image:
         process.env.PUBLIC_URL + "/assets/images/institutions/citn.png",
       enroll_plan: [
         `You can enrol for this course as a standalone or as part of your certification pathway.
 Group and early-bird registration discounts are available. Contact Questence for details`,
+      ],
+      list_of_levels:[
+        `The CITN syllabus is divided into 3 parts and each part consists of four (4) subjects.`,
+
+`I. Foundation:`,
+`Principles of Taxation`,
+`Financial Accounting`,
+`Business Law`,
+`Economics`,
+
+`II. Professional Taxation I:`,
+`Financial Reporting `,
+`Income Tax`,
+`Indirect Tax`,
+`Governance, Risk & Ethics`,
+
+`III. Professional Taxation II`,
+`Tax Audit and Investigation`,
+`International Taxation`,
+`Financial / Tax Analysis `,
+`Income Tax for Specialized Businesses`,
+      ],
+      prerequisites:[
+        `First degree, Higher National Diploma or its equivalent. `,
+`Undergraduates with evidence of admission into higher institutionsOrdinary National Diploma of any Polytechnic recognised by the Council of the Institute`,
       ],
       faqs: [
         {
@@ -45,10 +70,17 @@ Group and early-bird registration discounts are available. Contact Questence for
       ],
 
       about_program: [
-        "These sessions will help you succeed the CITN series of exams and qualifying you as a chartered Taxation professional.",
-      
+        `The Institute's objectives include`,
+`Raising, maintaining and regulating the standard of taxation practice amongst its members. 
+Promoting professional ethics and efficiency in tax administration and practice. 
+Encouraging, promoting and co-ordinating research for the advancement of taxation in Nigeria.`,
 
-       
+`In addition to being mandatory for the practice of taxation in Nigeria, certification and or membership also confers the following benefits;
+Continuing Education on the platform of CITN Mandatory Training programmes.`,
+`Job prospects and career visibility`,
+`Mentoring programs`,
+`Networking opportunities`,
+`Access to resources; Newsletters and other publications.`,
       
       ],
 
@@ -586,6 +618,7 @@ The course aims to impart knowledge of tax computations, provisioning, adjustmen
         `You can enrol for this course as a standalone or as part of your certification pathway.
 Group and early-bird registration discounts are available. Contact Questence for details`,
       ],
+
       faqs: [
         {
           question: `How do I make the best of my learning experience.`,
@@ -618,9 +651,56 @@ Group and early-bird registration discounts are available. Contact Questence for
       ],
 
       about_program: [
-        "This course gives you an indepth knowledge on how to become an Accountant by profession, this is absolutely for you!.",
-        "These sessions will aid your passing the CIPM series of exams and qualifying you as a chartered Accountant. With is on your profile you almost immediately become a much sough-after professional.",
-        "The firm foundation you receive here, will go a long way in achieving your long-term career goals in the accountancy profession.",
+        `The Association of National Accountants of Nigeria is fully committed to advancing the science of accountancy. `
+      ],
+
+      objectives:[
+        `The Association aims to develop education and training programmes reflecting the national environment which would meet internationally accepted accounting standards. `
+      ],
+
+      list_of_levels:[
+        `The ANAN syllabus is divided into 4 parts `,
+
+`PROFESSIONAL EXAMINATION A (PEA)`,
+`Information Systems and Technology for Business`,
+`Finance and Financial Management`,
+`Entrepreneurial Development`,
+`Auditing and Assurance Services `,
+`Corporate Reporting`,
+`Environmental, Oil and Gas Accounting` ,
+`Professional Values and Ethics in Accounting` ,
+`Basic French I`,
+
+
+`PROFESSIONAL EXAMINATION B (PEB)`,
+`Advanced Corporate Reporting` ,
+`Advanced Taxation `,
+`Advanced Management Accounting `,
+`Corporate Law` ,
+`Forensic Accounting` ,
+`Public Sector Accounting and Finance `,
+`Corporate Governance `,
+`Basic French II`,
+
+
+`CONVERSION ACCOUNTING PROGRAMME (CAP)- CONVERSION A `,
+`Financial Accounting`,
+`Management in Organisations`, 
+`Economics and Business Planning `,
+`Cost and Management Accounting `,
+`Basic French I`,
+
+
+`CONVERSION ACCOUNTING PROGRAMME (CAP)- CONVERSION B `,
+`Business Law and Professional Ethics `,
+`Taxation` ,
+`Auditing `,
+`Financial Management `,
+`Basic French II`,
+      ],
+
+      prerequisites:[
+        `First degree, Higher National Diploma or its equivalent. `
       ],
 
       courses: [
@@ -2428,7 +2508,70 @@ Group and early-bird registration discounts are available. Contact Questence for
         },
       ],
 
-      about_program: [],
+      about_program: [
+        `
+        The Institute of Chartered Secretaries and Administrators of Nigeria (ICSAN) dedicated to enhancing the status and practice of Corporate Governance and Public Administration. 
+        The Institute is a member of the Corporate Secretaries International Association (CSIA)`
+      ],
+
+      objectives:[
+        `The Institute is dedicated to;`,
+        `Developing and promoting professional ideals, standards, ethics, code of conduct and the interests of the Chartered Secretaries and Administrators`,
+       ` Encouraging potential Chartered Secretaries and Administrators to acquire professional qualification.`,
+        `Creating opportunities for social interaction, communication, and solidarity among the members.`
+      ],
+
+      list_of_levels:[
+
+        `The ICSAN  syllabus is divided into 4 levels with four courses in each level`,
+
+`Level 1 - Foundation `,
+`Business Environment`,
+`Business Communications`,
+`Accounting for Business`,
+`Business Management`,
+
+`Level 2 - Pre-Professional`,
+`Business Law in Practice`,
+`Marketing`,
+`Business Finance`,
+`Business Strategy and Planning`,
+
+`Level 3 - Professional Programme I`,
+`Strategic and Operations Management`,
+`Corporate Law`,
+`Financial Accounting`,
+`Management Accounting`,
+
+`Level 4 - Professional Programme II`,
+`Corporate Administration`,
+`Corporate Secretaryship`,
+`Corporate Financial Management`,
+`Corporate Governance`,
+      ],
+      prerequisites:[
+        `Non degree holders will start form the foundation stage.` ,
+`Non-degree holders must possess the minimum entry requirement which is five O level credits
+ and must include English Language and Mathematics.`,
+
+`Graduates with related degrees (B.Sc./HND Accounting, LL.B, ICSAN’S CPA and B.Sc/HND Finance)
+ are exempted from all subjects in Foundation, Pre Professional and Professional Programme Part 1 stages,
+  such degree holders shall be required to write and pass all the subjects in Professional Programme Part 2.`,
+
+`Non-related degrees holders are exempted from Foundation, Pre Professional,
+ Strategic and Operations Management and Management Accounting in Professional Programme Part 1 
+ and shall be required to write and pass six subjects i.e. Corporate Law and Financial 
+ Accounting in Professional Programme Part1 and the subjects in Professional Programme Part 2.`,
+
+`Holders of professional qualifications (ACA, ACCA, CIMA and CIBN) are exempted 
+from all subjects in Foundation, Pre Professional and Professional Programme Part 1 stages,
+ such degree holders shall be required to write and pass all the subjects in Professional Programme Part 2.`,
+
+`Holders of other professional qualifications are exempted from the Foundation and Pre
+ Professional stages and will be required to write and pass all the subjects in 
+ Professional Programme Parts 1 & 2.`,
+
+      ],
 
       courses: [
         {
@@ -2690,9 +2833,85 @@ Group and early-bird registration discounts are available. Contact Questence for
       skills_acquired: [],
       about_program: [
         `
+        The Chartered Institute of Bankers of is committed to enthroning professional excellence in the banking industry in Nigeria.`,
+      ],
+      objectives:[
+        `The Institute's core objective is to  be the foremost and most influential professional body in the provision of capacity building in banking and finance industry in Africa. `
+      ],
+      list_of_levels:[
+        `Diploma Level`,
 
-Questence brings the CIBN syllabus to life with vibrant educative lessons designed
- to make preparing for and passing your certification examinations a whole lot easier.`,
+`Economics of Banking & Finance` ,
+`Customer Service & Relationship Mgt`,
+`Banking Law and Regulation` ,
+`Ethics, Corporate Governance & Professionalism`,
+
+
+`Intermediate Professional Level`,
+
+`Digital Banking` ,
+`Enterprise Risk Management` ,
+`Finance in the Global Market`,
+`Fintech`,
+
+
+`Chartered Banker Level (Core & Electives)`,
+
+`Core`,
+`Corporate Financial Services `,
+`Applied Banking`,
+`Bank Management and Strategy`,
+`Lending and Credit Management`,
+
+`Electives`,
+`Public Sector Finance` ,
+`Human Resource Management`,
+`Agency Banking `,
+`Infrastructure Finance`,
+`SME’s Finance `,
+`Agricultural & Rural Banking`,
+`Bank Audit and Compliance`,
+`Central Banking/ Deposit Insurance System`,
+
+
+
+`Microfinance Certification Programme`,
+
+`The Evolution Mgt. and Regulation of Microfinancing`,
+`Product Dev. and Marketing Mgt.` ,
+`Financial Analysis & Performance Monitoring in Microfinance Institutions`,
+`Ethics and Corporate Governance `,
+`Risk Mgt & Internal Control in Microfinance Institutions `,
+`Digital Finance in Microfinance Institution`,
+`Small and Medium Enterprises Mgt. and Development`,
+
+`Treasury Management `,
+
+`Introduction to Assets & Liabilities Mgt` ,
+`Basic Treasury Management `,
+`Law, Ethics & Corporate Gov. in Treasury Mgt`,
+`Treasury Management`,
+`Treasury Operations`,
+`Assets and Liabilities Mgt`,
+`Investment Portfolio Management` ,
+`Principles of Financial Risk `,
+`Personal Effectiveness & Team Building`,
+      ],
+
+      prerequisites:[
+        `Exemptions are granted based on their Academic qualification(s) ranging from 1 to15 subjects as detailed below:`,
+
+`BSc/HND Banking & Finance: Students are exempted from subjects ranging from 9 to 13. The students get standard exemptions of 9 subjects (all the eight (8) diploma level subjects and one (1) in the intermediate level) while further exemptions are based on transcript.`,
+
+`BSc/HND Accounting/Accountancy: Students are exempted from 10 subjects (all the eight (8) diploma level subjects and two (2) in the intermediate level).`,
+
+`BSc/HND Sciences Courses: Students are exempted from a maximum of 3 subjects in the diploma level.`,
+
+`BSc/HND Business Administration, Economics or Marketing – Students are exempted from 9 subjects (all the eight (8) diploma level subjects and one (1) in the intermediate level). Further exemptions are based on transcript.`,
+
+`B.A. Art Courses: Students are exempted from a maximum of 2 subjects in the diploma level.`,
+
+`MSc/MBA/Ph.D. in Management & Social Science courses: Students are exempted from a minimum of all the eight (8) diploma level subjects. Further exemptions are based on transcript.`
       ],
       courses: [
         {
@@ -3028,12 +3247,52 @@ Questence brings the CIBN syllabus to life with vibrant educative lessons design
       institution: "CIPM",
       fullname: "Chartered Institute of Personnel Management of Nigeria",
       intro:
-        "Your path to CIPM certification will be a lot smoother if you take full advantage of our online courses.",
+        "The Chartered Institute of Personnel Management of Nigeria was established as an umbrella Association for Practitioners of Personnel Management in Nigeria. The Institute awards certifications in the Human Resource field.  CIPM’s pathway comprises 31 courses across six levels.",
       hero_image:
         process.env.PUBLIC_URL + "/assets/images/institutions/cipm.jpg",
       enroll_plan: [
         `You can enrol for this course as a standalone or as part of your certification pathway.
 Group and early-bird registration discounts are available. Contact Questence for details`,
+      ],
+
+      objectives:[
+        `Your CIPM certification grants you international recognition as an HR practitioner.
+        `
+      ],
+      list_of_levels:[
+        `The CIPM certification pathway spans six levels namely;`,
+
+`Foundation I with the following courses; Introduction to Management, 
+Writing & Communication Skills, Introduction to Economics, Introduction to Accounting,
+ and Fundamentals of Psychology & Sociology.`,
+
+`Foundation II with the following courses; Introduction to Human Resource Management,
+ Nigerian Business Environment, Business Law, Computer Application and Management Information System,
+  Elements of Politics & the Nigerian Legal System, and Introduction to Human Resource Management`,
+
+`Intermediate I with the following courses;
+ Business Administration, Advanced Economics, Accounting & Finance for Managers,
+  Business Statistics & Social Research Methods, and Business Administration`,
+
+`Intermediate II with the following courses; Learning & Development,
+ Public Administration, Workforce Planning & Strategies, and Comparative Management & Administration`,
+
+`Professional Level I with the following courses; Operations Research, 
+Organisational Behaviour & Performance, Insurance & Pensions Management, 
+Advanced Human Resource Management I, and Presentation Skills`,
+
+`Professional Level II with the following courses; Nigerian Labour Law,
+ Advanced Employment Relations, Advanced Human Resource Management II, and Labour Market Analysis, `
+
+      ],
+
+      prerequisites:[
+        `Foundation I is the starting point for holders of WASSCE/NECO/GCE Ordinary Level.`,
+`OND/NCE/equivalent holders in Social Sciences, Humanities and Management begin from Foundation II.`,
+`Degree/HND in the Social Sciences, Humanities and Management begin from Intermediate II.`,
+`Degree/HND in other disciplines begin from Intermediate I`,
+`Higher degrees (e.g. M.A./M.Sc/MBA/M.Phil/Ph.D) in relevant disciplines begin from PE I.`,
+`Higher degrees in other disciplines begin from Intermediate II.`,
       ],
       faqs: [
         {
@@ -3050,7 +3309,7 @@ Group and early-bird registration discounts are available. Contact Questence for
           ],
         },
         {
-          question: `What is the Certification Pathplan?‎`,
+          question: `What is the Certification Pathplan?`,
           answers: [
             `The Questence Certification Pathway plan allows you study for your certification in one place at your own pace. Whether at work, at home or even in school.
 `,
@@ -3058,7 +3317,7 @@ Group and early-bird registration discounts are available. Contact Questence for
         },
 
         {
-          question: `Are there any international restrictions?‎`,
+          question: `Are there any international restrictions?`,
           answers: [
             `You can learn on Questence from anywhere in the world. We immensely value our global community and will not withhold services from anyone anywhere except mandated by law to do so.
 `,
@@ -3408,6 +3667,475 @@ Group and early-bird registration discounts are available. Contact Questence for
       ], //end courses
     },
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {
+      id: 9,
+      institution: "ATSWA",
+      fullname: "Accounting Technicians Scheme West Africa (ATSWA) ",
+      intro:
+        "The Accounting Technicians Scheme West Africa (ATSWA) programme is designed to produce middle-level Accounting Technicians within the West African sub-region.",
+      hero_image:
+        process.env.PUBLIC_URL + "/assets/images/institutions/cipm.jpg",
+      enroll_plan: [
+        `You can enrol for this course as a standalone or as part of your certification pathway.
+Group and early-bird registration discounts are available. Contact Questence for details`,
+      ],
+
+      objectives:[
+        `Possessing an AAT Certificate from ATSWA provides you with a recognised qualification for the accounting and auditing staff employed in the public sector,
+         industry, commerce and in various offices or practicing accountants. `
+      ],
+      list_of_levels:[
+        `The ATSWA syllabus is divided into 3 parts and each part consists of four (4) subjects.`,
+
+        `PART 1 /ATS I`,
+        `Basic Accounting Processes & Systems (BAPS)`,
+       `Business Law`,
+        `Economics`,
+       ` Communication Skills`,
+        
+        `PART 2/ATS II`,
+        `Principles and Practice of Financial Accounting – Exemption for ND Banking & Finance.`,
+        `Public Sector Accounting`,
+        `Quantitative Techniques`,
+        `Information Technology`,
+        
+        `PART 3/ATS III`,
+        `Principles of Audit`,
+        `Cost Accounting & Budgeting`,
+        `Preparing Tax Computations & Returns (Taxation) and`,
+        `Principles of Management`,
+      ],
+
+      prerequisites:[
+        `Five (5) credit passes in any subject including English Language and Mathematics in the West Africa School Certificate Examination, General Certificate of Education or Senior School Certificate of Education, NECO equivalent not more than two sittings or NABTEB.
+        Ordinary National Diploma of any Polytechnic recognised by the Council of the Institute`,
+        `National Certificate in Education (NCE) from any College of Education.`,
+        `Students with National Diploma in Banking & Finance are eligible to start at stage II.
+         They are also allowed entitle to exemption from 1 (one) out of the 4 papers at this stage.`
+      ],
+      faqs: [
+        {
+          question: `How do I make the best of my learning experience.`,
+          answers: [
+            `Have the right expectations. ...`,
+            `Know your resources. ...`,
+            `Study in an organised manner. ...`,
+            `Have a dedicated workspace. ...`,
+            `Actively communicate with your trainer. ...`,
+            `Communicate with your colleagues/other learners. ...`,
+            `Have backup technology ready. ...`,
+            `Set aside study time.`,
+          ],
+        },
+        {
+          question: `What is the Certification Pathplan?`,
+          answers: [
+            `The Questence Certification Pathway plan allows you study for your certification in one place at your own pace. Whether at work, at home or even in school.
+`,
+          ],
+        },
+
+        {
+          question: `Are there any international restrictions?`,
+          answers: [
+            `You can learn on Questence from anywhere in the world. We immensely value our global community and will not withhold services from anyone anywhere except mandated by law to do so.
+`,
+          ],
+        },
+      ],
+      about_program: [
+        "The CIPM certification is necessary for a career in Human Resources.",
+
+        "These sessions will aid your passing the CIPM series of exams and qualifying you as a chartered Human Resource Manager.",
+      
+      
+
+
+
+
+      ],
+
+      courses: [
+        {
+          price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "FOUNDATION I",
+          body: [
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title:
+                "Introduction to Management Writing and Communication Skills",
+              image:
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTm_MO3cTsD7kACjg0obWc4LHFz36KtjK8ywFu-GuR_Fdu13hcnpsIuTVN4StLvBWJ3Xig&usqp=CAU",
+              info: ``,
+              outcomes: [
+                "Obtain Wide and broad understanding of the practices and and ethics of Accounting.",
+                "Learn and Improve on your skills from accomplished professionals and set your career in the right direction.",
+                "Learn and apply modern global best practices in Accounting. ",
+              ],
+
+              skills_acquired: [
+                "Analytical and problem-solving skills",
+                "Time management",
+                "Critical thinking",
+                "Clerical knowledge",
+                "Principles of Accounting",
+              ],
+            },
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Introduction to Economics,Introduction to Accounting",
+              image:
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTm_MO3cTsD7kACjg0obWc4LHFz36KtjK8ywFu-GuR_Fdu13hcnpsIuTVN4StLvBWJ3Xig&usqp=CAU",
+              info: ``,
+              outcomes: [
+                "Obtain Wide and broad understanding of the practices and and ethics of Accounting.",
+                "Learn and Improve on your skills from accomplished professionals and set your career in the right direction.",
+                "Learn and apply modern global best practices in Accounting. ",
+              ],
+
+              skills_acquired: [
+                "Analytical and problem-solving skills",
+                "Time management",
+                "Critical thinking",
+                "Clerical knowledge",
+                "Principles of Accounting",
+              ],
+            },
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Fundamentals of Psychology & Sociology",
+              image:
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTm_MO3cTsD7kACjg0obWc4LHFz36KtjK8ywFu-GuR_Fdu13hcnpsIuTVN4StLvBWJ3Xig&usqp=CAU",
+              info: ``,
+              outcomes: [
+                "Obtain Wide and broad understanding of the practices and and ethics of Accounting.",
+                "Learn and Improve on your skills from accomplished professionals and set your career in the right direction.",
+                "Learn and apply modern global best practices in Accounting. ",
+              ],
+
+              skills_acquired: [
+                "Analytical and problem-solving skills",
+                "Time management",
+                "Critical thinking",
+                "Clerical knowledge",
+                "Principles of Accounting",
+              ],
+            },
+          ],
+        },
+
+        {
+          price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "FOUNDATION II",
+          body: [
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title:
+                "Introduction to Personnel Management and Industrial Relations",
+              image:
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCOcfezvnCCZ2PlYQAuwNqwacmcm1RLE06-iDnwNhFIDQUFqP3Z0hLmfX6fCX74BHEcNE&usqp=CAU",
+              info: ``,
+              outcomes: [
+                "Obtain Wide and broad understanding of the practices and and ethics of Accounting.",
+                "Learn and Improve on your skills from accomplished professionals and set your career in the right direction.",
+                "Learn and apply modern global best practices in Accounting. ",
+              ],
+
+              skills_acquired: [
+                "Analytical and problem-solving skills",
+                "Time management",
+                "Critical thinking",
+                "Clerical knowledge",
+                "Principles of Accounting",
+              ],
+            },
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Nigerian Business Environment",
+              image:
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCOcfezvnCCZ2PlYQAuwNqwacmcm1RLE06-iDnwNhFIDQUFqP3Z0hLmfX6fCX74BHEcNE&usqp=CAU",
+              info: ``,
+              outcomes: [
+                "Obtain Wide and broad understanding of the practices and and ethics of Accounting.",
+                "Learn and Improve on your skills from accomplished professionals and set your career in the right direction.",
+                "Learn and apply modern global best practices in Accounting. ",
+              ],
+
+              skills_acquired: [
+                "Analytical and problem-solving skills",
+                "Time management",
+                "Critical thinking",
+                "Clerical knowledge",
+                "Principles of Accounting",
+              ],
+            },
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Business Law",
+              image:
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCOcfezvnCCZ2PlYQAuwNqwacmcm1RLE06-iDnwNhFIDQUFqP3Z0hLmfX6fCX74BHEcNE&usqp=CAU",
+              info: ``,
+              outcomes: [
+                "Obtain Wide and broad understanding of the practices and and ethics of Accounting.",
+                "Learn and Improve on your skills from accomplished professionals and set your career in the right direction.",
+                "Learn and apply modern global best practices in Accounting. ",
+              ],
+
+              skills_acquired: [
+                "Analytical and problem-solving skills",
+                "Time management",
+                "Critical thinking",
+                "Clerical knowledge",
+                "Principles of Accounting",
+              ],
+            },
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Computer Application and Management Information System",
+              image:
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCOcfezvnCCZ2PlYQAuwNqwacmcm1RLE06-iDnwNhFIDQUFqP3Z0hLmfX6fCX74BHEcNE&usqp=CAU",
+              info: ``,
+              outcomes: [
+                "Obtain Wide and broad understanding of the practices and and ethics of Accounting.",
+                "Learn and Improve on your skills from accomplished professionals and set your career in the right direction.",
+                "Learn and apply modern global best practices in Accounting. ",
+              ],
+
+              skills_acquired: [
+                "Analytical and problem-solving skills",
+                "Time management",
+                "Critical thinking",
+                "Clerical knowledge",
+                "Principles of Accounting",
+              ],
+            },
+
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Government and Nigerian Legal System",
+              image:
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCOcfezvnCCZ2PlYQAuwNqwacmcm1RLE06-iDnwNhFIDQUFqP3Z0hLmfX6fCX74BHEcNE&usqp=CAU",
+              info: ``,
+              outcomes: [
+                "Obtain Wide and broad understanding of the practices and and ethics of Accounting.",
+                "Learn and Improve on your skills from accomplished professionals and set your career in the right direction.",
+                "Learn and apply modern global best practices in Accounting. ",
+              ],
+
+              skills_acquired: [
+                "Analytical and problem-solving skills",
+                "Time management",
+                "Critical thinking",
+                "Clerical knowledge",
+                "Principles of Accounting",
+              ],
+            },
+          ],
+        },
+
+        {
+          price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "INTERMEDIATE I",
+          body: [
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Business Administration",
+              image:
+                "https://st4.depositphotos.com/18690434/21130/v/1600/depositphotos_211303438-stock-illustration-elearning-vector-icon-isolated-transparent.jpg",
+              info: ``,
+              skills_acquired: [],
+              outcomes: [],
+            },
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Advanced Economics",
+              image:
+                "https://st4.depositphotos.com/18690434/21130/v/1600/depositphotos_211303438-stock-illustration-elearning-vector-icon-isolated-transparent.jpg",
+              info: ``,
+              skills_acquired: [],
+              outcomes: [],
+            },
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Accounting and Finance for Managers",
+              image:
+                "https://st4.depositphotos.com/18690434/21130/v/1600/depositphotos_211303438-stock-illustration-elearning-vector-icon-isolated-transparent.jpg",
+              info: ``,
+              skills_acquired: [],
+              outcomes: [],
+            },
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Business Statistics and Social Research Methods",
+              image:
+                "https://st4.depositphotos.com/18690434/21130/v/1600/depositphotos_211303438-stock-illustration-elearning-vector-icon-isolated-transparent.jpg",
+              info: ``,
+              skills_acquired: [],
+              outcomes: [],
+            },
+          ],
+        },
+
+        {
+          price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "INTERMEDIATE II",
+          body: [
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Training and Development",
+              image:
+                "https://st4.depositphotos.com/18690434/21130/v/1600/depositphotos_211303438-stock-illustration-elearning-vector-icon-isolated-transparent.jpg",
+              info: ``,
+              skills_acquired: [],
+              outcomes: [],
+            },
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Public Administration",
+              image:
+                "https://st4.depositphotos.com/18690434/21130/v/1600/depositphotos_211303438-stock-illustration-elearning-vector-icon-isolated-transparent.jpg",
+              info: ``,
+              skills_acquired: [],
+              outcomes: [],
+            },
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Manpower Planning",
+              image:
+                "https://st4.depositphotos.com/18690434/21130/v/1600/depositphotos_211303438-stock-illustration-elearning-vector-icon-isolated-transparent.jpg",
+              info: ``,
+              skills_acquired: [],
+              outcomes: [],
+            },
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Comparative Management and Administration",
+              image:
+                "https://st4.depositphotos.com/18690434/21130/v/1600/depositphotos_211303438-stock-illustration-elearning-vector-icon-isolated-transparent.jpg",
+              info: ``,
+              skills_acquired: [],
+              outcomes: [],
+            },
+          ],
+        },
+
+        {
+          price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "PROFESSIONAL EXAMINATION I ",
+          body: [
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Operations Research",
+              image:
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5Z0JPTYZSlGocGR3HXNhf5vuTg5wlFIOfLDKx1WqPbUV1KicQFnR5WC3hCkATj0koZa0&usqp=CAU",
+              info: ``,
+              skills_acquired: [],
+              outcomes: [],
+            },
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Organisational Behaviour and Performance",
+              image:
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5Z0JPTYZSlGocGR3HXNhf5vuTg5wlFIOfLDKx1WqPbUV1KicQFnR5WC3hCkATj0koZa0&usqp=CAU",
+              info: ``,
+              skills_acquired: [],
+              outcomes: [],
+            },
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Insurance and Pensions Management",
+              image:
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5Z0JPTYZSlGocGR3HXNhf5vuTg5wlFIOfLDKx1WqPbUV1KicQFnR5WC3hCkATj0koZa0&usqp=CAU",
+              info: ``,
+              skills_acquired: [],
+              outcomes: [],
+            },
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Advanced Personnel Management I",
+              image:
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5Z0JPTYZSlGocGR3HXNhf5vuTg5wlFIOfLDKx1WqPbUV1KicQFnR5WC3hCkATj0koZa0&usqp=CAU",
+              info: ``,
+              skills_acquired: [],
+              outcomes: [],
+            },
+          ],
+        },
+
+        {
+          price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "PROFESSIONAL EXAMINIATION II",
+          body: [
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Nigeria Labour Law",
+              image:
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKrQwVfC-vHqEfPORmqtiT87iABdJLPyjYxM2oZjW_Et4WbecvGWZ_kG5Qd3fpbLxnjkQ&usqp=CAU",
+              info: ``,
+              skills_acquired: [],
+              outcomes: [],
+            },
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Advanced Industrial Relations",
+              image:
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKrQwVfC-vHqEfPORmqtiT87iABdJLPyjYxM2oZjW_Et4WbecvGWZ_kG5Qd3fpbLxnjkQ&usqp=CAU",
+              info: ``,
+              skills_acquired: [],
+              outcomes: [],
+            },
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Advanced Industrial Relations",
+              image:
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKrQwVfC-vHqEfPORmqtiT87iABdJLPyjYxM2oZjW_Et4WbecvGWZ_kG5Qd3fpbLxnjkQ&usqp=CAU",
+              info: ``,
+              skills_acquired: [],
+              outcomes: [],
+            },
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Advanced Personnel Management II",
+              image:
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKrQwVfC-vHqEfPORmqtiT87iABdJLPyjYxM2oZjW_Et4WbecvGWZ_kG5Qd3fpbLxnjkQ&usqp=CAU",
+              info: ``,
+              skills_acquired: [],
+              outcomes: [],
+            },
+
+            {
+              price:"12000",learningStyle:"Instructor Led",author:"A dummy author",language:"English",title: "Labour Market Analysis",
+              image:
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKrQwVfC-vHqEfPORmqtiT87iABdJLPyjYxM2oZjW_Et4WbecvGWZ_kG5Qd3fpbLxnjkQ&usqp=CAU",
+              info: ``,
+              skills_acquired: [],
+              outcomes: [],
+            },
+          ],
+        },
+      ], //end courses
+    },
+
+
     //second
 
     {
@@ -3696,8 +4424,8 @@ conducted through the bank and how errors in accounting are treated.`,
 
     {
       id: 3,
-      fullname: "Nigerian Institute Of Management",
-      institution: "NIM",
+      fullname: "National Institute of Marketing of Nigeria (NIMN)",
+      institution: "NIMN",
       intro:
         "Our online classes and tutorials will help you ace your certification examinations.",
       hero_image:
@@ -3737,8 +4465,85 @@ Group and early-bird registration discounts are available. Contact Questence for
         },
       ],
       about_program: [
-        `Let Questence help you along your path to certification. Our courses bring the NIM syllabus to life and make passing your examinations a lot easier.`,
+        `The National Institute of Marketing of Nigeria (NIMN) is the body for professionals engaged in marketing and related fields `,
       
+
+
+      ],
+
+      objectives:[
+        `A professional qualification in marketing from the NIMN provides holders with a wide range of interesting career opportunities in brand management, Sales, customer service, customer relationship, marketing communication, marketing research, retail and sales management, etc.`
+      ],
+
+      list_of_levels:[
+        `Certificate and Diploma Courses `,
+`Foundation Certificate in Marketing FCM I`,
+`Information Technology (FCM I) `,
+`Principles of Marketing I (FCM I)`,
+`Business Communications (FCM I)` ,
+`Economics & Commercial Studies (FCM I) `,
+`Elements of Statistics (FCM I)` ,
+`Principles of Selling (FCM I)`,
+
+
+`Foundation Certificate in Marketing FCM II`,
+`Business Environment (FCM II) `,
+`Practice of Marketing (FCM II) `,
+`Management for Marketing (FCM II) `,
+`Principles of Accounting (FCM II) `,
+`Business Law (FCM II) `,
+`Business Environment (FCM II)`,
+
+
+`Graduate Diploma in Marketing (ICM I)`,
+`Promotional Practice (ICM I)`,
+`Managerial Accounting (ICM I) `,
+`Marketing Research (ICM I) `,
+`Industrial & Agricultural Marketing (ICM I) `,
+`Quantitative Business Analysis (ICM I) `,
+`Consumer Behaviour (ICM I)`,
+
+
+
+`Graduate Diploma in Marketing (ICM II)`,
+`Services Marketing (ICM II) `,
+`Financial Accounting (ICM II) `,
+`Electronic Marketing (ICM II) `,
+`Direct Marketing (ICM II) `,
+`Sales Management (ICM II) `,
+`Services Marketing (ICM II)`,
+
+
+
+`Post Graduate Diploma in Marketing (PCM I)`,
+`Entrepreneurship & Small Business Mgt. (PCM I) `,
+`International Marketing (PCM I) `,
+`Product Development & Brand Mgt. (PCM I) `,
+`Distribution & Logistics Management (PCM I)`,
+`Strategic Marketing Management I (PCM I)`,
+
+`Post Graduate Diploma in Marketing (PCM II)`,
+`Marketing Information Systems (PCM II) `,
+`Global Marketing (PCM II) `,
+`Strategic Marketing Management II (PCM II)` ,
+`Integrated Marketing Communications (PCM II)`,
+`Marketing Analysis & Decision-Making Case Study (PCM II)`,
+
+      ],
+
+      prerequisites:[
+          `Foundation Certificate Stage`,
+`Five credits in GCE (O/L)/SSCE, NECO. These Credits must include English Language, 
+Mathematics at not more than two sittings.`,
+`Professional Final Scheme`,
+`Completion of the Certificate scheme of the National institute of Marketing of Nigeria and 
+graduates with first degree in Marketing and business administration. Other professional 
+qualifications in Sales and marketing, distribution, advertising and public relations would be exempted 
+from the certificate scheme of the institute.`,
+`Post Graduate Qualification Admission Scheme`,
+`Candidates with MSc and MBA in marketing would be exempted in PFS I and would be required to
+take the PFS II Subject for subject exemption: would be granted to graduate and postgraduate students 
+in field other than marketing as well as other professional qualifications in unrelated fields to marketing.`
 
 
       ],

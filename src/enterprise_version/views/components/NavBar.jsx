@@ -130,6 +130,7 @@ const NavBar = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setP
   const [loginModalShow, setLoginModalShow] = useState(false);
   const [regModalShow, setRegModalShow] = useState(false);
   const [forgotModalShow, setForgotModalShow] = useState(false);
+  const [errors, NotificationErrors] = useState({})
 
   let AuthLinks = [].concat([...AUTHLINKS])
 
@@ -248,61 +249,61 @@ const prevalidate = (setSubmitting)=>{
       }
       let showErrorOnce = false
 
-      console.log(initial)
+    
 
-      Object.keys(initial).forEach(keys=>{
-        console.log(keys)
-         if(initial[keys].length<=0){
-           showErrorOnce =true 
-           if(showErrorOnce){
-             showErrorOnce=false
-             toast.error("Please fill out the blank fields")
-             setSubmitting(false);
-              setLoading(false);
-             return false
-           }
+      // Object.keys(initial).forEach(keys=>{
+      //   console.log(keys)
+      //    if(initial[keys]==""){
+      //      showErrorOnce =true 
+      //      if(showErrorOnce){
+      //        showErrorOnce=false
+      //        toast.error("Please fill out the blank fields")
+      //        setSubmitting(false);
+      //         setLoading(false);
+      //        return false
+      //      }
           
-         }
-         //validate email
-         if(keys=="email"){
-           if(!initial[keys].match(email_regex)){
-            showErrorOnce =true 
-             if(showErrorOnce){
-               showErrorOnce=false
-               toast.error(`Please ensure to use a valid email`)
-               setSubmitting(false);
-                setLoading(false);
-               return false
-            }
-           }
-         }
+      //    }
+      //    //validate email
+      //    if(keys=="email"){
+      //      if(!initial[keys]==""){
+      //       showErrorOnce =true 
+      //        if(showErrorOnce){
+      //          showErrorOnce=false
+      //          toast.error(`Please ensure to use a valid email`)
+      //          setSubmitting(false);
+      //           setLoading(false);
+      //          return false
+      //       }
+      //      }
+      //    }
 
-         //check password match
-         if(keys=="password"){
-            if(initial[keys]!=initial["password_confirmation"]){
-               showErrorOnce =true 
-               if(showErrorOnce){
-                 showErrorOnce=false
-                 toast.error("Password do not match")
-                 setSubmitting(false);
-                 setLoading(false);
-                 return false
-               }
-           }
+      //    //check password match
+      //    if(keys=="password"){
+      //       if(initial[keys]!=initial["password_confirmation"]){
+      //          showErrorOnce =true 
+      //          if(showErrorOnce){
+      //            showErrorOnce=false
+      //            toast.error("Password do not match")
+      //            setSubmitting(false);
+      //            setLoading(false);
+      //            return false
+      //          }
+      //      }
 
 
-           if(!initial[keys].match(passwordRegex)){
-               showErrorOnce =true 
-               if(showErrorOnce){
-                 showErrorOnce=false
-                 toast.error("Please use a strong password . Password should contain One capital letter, and atleast a minimum of 8 alphanumeric digits and other symbols ")
-                 setSubmitting(false);
-                 setLoading(false);
-                 return false
-               }
-           }
-         }
-      })
+      //      if(!initial[keys].match(passwordRegex)){
+      //          showErrorOnce =true 
+      //          if(showErrorOnce){
+      //            showErrorOnce=false
+      //            toast.error("Please use a strong password . Password should contain One capital letter, and atleast a minimum of 8 alphanumeric digits and other symbols ")
+      //            setSubmitting(false);
+      //            setLoading(false);
+      //            return false
+      //          }
+      //      }
+      //    }
+      // })
 
       return true
   }
@@ -324,13 +325,37 @@ const prevalidate = (setSubmitting)=>{
         }, 2000);
         setSubmitting(false);
       } catch (err) {
-        // console.log(
-        //   err?.response?.data?.errors?.email[0] || err?.response?.data?.message
-        // );
-        toast.error( err?.response?.data?.errors?.email[0] || err?.response?.data?.message);
         setSubmitting(false);
+        setLoading(false);
+        if(err?.response?.data?.errors){
+          
+          if(err?.response?.data?.errors?.phone_number[0]){
+            toast.error(err?.response?.data?.errors?.phone_number[0])
+          }
 
-      }
+
+          if(err?.response?.data?.errors?.email[0]){
+            toast.error(err?.response?.data?.errors?.email[0])
+          }
+
+         // return toast.error( err?.response?.data?.errors?.email[0] );
+         Object.keys(err?.response?.data?.errors).forEach(keys=>{
+          console.log(keys)
+           if(err?.response?.data?.errors[keys]){
+              NotificationErrors(err?.response?.data?.errors)
+               toast.error(err?.response?.data?.errors[keys][0])
+               setSubmitting(false);
+                setLoading(false);
+               //return false
+           
+           }
+         })
+
+        }
+    
+         setSubmitting(false);
+
+       }
       setLoading(false);
 
     }
@@ -443,18 +468,24 @@ const prevalidate = (setSubmitting)=>{
                   <NavDropdown.Item href={process.env.PUBLIC_URL+ "/courses/category/?search_menu=menu_mapper&nested_filter_id=6&nested_search_parent=others"}
                     >Others</NavDropdown.Item>
                 </NavDropdown>
-                <NavDropdown title="Programs" id="collasible-nav-dropdown">
+                <NavDropdown title="Programmes" id="collasible-nav-dropdown">
                   
                   
                 <NavDropdown.Item   style={{ whiteSpace: "initial", width: "300px" }}
                 href={process.env.PUBLIC_URL+ "/program-detail/3"}
                             >
-                        NIM: Nigerian Institute of Management
+                       NIMN: National Institute of Marketing Of Nigeria
                       </NavDropdown.Item>
                       <NavDropdown.Item   style={{ whiteSpace: "initial", width: "300px" }}
                    href={process.env.PUBLIC_URL+ "/program-detail/2"}>
-                        ICAN: Institute of Chartered Accountants
+                        ICAN: Institute of Chartered Accountants (ICAN)
                       </NavDropdown.Item>
+
+                      <NavDropdown.Item   style={{ whiteSpace: "initial", width: "300px" }}
+                   href={process.env.PUBLIC_URL+ "/program-detail/9"}>
+                        ATSWA:  Accounting Technicians Scheme West Africa (ATSWA)
+                      </NavDropdown.Item>
+
                       <NavDropdown.Item   style={{ whiteSpace: "initial", width: "300px" }}
                  href={process.env.PUBLIC_URL+ "/program-detail/4"}>
                         CITN: Chartered Institute of Taxation of Nigeria
@@ -476,7 +507,7 @@ const prevalidate = (setSubmitting)=>{
                       </NavDropdown.Item>
                       <NavDropdown.Item   style={{ whiteSpace: "initial", width: "300px" }}
                    href={process.env.PUBLIC_URL+ "/program-detail/5"}>
-                        Association Of Accountants of Nigeria
+                        ANAN: Association Of Accountants of Nigeria
                       </NavDropdown.Item>
                       <NavDropdown.Item    style={{ whiteSpace: "initial", width: "300px" }}
                   href={process.env.PUBLIC_URL+ "/program-detail/1"}>
@@ -1014,7 +1045,7 @@ const prevalidate = (setSubmitting)=>{
                   </NavDropdown.Item>
                 </NavDropdown>
                 <NavDropdown
-                  title="Programs"
+                  title="Programmes"
                   id="basic-nav-dropdown"
                   show={secondShow}
                   onMouseEnter={() => setSecondShow(true)}
@@ -1027,11 +1058,18 @@ const prevalidate = (setSubmitting)=>{
                     <div className="col border-end">
                       <NavDropdown.Item href={process.env.PUBLIC_URL+ "/program-detail/3"}
                             >
-                        NIM: Nigerian Institute of Management
+                        NIMN: National Institute of Marketing Of Nigeria
                       </NavDropdown.Item>
                       <NavDropdown.Item href={process.env.PUBLIC_URL+ "/program-detail/2"}>
                         ICAN: Institute of Chartered Accountants
                       </NavDropdown.Item>
+
+                      <NavDropdown.Item   
+                   href={process.env.PUBLIC_URL+ "/program-detail/9"}>
+                        ATSWA:  Accounting Technicians Scheme West Africa (ATSWA)
+                      </NavDropdown.Item>
+
+                      
                       <NavDropdown.Item href={process.env.PUBLIC_URL+ "/program-detail/4"}>
                         CITN: Chartered Institute of Taxation of Nigeria
                       </NavDropdown.Item>
@@ -1052,7 +1090,7 @@ const prevalidate = (setSubmitting)=>{
                         Administrators of Nigeria
                       </NavDropdown.Item>
                       <NavDropdown.Item href={process.env.PUBLIC_URL+ "/program-detail/5"}>
-                        Association Of Accountants of Nigeria
+                        ANAN - Association Of Accountants of Nigeria
                       </NavDropdown.Item>
                       <NavDropdown.Item href={process.env.PUBLIC_URL+ "/program-detail/1"}>
                         CIPM: Chartered Institute of Personnel Management of
@@ -1067,7 +1105,7 @@ const prevalidate = (setSubmitting)=>{
                             
                         style={{ whiteSpace: "initial", paddingBottom: "10px" }}
                       >
-                        NIM: Nigerian Institute of Management
+                        NIMN: National Institute of Marketing Of Nigeria
                       </NavDropdown.Item>
                       <NavDropdown.Item
                         href={process.env.PUBLIC_URL+ "/program-detail/6"}
@@ -1101,7 +1139,7 @@ const prevalidate = (setSubmitting)=>{
                         href={process.env.PUBLIC_URL+ "/program-detail/5"}
                         style={{ whiteSpace: "initial", paddingBottom: "50px" }}
                       >
-                        Association Of Accountants of Nigeria
+                        ANAN - Association Of Accountants of Nigeria
                       </NavDropdown.Item>
                       <NavDropdown.Item
                         href={process.env.PUBLIC_URL+ "/program-detail/1"}
@@ -1246,7 +1284,6 @@ const prevalidate = (setSubmitting)=>{
                           onSubmit={handleSubmit}
                         >
               <div className="row">
-
 
 
                 <div className="mb-3 col-md-6">

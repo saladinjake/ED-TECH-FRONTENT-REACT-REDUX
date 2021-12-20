@@ -25,7 +25,7 @@ const CourseHeader = ({ pageTitle, bgClass, subHeading, introVideoUrl,by,languag
               <div className="row d-none d-md-flex">
                 <div className="col">
                   <span className="bg-teal inherit py-2 px-4 rounded">
-                    Level
+                    5.0
                   </span>
                   <div className="d-inline-flex mx-3 text-white">
                     <i className="bi bi-star-fill text-white mx-1"></i>

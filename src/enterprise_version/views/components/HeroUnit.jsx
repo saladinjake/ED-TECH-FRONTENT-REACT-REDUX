@@ -31,6 +31,7 @@ const HeroUnit = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, se
   const [loginModalShow, setLoginModalShow] = useState(false);
   const [regModalShow, setRegModalShow] = useState(false);
   const [forgotModalShow, setForgotModalShow] = useState(false);
+  const [errors, NotificationErrors] = useState({})
 
   const handleLoginModalClose = () => setLoginModalShow(false);
   const handleLoginModalShow = () => {
@@ -117,14 +118,7 @@ const HeroUnit = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, se
             showErrorOnce =true 
              if(showErrorOnce){
                showErrorOnce=false
-               toast.error(`Invalid Email \n must start with alphanumeric char
-can only have alphanumeric and @._-% char\n
-cannot have 2 consecutives . exept for quoted string\n
-char before @ can only be alphanumeric and ._-%, exept for quoted string\n
-must have @ in the middle\n
-need to have at least 1 . in the domain part\n
-cannot have double - in the domain part\n
-can only have alphanumeric and .- char in the domain part`)
+               toast.error(`Invalid Email `)
                setSubmitting(false);
                 setLoading(false);
                return false
@@ -211,32 +205,52 @@ can only have alphanumeric and .- char in the domain part`)
 //register
 
 
-  const handleSubmitRegistration = async  (values, { setSubmitting }) => {
+const handleSubmitRegistration = async  (values, { setSubmitting }) => {
    
  
-   if(prevalidate(setSubmitting)){
-       setLoading(true);
-      try {
-        
-        await registerLearner(values);
-        toast.success("We have sent a verification mail to your email.");
-        setTimeout(() => {
-          // history.push("/");
-          window.location.reload();
-        }, 2000);
-        setSubmitting(false);
-      } catch (err) {
-        // console.log(
-        //   err?.response?.data?.errors?.email[0] || err?.response?.data?.message
-        // );
-        toast.error( err?.response?.data?.errors?.email[0] || err?.response?.data?.message);
+  if(prevalidate(setSubmitting)){
+      setLoading(true);
+     try {
+       
+       await registerLearner(values);
+       toast.success("We have sent a verification mail to your email.");
+       setTimeout(() => {
+         // history.push("/");
+         window.location.reload();
+       }, 2000);
+       setSubmitting(false);
+     } catch (err) {
+       setSubmitting(false);
+       setLoading(false);
+       if(err?.response?.data?.errors){
+         
+         if(err?.response?.data?.errors?.phone_number[0]){
+           toast.error(err?.response?.data?.errors?.phone_number[0])
+         }
+
+        // return toast.error( err?.response?.data?.errors?.email[0] );
+        Object.keys(err?.response?.data?.errors).forEach(keys=>{
+         console.log(keys)
+          if(err?.response?.data?.errors[keys]){
+             NotificationErrors(err?.response?.data?.errors)
+              toast.error(err?.response?.data?.errors[keys][0])
+              setSubmitting(false);
+               setLoading(false);
+              //return false
+          
+          }
+        })
+
+       }
+   
         setSubmitting(false);
 
       }
-      setLoading(false);
+     setLoading(false);
 
-    }
-  };
+   }
+ };
+
 
 
 
