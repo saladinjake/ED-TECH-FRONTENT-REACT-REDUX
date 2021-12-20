@@ -329,17 +329,11 @@ const prevalidate = (setSubmitting)=>{
         setLoading(false);
         if(err?.response?.data?.errors){
           
-          if(err?.response?.data?.errors?.phone_number[0]){
+          if(err?.response?.data?.errors?.phone_number){
             toast.error(err?.response?.data?.errors?.phone_number[0])
-          }
-  
-  
-          if(err?.response?.data?.errors?.email[0]){
+          }else if(err?.response?.data?.errors?.email){
             toast.error(err?.response?.data?.errors?.email[0])
-          }
-  
-  
-          if(err?.response?.data?.errors?.password[0]){
+          }else if(err?.response?.data?.errors?.password){
             toast.error(err?.response?.data?.errors?.password[0])
           }
   
@@ -348,17 +342,17 @@ const prevalidate = (setSubmitting)=>{
           }
 
          // return toast.error( err?.response?.data?.errors?.email[0] );
-         Object.keys(err?.response?.data?.errors).forEach(keys=>{
-          console.log(keys)
-           if(err?.response?.data?.errors[keys]){
-              NotificationErrors(err?.response?.data?.errors)
-               toast.error(err?.response?.data?.errors[keys][0])
-               setSubmitting(false);
-                setLoading(false);
-               //return false
+        //  Object.keys(err?.response?.data?.errors).forEach(keys=>{
+        //   console.log(keys)
+        //    if(err?.response?.data?.errors[keys]){
+        //       NotificationErrors(err?.response?.data?.errors)
+        //        toast.error(err?.response?.data?.errors[keys][0])
+        //        setSubmitting(false);
+        //         setLoading(false);
+        //        //return false
            
-           }
-         })
+        //    }
+        //  })
 
         }
     
