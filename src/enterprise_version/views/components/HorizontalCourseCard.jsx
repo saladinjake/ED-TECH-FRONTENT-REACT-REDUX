@@ -72,11 +72,20 @@ const HorizontalCourseCard = ({
     const redirectToLms = (urlBits) => {
       if(localStorage.getItem("lms_token")){
         const lms_token =  JSON.parse(localStorage.getItem("lms_token"));
+        console.log(lms_token)
+        var encrypted = CryptoJS.AES.encrypt(lms_token, PRIVATE_KEY_ENCRYPTER_1);
+        var encrypted2 = CryptoJS.AES.encrypt(lms_token, PRIVATE_KEY_ENCRYPTER_2);
+        //var decrypted = CryptoJS.AES.decrypt(encrypted, PRIVATE_KEY_ENCRYPTER_1);
+       // var decrypted2 = CryptoJS.AES.decrypt(encrypted2, PRIVATE_KEY_ENCRYPTER_2);
+         //console.log(encrypted.toString()=== encrypted2.toString());
+  // console.log(decrypted.toString());
+       //console.log(decrypted.toString(CryptoJS.enc.Utf8)===decrypted2.toString(CryptoJS.enc.Utf8));
+  
+        urlBits+=`&token=${encrypted.toString()}&enroute=${encrypted2}` 
     
-         let encrypted = Base64.encodeURI(lms_token); 
-         let user_id =  JSON.parse(localStorage.getItem("lms_user_profile_id"));
-        urlBits =`fd3a6e73-e95b-4199-990b-553f15218276/?course_findings=${encrypted}&reloaded_data=${user_id}`;
-        const lmsFront = MICROSERVICE_FRONT1 + urlBits;
+        console.log(urlBits); //34feb914c099df25794bf9ccb85bea72
+    
+        const lmsFront = "http://lms.8aade.net/"+ urlBits;
         return lmsFront
   
       }else{
