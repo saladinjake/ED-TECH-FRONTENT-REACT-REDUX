@@ -81,23 +81,7 @@ import Loader from "./Loader";
 
 
 
-        freeCourses.forEach(async (item) => {
-            await enrollCourseInLMS({
-              overall_score	:0,
-              course_is_complete	:false,
-              start_date:	item.start_date,
-              end_date: item.end_date	,
-              user:	 user?.lms_id,
-              course: item.lms_course_id,
-              completed_section	:[
-              ],
-              completed_subsection:	[
-              ],
-              completed_lesson:	[
-              ]  
-            })
-         });
-
+       
         
 
 
@@ -353,22 +337,7 @@ const CartDetail  = ({
 
 
 
-        paidCourses.forEach(async (item) => {
-            await enrollCourseInLMS({
-              overall_score	:0,
-              course_is_complete	:false,
-              start_date:	item.start_date,
-              end_date: item.end_date	,
-              user:	 	 user?.lms_id,
-              course: item.lms_course_id,
-              completed_section	:[
-              ],
-              completed_subsection:	[
-              ],
-              completed_lesson:	[
-              ]  
-            })
-        });
+      
         toast.success(`Courses enrolled succesfully`);
         
       } catch (err) {
