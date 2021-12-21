@@ -13,7 +13,7 @@ import { removeFromCart, fetchCourses,
 } from "../../core/redux/actions/cart.action";
 
 
-import { enrollCourses } from "../../api/enrollment.services";
+import { enrollCourses, enrollCourseInLMS } from "../../api/enrollment.services";
 import toast from "react-hot-toast";
 import { clearCart } from "../../core/redux/actions/cart.action";
 
@@ -47,6 +47,9 @@ import Loader from "./Loader";
   const allfreeEnrollments = async (cart,user) =>{
   /*write something awesome*/
   // alert("osho free master. you no go buy one course at all!! Nawa u")
+
+  let lms_id = user?.lms_id || "";
+  let lms_token_key = user?.lms_token_key || "";
    if(cart.length> 0){
       const freeCourses = cart.filter(course=>{
         return course.price <= 0
@@ -68,9 +71,37 @@ import Loader from "./Loader";
       });
       //enroll free courses
       try {
+        /// in php api enrollment
         await enrollCourses({
           enrollments: payload,
         });
+
+        //in django api lms 
+
+
+
+
+        freeCourses.forEach(async (item) => {
+            await enrollCourseInLMS({
+              overall_score	:0,
+              course_is_complete	:false,
+              start_date:	item.start_date,
+              end_date: item.end_date	,
+              user:	 user?.lms_id,
+              course: item.lms_course_id,
+              completed_section	:[
+              ],
+              completed_subsection:	[
+              ],
+              completed_lesson:	[
+              ]  
+            })
+         });
+
+        
+
+
+
         toast.success(`Courses enrolled succesfully`);
         clearCart();
         if (user.roles[0].name === "Instructor") {
@@ -142,8 +173,14 @@ const CartDetail  = ({
   cart: { cart, total },
   removeFromCart,
   fetchCourses,
+ 
   
 }) => {
+
+ 
+
+    let lms_id = user?.lms_id || "";
+    let lms_token_key = user?.lms_token_key || "";
 
   const [config, setConfig] = useState({});
   let history = useHistory();
@@ -277,6 +314,9 @@ const CartDetail  = ({
         await enrollCourses({
           enrollments: payload,
         });
+
+
+
        
       } catch (err) {
         toast.error(
@@ -306,10 +346,28 @@ const CartDetail  = ({
       //enroll paid courses
 
 
-
       try {
         await enrollCourses({
           enrollments: payload,
+        });
+
+
+
+        paidCourses.forEach(async (item) => {
+            await enrollCourseInLMS({
+              overall_score	:0,
+              course_is_complete	:false,
+              start_date:	item.start_date,
+              end_date: item.end_date	,
+              user:	 	 user?.lms_id,
+              course: item.lms_course_id,
+              completed_section	:[
+              ],
+              completed_subsection:	[
+              ],
+              completed_lesson:	[
+              ]  
+            })
         });
         toast.success(`Courses enrolled succesfully`);
         

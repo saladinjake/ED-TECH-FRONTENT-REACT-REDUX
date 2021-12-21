@@ -109,8 +109,8 @@ const CourseCard = ({
   const redirectToLms = (urlBits) => {
     if(localStorage.getItem("lms_token")){
       const lms_token =  JSON.parse(localStorage.getItem("lms_token"));
-  
-       let encrypted = Base64.encodeURI(lms_token); 
+      let encrypted =  CryptoJS.AES.encrypt(lms_token, PRIVATE_KEY_ENCRYPTER_1);
+      encrypted = Base64.encodeURI(encrypted); 
        let user_id =  JSON.parse(localStorage.getItem("lms_user_profile_id"));
       urlBits =`fd3a6e73-e95b-4199-990b-553f15218276/?${makeRandomId(10)}=${encrypted}&${makeRandomId(15)}=${user_id}`;
       const lmsFront = MICROSERVICE_FRONT1 + urlBits;

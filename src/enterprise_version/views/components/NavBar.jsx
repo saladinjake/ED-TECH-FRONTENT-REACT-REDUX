@@ -215,7 +215,7 @@ const NavBar = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setP
           .catch(error => { 
             //console.log('error', error)
           if(error){
-            toast.error(error)
+            toast.error("Some error occured")
           }else{
             toast.error('Invalid credentials. User dont exists')
           }

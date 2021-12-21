@@ -9,6 +9,9 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Loader from "./Loader";
 
+
+import { addToCart, fetchCourses } from "../../core/redux/actions/cart.action";
+import { addToWishlist } from "../../api/wishlist.services"
 const CoursesSection = () => {
 
   const [isLoading,setLoading] = useState(false);
@@ -141,10 +144,21 @@ const CoursesSection = () => {
 
 
 
+CoursesSection.propTypes = {
+  cart: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
+  addToCart: PropTypes.func.isRequired,
+};
 
+const mapStateToProps = (state) => ({
+  cart: state.cart,
+  auth: state.auth,
+  wishList: state.wishList,
+});
 
-CoursesSection.propTypes = {};
+export default connect(mapStateToProps, {
+  addToCart,
+  fetchCourses,
+  //addToWishList,
+})(CoursesSection);
 
-const mapStateToProps = (state) => ({});
-
-export default connect(mapStateToProps, {})(CoursesSection);

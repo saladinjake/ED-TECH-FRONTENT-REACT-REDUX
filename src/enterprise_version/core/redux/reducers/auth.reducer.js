@@ -23,6 +23,8 @@ const initialState = {
   loading: false,
   errFlag: false,
   prevPath: "",
+  user_lms_id:"",
+  lms_token:""
 };
 
 export default (state = initialState, action) => {
@@ -32,9 +34,13 @@ export default (state = initialState, action) => {
     //all this should be encrypted so its not just plain
       localStorage.setItem("access_token", action.payload.access_token);
       localStorage.setItem("token", action.payload.access_token);
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
+     
       localStorage.setItem("lms_user_profile_id", JSON.stringify(action.payload.lms_user_profile_id));
+      let userPayLoad = action.payload.user;
+      userPayLoad["lms_id"] = action.payload.lms_user_profile_id;
+      userPayLoad["lms_token_key"] = action.payload.lms_token
 
+      localStorage.setItem("user", JSON.stringify(action.payload.user));
       
       localStorage.setItem(
         "user_roles",
@@ -49,11 +55,13 @@ export default (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        user: action.payload.user,
+        user: userPayLoad, // action.payload.user,
         token: action.payload.access_token,
         user_roles: action.payload.user_roles,
         isAuthenticated: true,
         errFlag: false,
+        user_lms_id:action.payload.lms_user_profile_id,
+  lms_token:action.payload.lms_token
       };
     case AUTH_ERROR:
     case LOGIN_FAIL:
