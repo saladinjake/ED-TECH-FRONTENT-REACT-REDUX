@@ -79,6 +79,20 @@ export const loginUserForgotChangePassword = async (details) => {
   });
 };
 
+
+export const ChangePassword = async (details) => {
+  let request = axios.post("auth/password/reset", details);
+  return request.then((response) => {
+    if (response.status === 200) {
+      return response && response;
+    }
+  });
+};
+
+
+
+
+
 export const registerLearner = async (details) => {
   let request = axios.post("learners/register", details);
   return request.then((response) => {

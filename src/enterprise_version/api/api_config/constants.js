@@ -7,3 +7,5 @@ export const BASE_URL =
     export const  PRIVATE_KEY_ENCRYPTER_2="(&*$#$$^HGHDG(**^&thjhfikl0(^^3543%%&67)))"
 
     export const MICROSERVICE_FRONT1="http://lms.8aade.net/"
+
+    export const BASE_URL_ENROLLMENT ="https://questence.tqfe.net/api/v1"

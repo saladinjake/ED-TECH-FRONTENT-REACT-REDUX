@@ -13,7 +13,7 @@ import CartScreen from "../../views/screens/CartScreen";
 import NotificationScreen from "../../views/screens/NotificationScreen";
 import WishListScreen from "../../views/screens/WishListScreen";
 import ProfileScreen from "../../views/screens/ProfileScreen";
-
+import ChangePassword from "../../views/screens/ChangePasswordScreen"
 
 
 import HonorCodeScreen from "../../views/screens/HonorCodeScreen";
@@ -123,6 +123,15 @@ const AppNavigator = () => {
           path="/mylearning"
           render={(props) => <MyLearning {...props} />}
         />
+
+
+
+<Route
+          path="/password/reset/:id"
+          render={(props) => <ChangePassword {...props} />}
+        />
+
+
         {/*both user and instructors use same dash board*/}
         <Route
           path="/dashboard"
