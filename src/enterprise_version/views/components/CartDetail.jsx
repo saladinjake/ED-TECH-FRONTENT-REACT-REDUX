@@ -91,7 +91,7 @@ import Loader from "./Loader";
         if (user.roles[0].name === "Instructor") {
           window.location.href=process.env.PUBLIC_URL+ "/instructor/dashboard";
         } else {
-          window.location.href=process.env.PUBLIC_URL+"/mycourses";
+          window.location.href=process.env.PUBLIC_URL+"/mylearning";
         }
       } catch (err) {
          clearCart();
@@ -134,7 +134,7 @@ import Loader from "./Loader";
             <button class="bg-teal" onClick={(e) => {
                 e.preventDefault()
                 allfreeEnrollments(cart,user)
-            }}>Enroll for free</button>
+            }}>Click To Enroll </button>
         </div>
 
       )
