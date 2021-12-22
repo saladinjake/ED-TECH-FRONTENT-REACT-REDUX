@@ -12,10 +12,12 @@ import Loader from "./Loader";
 
 import { addToCart, fetchCourses } from "../../core/redux/actions/cart.action";
 import { addToWishlist } from "../../api/wishlist.services"
-const CoursesSection = () => {
+const CoursesSection = ({fetchCourses}) => {
 
   const [isLoading,setLoading] = useState(false);
   const [topCourses,setTopCourses] = useState([])
+
+
 
   useEffect(()=>{
     
@@ -24,6 +26,7 @@ const CoursesSection = () => {
 
       setLoading(true)
       try{
+        await fetchCourses();
         const responseTopCourse = await getFeaturedCourses() 
     
         setTopCourses([...responseTopCourse.data.data.courses])

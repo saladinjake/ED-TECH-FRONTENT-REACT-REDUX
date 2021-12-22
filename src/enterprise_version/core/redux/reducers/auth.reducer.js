@@ -7,6 +7,7 @@ import {
   SET_PATH,
   SET_LOADING,
 } from "./../actions/types";
+import toast from "react-hot-toast"
 
 const cachedUser = localStorage && JSON?.parse(localStorage.getItem("user"));
 const cachedRole =
@@ -23,33 +24,41 @@ const initialState = {
   loading: false,
   errFlag: false,
   prevPath: "",
-  user_lms_id:"",
-  lms_token:""
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_SUCCESS:
 
-    //all this should be encrypted so its not just plain
-      localStorage.setItem("access_token", action.payload.access_token);
-      localStorage.setItem("token", action.payload.access_token);
-     
-      localStorage.setItem("lms_user_profile_id", JSON.stringify(action.payload.lms_user_profile_id));
-      let userPayLoad = action.payload.user;
-      userPayLoad["lms_id"] = action.payload.lms_user_profile_id;
-      userPayLoad["lms_token_key"] = action.payload.lms_token
+      let userPayLoad  ={}; // user starts off an empty value.. i dont know you yet
+      console.log(action.payload.user)
+      if(action.payload.user.hasOwnProperty("id") ){
+        //more security check befor grants are allowed
+        //all this should be encrypted so its not just plain
+        localStorage.setItem("access_token", action.payload.access_token);
+        localStorage.setItem("token", action.payload.access_token);
+        localStorage.setItem("user", JSON.stringify(action.payload.user));
+        localStorage.setItem("lms_user_profile_id", JSON.stringify(action.payload.lms_user_profile_id));
+        let userPayLoad = action.payload.user;
+        userPayLoad["lms_id"] = action.payload.lms_user_profile_id;
+        userPayLoad["lms_token_key"] = action.payload.lms_token
+        
+        localStorage.setItem(
+          "user_roles",
+          JSON.stringify(action.payload.user_roles)
+        );
+        localStorage.setItem(
+          "lms_token",
+          JSON.stringify(action.payload.lms_token)
+        );
+  
+       toast.success("Login Successful");
+      }else{
+       toast.error("Login Credentials not found");
+       localStorage.clear()
+      }
 
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
-      
-      localStorage.setItem(
-        "user_roles",
-        JSON.stringify(action.payload.user_roles)
-      );
-      localStorage.setItem(
-        "lms_token",
-        JSON.stringify(action.payload.lms_token)
-      );
+    
 
       // set the lms token to cookies
       return {
@@ -60,8 +69,6 @@ export default (state = initialState, action) => {
         user_roles: action.payload.user_roles,
         isAuthenticated: true,
         errFlag: false,
-        user_lms_id:action.payload.lms_user_profile_id,
-  lms_token:action.payload.lms_token
       };
     case AUTH_ERROR:
     case LOGIN_FAIL:

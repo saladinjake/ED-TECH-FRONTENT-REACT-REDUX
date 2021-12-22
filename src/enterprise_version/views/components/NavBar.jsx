@@ -205,12 +205,26 @@ const NavBar = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setP
         fetch(`${BASE_URL}/profile-resource/api/lms-enrollment/login/`, requestOptions)
           .then(response => response.json())
           .then(result => {
-            login(result);    //without sso login(result.data);
             console.log(result)
+               // more secured login check
+            if (!('user' in result)){
+              toast.error("Invalid credentials")
+              logOut();
+              setSubmitting(false);
+               setLoading(false);
+               localStorage.clear()
+            }else{
+              login(result);    //without sso login(result.data);
+              console.log(result)
+            }
+
+            
+            //conditions for success
+
             setTimeout(() => {
               window.location.reload();
             }, 2000);
-            toast.success("Login Successful");
+            
           })
           .catch(error => { 
             //console.log('error', error)

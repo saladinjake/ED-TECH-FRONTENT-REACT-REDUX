@@ -4,6 +4,7 @@ import HorizontalCourseCard from "./EnrolledHorizontalCourseCard";
 import CourseCard from "./EnrolledCourseCard";
 const CoursesWithSortWidget = ({ filteredCourses }) => {
   const [sortType, setSortType] = useState("grid");
+  const defaultCourseIdForTestingPurpose ="fd3a6e73-e95b-4199-990b-553f15218276"
   const handleSort = (sortType) => {
     setSortType(sortType);
   };
@@ -18,6 +19,10 @@ const CoursesWithSortWidget = ({ filteredCourses }) => {
                 <>
                   {filteredCourses.length > 0 &&
                     filteredCourses.map((course, index) => {
+                      let givenCourseId =course?.course?.lms_course_id
+                      if(!course?.course?.lms_course_id || course?.course?.lms_course_id==null){
+                          givenCourseId = defaultCourseIdForTestingPurpose
+                      }
                       return (
                         <HorizontalCourseCard
                           key={index + "_" + Math.random() * 90}
@@ -41,6 +46,7 @@ const CoursesWithSortWidget = ({ filteredCourses }) => {
                           courseBtnText="View Course"
                           courseRating="3"
                           courseCompletion="90"
+                          givenCourseId={givenCourseId }
                         />
                       );
                     })}
@@ -52,6 +58,11 @@ const CoursesWithSortWidget = ({ filteredCourses }) => {
                     <>
                       {filteredCourses.length > 0 &&
                         filteredCourses.map((course, index) => {
+                          console.log(course?.course)
+                          let givenCourseId =course?.course?.lms_course_id
+                          if(!course?.course?.lms_course_id || course?.course?.lms_course_id==null){
+                              givenCourseId = defaultCourseIdForTestingPurpose
+                          }
                           return (
                             <div className="col-md-4">
                               <CourseCard
@@ -73,6 +84,7 @@ const CoursesWithSortWidget = ({ filteredCourses }) => {
                                 courseBtnText="View Course"
                                 courseRating="4"
                                 courseCompletion="40"
+                                givenCourseId={givenCourseId }
                               />
                             </div>
                           );
