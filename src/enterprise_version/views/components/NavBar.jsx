@@ -168,6 +168,7 @@ const NavBar = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setP
   console.log(pattern2.test(history?.location?.search));
 
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const initialValues = { email: "", password: "" };
   const initialRegValues = {
     email: "",
@@ -189,7 +190,7 @@ const NavBar = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setP
 
   
   const handleSubmit = async (values, { setSubmitting }) => {
-       setLoading(true);
+       setLoading2(true);
        console.log(values.email,values.password)
 
        var formdata = new FormData();
@@ -208,12 +209,40 @@ const NavBar = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setP
             console.log(result)
                // more secured login check
             if (!('user' in result)){
-               toast.error("Invalid credentials")
-               logOut();
-               setSubmitting(false);
-               setLoading(false);
-               localStorage.clear()
 
+              if(result?.message){
+                let msg = result?.message;
+                 if(result?.message==='Oh Snap! An error occured. Invalid credentials.'){
+                  toast.error("Invalid credentials. Please try again ")
+                  logOut();
+                  setSubmitting(false);
+                  setLoading2(false);
+                  localStorage.clear()
+                }else{
+                  let msg = result?.message;
+                  if(msg.substring(`Please check your mailbox`)){
+                    toast.error("An error occured. Please check your mailbox to confirm your email address to proceed!")
+                    
+                    logOut();
+                    setSubmitting(false);
+                    setLoading2(false);
+                    localStorage.clear()
+                  }
+                }
+
+              }else{
+                toast.error("Invalid credentials. Please try again or click the sign up link if your account is not yet registered. ")
+                logOut();
+                setSubmitting(false);
+                setLoading2(false);
+                localStorage.clear()
+              }
+
+
+
+             
+              
+           
 
             }else{
               login(result);    //without sso login(result.data);
@@ -235,11 +264,11 @@ const NavBar = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setP
         
             logOut();
             setSubmitting(false);
-             setLoading(false);
+             setLoading2(false);
 
 
           });
-          setLoading(false);
+          setLoading2(false);
 
     
   };
@@ -1260,6 +1289,7 @@ const prevalidate = (setSubmitting)=>{
           show={regModalShow}
           onHide={handleRegModalClose}
           className="border-0"
+          backdrop="static"
         >
           <Modal.Header
             size="lg"
@@ -1458,6 +1488,7 @@ const prevalidate = (setSubmitting)=>{
           show={loginModalShow}
           onHide={handleLoginModalClose}
           className="border-0"
+          backdrop="static"
         >
           <Modal.Header closeButton className="border-0"></Modal.Header>
           <Modal.Body className="border-0">
@@ -1537,7 +1568,7 @@ const prevalidate = (setSubmitting)=>{
               </div>
               <div className="mb-3">
                 <button type="submit"  className="btn btn-solid-teal w-100 border-radius-15" disabled={isSubmitting}>
-                            {loading ? (
+                            {loading2 ? (
                               <div className="spinner-border" role="status">
                                 <span className="sr-only"></span>
                               </div>
@@ -1578,6 +1609,7 @@ const prevalidate = (setSubmitting)=>{
           show={forgotModalShow}
           onHide={handleForgotModalClose}
           className="border-0"
+          backdrop="static"
         >
           <Modal.Header closeButton className="border-0"></Modal.Header>
           <Modal.Body className="border-0">

@@ -38,8 +38,7 @@ var axios = require('axios');
 const ChangePasswordScreen = () => {
   let history = useHistory();
 
-  const getTokenItemFromString = (thePath) =>
-    thePath.substring(thePath.lastIndexOf("/") + 1);
+  const getTokenItemFromString = (thePath) => thePath.substring(thePath.lastIndexOf("/") + 1);
 
   let params = qs.parse(history?.location?.search, { ignoreQueryPrefix: true });
 
@@ -110,9 +109,9 @@ var config = {
 
 axios(config)
 .then(function (response) {
-  console.log(JSON.stringify(response.data));
-  toast.success(JSON.stringify(response.data))
-  history.push("../");
+  // console.log(JSON.stringify(response.data.message));
+  toast.success(JSON.stringify(response.data.message))
+  history.push("../../");
 })
 .catch(function (response) {
     toast.error(JSON.stringify(response?.error?.message|| response?.error || "could not perform the update password request"))
@@ -150,6 +149,7 @@ axios(config)
           show={loginModalShow}
           onHide={handleLoginModalClose}
           className="border-0"
+          backdrop="static"
         >
           <Modal.Header closeButton className="border-0"></Modal.Header>
           <Modal.Body className="border-0">

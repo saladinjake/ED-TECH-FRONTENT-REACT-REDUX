@@ -63,6 +63,7 @@ const HeroUnit = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, se
   console.log(pattern2.test(history?.location?.search));
 
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const initialValues = { email: "", password: "" };
   const initialRegValues = {
     email: "",
@@ -157,48 +158,88 @@ const HeroUnit = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, se
   }
 
   const handleSubmit = async (values, { setSubmitting }) => {
-       setLoading(true);
-       console.log(values.email,values.password)
+    setLoading2(true);
+    console.log(values.email,values.password)
 
-       var formdata = new FormData();
-       formdata.append("email", values.email);
-       formdata.append("password", values.password);
+    var formdata = new FormData();
+    formdata.append("email", values.email);
+    formdata.append("password", values.password);
 
-        var requestOptions = {
-          method: 'POST',
-          body: formdata,
-          redirect: 'follow'
-        };
+     var requestOptions = {
+       method: 'POST',
+       body: formdata,
+       redirect: 'follow'
+     };
 
-        fetch(`${BASE_URL}/profile-resource/api/lms-enrollment/login/`, requestOptions)
-          .then(response => response.json())
-          .then(result => {
-            console.log(result);
-            login(result);//without sso login(result.data);
+     fetch(`${BASE_URL}/profile-resource/api/lms-enrollment/login/`, requestOptions)
+       .then(response => response.json())
+       .then(result => {
+         console.log(result)
+            // more secured login check
+         if (!('user' in result)){
 
-            setTimeout(() => {
-              window.location.reload();
-            }, 2000);
+           if(result?.message){
+             let msg = result?.message;
+              if(result?.message==='Oh Snap! An error occured. Invalid credentials.'){
+               toast.error("Invalid credentials. Please try again ")
+               logOut();
+               setSubmitting(false);
+               setLoading2(false);
+               localStorage.clear()
+             }else{
+               let msg = result?.message;
+               if(msg.substring(`Please check your mailbox`)){
+                 toast.error("An error occured. Please check your mailbox to confirm your email address to proceed!")
+                 
+                 logOut();
+                 setSubmitting(false);
+                 setLoading2(false);
+                 localStorage.clear()
+               }
+             }
+
+           }else{
+             toast.error("Invalid credentials. Please try again or click the sign up link if your account is not yet registered. ")
+             logOut();
+             setSubmitting(false);
+             setLoading2(false);
+             localStorage.clear()
+           }
 
 
-            toast.success("Login Successful");
 
-          })
-          .catch(error => { 
-            //console.log('error', error)
+          
+           
+        
+
+         }else{
+           login(result);    //without sso login(result.data);
+           //console.log(result)
+           setTimeout(() => {
+             window.location.reload();
+           }, 2000);
+
+         }
+         
+       })
+       .catch(error => { 
+         //console.log('error', error)
+       if(error){
+         toast.error("Some error occured")
+       }else{
+         toast.error('Invalid credentials. User dont exists')
+       }
+     
+         logOut();
+         setSubmitting(false);
+          setLoading2(false);
 
 
-            toast.error(error);
-            logOut();
-            setSubmitting(false);
-             setLoading(false);
+       });
+       setLoading2(false);
 
-
-          });
-          setLoading(false);
-
-    
-  };
+ 
+};
 
 
 
@@ -227,9 +268,13 @@ const handleSubmitRegistration = async  (values, { setSubmitting }) => {
          
         if(err?.response?.data?.errors?.phone_number){
           toast.error(err?.response?.data?.errors?.phone_number[0])
-        }else if(err?.response?.data?.errors?.email){
-          toast.error(err?.response?.data?.errors?.email[0])
-        }else if(err?.response?.data?.errors?.password){
+        }
+        
+        if(err?.response?.data?.errors?.email){
+          toast.error( `A user with is email has already registered` |err?.response?.data?.errors?.email[0])
+        }
+        
+        if(err?.response?.data?.errors?.password){
           toast.error(err?.response?.data?.errors?.password[0])
         }
 
@@ -320,6 +365,7 @@ const handleSubmitRegistration = async  (values, { setSubmitting }) => {
           show={regModalShow}
           onHide={handleRegModalClose}
           className="border-0"
+          backdrop="static"
         >
           <Modal.Header
             size="lg"
@@ -519,6 +565,7 @@ const handleSubmitRegistration = async  (values, { setSubmitting }) => {
           show={loginModalShow}
           onHide={handleLoginModalClose}
           className="border-0"
+          backdrop="static"
         >
           <Modal.Header closeButton className="border-0"></Modal.Header>
           <Modal.Body className="border-0">
@@ -637,6 +684,7 @@ const handleSubmitRegistration = async  (values, { setSubmitting }) => {
           show={forgotModalShow}
           onHide={handleForgotModalClose}
           className="border-0"
+          backdrop="static"
         >
           <Modal.Header closeButton className="border-0"></Modal.Header>
           <Modal.Body className="border-0">
