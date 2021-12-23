@@ -208,22 +208,21 @@ const NavBar = ({ auth: {isAuthenticated, user , prevPath }, login, logOut, setP
             console.log(result)
                // more secured login check
             if (!('user' in result)){
-              toast.error("Invalid credentials")
-              logOut();
-              setSubmitting(false);
+               toast.error("Invalid credentials")
+               logOut();
+               setSubmitting(false);
                setLoading(false);
                localStorage.clear()
+
+
             }else{
               login(result);    //without sso login(result.data);
-              console.log(result)
+              //console.log(result)
+              setTimeout(() => {
+                window.location.reload();
+              }, 2000);
+
             }
-
-            
-            //conditions for success
-
-            setTimeout(() => {
-              window.location.reload();
-            }, 2000);
             
           })
           .catch(error => { 
