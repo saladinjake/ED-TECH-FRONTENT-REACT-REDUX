@@ -1,0 +1,162 @@
+let data = {
+   "institutions": [
+
+  	{
+		  	"id":1,
+			"institution":"CIPM",
+			"intro": "Your path to CIPM certification will be a lot smoother if you take full advantage of our programmes in",
+		     "hero-image":"",
+			"courses": [
+								   { 
+
+								     "title": "FOUNDATION I",
+								     "body": [
+								  	       {"title":"Introduction to Management Writing and Communication Skills",
+								  	       "image": "the image"
+								  	       },
+								           {"title":"Introduction to Economics,Introduction to Accounting",
+								           	"image":""
+
+								           },
+								           {
+								           	"title":"Fundamentals of Psychology & Sociology",
+								           	"image":""
+								           }
+
+								  	 ]
+								  },
+
+								   {
+
+								   	  "title": "FOUNDATION II",
+								       "body":[{
+								     	       "title": "Introduction to Personnel Management and Industrial Relations",
+								     	       "image":""
+
+								              },
+								              {
+								     	       "title": "Nigerian Business Environment",
+
+								     	      } ,
+								     	      { 
+								     	       "title": "Business Law",
+								              },  
+								     	      { "title": "Computer Application and Management Information System",
+								                "image": ""
+								     	      },
+
+								     	      {
+								     	      	"title":"Government and Nigerian Legal System",
+								     	      	"image":""
+								     	      }
+								     	  ]
+								     },
+
+								     {
+								  	    "title":"INTERMEDIATE I",
+								  	    "body":[
+										  		{
+										  			"title":"Business Administration",
+										  			"image":""
+										  		},
+										  		{
+										  			"title":"Advanced Economics",
+										  			"image":""
+										  		},
+										  		{
+										  			 "title":"Accounting and Finance for Managers",
+										  			 "image":""
+
+										  		},
+										  		{
+								                  "title":"Business Statistics and Social Research Methods",
+								                  "image":""
+										  		}
+										  	]
+										  },
+
+										  {
+										  	"title":"INTERMEDIATE II",
+										  	"body":[
+										  		{
+										  			"title":"Training and Development",
+										  			"image":""
+
+										  		},
+										  		{
+										  			"title":"Public Administration",
+										  			"image":""
+										  		},
+										  		{
+										  			 "title": "Manpower Planning",
+										  			 "image":""
+
+										  		},
+										  		{
+										  			"title":"Comparative Management and Administration",
+										  			"image":""
+										  		},
+										  		
+										  	]
+										  },
+
+										  {
+										  	 "title":"PROFESSIONAL EXAMINATION I ",
+										  	 "body":[
+										  	 	{
+										  	 		"title":"Operations Research",
+										  	 		"image":""
+										  	 	},
+										  	 	{
+										  	 		"title":"Organisational Behaviour and Performance",
+										  	 		"image":""
+										  	 	},
+										  	 	{
+										  	 		"title":"Insurance and Pensions Management",
+										  	 		"image":""
+										  	 	},
+										  	 	{
+										  	 		"title":"Advanced Personnel Management I",
+										  	 		"image":""
+										  	 	}
+
+										  	 ]
+
+										  },
+
+										  {
+										  	"title": "PROFESSIONAL EXAMINIATION II",
+										  	"body":[
+										  		{
+										  			"title":"Nigeria Labour Law",
+										  			"image":""
+										  		},
+										  		{
+										  			"title":"Advanced Industrial Relations",
+										  			"image":""
+										  		},
+										  		{
+										  			"title":"Advanced Industrial Relations",
+										  			"image":""
+
+										  		},
+										  		{
+										  			"title":"Advanced Personnel Management II",
+										  			"image":""
+										  		},
+
+										  		{
+										  			"title":"Labour Market Analysis",
+										  			"image":""
+										  		}
+										  	]
+										  }
+
+		    ]
+
+
+    }
+  ]
+}
+
+export default data;

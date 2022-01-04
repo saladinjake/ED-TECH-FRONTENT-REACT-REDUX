@@ -1,0 +1,79 @@
+import React, { useState, useEffect } from "react";
+
+import toast, { useToaster } from "react-hot-toast";
+import $ from "jquery";
+
+const Notifications = () => {
+  const { toasts, handlers } = useToaster();
+  const { zIndexTop, setHighestZIndex } = useState("");
+  const { startPause, endPause, calculateOffset, updateHeight } = handlers;
+  var maxZ = 9000000;
+
+  $(document).ready(function () {
+    var maxZ = Math.max.apply(
+      null,
+      $.map($("body *"), function (e, n) {
+        if ($(e).css("position") != "static")
+          return parseInt($(e).css("z-index")) || 1;
+      })
+    );
+  });
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+
+        bottom: "20%",
+        right: "25%",
+        transform: "translate(40%,-20%)",
+
+        display: "flex",
+        zIndex: zIndexTop + 40000 + "",
+      }}
+      onMouseEnter={startPause}
+      onMouseLeave={endPause}
+    >
+      {toasts.map((toast) => {
+        console.log(toast);
+        const offset = calculateOffset(toast.id, {
+          reverseOrder: false,
+          margin: 8,
+        });
+        const ref = (el) => {
+          if (el && !toast.height) {
+            const height = el.getBoundingClientRect().height;
+            updateHeight(toast.id, height);
+          }
+        };
+        const bg = toast.type == "error" ? "red" : "green";
+        return (
+          <div
+            key={toast.id}
+            ref={ref}
+            className="card-box"
+            style={{
+              position: "absolute",
+              background: bg,
+              width: "300px",
+
+              fontSize: "20px",
+              margin: "10px",
+              padding: "10px",
+              color: "#fff",
+              zIndex: zIndexTop + 40000 + "",
+
+              transition: "all 0.5s ease-out",
+              opacity: toast.visible ? 1 : 0,
+              transform: `translateY(${offset}px)`,
+            }}
+          >
+            {toast.message}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+export default Notifications;
