@@ -1,6 +1,6 @@
-# Getting Started with QUESTENCE ENTERPRISE APPLICATION
+# Getting Started with Create React App
 
-This FOLDER STRUCTURE [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 

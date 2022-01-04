@@ -1,30 +1,23 @@
-/*Import Application configurations and core modules*/
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-import QuestenceEnterpriseApp from './QuestenceEnterprise/BootInitializer/App';
-import reportWebVitals from './QuestenceEnterprise/ApplicationBinaries/helpers/reportWebVitals';
-
-/*redux store provisioner*/
-import { Provider as Provisioner }  from "react-redux";
-import QuestenceReduxStore from "./QuestenceEnterprise/ApplicationBinaries/redux/store";
-
-/*css : todo:encapsulate this location*/
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-const ROOT_INJECTOR = "root_questence_inlet_spa";
-
+import { Provider as Provisioner }  from "react-redux";
+import QuestenceReduxStore,{ persister } from "./enterprise_version/core/redux/store";
+//import { PersistGate } from 'redux-persist/integration/react';
 ReactDOM.render(
   <React.StrictMode>
      {/*REDUX STATE ENHANCER*/}
     <Provisioner store={QuestenceReduxStore}>
-       <QuestenceEnterpriseApp />
+          <App />
     </Provisioner>
   </React.StrictMode>,
-  document.getElementById(ROOT_INJECTOR)
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
