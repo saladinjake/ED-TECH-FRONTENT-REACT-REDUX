@@ -1,13 +1,25 @@
-This is an elearning software designed to meet the needs of a customised learning management software (https://github.com/facebook/create-react-app).
+# frontend edtech
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/677a100f-bcf1-453a-85b3-377469be8d48/deploy-status)](https://app.netlify.com/sites/modest-minsky-1a614f/deploys)
+## features in feature branch
+- authentication
+- reset password
+- course navigation
+- course enrolment
+- cart
+- wishlist
+- paystack payment
 
-## Available Scripts
 
-In the project directory, you can run:
+## features in feature-authoring for instructors
+- add courses
+- add sections
+- add subsection
+- add lessons
+- add components
+    - html component
+    - iframe component
+    - video component
+    - problem component
+    - question component   
 
-### `yarn start`
-
-### `yarn test`
-
-### `yarn build`
+# this is a demo prototype version not fully functional. 
